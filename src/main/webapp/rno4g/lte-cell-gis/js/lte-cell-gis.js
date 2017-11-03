@@ -158,6 +158,7 @@ $(function () {
     });
 
     initAreaSelector("provinceId", "cityId", "districtId");
+    $("#districtId").trigger("change");
 
     $("#loadGisCell").click(function () {
         var cityId = parseInt($("#cityId").find("option:checked").val());
