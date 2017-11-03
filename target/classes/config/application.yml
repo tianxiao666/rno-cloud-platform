@@ -1,0 +1,21 @@
+keycloak:
+  auth-server-url: http://localhost:9080/auth
+  realm: jhipster
+  public-client: true
+  resource: web_app
+
+spring:
+    devtools:
+        restart:
+            enabled: false
+        livereload:
+            enabled: false
+    datasource:
+#        type: com.zaxxer.hikari.HikariDataSource
+        url: jdbc:oracle:thin:@192.168.50.20:1521:rnodb
+        username: rno4dev
+        password: 123456
+    jpa:
+        database-platform: org.hibernate.dialect.Oracle10gDialect
+        database: ORACLE
+        show-sql: true

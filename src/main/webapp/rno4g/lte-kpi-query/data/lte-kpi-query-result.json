@@ -1,0 +1,244 @@
+{
+ "data": [
+    {
+      "ERAB_ESTABSUCC": "100%",
+      "RRC_CONNESTABSUCC": "100%",
+      "MEABEGTIME": "2015-7-16 15:15:00",
+      "CELLNAME": "广州天河区林和村改造房B区E-ZLW-2",
+      "SWITCHSUCC": "100%",
+      "WIRECONN": "100%",
+      "ERAB_DROP_CELLLEVEL": "0%",
+      "MEAENDTIME": "2015-7-16 15:30:00"
+    },
+    {
+      "ERAB_ESTABSUCC": "100%",
+      "RRC_CONNESTABSUCC": "100%",
+      "MEABEGTIME": "2015-7-16 15:00:00",
+      "CELLNAME": "广州天河区林和村改造房B区E-ZLW-6",
+      "SWITCHSUCC": "100%",
+      "WIRECONN": "100%",
+      "ERAB_DROP_CELLLEVEL": "0%",
+      "MEAENDTIME": "2015-7-16 15:15:00"
+    },
+    {
+      "ERAB_ESTABSUCC": "100%",
+      "RRC_CONNESTABSUCC": "100%",
+      "MEABEGTIME": "2015-7-16 15:15:00",
+      "CELLNAME": "广州天河区天河华庭街站D-ZLH-1",
+      "SWITCHSUCC": "100%",
+      "WIRECONN": "100%",
+      "ERAB_DROP_CELLLEVEL": "0%",
+      "MEAENDTIME": "2015-7-16 15:30:00"
+    },
+    {
+      "ERAB_ESTABSUCC": "99.23%",
+      "RRC_CONNESTABSUCC": "100%",
+      "MEABEGTIME": "2015-7-16 14:30:00",
+      "CELLNAME": "广州天河区天河华庭街站D-ZLH-2",
+      "SWITCHSUCC": "100%",
+      "WIRECONN": "99.23%",
+      "ERAB_DROP_CELLLEVEL": "0%",
+      "MEAENDTIME": "2015-7-16 14:45:00"
+    },
+    {
+      "ERAB_ESTABSUCC": "100%",
+      "RRC_CONNESTABSUCC": "100%",
+      "MEABEGTIME": "2015-7-16 15:15:00",
+      "CELLNAME": "广州天河区天河华庭街站D-ZLH-3",
+      "SWITCHSUCC": "99.65%",
+      "WIRECONN": "100%",
+      "ERAB_DROP_CELLLEVEL": "0%",
+      "MEAENDTIME": "2015-7-16 15:30:00"
+    },
+    {
+      "ERAB_ESTABSUCC": "100%",
+      "RRC_CONNESTABSUCC": "100%",
+      "MEABEGTIME": "2015-7-16 14:45:00",
+      "CELLNAME": "广州天河区恒康阁AE-ZLW-1",
+      "SWITCHSUCC": "100%",
+      "WIRECONN": "100%",
+      "ERAB_DROP_CELLLEVEL": "0%",
+      "MEAENDTIME": "2015-7-16 15:00:00"
+    },
+    {
+      "ERAB_ESTABSUCC": "96.77%",
+      "RRC_CONNESTABSUCC": "100%",
+      "MEABEGTIME": "2015-7-16 15:00:00",
+      "CELLNAME": "广州天河区林和村改造房B区E-ZLW-3",
+      "SWITCHSUCC": "100%",
+      "WIRECONN": "96.77%",
+      "ERAB_DROP_CELLLEVEL": "10.2%",
+      "MEAENDTIME": "2015-7-16 15:15:00"
+    },
+    {
+      "ERAB_ESTABSUCC": "98.1%",
+      "RRC_CONNESTABSUCC": "100%",
+      "MEABEGTIME": "2015-7-16 15:00:00",
+      "CELLNAME": "广州天河区天河华庭街站D-ZLH-2",
+      "SWITCHSUCC": "100%",
+      "WIRECONN": "98.1%",
+      "ERAB_DROP_CELLLEVEL": "0%",
+      "MEAENDTIME": "2015-7-16 15:15:00"
+    },
+    {
+      "ERAB_ESTABSUCC": "100%",
+      "RRC_CONNESTABSUCC": "100%",
+      "MEABEGTIME": "2015-7-16 14:45:00",
+      "CELLNAME": "广州天河区林和村改造房B区E-ZLW-1",
+      "SWITCHSUCC": "100%",
+      "WIRECONN": "100%",
+      "ERAB_DROP_CELLLEVEL": "0%",
+      "MEAENDTIME": "2015-7-16 15:00:00"
+    },
+    {
+      "ERAB_ESTABSUCC": "100%",
+      "RRC_CONNESTABSUCC": "100%",
+      "MEABEGTIME": "2015-7-16 14:45:00",
+      "CELLNAME": "广州天河区林和村改造房B区E-ZLW-4",
+      "SWITCHSUCC": "100%",
+      "WIRECONN": "100%",
+      "ERAB_DROP_CELLLEVEL": "0%",
+      "MEAENDTIME": "2015-7-16 15:00:00"
+    },
+    {
+      "ERAB_ESTABSUCC": "100%",
+      "RRC_CONNESTABSUCC": "100%",
+      "MEABEGTIME": "2015-7-16 15:00:00",
+      "CELLNAME": "广州天河区林和村改造房B区E-ZLW-5",
+      "SWITCHSUCC": "100%",
+      "WIRECONN": "100%",
+      "ERAB_DROP_CELLLEVEL": "0%",
+      "MEAENDTIME": "2015-7-16 15:15:00"
+    },
+    {
+      "ERAB_ESTABSUCC": "97.16%",
+      "RRC_CONNESTABSUCC": "100%",
+      "MEABEGTIME": "2015-7-16 14:45:00",
+      "CELLNAME": "广州天河区天河华庭街站D-ZLH-2",
+      "SWITCHSUCC": "100%",
+      "WIRECONN": "97.16%",
+      "ERAB_DROP_CELLLEVEL": "0%",
+      "MEAENDTIME": "2015-7-16 15:00:00"
+    },
+    {
+      "ERAB_ESTABSUCC": "99.68%",
+      "RRC_CONNESTABSUCC": "100%",
+      "MEABEGTIME": "2015-7-16 14:30:00",
+      "CELLNAME": "广州天河区天河华庭街站D-ZLH-3",
+      "SWITCHSUCC": "100%",
+      "WIRECONN": "99.68%",
+      "ERAB_DROP_CELLLEVEL": "0.11%",
+      "MEAENDTIME": "2015-7-16 14:45:00"
+    },
+    {
+      "ERAB_ESTABSUCC": "100%",
+      "RRC_CONNESTABSUCC": "100%",
+      "MEABEGTIME": "2015-7-16 15:00:00",
+      "CELLNAME": "广州天河区恒康阁AE-ZLW-1",
+      "SWITCHSUCC": "100%",
+      "WIRECONN": "100%",
+      "ERAB_DROP_CELLLEVEL": "1.56%",
+      "MEAENDTIME": "2015-7-16 15:15:00"
+    },
+    {
+      "ERAB_ESTABSUCC": "100%",
+      "RRC_CONNESTABSUCC": "100%",
+      "MEABEGTIME": "2015-7-16 15:15:00",
+      "CELLNAME": "广州天河区恒康阁AE-ZLW-1",
+      "SWITCHSUCC": "100%",
+      "WIRECONN": "100%",
+      "ERAB_DROP_CELLLEVEL": "0%",
+      "MEAENDTIME": "2015-7-16 15:30:00"
+    },
+    {
+      "ERAB_ESTABSUCC": "100%",
+      "RRC_CONNESTABSUCC": "100%",
+      "MEABEGTIME": "2015-7-16 15:00:00",
+      "CELLNAME": "广州天河区林和村改造房B区E-ZLW-1",
+      "SWITCHSUCC": "100%",
+      "WIRECONN": "100%",
+      "ERAB_DROP_CELLLEVEL": "0%",
+      "MEAENDTIME": "2015-7-16 15:15:00"
+    },
+    {
+      "ERAB_ESTABSUCC": "100%",
+      "RRC_CONNESTABSUCC": "100%",
+      "MEABEGTIME": "2015-7-16 14:30:00",
+      "CELLNAME": "广州天河区天河华庭街站D-ZLH-1",
+      "SWITCHSUCC": "100%",
+      "WIRECONN": "100%",
+      "ERAB_DROP_CELLLEVEL": "0%",
+      "MEAENDTIME": "2015-7-16 14:45:00"
+    },
+    {
+      "ERAB_ESTABSUCC": "100%",
+      "RRC_CONNESTABSUCC": "100%",
+      "MEABEGTIME": "2015-7-16 14:45:00",
+      "CELLNAME": "广州天河区天河华庭街站D-ZLH-1",
+      "SWITCHSUCC": "100%",
+      "WIRECONN": "100%",
+      "ERAB_DROP_CELLLEVEL": "0%",
+      "MEAENDTIME": "2015-7-16 15:00:00"
+    },
+    {
+      "ERAB_ESTABSUCC": "100%",
+      "RRC_CONNESTABSUCC": "100%",
+      "MEABEGTIME": "2015-7-16 15:15:00",
+      "CELLNAME": "广州天河区林和村改造房B区E-ZLW-1",
+      "SWITCHSUCC": "100%",
+      "WIRECONN": "100%",
+      "ERAB_DROP_CELLLEVEL": "2.08%",
+      "MEAENDTIME": "2015-7-16 15:30:00"
+    },
+    {
+      "ERAB_ESTABSUCC": "101.01%",
+      "RRC_CONNESTABSUCC": "98.1%",
+      "MEABEGTIME": "2015-7-16 15:15:00",
+      "CELLNAME": "广州天河区林和村改造房B区E-ZLW-3",
+      "SWITCHSUCC": "100%",
+      "WIRECONN": "99.09%",
+      "ERAB_DROP_CELLLEVEL": "2.83%",
+      "MEAENDTIME": "2015-7-16 15:30:00"
+    },
+    {
+      "ERAB_ESTABSUCC": "100%",
+      "RRC_CONNESTABSUCC": "100%",
+      "MEABEGTIME": "2015-7-16 15:15:00",
+      "CELLNAME": "广州天河区林和村改造房B区E-ZLW-5",
+      "SWITCHSUCC": "100%",
+      "WIRECONN": "100%",
+      "ERAB_DROP_CELLLEVEL": "0%",
+      "MEAENDTIME": "2015-7-16 15:30:00"
+    },
+    {
+      "ERAB_ESTABSUCC": "100%",
+      "RRC_CONNESTABSUCC": "100%",
+      "MEABEGTIME": "2015-7-16 15:15:00",
+      "CELLNAME": "广州天河区林和村改造房B区E-ZLW-6",
+      "SWITCHSUCC": "100%",
+      "WIRECONN": "100%",
+      "ERAB_DROP_CELLLEVEL": "0%",
+      "MEAENDTIME": "2015-7-16 15:30:00"
+    },
+    {
+      "ERAB_ESTABSUCC": "98.58%",
+      "RRC_CONNESTABSUCC": "100%",
+      "MEABEGTIME": "2015-7-16 15:00:00",
+      "CELLNAME": "广州天河区天河华庭街站D-ZLH-1",
+      "SWITCHSUCC": "98.18%",
+      "WIRECONN": "98.58%",
+      "ERAB_DROP_CELLLEVEL": "0%",
+      "MEAENDTIME": "2015-7-16 15:15:00"
+    },
+    {
+      "ERAB_ESTABSUCC": "97.7%",
+      "RRC_CONNESTABSUCC": "100%",
+      "MEABEGTIME": "2015-7-16 15:15:00",
+      "CELLNAME": "广州天河区天河华庭街站D-ZLH-2",
+      "SWITCHSUCC": "100%",
+      "WIRECONN": "97.7%",
+      "ERAB_DROP_CELLLEVEL": "0%",
+      "MEAENDTIME": "2015-7-16 15:30:00"
+    }
+  ]
+}

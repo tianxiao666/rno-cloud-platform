@@ -1,0 +1,64 @@
+{
+  "data": [
+    {
+      "dataCollectId": 1542,
+      "uploadTime": "2015-9-15 15:20:56",
+      "businessTime": "2015-9-15 0:00:00",
+      "fileName": "广州市天河区20150716-14-30_15-15_LTE话统数据.zip",
+      "oriFileName": "广州市天河区20150716-14-30_15-15_LTE话统数据.zip",
+      "account": "liu.yp@iscreate.com",
+      "cityId": "广州市",
+      "businessDataType": 17,
+      "fileSize": "205.82M",
+      "fileStatus": "全部成功",
+      "jobId": 1522,
+      "launchTime": "2015-9-15 15:21:52",
+      "completeTime": "2015-9-15 15:24:58"
+    },
+    {
+      "dataCollectId": 1443,
+      "uploadTime": "2015-8-5 15:02:16",
+      "businessTime": "2015-8-5 0:00:00",
+      "fileName": "LTE话统数据.zip",
+      "oriFileName": "LTE话统数据.zip",
+      "account": "liu.yp@iscreate.com",
+      "cityId": "广州市",
+      "businessDataType": 17,
+      "fileSize": "64.75M",
+      "fileStatus": "全部成功",
+      "jobId": 1403,
+      "launchTime": "2015-8-5 15:02:37",
+      "completeTime": "2015-8-5 15:03:36"
+    },
+    {
+      "dataCollectId": 1283,
+      "uploadTime": "2015-7-31 10:36:59",
+      "businessTime": "2015-7-31 0:00:00",
+      "fileName": "CMCC-ENB-PM-V2.4.1-EutranCellTdd-20150616-1415P07.xml",
+      "oriFileName": "CMCC-ENB-PM-V2.4.1-EutranCellTdd-20150616-1415P07.xml",
+      "account": "liu.yp@iscreate.com",
+      "cityId": "广州市",
+      "businessDataType": 17,
+      "fileSize": "13.83M",
+      "fileStatus": "全部成功",
+      "jobId": 1242,
+      "launchTime": "2015-7-31 10:37:00",
+      "completeTime": "2015-7-31 10:37:01"
+    },
+    {
+      "dataCollectId": 1282,
+      "uploadTime": "2015-7-31 10:09:47",
+      "businessTime": "2015-7-31 0:00:00",
+      "fileName": "CMCC-ENB-PM-V2.4.1-EutranCellTdd-20150716-1430P00.xml",
+      "oriFileName": "CMCC-ENB-PM-V2.4.1-EutranCellTdd-20150716-1430P00.xml",
+      "account": "liu.yp@iscreate.com",
+      "cityId": "广州市",
+      "businessDataType": 17,
+      "fileSize": "97.12M",
+      "fileStatus": "全部成功",
+      "jobId": 1241,
+      "launchTime": "2015-7-31 10:10:19",
+      "completeTime": "2015-7-31 10:10:28"
+    }
+  ]
+}

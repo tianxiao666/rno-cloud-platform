@@ -1,0 +1,214 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <meta charset="UTF-8">
+
+    <title>业务热点覆盖分析优化</title>
+
+    <link rel="stylesheet" type="text/css" href="css/lte-traffic-analysis.css">
+
+    <script src="../../lib/jquery/1.8.2/jquery.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
+    <script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
+    <script src="../../lib/validate.js"></script>
+    <script src="../../lib/tab.js"></script>
+
+    <link rel="stylesheet" href="../../lib/openlayers/4.4.2/ol.css" type="text/css">
+    <script src="../../lib/openlayers/4.4.2/ol.js" type="text/javascript"></script>
+
+    <!--<script type="text/javascript" src="js/lte-traffic-analysis-origin.js"></script>-->
+    <script type="text/javascript" src="js/lte-traffic-analysis.js"></script>
+
+</head>
+<body>
+<!--<div style="margin: 5px;padding: 0;">
+<div class="loading_cover" style="display: none;position:absolute;z-index:999">
+    <div class="cover"></div>
+    <h4 class="loading">
+        正在加载 <em class="loading_fb">小区</em>资源,请稍侯...
+    </h4>
+</div>-->
+<div class="map" id="map"></div>
+<div class="dialog draggable ui-draggable">
+    <div style="padding: 5px">
+
+        <form id="conditionForm" method="post">
+            省：<select name="provinceId" class="required" id="provinceId">
+
+        </select> 市：<select name="cityId" class="required" id="cityId">
+
+        </select> 区：<select name="areaId" class="required" id="queryCellAreaId">
+        </select>
+            <input id="showCellName" class="showCellNameButton" value="显示小区名字" type="button">
+            <input id="loadGisCell" value="加载小区" type="button">
+            <span id="loadingCellTip"></span><input id="showpbcList" value="显示问题小区表" type="button">
+            <span id="loadingProbCellTip"></span>
+            <input id="trigger" name="trigger" value="切换谷歌" style="display: none;" type="button">
+            <input id="hiddenZoom" name="zoom" value="14" type="hidden">
+            <input id="hiddenLng" value="114.719238" type="hidden">
+            <input id="hiddenLat" value="22.987474" type="hidden">
+            <input id="hiddenPageSize" value="100" type="hidden">
+            <input id="hiddenCurrentPage" value="1" type="hidden">
+            <input id="hiddenTotalPageCnt" value="0" type="hidden">
+            <input id="hiddenTotalCnt" value="0" type="hidden">
+        </form>
+        <div id="hiddenAreaLngLatDiv" style="display:none">
+
+            <input id="areaid_262" value="114.719238,22.987474" type="hidden">
+
+            <input id="areaid_263" value="114.255066,23.728783" type="hidden">
+
+            <input id="areaid_260" value="114.382782,23.084785" type="hidden">
+
+            <input id="areaid_261" value="114.45694,22.791375" type="hidden">
+
+        </div>
+
+
+    </div>
+</div>
+
+<div class="resource_list_icon" style="right: 400px;">
+    <a href="#" class="switch"></a>
+    <a href="#" class="switch_hidden" style="display: none;"></a>
+    <div class="shad_v"></div>
+</div>
+<div class="resource-list">
+    <div class="resource_list_icon" style="height: 650px; right: 0;">
+        <a href="#" class="switch"></a> <a href="#" class="switch_hidden" style="display: inline;"></a>
+        <div class="shad_v"></div>
+    </div>
+    <div class="resource_list_box" style="height: 100%; overflow: auto; display: none;">
+        <div id="frame" style="border: 1px solid #ddd">
+        <div id="div_tab" class="div_tab divtab_menu" style="margin-top: 5px">
+            <ul>
+                <li>小区指标详情</li>
+                <li class="selected">监控阈值详情</li>
+                <li>问题小区表</li>
+            </ul>
+        </div>
+        <div class="divtab_content">
+            <div id="div_tab_0">
+                <div class="resource_list">
+                    <table id="lteStsCellIndex" class="main-table1 half-width">
+                    </table>
+                </div>
+            </div>
+            <div id="div_tab_1">
+                <div class="resource_list">
+                    <div class="div_title_24px_blue">
+                        <span class="sp_title">说明</span>
+                    </div>
+                    <a onclick="$('#thresholdInstructionDiv').show()">监控阈值说明</a><br>
+                    <div class="div_title_24px_blue">
+                        <span class="sp_title">监控阈值</span>
+                    </div>
+                    <table id="lteStsCellThreshold" class="main-table1 half-width">
+                    </table>
+                </div>
+            </div>
+            <div id="div_tab_2" style="display:none">
+                <div class="resource_list">
+                    <table id="probCellList" class="main-table1 half-width">
+                    </table>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+</div>
+<div id="operInfo"
+     style="display:none; top:40px;left:600px;z-index:999;width:400px; height:40px; background-color:#7dff3f; filter:alpha(Opacity=80);-moz-opacity:0.5;opacity: 0.5;z-index:9999;position: fixed;">
+    <table style="text-align:center; height:100%;width:100%">
+        <tbody>
+        <tr>
+            <td><span id="operTip"></span></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div id="thresholdInstructionDiv" class="dialog2 draggable ui-draggable"
+     style="display:none; left:25%; top: 40%;width: 800px;">
+    <div class="dialog_header">
+        <div class="dialog_title">监控阈值说明</div>
+        <div class="dialog_tool">
+            <div class="dialog_tool_close dialog_closeBtn" onclick="$('#thresholdInstructionDiv').hide();">
+            </div>
+        </div>
+    </div>
+    <div class="dialog_content" style="background:#f9f9f9;padding:10px">
+        <div>
+            <div style="text-align: center">
+                当监控阈值满足监控公式条件时，监控项为异常。<br>
+            </div>
+            <table>
+                <thead>
+                <tr>
+                    <th style="width: 200px">监控项</th>
+                    <th>监控阈值</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>E-RAB掉线率</td>
+                    <td>[E-RAB掉线率(小区级)]&gt;=10 and [E-RAB建立成功次数]&gt;20</td>
+                </tr>
+                <tr>
+                    <td>E-RAB建立成功率</td>
+                    <td>[E-RAB建立成功率]&lt;=85 and [E-RAB建立请求次数]&gt;20</td>
+                </tr>
+                <tr>
+                    <td>RRC连接建立成功率</td>
+                    <td>[RRC连接建立成功率]&lt;=85 and [RRC连接建立请求次数]&gt;20</td>
+                </tr>
+                <tr>
+                    <td>零流量零话务</td>
+                    <td>[RRC连接建立请求次数]&gt;3 and [空口上行业务字节数]+[空口下行业务字节数]=0</td>
+                </tr>
+                <tr>
+                    <td>无线接通率</td>
+                    <td>[RRC连接建立请求次数]&gt;100 and 无线接通率&lt;=70</td>
+                </tr>
+                <tr>
+                    <td>CellBar_RRC连接失败次数</td>
+                    <td>[RRC连接建立成功率]&lt;70 and ([RRC连接建立请求次数]-[RRC连接建立成功次数])&gt;200</td>
+                </tr>
+                <tr>
+                    <td>CellBar_掉线次数</td>
+                    <td>[无线掉线率(小区级)]&gt;50 and [无线掉线次数(小区级)]&gt;200</td>
+                </tr>
+                <tr>
+                    <td>RRC连接失败次数</td>
+                    <td>[RRC连接建立请求次数]-[RRC连接建立成功次数]&gt;100</td>
+                </tr>
+                <tr>
+                    <td>掉线次数</td>
+                    <td>[无线掉线次数(小区级)]&gt;150</td>
+                </tr>
+                <tr>
+                    <td>接通失败次数</td>
+                    <td>([RRC连接建立请求次数]-[RRC连接建立成功次数])+([E-RAB建立请求次数]-[E-RAB建立成功次数])&gt;200</td>
+                </tr>
+                <tr>
+                    <td>切换成功率</td>
+                    <td>[切换成功率]&lt;=60 and [切换请求次数]&gt;100</td>
+                </tr>
+                <tr>
+                    <td>切换失败次数</td>
+                    <td>[切换请求次数]-[切换成功次数]&gt;=150</td>
+                </tr>
+                <tr>
+                    <td>无线掉线率</td>
+                    <td>[无线掉线率(小区级)]&gt;=20 and [RRC连接建立请求次数]+[E-RAB建立请求次数]&gt;100</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

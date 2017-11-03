@@ -1,0 +1,268 @@
+/* 兼容HTML5的 css reset */
+body, iframe, ul, li {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    font-style: normal;
+}
+
+body {
+    font: 12px/1.231 sans-serif;
+    *font-size: small;
+    height: 100%;
+    width: 100%;
+}
+
+/*链接*/
+a {
+    color: #15428B;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* 去掉链接点击后的虚线 */
+a:hover {
+    text-decoration: underline;
+    outline: none;
+}
+
+a:active {
+    color: #15428B
+}
+
+/* 重设列表，默认缩进两个字符，定义ol的样式 */
+ul, li, ol {
+    list-style: none outside none;
+}
+
+ol {
+    list-style-type: decimal;
+}
+
+body {
+    font-family: '微软雅黑', Verdana, Geneva, sans-serif;
+    overflow: hidden;
+}
+
+.header {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    margin: 0 auto;
+    padding: 0 10px;
+    height: 70px;
+    background: url(../img/logo-bg.png) no-repeat;
+}
+
+.header_nav {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 450px;
+    height: 30px;
+}
+
+.rno_name {
+    position: absolute;
+    margin-top: 5px;
+    margin-bottom: 3px;
+    left: 10px;
+    float: left;
+    width: 600px;
+    height: 60px;
+    background: url(../img/hgicreate-rno-logo.png) no-repeat;
+    background-size: contain;
+}
+
+.rno4g_name {
+    position: absolute;
+    margin-top: 5px;
+    margin-bottom: 3px;
+    left: 10px;
+    float: left;
+    width: 556px;
+    height: 52px;
+    background: url(../img/hgicreate-rno4g-logo.png) no-repeat;
+    background-size: contain;
+}
+
+.user_config_nav {
+    position: relative;
+    display: block;
+    margin-top: 5px;
+    margin-left: 200px;
+    width: 280px;
+    height: 30px;
+}
+
+.user_config_div {
+    position: absolute;
+    top: 30px;
+    left: -333px;
+    z-index: 999;
+    margin: 1px;
+    padding: 4px 0 0;
+    width: 360px;
+    height: 33px;
+    border-radius: 5px;
+    solid: #99bbe8;
+}
+
+.nowTime {
+    position: absolute;
+    top: 45px;
+    right: 10px;
+    font-size: 14px;
+}
+
+.tool_bar {
+    position: absolute;
+    top: 0;
+    right: 10px;
+}
+
+.tool_bar span {
+    display: inline-block;
+    margin-left: 5px;
+    padding-left: 22px;
+    font-size: 9pt;
+    line-height: 30px;
+    cursor: pointer;
+}
+
+.tool_bar span:hover {
+    color: #00f;
+}
+
+.tool_bar span.quit {
+    background: url(../img/quit.png) 0 8px no-repeat;
+}
+
+.main_nav {
+    margin: 0 auto;
+    width: 100%;
+    height: 26px;
+    background: url(../img/nav-back.png) repeat-x 0 0;
+    position: absolute;
+    z-index: 30;
+    padding: 0 5px;
+}
+
+.firstLevelMenu {
+    float: left;
+    display: block;
+    width: 130px;
+    background: #fff url(../img/nav-back.png) 0 0 repeat-x;
+    color: #fff;
+    text-align: center;
+    font-size: 14px;
+    line-height: 26px;
+    cursor: pointer;
+}
+
+.secondLevelMenu {
+    position: relative;
+    padding-left: 5px;
+    width: 125px;
+    background: url(../img/second-level-menu.png) repeat-x scroll 0 0 #fff;
+    color: #000;
+    text-align: left;
+    font-size: 9pt;
+}
+
+.thirdLevelMenu {
+    position: relative;
+    padding-left: 5px;
+    width: 90pt;
+    background: url(../img/second-level-menu.png) repeat-x scroll 0 0 #fff;
+    color: #000;
+    text-align: left;
+    font-size: 9pt;
+}
+
+.firstLevelMenuSelected {
+    background: url(../img/menu.gif) repeat-x scroll 0 0 #fff;
+}
+
+.firstLevelMenuOn, .secondLevelMenuOn, .secondLevelMenuSelected, .thirdLevelMenuOn, .thirdLevelMenuSelected {
+    background: url(../img/blue.gif) repeat-x scroll 0 0 #fff;
+}
+
+.arrow {
+    padding-right: 8px;
+    background: url(../img/item-pointer.gif) no-repeat 90% 4px;
+    color: #a9a9a9;
+    cursor: pointer;
+}
+
+.main_nav li.main_nav_on {
+    background-position: 0 -30px;
+    color: #333;
+    font-weight: 700;
+}
+
+.content {
+    overflow: hidden;
+    margin: 0 auto;
+    padding: 4px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin-top: 2px;
+    padding: 8px 0 0;
+    width: 100%;
+    height: 30px;
+    border-top: 1px solid #ccc;
+    background: url(../img/logo-bg.png) no-repeat;
+    box-shadow: -2px -2px 3px #aaa;
+    text-align: center;
+    line-height: 24px;
+}
+
+select {
+    width: auto;
+    padding: 2px;
+    background: url(../img/input.png) no-repeat 0 -75px;
+    border-color: #9A9A9A #CDCDCD #CDCDCD #9A9A9A;
+}
+
+input[type="button"] {
+    cursor: pointer;
+    height: 24px;
+    line-height: 24px;
+    border-right: 1px solid #c8c8c8;
+    border-left: none;
+    border-top: none;
+    border-bottom: none;
+    background: url(../img/input.png) no-repeat;
+}
+
+.firstLevelMenu ul, .secondLevelMenu ul {
+    display: none;
+}
+
+.textUnderLine {
+    text-decoration: underline;
+    color: #666;
+}
+
+.space {
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+#mainDiv {
+    position: absolute;
+    height: 100%;
+    top: 100px;
+    width: 100%;
+}
+
+#mainIFrame {
+    width: 100%;
+    height: 100%;
+}

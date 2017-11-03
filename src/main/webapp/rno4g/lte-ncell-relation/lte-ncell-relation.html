@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+
+    <title>LTE邻区关系管理</title>
+
+    <link rel="stylesheet" type="text/css" href="css/lte-ncell-relation.css">
+
+    <script src="../../lib/jquery/1.8.2/jquery.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
+
+    <script src="../../lib/tab.js"></script>
+
+    <script type="text/javascript" src="../../lib/rno/libfileupload.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="../../lib/datatables/1.10.16/datatables.min.css">
+    <script src="../../lib/datatables/1.10.16/datatables.min.js"></script>
+
+    <script type="text/javascript" src="js/lte-ncell-relation.js"></script>
+
+</head>
+
+<body>
+<div class="div_left_main" style="width: 100%">
+    <div class="div_left_content">
+
+        <div style="padding: 10px">
+            <div id="frame" style="border: 1px solid #ddd">
+                <div id="div_tab" class="div_tab divtab_menu">
+                    <ul>
+                        <li class="selected">LTE邻区关系查询</li>
+                        <li class="">LTE邻区关系导入</li>
+                    </ul>
+                </div>
+
+                <div class="divtab_content">
+                    <div id="div_tab_0" style="display: block;">
+
+
+                        <title>LTE邻区关系查询</title>
+
+                        <meta http-equiv="pragma" content="no-cache">
+                        <meta http-equiv="cache-control" content="no-cache">
+                        <meta http-equiv="expires" content="0">
+                        <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+                        <meta http-equiv="description" content="This is my page">
+
+                        <script type="text/javascript"
+                                src="js/lte-ncell-relation-query.js"></script>
+
+
+                        <div>
+                            <form id="conditionForm" method="post">
+
+                                <input id="hiddenPageSize" name="page.pageSize" value="25" type="hidden">
+                                <input id="hiddenCurrentPage" name="page.currentPage" value="1" type="hidden">
+                                <input id="hiddenTotalPageCnt" name="page.totalPageCnt" value="1" type="hidden">
+                                <input id="hiddenTotalCnt" name="page.totalCnt" value="11" type="hidden">
+
+                                <table class="main-table1 half-width" style="width: 100%; padding-top: 10px">
+                                    <tbody>
+                                    <tr>
+                                        <td class="menuTd" style="display:none;text-align:center">区域</td>
+                                        <td class="menuTd" style="text-align:center">主小区名称</td>
+                                        <td class="menuTd" style="text-align:center">邻小区名称</td>
+                                        <td class="menuTd" style="text-align:center">主小区site</td>
+                                        <td class="menuTd" style="text-align:center">邻小区site</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="display:none;text-align:left">省：<select class="areaCls"
+                                                                                           name="queryLteCellCond.provinceId"
+                                                                                           id="queryProvinceId"
+                                                                                           style="width:70px">
+                                            <option value="-1" selected="selected">全部</option>
+
+                                            <option value="82">
+                                                广东省
+                                            </option>
+
+                                            <option value="30027">
+                                                澳门
+                                            </option>
+
+                                        </select><br> 市：<select class="areaCls" name="queryLteCellCond.cityId"
+                                                                id="queryCityId" style="width:70px">
+                                            <option value="-1" selected="selected">全部</option>
+
+                                        </select>
+
+                                        </td>
+                                        <td style=" text-align:center"><input id="queryCellNameId"
+                                                                              name="queryLteCellCond.cellName"
+                                                                              type="text">
+                                        </td>
+                                        <td style="text-align: center"><input id="queryNCellNameId"
+                                                                              name="queryLteCellCond.ncellName"
+                                                                              type="text">
+                                        </td>
+                                        <td style="text-align: center"><input id="queryCellSiteId"
+                                                                              name="queryLteCellCond.cellSite"
+                                                                              type="text">
+                                        </td>
+                                        <td style="text-align: center"><input id="queryNCellSiteId"
+                                                                              name="queryLteCellCond.ncellSite"
+                                                                              type="text">
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="width: 10%; text-align:center" colspan="5">
+                                            <span style="color:red;width:100px;font-family:华文中宋;text-align:center"
+                                                  id="nameErrorText1"></span>
+                                            <span style="color:red;width:100px;font-family:华文中宋;text-align:center"
+                                                  id="nameErrorText2"></span><input value="查  询"
+                                                                                    id="queryBtn" type="button">
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+
+
+                        <div style="padding-top: 10px">
+                            <table width="100%">
+                                <tbody>
+                                <tr>
+                                    <td style="width: 20%">
+                                        <p>
+                                            <font style="font-weight: bold">LTE邻区关系信息：</font>
+                                        </p>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div style="padding-top: 10px">
+                            <table id="queryResultTab" class="display rnoHeader" cellspacing="0" width="100%">
+                                <thead>
+                                <tr>
+                                    <th style="width: 8%">主小区名称</th>
+                                    <th style="width: 8%">邻小区名称</th>
+                                    <th style="width: 10%">主小区id</th>
+                                    <th style="width: 8%">主小区eNodeB Id</th>
+                                    <th style="width: 8%">邻小区id</th>
+                                    <th style="width: 8%">邻小区eNodeB Id</th>
+                                    <th style="width: 10%">主小区site Id</th>
+                                    <th style="width: 10%">邻小区site Id</th>
+                                    <th style="width: 10%">操作</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+
+                    </div>
+                    <div id="div_tab_1" style="display: none;">
+
+
+                        <title>LTE邻区关系导入</title>
+
+                        <meta http-equiv="pragma" content="no-cache">
+                        <meta http-equiv="cache-control" content="no-cache">
+                        <meta http-equiv="expires" content="0">
+                        <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+                        <meta http-equiv="description" content="This is my page">
+
+
+                        <script type="text/javascript"
+                                src="js/lte-ncell-relation-import.js"></script>
+
+
+                        <form id="formImportLteNCell" enctype="multipart/form-data" method="post">
+                            <input name="needPersist" value="true" type="hidden">
+                            <input name="systemConfig" value="true" type="hidden">
+                            <input name="fileCode" value="LTENCELLFILE" type="hidden">
+                            <input name="areaId" value="1000" type="hidden">
+                            <div>
+                                <table class="main-table1 half-width">
+                                    <tbody>
+                                    <tr>
+                                        <td class="menuTd">LTE邻区关系文件（EXCEL）<span class="txt-impt">*</span>
+                                            <br>
+                                        </td>
+                                        <td style="width: 50%; font-weight: bold" colspan="0">
+                                            <input style="width: 44%;" name="file" id="fileid"
+                                                   class="canclear  required" type="file"> &nbsp;
+                                            <a href="http://192.168.6.41:8084/ops/op/rno/fileDownloadAction?fileName=LTE%E9%82%BB%E5%8C%BA%E5%AF%BC%E5%85%A5%E6%A8%A1%E6%9D%BF.xlsx"
+                                               title="点击下载模板" id="downloadHref">下载LTE邻区导入模板</a><br>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="container-bottom" style="padding-top: 10px">
+                                <table style="width: 60%; margin: auto" align="center">
+                                    <tbody>
+                                    <tr>
+                                        <td><input value="导    入" style="width: 90px;" id="importBtn" name="import"
+                                                   type="button"> <br></td>
+
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div id="importResultDiv" class="container-bottom" style="padding-top: 10px">
+                                </div>
+
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</body>
+</html>

@@ -1,0 +1,112 @@
+{
+  "data": [
+    {
+      "cityId":"佛山市",
+      "measureTime": "2016-6-7 15:36:12",
+      "measureDataNum": "120",
+      "enterSysTime": "2016-6-8 15:38:11"
+    },
+    {
+      "cityId":"佛山市",
+      "measureTime": "2016-6-8 10:37:12",
+      "measureDataNum": "110",
+      "enterSysTime": "2016-6-8 15:39:11"
+    },
+    {
+      "cityId":"佛山市",
+      "measureTime": "2016-6-8 13:37:12",
+      "measureDataNum": "100",
+      "enterSysTime": "2016-6-8 15:40:11"
+    },
+    {
+      "cityId":"佛山市",
+      "measureTime": "2016-6-7 13:59:12",
+      "measureDataNum": "80",
+      "enterSysTime": "2016-6-8 15:39:40"
+    },
+    {
+      "cityId":"佛山市",
+      "measureTime": "2016-6-7 16:59:12",
+      "measureDataNum": "90",
+      "enterSysTime": "2016-6-8 15:41:40"
+    },
+    {
+      "cityId":"佛山市",
+      "measureTime": "2016-6-8 13:59:12",
+      "measureDataNum": "90",
+      "enterSysTime": "2016-6-8 15:41:22"
+    },
+    {
+      "cityId":"佛山市",
+      "measureTime": "2016-6-12 16:59:12",
+      "measureDataNum": "120",
+      "enterSysTime": "2016-6-15 15:41:40"
+    },
+    {
+      "cityId":"佛山市",
+      "measureTime": "2016-6-13 09:59:12",
+      "measureDataNum": "110",
+      "enterSysTime": "2016-6-15 15:43:40"
+    },
+    {
+      "cityId":"佛山市",
+      "measureTime": "2016-6-13 11:40:12",
+      "measureDataNum": "100",
+      "enterSysTime": "2016-6-15 15:42:30"
+    },
+    {
+      "cityId":"佛山市",
+      "measureTime": "2016-6-13 14:09:12",
+      "measureDataNum": "100",
+      "enterSysTime": "2016-6-15 15:44:40"
+    },
+    {
+      "cityId":"佛山市",
+      "measureTime": "2016-6-14 09:42:12",
+      "measureDataNum": "110",
+      "enterSysTime": "2016-6-15 15:45:33"
+    },
+    {
+      "cityId":"佛山市",
+      "measureTime": "2016-6-14 11:24:12",
+      "measureDataNum": "110",
+      "enterSysTime": "2016-6-15 15:46:33"
+    },
+    {
+      "cityId":"佛山市",
+      "measureTime": "2016-6-14 14:27:12",
+      "measureDataNum": "100",
+      "enterSysTime": "2016-6-15 15:46:01"
+    },
+    {
+      "cityId":"佛山市",
+      "measureTime": "2016-6-14 16:02:12",
+      "measureDataNum": "110",
+      "enterSysTime": "2016-6-15 15:47:33"
+    },
+    {
+      "cityId":"佛山市",
+      "measureTime": "2016-6-14 17:02:12",
+      "measureDataNum": "100",
+      "enterSysTime": "2016-6-15 15:47:54"
+    },
+    {
+      "cityId":"佛山市",
+      "measureTime": "2016-6-15 10:02:12",
+      "measureDataNum": "120",
+      "enterSysTime": "2016-6-15 15:48:03"
+    },
+    {
+      "cityId":"佛山市",
+      "measureTime": "2016-6-22 11:02:12",
+      "measureDataNum": "100",
+      "enterSysTime": "2016-6-12 15:47:54"
+    },
+    {
+      "cityId":"佛山市",
+      "measureTime": "2016-6-22 13:02:12",
+      "measureDataNum": "120",
+      "enterSysTime": "2016-6-15 15:46:54"
+    }
+  ]
+}

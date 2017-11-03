@@ -1,0 +1,263 @@
+<!DOCTYPE html >
+<html><head>
+<meta charset="UTF-8">
+
+<title>G4 DT分析图</title>
+
+
+	<link rel="stylesheet" type="text/css" href="css/lte-dt-analysis.css">
+
+	<script src="../../lib/jquery/1.8.2/jquery.js"></script>
+	<script src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
+	<script src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
+	<link rel="stylesheet" type="text/css" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
+	<script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
+	<script src="../../lib/validate.js"></script>
+	<script src="../../lib/tab.js"></script>
+	<script src="../../lib/laydate/5.0.7/laydate.js"></script>
+
+	<link rel="stylesheet" href="../../lib/openlayers/4.4.2/ol.css" type="text/css">
+	<script src="../../lib/openlayers/4.4.2/ol.js" type="text/javascript"></script>
+
+	<link rel="stylesheet" type="text/css" href="../../lib/datatables/1.10.16/datatables.min.css">
+	<script src="../../lib/datatables/1.10.16/datatables.min.js"></script>
+
+	<script type="text/javascript" src="js/lte-dt-analysis.js"></script>
+	<script type="text/javascript" src="js/lte-dt-analysis-origin.js"></script>
+</head>
+<body>
+<div id="map" class="map"></div>
+<div class="dialog draggable ui-draggable">
+	<div style="padding: 5px">
+		<form id="conditionForm" method="post">
+			省：<select name="provinceId" class="required" id="provinceId">
+		</select> 市：<select name="cityId" class="required" id="cityId">
+		</select> 区：<select name="showareaId" class="required" id="queryCellAreaId"></select>
+			<input id="loadGisCell" name="trigger" value="加载小区"  type="button">
+			<input id="realPostAreaId" name="areaId" value="187" type="hidden"> <input id="displaycell" name="displaycell" value="显示小区" type="hidden">
+			<input id="hiddenZoom" name="zoom" value="14" type="hidden">
+			<input id="hiddenLng" value="113.361397" type="hidden"> <input id="hiddenLat" value="23.12489" type="hidden"> <input id="hiddenPageSize" name="page.pageSize" value="100" type="hidden"> <input id="hiddenCurrentPage" name="page.currentPage" value="1" type="hidden"> <input name="page.forcedStartIndex" id="hiddenForcedStartIndex" type="hidden"> <input id="hiddenTotalPageCnt" type="hidden"> <input id="hiddenTotalCnt" type="hidden">
+
+		</form>
+		<div id="hiddenAreaLngLatDiv" style="display:none"><input id="areaid_187" value="113.361397,23.12489" type="hidden"><input id="areaid_193" value="113.384399,22.936895" type="hidden"></div>
+	</div>
+</div>
+<div class="resource_list_icon" style="right: 381px;">
+	<a href="#" class="switch"></a>
+	<a href="#" class="switch_hidden" style="display: none;"></a>
+	<div class="shad_v"></div>
+</div>
+<div class="resource-list">
+	<div class="resource_list300_box" style="height:100%;">
+		<div class="resource_list300">
+			<div id="div_tab" class="div_tab divtab_menu">
+				<ul>
+					<li class="">DT分析</li>
+					<li class="selected">加载数据</li>
+					<li id="sampleDetailLi" class="">采样点详情</li>
+				</ul>
+			</div>
+		</div>
+		<div class="divtab_content">
+			<div id="div_tab_0" style="display: none;">
+				<input id="showRenderColorBtn" value="显示渲染图例" type="hidden">
+
+				<div class="div_title_24px_blue">
+					<span class="sp_title"> DT任务</span>
+				</div>
+
+				<div class="div_transparentstandard_nopaddming" id="analysisListDiv">
+					<table class="tb-transparent-standard" style="width:100%" id="analysisListTable"></table>
+					<div id="analysisBtnDiv" style="display:none">
+						<input value="确定" id="confirmSelectionAnalysisBtn" type="button">&nbsp;&nbsp;&nbsp;<input id="showWithCellCheck" checked="checked" type="checkbox">同步显示小区
+					</div>
+				</div>
+				<div class="div-m-split-10px"></div>
+				<div class="div_transparent_standard_border">
+					<div class="div_title_24px_grey sp_title_left">
+						<span style="font-style: italic;"> 弱覆盖</span>
+					</div>
+					<div id="analysisDiv">
+						<input id="weakcoveragebtn" value="弱覆盖" type="button">
+
+					</div>
+					<div class="div_title_24px_grey sp_title_left">
+						<span style="font-style: italic;"> 过覆盖</span>
+					</div>
+					<div id="analysisDiv">
+						<input id="radioresourceutilizationbtn" value="室分外泄" type="button">
+					</div>
+					<div class="div_title_24px_grey sp_title_left">
+						<span style="font-style: italic;"> 异常覆盖</span>
+					</div>
+					<div id="analysisDiv">
+						<input id="cellsignaloverlapbtn" value="重叠覆盖" type="button">
+					</div>
+				</div>
+			</div>
+			<div id="div_tab_1" style="display: block;">
+				<form id="searchDtForm">
+					<table class="main-table1 half-width" style="margin-left:0;width:100%">
+						<tbody>
+						<tr>
+							<td class="menuTd">区域<span class="txt-impt">*</span></td>
+							<td>
+								<select id="provincemenu">
+
+
+								</select> <select id="citymenu" name="attachParams['cityId']">
+
+
+							</select>
+							</td>
+						</tr>
+						<tr>
+							<td class="menuTd">测试日期<span class="txt-impt">*</span>
+							</td><td>
+							<input id="endDate" name="attachParams['endDate']" class="hasDatepicker"
+								   type="text">
+						</td>
+						</tr>
+
+						<tr>
+							<td class="menuTd">数据类型<span class="txt-impt">*</span>
+							</td>
+							<td style="width: 50%; font-weight: bold" colspan="0">
+								<select id="factory" name="attachParams['dataType']">
+									<option value="ALL" selected="selected">全部</option>
+									<option value="DataService">数据业务</option>
+									<option value="SweepFreq">扫频业务</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td class="menuTd">区域类型<span class="txt-impt">*</span>
+							</td>
+							<td style="width: 50%; font-weight: bold" colspan="0">
+								<select id="areaType" name="attachParams['areaType']">
+									<option value="ALL" selected="selected">全部</option>
+									<option value="城区">城区</option>
+									<option value="非城区">非城区</option>
+									<option value="高速">高速</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td class="menuTd" colspan="2" align="center">
+								<input name="" id="queryDtDT" value="查询DT" type="button">
+								<input name="" id="loadDtData" value="加载" type="button">
+							</td>
+						</tr>
+						</tbody>
+
+					</table>
+				</form>
+				<div id="dtListDiv" style="overflow-x:scroll;overflow-y:hidden;  width:100%; height:100%">
+					<table id="listDtRes" class="display rnoHeader" cellspacing="0" width="100%">
+						<thead>
+						<tr><th>数据类型</th>
+							<th>区域类型</th>
+							<th>文件名</th>
+							<th></th>
+						</tr></thead>
+						</table>
+				</div>
+			</div>
+			<div id="div_tab_2" style="display: none;">
+				<table class="main-table1 half-width" id="sampleDetailTable">
+					<tbody><tr>
+						<td class="menuTd" style="width:20%">时间</td>
+						<td id="tdSampleTime"></td>
+					</tr>
+					<tr>
+						<td class="menuTd">主覆盖小区</td>
+						<td id="tdServerCell"></td>
+					</tr>
+					<tr>
+						<td class="menuTd">RSRP</td>
+						<td id="tdCellRsrp"></td>
+
+					</tr>
+					<tr>
+						<td class="menuTd">RS_SINR</td>
+						<td id="tdCellRsSinr"></td>
+					</tr>
+					<tr>
+						<td class="menuTd">邻区</td>
+						<td id="tdNcells"></td>
+					</tr>
+					<tr>
+						<td class="menuTd">邻区RSRP</td>
+						<td id="tdNcellRsrps"></td>
+					</tr>
+					<tr>
+						<td class="menuTd">采样点与服务小区距离</td>
+						<td id="tdServerCellToSampleDis"></td>
+					</tr>
+					<tr>
+						<td class="menuTd">区域类型</td>
+						<td id="tdAreaType"></td>
+					</tr>
+					<tr>
+						<td class="menuTd">频点类型</td>
+						<td id="tdCellEarfcn"></td>
+					</tr>
+					</tbody></table>
+			</div>
+		</div>
+	</div>
+</div>
+	<!--<div class="loading_cover" style="display: none">
+		<div class="cover"></div>
+		<h4 class="loading">
+			正在进行 <em class="loading_fb"></em>,请稍侯...
+		</h4>
+	</div>-->
+
+
+	
+	<div id="analyze_Dialog" class="dialog2 draggable ui-draggable" style="display:none; width:250px;">
+		<div class="dialog_header">
+			<div class="dialog_title">DT专题分析</div>
+			<div class="dialog_tool">
+				<div class="dialog_tool_close dialog_closeBtn" onclick="$('#analyze_Dialog').hide();$('.colordialog2').hide();"></div>
+			</div>
+		</div>
+		<div class="dialog_content" style="width:300px; background:#f9f9f9">
+			<table class="tb-transparent-standard" style="width:300px" id="trafficTable">
+
+			</table>
+
+		</div>
+	</div>
+	
+	<div>
+		<div class="black"></div>
+		<div id="analyzeedit_Dialog" class="dialog2 draggable ui-draggable" style="display:none; width:410px;">
+			<div class="dialog_header">
+				<div class="dialog_title">DT专题分析修改</div>
+				<div class="dialog_tool">
+					<div class="dialog_tool_close dialog_closeBtn2" onclick="$('#analyzeedit_Dialog').hide();$('.black').hide();$('.colordialog2').hide();"></div>
+				</div>
+			</div>
+			<div class="dialog_content" style="width:410px; background:#f9f9f9">
+				<form action="updateOrAddrnoTrafficRendererAction" id="rendererForm" method="post">
+					<table class="tb-transparent-standard" style="width:350px " id="analyzeedit_trafficTable">
+
+					</table>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div id="divColorDiv"></div>
+	<div id="operInfo" style="top: 40px; left: 600px; width: 400px; height: 40px; background-color: rgb(125, 255, 63); opacity: 0.5; z-index: 9999; position: fixed; display: none;">
+		<table style="text-align:center" height="100%" width="100%">
+			<tbody><tr>
+				<td><span id="operTip">尚未有采样数据，无法进行分析！</span></td>
+			</tr>
+		</tbody></table>
+
+	</div>
+
+</body>
+</html>

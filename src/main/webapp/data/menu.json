@@ -1,0 +1,118 @@
+{
+  "title": "怡创移动通信4G网络优化软件平台",
+  "menu": [
+    {
+      "title": "资源配置",
+      "sub": [
+        {
+          "title": "LTE小区GIS呈现",
+          "url": "rno4g/lte-cell-gis/lte-cell-gis.html"
+        },
+        {
+          "title": "LTE小区配置管理",
+          "url": "rno4g/lte-cell-data/lte-cell-data.html"
+        },
+        {
+          "title": "LTE邻区配置管理",
+          "url": "rno4g/lte-ncell-relation/lte-ncell-relation.html"
+        }
+      ]
+    },
+    {
+      "title": "场景管理",
+      "sub": [
+        {
+          "title": "地理场景管理",
+          "url": "rno4g/lte-geo-scene/lte-geo-scene.html"
+        },
+        {
+          "title": "时间场景管理",
+          "url": "rno4g/lte-time-scene/lte-time-scene.html"
+        },
+        {
+          "title": "网格数据管理",
+          "url": "rno4g/lte-grid-data/lte-grid-data.html"
+        },
+        {
+          "title": "网格地图展示",
+          "url": "rno4g/lte-grid-gis/lte-grid-gis.html"
+        }
+      ]
+    },
+    {
+      "title": "PCI优化",
+      "sub": [
+        {
+          "title": "MR测量数据管理",
+          "url": "working.html"
+        },
+        {
+          "title": "HO切换数据管理",
+          "url": "working.html"
+        },
+        {
+          "title": "区域PCI翻频方案",
+          "url": "working.html"
+        },
+        {
+          "title": "干扰矩阵计算",
+          "url": "working.html"
+        },
+        {
+          "title": "小区PCI评估",
+          "url": "working.html"
+        },{
+          "title": "LTE动态覆盖图",
+          "url": "working.html"
+        },
+        {
+          "title": "LTE网络覆盖分析",
+          "url": "working.html"
+        }
+      ]
+    },
+    {
+      "title": "路网分析优化",
+      "sub": [
+        {
+          "title": "路测数据管理",
+          "url": "rno4g/lte-dt-data/lte-dt-data.html"
+        },
+        {
+          "title": "异常点问题分析优化",
+          "url": "rno4g/lte-dt-analysis/lte-dt-analysis.html"
+        }
+      ]
+    },
+    {
+      "title": "业务分析优化",
+      "sub": [
+        {
+          "title": "网络统计数据管理",
+          "url": "rno4g/lte-traffic-stats/lte-traffic-stats.html"
+        },
+        {
+          "title": "业务热点覆盖分析优化",
+          "url": "rno4g/lte-traffic-analysis/lte-traffic-analysis.html"
+        }
+      ]
+    },
+    {
+      "title": "KPI指标查询",
+      "sub": [
+        {
+          "title": "KPI指标管理",
+          "url": "rno4g/lte-kpi-data/lte-kpi-data.html"
+        },
+        {
+          "title": "覆盖类KPI指标",
+          "url": "rno4g/lte-kpi-chart/lte-kpi-chart.html"
+        },
+        {
+          "title": "性能类KPI指标",
+          "url": "rno4g/lte-kpi-query/lte-kpi-query.html"
+        }
+      ]
+    }
+  ]
+}

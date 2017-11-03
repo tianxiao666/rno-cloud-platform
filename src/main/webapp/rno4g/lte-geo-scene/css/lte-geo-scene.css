@@ -1,0 +1,319 @@
+html, body, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address,
+cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt,
+dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th,
+td, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav,
+section, summary, time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-variant: inherit;
+    font-weight: inherit;
+    font-stretch: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    font-family: inherit;
+    font-style: normal;
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+
+blockquote, q {
+    quotes: none;
+}
+
+blockquote::before, blockquote::after, q::before, q::after {
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+body {
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    font-stretch: normal;
+    font-size: 12px;
+    line-height: 1.231;
+    font-family: sans-serif;
+    height: 100%;
+    width: 100%;
+}
+
+select, input, textarea, button {
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    font-stretch: normal;
+    font-size: 99%;
+    line-height: normal;
+    font-family: sans-serif;
+}
+
+pre, code, kbd, samp {
+    font-family: monospace, sans-serif;
+}
+
+a {
+    color: rgb(21, 66, 139);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+a:hover {
+    text-decoration: underline;
+    outline: none;
+}
+
+a:active {
+    color: rgb(21, 66, 139);
+}
+
+ul, li, ol {
+    list-style: none outside none;
+}
+
+ol {
+    list-style-type: decimal;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+}
+
+input, select, textarea {
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    font-stretch: normal;
+    font-size: 12px;
+    line-height: 1.5;
+    font-family: Tahoma, "Microsoft Yahei", Simsun;
+    outline: none;
+}
+
+input[type="text"] {
+    padding: 4px;
+    background: url("../images/input.png") 0 -75px no-repeat;
+    border-width: 1px;
+    border-style: solid;
+    border-image: initial;
+    border-color: rgb(154, 154, 154) rgb(205, 205, 205) rgb(205, 205, 205) rgb(154, 154, 154);
+}
+
+input[type="button"], input[type="submit"] {
+    cursor: pointer;
+    height: 24px;
+    line-height: 24px;
+    padding: 2px 6px 3px;
+    border-right: 1px solid rgb(200, 200, 200);
+    border-left: none;
+    border-top: none;
+    border-bottom: none;
+    background: url("../images/input.png") 0 0 no-repeat;
+    position: relative;
+    top: -1px;
+}
+
+input[type="button"]:hover, input[type="submit"]:hover {
+    background-position: 0 -25px;
+    border-right: 1px solid rgb(204, 203, 203);
+}
+
+input[type="checkbox"], input[type="radio"] {
+    position: relative;
+    top: 2px;
+    left: -2px;
+    cursor: pointer;
+}
+
+select {
+    line-height: 20px;
+    padding: 2px;
+    background: url("../images/input.png") 0 -75px no-repeat;
+    border-width: 1px;
+    border-style: solid;
+    border-image: initial;
+    border-color: rgb(154, 154, 154) rgb(205, 205, 205) rgb(205, 205, 205) rgb(154, 154, 154);
+}
+
+textarea {
+    width: 400px;
+    height: 60px;
+    padding: 2px 0 0 2px;
+    background: url("../images/input.png") 0 -75px repeat-x rgb(255, 255, 255);
+    border-width: 1px;
+    border-style: solid;
+    border-image: initial;
+    border-color: rgb(154, 154, 154) rgb(205, 205, 205) rgb(205, 205, 205) rgb(154, 154, 154);
+    overflow-y: auto;
+    resize: none;
+}
+
+input, select, textarea {
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    font-stretch: normal;
+    font-size: 12px;
+    line-height: 1.5;
+    font-family: Tahoma, "Microsoft Yahei", Simsun;
+    outline: none;
+}
+
+input[type="checkbox"], input[type="radio"] {
+    position: relative;
+    top: 2px;
+    left: -2px;
+    cursor: pointer;
+}
+
+input[type="text"], input[type="password"] {
+    width: 110px;
+    padding: 4px;
+    background: url("../images/input.png") 0 -75px repeat-x;
+    border-width: 1px;
+    border-style: solid;
+    border-image: initial;
+    border-color: rgb(154, 154, 154) rgb(205, 205, 205) rgb(205, 205, 205) rgb(154, 154, 154);
+    color: rgb(85, 85, 85);
+}
+
+textarea {
+    width: 400px;
+    height: 60px;
+    padding: 2px 0 0 2px;
+    background: url("../images/input.png") 0 -75px repeat-x rgb(255, 255, 255);
+    border-width: 1px;
+    border-style: solid;
+    border-image: initial;
+    border-color: rgb(154, 154, 154) rgb(205, 205, 205) rgb(205, 205, 205) rgb(154, 154, 154);
+    overflow-y: auto;
+    resize: none;
+}
+
+input[type="text"]:hover, input[type="password"]:hover, textarea:hover {
+    border: 1px solid rgb(153, 187, 232);
+}
+
+select {
+    width: auto;
+    padding: 2px;
+    background: url("../images/input.png") 0 -75px no-repeat;
+    border-width: 1px;
+    border-style: solid;
+    border-image: initial;
+    border-color: rgb(154, 154, 154) rgb(205, 205, 205) rgb(205, 205, 205) rgb(154, 154, 154);
+}
+
+input[type="button"], input[type="submit"], input[type="reset"] {
+    cursor: pointer;
+    height: 24px;
+    line-height: 24px;
+    border-right: 1px solid rgb(200, 200, 200);
+    border-left: none;
+    border-top: none;
+    border-bottom: none;
+    background: url("../images/input.png") no-repeat;
+}
+
+input[type="button"]:hover, input[type="submit"]:hover, input[type="reset"]:hover {
+    background-position: 0 -25px;
+    border-right: 1px solid rgb(204, 203, 203);
+}
+
+input[type="button"]:active, input[type="submit"]:active, input[type="reset"]:active {
+    background-position: 0 -50px;
+    border-right: 1px solid rgb(204, 203, 203);
+}
+
+body {
+    font-family: "Microsoft yahei", Verdana, Geneva, sans-serif;
+}
+
+.loading_cover {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 11;
+}
+
+.cover {
+    height: 100%;
+    width: 100%;
+    background: rgb(255, 255, 255);
+    opacity: 0.6;
+}
+
+.loading {
+    height: 36px;
+    line-height: 36px;
+    background: url("../images/loading_img.gif") no-repeat;
+    padding-left: 50px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -100px;
+    font-weight: normal;
+    font-size: 14px;
+}
+
+.loading_fb {
+    padding: 0 2px;
+    font-weight: bold;
+    color: rgb(0, 0, 255);
+}
+
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, input, button, textarea, p, blockquote, th, td, form {
+    margin: 0;
+    padding: 0;
+}
+
+.paramTable {
+    margin: auto;
+    padding-left: 5px;
+    width: 100%;
+}
+
+.paramTable th {
+    padding: 0 10px;
+    background: url("../images/cmp-bg2.gif") repeat-x;
+    color: rgb(68, 68, 68);
+    white-space: nowrap;
+    border: 1px solid rgb(204, 204, 204);
+    line-height: 30px;
+    font-size: 14px;
+}
+
+.paramTable tr td {
+    border: 1px solid rgb(204, 204, 204);
+    padding: 4px 4px 4px 6px;
+    color: rgb(0, 0, 0);
+    line-height: 21px;
+    vertical-align: middle;
+    background: whitesmoke;
+}
+
+.paramTable input {
+    width: 100%;
+}
+
+.paramTable div {
+    display: inline-block;
+    height: 21px;
+    width: 100%;
+    text-align: center;
+}
+
+.paramTable span {
+    text-align: center;
+    font-weight: bold;
+    color: red;
+    display: none;
+}
