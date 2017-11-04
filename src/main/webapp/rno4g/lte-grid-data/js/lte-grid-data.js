@@ -44,7 +44,12 @@ $(function () {
         }
     });
 
-    $("#queryBtn").click(function () {
+    // $("#queryBtn").click(function () {
+    $("#searchImportForm").ajaxForm(function () {
+
+        $('#queryResultTab').DataTable().clear();
+        $('#queryResultTab').DataTable().destroy();
+
         $('#queryResultTab').css("line-height", "12px");
         $('#queryResultTab').DataTable( {
             "ajax": "data/lte-grid-data-import-query.json",
@@ -67,7 +72,12 @@ $(function () {
         } );
     });
 
-    $("#queryBtn1").click(function () {
+    // $("#queryBtn1").click(function () {
+    $("#searchNcsForm").ajaxForm(function () {
+
+        $('#queryResultTab1').DataTable().clear();
+        $('#queryResultTab1').DataTable().destroy();
+
         $('#queryResultTab1').css("line-height", "12px");
         $('#queryResultTab1').DataTable( {
             "ajax": "data/lte-grid-data-query.json",
