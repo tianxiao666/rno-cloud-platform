@@ -1806,6 +1806,10 @@ body {
     margin: 50px;
 }
 
+.greystyle-standard-noborder tr td {
+    padding: 0
+}
+
 .paging_div {
     text-align: left;
 }

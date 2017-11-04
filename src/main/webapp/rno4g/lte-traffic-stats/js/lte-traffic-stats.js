@@ -17,16 +17,16 @@ $(function () {
     });
 
     //执行 区域 实例 
-    $("#provincemenu").change(function () {
+    $("#province-menu-1").change(function () {
         var cityId = parseInt($(this).find("option:checked").val());
         $.getJSON("../../data/area.json", function (data) {
-            renderArea(data, cityId, "citymenu");
+            renderArea(data, cityId, "city-menu-1");
         })
     });
     $("#province-menu-2").change(function () {
-        var cityId2 = parseInt($(this).find("option:checked").val());
+        var cityId = parseInt($(this).find("option:checked").val());
         $.getJSON("../../data/area.json", function (data) {
-            renderArea(data, cityId2, "city-menu-2");
+            renderArea(data, cityId, "city-menu-2");
         })
     });
 
@@ -36,16 +36,16 @@ $(function () {
         dataType: "json",
         async: false,
         success: function (data) {
-            renderArea(data, 0, "provincemenu");
+            renderArea(data, 0, "province-menu-1");
             renderArea(data, 0, "province-menu-2");
-            $("#provincemenu").change();
+            $("#province-menu-1").change();
             $("#province-menu-2").change();
         }
     });
 
-    $("#queryBtn").click(function () {
-        $('#queryResultTab').css("line-height", "12px");
-        $('#queryResultTab').DataTable( {
+    $("#queryBtn-1").click(function () {
+        $('#queryResultTab-1').css("line-height", "12px");
+        $('#queryResultTab-1').DataTable( {
             "ajax": "data/lte-traffic-stats-record.json",
             "columns": [
                 { data: "cityId" },
@@ -66,9 +66,9 @@ $(function () {
         } );
     });
 
-    $("#queryBtn1").click(function () {
-        $('#queryResultTab1').css("line-height", "12px");
-        $('#queryResultTab1').DataTable( {
+    $("#queryBtn-2").click(function () {
+        $('#queryResultTab-2').css("line-height", "12px");
+        $('#queryResultTab-2').DataTable( {
             "ajax": "data/lte-traffic-stats-list.json",
             "columns": [
                 { data: "AREA_ID" },

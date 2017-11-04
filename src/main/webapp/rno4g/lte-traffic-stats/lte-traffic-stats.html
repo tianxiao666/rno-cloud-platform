@@ -1,290 +1,276 @@
 <!DOCTYPE html>
-<html><head>
-<meta charset="UTF-8">
+<html>
+<head>
+    <meta charset="UTF-8">
 
-<title>4g话统数据管理</title>
+    <title>4g话统数据管理</title>
 
-	<link rel="stylesheet" type="text/css" href="css/lte-traffic-stats.css">
-<style>
+    <link rel="stylesheet" type="text/css" href="css/lte-traffic-stats.css">
 
+    <script src="../../lib/jquery/1.8.2/jquery.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.metadata.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
+    <script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
+    <script src="../../lib/validate.js"></script>
+    <script src="../../lib/tab.js"></script>
+    <script src="../../lib/laydate/5.0.7/laydate.js"></script>
 
-</style>
+    <link rel="stylesheet" type="text/css" href="../../lib/datatables/1.10.16/datatables.min.css">
+    <script src="../../lib/datatables/1.10.16/datatables.min.js"></script>
 
+    <script src="js/lte-traffic-stats.js"></script>
+    <script src="js/tmp-lte-traffic-stats-origin.js"></script>
+    <script src="js/lte-traffic-stats-origin.js"></script>
 
-
-<script type="text/javascript">
-$(document).ready(function(){
-	$(".draggable").draggable();
-	$("#trigger").css("display","none");
-	
-});
-</script>
-
-
-	<script src="../../lib/jquery/1.8.2/jquery.js"></script>
-	<script src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
-	<script src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
-	<script src="../../lib/jquery-plugins/jquery.metadata.js"></script>
-	<link rel="stylesheet" type="text/css" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
-	<script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
-	<script src="../../lib/validate.js"></script>
-	<script src="../../lib/tab.js"></script>
-	<script src="../../lib/laydate/5.0.7/laydate.js"></script>
-
-	<link rel="stylesheet" type="text/css" href="../../lib/datatables/1.10.16/datatables.min.css">
-	<script src="../../lib/datatables/1.10.16/datatables.min.js"></script>
-
-	<script src="js/lte-traffic-stats.js"></script>
-	<script src="js/lte-traffic-stats-origin.js"></script>
-
-
-<style type="text/css">
-body {
-	margin: 50px;
-}
-
-.greystyle-standard-noborder tr td {
-	padding: 0
-}
-
-.dict_left {
-	width: 130px;
-	float: left;
-	left: 0;
-	z-index: 1;
-	border: 1px;
-	margin: 5px
-}
-
-.dict_right {
-	width: 100%;
-	left: 200px;
-	float: left;
-	border: 1px;
-	margin: 5px
-}
-
-/* 覆盖分页面板的对齐样式 */
-.paging_div {
-	text-align: left;
-}
-
-select {
-	width: 100px;
-}
-
-.sectionDivCls {
-	margin-top: 10px;
-}
-.importTitle {
-	background: url("images/ui-bg_glass_65_ffffff_1x400.png") repeat-x scroll 50% 50% #ffffff;
-	border: 1px solid #fbd850;
-	color: #eb8f00;
-	font-weight: bold;
-	padding-left: 2.2em;
-	height:30px;
-	cursor: pointer;
-	border-radius: 5px;
-}
-.importContent {
-	background: url("images/ui-bg_highlight-soft_100_eeeeee_1x100.png") repeat-x scroll 50% top #eeeeee;
-	border: 1px solid #dddddd;
-	padding: 1em 2.2em;
-	border-radius: 5px;
-}
-</style>
-<script type="text/javascript">
-	var $ = jQuery.noConflict();
-</script></head>
-
+</head>
 
 
 <body>
 
-	<span class="navTitle"><h2>当前位置：业务分析优化 &gt;  网络统计数据管理 </h2></span>
-	<div class="loading_cover" style="display: none">
-		<div class="cover"></div>
-		<h4 class="loading">
-			正在加载 <em class="loading_fb" id="tipcontentId"></em>,请稍侯...
-		</h4>
-	</div>
+<span class="navTitle"><h2>当前位置：业务分析优化 &gt;  网络统计数据管理 </h2></span>
+<div class="loading_cover" style="display: none">
+    <div class="cover"></div>
+    <h4 class="loading">
+        正在加载 <em class="loading_fb" id="tipcontentId"></em>,请稍侯...
+    </h4>
+</div>
 
 
+<div id="tabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all" style="width: 95%">
+    <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
+        <li class="ui-state-default ui-corner-top ui-tabs-active ui-state-active" role="tab" tabindex="0"
+            aria-controls="tabs-1" aria-labelledby="ui-id-1" aria-selected="true" aria-expanded="true"><a href="#tabs-1"
+                                                                                                          class="ui-tabs-anchor"
+                                                                                                          role="presentation"
+                                                                                                          tabindex="-1"
+                                                                                                          id="ui-id-1">网络统计数据导入</a>
+        </li>
+        <li class="ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="tabs-2"
+            aria-labelledby="ui-id-2" aria-selected="false" aria-expanded="false"><a href="#tabs-2"
+                                                                                     class="ui-tabs-anchor"
+                                                                                     role="presentation" tabindex="-1"
+                                                                                     id="ui-id-2">网络统计数据查询 </a></li>
+    </ul>
+    <div id="tabs-1" aria-labelledby="ui-id-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel"
+         aria-hidden="false">
+        <div id="listinfoDiv">
+            <form id="searchImportForm">
+                <select id="province-menu-1">
+                </select>
+                <select id="city-menu-1" name="attachParams['cityId']">
+                </select>
+                <div style="margin: 9px"></div>
+                <div id="searchImportDiv"
+                     style="height: 46px; background: rgb(255, 255, 255) url(&quot;images/ui-bg_glass_65_ffffff_1x400.png&quot;) repeat-x scroll 50% 50%; border: 1px solid rgb(251, 216, 80);">
+                    <div style="margin: 9px"></div>
+                    <input id="hiddenPageSize"
+                           name="page.pageSize"
+                           value="25"
+                           type="hidden">
+                    <input id="hiddenCurrentPage" name="page.currentPage" value="1" type="hidden"> <input
+                        id="hiddenTotalPageCnt" value="0" type="hidden"> <input id="hiddenTotalCnt" value="0"
+                                                                                name="page.totalCnt" type="hidden">
+                    <table>
+                        <tbody>
+                        <tr>
 
-	<div id="tabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all" style="width: 95%">
-		<ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
-			<li class="ui-state-default ui-corner-top ui-tabs-active ui-state-active" role="tab" tabindex="0" aria-controls="tabs-1" aria-labelledby="ui-id-1" aria-selected="true" aria-expanded="true"><a href="#tabs-1" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-1">网络统计数据导入</a></li>
-			<li class="ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="tabs-2" aria-labelledby="ui-id-2" aria-selected="false" aria-expanded="false"><a href="#tabs-2" class="ui-tabs-anchor" role="presentation" tabindex="-1" id="ui-id-2">网络统计数据查询 </a></li>
-		</ul>
-		<div id="tabs-1" aria-labelledby="ui-id-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" aria-hidden="false">
-			<div id="listinfoDiv">
-					<form id="searchImportForm">
-						<select id="provincemenu">
+                            <td style="padding-left:30px"><label>上传时间 从:</label> <input
+                                    value="" id="begUploadDate"
+                                    name="attachParams['begUploadDate']" class="hasDatepicker"
+                                    type="text"> 至：<input value="" id="endUploadDate"
+                                                          name="attachParams['endUploadDate']"
+                                                          class="hasDatepicker" type="text"></td>
+                            <td style="padding-left:30px"><label>状态:</label></td>
+                            <td><select id="importstatusmenu" name="attachParams['fileStatus']" style="display: none;">
+                                <option value="全部" selected="selected">全部</option>
+                                <option value="全部成功">全部成功</option>
+                                <option value="部分失败">部分失败</option>
+                                <option value="全部失败">全部失败</option>
+                                <option value="正在解析">正在解析</option>
+                                <option value="等待解析">等待解析</option>
+                            </select><span style="display:none"
+                                           class="ui-selectmenu-button ui-widget ui-state-default ui-corner-all"
+                                           tabindex="0" id="importstatusmenu-button" role="combobox"
+                                           aria-expanded="false" aria-autocomplete="list"
+                                           aria-owns="importstatusmenu-menu" aria-haspopup="true"
+                                           style="width: 98px;"><span class="ui-icon ui-icon-triangle-1-s"></span><span
+                                    class="ui-selectmenu-text">全部</span></span></td>
+                            <td style="padding-left:30px"><input id="queryBtn-1" value="查询导入记录" type="button"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
 
-						</select> <select id="citymenu" name="attachParams['cityId']">
+            <div style="margin: 9px"></div>
 
-						</select>
-						<div style="margin: 9px"></div>
-						<div id="searchImportDiv" style="height: 46px; background: rgb(255, 255, 255) url(&quot;images/ui-bg_glass_65_ffffff_1x400.png&quot;) repeat-x scroll 50% 50%; border: 1px solid rgb(251, 216, 80);">
-							<div style="margin: 9px"></div>
-							<input name="fileCode" id="fileCode" value="4GSTSDATAFILE" type="hidden"> <input id="hiddenPageSize" name="page.pageSize" value="25" type="hidden"> <input id="hiddenCurrentPage" name="page.currentPage" value="1" type="hidden"> <input id="hiddenTotalPageCnt" value="0" type="hidden"> <input id="hiddenTotalCnt" value="0" name="page.totalCnt" type="hidden">
-							<table>
-								<tbody><tr>
+            <div id="importTitleDiv" class="importTitle">
+                <div style="margin: 9px"></div>
+                导入
+            </div>
+            <div id="importDiv" class="importContent" style="height: 180px;">
+                <form id="formImportData" enctype="multipart/form-data" method="post">
+                    <input name="fileCode" id="fileCode" value="4GSTSDATAFILE" type="hidden">
+                    <input name="token"
+                           id="token" value=""
+                           type="hidden">
+                    <input id="uploadCityId" name="cityId" value="98" type="hidden">
+                    <div>
+                        <table class="main-table1 half-width" style="margin-left:0;width:50%">
+                            <tbody>
+                            <tr>
+                                <td class="menuTd">网络统计数据文件<span class="txt-impt">*</span>
+                                </td>
+                                <td style="width: 50%; font-weight: bold" colspan="0"><input style="width: 44%;"
+                                                                                             name="file" id="fileid"
+                                                                                             class="canclear required"
+                                                                                             type="file">
+                                    <span style="color:red;width:100px;font-family:华文中宋;text-align:center"
+                                          id="fileDiv"></span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="container-bottom" style="padding-top: 10px">
+                        <table style="width: 60%; margin: auto" align="center">
+                            <tbody>
+                            <tr>
+                                <td><input value="导    入" style="width: 90px;" id="importBtn" name="import"
+                                           type="button"> <br>
+                                    <div id="uploadMsgDiv" style="display:none"></div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div id="importResultDiv" class="container-bottom" style="padding-top: 10px">
+                            <div id="progressInfoDiv" style="width:50%;display:none">
+                                <h2 id="progressNum">0%</h2>
+                                <div id="progressbar" class="ui-progressbar ui-widget ui-widget-content ui-corner-all"
+                                     role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                    <div class="ui-progressbar-value ui-widget-header ui-corner-left"
+                                         style="display: none; width: 0%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <span id="upload-file-message"></span>
+                </form>
+            </div>
 
-									<td style="padding-left:30px"><label>上传时间 从:</label> <input
-											value="" id="begUploadDate"
-											name="attachParams['begUploadDate']" class="hasDatepicker"
-											type="text"> 至：<input value="" id="endUploadDate"
-																  name="attachParams['endUploadDate']"
-																  class="hasDatepicker" type="text"></td>
-									<td style="padding-left:30px"><label>状态:</label></td>
-									<td><select id="importstatusmenu" name="attachParams['fileStatus']" style="display: none;">
-											<option value="全部" selected="selected">全部</option>
-											<option value="全部成功">全部成功</option>
-											<option value="部分失败">部分失败</option>
-											<option value="全部失败">全部失败</option>
-											<option value="正在解析">正在解析</option>
-											<option value="等待解析">等待解析</option>
-									</select><span style="display:none" class="ui-selectmenu-button ui-widget ui-state-default ui-corner-all" tabindex="0" id="importstatusmenu-button" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-owns="importstatusmenu-menu" aria-haspopup="true" style="width: 98px;"><span class="ui-icon ui-icon-triangle-1-s"></span><span  class="ui-selectmenu-text">全部</span></span></td>
-									<td style="padding-left:30px"><input id="queryBtn" value="查询导入记录" type="button"></td>
-								</tr>
-							</tbody></table>
-						</div>
-					</form>
-				
-					<div style="margin: 9px"></div>
-			
-					<div id="importTitleDiv" class="importTitle">
-						<div style="margin: 9px"></div>
-						导入
-					</div>
-					<div id="importDiv" class="importContent" style="height: 180px;">
-						<form id="formImportData" enctype="multipart/form-data" method="post">
-							<input name="fileCode" id="fileCode" value="4GSTSDATAFILE" type="hidden"> <input name="token" id="token" value="" type="hidden">
-							<input id="uploadCityId" name="cityId" value="98" type="hidden">
-							
-												<input name="meaTime" class="required" id="meatime" value="2017-10-26" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" readonly="readonly" style="width: 132px;" type="hidden">
-							<div>
-								<table class="main-table1 half-width" style="margin-left:0;width:50%">
-									<tbody>
-										
-										<tr>
-											<td class="menuTd">网络统计数据文件<span class="txt-impt">*</span>
-											</td>
-											<td style="width: 50%; font-weight: bold" colspan="0"><input style="width: 44%;" name="file" id="fileid" class="canclear required" type="file"></td>
-										</tr>
+            <div id="importListDiv" class="sectionDivCls">
+                <b>网络统计上传记录列表</b>
 
-										
-									</tbody>
+                <table id="queryResultTab-1" class="display rnoHeader" cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th>地市</th>
+                        <th>上传日期</th>
+                        <th>文件名称</th>
+                        <th>文件大小</th>
+                        <th>开始时间</th>
+                        <th>完成时间</th>
+                        <th>上传账号</th>
+                        <th>状态</th>
+                    </tr>
+                    </thead>
+                </table>
 
-								</table>
-							</div>
-							<div class="container-bottom" style="padding-top: 10px">
-								<table style="width: 60%; margin: auto" align="center">
-									<tbody><tr>
-										<td><input value="导    入" style="width: 90px;" id="importBtn" name="import" type="button"> <br>
-											<div id="uploadMsgDiv" style="display:none"></div>	</td>
-									</tr>
-								</tbody></table>
-								<div id="importResultDiv" class="container-bottom" style="padding-top: 10px">
-									<div id="progressInfoDiv" style="width:50%;display:none">
-										<h2 id="progressNum">0%</h2>
-										<div id="progressbar" class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="ui-progressbar-value ui-widget-header ui-corner-left" style="display: none; width: 0%;"></div></div>
-									</div>
-								</div>
-							</div>
-						</form>
-					</div>
+            </div>
+        </div>
 
-				<div id="importListDiv" class="sectionDivCls">
-					<b>网络统计上传记录列表</b>
+        <div id="reportDiv" style="display:none">
+            <form id="viewReportForm">
+                <input name="attachParams['jobId']" id="hiddenJobId" value="" type="hidden"> <input id="hiddenPageSize"
+                                                                                                    name="page.pageSize"
+                                                                                                    value="25"
+                                                                                                    type="hidden">
+                <input id="hiddenCurrentPage" name="page.currentPage" value="1" type="hidden"> <input
+                    id="hiddenTotalPageCnt" type="hidden"> <input id="hiddenTotalCnt" value="-1" name="page.totalCnt"
+                                                                  type="hidden">
+            </form>
+            <ul id="icons" class="ui-widget ui-helper-clearfix" style="width:100px;cursor:pointer">
+                <li class="ui-state-default ui-corner-all" title="返回列表" style="width:100px"
+                    onclick="javascript:returnToImportList();"><span class="ui-icon ui-icon-arrowreturnthick-1-w"
+                                                                     style="width:20px"></span>返回列表
+                </li>
+            </ul>
+            <table id="reportListTab" class="greystyle-standard" style="width:auto;margin-left:0">
+                <thead>
+                <tr>
+                    <th>阶段</th>
+                    <th>开始时间</th>
+                    <th>结束</th>
+                    <th>结果</th>
+                    <th>详细信息</th>
+                </tr>
+                </thead>
+            </table>
 
-					<table id="queryResultTab" class="display rnoHeader" cellspacing="0" width="100%">
-						<thead>
-						<tr>
-							<th>地市</th>
-							<th>上传日期</th>
-							<th>文件名称</th>
-							<th>文件大小</th>
-							<th>开始时间</th>
-							<th>完成时间</th>
-							<th>上传账号</th>
-							<th>状态</th>
-						</tr>	
-						</thead>
-					</table>
+        </div>
+    </div>
+    <div id="tabs-2" aria-labelledby="ui-id-2" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel"
+         style="display: none;" aria-hidden="true">
+        <form id="searchDataForm">
+            <input name="fileCode" id="fileCode" value="4GSTSDATAFILE" type="hidden"> <input id="hiddenPageSize"
+                                                                                             name="page.pageSize"
+                                                                                             value="25" type="hidden">
+            <input id="hiddenCurrentPage" name="page.currentPage" value="1" type="hidden"> <input
+                id="hiddenTotalPageCnt" type="hidden"> <input id="hiddenTotalCnt" value="-1" name="page.totalCnt"
+                                                              type="hidden">
+            <table>
+                <tbody>
+                <tr>
+                    <td><select id="province-menu-2">
 
-				</div>
-			</div>
-			
-			<div id="reportDiv" style="display:none">
-				<form id="viewReportForm">
-					<input name="attachParams['jobId']" id="hiddenJobId" value="" type="hidden"> <input id="hiddenPageSize" name="page.pageSize" value="25" type="hidden"> <input id="hiddenCurrentPage" name="page.currentPage" value="1" type="hidden"> <input id="hiddenTotalPageCnt" type="hidden"> <input id="hiddenTotalCnt" value="-1" name="page.totalCnt" type="hidden">
-				</form>
-				<ul id="icons" class="ui-widget ui-helper-clearfix" style="width:100px;cursor:pointer">
-					<li class="ui-state-default ui-corner-all" title="返回列表" style="width:100px" onclick="javascript:returnToImportList();"><span class="ui-icon ui-icon-arrowreturnthick-1-w" style="width:20px"></span>返回列表</li>
-				</ul>
-				<table id="reportListTab" class="greystyle-standard" style="width:auto;margin-left:0">
-					<thead>
-					<tr>
-						<th>阶段</th>
-						<th>开始时间</th>
-						<th>结束</th>
-						<th>结果</th>
-						<th>详细信息</th>
-					</tr>
-					</thead>
-				</table>
+                    </select> <select id="city-menu-2" name="attachParams['cityId']">
 
-			</div>
-		</div>
-		<div id="tabs-2" aria-labelledby="ui-id-2" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel" style="display: none;" aria-hidden="true">
-			<form id="searchDataForm">
-				<input name="fileCode" id="fileCode" value="4GSTSDATAFILE" type="hidden"> <input id="hiddenPageSize" name="page.pageSize" value="25" type="hidden"> <input id="hiddenCurrentPage" name="page.currentPage" value="1" type="hidden"> <input id="hiddenTotalPageCnt" type="hidden"> <input id="hiddenTotalCnt" value="-1" name="page.totalCnt" type="hidden">
-				<table>
-					<tbody><tr>
-						<td><select id="province-menu-2">
-
-						</select> <select id="city-menu-2" name="attachParams['cityId']">
-
-						</select><span  style="display:none" class="ui-selectmenu-button ui-widget ui-state-default ui-corner-all" tabindex="0" id="citymenu2-button" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-owns="citymenu2-menu" aria-haspopup="true" style="width: 98px;"><span class="ui-icon ui-icon-triangle-1-s"></span><span class="ui-selectmenu-text">
+                    </select><span style="display:none"
+                                   class="ui-selectmenu-button ui-widget ui-state-default ui-corner-all" tabindex="0"
+                                   id="citymenu2-button" role="combobox" aria-expanded="false" aria-autocomplete="list"
+                                   aria-owns="citymenu2-menu" aria-haspopup="true" style="width: 98px;"><span
+                            class="ui-icon ui-icon-triangle-1-s"></span><span class="ui-selectmenu-text">
 										惠州市
 									</span></span></td>
 
-						<td style="padding-left:10px">测试时间 从:</td>
-						<td></label> <input
-								value="" id="beginTestDate"
-								name="attachParams['begUploadDate']" class="hasDatepicker"
-								type="text" style="width: auto"></td>
-						<td>至：</td>
-						<td><input value="" id="endTestDate"
-								   name="attachParams['endUploadDate']"
-								   class="hasDatepicker" type="text" style="width: auto"></td>
-						<td style="padding-left:10px"><input id="queryBtn1" value="查询" type="button"></td>
-					</tr>
-				</tbody></table>
+                    <td style="padding-left:10px">测试时间 从:</td>
+                    <td></label> <input
+                            value="" id="beginTestDate"
+                            name="attachParams['begUploadDate']" class="hasDatepicker"
+                            type="text" style="width: auto"></td>
+                    <td>至：</td>
+                    <td><input value="" id="endTestDate"
+                               name="attachParams['endUploadDate']"
+                               class="hasDatepicker" type="text" style="width: auto"></td>
+                    <td style="padding-left:10px"><input id="queryBtn-2" value="查询" type="button"></td>
+                </tr>
+                </tbody>
+            </table>
 
-			</form>
-			<div id="dataListDiv" class="sectionDivCls">
-				<table id="queryResultTab1" class="display rnoHeader" cellspacing="0" width="100%">
-					<thead>
-					<tr>
-						<th>地市</th>
-						<th>开始时间</th>
-						<th>结束时间</th>
-						<th>信息参考模型</th>
-						<th>前缀</th>
-						<th>SenderName</th>
-						<th>供应商名</th>
-						<th>任务ID</th>
-						<th>测试数据量</th>
-						<th>进入系统时间</th>
-						</tr>
-					</thead>
-				</table>
+        </form>
+        <div id="dataListDiv" class="sectionDivCls">
+            <table id="queryResultTab-2" class="display rnoHeader" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                    <th>地市</th>
+                    <th>开始时间</th>
+                    <th>结束时间</th>
+                    <th>信息参考模型</th>
+                    <th>前缀</th>
+                    <th>SenderName</th>
+                    <th>供应商名</th>
+                    <th>任务ID</th>
+                    <th>测试数据量</th>
+                    <th>进入系统时间</th>
+                </tr>
+                </thead>
+            </table>
 
-			</div>
-		</div>
-	</div>
+        </div>
+    </div>
+</div>
 
-</body></html>
+</body>
+</html>

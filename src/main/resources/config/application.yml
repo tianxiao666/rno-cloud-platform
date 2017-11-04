@@ -19,6 +19,8 @@ spring:
         database-platform: org.hibernate.dialect.Oracle10gDialect
         database: ORACLE
         show-sql: true
+    profiles:
+      active: dev
 logging:
   level:
     com.hgicreate.rno: debug

@@ -1,0 +1,9 @@
+server:
+  port: 8000
+spring:
+  http:
+    multipart:
+      max-request-size: 2048000kb
+      max-file-size: 4096000kb
+      location: D:/tmp
+
