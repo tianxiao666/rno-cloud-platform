@@ -2,7 +2,11 @@ $(function () {
     //tab选项卡
     tab("div_tab", "li", "onclick");//项目服务范围类别切换
 
-    $("#queryBtn").click(function () {
+    $("#conditionForm").ajaxForm(function () {
+
+        $('#queryResultTab').DataTable().clear();
+        $('#queryResultTab').DataTable().destroy();
+
         $('#queryResultTab').css("line-height", "12px");
         $('#queryResultTab').DataTable( {
             "ajax": "data/lte-ncell-relation-data.json",

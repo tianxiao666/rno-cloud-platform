@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="css/lte-ncell-relation.css">
 
     <script src="../../lib/jquery/1.8.2/jquery.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
     <script src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
 
     <script src="../../lib/tab.js"></script>
@@ -51,7 +52,7 @@
 
 
                         <div>
-                            <form id="conditionForm" method="post">
+                            <form id="conditionForm" method="post" action="/api/lte-ncell-relation/ncellQuery">
 
                                 <input id="hiddenPageSize" name="page.pageSize" value="25" type="hidden">
                                 <input id="hiddenCurrentPage" name="page.currentPage" value="1" type="hidden">
@@ -90,19 +91,19 @@
 
                                         </td>
                                         <td style=" text-align:center"><input id="queryCellNameId"
-                                                                              name="queryLteCellCond.cellName"
+                                                                              name="cellName"
                                                                               type="text">
                                         </td>
                                         <td style="text-align: center"><input id="queryNCellNameId"
-                                                                              name="queryLteCellCond.ncellName"
+                                                                              name="ncellName"
                                                                               type="text">
                                         </td>
                                         <td style="text-align: center"><input id="queryCellSiteId"
-                                                                              name="queryLteCellCond.cellSite"
+                                                                              name="cellSite"
                                                                               type="text">
                                         </td>
                                         <td style="text-align: center"><input id="queryNCellSiteId"
-                                                                              name="queryLteCellCond.ncellSite"
+                                                                              name="ncellSite"
                                                                               type="text">
                                         </td>
                                     </tr>
@@ -113,7 +114,7 @@
                                                   id="nameErrorText1"></span>
                                             <span style="color:red;width:100px;font-family:华文中宋;text-align:center"
                                                   id="nameErrorText2"></span><input value="查  询"
-                                                                                    id="queryBtn" type="button">
+                                                                                    id="queryBtn" type="submit">
                                         </td>
                                     </tr>
                                     </tbody>

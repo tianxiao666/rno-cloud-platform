@@ -8,43 +8,43 @@ $(document)
 		.ready(
 				function() {		
 					    
-					// 查询条件
-					$("#conditionForm").submit(function() {
-						// 重新初始化分页参数
-						initFormPage('conditionForm');
-						$("span#nameErrorText1").html("");
-						 $("span#nameErrorText2").html("");
-						//记录
-						lastCond['queryProvinceId']=$("#queryProvinceId").val();
-						lastCond['queryCityId']=$("#queryCityId").val();
-						lastCond['queryCellNameId']=$("#queryCellNameId").val();
-						lastCond['queryNCellNameId']=$("#queryNCellNameId").val();
-						lastCond['queryCellSiteId']=$("#queryCellSiteId").val();
-						lastCond['queryNCellSiteId']=$("#queryNCellSiteId").val();
-						
-						//console.log("条件："+$("#queryProvinceId").val()+" "+$("#queryCityId").val()+" "+
-						//				$("#queryCellNameId").val()+""+$("#queryNCellNameId").val()+" "+$("#queryCellSiteId").val()+" "+$("#queryNCellSiteId").val())
-						var queryProvinceId = $("#queryProvinceId").val();
-						var queryCityId = $("#queryCityId").val();
-						var queryCellNameId = $("#queryCellNameId").val();
-						 var queryNCellNameId = $("#queryNCellNameId").val();
-						 var queryCellSiteId = $("#queryCellSiteId").val();
-						 var queryNCellSiteId = $("#queryNCellSiteId").val();
-						 var str = queryProvinceId + queryCityId + queryCellNameId + queryNCellNameId + queryCellSiteId + queryNCellSiteId;
-						 /*var pattern = new RegExp("[\\\\`~*#!@%&'|{}\":<>.,;+/=?$￥！()（）【】，。：；”‘？》《^]+");*/
-						 var strExp=/^[\u4e00-\u9fa5A-Za-z0-9_-]+$/;
-						  if(!strExp.test(str)){
-							   	$("span#nameErrorText1").html("含有非法字符！");
-							   	  return false;   
-							 }  else if(!(queryCellNameId.length<40&&queryNCellNameId.length<40&&
-									 queryCellSiteId.length<40&&queryNCellSiteId.length<40)){
-								 $("span#nameErrorText2").html("输入信息过长！");
-							      return false;
-						     }   
-							 
-						queryLteNcell();
-						return false;
-					});
+					查询条件
+					// $("#conditionForm").submit(function() {
+					// 	// 重新初始化分页参数
+					// 	initFormPage('conditionForm');
+					// 	$("span#nameErrorText1").html("");
+					// 	 $("span#nameErrorText2").html("");
+					// 	//记录
+					// 	lastCond['queryProvinceId']=$("#queryProvinceId").val();
+					// 	lastCond['queryCityId']=$("#queryCityId").val();
+					// 	lastCond['queryCellNameId']=$("#queryCellNameId").val();
+					// 	lastCond['queryNCellNameId']=$("#queryNCellNameId").val();
+					// 	lastCond['queryCellSiteId']=$("#queryCellSiteId").val();
+					// 	lastCond['queryNCellSiteId']=$("#queryNCellSiteId").val();
+                    //
+					// 	//console.log("条件："+$("#queryProvinceId").val()+" "+$("#queryCityId").val()+" "+
+					// 	//				$("#queryCellNameId").val()+""+$("#queryNCellNameId").val()+" "+$("#queryCellSiteId").val()+" "+$("#queryNCellSiteId").val())
+					// 	var queryProvinceId = $("#queryProvinceId").val();
+					// 	var queryCityId = $("#queryCityId").val();
+					// 	var queryCellNameId = $("#queryCellNameId").val();
+					// 	 var queryNCellNameId = $("#queryNCellNameId").val();
+					// 	 var queryCellSiteId = $("#queryCellSiteId").val();
+					// 	 var queryNCellSiteId = $("#queryNCellSiteId").val();
+					// 	 var str = queryProvinceId + queryCityId + queryCellNameId + queryNCellNameId + queryCellSiteId + queryNCellSiteId;
+					// 	 /*var pattern = new RegExp("[\\\\`~*#!@%&'|{}\":<>.,;+/=?$￥！()（）【】，。：；”‘？》《^]+");*/
+					// 	 var strExp=/^[\u4e00-\u9fa5A-Za-z0-9_-]+$/;
+					// 	  if(!strExp.test(str)){
+					// 		   	$("span#nameErrorText1").html("含有非法字符！");
+					// 		   	  return false;
+					// 		 }  else if(!(queryCellNameId.length<40&&queryNCellNameId.length<40&&
+					// 				 queryCellSiteId.length<40&&queryNCellSiteId.length<40)){
+					// 			 $("span#nameErrorText2").html("输入信息过长！");
+					// 		      return false;
+					// 	     }
+                    //
+					// 	queryLteNcell();
+					// 	return false;
+					// });
 
 					// 查询的区域联动
 					$("#queryProvinceId")
