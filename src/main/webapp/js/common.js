@@ -38,6 +38,8 @@ function initAreaSelectors(options) {
                 if ((defaultAreaId % 100) > 0) {
                     $districtId.find("option[value='" + defaultAreaId + "']").attr("selected", true);
                 }
+
+                $districtId.trigger("change");
             });
         }
 

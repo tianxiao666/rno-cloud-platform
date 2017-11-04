@@ -1,32 +1,30 @@
 <!DOCTYPE html>
-<html><head>
-<meta charset="UTF-8">
+<html>
+<head>
+    <meta charset="UTF-8">
 
-<title>4g区域网格呈现</title>
+    <title>4g区域网格呈现</title>
 
-<link rel="stylesheet" type="text/css" href="css/lte-grid-gis.css">
+    <link rel="stylesheet" type="text/css" href="css/lte-grid-gis.css">
 
-<script src="../../lib/jquery/1.8.2/jquery.js"></script>
-<link rel="stylesheet" type="text/css" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
-<script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
+    <script src="../../lib/jquery/1.8.2/jquery.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
+    <script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
 
-<link rel="stylesheet" href="../../lib/openlayers/4.4.2/ol.css" type="text/css">
-<script src="../../lib/openlayers/4.4.2/ol.js" type="text/javascript"></script>
-<script src="js/lte-grid-gis.js"></script>
-
+    <link rel="stylesheet" href="../../lib/openlayers/4.4.2/ol.css" type="text/css">
+    <script src="../../lib/openlayers/4.4.2/ol.js" type="text/javascript"></script>
+    <script src="../../js/common.js"></script>
+    <script src="js/lte-grid-gis.js"></script>
 </head>
-
-
 <body>
 <div id="map" class="map"></div>
-<div class="dialog draggable ui-draggable">
-	省：<select name="provinceId" class="required" id="provinceId" title=""></select>
-	市：<select name="cityId" class="required" id="cityId" title=""></select>
-	区：<select name="districtId" class="required" id="districtId" title=""></select>
-	<input id="loadGisCell" value="加载小区" type="button">
-	<input id="loadGrid" value="加载网格" type="button">
-	<input id="ExportGridCellData" value="导出网格小区数据" type="button">
+<div class="dialog">
+    省：<select name="provinceId" class="required" id="provinceId" title=""></select>
+    市：<select name="cityId" class="required" id="cityId" title=""></select>
+    区：<select name="districtId" class="required" id="districtId" title=""></select>
+    <input id="loadGisCell" value="加载小区" type="button">
+    <input id="loadGrid" value="加载网格" type="button">
+    <input id="ExportGridCellData" value="导出网格小区数据" type="button">
 </div>
-
-
-</body></html>
+</body>
+</html>
