@@ -4,6 +4,9 @@ var popup;
 $(function () {
     $(".dialog").draggable();
     $("#trigger").css("display", "none");
+    $(".resource_list_box").css("display", "none");
+    $(".switch_hidden").show();
+    $(".resource_list_icon").css("right", "0");
 
     $(".switch").click(function () {
         $(this).hide();
@@ -25,6 +28,10 @@ $(function () {
         $(".search_box_alert").slideToggle("fast");
     });
 
+    $("#map").bind("contextmenu", function() {
+        return false;
+    });
+
     var baseLayer = new ol.layer.Tile({
         source: new ol.source.XYZ({
             url: 'http://rno-omt.hgicreate.com/styles/rno-omt/{z}/{x}/{y}.png',
@@ -38,6 +45,21 @@ $(function () {
         zIndex: 3
     });
 
+    // 标签图层
+    var textImageTile = new ol.layer.Tile({
+        source: new ol.source.TileWMS({
+            url: 'http://192.168.50.20:8082/geoserver/wms',
+            params: {
+                'FORMAT': 'image/png',
+                'SRS': 'EPSG:4326',
+                'tiled': true,
+                'LAYERS': 'rnoprod:RNO_LTE_CELL_CENTROID'
+            },
+            serverType: 'geoserver'
+        }),
+        opacity: 0.8
+    });
+
     var redStyle = new ol.style.Style({
         stroke: new ol.style.Stroke({
             // 设置线条颜色
@@ -48,6 +70,32 @@ $(function () {
             // 设置填充颜色与不透明度
             color: 'rgba(255, 0, 0, 1.0)'
         })
+    });
+
+    var contextmenu_items = [
+        {
+            text: '显示邻区',
+            data: 1,
+            callback: showNcell
+        }
+    ];
+
+    var contextmenu = new ContextMenu({
+        width : 120,
+        items : contextmenu_items
+    });
+
+    // 右键菜单打开之前，判断是否在 feature 上，如果不是则禁止右键菜单
+    contextmenu.on('beforeopen', function (e) {
+        var feature = map.forEachFeatureAtPixel(e.pixel, function (feature) {
+            return feature;
+        });
+
+        if (feature) {
+            contextmenu.enable();
+        } else {
+            contextmenu.disable();
+        }
     });
 
     $("#districtId").change(function () {
@@ -66,6 +114,7 @@ $(function () {
 
             popup = new ol.Overlay({element: document.getElementById('popup')});
             map.addOverlay(popup);
+            map.addControl(contextmenu);
 
             map.on('singleclick', function (evt) {
 
@@ -161,8 +210,9 @@ $(function () {
             });
         }
     });
+    initAreaSelectors({selectors: ["provinceId", "cityId", "districtId"], coord: true});
 
-    $("#cityId").change(function () {
+    /*$("#cityId").change(function () {
         var cityId = parseInt($(this).find("option:checked").val());
         $.getJSON("../../data/area.json", function (data) {
             renderArea(data, cityId, "districtId", true);
@@ -187,7 +237,7 @@ $(function () {
             renderArea(data, 0, "provinceId", false);
             $("#provinceId").change();
         }
-    });
+    });*/
 
     $("#loadGisCell").click(function () {
         var cityId = parseInt($("#cityId").find("option:checked").val());
@@ -213,13 +263,15 @@ $(function () {
     $("#showCellName").click(function () {
         if ($(this).val() === "显示小区名字") {
             $(this).val("关闭小区名字");
+            map.addLayer(textImageTile);
         } else {
             $(this).val("显示小区名字");
+            map.removeLayer(textImageTile);
         }
     })
 });
 
-// 渲染区域
+/*// 渲染区域
 function renderArea(data, parentId, areaMenu, boolLonLat) {
     var arr = data.filter(function (v) {
         return v.parentId === parentId;
@@ -241,9 +293,14 @@ function renderArea(data, parentId, areaMenu, boolLonLat) {
     } else {
         console.log("父ID为" + parentId + "时未找到任何下级区域。");
     }
-}
+}*/
 
 function addColor(t) {
+    $(".switch_hidden").trigger("click");
     $(t).siblings().removeClass('custom-bg');
     $(t).addClass('custom-bg');
+}
+
+var showNcell = function getNcell(evt) {
+
 }
