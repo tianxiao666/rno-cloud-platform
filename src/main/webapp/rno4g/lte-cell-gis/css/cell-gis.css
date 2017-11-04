@@ -702,3 +702,15 @@ html, body {
     height: 100%;
     width: 100%;
 }
+
+.custom tbody tr{
+    cursor: pointer;
+}
+
+.custom tbody tr:hover{
+    background: rgba(94, 94, 94, 0.32);
+}
+
+.custom-bg{
+    background: rgba(94, 94, 94, 0.32);
+}

@@ -93,7 +93,7 @@ $(function () {
                             clickedCellLayer.getSource().clear();
                             clickedCellLayer.getSource().addFeatures(allFeatures);
 
-                            var content = '<table id="cellTable" class="table table-striped">';
+                            var content = '<table id="cellTable" class="table custom">';
                             content += '<thead style="white-space: nowrap"><th>小区ID</th><th>小区名称</th><th>PCI</th></thead>';
                             content += '<tbody>';
                             // 获取多个重叠 feature
@@ -101,7 +101,7 @@ $(function () {
                                 var feature = allFeatures[i];
                                 console.log(feature);
 
-                                content += '<tr style="word-break:break-all">';
+                                content += '<tr style="word-break:break-all" onclick="addColor(this)">';
                                 content += '<td style="display:none">' + i + '</td>';
                                 content += '<td style="white-space: nowrap">' + feature.get('CELL_ID') + '</td>';
                                 content += '<td>' + feature.get('CELL_NAME') + '</td>';
@@ -134,6 +134,8 @@ $(function () {
                                 $("#showCellBandTypeId").text(feature.get('BAND_TYPE'));
                                 $("#showCellEarfcnId").text(feature.get('EARFCN'));
                                 $("#showCellCoverTypeId").text(feature.get('COVER_TYPE'));
+                                $("#showPciMod3").text(feature.get('PCI_MOD3'));
+                                $("#showStationSpace").text(feature.get('STATION_SPACE'));
                                 /*
                                 showCellGroundHeightId
                                 showCellAntennaTypeId
@@ -152,7 +154,11 @@ $(function () {
                 }
             });
         } else {
-            map.getView().setCenter(ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:3857'));
+            //map.getView().setCenter(ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:3857'));
+            map.getView().animate({
+                center: [ parseFloat(lon), parseFloat(lat) ],
+                duration: 2000
+            });
         }
     });
 
@@ -235,4 +241,9 @@ function renderArea(data, parentId, areaMenu, boolLonLat) {
     } else {
         console.log("父ID为" + parentId + "时未找到任何下级区域。");
     }
+}
+
+function addColor(t) {
+    $(t).siblings().removeClass('custom-bg');
+    $(t).addClass('custom-bg');
 }
