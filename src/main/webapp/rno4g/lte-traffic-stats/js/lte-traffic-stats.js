@@ -43,6 +43,45 @@ $(function () {
         }
     });
 
+    // AJAX 上传文件
+    var progress = $('.upload-progress');
+    var bar = $('.bar');
+    var percent = $('.percent');
+
+    $("#formImportData").ajaxForm({
+        url: "/api/lte-traffic-stats/upload-file",
+        beforeSend: function () {
+            progress.css("display", "block");
+            var percentVal = '0%';
+            bar.width(percentVal);
+            percent.html(percentVal);
+        },
+        uploadProgress: function (event, position, total, percentComplete) {
+            var percentVal = percentComplete + '%';
+            bar.width(percentVal);
+            percent.html(percentVal);
+        },
+        success: function () {
+            var percentVal = '100%';
+            bar.width(percentVal);
+            percent.html(percentVal);
+        }
+    });
+
+    // 当上传文件域改变时，隐藏进度条
+    $("input[name='file']").change(function () {
+        var filename = fileid.value;
+        if(!(filename.toUpperCase().endsWith(".CSV")||filename.toUpperCase().endsWith(".XLS")
+                || filename.toUpperCase().endsWith(".XLSX") || filename.toUpperCase().endsWith(".XML")
+                || filename.toUpperCase().endsWith(".TXT") || filename.toUpperCase().endsWith(".ZIP"))){
+            $("#fileDiv").html("不支持该类型文件！");
+            return false;
+        }else {
+            $("#fileDiv").html("");
+        }
+        progress.css("display", "none");
+    });
+
     $("#queryBtn-1").click(function () {
         $('#queryResultTab-1').css("line-height", "12px");
         $('#queryResultTab-1').DataTable( {

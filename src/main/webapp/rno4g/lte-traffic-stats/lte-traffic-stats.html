@@ -17,11 +17,13 @@
     <script src="../../lib/tab.js"></script>
     <script src="../../lib/laydate/5.0.7/laydate.js"></script>
 
+    <link rel="stylesheet" href="../../lib/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="../../lib/jquery-plugins/jquery.form.min-4.2.2.js"></script>
+
     <link rel="stylesheet" type="text/css" href="../../lib/datatables/1.10.16/datatables.min.css">
     <script src="../../lib/datatables/1.10.16/datatables.min.js"></script>
 
     <script src="js/lte-traffic-stats.js"></script>
-    <script src="js/lte-traffic-stats-upload.js"></script>
     <script src="js/lte-traffic-stats-origin.js"></script>
 
 </head>
@@ -127,7 +129,7 @@
                                                                                              name="file" id="fileid"
                                                                                              class="canclear required"
                                                                                              type="file">
-                                    <span style="color:red;width:100px;font-family:华文中宋;text-align:center"
+                                    <span style="color:red;width:66%;font-family:华文中宋;text-align:center"
                                           id="fileDiv"></span>
                                 </td>
                             </tr>
@@ -139,20 +141,16 @@
                             <tbody>
                             <tr>
                                 <td><input value="导    入" style="width: 90px;" id="importBtn" name="import"
-                                           type="button"> <br>
+                                           type="submit"> <br>
                                     <div id="uploadMsgDiv" style="display:none"></div>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
                         <div id="importResultDiv" class="container-bottom" style="padding-top: 10px">
-                            <div id="progressInfoDiv" style="width:50%;display:none">
-                                <h2 id="progressNum">0%</h2>
-                                <div id="progressbar" class="ui-progressbar ui-widget ui-widget-content ui-corner-all"
-                                     role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                                    <div class="ui-progressbar-value ui-widget-header ui-corner-left"
-                                         style="display: none; width: 0%;"></div>
-                                </div>
+                            <div class="upload-progress">
+                                <div class="bar"></div >
+                                <div class="percent">0%</div >
                             </div>
                         </div>
                     </div>

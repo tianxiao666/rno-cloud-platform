@@ -1,16 +1,16 @@
 package com.hgicreate.rno.web.rest;
 
+import com.hgicreate.rno.web.rest.vm.FileUploadVM;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 
@@ -21,42 +21,42 @@ public class LteTrafficStatsResource {
 
     private String importDate ;
 
-    @Autowired
-    private Environment env;
+    @Value("${rno.path.upload-files}")
+    private String directory;
 
-    @RequestMapping(method = RequestMethod.POST, value = "/uploadFile")
-    @ResponseBody
-    public ResponseEntity<?> uploadFile(
-            @RequestParam("file") MultipartFile uploadfile) {
+    @PostMapping("/upload-file")
+    public ResponseEntity<?> uploadFile(FileUploadVM vm) {
+
+        log.debug("模块名：" + vm.getModuleName());
+
         try {
-            // Get the filename and build the local file path
-            String filename = uploadfile.getOriginalFilename();
-            log.info("上传文件："+filename);
-            String directory = env.getProperty("spring.http.multipart.location");
-            /**根据本地路径创建目录**/
-            File fullPathFile = new File(directory);
-            if (!fullPathFile.exists())
-                fullPathFile.mkdirs();
-            /** 获取文件的后缀* */
-            String suffix = uploadfile.getOriginalFilename().substring(
-                    uploadfile.getOriginalFilename().lastIndexOf("."));
-            /** 使用UUID生成文件名称* */
-            String fileName = "import-"+UUID.randomUUID().toString() + suffix;
-            /** 拼成完整的文件保存路径加文件* */
-            String filePath = fullPathFile + File.separator + fileName;
-            /** 文件输出流* */
-            File file = new File(filePath);
-            try (FileOutputStream fileOutputStream = new FileOutputStream(file);
-                 BufferedOutputStream stream = new BufferedOutputStream(fileOutputStream)) {
-                stream.write(uploadfile.getBytes());
+            // 获取文件名，并构建为本地文件路径
+            String filename = vm.getFile().getOriginalFilename();
+            log.debug("上传的文件名：{}", filename);
+
+            // 如果目录不存在则创建目录
+            File fileDirectory = new File(directory);
+            if (!fileDirectory.exists() && !fileDirectory.mkdirs()) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
-            log.info("上传文件成功");
-        }
-        catch (Exception e) {
+
+            // 以随机的 UUID 为文件名存储在本地
+            filename ="import-"+ UUID.randomUUID().toString();
+            String filepath = Paths.get(directory, filename).toString();
+
+            log.debug("存储的文件名：{}", filename);
+
+            // 保存文件到本地
+            BufferedOutputStream stream =
+                    new BufferedOutputStream(new FileOutputStream(new File(filepath)));
+            stream.write(vm.getFile().getBytes());
+            stream.close();
+        } catch (Exception e) {
             System.out.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 }
