@@ -52,11 +52,11 @@ function doFileUpload() {
         cache: false,
         success: function () {
             // Handle upload success
-            $("#uploadMsgDiv").html("上传成功");
+            $("#upload-file-message").html("上传成功");
         },
         error: function () {
             // Handle upload error
-            $("#uploadMsgDiv").html("上传失败");
+            $("#upload-file-message").html("上传失败");
         }
     });
 }
