@@ -1,7 +1,7 @@
 package com.hgicreate.rno.web.rest;
 
-import com.hgicreate.rno.service.AreaService;
-import com.hgicreate.rno.service.dto.AreaDTO;
+import com.hgicreate.rno.service.LteCellGisService;
+import com.hgicreate.rno.service.dto.LteCellGisDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,14 +14,19 @@ import java.util.List;
 @RequestMapping("/api/lte-cell-gis")
 public class LteCellGisResource {
 
-    private final AreaService areaService;
+    private final LteCellGisService lteCellGisService;
 
-    public LteCellGisResource(AreaService areaService) {
-        this.areaService = areaService;
+    public LteCellGisResource(LteCellGisService lteCellGisService) {
+        this.lteCellGisService = lteCellGisService;
     }
 
-    @GetMapping("/areas")
-    public List<AreaDTO> getAllAreas(long parentId) {
-        return areaService.getAreasByParentId(parentId);
+    @GetMapping("/getCellByCellId")
+    public List<LteCellGisDTO> getCellByCellId(String cellId) {
+        return lteCellGisService.getCellByCellId(cellId);
+    }
+
+    @GetMapping("/getNcellByCellId")
+    public List<String> getNcellByCellId(String cellId) {
+        return lteCellGisService.getNcellByCellId(cellId);
     }
 }

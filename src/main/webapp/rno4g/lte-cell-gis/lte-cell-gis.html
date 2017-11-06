@@ -24,6 +24,7 @@
     <script src="js/lte-cell-gis.js"></script>
 </head>
 <body>
+<div id="info" class="info-style" style="display: none"></div>
 <div id="map" class="map"></div>
 <div style="display: none"> 
     <div id="popup"></div>
@@ -53,73 +54,77 @@
                 <td id="showCellNameId"></td>
             </tr>
             <tr>
+                <td class="menuTd" style="width: 20%">厂家名称</td>
+                <td id="showManufacturer"></td>
+            </tr>
+            <tr>
+                <td class="menuTd" style="width: 20%">工作频段</td>
+                <td id="showBandType"></td>
+            </tr>
+            <tr>
+                <td class="menuTd" style="width: 20%">频段指示</td>
+                <td id="showBandIndicator"></td>
+            </tr>
+            <tr>
+                <td class="menuTd" style="width: 20%">中心载频的信道号</td>
+                <td id="showEarfcn"></td>
+            </tr>
+            <tr>
                 <td class="menuTd" style="width: 20%">PCI</td>
-                <td id="showCellPciId"></td>
-            </tr>
-            <tr>
-                <td class="menuTd" style="width: 20%">经度</td>
-                <td id="showCellLngId"></td>
-            </tr>
-            <tr>
-                <td class="menuTd" style="width: 20%">纬度</td>
-                <td id="showCellLatId"></td>
-            </tr>
-            <!--<tr>
-                <td class="menuTd" style="width: 20%">天线挂高</td>
-                <td id="showCellGroundHeightId"></td>
-            </tr>
-            <tr>
-                <td class="menuTd" style="width: 20%">天线类型</td>
-                <td id="showCellAntennaTypeId"></td>
-            </tr>-->
-            <tr>
-                <td class="menuTd" style="width: 20%">天线方向</td>
-                <td id="showCellAzimuthId"></td>
-            </tr>
-           <!-- <tr>
-                <td class="menuTd" style="width: 20%">是否合路</td>
-                <td id="showCellIntegratedId"></td>
-            </tr>
-            <tr>
-                <td class="menuTd" style="width: 20%">RRU型号</td>
-                <td id="showCellRruverId"></td>
-            </tr>
-            <tr>
-                <td class="menuTd" style="width: 20%">RRU数量</td>
-                <td id="showCellRrunumId"></td>
-            </tr>
-            <tr>
-                <td class="menuTd" style="width: 20%">参考信号功率</td>
-                <td id="showCellRspowerId"></td>
-            </tr>-->
-            <tr>
-                <td class="menuTd" style="width: 20%">频段类型</td>
-                <td id="showCellBandTypeId"></td>
-            </tr>
-            <!--<tr>
-                <td class="menuTd" style="width: 20%">下行带宽</td>
-                <td id="showCellBandId"></td>
-            </tr>-->
-            <tr>
-                <td class="menuTd" style="width: 20%">下行频点</td>
-                <td id="showCellEarfcnId"></td>
+                <td id="showPci"></td>
             </tr>
             <tr>
                 <td class="menuTd" style="width: 20%">覆盖类型</td>
-                <td id="showCellCoverTypeId"></td>
+                <td id="showCoverType"></td>
             </tr>
             <tr>
-                <td class="menuTd" style="width: 20%">PCI模3</td>
-                <td id="showPciMod3"></td>
+                <td class="menuTd" style="width: 20%">覆盖场景</td>
+                <td id="showCoverScene"></td>
+            </tr>
+            <tr>
+                <td class="menuTd" style="width: 20%">经度</td>
+                <td id="showLongitude"></td>
+            </tr>
+            <tr>
+                <td class="menuTd" style="width: 20%">纬度</td>
+                <td id="showLatitude"></td>
+            </tr>
+            <tr>
+                <td class="menuTd" style="width: 20%">方向角</td>
+                <td id="showAzimuth"></td>
+            </tr>
+            <tr>
+                <td class="menuTd" style="width: 20%">电子下倾角</td>
+                <td id="showEDowntilt"></td>
+            </tr>
+            <tr>
+                <td class="menuTd" style="width: 20%">机械下倾角</td>
+                <td id="showMDowntilt"></td>
+            </tr>
+            <tr>
+                <td class="menuTd" style="width: 20%">总下倾角</td>
+                <td id="showTotalDowntilt"></td>
+            </tr>
+            <tr>
+                <td class="menuTd" style="width: 20%">天线挂高</td>
+                <td id="showAntennaHeight"></td>
+            </tr>
+            <tr>
+                <td class="menuTd" style="width: 20%">是否拉远小区</td>
+                <td id="showRemoteCell"></td>
+            </tr>
+            <tr>
+                <td class="menuTd" style="width: 20%">是否关联状态库工参</td>
+                <td id="showRelatedParam"></td>
+            </tr>
+            <tr>
+                <td class="menuTd" style="width: 20%">是否关联状态库资源</td>
+                <td id="showRelatedResouce"></td>
             </tr>
             <tr>
                 <td class="menuTd" style="width: 20%">站间距</td>
                 <td id="showStationSpace"></td>
             </tr>
-            <!--<tr>
-                <td class="menuTd" style="width: 20%">覆盖范围</td>
-                <td id="showCellCoverRangeId"></td>
-            </tr>-->
             </tbody>
         </table>
     </div>
