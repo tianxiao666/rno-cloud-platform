@@ -17,6 +17,8 @@ spring:
         database-platform: org.hibernate.dialect.Oracle10gDialect
         database: ORACLE
         show-sql: true
+        properties:
+            hibernate.format_sql: true
     http:
         multipart:
             max-file-size: 300MB
