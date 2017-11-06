@@ -8,7 +8,7 @@ $(document)
 		.ready(
 				function() {		
 					    
-					查询条件
+					//查询条件
 					// $("#conditionForm").submit(function() {
 					// 	// 重新初始化分页参数
 					// 	initFormPage('conditionForm');

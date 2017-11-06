@@ -2,6 +2,7 @@ package com.hgicreate.rno.service;
 
 import com.hgicreate.rno.repository.AreaRepository;
 import com.hgicreate.rno.service.dto.AreaDTO;
+import com.hgicreate.rno.service.mapper.AreaMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,17 +21,14 @@ public class AreaService {
     }
 
     @Transactional(readOnly = true)
-    public List<AreaDTO> getAllAreas() {
-        return areaRepository.findAll().stream().map(AreaDTO::new).collect(Collectors.toList());
-    }
-
     public List<AreaDTO> getAreasByParentId(long parentId) {
         List<AreaDTO> list = areaRepository.findAllByParentId(parentId)
-                .stream().map(AreaDTO::new).collect(Collectors.toList());
+                .stream().map(AreaMapper.INSTANCE::areaToAreaDTO)
+                .collect(Collectors.toList());
 
         // 如果下一级为空，则把当前区域设置为下一级，解决东莞、中山这些没有任何区县的城市在区域联动三级显示的问题
         if (list.size() == 0) {
-            list.add(new AreaDTO(areaRepository.getOne(parentId)));
+            list.add(AreaMapper.INSTANCE.areaToAreaDTO(areaRepository.getOne(parentId)));
 
             // 调整港澳台在区域联动二三级的显示
             if (parentId > 0) {

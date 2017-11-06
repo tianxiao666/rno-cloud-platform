@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "rno.path.upload-files",
+      "type": "java.lang.String",
+      "description": "上传文件在服务器上保存的路径."
+    }
+  ]
+}

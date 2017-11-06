@@ -26,10 +26,14 @@
         <org.mapstruct.version>1.2.0.Final</org.mapstruct.version>
         <thymeleaf.version>3.0.2.RELEASE</thymeleaf.version>
         <thymeleaf-layout-dialect.version>2.1.1</thymeleaf-layout-dialect.version>
-        <hikaricp.version>2.6.0</hikaricp.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
@@ -59,6 +63,11 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct-jdk8</artifactId>
             <version>${org.mapstruct.version}</version>
@@ -66,6 +75,7 @@
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct-processor</artifactId>
+            <version>${org.mapstruct.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -84,39 +94,10 @@
             <version>12.1.0.2</version>
         </dependency>
         <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
         </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.webjars</groupId>-->
-            <!--<artifactId>bootstrap</artifactId>-->
-            <!--<version>3.3.7-1</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.webjars</groupId>-->
-            <!--<artifactId>jquery-ui</artifactId>-->
-            <!--<version>1.12.1</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.webjars</groupId>-->
-            <!--<artifactId>openlayers</artifactId>-->
-            <!--<version>4.3.1</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>org.webjars.bower</groupId>-->
-            <!--<artifactId>datatables</artifactId>-->
-            <!--<version>1.10.16</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>org.springframework.boot</groupId>-->
-        <!--<artifactId>spring-boot-starter-tomcat</artifactId>-->
-        <!--<scope>provided</scope>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>

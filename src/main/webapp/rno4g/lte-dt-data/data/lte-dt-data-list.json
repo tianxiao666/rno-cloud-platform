@@ -2,7 +2,7 @@
   "data": [
     {
       "RECORD_COUNT": 714,
-      "FILE_NAME": "ATU_20150613_LTE本地网_佛山_4G_上传_{$强行归类-运营商-中国移动$}-LTE TDD_C28-C29晚忙_0x51000005_192000_MS8.lte",
+      "FILE_NAME": "ATU_20150613_上传_C28-C29晚忙_0x51000005_192000_MS8.lte",
       "CITY_ID": 93,
       "DT_SAMPLING_DESC_ID": 104,
       "MEA_TIME": "2015-06-13",
@@ -12,7 +12,7 @@
     },
     {
       "RECORD_COUNT": 714,
-      "FILE_NAME": "ATU_20150613_LTE本地网_佛山_4G_上传_{$强行归类-运营商-中国移动$}-LTE TDD_C28-C29晚忙_0x51000005_192000_MS8.lte",
+      "FILE_NAME": "ATU_20150613_上传_C28-C29晚忙_0x51000005_192000_MS8.lte",
       "CITY_ID": 93,
       "DT_SAMPLING_DESC_ID": 90,
       "MEA_TIME": "2015-06-13",
@@ -22,7 +22,7 @@
     },
     {
       "RECORD_COUNT": 689,
-      "FILE_NAME": "ATU_20150613_LTE本地网_佛山_4G_下载_{$强行归类-运营商-中国移动$}-LTE TDD_C28-C29晚忙_0x51000005_192000_MS2.lte",
+      "FILE_NAME": "ATU_20150613_下载_C28-C29晚忙_0x51000005_192000_MS2.lte",
       "CITY_ID": 93,
       "DT_SAMPLING_DESC_ID": 89,
       "MEA_TIME": "2015-06-13",
@@ -32,7 +32,7 @@
     },
     {
       "RECORD_COUNT": 728,
-      "FILE_NAME": "ATU_20150610_LTE本地网_佛山_4G_下载_{$强行归类-运营商-中国移动$}-LTE TDD_C59-C60-C51-C65早忙_0x51000005_082700_MS2.lte",
+      "FILE_NAME": "ATU_20150610_下载_C59-C60-C51-C65早忙_0x51000005_082700_MS2.lte",
       "CITY_ID": 93,
       "DT_SAMPLING_DESC_ID": 101,
       "MEA_TIME": "2015-06-10",
@@ -42,7 +42,7 @@
     },
     {
       "RECORD_COUNT": 543,
-      "FILE_NAME": "ATU_20150610_LTE本地网_佛山_4G_上传_{$强行归类-运营商-中国移动$}-LTE TDD_C59-C60-C51-C65早忙_0x51000005_082700_MS8.lte",
+      "FILE_NAME": "ATU_20150610_上传_C59-C60-C51-C65早忙_0x51000005_082700_MS8.lte",
       "CITY_ID": 93,
       "DT_SAMPLING_DESC_ID": 88,
       "MEA_TIME": "2015-06-10",
@@ -52,7 +52,7 @@
     },
     {
       "RECORD_COUNT": 543,
-      "FILE_NAME": "ATU_20150610_LTE本地网_佛山_4G_上传_{$强行归类-运营商-中国移动$}-LTE TDD_C59-C60-C51-C65早忙_0x51000005_082700_MS8.lte",
+      "FILE_NAME": "ATU_20150610_上传_C59-C60-C51-C65早忙_0x51000005_082700_MS8.lte",
       "CITY_ID": 93,
       "DT_SAMPLING_DESC_ID": 102,
       "MEA_TIME": "2015-06-10",
@@ -62,7 +62,7 @@
     },
     {
       "RECORD_COUNT": 583,
-      "FILE_NAME": "ATU_20150605_LTE本地网_佛山_4G_上传_{$强行归类-运营商-中国移动$}-LTE TDD_A7C36C35早忙_0x51000005_081500_MS8.lte",
+      "FILE_NAME": "ATU_20150605_上传_A7C36C35早忙_0x51000005_081500_MS8.lte",
       "CITY_ID": 93,
       "DT_SAMPLING_DESC_ID": 86,
       "MEA_TIME": "2015-06-05",
@@ -72,7 +72,7 @@
     },
     {
       "RECORD_COUNT": 583,
-      "FILE_NAME": "ATU_20150605_LTE本地网_佛山_4G_上传_{$强行归类-运营商-中国移动$}-LTE TDD_A7C36C35早忙_0x51000005_081500_MS8.lte",
+      "FILE_NAME": "ATU_20150605_上传_A7C36C35早忙_0x51000005_081500_MS8.lte",
       "CITY_ID": 93,
       "DT_SAMPLING_DESC_ID": 100,
       "MEA_TIME": "2015-06-05",
@@ -82,7 +82,7 @@
     },
     {
       "RECORD_COUNT": 584,
-      "FILE_NAME": "ATU_20150605_LTE本地网_佛山_4G_下载_{$强行归类-运营商-中国移动$}-LTE TDD_A7C36C35早忙_0x51000005_081500_MS2.lte",
+      "FILE_NAME": "ATU_20150605_下载_A7C36C35早忙_0x51000005_081500_MS2.lte",
       "CITY_ID": 93,
       "DT_SAMPLING_DESC_ID": 85,
       "MEA_TIME": "2015-06-05",
@@ -92,7 +92,7 @@
     },
     {
       "RECORD_COUNT": 584,
-      "FILE_NAME": "ATU_20150605_LTE本地网_佛山_4G_下载_{$强行归类-运营商-中国移动$}-LTE TDD_A7C36C35早忙_0x51000005_081500_MS2.lte",
+      "FILE_NAME": "ATU_20150605_下载_A7C36C35早忙_0x51000005_081500_MS2.lte",
       "CITY_ID": 93,
       "DT_SAMPLING_DESC_ID": 99,
       "MEA_TIME": "2015-06-05",
@@ -102,7 +102,7 @@
     },
     {
       "RECORD_COUNT": 2093,
-      "FILE_NAME": "ATU_20150602_LTE本地网_佛山_4G_下载_{$强行归类-运营商-中国移动$}-LTE TDD_A4A8早忙_0x51000005_083000_MS2.lte",
+      "FILE_NAME": "ATU_20150602_下载_A4A8早忙_0x51000005_083000_MS2.lte",
       "CITY_ID": 93,
       "DT_SAMPLING_DESC_ID": 97,
       "MEA_TIME": "2015-06-02",
@@ -112,7 +112,7 @@
     },
     {
       "RECORD_COUNT": 2108,
-      "FILE_NAME": "ATU_20150602_LTE本地网_佛山_4G_上传_{$强行归类-运营商-中国移动$}-LTE TDD_A4A8早忙_0x51000005_083000_MS8.lte",
+      "FILE_NAME": "ATU_20150602_上传_A4A8早忙_0x51000005_083000_MS8.lte",
       "CITY_ID": 93,
       "DT_SAMPLING_DESC_ID": 84,
       "MEA_TIME": "2015-06-02",
@@ -122,7 +122,7 @@
     },
     {
       "RECORD_COUNT": 2108,
-      "FILE_NAME": "ATU_20150602_LTE本地网_佛山_4G_上传_{$强行归类-运营商-中国移动$}-LTE TDD_A4A8早忙_0x51000005_083000_MS8.lte",
+      "FILE_NAME": "ATU_20150602_上传_A4A8早忙_0x51000005_083000_MS8.lte",
       "CITY_ID": 93,
       "DT_SAMPLING_DESC_ID": 98,
       "MEA_TIME": "2015-06-02",
@@ -132,7 +132,7 @@
     },
     {
       "RECORD_COUNT": 11978,
-      "FILE_NAME": "ATU_20150601_LTE本地网_佛山_4G_上传_{$强行归类-运营商-中国移动$}-LTE TDD_A1A3早忙_0x51000005_085500_MS8.lte",
+      "FILE_NAME": "ATU_20150601_上传_A1A3早忙_0x51000005_085500_MS8.lte",
       "CITY_ID": 93,
       "DT_SAMPLING_DESC_ID": 78,
       "MEA_TIME": "2015-06-01",
@@ -142,7 +142,7 @@
     },
     {
       "RECORD_COUNT": 9833,
-      "FILE_NAME": "ATU_20150601_LTE本地网_佛山_4G_下载_{$强行归类-运营商-中国移动$}-LTE TDD_A1A3午忙_0x51000005_130500_MS2.lte",
+      "FILE_NAME": "ATU_20150601_下载_A1A3午忙_0x51000005_130500_MS2.lte",
       "CITY_ID": 93,
       "DT_SAMPLING_DESC_ID": 79,
       "MEA_TIME": "2015-06-01",
@@ -152,7 +152,7 @@
     },
     {
       "RECORD_COUNT": 9929,
-      "FILE_NAME": "ATU_20150601_LTE本地网_佛山_4G_上传_{$强行归类-运营商-中国移动$}-LTE TDD_A1A3午忙_0x51000005_130500_MS8.lte",
+      "FILE_NAME": "ATU_20150601_上传_A1A3午忙_0x51000005_130500_MS8.lte",
       "CITY_ID": 93,
       "DT_SAMPLING_DESC_ID": 80,
       "MEA_TIME": "2015-06-01",
@@ -162,7 +162,7 @@
     },
     {
       "RECORD_COUNT": 2330,
-      "FILE_NAME": "ATU_20150601_LTE本地网_佛山_4G_下载_{$强行归类-运营商-中国移动$}-LTE TDD_A1A3晚忙_0x51000005_155500_MS2.lte",
+      "FILE_NAME": "ATU_20150601_下载_A1A3晚忙_0x51000005_155500_MS2.lte",
       "CITY_ID": 93,
       "DT_SAMPLING_DESC_ID": 81,
       "MEA_TIME": "2015-06-01",
@@ -172,7 +172,7 @@
     },
     {
       "RECORD_COUNT": 2377,
-      "FILE_NAME": "ATU_20150601_LTE本地网_佛山_4G_上传_{$强行归类-运营商-中国移动$}-LTE TDD_A1A3晚忙_0x51000005_155500_MS8.lte",
+      "FILE_NAME": "ATU_20150601_上传_A1A3晚忙_0x51000005_155500_MS8.lte",
       "CITY_ID": 93,
       "DT_SAMPLING_DESC_ID": 82,
       "MEA_TIME": "2015-06-01",
@@ -182,7 +182,7 @@
     },
     {
       "RECORD_COUNT": 11720,
-      "FILE_NAME": "ATU_20150601_LTE本地网_佛山_4G_下载_{$强行归类-运营商-中国移动$}-LTE TDD_A1A3早忙_0x51000005_085500_MS2.lte",
+      "FILE_NAME": "ATU_20150601_下载_A1A3早忙_0x51000005_085500_MS2.lte",
       "CITY_ID": 93,
       "DT_SAMPLING_DESC_ID": 77,
       "MEA_TIME": "2015-06-01",
@@ -192,7 +192,7 @@
     },
     {
       "RECORD_COUNT": 11978,
-      "FILE_NAME": "ATU_20150601_LTE本地网_佛山_4G_上传_{$强行归类-运营商-中国移动$}-LTE TDD_A1A3早忙_0x51000005_085500_MS8.lte",
+      "FILE_NAME": "ATU_20150601_上传_A1A3早忙_0x51000005_085500_MS8.lte",
       "CITY_ID": 93,
       "DT_SAMPLING_DESC_ID": 92,
       "MEA_TIME": "2015-06-01",
@@ -202,7 +202,7 @@
     },
     {
       "RECORD_COUNT": 9833,
-      "FILE_NAME": "ATU_20150601_LTE本地网_佛山_4G_下载_{$强行归类-运营商-中国移动$}-LTE TDD_A1A3午忙_0x51000005_130500_MS2.lte",
+      "FILE_NAME": "ATU_20150601_下载_A1A3午忙_0x51000005_130500_MS2.lte",
       "CITY_ID": 93,
       "DT_SAMPLING_DESC_ID": 93,
       "MEA_TIME": "2015-06-01",
@@ -212,7 +212,7 @@
     },
     {
       "RECORD_COUNT": 9929,
-      "FILE_NAME": "ATU_20150601_LTE本地网_佛山_4G_上传_{$强行归类-运营商-中国移动$}-LTE TDD_A1A3午忙_0x51000005_130500_MS8.lte",
+      "FILE_NAME": "ATU_20150601_上传_A1A3午忙_0x51000005_130500_MS8.lte",
       "CITY_ID": 93,
       "DT_SAMPLING_DESC_ID": 94,
       "MEA_TIME": "2015-06-01",
@@ -222,7 +222,7 @@
     },
     {
       "RECORD_COUNT": 2330,
-      "FILE_NAME": "ATU_20150601_LTE本地网_佛山_4G_下载_{$强行归类-运营商-中国移动$}-LTE TDD_A1A3晚忙_0x51000005_155500_MS2.lte",
+      "FILE_NAME": "ATU_20150601_下载_A1A3晚忙_0x51000005_155500_MS2.lte",
       "CITY_ID": 93,
       "DT_SAMPLING_DESC_ID": 95,
       "MEA_TIME": "2015-06-01",
@@ -232,7 +232,7 @@
     },
     {
       "RECORD_COUNT": 2377,
-      "FILE_NAME": "ATU_20150601_LTE本地网_佛山_4G_上传_{$强行归类-运营商-中国移动$}-LTE TDD_A1A3晚忙_0x51000005_155500_MS8.lte",
+      "FILE_NAME": "ATU_20150601_上传_A1A3晚忙_0x51000005_155500_MS8.lte",
       "CITY_ID": 93,
       "DT_SAMPLING_DESC_ID": 96,
       "MEA_TIME": "2015-06-01",
@@ -242,7 +242,7 @@
     },
     {
       "RECORD_COUNT": 11720,
-      "FILE_NAME": "ATU_20150601_LTE本地网_佛山_4G_下载_{$强行归类-运营商-中国移动$}-LTE TDD_A1A3早忙_0x51000005_085500_MS2.lte",
+      "FILE_NAME": "ATU_20150601_下载_A1A3早忙_0x51000005_085500_MS2.lte",
       "CITY_ID": 93,
       "DT_SAMPLING_DESC_ID": 91,
       "MEA_TIME": "2015-06-01",

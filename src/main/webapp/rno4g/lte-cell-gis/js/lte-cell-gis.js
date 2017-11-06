@@ -48,7 +48,7 @@ $(function () {
     // 标签图层
     var textImageTile = new ol.layer.Tile({
         source: new ol.source.TileWMS({
-            url: 'http://192.168.50.20:8082/geoserver/wms',
+            url: 'http://rno-gis.hgicreate.com/geoserver/wms',
             params: {
                 'FORMAT': 'image/png',
                 'SRS': 'EPSG:4326',

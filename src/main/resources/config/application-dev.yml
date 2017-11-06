@@ -1,9 +1,27 @@
-server:
-  port: 8000
-spring:
-  http:
-    multipart:
-      max-request-size: 200MB
-      max-file-size: 180MB
-      location: D:\\tmp
+keycloak:
+    auth-server-url: http://localhost:9080/auth
+    realm: jhipster
+    public-client: true
+    resource: web_app
 
+logging:
+    level:
+        com.hgicreate.rno: debug
+
+spring:
+    datasource:
+        url: jdbc:oracle:thin:@192.168.50.20:1521:rnodb
+        username: rno4dev
+        password: 123456
+    jpa:
+        database-platform: org.hibernate.dialect.Oracle10gDialect
+        database: ORACLE
+        show-sql: true
+    http:
+        multipart:
+            max-file-size: 300MB
+            max-request-size: 300MB
+
+rno:
+    path:
+        upload-files: d:/tmp/rno-cloud-platform/uploads
