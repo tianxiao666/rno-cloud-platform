@@ -404,7 +404,7 @@ var showNcell = function getNcell(evt) {
                         async: false,
                         success: function (data) {
                             if(data!='') {
-                                paintInterCell(cellId, data);
+                                paintNcell(cellId, data);
                             }else {
                                 $("#loading").css("display", "none");
                                 showInfoInAndOut('info', '没有找到邻区数据！');
@@ -428,7 +428,7 @@ function showInfoInAndOut(div, info) {
 }
 
 //绘制邻区
-function paintInterCell(cellId, cells) {
+function paintNcell(cellId, cells) {
     var ncellStr = "'" + cellId + "',";
     $.each(cells, function (index, value) {
         ncellStr += "'" + value + "',";
