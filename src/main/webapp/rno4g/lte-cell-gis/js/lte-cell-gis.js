@@ -1,8 +1,6 @@
-var map, cellLayer, clickedCellLayer;
+var map, cellLayer, clickedCellLayer, nCellLayer, thisCellLayer, lineLayer;
 var popup;
-var redStyle;
-var wfs='http://rno-gis.hgicreate.com/geoserver/rnoprod/ows?service=WFS&version=1.1.1&request=GetFeature&typeName=rnoprod:RNO_LTE_CELL_GEOM&maxFeatures=50&outputFormat=text%2Fjavascript';
-
+var redStyle, orangeStyle, blackStyle;
 
 $(function () {
     $(".dialog").draggable();
@@ -46,9 +44,28 @@ $(function () {
         })
     });
 
-    clickedCellLayer = new ol.layer.Vector({
+    //主小区图层
+    thisCellLayer = new ol.layer.Vector({
+        source: new ol.source.Vector(),
+        zIndex: 5
+    });
+
+    //邻区图层
+    nCellLayer = new ol.layer.Vector({
         source: new ol.source.Vector(),
         zIndex: 3
+    });
+
+    //线图层
+    lineLayer = new ol.layer.Vector({
+        source: new ol.source.Vector(),
+        zIndex: 6
+    });
+
+    //点击小区图层
+    clickedCellLayer = new ol.layer.Vector({
+        source: new ol.source.Vector(),
+        zIndex: 4
     });
 
     // 小区名图层
@@ -66,6 +83,7 @@ $(function () {
         opacity: 0.8
     });
 
+    //点击小区专用
     redStyle = new ol.style.Style({
         stroke: new ol.style.Stroke({
             // 设置线条颜色
@@ -78,6 +96,33 @@ $(function () {
         })
     });
 
+    //邻区专用
+    orangeStyle = new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            // 设置线条颜色
+            color: 'yellow',
+            size: 5
+        }),
+        fill: new ol.style.Fill({
+            // 设置填充颜色与不透明度
+            color: 'rgba(255, 165, 0, 1.0)'
+        })
+    });
+
+    //主小区专用
+    blackStyle = new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            // 设置线条颜色
+            color: 'yellow',
+            size: 5
+        }),
+        fill: new ol.style.Fill({
+            // 设置填充颜色与不透明度
+            color: 'rgba(0, 0, 0, 1.0)'
+        })
+    });
+
+    //右键菜单
     var contextmenu_items = [
         {
             text: '显示邻区',
@@ -97,7 +142,7 @@ $(function () {
         if (map === undefined) {
             map = new ol.Map({
                 target: 'map',
-                layers: [clickedCellLayer, baseLayer],
+                layers: [clickedCellLayer, baseLayer, nCellLayer, thisCellLayer, lineLayer],
                 view: new ol.View({
                     projection: 'EPSG:4326',
                     center: [lon, lat],
@@ -136,7 +181,7 @@ $(function () {
             });
             map.addControl(contextmenu);
 
-            map.on('click', function (evt) {
+            map.on('singleclick', function (evt) {
 
                 var element = popup.getElement();
                 $(element).popover('destroy');
@@ -266,16 +311,17 @@ $(function () {
     });
 
     $("#showCellName").click(function () {
-        if ($(this).val() === "显示小区名字") {
-            $(this).val("关闭小区名字");
+        if ($(this).text() === "显示小区名字") {
+            $(this).text("关闭小区名字");
             map.addLayer(textImageTile);
         } else {
-            $(this).val("显示小区名字");
+            $(this).text("显示小区名字");
             map.removeLayer(textImageTile);
         }
     })
 });
 
+//点击popup表格，添加选中行的背景色
 function addColor(t, isShowRightBox) {
     if(isShowRightBox) {
         $(".switch_hidden").trigger("click");
@@ -286,7 +332,11 @@ function addColor(t, isShowRightBox) {
     $(t).addClass('custom-bg');
 }
 
+//显示邻区
 var showNcell = function getNcell(evt) {
+    thisCellLayer.getSource().clear();
+    nCellLayer.getSource().clear();
+    lineLayer.getSource().clear();
     var element = popup.getElement();
     $(element).popover('destroy');
 
@@ -342,22 +392,24 @@ var showNcell = function getNcell(evt) {
 
                 $('#cellTable1 tbody tr').click(function () {
                     $(element).popover('destroy');
+                    $("#loading").show();
                     var index = $(this).find('td:first').text();
-                    var feature = allFeatures[index];
+                    var cellId = allFeatures[index].get('CELL_ID');
                     $.ajax({
                         url: "/api/lte-cell-gis/getNcellByCellId",
                         dataType: "json",
                         data: {
-                            'cellId' : feature.get('CELL_ID')
+                            'cellId' : cellId
                         },
                         async: false,
                         success: function (data) {
                             if(data!='') {
-
+                                paintInterCell(cellId, data);
                             }else {
+                                $("#loading").css("display", "none");
                                 showInfoInAndOut('info', '没有找到邻区数据！');
                             }
-                            console.log(data);
+                            //console.log(data);
                         }
                     });
                 });
@@ -368,8 +420,70 @@ var showNcell = function getNcell(evt) {
     }
 }
 
+//提示信息淡入淡出
 function showInfoInAndOut(div, info) {
     $("#" + div).html(info);
     $("#" + div).fadeIn(2000);
     setTimeout("$('#" + div + "').fadeOut(2000)", 1000);
+}
+
+//绘制邻区
+function paintInterCell(cellId, cells) {
+    var ncellStr = "'" + cellId + "',";
+    $.each(cells, function (index, value) {
+        ncellStr += "'" + value + "',";
+    });
+    //console.log(ncellStr);
+    var cityId = parseInt($("#cityId").find("option:checked").val());
+    var filter = encodeURIComponent("CELL_ID in (" + ncellStr.substring(0, ncellStr.length-1) + ")");
+    //console.log(filter);
+
+    var url = 'http://rno-gis.hgicreate.com/geoserver/rnoprod/ows?service=WFS&version=1.1.1' +
+        '&request=GetFeature&typeName=rnoprod:RNO_LTE_CELL_GEOM&maxFeatures=50&' +
+        'outputFormat=text%2Fjavascript&CQL_FILTER=' + filter;
+    //console.log(url);
+    var parser = new ol.format.GeoJSON();
+    $.ajax({
+        url : url,
+        dataType : 'jsonp',
+        jsonpCallback : 'parseResponse'
+    }).then(function(response) {
+        var features = parser.readFeatures(response);
+        var cellCoors = [];
+        var ncellCoors = [];
+        //console.log(features.length);
+        if (features.length) {
+            for(var m = 0; m < features.length; m++) {
+                var onefeature = features[m];
+                if(onefeature.get('CELL_ID')==cellId){
+                    cellCoors = [onefeature.get('LONGITUDE'), onefeature.get('LATITUDE')];
+                    onefeature.setStyle(blackStyle);
+                    thisCellLayer.getSource().addFeature(onefeature);
+                }else{
+                    ncellCoors.push([onefeature.get('LONGITUDE'), onefeature.get('LATITUDE')]);
+                    onefeature.setStyle(orangeStyle);
+                    nCellLayer.getSource().addFeature(onefeature);
+                }
+            }
+            drawLine(cellCoors, ncellCoors);
+        }
+        $("#loading").css("display", "none");
+    });
+}
+
+//绘制主小区与邻区之间的连线
+function drawLine(cellCoors, ncellCoors){
+    $.each(ncellCoors, function (index, value) {
+        var line = new ol.geom.LineString([cellCoors, value]);
+        var feature = new ol.Feature({
+            geometry: line,
+        });
+        feature.setStyle(new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: 'green',
+                width: 1,
+            }),
+        }));
+        lineLayer.getSource().addFeature(feature);
+    });
 }

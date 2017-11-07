@@ -24,17 +24,18 @@
     <script src="js/lte-cell-gis.js"></script>
 </head>
 <body>
+<div id="loading" class="loading" style="display: none">加载中...</div>
 <div id="info" class="info-style" style="display: none"></div>
 <div id="map" class="map"></div>
 <div style="display: none"> 
     <div id="popup"></div>
 </div>
 <div class="dialog">
-    省：<select name="provinceId" class="required" id="provinceId" title=""></select>
-    市：<select name="cityId" class="required" id="cityId" title=""></select>
-    区：<select name="districtId" class="required" id="districtId" title=""></select>
-    <input id="showCellName" value="显示小区名字" type="button">
-    <input id="loadGisCell" value="加载小区" type="button">
+    <!--省：--><select name="provinceId" class="form-control custom-select" id="provinceId" title=""></select>
+    <!--市：--><select name="cityId" class="form-control custom-select" id="cityId" title=""></select>
+    <!--区：--><select name="districtId" class="form-control custom-select" id="districtId" title=""></select>
+    <button id="showCellName" class="btn btn-info custom-btn" type="button">显示小区名字</button>
+    <button id="loadGisCell" class="btn btn-info custom-btn" type="button">加载小区</button>
 </div>
 <div class="resource_list_icon">
     <a href="#" class="switch"></a>
@@ -43,86 +44,86 @@
 </div>
 <div class="resource_list_box">
     <div class="resource_list">
-        <table class="main-table1 half-width">
+        <table class="table">
             <tbody>
             <tr>
-                <td class="menuTd" style="width: 20%">小区名</td>
+                <td class="menuTd">小区名</td>
                 <td id="showCellLabelId"></td>
             </tr>
             <tr>
-                <td class="menuTd" style="width: 20%">小区中文名</td>
+                <td class="menuTd">小区中文名</td>
                 <td id="showCellNameId"></td>
             </tr>
             <tr>
-                <td class="menuTd" style="width: 20%">厂家名称</td>
+                <td class="menuTd">厂家名称</td>
                 <td id="showManufacturer"></td>
             </tr>
             <tr>
-                <td class="menuTd" style="width: 20%">工作频段</td>
+                <td class="menuTd">工作频段</td>
                 <td id="showBandType"></td>
             </tr>
             <tr>
-                <td class="menuTd" style="width: 20%">频段指示</td>
+                <td class="menuTd">频段指示</td>
                 <td id="showBandIndicator"></td>
             </tr>
             <tr>
-                <td class="menuTd" style="width: 20%">中心载频的信道号</td>
+                <td class="menuTd">中心载频的信道号</td>
                 <td id="showEarfcn"></td>
             </tr>
             <tr>
-                <td class="menuTd" style="width: 20%">PCI</td>
+                <td class="menuTd">PCI</td>
                 <td id="showPci"></td>
             </tr>
             <tr>
-                <td class="menuTd" style="width: 20%">覆盖类型</td>
+                <td class="menuTd">覆盖类型</td>
                 <td id="showCoverType"></td>
             </tr>
             <tr>
-                <td class="menuTd" style="width: 20%">覆盖场景</td>
+                <td class="menuTd">覆盖场景</td>
                 <td id="showCoverScene"></td>
             </tr>
             <tr>
-                <td class="menuTd" style="width: 20%">经度</td>
+                <td class="menuTd">经度</td>
                 <td id="showLongitude"></td>
             </tr>
             <tr>
-                <td class="menuTd" style="width: 20%">纬度</td>
+                <td class="menuTd">纬度</td>
                 <td id="showLatitude"></td>
             </tr>
             <tr>
-                <td class="menuTd" style="width: 20%">方向角</td>
+                <td class="menuTd">方向角</td>
                 <td id="showAzimuth"></td>
             </tr>
             <tr>
-                <td class="menuTd" style="width: 20%">电子下倾角</td>
+                <td class="menuTd">电子下倾角</td>
                 <td id="showEDowntilt"></td>
             </tr>
             <tr>
-                <td class="menuTd" style="width: 20%">机械下倾角</td>
+                <td class="menuTd">机械下倾角</td>
                 <td id="showMDowntilt"></td>
             </tr>
             <tr>
-                <td class="menuTd" style="width: 20%">总下倾角</td>
+                <td class="menuTd">总下倾角</td>
                 <td id="showTotalDowntilt"></td>
             </tr>
             <tr>
-                <td class="menuTd" style="width: 20%">天线挂高</td>
+                <td class="menuTd">天线挂高</td>
                 <td id="showAntennaHeight"></td>
             </tr>
             <tr>
-                <td class="menuTd" style="width: 20%">是否拉远小区</td>
+                <td class="menuTd">是否拉远小区</td>
                 <td id="showRemoteCell"></td>
             </tr>
             <tr>
-                <td class="menuTd" style="width: 20%">是否关联状态库工参</td>
+                <td class="menuTd">是否关联状态库工参</td>
                 <td id="showRelatedParam"></td>
             </tr>
             <tr>
-                <td class="menuTd" style="width: 20%">是否关联状态库资源</td>
+                <td class="menuTd">是否关联状态库资源</td>
                 <td id="showRelatedResouce"></td>
             </tr>
             <tr>
-                <td class="menuTd" style="width: 20%">站间距</td>
+                <td class="menuTd">站间距</td>
                 <td id="showStationSpace"></td>
             </tr>
             </tbody>
