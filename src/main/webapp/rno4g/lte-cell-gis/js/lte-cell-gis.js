@@ -473,9 +473,10 @@ function paintNcell(cellId, cells) {
 
 //绘制主小区与邻区之间的连线
 function drawLine(cellCoors, ncellCoors){
+    var line, feature;
     $.each(ncellCoors, function (index, value) {
-        var line = new ol.geom.LineString([cellCoors, value]);
-        var feature = new ol.Feature({
+        line = new ol.geom.LineString([cellCoors, value]);
+        feature = new ol.Feature({
             geometry: line,
         });
         feature.setStyle(new ol.style.Style({
