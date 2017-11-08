@@ -24,6 +24,8 @@
 </head>
 
 <body>
+<div id="loading" class="loading" style="display: none">加载中...</div>
+<div id="info" class="info-style" style="display: none"></div>
 <div class="div_left_main" style="width: 100%">
     <div class="div_left_content">
 
@@ -38,74 +40,45 @@
 
                 <div class="divtab_content">
                     <div id="div_tab_0" style="display: block;">
-
-
-                        <title>LTE小区查询</title>
-
-                        <meta http-equiv="pragma" content="no-cache">
-                        <meta http-equiv="cache-control" content="no-cache">
-                        <meta http-equiv="expires" content="0">
-                        <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-                        <meta http-equiv="description" content="This is my page">
-
-                        <script type="text/javascript" src="js/lte-cell-data-query.js"></script>
-
-                        <style type="text/css">
-                            div#lteCellDetailDiv {
-                                width: 500px;
-                                position: absolute;
-                                /*background: none repeat scroll 0 0 #70e1ff;*/
-                                top: 50%;
-                                left: 38%;
-                                margin-left: -100px;
-                                margin-top: -100px;
-                                padding: 10px 10px;
-                            }
-                        </style>
-
-
                         <div>
-                            <form id="conditionForm" method="post" action="/api/lte-cell-data/cell-query">
+                            <form id="conditionForm" method="post">
                                 <input id="hiddenPageSize" name="page.pageSize" value="25" type="hidden"> <input
                                     id="hiddenCurrentPage" name="page.currentPage" value="1" type="hidden"> <input
                                     id="hiddenTotalPageCnt" name="page.totalPageCnt" value="379" type="hidden"> <input
                                     id="hiddenTotalCnt" name="page.totalCnt" value="9455" type="hidden">
                                 <table class="main-table1 half-width" style="width: 100%; padding-top: 10px">
-
                                     <tbody>
                                     <tr>
                                         <td class="menuTd" style="text-align:center">区域</td>
-                                        <td class="menuTd" style="text-align:center">eNodeB名称</td>
+                                        <td class="menuTd" style="text-align:center">LTE CELL ID</td>
                                         <td class="menuTd" style="text-align:center">LTE CELL名称</td>
                                         <td class="menuTd" style="text-align:center">小区PCI</td>
                                     </tr>
                                     <tr>
 
-                                        <td>省：<select class="areaCls" name="provinceId"
-                                                      id="province-id" style="width:70px">
-                                        </select><br> 市：<select class="areaCls" name="cityId"
-                                                                id="city-id" style="width:70px">
+                                        <td><label for="provinceId">省：</label>
+                                            <select class="areaCls" name="provinceId" id="provinceId" style="width:70px">
+                                        </select><br>
+                                            <label for="cityId">市：</label><select class="areaCls" name="cityId"  id="cityId" style="width:70px">
                                         </select>
-
                                         </td>
-
-                                        <td style=" text-align:center"><input id="queryEnodebNameId"
-                                                                              name="enodebName"
-                                                                              type="text"></td>
-                                        <td style="text-align: center"><input name="cellName"
-                                                                              id="queryCellNameId" type="text"></td>
-                                        <td style="width: 10%; text-align: center"><input name="pci"
-                                                                                          id="queryCellPciId"
-                                                                                          type="text"></td>
-
+                                        <td style=" text-align:center">
+                                            <label for="cellId"></label><input id="cellId"  name="cellId"  type="text">
+                                        </td>
+                                        <td style="text-align: center">
+                                            <label for="cellName"></label><input name="cellName"  id="cellName" type="text">
+                                        </td>
+                                        <td style="width: 10%; text-align: center">
+                                            <label for="pci"></label><input name="pci" id="pci" type="text">
+                                        </td>
                                     </tr>
 
                                     <tr>
 
                                         <td style="width: 10%; text-align: center" colspan="4">
-                                            <span style="color:red;width:100px;font-family:华文中宋;text-align:center"
+                                            <span style="color:red;width:100px;font-family:华文中宋,serif;text-align:center"
                                                   id="nameErrorText1"></span>
-                                            <span style="color:red;width:100px;font-family:华文中宋;text-align:center"
+                                            <span style="color:red;width:100px;font-family:华文中宋,serif;text-align:center"
                                                   id="nameErrorText2"></span><input value="查  询"
                                                                                     id="queryBtn" type="submit"></td>
                                     </tr>
@@ -120,7 +93,7 @@
                                 <tr>
                                     <td style="width: 20%">
                                         <p>
-                                            <font style="font-weight: bold">LTE小区信息表：</font>
+                                            <span style="font-weight: bold">LTE小区信息表：</span>
                                         </p>
                                     </td>
                                 </tr>
@@ -134,12 +107,12 @@
                                 <thead>
                                 <tr>
                                     <th>地区</th>
-                                    <th>eNodeb名称</th>
+                                    <th>小区 CELL ID</th>
                                     <th>小区中文名</th>
                                     <th>小区PCI</th>
                                     <th>小区带宽</th>
                                     <th>小区下行频点</th>
-                                    <th>发射功率</th>
+                                    <th>天线方位角</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>
@@ -159,7 +132,7 @@
                             </div>
                             <div class="dialog_content">
                                 <div style="font-weight: bold;margin-bottom:5px">
-                                    eNodeB名称：<span id="VIEW_ENODEB_NAME"></span>
+                                    eNodeB：<span id="VIEW_ENODEB_NAME"></span>
                                     -&gt;小区名称：<span id="VIEW_CELL_NAME"></span>
                                 </div>
                                 <input value="同站下一小区详情" id="nextCellDetailBtn" type="button">
@@ -173,7 +146,7 @@
                         </div>
 
                         <div id="editLteCellMessage" class="dialog2"
-                             style="display:none;width: 700px; right: 450px; top: 32%; z-index: 30; left: 30%;">
+                             style="display:none;width: 800px; right: 450px; top: 32%; z-index: 30; left: 30%;">
                             <div class="dialog_header">
                                 <div class="dialog_title">
                                     LTE小区信息编辑
@@ -183,14 +156,14 @@
                                          onclick="$('#editLteCellMessage').hide()"></div>
                                 </div>
                             </div>
-                            <div class="dialog_content" style="width:698px; background:#f9f9f9">
+                            <div class="dialog_content" style="width:800px; background:#f9f9f9">
                                 <div style="font-weight: bold;margin-bottom:5px">
-                                    eNodeB名称：
+                                    eNodeB：
                                     <span id="editVIEW_ENODEB_NAME"></span>
                                     &nbsp;&nbsp;&nbsp;-&gt;小区名称：
                                     <span id="editVIEW_CELL_NAME"></span>
                                 </div>
-                                <form id="lteCellDetailForm">
+                                <form id="lteCellDetailForm" method="post">
                                     <input id="lteCellIdForEdit" name="lteCellId" value="" type="hidden">
                                     <table id="editCellDetailTable" class="main-table1 half-width" border="1"
                                            align="center">
@@ -207,22 +180,9 @@
 
                     </div>
                     <div id="div_tab_1" style="display: none;">
-
-
-                        <title>LTE小区导入</title>
-
-                        <meta http-equiv="pragma" content="no-cache">
-                        <meta http-equiv="cache-control" content="no-cache">
-                        <meta http-equiv="expires" content="0">
-                        <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-                        <meta http-equiv="description" content="This is my page">
-
-
-                        <script type="text/javascript"
-                                src="js/lte-cell-data-import.js"></script>
-
-
-                        <form id="formImportLteCell" enctype="multipart/form-data" method="post">
+                       <!-- <script type="text/javascript"
+                                src="js/lte-cell-data-import.js"></script>-->
+                        <!--<form id="formImportLteCell" enctype="multipart/form-data" method="post">
                             <input name="needPersist" value="true" type="hidden"> <input name="systemConfig"
                                                                                          value="true" type="hidden">
                             <input name="fileCode" value="LTECELLFILE" type="hidden">
@@ -288,7 +248,7 @@
 
 
                             </div>
-                        </form>
+                        </form>-->
                     </div>
                 </div>
             </div>
