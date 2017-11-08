@@ -4,23 +4,8 @@ var secondLevelMenuSelected = "";
 var thirdLevelMenuSelected = "";
 
 $(function () {
-    $("#provinceMenu").change(function () {
-        var provinceId = parseInt($(this).find("option:checked").val());
-        $.getJSON("data/area.json", function (data) {
-            renderArea(data, provinceId, "cityMenu")
-        })
-    });
-
-    //初始化区域
-    $.ajax({
-        url: "data/area.json",
-        dataType: "json",
-        async: false,
-        success: function (data) {
-            renderArea(data, 0, "provinceMenu");
-            $("#provinceMenu").change();
-        }
-    });
+    //初始化区域联动
+    initAreaSelectors({ selectors: ["provinceMenu", "cityMenu"] });
 
     //初始化内容显示区域高度
     var clientHeight = document.documentElement.clientHeight;
@@ -279,19 +264,16 @@ function renderMenu(data) {
     $("#navMenu").html(menuHtml.join(""));
 }
 
-// 渲染区域
-function renderArea(data, parentId, areaMenu) {
-    var arr = data.filter(function (v) {
-        return v.parentId === parentId;
-    });
-    if (arr.length > 0) {
-        var areaHtml = [];
-        $.each(arr, function (index) {
-            var area = arr[index];
-            areaHtml.push("<option value='" + area.id + "'>" + area.name + "</option>");
-        });
-        $("#" + areaMenu).html(areaHtml.join(""));
-    } else {
-        console.log("父ID为" + parentId + "时未找到任何下级区域。");
+//浏览器大小变化时修改门户主体高度
+$(window).resize(function() {
+    if (window.timerLayout) {
+        clearTimeout(window.timerLayout);
     }
+    window.timerLayout = setTimeout(windowsResize, 100);
+});
+
+//获取门户主体高度
+function windowsResize() {
+    var docH = document.documentElement.clientHeight;
+    $("#maindiv").css("height", docH - 95 - 40);
 }
