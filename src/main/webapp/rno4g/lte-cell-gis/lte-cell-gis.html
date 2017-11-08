@@ -26,7 +26,9 @@
 <body>
 <div id="loading" class="loading" style="display: none">加载中...</div>
 <div id="info" class="info-style" style="display: none"></div>
-<div id="map" class="map"></div>
+<div id="map" class="map"
+     style="position: absolute; z-index: 0; overflow: hidden;
+      background-color: rgb(243, 241, 236); color: rgb(0, 0, 0); text-align: left;"></div>
 <div style="display: none"> 
     <div id="popup"></div>
 </div>
@@ -43,7 +45,7 @@
     <div class="shad_v"></div>
 </div>
 <div class="resource_list_box">
-    <div class="resource_list">
+    <div style="overflow-x: auto; display:block;margin-bottom: 39px">
         <table class="table">
             <tbody>
             <tr>

@@ -209,7 +209,7 @@ body {
 }
 
 .footer {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
     margin-top: 2px;
@@ -257,9 +257,10 @@ input[type="button"] {
 
 #mainDiv {
     position: absolute;
-    height: 100%;
+    height: auto;
     top: 100px;
     width: 100%;
+    margin-bottom: 39px;
 }
 
 #mainIFrame {

@@ -1,8 +1,9 @@
 var map, cellLayer, clickedCellLayer, nCellLayer, thisCellLayer, lineLayer;
 var popup;
-var redStyle, orangeStyle, blackStyle;
+var redStyle, orangeStyle;
 
 $(function () {
+
     $(".dialog").draggable();
     $("#trigger").css("display", "none");
 
@@ -83,7 +84,7 @@ $(function () {
         opacity: 0.8
     });
 
-    //点击小区专用
+    //点击小区,主小区专用
     redStyle = new ol.style.Style({
         stroke: new ol.style.Stroke({
             // 设置线条颜色
@@ -106,19 +107,6 @@ $(function () {
         fill: new ol.style.Fill({
             // 设置填充颜色与不透明度
             color: 'rgba(255, 165, 0, 1.0)'
-        })
-    });
-
-    //主小区专用
-    blackStyle = new ol.style.Style({
-        stroke: new ol.style.Stroke({
-            // 设置线条颜色
-            color: 'yellow',
-            size: 5
-        }),
-        fill: new ol.style.Fill({
-            // 设置填充颜色与不透明度
-            color: 'rgba(0, 0, 0, 1.0)'
         })
     });
 
@@ -150,39 +138,29 @@ $(function () {
                 })
             });
 
+            cellLayer = new ol.layer.Tile({
+                zIndex: 2,
+                source: new ol.source.TileWMS({
+                    /*url: 'http://rno-gis.hgicreate.com/geoserver/rnoprod/wms',
+                    params: {
+                        'FORMAT': 'image/png',
+                        'VERSION': '1.1.1',
+                        tiled: true,
+                        STYLES: '',
+                        LAYERS: 'rnoprod:RNO_LTE_CELL_GEOM',
+                    }*/
+                }),
+                visible: false,
+                opacity: 0.5
+            });
+            map.addLayer(cellLayer);
+
             popup = new ol.Overlay({element: document.getElementById('popup')});
             map.addOverlay(popup);
 
-            // 右键菜单打开之前，判断是否在 feature 上，如果不是则禁止右键菜单
-            contextmenu.on('beforeopen', function (e) {
-                var feature = map.forEachFeatureAtPixel(e.pixel, function (feature) {
-                    return feature;
-                });
-
-                if (feature) {
-                    contextmenu.enable();
-                } else {
-                    contextmenu.disable();
-                }
-            });
-
-            // 打开右键菜单
-            contextmenu.on('open', function (e) {
-                var element = popup.getElement();
-                $(element).popover('destroy');
-                var feature = map.forEachFeatureAtPixel(e.pixel, function (feature) {
-                    return feature;
-                });
-                // console.log(feature);
-                if (feature) {
-                    contextmenu.clear();
-                    contextmenu.extend(contextmenu_items);
-                }
-            });
             map.addControl(contextmenu);
 
             map.on('singleclick', function (evt) {
-
                 var element = popup.getElement();
                 $(element).popover('destroy');
 
@@ -277,6 +255,7 @@ $(function () {
                     });
                 }
             });
+
         } else {
             //map.getView().setCenter(ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:3857'));
             map.getView().animate({
@@ -310,6 +289,49 @@ $(function () {
         map.addLayer(cellLayer);
     });
 
+    // 右键菜单打开之前
+    contextmenu.on('beforeopen', function (e) {
+        // console.log("e.coordinate====="+e.coordinate);
+        var element = popup.getElement();
+        $(element).popover('destroy');
+        var view = map.getView();
+        //contextmenu_items[contextmenu_items.length-1] = e.coordinate;
+        var url = cellLayer.getSource().getGetFeatureInfoUrl(
+            e.coordinate, view.getResolution(), view.getProjection(),
+            {'INFO_FORMAT': 'text/javascript', 'FEATURE_COUNT': 50});
+        if (url) {
+            var parser = new ol.format.GeoJSON();
+            $.ajax({
+                url: url,
+                dataType: 'jsonp',
+                jsonpCallback: 'parseResponse'
+            }).then(function (response) {
+                var	features = parser.readFeatures(response);
+                if (features.length > 0) {
+                    console.log(features.length);
+                    clickedCellLayer.getSource().clear();
+                    clickedCellLayer.getSource().addFeatures(features);
+                    for (var i = 0; i < features.length; i++) {
+                        var feature = features[i];
+                        feature.setStyle(redStyle);
+                    }
+                    contextmenu.enable();
+                } else {
+                    console.log('No result');
+                    contextmenu.disable();
+                }
+            });
+        }else {
+            contextmenu.disable();
+        }
+    });
+
+    //打开右键菜单
+    contextmenu.on('open', function (e) {
+        contextmenu.clear();
+        contextmenu.extend(contextmenu_items);
+    });
+
     $("#showCellName").click(function () {
         if ($(this).text() === "显示小区名字") {
             $(this).text("关闭小区名字");
@@ -325,9 +347,9 @@ $(function () {
 function addColor(t, isShowRightBox) {
     if(isShowRightBox) {
         $(".switch_hidden").trigger("click");
-    }else {
+    }/*else {
         $(".switch").trigger("click");
-    }
+    }*/
     $(t).siblings().removeClass('custom-bg');
     $(t).addClass('custom-bg');
 }
@@ -457,7 +479,7 @@ function paintNcell(cellId, cells) {
                 var onefeature = features[m];
                 if(onefeature.get('CELL_ID')==cellId){
                     cellCoors = [onefeature.get('LONGITUDE'), onefeature.get('LATITUDE')];
-                    onefeature.setStyle(blackStyle);
+                    onefeature.setStyle(redStyle);
                     thisCellLayer.getSource().addFeature(onefeature);
                 }else{
                     ncellCoors.push([onefeature.get('LONGITUDE'), onefeature.get('LATITUDE')]);
