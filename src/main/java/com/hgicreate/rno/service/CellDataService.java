@@ -33,7 +33,7 @@ public class CellDataService {
             sql += " and a.cell_id = '" + cellDataVM.getCellId().trim()+"'";
         }
         if(!cellDataVM.getCellName().trim().equals("")){
-            sql += " and a.cell_name like % "+cellDataVM.getCellName().trim()+" %";
+            sql += " and a.cell_name like %"+cellDataVM.getCellName().trim()+"%";
         }
         if(!cellDataVM.getPci().trim().equals("")){
             sql += " and a.pci =" + cellDataVM.getPci().trim();
