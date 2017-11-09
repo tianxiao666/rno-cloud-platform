@@ -2,12 +2,14 @@ package com.hgicreate.rno.dao;
 
 import com.hgicreate.rno.domain.NcellRelation;
 import com.hgicreate.rno.web.rest.vm.LteNcellRelationQueryVM;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class LteNcellRelationDao {
     private final EntityManager entityManager;
 

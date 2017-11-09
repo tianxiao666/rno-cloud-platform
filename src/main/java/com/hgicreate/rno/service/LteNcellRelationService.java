@@ -16,15 +16,14 @@ import java.util.stream.Collectors;
 @Service
 public class LteNcellRelationService {
 
-    private final EntityManager entityManager;
+    private final LteNcellRelationDao lteNcellRelationDao;
 
-    public LteNcellRelationService(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    public LteNcellRelationService(LteNcellRelationDao lteNcellRelationDao) {
+        this.lteNcellRelationDao = lteNcellRelationDao;
     }
 
     public List<LteNcellRelationDTO> queryNcellRelationDTOs(LteNcellRelationQueryVM vm) {
-        LteNcellRelationDao dao = new LteNcellRelationDao(entityManager);
-        List<LteNcellRelationDTO> dtoList = dao.queryNcellRelation(vm)
+        List<LteNcellRelationDTO> dtoList = lteNcellRelationDao.queryNcellRelation(vm)
                                                .stream()
                                                .map(LteNcellRelationMapper.INSTANCE::ncellRelationToNcellRelationDTO)
                                                .collect(Collectors.toList());
