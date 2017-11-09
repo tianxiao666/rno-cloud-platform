@@ -38,7 +38,7 @@ body {
     line-height: 1.231;
     font-family: sans-serif;
     height: 100%;
-    width: 100%;
+    width: 99%;
 }
 
 select, input, textarea, button {
@@ -696,4 +696,48 @@ body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, input, button, textar
     -webkit-border-radius: 20px;
     border-radius: 20px;
     filter: progid:DXImageTransform.Microsoft.Alpha(opacity=70);
+}
+
+.importContent {
+    border: 1px solid rgb(221, 221, 221);
+    padding: 1em 2.2em;
+    border-radius: 5px;
+    height: 200px;
+}
+
+.td-label {
+    width: 20%;
+    height: 36px;
+    text-align: right;
+    background: rgb(232, 237, 255);
+    white-space: nowrap;
+    padding-right: 3px;
+}
+
+.required {
+    color: #C00;
+    font-size: 14px;
+}
+
+.upload-progress {
+    position: relative;
+    width: 700px;
+    border: 1px solid #ddd;
+    padding: 1px;
+    border-radius: 3px;
+    display: none;
+}
+
+.bar {
+    background-color: #B4F5B4;
+    width: 0;
+    height: 20px;
+    border-radius: 3px;
+}
+
+.percent {
+    position: absolute;
+    display: inline-block;
+    top: 3px;
+    left: 48%;
 }

@@ -11,7 +11,7 @@ import java.util.Map;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class NcellRelationDTO {
+public class LteNcellRelationDTO {
     private long id;
     private String cellId;
     private String cellName;
