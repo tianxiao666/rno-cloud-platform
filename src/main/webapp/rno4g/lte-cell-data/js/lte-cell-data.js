@@ -138,23 +138,23 @@ function showQueryList(data) {
             showInfoInAndOut('info', '没有符合条件的小区数据');
             return false;
         }
-
+        console.log(data);
         $('#queryResultTab').css("line-height", "12px").DataTable({
             "data": data,
             // /api/lte-cell-data/cell-query
             "columns": [
-                {"data": "areaName"},
-                {"data": "cellId"},
-                {"data": "cellName"},
-                {"data": "pci"},
-                {"data": "bandWidth"},
-                {"data": "earfcn"},
-                {"data": "azimuth"},
+                {"data": 1},
+                {"data": 0},
+                {"data": 2},
+                {"data": 3},
+                {"data": 4},
+                {"data": 5},
+                {"data": 6},
                 {"data": null}
             ],
             "columnDefs": [{
                 "render": function (data, type, row) {
-                    var cellId = row['cellId'];
+                    var cellId = data[0];
                     return "<a onclick=\"showDetail('" + cellId + "')\">查询详情</a>&nbsp;&nbsp;&nbsp;"
                         + "<a onclick=\"showEditor('" + cellId + "')\">编辑</a>&nbsp;&nbsp;&nbsp;"
                         + "<a onclick=\"deleteCell('"+cellId+ "')\">删除</a>";

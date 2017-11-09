@@ -1,22 +1,14 @@
 package com.hgicreate.rno.service;
 
-import com.hgicreate.rno.domain.Cell;
-import com.hgicreate.rno.repository.CellDataRepository;
 import com.hgicreate.rno.service.dto.CellDataDTO;
-import com.hgicreate.rno.service.mapper.CellDataMapper;
 import com.hgicreate.rno.web.rest.vm.CellDataVM;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -24,32 +16,31 @@ import java.util.stream.Collectors;
 @Transactional
 public class CellDataService {
 
-    private final CellDataRepository cellDataRepository;
 
-    public CellDataService(CellDataRepository cellDataRepository) {
-        this.cellDataRepository = cellDataRepository;
+    private final EntityManager entityManager;
+
+    public CellDataService(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
-    public List<CellDataDTO> queryCellByCondition(CellDataVM cellDataVM){
-        List<CellDataDTO> cellDataDTOS= cellDataRepository.findAll((root, criteriaQuery, criteriaBuilder) -> {
-           List<Predicate> predicates = new ArrayList<>();
-           predicates.add(criteriaBuilder.equal(root.get("areaId"), cellDataVM.getCityId()));
-            if(!cellDataVM.getCellId().trim().equals("")){
-                predicates.add(criteriaBuilder.equal(root.get("cellId"), cellDataVM.getCellId()));
-            }
-            if(!cellDataVM.getCellName().trim().equals("")){
-                predicates.add(criteriaBuilder.like(root.get("cellName"),"%"+cellDataVM.getCellName()+"%"));
-            }
-            if(!cellDataVM.getPci().trim().equals("")){
-                predicates.add(criteriaBuilder.equal(root.get("pci"), cellDataVM.getPci()));
-            }
-
-            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
-        }).stream().map(CellDataMapper.INSTANCE::cellToCellData).collect(Collectors.toList());
-        if(cellDataDTOS.size() <1000){
-            return cellDataDTOS;
-        }else{
-            return  cellDataDTOS.subList(0,1000);
+    @SuppressWarnings("unchecked")
+    public List<CellDataDTO> queryLteCell(CellDataVM cellDataVM){
+        String sql = "select a.cell_id as cellId, b.name as areaName, a.cell_name as cellName,a.pci as pci\n" +
+                ", a.band_width as bandWidth, a.earfcn as earfcn, a.azimuth from RNO_LTE_CELL a\n" +
+                "join RNO_SYS_AREA b on (a.AREA_ID = b.ID) where ROWNUM <1001";
+        sql += " and a.area_id =" + cellDataVM.getCityId();
+        if(!cellDataVM.getCellId().trim().equals("")){
+            sql += " and a.cell_id = " + cellDataVM.getCellId().trim();
         }
+        if(!cellDataVM.getCellName().trim().equals("")){
+            sql += " and a.cell_name like % "+cellDataVM.getCellName().trim()+" %";
+        }
+        if(!cellDataVM.getPci().trim().equals("")){
+            sql += " and a.pci =" + cellDataVM.getPci().trim();
+        }
+        Query query =entityManager.createNativeQuery(sql);
+
+        return (List<CellDataDTO>) query.getResultList();
+
     }
 }

@@ -32,7 +32,7 @@ public class LteCellDataResource {
                 +cellDataVM.getCellId()+"，LTE CELL名称="
                 +cellDataVM.getCellName()+"，小区PCI="
                 +cellDataVM.getPci());
-        return cellDataService.queryCellByCondition(cellDataVM);
+        return cellDataService.queryLteCell(cellDataVM);
     }
 
     @GetMapping("/findCellDetailById")
@@ -62,8 +62,5 @@ public class LteCellDataResource {
             System.out.println(e.getMessage());
             return false;
         }
-
     }
-
-
 }
