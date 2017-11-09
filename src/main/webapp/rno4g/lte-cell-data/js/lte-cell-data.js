@@ -70,17 +70,17 @@ var currentIndex = 0;
 $(function () {
 
     //tab选项卡
-    tab("div_tab", "li", "onclick");//项目服务范围类别切换
+    $("#tabs").tabs();//项目服务范围类别切换
     $("#queryBtn").click(function () {
         $(".loading").show();
         var reg = /^[0-9]+.?[0-9]*$/;
-        var pci =$("#pci").val();
-        if(!reg.test(pci) && pci.trim() !==''){
+        var pci = $("#pci").val();
+        if (!reg.test(pci) && pci.trim() !== '') {
             showInfoInAndOut("info", "PCI值必须为数字");
             return false;
         }
-        if(pci.length >10 && pci.trim() !==''){
-            showInfoInAndOut("info","PCI值输入过长");
+        if (pci.length > 10 && pci.trim() !== '') {
+            showInfoInAndOut("info", "PCI值输入过长");
             return false;
         }
     });
@@ -94,20 +94,25 @@ $(function () {
 
     //初始化区域
     initAreaSelectors({selectors: ["provinceId", "cityId"]});
+    initAreaSelectors({selectors: ["provinceId2", "cityId2"]});
+
+    // 执行 laydate 实例 
+    laydate.render({elem: '#begUploadDate', value: new Date(new Date().getTime() - 7 * 86400000)});
+    laydate.render({elem: '#endUploadDate', value: new Date()});
 
     //下一小区详情
-    $("#nextCellDetailBtn").click(function(){
+    $("#nextCellDetailBtn").click(function () {
         ++currentIndex;
-        if(currentIndex>=currentCellArray.length){
-            currentIndex=0;
+        if (currentIndex >= currentCellArray.length) {
+            currentIndex = 0;
         }
         showCellDetail(currentIndex);
 
     });
 
     //重置当前编辑lte小区详情
-    $("#btnReset").click(function() {
-       var cellId= $("#lteCellIdForEdit").val();
+    $("#btnReset").click(function () {
+        var cellId = $("#lteCellIdForEdit").val();
         //加载到页面重置数据
         showEditor(cellId);
     });
@@ -116,13 +121,13 @@ $(function () {
         $(".loading").show();
         //提交前再做一次全局检验
         var length = chineseToCode.length;
-        for ( var i = 0; i < length; i++) {
+        for (var i = 0; i < length; i++) {
             var oneKey = chineseToCode[i];
             var code = oneKey['code'];      //元素id值
-            var value = $("#"+code).val(); //元素value值
+            var value = $("#" + code).val(); //元素value值
             //如果submitOK为true，继续验证下一个元素，反之则不再循环
-            if(submitOK===true){
-                checkDateType(code,value);
+            if (submitOK === true) {
+                checkDateType(code, value);
             } else {
                 break;
             }
@@ -130,47 +135,94 @@ $(function () {
         updateLteCellDetail(submitOK);
     });
 
+    // AJAX 上传文件
+    var progress = $('.upload-progress');
+    var bar = $('.bar');
+    var percent = $('.percent');
+
+    $("#importBtn").click(function () {
+        var path = $("#file").val();
+        if (path.substring(path.lastIndexOf("."), path.length).toLowerCase() !== '.csv') {
+            showInfoInAndOut("info", "请上传csv格式的小区文件");
+            return false;
+        }
+    });
+
+    // 当上传文件域改变时，隐藏进度条
+    $("input[name='file']").change(function () {
+        progress.css("display", "none");
+    });
+
+    $("#file-upload-form").ajaxForm({
+        url: "/api/lte-cell-data/upload-file",
+        beforeSend: function () {
+            progress.css("display", "block");
+            var percentVal = '0%';
+            bar.width(percentVal);
+            percent.html(percentVal);
+        },
+        uploadProgress: function (event, position, total, percentComplete) {
+            var percentVal = percentComplete + '%';
+            bar.width(percentVal);
+            percent.html(percentVal);
+        },
+        success: function () {
+            var percentVal = '100%';
+            bar.width(percentVal);
+            percent.html(percentVal);
+            $("#info").css("background","green");
+            showInfoInAndOut("info","文件导入成功！");
+
+        }
+    });
+
+    // AJAX 提交查询条件表单
+    $("#import-query-form").ajaxForm({
+        url: "/api/lte-cell-data/query-import",
+        success: showImportRecord
+    });
+
 });
 
 function showQueryList(data) {
-    $(".loading").css("display","none");
-        if (data.length ===0) {
-            showInfoInAndOut('info', '没有符合条件的小区数据');
-            return false;
+    $(".loading").css("display", "none");
+    if (data.length === 0) {
+        showInfoInAndOut('info', '没有符合条件的小区数据');
+        return false;
+    }
+    console.log(data);
+    $('#queryResultTab').css("line-height", "12px").DataTable({
+        "data": data,
+        // /api/lte-cell-data/cell-query
+        "columns": [
+            {"data": 1},
+            {"data": 0},
+            {"data": 2},
+            {"data": 3},
+            {"data": 4},
+            {"data": 5},
+            {"data": 6},
+            {"data": null}
+        ],
+        "columnDefs": [{
+            "render": function (data) {
+                var cellId = data[0];
+                return "<a onclick=\"showDetail('" + cellId + "')\">查询详情</a>&nbsp;&nbsp;&nbsp;"
+                    + "<a onclick=\"showEditor('" + cellId + "')\">编辑</a>&nbsp;&nbsp;&nbsp;"
+                    + "<a onclick=\"deleteCell('" + cellId + "')\">删除</a>";
+            },
+            "targets": -1,
+            "data": null
         }
-        console.log(data);
-        $('#queryResultTab').css("line-height", "12px").DataTable({
-            "data": data,
-            // /api/lte-cell-data/cell-query
-            "columns": [
-                {"data": 1},
-                {"data": 0},
-                {"data": 2},
-                {"data": 3},
-                {"data": 4},
-                {"data": 5},
-                {"data": 6},
-                {"data": null}
-            ],
-            "columnDefs": [{
-                "render": function (data, type, row) {
-                    var cellId = data[0];
-                    return "<a onclick=\"showDetail('" + cellId + "')\">查询详情</a>&nbsp;&nbsp;&nbsp;"
-                        + "<a onclick=\"showEditor('" + cellId + "')\">编辑</a>&nbsp;&nbsp;&nbsp;"
-                        + "<a onclick=\"deleteCell('"+cellId+ "')\">删除</a>";
-                },
-                "targets": -1,
-                "data": null
-            }
-            ],
-            // "lengthChange": false,
-            // "ordering": false,
-            // "searching": false,
-            "destroy": true,
-            "language": {
-                url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
-            }
-        });
+        ],
+        // "lengthChange": false,
+        // "ordering": false,
+        // "searching": false,
+        "destroy": true,
+        "language": {
+            url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
+        }
+    });
 }
 
 function showDetail(cellId) {
@@ -194,23 +246,23 @@ function showCellAndCoSiteCell(data) {
 function showEditor(cellId) {	//加载lte小区id保存到隐藏域
     $("#lteCellIdForEdit").val(cellId);
     //显示编辑框
-    var editLteCellMessage =$("#editLteCellMessage");
+    var editLteCellMessage = $("#editLteCellMessage");
     editLteCellMessage.css({
-        "top" : (32) + "%",
-        "left" : (25) + "%",
-        "width" : (800) + "px",
-        "z-index" : (30)
+        "top": (32) + "%",
+        "left": (25) + "%",
+        "width": (800) + "px",
+        "z-index": (30)
     });
     editLteCellMessage.show();
     //加载需要编辑的lte小区数据到页面
     $(".loading").css("display", "block");
     $.ajax({
-        url :'/api/lte-cell-data/findCellDetailForEdit',
-        data : {
-            'cellId' : cellId
+        url: '/api/lte-cell-data/findCellDetailForEdit',
+        data: {
+            'cellId': cellId
         },
-        dataType :'text',
-        success : function(data) {
+        dataType: 'text',
+        success: function (data) {
             console.log(data);
             //目标小区信息
             var oneLteCellDetail = eval("(" + data + ")");
@@ -219,19 +271,19 @@ function showEditor(cellId) {	//加载lte小区id保存到隐藏域
             }
             loadCellForEdit(oneLteCellDetail);
         },
-        complete : function() {
+        complete: function () {
             $(".loading").css("display", "none");
         }
     });
 
 }
 
-function loadCellForEdit(oneLteCellDetail){
+function loadCellForEdit(oneLteCellDetail) {
     // 循环设置
     var html = '';
     var size = chineseToCode.length;
     var onekey;
-    for ( var i = 0; i < size; i++) {
+    for (var i = 0; i < size; i++) {
         if (i % 3 === 0) {
             // 换行
             if (i > 0) {
@@ -240,44 +292,44 @@ function loadCellForEdit(oneLteCellDetail){
             html += "<tr>";
         }
         onekey = chineseToCode[i];
-        var oneValue =oneLteCellDetail[onekey['code']]===undefined ||oneLteCellDetail[onekey['code']] ===null ?"":oneLteCellDetail[onekey['code']];
+        var oneValue = oneLteCellDetail[onekey['code']] === undefined || oneLteCellDetail[onekey['code']] === null ? "" : oneLteCellDetail[onekey['code']];
         //加载select标签
-        if(onekey['code']==='cellId'){
-            html += "<td class='menuTd'>"+ onekey['name']+ " : "+
-                    "<input id='"+onekey['code']+"' " +
-                "type='text' readonly style='height: 10px;width: 144px' " +
-                "name='"+onekey['code']+"' value='"+oneValue+"'/>"+
-               "</br> <span id='span"+onekey['code']+"'  style='font-family:华文中宋; color:red;width:100px;display:block;'></span></td>";
-        }else if(onekey['code']==='remoteCell'
-            || onekey['code']==='relatedParam'
-            || onekey['code']==='relatedResoure') {
-            html += "<td class='menuTd'>" + onekey['name']+" : " +
-                "<select style='width: 154px' id='"+onekey['code']+"' name='"+onekey['code']+"'> ";
-            if(oneLteCellDetail[onekey['code']]==="是") {
+        if (onekey['code'] === 'cellId') {
+            html += "<td class='menuTd'>" + onekey['name'] + " : " +
+                "<input id='" + onekey['code'] + "' " +
+                "type='text' readonly style='height: 21px;width: 146px' " +
+                "name='" + onekey['code'] + "' value='" + oneValue + "'/>" +
+                "</br> <span id='span" + onekey['code'] + "'  style='font-family:华文中宋; color:red;width:100px;display:block;'></span></td>";
+        } else if (onekey['code'] === 'remoteCell'
+            || onekey['code'] === 'relatedParam'
+            || onekey['code'] === 'relatedResoure') {
+            html += "<td class='menuTd'>" + onekey['name'] + " : " +
+                "<select style='width: 146px' id='" + onekey['code'] + "' name='" + onekey['code'] + "'> ";
+            if (oneLteCellDetail[onekey['code']] === "是") {
                 html += "<option value='是' selected='selected'>是</option> " +
                     "<option value='否'>否</option> ";
             } else {
                 html += "<option value='是'>是</option> " +
                     "<option value='否' selected='selected'>否</option> ";
             }
-            html += "</select> "+
+            html += "</select> " +
                 "</td> ";
         } else {
-            html += "<td class='menuTd'>" + onekey['name']+" : " +
-                "<input id='"+onekey['code']+"' "+
-                "name='"+onekey['code']+"' "+
-                "value='"+oneValue+"' " +
+            html += "<td class='menuTd'>" + onekey['name'] + " : " +
+                "<input id='" + onekey['code'] + "' " +
+                "name='" + onekey['code'] + "' " +
+                "value='" + oneValue + "' " +
                 "onkeyup='checkOnkeyupDateType(this)'/>" +
-                "</br><span id='span"+onekey['code']+"'  style='font-family:华文中宋; color:red;width:100px;display:block;'></span>" +
+                "</br><span id='span" + onekey['code'] + "'  style='font-family:华文中宋; color:red;width:100px;display:block;'></span>" +
                 "</td>";
         }
     }
     if (size % 3 > 0) {
-        for ( var j = 0; j < 3 - size % 3; j++) {
+        for (var j = 0; j < 3 - size % 3; j++) {
             html += "<td class='menuTd'></td>";
         }
     }
-    html+="</tr>";
+    html += "</tr>";
     //console.log(html);
     $("span#editVIEW_ENODEB_NAME").html(oneLteCellDetail['enodebId']);
     $("span#editVIEW_CELL_NAME").html(oneLteCellDetail['cellName']);
@@ -341,7 +393,7 @@ function deleteCell(cellId) {
         dataType: 'text',
         data: {cellId: cellId},
         success: function () {
-                showInfoInAndOut("info","删除小区成功！");
+            showInfoInAndOut("info", "删除小区成功！");
             $("#conditionForm").ajaxForm({
                 url: "/api/lte-cell-data/cell-query",
                 success: showQueryList,
@@ -349,9 +401,9 @@ function deleteCell(cellId) {
                     console.log(err);
                 }
             });
-        },error: function (err) {
+        }, error: function (err) {
             console.log(err);
-            showInfoInAndOut("info","后台程序错误！");
+            showInfoInAndOut("info", "后台程序错误！");
         }
     })
 }
@@ -362,7 +414,7 @@ function deleteCell(cellId) {
 function checkOnkeyupDateType(e) {
     var id = e.id;  //获取元素的id
     var value = e.value;  //获取元素的值
-    checkDateType(id,value);
+    checkDateType(id, value);
 }
 
 /*
@@ -370,94 +422,98 @@ function checkOnkeyupDateType(e) {
  * @param 元素id值
  * @param 元素value值
  */
-function checkDateType(id,value) {
+function checkDateType(id, value) {
 
     //验证需要的正则表达式
     //var vali1 = /[^A-Za-z0-9]/g;   //输入数字和英文字母
     var vali2 = /[^\d.]/g; 		  //输入数字和小数点
-   // var vali3 = /[^\d:]/g;		   //输入数字和：
+    // var vali3 = /[^\d:]/g;		   //输入数字和：
     //var vali4 = /[^\d-]/g;    /*/^[-+]?[0-9]*\.?[0-9]+$/;*/	//输入正负浮点数
     var vali5 = /[^\d-.]/g;    //输入数字,负号，小数点
 
     //----------需要验证的参数 start-------------//
     //经度的验证
-    if(id==='longitude') {
-        if(135.04166666667<value || value<73.666666666667){
-            $("span#span"+id).html("中国经度范围东经73.666666666667-<br>135.04166666667");
+    if (id === 'longitude') {
+        if (135.04166666667 < value || value < 73.666666666667) {
+            $("span#span" + id).html("中国经度范围东经73.666666666667-<br>135.04166666667");
             submitOK = false;
-        }else if(vali2.test(value)) {
+        } else if (vali2.test(value)) {
             //console.log("不合法");
-            $("span#span"+id).html("请输入数字或者小数点");
+            $("span#span" + id).html("请输入数字或者小数点");
             submitOK = false;
         } else {
             //console.log("合法");
-            $("span#span"+id).html("");
-            submitOK =true;
+            $("span#span" + id).html("");
+            submitOK = true;
         }
     }
     //纬度的验证
-    if(id==='latitude') {
-        if(53.55<value || value<3.8666666666667){
-            $("span#span"+id).html("中国纬度范围北纬3.8666666666667-<br>53.55");
+    if (id === 'latitude') {
+        if (53.55 < value || value < 3.8666666666667) {
+            $("span#span" + id).html("中国纬度范围北纬3.8666666666667-<br>53.55");
             submitOK = false;
-        }else if(vali2.test(value)) {
+        } else if (vali2.test(value)) {
             //console.log("不合法");
-            $("span#span"+id).html("请输入数字或者小数点");
+            $("span#span" + id).html("请输入数字或者小数点");
             submitOK = false;
         } else {
             //console.log("合法");
-            $("span#span"+id).html("");
-            submitOK =true;
+            $("span#span" + id).html("");
+            submitOK = true;
         }
     }
 
     //覆盖类型的验证
-    if(id==='coverType'){
-        if(value==="室内" || value==="室外"){
-            $("span#span"+id).html("");
+    if (id === 'coverType') {
+        if (value === "室内" || value === "室外") {
+            $("span#span" + id).html("");
             submitOK = true;
-        }else  {
-            $("span#span"+id).html("覆盖类型请填写“室内”或者“室外”");
+        } else {
+            $("span#span" + id).html("覆盖类型请填写“室内”或者“室外”");
             submitOK = false;
         }
     }
     //数字输入的验证
-    if(id==='pci' || id==='antennaHeight' || id==='azimuth'
-        || id==='tac' || id==='mDowntilt' || id==='eDowntilt'
-        || id==='totalDowntilt'|| id==='stationSpace'
-        || id==='earfcn' || id === 'brandWidth' || id ==='eci') {
-        if(vali5.test(value)) {
+    if (id === 'pci' || id === 'antennaHeight' || id === 'azimuth'
+        || id === 'tac' || id === 'mDowntilt' || id === 'eDowntilt'
+        || id === 'totalDowntilt' || id === 'stationSpace'
+        || id === 'earfcn' || id === 'brandWidth' || id === 'eci') {
+        if (vali5.test(value)) {
             //console.log("不合法");
-            $("span#span"+id).html("请输入正确的格式");
+            $("span#span" + id).html("请输入正确的格式");
             submitOK = false;
         } else {
             //console.log("合法");
-            $("span#span"+id).html("");
-            submitOK =true;
+            $("span#span" + id).html("");
+            submitOK = true;
         }
     }
     //----------需要验证的参数 end-------------//
 }
 
 function updateLteCellDetail(submitOK) {
-    if(submitOK) {
+    if (submitOK) {
         $("#lteCellDetailForm")
             .ajaxSubmit({
-                url : "/api/lte-cell-data/updateLteCellDetail",
-                dataType : 'text',
-                success : function(flag) {
+                url: "/api/lte-cell-data/updateLteCellDetail",
+                dataType: 'text',
+                success: function (flag) {
                     console.log(flag);
-                            if(flag === "true"){
-                                showInfoInAndOut("info","更新成功！");
-                                $("#editLteCellMessage").hide();
-                            }else{
-                                showInfoInAndOut("info","更新失败！");
-                            }
+                    if (flag === "true") {
+                        showInfoInAndOut("info", "更新成功！");
+                        $("#editLteCellMessage").hide();
+                    } else {
+                        showInfoInAndOut("info", "更新失败！");
+                    }
                 },
-                complete : function() {
+                complete: function () {
                     //alert("更新完成");
                     $(".loading").css("display", "none");
                 }
             })
-    };
+    }
+}
+
+function showImportRecord(data) {
+
 }

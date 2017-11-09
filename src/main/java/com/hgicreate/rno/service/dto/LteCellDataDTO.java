@@ -3,7 +3,7 @@ package com.hgicreate.rno.service.dto;
 import lombok.Data;
 
 @Data
-public class CellDataDTO {
+public class LteCellDataDTO {
 
     private String cellId;
     private String areaName;

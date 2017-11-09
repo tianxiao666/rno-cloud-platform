@@ -5,257 +5,254 @@
 
     <title>LTE小区信息管理</title>
 
+    <link rel="stylesheet" href="../../lib/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
+    <link rel="stylesheet" type="text/css" href="../../lib/datatables/1.10.16/datatables.min.css">
     <link rel="stylesheet" type="text/css" href="css/lte-cell-data.css">
 
     <script src="../../lib/jquery/1.8.2/jquery.js"></script>
     <script src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
     <script src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
-
-    <script src="../../lib/tab.js"></script>
     <script src="../../lib/rno/selftools.js"></script>
-
     <script type="text/javascript" src="../../lib/rno/libfileupload.js"></script>
-
-    <link rel="stylesheet" type="text/css" href="../../lib/datatables/1.10.16/datatables.min.css">
     <script src="../../lib/datatables/1.10.16/datatables.min.js"></script>
-
+    <script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
     <script type="text/javascript" src="../../js/common.js"></script>
+    <script src="../../lib/laydate/5.0.7/laydate.js"></script>
+
     <script type="text/javascript" src="js/lte-cell-data.js"></script>
 </head>
 
 <body>
 <div id="loading" class="loading" style="display: none">加载中...</div>
 <div id="info" class="info-style" style="display: none"></div>
-<div class="div_left_main" style="width: 100%">
-    <div class="div_left_content">
-
-        <div style="padding: 10px">
-            <div id="frame" style="border: 1px solid #ddd">
-                <div id="div_tab" class="div_tab divtab_menu">
-                    <ul>
-                        <li class="selected">LTE小区信息查询</li>
-                        <li class="">LTE小区信息导入</li>
-                    </ul>
+<div style="margin-top: 10px"><b style="font-weight: 700;font-size: 120%;">当前位置：资源配置 &gt; LTE小区配置管理 </b></div>
+<div id="tabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
+    <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+        <li class="ui-state-default ui-corner-top ui-tabs-active ui-state-active">
+            <a href="#tabs-1" class="ui-tabs-anchor" tabindex="0" id="ui-id-1">LTE小区信息导入</a></li>
+        <li class="ui-state-default ui-corner-top" role="tab" tabindex="1">
+            <a href="#tabs-2" class="ui-tabs-anchor" tabindex="1" id="ui-id-2">LTE小区信息导入记录 </a></li>
+        <li class="ui-state-default ui-corner-top" role="tab" tabindex="2">
+            <a href="#tabs-3" class="ui-tabs-anchor" tabindex="2" id="ui-id-3">LTE小区信息查询 </a></li>
+    </ul>
+    <div id="tabs-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom">
+        <div id="importTitleDiv" class="importTitle">
+            <div style="margin: 9px"></div>
+            导入
+        </div>
+        <div id="importDiv" class="importContent">
+            <form id="file-upload-form" method="post" enctype="multipart/form-data">
+                <table class="table-bordered" width="700">
+                    <tbody>
+                    <tr>
+                        <td class="td-label">
+                            LTE小区数据文件（CSV）<span class="required">*</span>
+                        </td>
+                        <td style="padding-left: 5px">
+                            <input type="file" name="file" id="file" accept="*">
+                            <input type="hidden" name="moduleName" value="lte-cell-data">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div align="center" style="margin: 6px; width: 700px;">
+                    <input id="importBtn" value=" 导 入 " type="submit" class="btn btn-default" style="width: 120px">
                 </div>
+                <div class="upload-progress">
+                    <div class="bar"></div>
+                    <div class="percent">0%</div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="tabs-2" class="ui-tabs-panel ui-widget-content ui-corner-bottom" style="display: none;">
+        <form id="import-query-form" method="post">
+            <select id="provinceId2" name="province" title="" style="width: 100px"></select>
+            <select id="cityId2" name="city" title="" style="width: 100px"></select>
+            <div style="margin: 9px"></div>
+            <div id="searchImportDiv">
+                <div style="margin: 9px"></div>
+                <table>
+                    <tbody>
+                    <tr>
+                        <td style="padding-left:30px"><label>上传时间 从:</label>
+                            <input id="begUploadDate" name="begUploadDate" type="text" title=""> 至：
+                            <input id="endUploadDate" name="endUploadDate" type="text" title="">
+                        </td>
+                        <td style="padding-left:30px"><label>状态:</label></td>
+                        <td>
+                            <select id="import-status-menu" title="">
+                                <option value="全部" selected="selected">全部</option>
+                                <option value="全部成功">全部成功</option>
+                                <option value="部分失败">部分失败</option>
+                                <option value="全部失败">全部失败</option>
+                                <option value="正在解析">正在解析</option>
+                                <option value="等待解析">等待解析</option>
+                            </select>
+                        </td>
+                        <td style="padding-left:30px">
+                            <input value="查询导入记录" type="submit" class="btn btn-default">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </form>
+        <div id="importListDiv" class="sectionDivCls">
+            <div style="margin-top: 10px"><b style="font-weight: 700;font-size: 120%;">LTE CELL数据上传记录列表</b></div>
+            <table id="queryRecordResTab" class="display rnoHeader" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                    <th>地市</th>
+                    <th>上传日期</th>
+                    <th>文件名称</th>
+                    <th>文件大小</th>
+                    <th>开始时间</th>
+                    <th>完成时间</th>
+                    <th>上传账号</th>
+                    <th>状态</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <div id="tabs-3" class="ui-tabs-panel ui-widget-content ui-corner-bottom" style="display: none;">
+        <div>
+            <form id="conditionForm" method="post">
 
-                <div class="divtab_content">
-                    <div id="div_tab_0" style="display: block;">
-                        <div>
-                            <form id="conditionForm" method="post">
-                                <input id="hiddenPageSize" name="page.pageSize" value="25" type="hidden"> <input
-                                    id="hiddenCurrentPage" name="page.currentPage" value="1" type="hidden"> <input
-                                    id="hiddenTotalPageCnt" name="page.totalPageCnt" value="379" type="hidden"> <input
-                                    id="hiddenTotalCnt" name="page.totalCnt" value="9455" type="hidden">
-                                <table class="main-table1 half-width" style="width: 100%; padding-top: 10px">
-                                    <tbody>
-                                    <tr>
-                                        <td class="menuTd" style="text-align:center">区域</td>
-                                        <td class="menuTd" style="text-align:center">LTE CELL ID</td>
-                                        <td class="menuTd" style="text-align:center">LTE CELL名称</td>
-                                        <td class="menuTd" style="text-align:center">小区PCI</td>
-                                    </tr>
-                                    <tr>
+                <table class="main-table1 half-width" style="width: 100%; padding-top: 10px">
+                    <tbody>
+                    <tr>
+                        <td class="menuTd" style="text-align:center">区域</td>
+                        <td class="menuTd" style="text-align:center">LTE CELL ID</td>
+                        <td class="menuTd" style="text-align:center">LTE CELL名称</td>
+                        <td class="menuTd" style="text-align:center">小区PCI</td>
+                    </tr>
+                    <tr>
 
-                                        <td><label for="provinceId">省：</label>
-                                            <select class="areaCls" name="provinceId" id="provinceId" style="width:70px">
-                                        </select><br>
-                                            <label for="cityId">市：</label><select class="areaCls" name="cityId"  id="cityId" style="width:70px">
-                                        </select>
-                                        </td>
-                                        <td style=" text-align:center">
-                                            <label for="cellId"></label><input id="cellId"  name="cellId"  type="text">
-                                        </td>
-                                        <td style="text-align: center">
-                                            <label for="cellName"></label><input name="cellName"  id="cellName" type="text">
-                                        </td>
-                                        <td style="width: 10%; text-align: center">
-                                            <label for="pci"></label><input name="pci" id="pci" type="text">
-                                        </td>
-                                    </tr>
+                        <td><label for="provinceId">省：</label>
+                            <select name="provinceId" id="provinceId" style="width: 100px">
+                            </select><br>
+                            <label for="cityId">市：</label>&nbsp;<select  name="cityId" id="cityId" style="width: 100px">
+                            </select>
+                        </td>
+                        <td style=" text-align:center">
+                            <label for="cellId"></label><input id="cellId" name="cellId" type="text">
+                        </td>
+                        <td style="text-align: center">
+                            <label for="cellName"></label><input name="cellName" id="cellName" type="text">
+                        </td>
+                        <td style="width: 10%; text-align: center">
+                            <label for="pci"></label><input name="pci" id="pci" type="text">
+                        </td>
+                    </tr>
 
-                                    <tr>
+                    <tr>
 
-                                        <td style="width: 10%; text-align: center" colspan="4">
+                        <td style="width: 10%; text-align: center" colspan="4">
                                             <span style="color:red;width:100px;font-family:华文中宋,serif;text-align:center"
                                                   id="nameErrorText1"></span>
-                                            <span style="color:red;width:100px;font-family:华文中宋,serif;text-align:center"
-                                                  id="nameErrorText2"></span><input value="查  询"
-                                                                                    id="queryBtn" type="submit"></td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </form>
-                        </div>
+                            <span style="color:red;width:100px;font-family:华文中宋,serif;text-align:center"
+                                  id="nameErrorText2"></span><input value="查  询"
+                                                                    id="queryBtn" type="submit"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
 
-                        <div style="padding-top: 10px">
-                            <table width="100%">
-                                <tbody>
-                                <tr>
-                                    <td style="width: 20%">
-                                        <p>
-                                            <span style="font-weight: bold">LTE小区信息表：</span>
-                                        </p>
-                                    </td>
-                                </tr>
+        <div style="padding-top: 10px">
+            <table width="100%">
+                <tbody>
+                <tr>
+                    <td style="width: 20%">
+                        <p>
+                            <span style="font-weight: bold">LTE小区信息表：</span>
+                        </p>
+                    </td>
+                </tr>
 
-                                </tbody>
-                            </table>
+                </tbody>
+            </table>
 
-                        </div>
-                        <div style="padding-top: 10px">
-                            <table id="queryResultTab" class="display rnoHeader" cellspacing="0" width="100%">
-                                <thead>
-                                <tr>
-                                    <th>地区</th>
-                                    <th>小区 CELL ID</th>
-                                    <th>小区中文名</th>
-                                    <th>小区PCI</th>
-                                    <th>小区带宽</th>
-                                    <th>小区下行频点</th>
-                                    <th>天线方位角</th>
-                                    <th>操作</th>
-                                </tr>
-                                </thead>
-                            </table>
-                        </div>
+        </div>
+        <div style="padding-top: 10px">
+            <table id="queryResultTab" class="display rnoHeader" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                    <th>地区</th>
+                    <th>小区 CELL ID</th>
+                    <th>小区中文名</th>
+                    <th>小区PCI</th>
+                    <th>小区带宽</th>
+                    <th>小区下行频点</th>
+                    <th>天线方位角</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
 
-                        <div id="lteCellDetailDiv" class="dialog2"
-                             style="display:none;right: 450px; top: 32%; left: 30%; z-index: 30">
-                            <div class="dialog_header">
-                                <div class="dialog_title">
-                                    LTE小区详情查看
-                                </div>
-                                <div class="dialog_tool">
-                                    <div class="dialog_tool_close dialog_closeBtn"
-                                         onclick="$('#lteCellDetailDiv').hide()"></div>
-                                </div>
-                            </div>
-                            <div class="dialog_content">
-                                <div style="font-weight: bold;margin-bottom:5px">
-                                    eNodeB：<span id="VIEW_ENODEB_NAME"></span>
-                                    -&gt;小区名称：<span id="VIEW_CELL_NAME"></span>
-                                </div>
-                                <input value="同站下一小区详情" id="nextCellDetailBtn" type="button">
-                                <div>
-                                </div>
-                                <table class="greystyle-standard" id="viewCellDetailTable">
-
-                                </table>
-
-                            </div>
-                        </div>
-
-                        <div id="editLteCellMessage" class="dialog2"
-                             style="display:none;width: 800px; right: 450px; top: 32%; z-index: 30; left: 30%;">
-                            <div class="dialog_header">
-                                <div class="dialog_title">
-                                    LTE小区信息编辑
-                                </div>
-                                <div class="dialog_tool">
-                                    <div class="dialog_tool_close dialog_closeBtn"
-                                         onclick="$('#editLteCellMessage').hide()"></div>
-                                </div>
-                            </div>
-                            <div class="dialog_content" style="width:800px; background:#f9f9f9">
-                                <div style="font-weight: bold;margin-bottom:5px">
-                                    eNodeB：
-                                    <span id="editVIEW_ENODEB_NAME"></span>
-                                    &nbsp;&nbsp;&nbsp;-&gt;小区名称：
-                                    <span id="editVIEW_CELL_NAME"></span>
-                                </div>
-                                <form id="lteCellDetailForm" method="post">
-                                    <input id="lteCellIdForEdit" name="lteCellId" value="" type="hidden">
-                                    <table id="editCellDetailTable" class="main-table1 half-width" border="1"
-                                           align="center">
-
-                                    </table>
-                                    &nbsp;&nbsp;&nbsp;
-                                    <input id="btnUpdate" value="修 改" name="btnUpdate" type="button">
-                                    &nbsp;&nbsp;&nbsp;
-                                    <input id="btnReset" value="重 置" name="btnReset" type="button">
-                                </form>
-                            </div>
-                        </div>
-
-
-                    </div>
-                    <div id="div_tab_1" style="display: none;">
-                       <!-- <script type="text/javascript"
-                                src="js/lte-cell-data-import.js"></script>-->
-                        <!--<form id="formImportLteCell" enctype="multipart/form-data" method="post">
-                            <input name="needPersist" value="true" type="hidden"> <input name="systemConfig"
-                                                                                         value="true" type="hidden">
-                            <input name="fileCode" value="LTECELLFILE" type="hidden">
-                            <div>
-                                <table class="main-table1 half-width">
-                                    <tbody>
-                                    <tr>
-                                        <td class="menuTd">所属地市<span class="txt-impt">*</span>
-                                        </td>
-                                        <td style="width: 50%; font-weight: normal;" colspan="0">省：<select name="areaId"
-                                                                                                           class="required valid"
-                                                                                                           id="province-menu">
-                                        </select>
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="menuTd">LTE小区信息文件（CSV）<span class="txt-impt">*</span>
-                                            <br>
-                                        </td>
-                                        <td style="width: 50%; font-weight: bold" colspan="0"><input style="width: 44%;"
-                                                                                                     name="file"
-                                                                                                     id="idFile"
-                                                                                                     class="canclear  required"
-                                                                                                     type="file"> &nbsp;
-                                            <a href="http://192.168.6.41:8084/ops/op/rno/fileDownloadAction?fileName=LTE%E5%B0%8F%E5%8C%BA%E4%BF%A1%E6%81%AF%E5%AF%BC%E5%85%A5%E6%A8%A1%E6%9D%BF.xlsx"
-                                               title="点击下载模板" id="downloadHref">下载LTE小区导入模板</a><br>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="menuTd">导入模式<span class="txt-impt">*</span> <br>
-                                        </td>
-                                        <td><input name="attachParams['mode']" id="3" value="overwrite"
-                                                   class="canclear  required" checked="checked" type="radio"> <label
-                                                for="3"> 覆盖 </label>
-                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <input style="display:none" name="attachParams['mode']" id="32"
-                                                   value="append" class="canclear  required" type="radio"> <label
-                                                    style="display:none" for="32"> 新增 </label>
-                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <input style="display:none" name="attachParams['mode']" id="32"
-                                                   value="delete" class="canclear  required" type="radio"> <label
-                                                    style="display:none" for="32"> 删除 </label>
-
-                                            <br></td>
-                                    </tr>
-                                    </tbody>
-
-
-                                </table>
-                            </div>
-                            <div class="container-bottom" style="padding-top: 10px">
-                                <table style="width: 60%; margin: auto" align="center">
-                                    <tbody>
-                                    <tr>
-                                        <td><input value="导    入" style="width: 90px;" id="importBtn" name="import"
-                                                   type="button"> <br></td>
-
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                <div id="importResultDiv" class="container-bottom" style="padding-top: 10px"></div>
-
-
-                            </div>
-                        </form>-->
-                    </div>
+        <div id="lteCellDetailDiv" class="dialog2"
+             style="display:none;right: 450px; top: 32%; left: 30%; z-index: 30">
+            <div class="dialog_header">
+                <div class="dialog_title">
+                    LTE小区详情查看
                 </div>
+                <div class="dialog_tool">
+                    <div class="dialog_tool_close dialog_closeBtn"
+                         onclick="$('#lteCellDetailDiv').hide()"></div>
+                </div>
+            </div>
+            <div class="dialog_content">
+                <div style="font-weight: bold;margin-bottom:5px">
+                    eNodeB：<span id="VIEW_ENODEB_NAME"></span>
+                    -&gt;小区名称：<span id="VIEW_CELL_NAME"></span>
+                </div>
+                <input value="同站下一小区详情" id="nextCellDetailBtn" type="button">
+                <div>
+                </div>
+                <table class="greystyle-standard" id="viewCellDetailTable">
+
+                </table>
+
+            </div>
+        </div>
+
+        <div id="editLteCellMessage" class="dialog2"
+             style="display:none;width: 800px; right: 450px; top: 32%; z-index: 30; left: 30%;">
+            <div class="dialog_header">
+                <div class="dialog_title">
+                    LTE小区信息编辑
+                </div>
+                <div class="dialog_tool">
+                    <div class="dialog_tool_close dialog_closeBtn"
+                         onclick="$('#editLteCellMessage').hide()"></div>
+                </div>
+            </div>
+            <div class="dialog_content" style="width:800px; background:#f9f9f9">
+                <div style="font-weight: bold;margin-bottom:5px">
+                    eNodeB：
+                    <span id="editVIEW_ENODEB_NAME"></span>
+                    &nbsp;&nbsp;&nbsp;-&gt;小区名称：
+                    <span id="editVIEW_CELL_NAME"></span>
+                </div>
+                <form id="lteCellDetailForm" method="post">
+                    <input id="lteCellIdForEdit" name="lteCellId" value="" type="hidden">
+                    <table id="editCellDetailTable" class="main-table1 half-width" border="1"
+                           align="center">
+
+                    </table>
+                    &nbsp;&nbsp;&nbsp;
+                    <input id="btnUpdate" value="修 改" name="btnUpdate" type="button">
+                    &nbsp;&nbsp;&nbsp;
+                    <input id="btnReset" value="重 置" name="btnReset" type="button">
+                </form>
             </div>
         </div>
     </div>
-
-
 </div>
+
 </body>
 </html>
