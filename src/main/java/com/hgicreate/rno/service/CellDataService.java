@@ -30,7 +30,7 @@ public class CellDataService {
                 "join RNO_SYS_AREA b on (a.AREA_ID = b.ID) where ROWNUM <1001";
         sql += " and a.area_id =" + cellDataVM.getCityId();
         if(!cellDataVM.getCellId().trim().equals("")){
-            sql += " and a.cell_id = " + cellDataVM.getCellId().trim();
+            sql += " and a.cell_id = '" + cellDataVM.getCellId().trim()+"'";
         }
         if(!cellDataVM.getCellName().trim().equals("")){
             sql += " and a.cell_name like % "+cellDataVM.getCellName().trim()+" %";
