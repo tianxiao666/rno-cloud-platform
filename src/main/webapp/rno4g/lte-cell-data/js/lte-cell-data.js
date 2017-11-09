@@ -134,7 +134,7 @@ $(function () {
 
 function showQueryList(data) {
     $(".loading").css("display","none");
-        if (data === '') {
+        if (data.length ===0) {
             showInfoInAndOut('info', '没有符合条件的小区数据');
             return false;
         }
