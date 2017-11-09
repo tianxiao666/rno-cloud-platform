@@ -86,19 +86,23 @@
         </div>
         <div id="div_tab_1" style="display: none">
             <form id="importQuery" method="post">
-                <table class="display rnoHeader" >
+                <table class="main-table1 half-width" style="width: 100%; padding-top: 10px">
                     <tbody>
                     <tr>
-                        <td width="250px"><label>地市：</label>
+                        <td class="menuTd" style="text-align:center">地市</td>
+                        <td class="menuTd" style="text-align:center">上传时间</td>
+                        <td class="menuTd" style="text-align:center">状态</td>
+                    </tr>
+                    <tr>
+                        <td style=" text-align:center">
                             <select id="provinceId" name="provinceId" title=""></select>
                             <select id="cityId" name="cityId" title=""></select>
                         </td>
-                        <td width="332px"><label>上传时间 从:</label>
-                            <input id="begUploadDate" name="begUploadDate" type="text" title=""> 至：
+                        <td style="text-align: center">
+                            从：<input id="begUploadDate" name="begUploadDate" type="text" title=""> 至：
                             <input id="endUploadDate" name="endUploadDate" type="text" title="">
                         </td>
-                        <td width="30px"><label>状态:</label></td>
-                        <td width="90px">
+                        <td style="text-align: center">
                             <select id="import-status-menu" title="" name="states">
                                 <option value="全部" selected="selected">全部</option>
                                 <option value="全部成功">全部成功</option>
@@ -108,7 +112,11 @@
                                 <option value="等待解析">等待解析</option>
                             </select>
                         </td>
-                        <td width="90px">
+                    </tr>
+                    <tr>
+                        <td style="width: 10%; text-align:center" colspan="5">
+                                <span style="color:red;width:100px;font-family:华文中宋,serif;text-align:center" id="nameErrorText1"></span>
+                            <span style="color:red;width:100px;font-family:华文中宋,serif;text-align:center" id="nameErrorText2"></span>
                             <input id="queryImportDT" value="查询导入记录" type="submit" class="">
                         </td>
                     </tr>
