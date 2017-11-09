@@ -1,46 +1,30 @@
 $(function () {
+    $("#tabs").tabs();
 
-    // 执行 laydate 实例 
-    laydate.render({elem: '#begUploadDate', value: new Date(new Date().getTime() - 7 * 86400000)});
-    laydate.render({elem: '#endUploadDate', value: new Date()});
-    laydate.render({elem: '#beginTestDate', value: new Date(new Date().getTime() - 7 * 86400000), type: 'datetime'});
-    laydate.render({elem: '#endTestDate', value: new Date(), type: 'datetime'});
+    // 初始化区域联动
+    initAreaSelectors({selectors: ["provinceId", "cityId"]});
+    initAreaSelectors({selectors: ["provinceId2", "cityId2"]});
 
     //显示隐藏导入窗口
-    $("#importTitleDiv").click(function(){
+    $("#importTitleDiv").click(function () {
         var flag = $("#importDiv").is(":hidden");//是否隐藏
-        if(flag) {
+        if (flag) {
             $(".importContent").show("fast");
         } else {
             $(".importContent").hide("fast");
         }
     });
 
-    //执行 区域 实例 
-    $("#province-menu-1").change(function () {
-        var cityId = parseInt($(this).find("option:checked").val());
-        $.getJSON("../../data/area.json", function (data) {
-            renderArea(data, cityId, "city-menu-1");
-        })
-    });
-    $("#province-menu-2").change(function () {
-        var cityId = parseInt($(this).find("option:checked").val());
-        $.getJSON("../../data/area.json", function (data) {
-            renderArea(data, cityId, "city-menu-2");
-        })
-    });
+    // 执行 laydate 实例 
+    laydate.render({elem: '#begUploadDate', value: new Date(new Date().getTime() - 7 * 86400000)});
+    laydate.render({elem: '#endUploadDate', value: new Date()});
+    laydate.render({elem: '#beginTestDate', value: new Date(new Date().getTime() - 7 * 86400000)});
+    laydate.render({elem: '#endTestDate', value: new Date()});
 
-    //初始化区域
-    $.ajax({
-        url: "../../data/area.json",
-        dataType: "json",
-        async: false,
-        success: function (data) {
-            renderArea(data, 0, "province-menu-1");
-            renderArea(data, 0, "province-menu-2");
-            $("#province-menu-1").change();
-            $("#province-menu-2").change();
-        }
+    // AJAX 提交查询条件表单
+    $("#import-query-form").ajaxForm({
+        url: "/api/lte-traffic-data/query-import",
+        success: showQueryImportResult
     });
 
     // AJAX 上传文件
@@ -48,8 +32,8 @@ $(function () {
     var bar = $('.bar');
     var percent = $('.percent');
 
-    $("#formImportData").ajaxForm({
-        url: "/api/lte-traffic-stats/upload-file",
+    $("#file-upload-form").ajaxForm({
+        url: "/api/lte-traffic-data/upload-file",
         beforeSend: function () {
             progress.css("display", "block");
             var percentVal = '0%';
@@ -70,84 +54,75 @@ $(function () {
 
     // 当上传文件域改变时，隐藏进度条
     $("input[name='file']").change(function () {
-        var filename = fileid.value;
-        if(!(filename.toUpperCase().endsWith(".CSV")||filename.toUpperCase().endsWith(".XLS")
-                || filename.toUpperCase().endsWith(".XLSX") || filename.toUpperCase().endsWith(".XML")
-                || filename.toUpperCase().endsWith(".TXT") || filename.toUpperCase().endsWith(".ZIP"))){
-            $("#fileDiv").html("不支持该类型文件！");
-            return false;
-        }else {
-            $("#fileDiv").html("");
-        }
         progress.css("display", "none");
     });
 
-    $("#queryBtn-1").click(function () {
-        $('#queryResultTab-1').css("line-height", "12px");
-        $('#queryResultTab-1').DataTable( {
-            "ajax": "data/lte-traffic-stats-record.json",
+    $("#searchDtBtnDT").click(function () {
+        $('#dtDataResultDT').css("line-height", "12px")
+            .DataTable({
+                "ajax": "data/lte-traffic-stats-list.json",
+                "columns": [
+                    { data: "AREA_ID" },
+                    { data: "BEGINTIME" },
+                    { data: "ENDTIME" },
+                    { data: "INFOMODELREFERENCED" },
+                    { data: "DNPREFIX" },
+                    { data: "SENDERNAME" },
+                    { data: "VENDORNAME" },
+                    { data: "JOBID" },
+                    { data: "CNT" },
+                    { data: "CREATE_TIME" }
+                ],
+                "lengthChange": true,
+                "ordering": false,
+                "searching": true,
+                "language": {
+                    url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
+                }
+            });
+    });
+});
+
+
+function showQueryImportResult(data) {
+    $('#queryRecordResTab').css("line-height", "12px")
+        .DataTable({
+            "data": data,
             "columns": [
-                { data: "cityId" },
+                { data: "cityName" },
                 { data: "uploadTime" },
                 { data: "fileName" },
                 { data: "fileSize" },
                 { data: "launchTime" },
                 { data: "completeTime" },
                 { data: "account" },
-                { data: "fileStatus" }
+                {"data": null}
+            ],
+            "columnDefs": [
+                {"render": function (data, type, row) {
+                    switch (row['fileStatus']) {
+                        case "部分失败":
+                            return "<a style='color: red' <!--onclick='showImportDetail()'-->>" + row['fileStatus'] + "</a>";
+                        case "全部失败":
+                            return "<a style='color: red'>" + row['fileStatus'] + "</a>";
+                        case "全部成功":
+                            return "<a>" + row['fileStatus'] + "</a>";
+                        case "正在解析":
+                            return "<a>" + row['fileStatus'] + "</a>";
+                        case "等待解析":
+                            return "<a>" + row['fileStatus'] + "</a>";
+                        }
+                    },
+                "targets": -1,
+                "data": null
+                }
             ],
             "lengthChange": false,
-            "ordering": true,
-            "searching": true,
+            "ordering": false,
+            "searching": false,
+            "destroy": true,
             "language": {
                 url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
             }
-        } );
-    });
-
-    $("#queryBtn-2").click(function () {
-        $('#queryResultTab-2').css("line-height", "12px");
-        $('#queryResultTab-2').DataTable( {
-            "ajax": "data/lte-traffic-stats-list.json",
-            "columns": [
-                { data: "AREA_ID" },
-                { data: "BEGINTIME" },
-                { data: "ENDTIME" },
-                { data: "INFOMODELREFERENCED" },
-                { data: "DNPREFIX" },
-                { data: "SENDERNAME" },
-                { data: "VENDORNAME" },
-                { data: "JOBID" },
-                { data: "CNT" },
-                { data: "CREATE_TIME" }
-            ],
-            "lengthChange": false,
-            "ordering": true,
-            "searching": true,
-            "language": {
-                url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
-            }
-        } );
-    })
-
-});
-
-// 渲染区域
-function renderArea(data, parentId, areaMenu) {
-    var arr = data.filter(function (v) {
-        return v.parentId === parentId;
-    });
-    if (arr.length > 0) {
-        var areaHtml = [];
-        $.each(arr, function (index) {
-            var area = arr[index];
-            areaHtml.push("<option value='" + area.id + "'>");
-            areaHtml.push(area.name + "</option>");
         });
-        $("#" + areaMenu).html(areaHtml.join(""));
-
-    } else {
-        console.log("父ID为" + parentId + "时未找到任何下级区域。");
-    }
-
 }
