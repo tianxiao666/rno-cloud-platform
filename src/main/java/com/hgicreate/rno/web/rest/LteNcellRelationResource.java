@@ -3,8 +3,10 @@ package com.hgicreate.rno.web.rest;
 import com.hgicreate.rno.repository.NcellRepository;
 import com.hgicreate.rno.service.LteNcellRelationService;
 import com.hgicreate.rno.service.dto.DataCollectDTO;
+import com.hgicreate.rno.service.dto.LteNcellImportDtDTO;
 import com.hgicreate.rno.service.dto.LteNcellRelationDTO;
 import com.hgicreate.rno.web.rest.vm.FileUploadVM;
+import com.hgicreate.rno.web.rest.vm.LteNcellImportDtQueryVM;
 import com.hgicreate.rno.web.rest.vm.LteNcellImportQueryVM;
 import com.hgicreate.rno.web.rest.vm.LteNcellRelationQueryVM;
 import lombok.extern.slf4j.Slf4j;
@@ -43,10 +45,17 @@ public class LteNcellRelationResource {
     }
 
     @PostMapping("/ncell-import-query")
-    public List<DataCollectDTO> queryImport(LteNcellImportQueryVM vm){
+    public List<DataCollectDTO> importQuery(LteNcellImportQueryVM vm){
         log.debug("查询 DT 文件导入记录。");
         log.debug("视图模型: " + vm);
         return lteNcellRelationService.queryImport(vm);
+    }
+
+    @PostMapping("/ncell-import-data-query")
+    public List<LteNcellImportDtDTO> ncellDataQuery(LteNcellImportDtQueryVM vm){
+        log.debug("查询 DT 文件导入记录。");
+        log.debug("视图模型: " + vm);
+        return lteNcellRelationService.queryImportDt(vm);
     }
 
     @GetMapping("/deleteByCellIdAndNcellId")

@@ -2,8 +2,10 @@ package com.hgicreate.rno.service;
 
 import com.hgicreate.rno.dao.LteNcellRelationDao;
 import com.hgicreate.rno.service.dto.DataCollectDTO;
+import com.hgicreate.rno.service.dto.LteNcellImportDtDTO;
 import com.hgicreate.rno.service.dto.LteNcellRelationDTO;
 import com.hgicreate.rno.service.mapper.LteNcellRelationMapper;
+import com.hgicreate.rno.web.rest.vm.LteNcellImportDtQueryVM;
 import com.hgicreate.rno.web.rest.vm.LteNcellImportQueryVM;
 import com.hgicreate.rno.web.rest.vm.LteNcellRelationQueryVM;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,13 @@ public class LteNcellRelationService {
         dtoList.add(new DataCollectDTO(2, "广州市", "2015-9-28 18:18:41",
                 "天河小区邻区数据.csv", "19490250", "2015-9-28 18:19:03",
                 "2015-9-28 18:19:35", "liu.yp@iscreate.com", "全部成功"));
+        return dtoList;
+    }
+
+    public List<LteNcellImportDtDTO> queryImportDt(LteNcellImportDtQueryVM vm){
+        List<LteNcellImportDtDTO> dtoList = new ArrayList<>();
+        dtoList.add(new LteNcellImportDtDTO("广州市", "2015-9-28 18:19:03","数据业务",
+                "城区","棠下小区邻区数据.csv","100","2015-10-9 11:35:49"));
         return dtoList;
     }
 }

@@ -1,13 +1,26 @@
 $(function () {
     //tab选项卡
-    tab("div_tab", "li", "onclick");//项目服务范围类别切换
+    $("#tabs").tabs();//项目服务范围类别切换
 
     // 执行 laydate 实例 
     laydate.render({elem: '#begUploadDate', value: new Date(new Date().getTime() - 7 * 86400000)});
     laydate.render({elem: '#endUploadDate', value: new Date()});
+    laydate.render({elem: '#begUploadDate2', value: new Date(new Date().getTime() - 7 * 86400000)});
+    laydate.render({elem: '#endUploadDate2', value: new Date()});
 
     // 初始化区域联动
     initAreaSelectors({selectors: ["provinceId", "cityId"]});
+    initAreaSelectors({selectors: ["provinceId2", "cityId2"]});
+
+    //显示隐藏导入窗口
+    $("#importTitleDiv").click(function () {
+        var flag = $("#importDiv").is(":hidden");//是否隐藏
+        if (flag) {
+            $(".importContent").show("fast");
+        } else {
+            $(".importContent").hide("fast");
+        }
+    });
 
     //验证邻区关系查询条件
     $("#queryBtn").click(function () {
@@ -43,6 +56,12 @@ $(function () {
     $("#importQuery").ajaxForm({
         url: "/api/lte-ncell-relation/ncell-import-query",
         success: showNcellImportResult
+    });
+
+    //AJAX 提交邻区关系数据查询条件表单
+    $("#searchNcellDtForm").ajaxForm({
+        url: "/api/lte-ncell-relation/ncell-import-data-query",
+        success: showNcellImportDtResult
     });
 
     // AJAX 上传文件
@@ -106,6 +125,9 @@ function showNcellRelationResult(data) {
             "data": null
         }
         ],
+        "lengthChange": false,
+        "ordering": false,
+        "searching": false,
         "destroy":true,
         "language": {
             url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
@@ -153,6 +175,38 @@ function showNcellImportResult(data) {
             "data": null
         }
         ],
+        "lengthChange": false,
+        "ordering": false,
+        "searching": false,
+        "destroy":true,
+        "language": {
+            url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
+        }
+    });
+}
+
+//显示邻区关系数据查询结果
+function showNcellImportDtResult(data) {
+    $(".loading").css("display","none");
+    if (data == '') {
+        showInfoInAndOut('info', '没有符合条件的邻区关系');
+    }
+
+    $('#queryDataResultDT').css("line-height", "12px");
+    $('#queryDataResultDT').DataTable({
+        "data": data,
+        "columns": [
+            {"data": "areaName"},
+            {"data": "meaTime"},
+            {"data": "dataType"},
+            {"data": "areaType"},
+            {"data": "fileName"},
+            {"data": "recordCount"},
+            {"data": "createTime"}
+        ],
+        "lengthChange": false,
+        "ordering": false,
+        "searching": false,
         "destroy":true,
         "language": {
             url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
