@@ -68,9 +68,10 @@ var currentCellArray = null;
 var currentIndex = 0;
 
 $(function () {
-
     //tab选项卡
     $("#tabs").tabs();//项目服务范围类别切换
+
+    //查询前输入校验
     $("#queryBtn").click(function () {
         $(".loading").show();
         var reg = /^[0-9]+.?[0-9]*$/;
@@ -84,6 +85,8 @@ $(function () {
             return false;
         }
     });
+
+    //查询小区信息
     $("#conditionForm").ajaxForm({
         url: "/api/lte-cell-data/cell-query",
         success: showQueryList,
@@ -95,10 +98,23 @@ $(function () {
     //初始化区域
     initAreaSelectors({selectors: ["provinceId", "cityId"]});
     initAreaSelectors({selectors: ["provinceId2", "cityId2"]});
+    initAreaSelectors({selectors: ["provinceId3", "cityId3"]});
 
     // 执行 laydate 实例 
     laydate.render({elem: '#begUploadDate', value: new Date(new Date().getTime() - 7 * 86400000)});
     laydate.render({elem: '#endUploadDate', value: new Date()});
+    laydate.render({elem: '#beginJobDate', value: new Date(new Date().getTime() - 7 * 86400000)});
+    laydate.render({elem: '#endJobDate', value: new Date()});
+
+    //显示隐藏导入窗口
+    $("#importTitleDiv").click(function () {
+        var flag = $("#importDiv").is(":hidden");//是否隐藏
+        if (flag) {
+            $(".importContent").show("fast");
+        } else {
+            $(".importContent").hide("fast");
+        }
+    });
 
     //下一小区详情
     $("#nextCellDetailBtn").click(function () {
@@ -107,7 +123,6 @@ $(function () {
             currentIndex = 0;
         }
         showCellDetail(currentIndex);
-
     });
 
     //重置当前编辑lte小区详情
@@ -140,6 +155,7 @@ $(function () {
     var bar = $('.bar');
     var percent = $('.percent');
 
+    //导入文件类型判断
     $("#importBtn").click(function () {
         var path = $("#file").val();
         if (path.substring(path.lastIndexOf("."), path.length).toLowerCase() !== '.csv') {
@@ -153,6 +169,7 @@ $(function () {
         progress.css("display", "none");
     });
 
+    //上传
     $("#file-upload-form").ajaxForm({
         url: "/api/lte-cell-data/upload-file",
         beforeSend: function () {
@@ -176,10 +193,16 @@ $(function () {
         }
     });
 
-    // AJAX 提交查询条件表单
+    // AJAX 查询导入记录
     $("#import-query-form").ajaxForm({
         url: "/api/lte-cell-data/query-import",
         success: showImportRecord
+    });
+
+    //查询数据记录
+    $("#searchRecordForm").ajaxForm({
+       url: "/api/lte-cell-data/query-record",
+        success: showRecord
     });
 
 });
@@ -373,7 +396,7 @@ function showCellDetail(index) {
             html += "<tr>";
         }
         onekey = chineseToCode[i];
-        var value = cell[onekey['code']] === undefined ? ' ' : cell[onekey['code']];
+        var value = cell[onekey['code']] === undefined ||cell[onekey['code']] === null ? ' ' : cell[onekey['code']];
         html += "<td class='menuTd'>" + onekey['name']
             + " : " + value + "</td>";
     }
@@ -515,5 +538,66 @@ function updateLteCellDetail(submitOK) {
 }
 
 function showImportRecord(data) {
+    $('#queryRecordResTab').css("line-height", "12px")
+        .DataTable({
+            "data": data,
+            "columns": [
+                {"data": "areaName"},
+                {"data": "uploadTime"},
+                {"data": "filename"},
+                {"data": "fileSize"},
+                {"data": "launchTime"},
+                {"data": "completeTime"},
+                {"data": "account"},
+                {"data": null}
+            ],
+            "columnDefs": [{
+                "render": function (data, type, row) {
+                    switch (row['fileStatus']) {
+                        case "部分失败":
+                            return "<a style='color: red' onclick='showImportDetail()'>" + row['fileStatus'] + "</a>";
+                        case "全部失败":
+                            return "<a style='color: red' onclick='showImportDetail()'>" + row['fileStatus'] + "</a>";
+                        case "全部成功":
+                            return "<a onclick='showImportDetail()'>" + row['fileStatus'] + "</a>";
+                        case "正在解析":
+                            return "<a onclick='showImportDetail()'>" + row['fileStatus'] + "</a>";
+                        case "等待解析":
+                            return "<a onclick='showImportDetail()'>" + row['fileStatus'] + "</a>";
+                    }
+                },
+                "targets": -1,
+                "data": null
+            }
+            ],
+            "lengthChange": false,
+            "ordering": false,
+            "searching": false,
+            "destroy": true,
+            "language": {
+                url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
+            }
+        });
+}
 
+function showRecord(data) {
+    $('#recordResult').css("line-height", "12px")
+        .DataTable({
+            "data": data,
+            "columns": [
+                {"data": "areaName"},
+                {"data": "beginTime"},
+                {"data": "endTime"},
+                {"data": "jobId"},
+                {"data": "dataNum"},
+                {"data": "sysTime"}
+            ],
+            "lengthChange": false,
+            "ordering": false,
+            "searching": false,
+            "destroy": true,
+            "language": {
+                url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
+            }
+        });
 }

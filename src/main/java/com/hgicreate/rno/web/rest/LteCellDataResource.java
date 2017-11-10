@@ -5,6 +5,7 @@ import com.hgicreate.rno.repository.LteCellDataRepository;
 import com.hgicreate.rno.service.LteCellDataService;
 import com.hgicreate.rno.service.dto.DataCollectDTO;
 import com.hgicreate.rno.service.dto.LteCellDataDTO;
+import com.hgicreate.rno.service.dto.LteCellDataRecordDTO;
 import com.hgicreate.rno.web.rest.vm.LteCellDataVM;
 import com.hgicreate.rno.web.rest.vm.FileUploadVM;
 import lombok.extern.slf4j.Slf4j;
@@ -108,6 +109,11 @@ public class LteCellDataResource {
     @PostMapping("/query-import")
     public List<DataCollectDTO> queryImport(LteCellDataVM vm) {
         log.debug("视图模型: " + vm);
-        return null;
+        return lteCellDataService.queryFileUploadRecord();
+    }
+
+    @PostMapping("/query-record")
+    public List<LteCellDataRecordDTO> queryRecord(){
+        return lteCellDataService.queryRecord();
     }
 }

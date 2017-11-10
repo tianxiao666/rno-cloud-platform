@@ -275,5 +275,5 @@ $(window).resize(function() {
 //获取门户主体高度
 function windowsResize() {
     var docH = document.documentElement.clientHeight;
-    $("#maindiv").css("height", docH - 95 - 40);
+    $("#mainDiv").css("height", docH - 95 - 40);
 }
