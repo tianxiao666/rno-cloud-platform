@@ -69,7 +69,7 @@ $(function () {
     $("#searchDtBtnDT").click(function () {
         $('#dtDataResultDT').css("line-height", "12px")
             .DataTable({
-                "ajax": "data/lte-traffic-stats-list.json",
+                "ajax": "data/lte-traffic-data-list.json",
                 "columns": [
                     { data: "AREA_ID" },
                     { data: "BEGINTIME" },
