@@ -80,16 +80,14 @@ public class LteNcellRelationResource {
             log.debug("上传的文件名：{}", filename);
 
             // 如果目录不存在则创建目录
-            directory += "/"+vm.getModuleName();
-            System.out.println(directory);
-            File fileDirectory = new File(directory);
+            File fileDirectory = new File(directory+"/"+vm.getModuleName());
             if (!fileDirectory.exists() && !fileDirectory.mkdirs()) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
 
             // 以随机的 UUID 为文件名存储在本地
             filename = UUID.randomUUID().toString()+".csv";
-            String filepath = Paths.get(directory, filename).toString();
+            String filepath = Paths.get(directory+"/"+vm.getModuleName(), filename).toString();
 
             log.debug("存储的文件名：{}", filename);
 
