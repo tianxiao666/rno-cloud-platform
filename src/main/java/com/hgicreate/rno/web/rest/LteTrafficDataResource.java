@@ -3,7 +3,7 @@ package com.hgicreate.rno.web.rest;
 import com.hgicreate.rno.service.LteTrafficDataService;
 import com.hgicreate.rno.service.dto.LteTrafficDataDTO;
 import com.hgicreate.rno.web.rest.vm.FileUploadVM;
-import com.hgicreate.rno.web.rest.vm.TrafficImportQueryVM;
+import com.hgicreate.rno.web.rest.vm.LteTrafficImportQueryVM;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -33,7 +33,7 @@ public class LteTrafficDataResource {
     }
 
     @PostMapping("/query-import")
-    public List<LteTrafficDataDTO> queryImport(TrafficImportQueryVM vm) {
+    public List<LteTrafficDataDTO> queryImport(LteTrafficImportQueryVM vm) {
         log.debug("查询 DT 文件导入记录。");
         log.debug("视图模型: " + vm);
         return lteTrafficDataService.queryTrafficDataCollectDTOs();
