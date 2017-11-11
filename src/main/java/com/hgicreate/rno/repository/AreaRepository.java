@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface AreaRepository extends JpaRepository<Area, Long> {
 
-    public List<Area> findAllByParentId(long parentId);
+    public List<Area> findAllByParentId(Long parentId);
 
 }

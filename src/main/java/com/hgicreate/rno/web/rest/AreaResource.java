@@ -23,7 +23,7 @@ public class AreaResource {
     }
 
     @GetMapping("/areas")
-    public List<AreaDTO> getAllAreas(long parentId) {
+    public List<AreaDTO> getAllAreas(Long parentId) {
         return areaService.getAreasByParentId(parentId);
     }
 }

@@ -19,8 +19,8 @@ public class Area implements Serializable {
     private Long id;
 
     private String name;
-    private int areaLevel;
-    private long parentId;
-    private double longitude;
-    private double latitude;
+    private Integer areaLevel;
+    private Long parentId;
+    private Double longitude;
+    private Double latitude;
 }

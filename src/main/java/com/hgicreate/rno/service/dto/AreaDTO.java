@@ -7,8 +7,8 @@ public class AreaDTO {
     private Long id;
 
     private String name;
-    private int level;
-    private long parentId;
-    private double longitude;
-    private double latitude;
+    private Integer level;
+    private Long parentId;
+    private Double longitude;
+    private Double latitude;
 }

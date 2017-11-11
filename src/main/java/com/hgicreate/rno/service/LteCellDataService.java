@@ -1,16 +1,23 @@
 package com.hgicreate.rno.service;
 
-import com.hgicreate.rno.dao.LteCellDataDao;
+import com.hgicreate.rno.domain.Area;
+import com.hgicreate.rno.domain.Cell;
+import com.hgicreate.rno.repository.LteCellDataRepository;
 import com.hgicreate.rno.service.dto.DataCollectDTO;
 import com.hgicreate.rno.service.dto.LteCellDataDTO;
 import com.hgicreate.rno.service.dto.LteCellDataRecordDTO;
+import com.hgicreate.rno.service.mapper.LteCellDataMapper;
 import com.hgicreate.rno.web.rest.vm.LteCellDataVM;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -18,14 +25,33 @@ import java.util.List;
 @Transactional
 public class LteCellDataService {
 
-    private final LteCellDataDao lteCellDataDao;
 
-    public LteCellDataService( LteCellDataDao lteCellDataDao) {
-        this.lteCellDataDao = lteCellDataDao;
+    private final LteCellDataRepository lteCellDataRepository;
+
+    public LteCellDataService(LteCellDataRepository lteCellDataRepository) {
+        this.lteCellDataRepository = lteCellDataRepository;
     }
 
+
     public List<LteCellDataDTO> queryLteCell(LteCellDataVM lteCellDataVM){
-       return  lteCellDataDao.queryLteCellByCondition(lteCellDataVM);
+        Cell cell = new Cell();
+        Area area = new Area();
+        area.setId(Long.parseLong(lteCellDataVM.getCityId()));
+        cell.setArea(area);
+
+        if(!lteCellDataVM.getCellId().trim().equals("")){
+            cell.setCellId(lteCellDataVM.getCellId().trim());
+        }
+        cell.setCellName(lteCellDataVM.getCellName().trim());
+        ExampleMatcher matcher =  ExampleMatcher.matching()
+                    .withMatcher("cellName", ExampleMatcher.GenericPropertyMatcher::contains)
+                    .withIgnoreNullValues();
+        if(!lteCellDataVM.getPci().trim().equals("")){
+            cell.setPci(lteCellDataVM.getPci().trim());
+        }
+        Example<Cell> example = matcher==null?Example.of(cell): Example.of(cell, matcher);
+        List<Cell> cells =lteCellDataRepository.findAll(example, new PageRequest(0,1000)).getContent();
+        return cells.stream().map(LteCellDataMapper.INSTANCE::lteCellDataToLteCellDto).collect(Collectors.toList());
     }
 
     public List<DataCollectDTO> queryFileUploadRecord(){

@@ -218,18 +218,18 @@ function showQueryList(data) {
         "data": data,
         // /api/lte-cell-data/cell-query
         "columns": [
-            {"data": 1},
-            {"data": 0},
-            {"data": 2},
-            {"data": 3},
-            {"data": 4},
-            {"data": 5},
-            {"data": 6},
+            {"data": "areaName"},
+            {"data": "cellId"},
+            {"data": "cellName"},
+            {"data": "pci"},
+            {"data": "bandWidth"},
+            {"data": "earfcn"},
+            {"data": "azimuth"},
             {"data": null}
         ],
         "columnDefs": [{
-            "render": function (data) {
-                var cellId = data[0];
+            "render": function (row) {
+                var cellId = row['cellId'];
                 return "<a onclick=\"showDetail('" + cellId + "')\">查询详情</a>&nbsp;&nbsp;&nbsp;"
                     + "<a onclick=\"showEditor('" + cellId + "')\">编辑</a>&nbsp;&nbsp;&nbsp;"
                     + "<a onclick=\"deleteCell('" + cellId + "')\">删除</a>";
@@ -524,6 +524,13 @@ function updateLteCellDetail(submitOK) {
                     console.log(flag);
                     if (flag === "true") {
                         showInfoInAndOut("info", "更新成功！");
+                        $("#conditionForm").ajaxForm({
+                            url: "/api/lte-cell-data/cell-query",
+                            success: showQueryList,
+                            error: function (err) {
+                                console.log(err);
+                            }
+                        });
                         $("#editLteCellMessage").hide();
                     } else {
                         showInfoInAndOut("info", "更新失败！");

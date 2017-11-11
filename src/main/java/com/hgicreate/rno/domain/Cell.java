@@ -2,9 +2,7 @@ package com.hgicreate.rno.domain;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -17,7 +15,6 @@ public class Cell {
 	private String cellName;
 	private String enodebId;
     private String eci;
-    private String areaId;
     private String manufacturer;
 	private String tac;
 	private String bandType;
@@ -39,4 +36,8 @@ public class Cell {
 	private String relatedParam;
 	private String relatedResouce;
 	private String stationSpace;
+
+	@OneToOne
+    @JoinColumn(name = "area_id", referencedColumnName = "id")
+	private Area area;
 }
