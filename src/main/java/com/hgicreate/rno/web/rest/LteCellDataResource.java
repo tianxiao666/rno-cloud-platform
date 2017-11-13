@@ -40,12 +40,12 @@ public class LteCellDataResource {
 
     @PostMapping("/cell-query")
     public List<LteCellDataDTO> cellQuery(LteCellDataVM lteCellDataVM) {
-        log.debug("查询条件：省="
-                + lteCellDataVM.getProvinceId() + ",市="
-                + lteCellDataVM.getCityId() + "，LTE CELL ID="
-                + lteCellDataVM.getCellId() + "，LTE CELL名称="
-                + lteCellDataVM.getCellName() + "，小区PCI="
-                + lteCellDataVM.getPci());
+        log.debug("查询条件：省={}，市={}，cellId={}, cell名称={},pci={}",
+                lteCellDataVM.getProvinceId() ,
+                lteCellDataVM.getCityId() ,
+                lteCellDataVM.getCellId() ,
+                lteCellDataVM.getCellName() ,
+                lteCellDataVM.getPci());
         return lteCellDataService.queryLteCell(lteCellDataVM);
     }
 
