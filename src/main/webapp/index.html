@@ -2,61 +2,44 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <link rel="shortcut icon" href="favicon.ico">
     <title>怡创移动通信4G网络优化软件平台</title>
+    <link rel="shortcut icon" href="favicon.ico">
     <link rel="stylesheet" href="css/index.css"/>
     <script src="lib/jquery/3.2.1/jquery.js"></script>
-    <script>
-        $(function () {
-            //初始化菜单
-            $.ajax({
-                url: "data/menu.json",
-                dataType: "json",
-                async: false,
-                success: function (data) {
-                    renderMenu(data);
-                }
-            });
-        })
-    </script>
     <script src="js/common.js"></script>
     <script src="js/index.js"></script>
 </head>
 <body>
-<div class="header">
-    <div class="rno4g_name"></div>
-    <div class="header_nav">
-        <div class="user_config_nav">
-            <div class="user_config_div">
-                <input id="saveUserConfigBtn" type="button" value="设置默认"/> 默认区域：
-                <select id="provinceMenu" title=""></select>
-                <select id="cityMenu" title=""></select>
-            </div>
+<header>
+    <div class="logo"></div>
+    <div class="header-info">
+        <div class="user-default">
+            <label for="province">默认区域：</label>
+            <select id="province"></select>
+            <select id="city" title=""></select>
+            <button id="saveBtn">设置默认</button>
         </div>
-        <div class="tool_bar">
+        <div class="user-info">
             <b>网优开发，欢迎您！</b>
-            <a href="#" onclick="$('#mainIFrame').attr('src','working.html')">我的设置</a>
+            <a href="#" onclick="$('#iframe').attr('src','working.html')">我的设置</a>
             <span class="quit">
                 <a href="login.html">退出</a>
             </span>
         </div>
+        <div id="now"></div>
     </div>
-    <div id="nowTime" class="nowTime"></div>
-</div>
-<div id="container">
-    <div class="main_nav">
-        <ul id="navMenu"></ul>
-    </div>
-    <div id="mainDiv">
-        <iframe scrolling="auto" id="mainIFrame" frameborder="0" src=""></iframe>
-    </div>
-</div>
-<div class="footer">
-    怡创移动通信4G网络优化软件平台 V1.0.0
-    <a href="/" target="_blank" class="textUnderLine space">使用说明书下载</a>
-    <span>维护热线: 020-28817300-201</span>
-    <span>Copyright © 广东海格怡创科技有限公司 | </span>
-    <a href="http://www.miitbeian.gov.cn/" target="_blank" class="textUnderLine">粤ICP备12023904号</a>
-</div>
+</header>
+<nav>
+    <ul id="menu"></ul>
+</nav>
+<main id="main">
+    <iframe id="iframe"></iframe>
+</main>
+<footer>
+    <span>怡创移动通信4G网络优化软件平台 V1.0.0</span>
+    <a href="#" target="_blank">使用说明书下载</a>
+    <span>维护热线: 020-28817300-201 Copyright © 广东海格怡创科技有限公司 |</span>
+    <a href="http://www.miitbeian.gov.cn/" target="_blank">粤ICP备12023904号</a>
+</footer>
 </body>
 </html>

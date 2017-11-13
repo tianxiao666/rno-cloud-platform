@@ -4,18 +4,28 @@ var secondLevelMenuSelected = "";
 var thirdLevelMenuSelected = "";
 
 $(function () {
+    //初始化菜单
+    $.ajax({
+        url: "data/menu.json",
+        dataType: "json",
+        async: false,
+        success: function (data) {
+            renderMenu(data);
+        }
+    });
+
     //初始化区域联动
-    initAreaSelectors({ selectors: ["provinceMenu", "cityMenu"] });
+    initAreaSelectors({ selectors: ["province", "city"] });
 
     //初始化内容显示区域高度
     var clientHeight = document.documentElement.clientHeight;
-    $("#mainDiv").css("height", clientHeight - 95 - 40);
+    $("#main").css("height", clientHeight - 95 - 40);
 
     onLoadOpenHomeTab();
 
-    var $navMenu = $("#navMenu");
+    var $menu = $("#menu");
     //鼠标悬停在一级菜单时，显示二级菜单，当鼠标离开时，收起二级菜单
-    $navMenu.find(">li").hover(function () {
+    $menu.find(">li").hover(function () {
         $(this).children("ul").css("display", "block");
         if (firstLevelMenuSelected !== $(this).attr("id")) {
             $(this).addClass("firstLevelMenuOn");
@@ -28,7 +38,7 @@ $(function () {
     });
 
     //鼠标悬停在二级菜单时，显示三级菜单，当鼠标离开时，收起三级菜单
-    $navMenu.find(">li>ul>li").hover(function () {
+    $menu.find(">li>ul>li").hover(function () {
         $(this).children("ul").css({
             "display": "block",
             "float": "left",
@@ -48,7 +58,7 @@ $(function () {
     });
 
     //鼠标悬停在三级菜单时改变菜单的样式，提高用户体验
-    $navMenu.find(">li>ul>li>ul>li").hover(function () {
+    $menu.find(">li>ul>li>ul>li").hover(function () {
         if ($(this).attr("id") !== thirdLevelMenuSelected) {
             $(this).addClass("thirdLevelMenuOn");
         }
@@ -60,7 +70,7 @@ $(function () {
 
     var i = 0;
     //鼠标点击二级菜单，窗口加载相应的模块
-    $navMenu.find(">li>ul>li").click(function () {
+    $menu.find(">li>ul>li").click(function () {
         var cl = "secondLevelMenu" + " " + "secondLevelMenuOn";
         var cl1 = $(this).attr("class");
         var cl2 = "secondLevelMenu" + " " + "secondLevelMenuSelected";
@@ -70,7 +80,7 @@ $(function () {
 
             var href = $(this).children("input").val();
 
-            $("#mainIFrame").attr("src", href);
+            $("#iframe").attr("src", href);
 
             //删除原来选中的菜单的选中样式
             if (localStorage['selectedMenuRank'] == 2) {
@@ -96,11 +106,11 @@ $(function () {
     });
 
     //鼠标点三级级菜单，窗口加载相应的模块
-    $navMenu.find(">li>ul>li>ul>li").click(function () {
+    $menu.find(">li>ul>li>ul>li").click(function () {
 
         var href = $(this).children("input").val();
 
-        $("#mainIFrame").attr("src", href);
+        $("#iframe").attr("src", href);
 
         //删除原来选中的菜单的选中样式
         $("li[class$='thirdLevelMenuSelected']").removeClass("thirdLevelMenuSelected");
@@ -129,12 +139,12 @@ $(function () {
     });
 
     //保存设置信息事件
-    $("#saveUserConfigBtn").click(function () {
+    $("#saveBtn").click(function () {
         saveUserConfig();
     });
 
     //时间显示
-    nowTime(document.getElementById('nowTime'));
+    nowTime(document.getElementById('now'));
 
     function saveMenuId(rank, menuId) {
         if (localStorage['selectedMenuRank'] === "3") {
@@ -194,12 +204,11 @@ function nowTime(ev, type) {
 
 //保存用户配置
 function saveUserConfig() {
-    var cityId = $("#cityMenu").val();
     $.ajax({
-        url: "saveUserConfigAction",
+        url: "/api/save-default-city",
         type: "POST",
         data: {
-            'cityId': cityId
+            'areaId': $("#city").val()
         },
         dataType: 'json',
         success: function () {
@@ -215,7 +224,7 @@ function onLoadOpenHomeTab() {
     var $selectedMenuId;
 
     if (selectedMenuId === "") {
-        $selectedMenuId = $("#navMenu").find(">li>ul>li").eq(0);
+        $selectedMenuId = $("#menu").find(">li>ul>li").eq(0);
     } else {
         $selectedMenuId = $("#" + selectedMenuId);
     }
@@ -228,7 +237,7 @@ function onLoadOpenHomeTab() {
         $selectedMenuId.addClass("thirdLevelMenuSelected");
     }
     var href = $selectedMenuId.children("input").val();
-    $("#mainIFrame").attr("src", href);
+    $("#iframe").attr("src", href);
 }
 
 // 渲染菜单
@@ -261,7 +270,7 @@ function renderMenu(data) {
         });
         menuHtml.push("</ul>");
     });
-    $("#navMenu").html(menuHtml.join(""));
+    $("#menu").html(menuHtml.join(""));
 }
 
 //浏览器大小变化时修改门户主体高度
@@ -275,5 +284,5 @@ $(window).resize(function() {
 //获取门户主体高度
 function windowsResize() {
     var docH = document.documentElement.clientHeight;
-    $("#mainDiv").css("height", docH - 95 - 40);
+    $("#main").css("height", docH - 95 - 40);
 }

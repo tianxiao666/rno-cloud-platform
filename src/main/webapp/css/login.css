@@ -62,16 +62,6 @@ a:hover {
     text-decoration: underline;
 }
 
-.clearfix::after, .clearfix::before {
-    display: block;
-    overflow: hidden;
-    height: 0;
-}
-
-.clearfix::after {
-    clear: both;
-}
-
 .login_main {
     margin-top: 45px;
     height: 455px;
@@ -91,7 +81,7 @@ a:hover {
     margin-bottom: 7px;
     width: 600px;
     height: 60px;
-    background: url("../img/hgicreate-rno-logo.png") 0 0 / contain no-repeat;
+    background: url("../images/hgicreate-rno-logo.png") 0 0 / contain no-repeat;
 }
 
 .login4g_header {
@@ -101,7 +91,7 @@ a:hover {
     margin-bottom: 7px;
     width: 556px;
     height: 52px;
-    background: url("../img/hgicreate-rno4g-logo.png") 0 0 / contain no-repeat;
+    background: url("../images/hgicreate-rno4g-logo.png") 0 0 / contain no-repeat;
 }
 
 .login_block {
@@ -126,7 +116,7 @@ a:hover {
     float: left;
     height: 49px;
     border-right: 1px solid rgb(183, 194, 201);
-    background: url("../img/login_block.png") repeat-x 0 0;
+    background: url("../images/login_block.png") repeat-x 0 0;
     color: rgb(28, 112, 197);
     text-align: center;
     font-weight: 700;
@@ -136,7 +126,7 @@ a:hover {
     font-family: "Microsoft YaHei", serif !important;
 }
 
-.login_formbg {
+.login_bg {
     position: relative;
     margin-top: 49px;
     height: 301px;
@@ -298,7 +288,7 @@ a:hover {
     height: 35px;
     outline: 0;
     border: 0 none;
-    background-image: url("../img/login_block.png");
+    background-image: url("../images/login_block.png");
     vertical-align: baseline;
     text-align: center;
     font-weight: 700;
@@ -316,12 +306,6 @@ a:hover {
 
 .btn_login:hover {
     background-position: -87pt -51px;
-}
-
-.login_footer {
-    margin: 0 auto;
-    height: 65px;
-    background-color: rgb(255, 255, 255);
 }
 
 .footer_inner {
@@ -401,7 +385,7 @@ a:hover {
     display: block;
     width: 13px;
     height: 13px;
-    background: url("../img/bg_control_nav.png") 0 0 no-repeat;
+    background: url("../images/bg_control_nav.png") 0 0 no-repeat;
     text-indent: -9999px;
     cursor: pointer;
 }
