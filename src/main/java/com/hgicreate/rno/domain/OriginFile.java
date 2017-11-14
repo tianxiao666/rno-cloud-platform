@@ -13,7 +13,7 @@ public class OriginFile {
 
     @Id
     @GeneratedValue(generator = "OriginFileSeq")
-    @SequenceGenerator(name = "OriginFileSeq", sequenceName = "SEQ_ORIGIN_FILE", allocationSize = 5)
+    @SequenceGenerator(name = "OriginFileSeq", sequenceName = "SEQ_ORIGIN_FILE", allocationSize = 1)
     private Long id;
 
     private String filename;
