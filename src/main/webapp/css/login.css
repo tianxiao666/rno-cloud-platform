@@ -100,6 +100,7 @@ main {
 }
 /* 幻灯片部分 - end */
 
+/* 登录表单区域 - start */
 .login-block {
     position: absolute;
     right: 30px;
@@ -218,7 +219,7 @@ main {
     white-space: nowrap;
 }
 
-.em-arrow {
+.arrow {
     position: absolute;
     top: 14px;
     right: 3px;
@@ -283,6 +284,7 @@ main {
 .btn-login:hover {
     background-position: -87pt -51px;
 }
+/* 登录表单区域 - start */
 
 /* 页脚部分 */
 footer {

@@ -1,370 +1,309 @@
 <!DOCTYPE html>
-<html><head>
-<meta charset="UTF-8">
+<html>
+<head>
+    <meta charset="UTF-8">
     <title>地理场景管理</title>
+    <link rel="stylesheet" type="text/css" href="css/lte-geo-scene.css">
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".draggable").draggable();
+            $("#trigger").css("display", "none");
+        });
+    </script>
+    <script type="text/javascript" src="js/lte-geo-scene.js"></script>
+    <style type="text/css">
+        .paramTable {
+            margin: auto;
+            padding-left: 5px;
+            width: 100%
+        }
 
-	<!--<link rel="stylesheet" type="text/css" href="geo-scene-manage_files/base.css">
-<link rel="stylesheet" type="text/css" href="geo-scene-manage_files/input.css">
-<link rel="stylesheet" type="text/css" href="geo-scene-manage_files/public.css">
-<link rel="stylesheet" type="text/css" href="geo-scene-manage_files/public-table.css">
-<link rel="stylesheet" type="text/css" href="geo-scene-manage_files/public-div-standard.css">
-<link rel="stylesheet" type="text/css" href="geo-scene-manage_files/public-table-standard.css">
-<link rel="stylesheet" type="text/css" href="geo-scene-manage_files/public-tb-std.css">
-<link rel="stylesheet" type="text/css" href="geo-scene-manage_files/public-span-std.css">
-<link rel="stylesheet" type="text/css" href="geo-scene-manage_files/iscreate-paging.css">
-<link rel="stylesheet" type="text/css" href="geo-scene-manage_files/source.css">
-<link rel="stylesheet" type="text/css" href="geo-scene-manage_files/loading_cover.css">
-<link rel="stylesheet" type="text/css" href="geo-scene-manage_files/dialog.css">
-<link rel="stylesheet" type="text/css" href="geo-scene-manage_files/jquery-ui-1.css">-->
-	<link rel="stylesheet" type="text/css" href="css/lte-geo-scene.css">
-<style>
-.main-table1 .menuTd{
-text-align:right;
-}
-.txt-err, .txt-impt {
-color: #C00;
-font-size: 14px;
-}
+        .paramTable th {
+            padding: 0 10px;
+            background: url('images/cmp-bg2.gif') repeat-x;
+            color: #444;
+            white-space: nowrap;
+            border: #CCC 1px solid;
+            line-height: 30px;
+            font-size: 14px;
+        }
 
-/*éæ ·ç¹çæ ·å¼*/
-.singleWrapCls {
-	width: 5px;
-	height: 5px;
-	border:1px solid #A9A9F5;
-	position: absolute;
-}
-.multiWrapCls {
-	width: 5px;
-	height: 5px;
-	border:1px solid #FF0040;
-	position: absolute;
-}
+        .paramTable tr td {
+            border: 1px solid #CCC;
+            padding: 4px;
+            padding-left: 6px;
+            color: #000;
+            line-height: 21px;
+            vertical-align: middle;
+            background: WhiteSmoke;
+        }
 
+        .paramTable input {
+            width: 100%;
+        }
 
-/*å¯¼å¥é¢æ¿å®¹å¨çæ ·å¼*/
-.loadframe{
-    height:auto!important;  
-    height:100px;  
-    min-height:100px; 
-}
+        .paramTable div {
+            display: inline-block;
+            height: 21px;
+            width: 100%;
+            text-align: center;
+        }
 
-/*æç¤ºæ ·å¼*/
-/*span.operTip{
- font:bold normal 900 15pt é»ä½;
-}*/
-</style>
-
-
-<!--<script type="text/javascript" src="geo-scene-manage_files/jquery-1.js"></script>
-<script type="text/javascript" src="geo-scene-manage_files/jquery_003.js"></script>
-<script type="text/javascript" src="geo-scene-manage_files/jquery.js"></script>
-<script type="text/javascript" src="geo-scene-manage_files/validate.js"></script>
-<script type="text/javascript" src="geo-scene-manage_files/jquery_002.js"></script>
-<script type="text/javascript" src="geo-scene-manage_files/jquery-ui-1.js"></script>
-
-<script type="text/javascript" src="geo-scene-manage_files/api"></script><script type="text/javascript" src="geo-scene-manage_files/getscript"></script>
-
-<script type="text/javascript" src="geo-scene-manage_files/tab.js"></script>
-<script type="text/javascript" src="geo-scene-manage_files/wdatePicker.js"></script><link href="geo-scene-manage_files/WdatePicker.css" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="geo-scene-manage_files/layer.js"></script><link type="text/css" rel="stylesheet" href="geo-scene-manage_files/layer.css">
-<script type="text/javascript" src="geo-scene-manage_files/selftools.js"></script>
-<script type="text/javascript" src="geo-scene-manage_files/rendererrule.js"></script>
-
-
-	
-
-
-
-	<script type="text/javascript" src="geo-scene-manage_files/libgiscelldisplay.js"></script>
-	<script type="text/javascript" src="geo-scene-manage_files/cellRelaModel.js"></script>
-	<script type="text/javascript" src="geo-scene-manage_files/lib_gis_dt_sample_display.js"></script>
-
-
- 
-
-
-
-<script type="text/javascript" src="geo-scene-manage_files/libareacascade.js"></script>
-<script type="text/javascript" src="geo-scene-manage_files/libfileupload.js"></script>
-
-<script type="text/javascript" src="geo-scene-manage_files/commontimedtask.js"></script>-->
-<script type="text/javascript">
-$(document).ready(function(){
-	$(".draggable").draggable();
-	/*if($("#trigger").length!=0){
-		$("#trigger").remove();
-	}*/
-	$("#trigger").css("display","none");
-	
-});
-</script>
-
-	<!--<script type="text/javascript" src="geo-scene-manage_files/lte-geo-scene.js"></script>-->
-	<script type="text/javascript" src="js/lte-geo-scene.js"></script>
-
-	<style type="text/css">
-.errorTip {
-	color: red;
-	width: 100px;
-	font-family: 华文中宋;
-}
-
-.paramTable {
-	margin: auto;
-	padding-left: 5px;
-	width: 100%
-}
-
-.paramTable th {
-	padding:0px 10px; 
-	background:url('images/cmp-bg2.gif') repeat-x;
-	color:#444; 
-	white-space:nowrap; 
-	border:#CCC 1px solid; 
-	line-height:30px;
-	font-size: 14px; 
-}
-
-.paramTable tr td {
-	border:1px solid #CCC; 
-	padding:4px; 
-	padding-left:6px; 
-	color:#000; 
-	line-height:21px; 
-	vertical-align:middle; 
-	background:WhiteSmoke;	
-}
-.paramTable  input{
-    width: 100%;
-}
-.paramTable  div{
- 	display:inline-block;
-	height: 21px;
-	width:100%;
-	text-align:center;
-}
-.paramTable  span{
-	text-align:center;
-	font-weight:bold;
-	color:red;
-	display:none;
-}
-</style>
-  <script type="text/javascript">
-
-  </script>
-  </head>
-  
-  <body>
-	
-	<div class="loading_cover" id="loadingDataDiv" style="display: none;">
-		<div class="cover"></div>
-		<h4 class="loading">
-			 <em class="loading_fb" id="loadContentId">正在查询</em>,请稍侯...
-		</h4>
-	</div>
+        .paramTable span {
+            text-align: center;
+            font-weight: bold;
+            color: red;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="loading_cover" id="loadingDataDiv" style="display: none;">
+    <div class="cover"></div>
+    <h4 class="loading">
+        <em class="loading_fb" id="loadContentId">正在查询</em>,请稍侯...
+    </h4>
+</div>
 <h2><span class="navTitle">当前位置：场景管理 &gt; 地理场景管理 </span></h2>
-	<center>
-	  	 <font style="font-weight: bold;font-size:16px">地理场景信息</font> <br>
-  	</center>
-  	<div id="displaySceneInfoDiv" style="padding-top: 10px">
-  	<div id="sceneAction" align="center">
-  	<div id="optionsDiv">
-  	<table class="options" cellspacing="0" cellpadding="0" border="0">
-  	<tbody><tr>
-  	<td><input value="刷新" style="width: 120px;" id="flashtable" name="flashtable" title="刷新页面的内容，未提交的修改将消失。" type="button"></td>
-  	
-  	<td><input value="删除" style="width: 120px;" id="deleteScene" name="deleteScene" title="删除当前的场景信息" type="button"></td>
-  	<td><input value="新增" style="width: 120px;" id="addScene" name="addScene" title="增加新场景" type="button"></td>
-  	<td><input value="提交" style="width: 120px;" id="submitalter" name="submitalter" title="修改场景信息或增加新场景后提交更改" type="button"></td>
-  	</tr>
-  	</tbody></table>
-  	</div>
-  	<div style="padding-top: 10px">
-  	<br>
-  	<table id="sceneSelect">
-  	<tbody><tr id="sceneNameTr">
+<center>
+    <font style="font-weight: bold;font-size:16px">地理场景信息</font> <br>
+</center>
+<div id="displaySceneInfoDiv" style="padding-top: 10px">
+    <div id="sceneAction" align="center">
+        <div id="optionsDiv">
+            <table class="options" cellspacing="0" cellpadding="0" border="0">
+                <tbody>
+                <tr>
+                    <td><input value="刷新" style="width: 120px;" id="flashtable" name="flashtable"
+                               title="刷新页面的内容，未提交的修改将消失。" type="button"></td>
 
-	<td style="margin: 0; text-align: center">场景名称：</td>
-  	<td id="sceneNameTd" style="text-align: left"><select name="cond[sceneNameList]" id="sceneNameList"><option value="21" selected="selected">室外</option><option value="41">商业区</option><option value="42">居民区</option><option value="164">室内</option><option value="61">测试场景1</option></select></td>
-  	<td><span id="sceneNameTip"></span></td> 
-  	</tr>
-  	</tbody></table>
-  	<br>
-  	</div>
-  	</div>
-  	<div style="width: 100%;" align="center">
+                    <td><input value="删除" style="width: 120px;" id="deleteScene" name="deleteScene" title="删除当前的场景信息"
+                               type="button"></td>
+                    <td><input value="新增" style="width: 120px;" id="addScene" name="addScene" title="增加新场景"
+                               type="button"></td>
+                    <td><input value="提交" style="width: 120px;" id="submitalter" name="submitalter"
+                               title="修改场景信息或增加新场景后提交更改" type="button"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="padding-top: 10px">
+            <br>
+            <table id="sceneSelect">
+                <tbody>
+                <tr id="sceneNameTr">
 
-	<div style="width: 600px;height: 100%;padding-top: 10px">
-  	<table class="paramTable" id="scenceInfoTable">
-  	<caption> <font style="color: red;font-weight: bold;">室外</font> 的场景信息<br></caption>
-  	<thead>
-  	<tr>   	  	 
-  	  	 <th style="width: 360px">参数名</th>
-  	  	 <th style="width: 240px">参数值(点击修改)</th>
+                    <td style="margin: 0; text-align: center">场景名称：</td>
+                    <td id="sceneNameTd" style="text-align: left"><select name="cond[sceneNameList]" id="sceneNameList">
+                        <option value="21" selected="selected">室外</option>
+                        <option value="41">商业区</option>
+                        <option value="42">居民区</option>
+                        <option value="164">室内</option>
+                        <option value="61">测试场景1</option>
+                    </select></td>
+                    <td><span id="sceneNameTip"></span></td>
+                </tr>
+                </tbody>
+            </table>
+            <br>
+        </div>
+    </div>
+    <div style="width: 100%;" align="center">
 
-	</tr>
-	</thead>
-  	 <tfoot></tfoot>
-  	 <tbody>
-  	  	 <tr>
-  	  	 <td>异系统小区测量启动门限A2</td>
-  	  	  <td id="INTERRATHOA2THDRSRP_td">
-  	  	  <div id="INTERRATHOA2THDRSRP" class="editbox" style="width: 100%;" onclick="editThis(this)">123</div>
-  	  	  <span id="INTERRATHOA2THDRSRP_old" class="oldDataTip" style="display: none;">123</span>
-  	  	  <span id="INTERRATHOA2THDRSRP_err" class="errTip"></span>
-  	  	  </td>
+        <div style="width: 600px;height: 100%;padding-top: 10px">
+            <table class="paramTable" id="scenceInfoTable">
+                <caption><font style="color: red;font-weight: bold;">室外</font> 的场景信息<br></caption>
+                <thead>
+                <tr>
+                    <th style="width: 360px">参数名</th>
+                    <th style="width: 240px">参数值(点击修改)</th>
 
-  	  	  </tr>
-  	  	 <tr>
-  	  	 <td>异系统小区测量停止门限A1</td>
-  	  	 <td id="INTERRATHOA1THDRSRP_td">
-  	  	 <div id="INTERRATHOA1THDRSRP" class="editbox" style="width: 100%;" onclick="editThis(this)">-115</div>
-  	  	 <span id="INTERRATHOA1THDRSRP_old" class="oldDataTip" style="display: none;">-115</span>
-  	  	 <span id="INTERRATHOA1THDRSRP_err" class="errTip"></span>
-  	  	 </td>
+                </tr>
+                </thead>
+                <tfoot></tfoot>
+                <tbody>
+                <tr>
+                    <td>异系统小区测量启动门限A2</td>
+                    <td id="INTERRATHOA2THDRSRP_td">
+                        <div id="INTERRATHOA2THDRSRP" class="editbox" style="width: 100%;" onclick="editThis(this)">
+                            123
+                        </div>
+                        <span id="INTERRATHOA2THDRSRP_old" class="oldDataTip" style="display: none;">123</span>
+                        <span id="INTERRATHOA2THDRSRP_err" class="errTip"></span>
+                    </td>
 
-  	  	 </tr>
-  	  	 <tr>
-  	  	 <td>B1事件迟滞值</td>
-  	  	 <td id="INTERRATHOUTRANB1HYST_td">
-  	  	 <div id="INTERRATHOUTRANB1HYST" class="editbox" style="width: 100%;" onclick="editThis(this)">2</div>
-  	  	 <span id="INTERRATHOUTRANB1HYST_old" class="oldDataTip" style="display: none;">2</span>
-  	  	 <span id="INTERRATHOUTRANB1HYST_err" class="errTip"></span>
-  	  	 </td>
+                </tr>
+                <tr>
+                    <td>异系统小区测量停止门限A1</td>
+                    <td id="INTERRATHOA1THDRSRP_td">
+                        <div id="INTERRATHOA1THDRSRP" class="editbox" style="width: 100%;" onclick="editThis(this)">
+                            -115
+                        </div>
+                        <span id="INTERRATHOA1THDRSRP_old" class="oldDataTip" style="display: none;">-115</span>
+                        <span id="INTERRATHOA1THDRSRP_err" class="errTip"></span>
+                    </td>
 
-  	  	 </tr>
-  	  	 <tr>
-  	  	 <td>B1事件异系统判决门限</td>
-  	  	 <td id="INTERRATHOUTRANB1THDRSCP_td">
-			<div id="INTERRATHOUTRANB1THDRSCP" class="editbox" style="width: 100%;" onclick="editThis(this)">-92</div>
-  	  	 <span id="INTERRATHOUTRANB1THDRSCP_old" class="oldDataTip" style="display: none;">-92</span>
-  	  	 <span id="INTERRATHOUTRANB1THDRSCP_err" class="errTip"></span>
-  	  	 </td>
+                </tr>
+                <tr>
+                    <td>B1事件迟滞值</td>
+                    <td id="INTERRATHOUTRANB1HYST_td">
+                        <div id="INTERRATHOUTRANB1HYST" class="editbox" style="width: 100%;" onclick="editThis(this)">
+                            2
+                        </div>
+                        <span id="INTERRATHOUTRANB1HYST_old" class="oldDataTip" style="display: none;">2</span>
+                        <span id="INTERRATHOUTRANB1HYST_err" class="errTip"></span>
+                    </td>
 
-  	  	 </tr>
-  	  	 <tr>
-  	  	 <td>A1\A2事件触发时间</td>
-  	  	 <td id="INTERRATHOA1A2TIMETOTRIG_td">
-  	  	   	  	 <div id="INTERRATHOA1A2TIMETOTRIG" class="editbox" style="width: 100%;" onclick="editThis(this)">640</div>
-  	  	 <span id="INTERRATHOA1A2TIMETOTRIG_old" class="oldDataTip" style="display: none;">640</span>
-  	  	 <span id="INTERRATHOA1A2TIMETOTRIG_err" class="errTip"></span>
-  	  	 </td>
+                </tr>
+                <tr>
+                    <td>B1事件异系统判决门限</td>
+                    <td id="INTERRATHOUTRANB1THDRSCP_td">
+                        <div id="INTERRATHOUTRANB1THDRSCP" class="editbox" style="width: 100%;"
+                             onclick="editThis(this)">-92
+                        </div>
+                        <span id="INTERRATHOUTRANB1THDRSCP_old" class="oldDataTip" style="display: none;">-92</span>
+                        <span id="INTERRATHOUTRANB1THDRSCP_err" class="errTip"></span>
+                    </td>
 
-  	  	 </tr>
-  	  	 <tr>
-  	  	 <td>A1、A2事件迟滞值</td>
-  	  	 <td id="INTERRATHOA1A2HYST_td">
-  	  	   	  	 <div id="INTERRATHOA1A2HYST" class="editbox" style="width: 100%;" onclick="editThis(this)">2</div>
-  	  	 <span id="INTERRATHOA1A2HYST_old" class="oldDataTip" style="display: none;">2</span>
-  	  	 <span id="INTERRATHOA1A2HYST_err" class="errTip"></span>
-  	  	 </td>
+                </tr>
+                <tr>
+                    <td>A1\A2事件触发时间</td>
+                    <td id="INTERRATHOA1A2TIMETOTRIG_td">
+                        <div id="INTERRATHOA1A2TIMETOTRIG" class="editbox" style="width: 100%;"
+                             onclick="editThis(this)">640
+                        </div>
+                        <span id="INTERRATHOA1A2TIMETOTRIG_old" class="oldDataTip" style="display: none;">640</span>
+                        <span id="INTERRATHOA1A2TIMETOTRIG_err" class="errTip"></span>
+                    </td>
 
-  	  	 </tr>
-  	  	 <tr>
-  	  	 <td>4G往3G盲重定向</td>
-  	  	 <td id="BLINDHOA1A2THDRSRP_td">
-  	  	   	  	 <div id="BLINDHOA1A2THDRSRP" class="editbox" style="width: 100%;" onclick="editThis(this)">-122</div>
-  	  	 <span id="BLINDHOA1A2THDRSRP_old" class="oldDataTip" style="display: none;">-122</span>
-  	  	 <span id="BLINDHOA1A2THDRSRP_err" class="errTip"></span>
-  	  	 </td>
+                </tr>
+                <tr>
+                    <td>A1、A2事件迟滞值</td>
+                    <td id="INTERRATHOA1A2HYST_td">
+                        <div id="INTERRATHOA1A2HYST" class="editbox" style="width: 100%;" onclick="editThis(this)">2
+                        </div>
+                        <span id="INTERRATHOA1A2HYST_old" class="oldDataTip" style="display: none;">2</span>
+                        <span id="INTERRATHOA1A2HYST_err" class="errTip"></span>
+                    </td>
 
-  	  	 </tr>
-  	  	 <tr>
-  	  	 <td>事件触发持续时间</td>
-  	  	 <td id="INTERFREQHOA1A2TIMETOTRIG_td">
-  	  	   	  	 <div id="INTERFREQHOA1A2TIMETOTRIG" class="editbox" style="width: 100%;" onclick="editThis(this)">320</div>
-  	  	 <span id="INTERFREQHOA1A2TIMETOTRIG_old" class="oldDataTip" style="display: none;">320</span>
-  	  	 <span id="INTERFREQHOA1A2TIMETOTRIG_err" class="errTip"></span>
-  	  	 </td>
+                </tr>
+                <tr>
+                    <td>4G往3G盲重定向</td>
+                    <td id="BLINDHOA1A2THDRSRP_td">
+                        <div id="BLINDHOA1A2THDRSRP" class="editbox" style="width: 100%;" onclick="editThis(this)">
+                            -122
+                        </div>
+                        <span id="BLINDHOA1A2THDRSRP_old" class="oldDataTip" style="display: none;">-122</span>
+                        <span id="BLINDHOA1A2THDRSRP_err" class="errTip"></span>
+                    </td>
 
-  	  	 </tr>
-  	  	 <tr>
-  	  	 <td>异频小区测量停止门限A1</td>
-  	  	 <td id="A3INTERFREQHOA1THDRSRP_td">
-  	  	   	  	 <div id="A3INTERFREQHOA1THDRSRP" class="editbox" style="width: 100%;" onclick="editThis(this)">-89</div>
-  	  	 <span id="A3INTERFREQHOA1THDRSRP_old" class="oldDataTip" style="display: none;">-89</span>
-  	  	 <span id="A3INTERFREQHOA1THDRSRP_err" class="errTip"></span>
-  	  	 </td>
+                </tr>
+                <tr>
+                    <td>事件触发持续时间</td>
+                    <td id="INTERFREQHOA1A2TIMETOTRIG_td">
+                        <div id="INTERFREQHOA1A2TIMETOTRIG" class="editbox" style="width: 100%;"
+                             onclick="editThis(this)">320
+                        </div>
+                        <span id="INTERFREQHOA1A2TIMETOTRIG_old" class="oldDataTip" style="display: none;">320</span>
+                        <span id="INTERFREQHOA1A2TIMETOTRIG_err" class="errTip"></span>
+                    </td>
 
-  	  	 </tr>
-  	  	 <tr>
-  	  	 <td>异频小区测量启动门限  A2</td>
-  	  	 <td id="A3INTERFREQHOA2THDRSRP_td">
-  	  	   	  	 <div id="A3INTERFREQHOA2THDRSRP" class="editbox" style="width: 100%;" onclick="editThis(this)">-91</div>
-  	  	 <span id="A3INTERFREQHOA2THDRSRP_old" class="oldDataTip" style="display: none;">-91</span>
-  	  	 <span id="A3INTERFREQHOA2THDRSRP_err" class="errTip"></span>
-  	  	 </td>
+                </tr>
+                <tr>
+                    <td>异频小区测量停止门限A1</td>
+                    <td id="A3INTERFREQHOA1THDRSRP_td">
+                        <div id="A3INTERFREQHOA1THDRSRP" class="editbox" style="width: 100%;" onclick="editThis(this)">
+                            -89
+                        </div>
+                        <span id="A3INTERFREQHOA1THDRSRP_old" class="oldDataTip" style="display: none;">-89</span>
+                        <span id="A3INTERFREQHOA1THDRSRP_err" class="errTip"></span>
+                    </td>
 
-  	  	 </tr>
-  	  	 <tr>
-  	  	 <td>异频A3事件偏移量</td>
-  	  	 <td id="INTERFREQHOA3OFFSET_td">
-  	  	   	  	 <div id="INTERFREQHOA3OFFSET" class="editbox" style="width: 100%;" onclick="editThis(this)">0</div>
-  	  	 <span id="INTERFREQHOA3OFFSET_old" class="oldDataTip" style="display: none;">0</span>
-  	  	 <span id="INTERFREQHOA3OFFSET_err" class="errTip"></span>
-  	  	 </td>
+                </tr>
+                <tr>
+                    <td>异频小区测量启动门限 A2</td>
+                    <td id="A3INTERFREQHOA2THDRSRP_td">
+                        <div id="A3INTERFREQHOA2THDRSRP" class="editbox" style="width: 100%;" onclick="editThis(this)">
+                            -91
+                        </div>
+                        <span id="A3INTERFREQHOA2THDRSRP_old" class="oldDataTip" style="display: none;">-91</span>
+                        <span id="A3INTERFREQHOA2THDRSRP_err" class="errTip"></span>
+                    </td>
 
-  	  	 </tr>
-  	  	 <tr>
-  	  	 <td>A1\A2事件的迟滞值</td>
-  	  	 <td id="INTERFREQHOA1A2HYST_td">
-  	  	   	  	 <div id="INTERFREQHOA1A2HYST" class="editbox" style="width: 100%;" onclick="editThis(this)">2</div>
-  	  	 <span id="INTERFREQHOA1A2HYST_old" class="oldDataTip" style="display: none;">2</span>
-  	  	 <span id="INTERFREQHOA1A2HYST_err" class="errTip"></span>
-  	  	 </td>
+                </tr>
+                <tr>
+                    <td>异频A3事件偏移量</td>
+                    <td id="INTERFREQHOA3OFFSET_td">
+                        <div id="INTERFREQHOA3OFFSET" class="editbox" style="width: 100%;" onclick="editThis(this)">0
+                        </div>
+                        <span id="INTERFREQHOA3OFFSET_old" class="oldDataTip" style="display: none;">0</span>
+                        <span id="INTERFREQHOA3OFFSET_err" class="errTip"></span>
+                    </td>
 
-  	  	 </tr>
-  	  	 <tr>
-  	  	 <td>最低接入电平</td>
-  	  	 <td id="QRXLEVMIN_td">
-  	  	  <div id="QRXLEVMIN" class="editbox" style="width: 100%;" onclick="editThis(this)">-122</div>
-  	  	 <span id="QRXLEVMIN_old" class="oldDataTip" style="display: none;">-122</span>
-  	  	 <span id="QRXLEVMIN_err" class="errTip"></span>
-  	  	 </td>
+                </tr>
+                <tr>
+                    <td>A1\A2事件的迟滞值</td>
+                    <td id="INTERFREQHOA1A2HYST_td">
+                        <div id="INTERFREQHOA1A2HYST" class="editbox" style="width: 100%;" onclick="editThis(this)">2
+                        </div>
+                        <span id="INTERFREQHOA1A2HYST_old" class="oldDataTip" style="display: none;">2</span>
+                        <span id="INTERFREQHOA1A2HYST_err" class="errTip"></span>
+                    </td>
 
-  	  	 </tr>
-  	  	 <tr>
-  	  	 <td>频异系统启动测门限</td>
-  	  	 <td id="SNONINTRASEARCH_td">
-  	  	   	  	 <div id="SNONINTRASEARCH" class="editbox" style="width: 100%;" onclick="editThis(this)">-92</div>
-  	  	 <span id="SNONINTRASEARCH_old" class="oldDataTip" style="display: none;">-92</span>
-  	  	 <span id="SNONINTRASEARCH_err" class="errTip"></span>
-  	  	 </td>
+                </tr>
+                <tr>
+                    <td>最低接入电平</td>
+                    <td id="QRXLEVMIN_td">
+                        <div id="QRXLEVMIN" class="editbox" style="width: 100%;" onclick="editThis(this)">-122</div>
+                        <span id="QRXLEVMIN_old" class="oldDataTip" style="display: none;">-122</span>
+                        <span id="QRXLEVMIN_err" class="errTip"></span>
+                    </td>
 
-  	  	 </tr>
-  	  	 <tr>
-  	  	 <td>判决门限</td>
-  	  	 <td id="THRSHSERVLOW_td">
-  	  	   	  	 <div id="THRSHSERVLOW" class="editbox" style="width: 100%;" onclick="editThis(this)">2</div>
-  	  	 <span id="THRSHSERVLOW_old" class="oldDataTip" style="display: none;">2</span>
-  	  	 <span id="THRSHSERVLOW_err" class="errTip"></span>
-  	  	 </td>
+                </tr>
+                <tr>
+                    <td>频异系统启动测门限</td>
+                    <td id="SNONINTRASEARCH_td">
+                        <div id="SNONINTRASEARCH" class="editbox" style="width: 100%;" onclick="editThis(this)">-92
+                        </div>
+                        <span id="SNONINTRASEARCH_old" class="oldDataTip" style="display: none;">-92</span>
+                        <span id="SNONINTRASEARCH_err" class="errTip"></span>
+                    </td>
 
-  	  	 </tr>
-  	  	 <tr>
-  	  	 <td>异系统重选迟滞时间</td>
-  	  	 <td id="TRESELEUTRAN_td">
-  	  	   	  	 <div id="TRESELEUTRAN" class="editbox" style="width: 100%;" onclick="editThis(this)">2</div>
-  	  	 <span id="TRESELEUTRAN_old" class="oldDataTip" style="display: none;">2</span>
-  	  	 <span id="TRESELEUTRAN_err" class="errTip"></span>
-  	  	 </td>
+                </tr>
+                <tr>
+                    <td>判决门限</td>
+                    <td id="THRSHSERVLOW_td">
+                        <div id="THRSHSERVLOW" class="editbox" style="width: 100%;" onclick="editThis(this)">2</div>
+                        <span id="THRSHSERVLOW_old" class="oldDataTip" style="display: none;">2</span>
+                        <span id="THRSHSERVLOW_err" class="errTip"></span>
+                    </td>
 
-  	  	 </tr>
-  	  	 <tr>
-  	  	 <td>小区重选优先级</td>
-  	  	 <td id="CELLRESELPRIORITY_td">
-  	  	   	  	 <div id="CELLRESELPRIORITY" class="editbox" style="width: 100%;" onclick="editThis(this)">4</div>
-  	  	 <span id="CELLRESELPRIORITY_old" class="oldDataTip" style="display: none;">4</span>
-  	  	 <span id="CELLRESELPRIORITY_err" class="errTip"></span>
-  	  	 </td>
+                </tr>
+                <tr>
+                    <td>异系统重选迟滞时间</td>
+                    <td id="TRESELEUTRAN_td">
+                        <div id="TRESELEUTRAN" class="editbox" style="width: 100%;" onclick="editThis(this)">2</div>
+                        <span id="TRESELEUTRAN_old" class="oldDataTip" style="display: none;">2</span>
+                        <span id="TRESELEUTRAN_err" class="errTip"></span>
+                    </td>
 
-  	  	 </tr>
-  	  	 </tbody>
-  	  	 </table>
-  	  	 <br><br><br><br><br>
-  	  	 </div>
-  	  	 </div>
-  	  	 </div>
-  	
-  	</body></html>
+                </tr>
+                <tr>
+                    <td>小区重选优先级</td>
+                    <td id="CELLRESELPRIORITY_td">
+                        <div id="CELLRESELPRIORITY" class="editbox" style="width: 100%;" onclick="editThis(this)">4
+                        </div>
+                        <span id="CELLRESELPRIORITY_old" class="oldDataTip" style="display: none;">4</span>
+                        <span id="CELLRESELPRIORITY_err" class="errTip"></span>
+                    </td>
+
+                </tr>
+                </tbody>
+            </table>
+            <br><br><br><br><br>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
