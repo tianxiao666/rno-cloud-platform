@@ -1,5 +1,6 @@
 package com.hgicreate.rno.security;
 
+import com.hgicreate.rno.config.Constants;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,7 +22,8 @@ public final class SecurityUtils {
     public static String getCurrentUserLogin() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
-        String userName = null;
+        // 缺省用户为匿名用户
+        String userName = Constants.ANONYMOUS_USER;
         if (authentication != null) {
             if (authentication.getPrincipal() instanceof UserDetails) {
                 UserDetails springSecurityUser = (UserDetails) authentication.getPrincipal();
