@@ -78,8 +78,6 @@ public class LteCellDataService {
         Date beginDate=sdf.parse(vm.getBegUploadDate());
         SimpleDateFormat sdf2 =   new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
         Date endDate =sdf2.parse(vm.getEndUploadDate() +" 23:59:59");
-        int dayMis = 1000*60*60*24;
-        log.debug("~~~~~~~~~~~~~~~~beginDate={}",beginDate);
         List<DataJob> list = new ArrayList<>();
         if(vm.getStatus().equals("全部")){
             list= dataJobRepository.findTop1000ByAreaAndOriginFile_CreatedDateBetweenAndOriginFile_DataType(
