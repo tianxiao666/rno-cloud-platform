@@ -1,7 +1,10 @@
 package com.hgicreate.rno.web.rest;
 
+import com.hgicreate.rno.domain.Area;
 import com.hgicreate.rno.domain.Cell;
+import com.hgicreate.rno.domain.DataJob;
 import com.hgicreate.rno.domain.OriginFile;
+import com.hgicreate.rno.repository.DataJobRepository;
 import com.hgicreate.rno.repository.LteCellDataRepository;
 import com.hgicreate.rno.repository.OriginFileRepository;
 import com.hgicreate.rno.security.SecurityUtils;
@@ -23,7 +26,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Paths;
 import java.text.ParseException;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -38,14 +40,17 @@ public class LteCellDataResource {
 
     private final OriginFileRepository originFileRepository;
 
+    private final DataJobRepository dataJobRepository;
+
     private final LteCellDataRepository lteCellDataRepository;
 
     private final LteCellDataService lteCellDataService;
 
     public LteCellDataResource(OriginFileRepository originFileRepository,
-                               LteCellDataRepository lteCellDataRepository,
+                               DataJobRepository dataJobRepository, LteCellDataRepository lteCellDataRepository,
                                LteCellDataService lteCellDataService) {
         this.originFileRepository = originFileRepository;
+        this.dataJobRepository = dataJobRepository;
         this.lteCellDataRepository = lteCellDataRepository;
         this.lteCellDataService = lteCellDataService;
     }
@@ -115,6 +120,12 @@ public class LteCellDataResource {
             String filepath = Paths.get(directory+ "/" + vm.getModuleName(), filename).toString();
             log.debug("存储的文件名：{}", filename);
 
+            // 保存文件到本地
+            BufferedOutputStream stream =
+                    new BufferedOutputStream(new FileOutputStream(new File(filepath)));
+            stream.write(vm.getFile().getBytes());
+            stream.close();
+
             //更新文件记录
             originFile.setDataType(vm.getModuleName().toUpperCase());
             originFile.setFullPath(filepath);
@@ -124,11 +135,18 @@ public class LteCellDataResource {
             originFile.setCreatedDate(new Date());
             originFileRepository.save(originFile);
 
-            // 保存文件到本地
-            BufferedOutputStream stream =
-                    new BufferedOutputStream(new FileOutputStream(new File(filepath)));
-            stream.write(vm.getFile().getBytes());
-            stream.close();
+            //建立任务
+            DataJob dataJob = new DataJob();
+            dataJob.setName("小区工参数据导入");
+            dataJob.setType(vm.getModuleName().toUpperCase());
+            dataJob.setOriginFile(originFile);
+            Area area = new Area();
+            area.setId(440100L);
+            dataJob.setArea(area);
+            dataJob.setCreatedDate(new Date());
+            dataJob.setCreatedUser(SecurityUtils.getCurrentUserLogin());
+            dataJob.setStatus("等待处理");
+            dataJobRepository.save(dataJob);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

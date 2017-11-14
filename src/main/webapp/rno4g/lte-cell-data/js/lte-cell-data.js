@@ -561,15 +561,15 @@ function showImportRecord(data) {
             "columnDefs": [{
                 "render": function (data, type, row) {
                     switch (row['status']) {
-                        case "部分失败":
+                        case "部分成功":
                             return "<a style='color: red' onclick='showImportDetail()'>" + row['status'] + "</a>";
                         case "全部失败":
                             return "<a style='color: red' onclick='showImportDetail()'>" + row['status'] + "</a>";
                         case "全部成功":
                             return "<a onclick='showImportDetail()'>" + row['status'] + "</a>";
-                        case "正在解析":
+                        case "正在处理":
                             return "<a onclick='showImportDetail()'>" + row['status'] + "</a>";
-                        case "等待解析":
+                        case "等待处理":
                             return "<a onclick='showImportDetail()'>" + row['status'] + "</a>";
                     }
                 },

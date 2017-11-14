@@ -11,6 +11,8 @@ import java.util.Date;
 public class DataJob {
 
     @Id
+    @GeneratedValue(generator = "DataJobSeq")
+    @SequenceGenerator(name = "DataJobSeq", sequenceName = "SEQ_DATA_JOB", allocationSize = 1)
     private Long id;
 
     private String name;
