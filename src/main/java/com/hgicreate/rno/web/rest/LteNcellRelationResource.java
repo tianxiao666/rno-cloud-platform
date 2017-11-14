@@ -1,11 +1,13 @@
 package com.hgicreate.rno.web.rest;
 
+import com.hgicreate.rno.domain.Area;
+import com.hgicreate.rno.domain.DataJob;
 import com.hgicreate.rno.domain.OriginFile;
+import com.hgicreate.rno.repository.DataJobRepository;
 import com.hgicreate.rno.repository.NcellRepository;
 import com.hgicreate.rno.repository.OriginFileRepository;
 import com.hgicreate.rno.security.SecurityUtils;
 import com.hgicreate.rno.service.LteNcellRelationService;
-import com.hgicreate.rno.service.dto.DataCollectDTO;
 import com.hgicreate.rno.service.dto.LteNcellImportDtDTO;
 import com.hgicreate.rno.service.dto.LteNcellImportFileDTO;
 import com.hgicreate.rno.service.dto.LteNcellRelationDTO;
@@ -24,8 +26,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Paths;
 import java.text.ParseException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -42,10 +42,13 @@ public class LteNcellRelationResource {
     private final NcellRepository ncellRepository;
     private final OriginFileRepository originFileRepository;
 
-    public LteNcellRelationResource(NcellRepository ncellRepository, LteNcellRelationService lteNcellRelationService, OriginFileRepository originFileRepository) {
+    private final DataJobRepository dataJobRepository;
+
+    public LteNcellRelationResource(NcellRepository ncellRepository, LteNcellRelationService lteNcellRelationService, OriginFileRepository originFileRepository, DataJobRepository dataJobRepository) {
         this.ncellRepository = ncellRepository;
         this.lteNcellRelationService = lteNcellRelationService;
         this.originFileRepository = originFileRepository;
+        this.dataJobRepository = dataJobRepository;
     }
 
     @PostMapping("/ncell-query")
@@ -84,9 +87,6 @@ public class LteNcellRelationResource {
 
         log.debug("模块名：" + vm.getModuleName());
 
-        //创建OriginFile对象，保存数据
-        OriginFile originFile = new OriginFile();
-
         try {
             // 获取文件名，并构建为本地文件路径
             String filename = vm.getFile().getOriginalFilename();
@@ -122,6 +122,8 @@ public class LteNcellRelationResource {
             stream.write(vm.getFile().getBytes());
             stream.close();
 
+            //创建OriginFile对象，保存文件记录
+            OriginFile originFile = new OriginFile();
             originFile.setFilename(vm.getFile().getOriginalFilename());
             originFile.setFileType(fileType);
             originFile.setFileSize(fileSize);
@@ -131,6 +133,21 @@ public class LteNcellRelationResource {
             originFile.setCreatedDate(new Date());
             originFile.setSourceType("上传");
             originFileRepository.save(originFile);
+
+            //创建DataJob对象，创建文件任务
+            Area area = new Area();
+            area.setId(Long.parseLong(vm.getAreaId()));
+
+            DataJob dataJob = new DataJob();
+            dataJob.setName("邻区关系导入");
+            dataJob.setType("LTE-NCELL-RELATION-DATA");
+            dataJob.setPriority(1);
+            dataJob.setArea(area);
+            dataJob.setOriginFile(originFile);
+            dataJob.setCreatedUser(SecurityUtils.getCurrentUserLogin());
+            dataJob.setCreatedDate(new Date());
+            dataJob.setStatus("等待处理");
+            dataJobRepository.save(dataJob);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

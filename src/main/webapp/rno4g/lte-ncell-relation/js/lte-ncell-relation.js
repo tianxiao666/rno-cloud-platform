@@ -72,6 +72,8 @@ $(function () {
     //导入文件类型判断
     $("#importBtn").click(function () {
         var path = $("#file").val();
+        var cityId = $("#cityId").val();
+        $("#areaId").val(cityId);
         var fileType = path.substring(path.lastIndexOf("."), path.length).toLowerCase();
         if (fileType !== '.csv' && fileType != '.zip') {
             showInfoInAndOut("info", "请上传csv或者zip格式的数据文件");
@@ -161,7 +163,7 @@ function showNcellImportResult(data) {
             {"data": "filename"},
             {"data": "fileSize"},
             {"data": null},
-            {"data": "completeTime"},
+            {"data": null},
             {"data": "createdUser"},
             {"data": null}
         ],
