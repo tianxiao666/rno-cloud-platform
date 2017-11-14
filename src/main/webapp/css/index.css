@@ -1,10 +1,8 @@
-
+/* 初始化 */
 body, iframe, ul, li {
     margin: 0;
     padding: 0;
     border: 0;
-    font: inherit;
-    font-style: normal;
 }
 
 body {
@@ -14,26 +12,6 @@ body {
     *font-size: small;
     height: 100%;
     width: 100%;
-}
-
-/* 链接 */
-a {
-    color: #15428B;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-a:hover {
-    text-decoration: underline;
-    outline: none;
-}
-
-a:active {
-    color: #15428B
-}
-
-ul, li {
-    list-style: none outside none;
 }
 
 /* 头部区域 */
@@ -53,10 +31,6 @@ header {
     margin-bottom: 3px;
     left: 10px;
     float: left;
-    width: 556px;
-    height: 52px;
-    background: url(../images/hgicreate-rno4g-logo.png) no-repeat;
-    background-size: contain;
 }
 
 .header-info {
@@ -72,6 +46,15 @@ header {
     top: 0;
     right: 10px;
     line-height: 30px;
+}
+
+.user-info a {
+    color: #15428B;
+    text-decoration: none;
+}
+
+.user-info a:hover {
+    text-decoration: underline;
 }
 
 .user-default {
@@ -115,7 +98,11 @@ button {
     background: url(../images/input.png) no-repeat;
 }
 
-/* 导航菜单 */
+/* 导航区域 */
+ul, li {
+    list-style: none outside none;
+}
+
 nav {
     margin: 0 auto;
     width: 100%;
@@ -164,7 +151,11 @@ nav li.main_nav_on {
     font-size: 9pt;
 }
 
-.firstLevelMenuOn, .firstLevelMenuSelected, .secondLevelMenuOn, .secondLevelMenuSelected, .thirdLevelMenuOn, .thirdLevelMenuSelected {
+.firstLevelMenuSelected {
+    background: url(../images/menu.gif) repeat-x scroll 0 0 #fff;
+}
+
+.firstLevelMenuOn, .secondLevelMenuOn, .secondLevelMenuSelected, .thirdLevelMenuOn, .thirdLevelMenuSelected {
     background: url(../images/blue.gif) repeat-x scroll 0 0 #fff;
 }
 
@@ -210,7 +201,6 @@ footer {
 }
 
 footer a {
-    text-decoration: underline;
     color: #666;
     margin-left: 8px;
     margin-right: 8px;

@@ -19,7 +19,7 @@ $(function () {
 
     //初始化内容显示区域高度
     var clientHeight = document.documentElement.clientHeight;
-    $("#main").css("height", clientHeight - 95 - 40);
+    $("main").css("height", clientHeight - 95 - 40);
 
     onLoadOpenHomeTab();
 
@@ -284,5 +284,5 @@ $(window).resize(function() {
 //获取门户主体高度
 function windowsResize() {
     var docH = document.documentElement.clientHeight;
-    $("#main").css("height", docH - 95 - 40);
+    $("main").css("height", docH - 95 - 40);
 }

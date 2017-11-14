@@ -11,14 +11,10 @@
 </head>
 <body>
 <header>
-    <div class="logo"></div>
+    <div class="logo">
+        <img src="images/hgicreate-rno4g-logo.png">
+    </div>
     <div class="header-info">
-        <div class="user-default">
-            <label for="province">默认区域：</label>
-            <select id="province"></select>
-            <select id="city" title=""></select>
-            <button id="saveBtn">设置默认</button>
-        </div>
         <div class="user-info">
             <b>网优开发，欢迎您！</b>
             <a href="#" onclick="$('#iframe').attr('src','working.html')">我的设置</a>
@@ -26,13 +22,19 @@
                 <a href="login.html">退出</a>
             </span>
         </div>
+        <div class="user-default">
+            <label for="province">默认区域：</label>
+            <select id="province"></select>
+            <select id="city" title=""></select>
+            <button id="saveBtn">设置默认</button>
+        </div>
         <div id="now"></div>
     </div>
 </header>
 <nav>
     <ul id="menu"></ul>
 </nav>
-<main id="main">
+<main>
     <iframe id="iframe"></iframe>
 </main>
 <footer>
