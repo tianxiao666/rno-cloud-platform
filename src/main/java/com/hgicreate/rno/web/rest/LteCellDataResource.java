@@ -1,11 +1,15 @@
 package com.hgicreate.rno.web.rest;
 
 import com.hgicreate.rno.domain.Cell;
+import com.hgicreate.rno.domain.OriginFile;
 import com.hgicreate.rno.repository.LteCellDataRepository;
+import com.hgicreate.rno.repository.OriginFileRepository;
+import com.hgicreate.rno.security.SecurityUtils;
 import com.hgicreate.rno.service.LteCellDataService;
-import com.hgicreate.rno.service.dto.DataCollectDTO;
 import com.hgicreate.rno.service.dto.LteCellDataDTO;
+import com.hgicreate.rno.service.dto.LteCellDataFileDTO;
 import com.hgicreate.rno.service.dto.LteCellDataRecordDTO;
+import com.hgicreate.rno.web.rest.vm.LteCellDataImportVM;
 import com.hgicreate.rno.web.rest.vm.LteCellDataVM;
 import com.hgicreate.rno.web.rest.vm.FileUploadVM;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +22,9 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Paths;
+import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,11 +36,16 @@ public class LteCellDataResource {
     @Value("${rno.path.upload-files}")
     private String directory;
 
+    private final OriginFileRepository originFileRepository;
+
     private final LteCellDataRepository lteCellDataRepository;
 
     private final LteCellDataService lteCellDataService;
 
-    public LteCellDataResource(LteCellDataRepository lteCellDataRepository, LteCellDataService lteCellDataService) {
+    public LteCellDataResource(OriginFileRepository originFileRepository,
+                               LteCellDataRepository lteCellDataRepository,
+                               LteCellDataService lteCellDataService) {
+        this.originFileRepository = originFileRepository;
         this.lteCellDataRepository = lteCellDataRepository;
         this.lteCellDataService = lteCellDataService;
     }
@@ -82,18 +94,36 @@ public class LteCellDataResource {
     public ResponseEntity<?> uploadLteCellFile(FileUploadVM vm) {
         log.debug("模块名：" + vm.getModuleName());
         try {
-            String fileName = vm.getFile().getOriginalFilename();
-            log.debug("上传的文件名：{}", fileName);
-
+            String filename = vm.getFile().getOriginalFilename();
+            log.debug("上传的文件名：{}", filename);
+            OriginFile originFile = new OriginFile();
+            originFile.setFilename(filename);
             // 如果目录不存在则创建目录
             File file = new File(directory + "/" + vm.getModuleName());
             if (!file.exists() && !file.mkdirs()) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             // 以随机的 UUID 为文件名存储在本地
-            fileName = UUID.randomUUID().toString();
-            String filepath = Paths.get(directory+ "/" + vm.getModuleName(), fileName).toString();
-            log.debug("存储的文件名：{}", fileName);
+            if(filename.endsWith(".csv")){
+                filename = UUID.randomUUID().toString() +".csv";
+                originFile.setFileType("CSV");
+            }else{
+                filename = UUID.randomUUID().toString() +".zip";
+                originFile.setFileType("ZIP");
+            }
+
+            String filepath = Paths.get(directory+ "/" + vm.getModuleName(), filename).toString();
+            log.debug("存储的文件名：{}", filename);
+
+            //更新文件记录
+            originFile.setDataType(vm.getModuleName().toUpperCase());
+            originFile.setFullPath(filepath);
+            originFile.setFileSize(filepath.getBytes().length);
+            originFile.setSourceType("上传");
+            originFile.setCreatedUser(SecurityUtils.getCurrentUserLogin());
+            originFile.setCreatedDate(new Date());
+            originFileRepository.save(originFile);
+
             // 保存文件到本地
             BufferedOutputStream stream =
                     new BufferedOutputStream(new FileOutputStream(new File(filepath)));
@@ -107,9 +137,9 @@ public class LteCellDataResource {
     }
 
     @PostMapping("/query-import")
-    public List<DataCollectDTO> queryImport(LteCellDataVM vm) {
+    public List<LteCellDataFileDTO> queryImport(LteCellDataImportVM vm) throws ParseException {
         log.debug("视图模型: " + vm);
-        return lteCellDataService.queryFileUploadRecord();
+        return lteCellDataService.queryFileUploadRecord(vm);
     }
 
     @PostMapping("/query-record")

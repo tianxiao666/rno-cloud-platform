@@ -54,7 +54,7 @@ var chineseToCode = [{
     'name': '拉远小区'
 }, {
     'code': 'relatedParam',
-    'name': '关联参数'
+    'name': '关联状态库工参'
 }, {
     'code': 'relatedResoure',
     'name': '关联状态库资源'
@@ -157,9 +157,9 @@ $(function () {
 
     //导入文件类型判断
     $("#importBtn").click(function () {
-        var path = $("#file").val();
-        if (path.substring(path.lastIndexOf("."), path.length).toLowerCase() !== '.csv') {
-            showInfoInAndOut("info", "请上传csv格式的小区文件");
+        var format = $("#file").val().substring(path.lastIndexOf("."), path.length).toLowerCase();
+        if (format !== '.csv' || format !=='.zip') {
+            showInfoInAndOut("info", "请上传csv或zip格式的小区文件");
             return false;
         }
     });
@@ -549,18 +549,18 @@ function showImportRecord(data) {
         .DataTable({
             "data": data,
             "columns": [
-                {"data": "areaName"},
                 {"data": "uploadTime"},
+                {"data": "areaName"},
                 {"data": "filename"},
+                {"data": "fileType"},
                 {"data": "fileSize"},
-                {"data": "launchTime"},
-                {"data": "completeTime"},
-                {"data": "account"},
+                {"data": "fullPath"},
+                {"data": "createdUser"},
                 {"data": null}
             ],
             "columnDefs": [{
                 "render": function (data, type, row) {
-                    switch (row['fileStatus']) {
+                    switch (row['status']) {
                         case "部分失败":
                             return "<a style='color: red' onclick='showImportDetail()'>" + row['fileStatus'] + "</a>";
                         case "全部失败":

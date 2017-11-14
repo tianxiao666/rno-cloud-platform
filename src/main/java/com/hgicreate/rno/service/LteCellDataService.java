@@ -2,11 +2,17 @@ package com.hgicreate.rno.service;
 
 import com.hgicreate.rno.domain.Area;
 import com.hgicreate.rno.domain.Cell;
+import com.hgicreate.rno.domain.DataJob;
+import com.hgicreate.rno.domain.OriginFile;
+import com.hgicreate.rno.repository.DataJobRepository;
 import com.hgicreate.rno.repository.LteCellDataRepository;
-import com.hgicreate.rno.service.dto.DataCollectDTO;
+import com.hgicreate.rno.repository.OriginFileRepository;
 import com.hgicreate.rno.service.dto.LteCellDataDTO;
+import com.hgicreate.rno.service.dto.LteCellDataFileDTO;
 import com.hgicreate.rno.service.dto.LteCellDataRecordDTO;
+import com.hgicreate.rno.service.mapper.LteCellDataFileMapper;
 import com.hgicreate.rno.service.mapper.LteCellDataMapper;
+import com.hgicreate.rno.web.rest.vm.LteCellDataImportVM;
 import com.hgicreate.rno.web.rest.vm.LteCellDataVM;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Example;
@@ -15,7 +21,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,8 +39,14 @@ public class LteCellDataService {
 
     private final LteCellDataRepository lteCellDataRepository;
 
-    public LteCellDataService(LteCellDataRepository lteCellDataRepository) {
+    private final OriginFileRepository originFileRepository;
+
+    private final DataJobRepository dataJobRepository;
+
+    public LteCellDataService(LteCellDataRepository lteCellDataRepository, OriginFileRepository originFileRepository, DataJobRepository dataJobRepository) {
         this.lteCellDataRepository = lteCellDataRepository;
+        this.originFileRepository = originFileRepository;
+        this.dataJobRepository = dataJobRepository;
     }
 
 
@@ -54,18 +71,23 @@ public class LteCellDataService {
         return cells.stream().map(LteCellDataMapper.INSTANCE::lteCellDataToLteCellDto).collect(Collectors.toList());
     }
 
-    public List<DataCollectDTO> queryFileUploadRecord(){
-        List<DataCollectDTO> dtoList = new ArrayList<>();
-        dtoList.add(new DataCollectDTO(1, "广州", "2015-09-9 11:35:49",
-                "广州天河区LTE小区数据.csv", "1336235", "2015-09-9 11:36:09",
-                "2015-10-9 11:36:41", "liu.yp@iscreate.com", "部分失败"));
-        dtoList.add(new DataCollectDTO(2, "广州", "2015-9-23 18:18:41",
-                "广州荔湾区LTE小区数据.csv", "19491001", "2015-9-23 18:19:03",
-                "2015-9-23 18:19:35", "liu.yp@iscreate.com", "全部成功"));
-        dtoList.add(new DataCollectDTO(3, "广州", "2015-9-13 11:59:09",
-                "广州海珠区LTE小区数据.csv", "1348128", "2015-9-13 12:05:05",
-                "2015-9-13 12:19:20", "liu.yp@iscreate.com", "全部成功"));
-        return dtoList;
+    public List<LteCellDataFileDTO> queryFileUploadRecord(LteCellDataImportVM vm) throws ParseException {
+        Area area = new Area();
+        area.setId(Long.parseLong(vm.getCity()));
+        SimpleDateFormat sdf =   new SimpleDateFormat( "yyyy-MM-dd" );
+        Date beginDate=sdf.parse(vm.getBegUploadDate());
+        Date endDate =sdf.parse(vm.getEndUploadDate());
+        log.debug("~~~~~~~~~~~~~~~~beginDate={}",beginDate);
+        List<DataJob> list = new ArrayList<>();
+        if(vm.getStatus().equals("全部")){
+            list= dataJobRepository.findTop1000ByAreaAndStatusAndOriginFile_CreatedDateBetweenAndOriginFile_DataType(
+                    area, vm.getStatus(), beginDate, endDate,"rno-lte-cell");
+        }else{
+            list= dataJobRepository.findTop1000ByAreaAndOriginFile_CreatedDateBetweenAndOriginFile_DataType(
+                    area, beginDate, endDate,"rno-lte-cell");
+        }
+        return list.stream().map(LteCellDataFileMapper.INSTANCE::lteCellDataFileToLteCellDataFileDto)
+                .collect(Collectors.toList());
     }
 
     public List<LteCellDataRecordDTO> queryRecord(){

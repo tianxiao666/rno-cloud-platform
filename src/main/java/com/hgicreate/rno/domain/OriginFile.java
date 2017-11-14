@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @Entity
@@ -23,6 +24,6 @@ public class OriginFile {
     private Integer dataAttr;
     private String sourceType;
     private String createdUser;
-    private LocalDateTime createdDate;
+    private Date createdDate;
 
 }

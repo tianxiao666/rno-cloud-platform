@@ -50,9 +50,9 @@
                             <input id="begUploadDate" name="begUploadDate" type="text" title=""> 至：
                             <input id="endUploadDate" name="endUploadDate" type="text" title="">
                         </td>
-                        <td style="padding-left:30px"><label>状态:</label></td>
+                        <td style="padding-left:30px"><label for="import-status-menu">状态:</label></td>
                         <td>
-                            <select id="import-status-menu" title="">
+                            <select id="import-status-menu" name="status" title="">
                                 <option value="全部" selected="selected">全部</option>
                                 <option value="全部成功">全部成功</option>
                                 <option value="部分失败">部分失败</option>
@@ -80,7 +80,7 @@
                     <tbody>
                     <tr>
                         <td class="td-label">
-                            LTE小区数据文件（CSV）<span class="required">*</span>
+                            LTE小区数据文件（CSV或ZIP）<span class="required">*</span>
                         </td>
                         <td style="padding-left: 5px">
                             <input type="file" name="file" id="file" accept="*">
@@ -103,13 +103,13 @@
             <table id="queryRecordResTab" class="display rnoHeader" cellspacing="0" width="100%">
                 <thead>
                 <tr>
-                    <th>地市</th>
-                    <th>上传日期</th>
+                    <th>上传时间</th>
+                    <th>所属区域</th>
                     <th>文件名称</th>
+                    <th>文件类型</th>
                     <th>文件大小</th>
-                    <th>开始时间</th>
-                    <th>完成时间</th>
-                    <th>上传账号</th>
+                    <th>文件全路径</th>
+                    <th>创建人</th>
                     <th>状态</th>
                 </tr>
                 </thead>
