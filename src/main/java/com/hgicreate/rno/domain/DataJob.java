@@ -3,7 +3,7 @@ package com.hgicreate.rno.domain;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @Entity
@@ -17,9 +17,9 @@ public class DataJob {
     private String type;
     private Integer priority;
     private String createdUser;
-    private LocalDateTime createdDate;
-    private LocalDateTime startTime;
-    private LocalDateTime completeTime;
+    private Date createdDate;
+    private Date startTime;
+    private Date completeTime;
     private String status;
 
     @OneToOne

@@ -76,15 +76,18 @@ public class LteCellDataService {
         area.setId(Long.parseLong(vm.getCity()));
         SimpleDateFormat sdf =   new SimpleDateFormat( "yyyy-MM-dd" );
         Date beginDate=sdf.parse(vm.getBegUploadDate());
-        Date endDate =sdf.parse(vm.getEndUploadDate());
+        SimpleDateFormat sdf2 =   new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
+        Date endDate =sdf2.parse(vm.getEndUploadDate() +" 23:59:59");
+        int dayMis = 1000*60*60*24;
         log.debug("~~~~~~~~~~~~~~~~beginDate={}",beginDate);
         List<DataJob> list = new ArrayList<>();
         if(vm.getStatus().equals("全部")){
-            list= dataJobRepository.findTop1000ByAreaAndStatusAndOriginFile_CreatedDateBetweenAndOriginFile_DataType(
-                    area, vm.getStatus(), beginDate, endDate,"rno-lte-cell");
-        }else{
             list= dataJobRepository.findTop1000ByAreaAndOriginFile_CreatedDateBetweenAndOriginFile_DataType(
-                    area, beginDate, endDate,"rno-lte-cell");
+                    area, beginDate, endDate,"LTE-CELL-DATA");
+        }else{
+
+            list= dataJobRepository.findTop1000ByAreaAndStatusAndOriginFile_CreatedDateBetweenAndOriginFile_DataType(
+                    area, vm.getStatus(), beginDate, endDate,"LTE-CELL-DATA");
         }
         return list.stream().map(LteCellDataFileMapper.INSTANCE::lteCellDataFileToLteCellDataFileDto)
                 .collect(Collectors.toList());
