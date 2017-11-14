@@ -2,9 +2,7 @@ package com.hgicreate.rno.domain;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Data
@@ -13,6 +11,8 @@ import java.time.LocalDateTime;
 public class OriginFile {
 
     @Id
+    @GeneratedValue(generator = "OriginFileSeq")
+    @SequenceGenerator(name = "OriginFileSeq", sequenceName = "SEQ_ORIGIN_FILE", allocationSize = 5)
     private Long id;
 
     private String filename;
@@ -24,4 +24,5 @@ public class OriginFile {
     private String sourceType;
     private String createdUser;
     private LocalDateTime createdDate;
+
 }
