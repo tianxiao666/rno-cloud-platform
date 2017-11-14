@@ -6,26 +6,26 @@ localStorage['SelectedMenuRank'] = "";
 $(function () {
     //幻灯片
     $(window).load(function () {
-        $(".login_slide").flexslider();
+        $(".login-slide").flexslider();
     });
 
      //弹出Email后缀名列表
-    $(".email_text").click(function () {
-        $(".email_list").toggle();
+    $(".email-text").click(function () {
+        $(".email-list").toggle();
     });
-    $(".email_extensions").mouseleave(function () {
-        $(".email_list").hide();
+    $(".email-extensions").mouseleave(function () {
+        $(".email-list").hide();
     });
 
-    var $email_list = $(".email_list li");
+    var $emailList = $(".email-list li");
     //显示Email后缀名
-    $email_list.click(function () {
-        $(".email_name").text($(this).text());
-        $(".email_list").hide();
+    $emailList.click(function () {
+        $(".email-name").text($(this).text());
+        $(".email-list").hide();
     });
 
     //鼠标经过改变颜色
-    $email_list.hover(function () {
+    $emailList.hover(function () {
         $(this).addClass("hover")
     }, function () {
         $(this).removeClass("hover")

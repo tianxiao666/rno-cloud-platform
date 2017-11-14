@@ -1,347 +1,66 @@
+/* 初始化 */
+html, body, form, div, span, img, a, button, input, select, ul, li {
+    margin: 0;
+    padding: 0;
+}
+
 body {
     color: rgb(0, 0, 0);
     text-align: center;
     font-size: 9pt;
     line-height: 166.6%;
-}
-
-a, body, dd, div, dl, dt, html, span {
-    margin: 0;
-    padding: 0;
-}
-
-body, button, input, select {
-    font-family: verdana, serif;
-}
-
-button, h1, h2, h3, input, select {
-    font-size: 100%;
-}
-
-body, form, h1, h2, h3, img, li, p, ul {
-    margin: 0;
-    padding: 0;
-    border: 0 none;
-}
-
-button, img, input, select {
-    margin: 0;
-    line-height: normal;
-}
-
-select {
-    padding: 1px;
+    font-family: '微软雅黑', Verdana, Geneva, sans-serif;
 }
 
 ul {
     list-style: none outside none;
 }
 
-button, button img, input, label, select {
-    vertical-align: middle;
+/* 标题区域 */
+header {
+    position: relative;
+    margin: 0 auto;
+    width: 960px;
 }
 
-aside, figcaption, figure, footer, header, hgroup, nav, section {
-    display: block;
-    margin: 0;
-    padding: 0;
-    border: medium none;
+.logo {
+    position: absolute;
+    margin-top: 2px;
+    margin-bottom: 7px;
 }
 
-em {
-    font-style: normal;
-}
-
-a {
-    color: rgb(132, 133, 133);
-    text-decoration: none;
-}
-
-a:hover {
-    color: rgb(51, 163, 220);
-    text-decoration: underline;
-}
-
-.login_main {
+/* 主内容区域 */
+main {
     margin-top: 45px;
     height: 455px;
     background-color: rgb(255, 255, 255);
 }
 
-.login_inner {
+.login-main {
     position: relative;
     margin: 0 auto;
-    width: 60pc;
+    width: 960px;
 }
 
-.logo {
-    position: absolute;
-    left: 0;
-    margin-top: 2px;
-    margin-bottom: 7px;
-}
-
-.login_block {
-    position: absolute;
-    right: 30px;
-    z-index: 2;
-    margin-top: 25px;
-    height: 350px;
-    border: 1px solid rgb(183, 194, 201);
-    border-radius: 2px;
-    box-shadow: rgba(0, 0, 0, 0.5) 2px 5px 5px 0;
-    text-align: left;
-}
-
-.login_block, .login_title {
-    overflow: hidden;
-    width: 300px;
-}
-
-.login_title {
-    position: relative;
-    float: left;
-    height: 49px;
-    border-right: 1px solid rgb(183, 194, 201);
-    background: url("../images/login_block.png") repeat-x 0 0;
-    color: rgb(28, 112, 197);
-    text-align: center;
-    font-weight: 700;
-    font-size: 18px;
-    line-height: 46px;
-    cursor: pointer;
-    font-family: "Microsoft YaHei", serif !important;
-}
-
-.login_bg {
-    position: relative;
-    margin-top: 49px;
-    height: 301px;
-    background-color: rgb(255, 255, 255);
-    opacity: 0.8;
-}
-
-.login_form {
-    position: absolute;
-    top: 60px;
-    left: 30px;
-    height: 290px;
-}
-
-.login_formIpt {
-    position: relative;
-    clear: both;
-    margin-top: 25px;
-    width: 238px;
-    height: 34px;
-}
-
-.loginFormTdIpt {
-    top: 0;
-    left: 0;
-    padding: 5px 8px;
-    width: 220px;
-    height: 23px;
-    border: 1px solid rgb(204, 204, 204);
-    box-shadow: rgba(0, 0, 0, 0.1) 0 1px 10px inset;
-    color: rgb(153, 153, 153);
-    font-size: 1pc;
-}
-
-.loginFormTdIpt:focus {
-    border: 1px solid rgb(28, 112, 197);
-    box-shadow: rgba(28, 112, 197, 0.8) 0 0 4px;
-}
-
-#passWord {
-    display: none;
-}
-
-.login_form .verificationCode {
-    width: 87pt;
-}
-
-.login_form .verificationCode .loginFormTdIpt {
-    width: 90pt;
-}
-
-.login_form .verificationCode .img {
-    position: absolute;
-    top: 0;
-    left: 148px;
-}
-
-.login_form .verificationCode .img img {
-    width: 90px;
-    height: 35px;
-}
-
-.loginFormIptWiotTh {
-    margin: 30px 0 0 60px;
-    height: 35px;
-    border: medium none;
-}
-
-.login_formIpt .userNameIpt {
-    width: 103px;
-}
-
-.login_formIpt .email_text {
-    position: absolute;
-    top: 0;
-    left: 121px;
-    display: block;
-    overflow: hidden;
-    padding: 0 3px;
-    width: 110px;
-    height: 33px;
-    border-top: 1px solid rgb(204, 204, 204);
-    border-right: 1px solid rgb(204, 204, 204);
-    border-bottom: 1px solid rgb(204, 204, 204);
-    border-image: initial;
-    border-left: none;
-    background-color: rgb(240, 240, 240);
-    font-size: 9pt;
-    line-height: 33px;
-    cursor: pointer;
-}
-
-.login_formIpt .email_text em {
-    display: inline-block;
-}
-
-.login_formIpt .email_text em.email_name {
-    overflow: hidden;
-    width: 98px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.login_formIpt .email_text em.em_arrow {
-    position: absolute;
-    top: 14px;
-    right: 3px;
-    border-top: 5px solid rgb(153, 153, 153);
-    border-right: 5px solid transparent;
-    border-left: 5px solid transparent;
-    color: rgb(153, 153, 153);
-    font-size: 10px;
-}
-
-.login_formIpt .email_list {
-    position: absolute;
-    left: 90pt;
-    z-index: 100;
-    display: none;
-    width: 87pt;
-    border-right: 1px solid rgb(204, 204, 204);
-    border-bottom: 1px solid rgb(204, 204, 204);
-    border-left: 1px solid rgb(204, 204, 204);
-    border-image: initial;
-    border-top: none;
-    background-color: rgb(240, 240, 240);
-}
-
-.login_formIpt .email_list ul li {
-    overflow: hidden;
-    padding: 0 5px;
-    height: 26px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: 9pt;
-    line-height: 26px;
-    cursor: pointer;
-}
-
-.login_formIpt .email_list ul li.hover {
-    background-color: rgb(83, 153, 224);
-}
-
-.login_form em.errorTip {
-    position: absolute;
-    top: 0;
-    width: 15pc;
-    text-align: left;
-}
-
-.login_form em.errorTip, .login_form em.errorTipVc {
-    display: inline-block;
-    color: red;
-}
-
-.btn {
-    display: inline-block;
-    padding: 0;
-    height: 35px;
-    outline: 0;
-    border: 0 none;
-    background-image: url("../images/login_block.png");
-    vertical-align: baseline;
-    text-align: center;
-    font-weight: 700;
-    font-size: 18px;
-    line-height: 35px;
-    cursor: pointer;
-    font-family: "Microsoft YaHei", serif !important;
-}
-
-.btn_login {
-    width: 102px;
-    background-position: -2px -51px;
-    color: rgb(255, 255, 255);
-}
-
-.btn_login:hover {
-    background-position: -87pt -51px;
-}
-
-.footer_inner {
-    position: relative;
-    overflow: visible;
-    margin: 0 auto;
-    width: 60pc;
-    height: 63px;
-    color: rgb(132, 133, 133);
-}
-
-.footer_nav {
-    position: absolute;
-    top: 25px;
-    right: 75pt;
-}
-
-.footer_nav a {
-    margin: 0 15px;
-}
-
-.footer_nav .copyright {
-    margin-left: 15px;
-}
-
-.footer_kx {
-    position: absolute;
-    top: 24px;
-    right: 30px;
-}
-
-.login_slide {
+/* 幻灯片部分 - start */
+.login-slide {
     padding-top: 65px;
 }
 
-.login_slide .slides > li {
+.login-slide .slides > li {
     display: none;
 }
 
-.login_slide .slides img {
+.login-slide .slides img {
     display: block;
     max-width: 100%;
 }
 
-.login_slide .slides {
+.login-slide .slides {
     zoom: 1;
 }
 
-.login_slide .slides > li {
+.login-slide .slides > li {
     position: relative;
 }
 
@@ -366,7 +85,7 @@ a:hover {
     display: block;
     width: 13px;
     height: 13px;
-    background: url("../images/bg_control_nav.png") 0 0 no-repeat;
+    background: url("../images/bg-control-nav.png") 0 0 no-repeat;
     text-indent: -9999px;
     cursor: pointer;
 }
@@ -378,4 +97,229 @@ a:hover {
 .login_slideNav li a.active {
     background-position: 0 -26px;
     cursor: default;
+}
+/* 幻灯片部分 - end */
+
+.login-block {
+    position: absolute;
+    right: 30px;
+    z-index: 2;
+    margin-top: 25px;
+    height: 350px;
+    border: 1px solid rgb(183, 194, 201);
+    border-radius: 2px;
+    box-shadow: rgba(0, 0, 0, 0.5) 2px 5px 5px 0;
+    text-align: left;
+}
+
+.login-title {
+    overflow: hidden;
+    width: 300px;
+    position: relative;
+    float: left;
+    height: 49px;
+    border-right: 1px solid rgb(183, 194, 201);
+    background: url("../images/login-block.png") repeat-x 0 0;
+    color: rgb(28, 112, 197);
+    text-align: center;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 46px;
+    cursor: pointer;
+}
+
+.login-bg {
+    position: relative;
+    margin-top: 49px;
+    height: 301px;
+    background-color: rgb(255, 255, 255);
+    opacity: 0.8;
+}
+
+.login-form {
+    position: absolute;
+    top: 60px;
+    left: 30px;
+    height: 290px;
+}
+
+.error-tip {
+    position: absolute;
+    top: 0;
+    width: 15pc;
+    text-align: left;
+    display: inline-block;
+    color: red;
+}
+
+.login-form-input {
+    position: relative;
+    clear: both;
+    margin-top: 25px;
+    width: 238px;
+    height: 34px;
+}
+
+.login-form-td-input {
+    top: 0;
+    left: 0;
+    padding: 5px 8px;
+    width: 220px;
+    height: 23px;
+    border: 1px solid rgb(204, 204, 204);
+    box-shadow: rgba(0, 0, 0, 0.1) 0 1px 10px inset;
+    color: rgb(153, 153, 153);
+    font-size: 1pc;
+}
+
+.login-form-td-input:focus {
+    border: 1px solid rgb(28, 112, 197);
+    box-shadow: rgba(28, 112, 197, 0.8) 0 0 4px;
+}
+
+.login-form-input-th {
+    margin: 30px 0 0 60px;
+    height: 35px;
+    border: medium none;
+}
+
+.user-name-input {
+    width: 103px;
+}
+
+.login-form-input .email-text {
+    position: absolute;
+    top: 0;
+    left: 121px;
+    display: block;
+    overflow: hidden;
+    padding: 0 3px;
+    width: 110px;
+    height: 33px;
+    border-top: 1px solid rgb(204, 204, 204);
+    border-right: 1px solid rgb(204, 204, 204);
+    border-bottom: 1px solid rgb(204, 204, 204);
+    border-image: initial;
+    border-left: none;
+    background-color: rgb(240, 240, 240);
+    font-size: 9pt;
+    line-height: 33px;
+    cursor: pointer;
+}
+
+.email-text span {
+    display: inline-block;
+}
+
+.email-name {
+    overflow: hidden;
+    width: 98px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.em-arrow {
+    position: absolute;
+    top: 14px;
+    right: 3px;
+    border-top: 5px solid rgb(153, 153, 153);
+    border-right: 5px solid transparent;
+    border-left: 5px solid transparent;
+    color: rgb(153, 153, 153);
+    font-size: 10px;
+}
+
+.email-list {
+    position: absolute;
+    left: 90pt;
+    z-index: 100;
+    display: none;
+    width: 87pt;
+    border-right: 1px solid rgb(204, 204, 204);
+    border-bottom: 1px solid rgb(204, 204, 204);
+    border-left: 1px solid rgb(204, 204, 204);
+    border-image: initial;
+    border-top: none;
+    background-color: rgb(240, 240, 240);
+}
+
+.email-list ul li {
+    overflow: hidden;
+    padding: 0 5px;
+    height: 26px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 9pt;
+    line-height: 26px;
+    cursor: pointer;
+}
+
+.email-list ul li.hover {
+    background-color: rgb(83, 153, 224);
+}
+
+.btn {
+    display: inline-block;
+    padding: 0;
+    height: 35px;
+    outline: 0;
+    border: 0 none;
+    background-image: url("../images/login-block.png");
+    vertical-align: baseline;
+    text-align: center;
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 35px;
+    cursor: pointer;
+    font-family: "Microsoft YaHei", serif !important;
+}
+
+.btn-login {
+    width: 102px;
+    background-position: -2px -51px;
+    color: rgb(255, 255, 255);
+}
+
+.btn-login:hover {
+    background-position: -87pt -51px;
+}
+
+/* 页脚部分 */
+footer {
+    position: relative;
+    overflow: visible;
+    margin: 0 auto;
+    width: 960px;
+    height: 63px;
+    color: rgb(132, 133, 133);
+}
+
+.footer-content {
+    position: absolute;
+    top: 25px;
+    right: 75pt;
+}
+
+.footer-content a {
+    margin: 0 15px;
+}
+
+.footer-content span {
+    margin-left: 15px;
+}
+
+.footer-trust {
+    position: absolute;
+    top: 24px;
+    right: 30px;
+}
+
+a {
+    color: rgb(132, 133, 133);
+    text-decoration: none;
+}
+
+a:hover {
+    color: rgb(51, 163, 220);
+    text-decoration: underline;
 }
