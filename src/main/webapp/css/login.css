@@ -120,7 +120,6 @@ main {
     font-weight: 700;
     font-size: 18px;
     line-height: 46px;
-    cursor: pointer;
 }
 
 .login-bg {
@@ -164,7 +163,7 @@ main {
     border: 1px solid rgb(204, 204, 204);
     box-shadow: rgba(0, 0, 0, 0.1) 0 1px 10px inset;
     color: rgb(153, 153, 153);
-    font-size: 1pc;
+    font-size: 16px;
 }
 
 .form-input input:focus {
@@ -180,41 +179,30 @@ main {
     position: absolute;
     top: 0;
     left: 121px;
-    display: block;
-    overflow: hidden;
     width: 115px;
     height: 35px;
     border-top: 1px solid rgb(204, 204, 204);
     border-right: 1px solid rgb(204, 204, 204);
     border-bottom: 1px solid rgb(204, 204, 204);
-    border-image: initial;
     border-left: none;
     background-color: rgb(240, 240, 240);
     font-size: 9px;
-    line-height: 33px;
     cursor: pointer;
 }
 
 .form-btn {
     margin: 30px 0 0 60px;
-    height: 35px;
-    border: medium none;
 }
 
 .form-btn button {
-    display: inline-block;
-    padding: 0;
     width: 102px;
     height: 35px;
-    outline: 0;
     border: 0 none;
-    vertical-align: baseline;
-    text-align: center;
     font-weight: 700;
     font-size: 18px;
     line-height: 35px;
     cursor: pointer;
-    color: rgb(255, 255, 255);
+    color: white;
     background: url("../images/login-block.png") -2px -51px;
 }
 
