@@ -60,15 +60,6 @@ public class LteNcellRelationService {
             list = dataJobRepository.findTop1000ByAreaAndStatusAndOriginFile_CreatedDateBetweenAndOriginFile_DataType(area,
                     vm.getStatus(),beginDate,endDate,"LTE-NCELL-RELATION-DATA");
         }
-
-
-//        List<DataCollectDTO> dtoList = new ArrayList<>();
-//        dtoList.add(new DataCollectDTO(1, "广州市", "2015-10-9 11:35:49",
-//                "棠下小区邻区数据.csv", "1366322", "2015-10-9 11:36:09",
-//                "2015-10-9 11:36:41", "liu.yp@iscreate.com", "部分失败"));
-//        dtoList.add(new DataCollectDTO(2, "广州市", "2015-9-28 18:18:41",
-//                "天河小区邻区数据.csv", "19490250", "2015-9-28 18:19:03",
-//                "2015-9-28 18:19:35", "liu.yp@iscreate.com", "全部成功"));
         return list.stream()
                    .map(LteNcellImportFileMapper.INSTANCE::ncellImportFileToNcellImportFileDTO)
                    .collect(Collectors.toList());
