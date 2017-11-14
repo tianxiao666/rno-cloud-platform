@@ -9,10 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LteNcellImportDtDTO {
     private String areaName;
-    private String meaTime;
     private String dataType;
-    private String areaType;
     private String fileName;
     private String recordCount;
+    private String jobId;
     private String createTime;
 }

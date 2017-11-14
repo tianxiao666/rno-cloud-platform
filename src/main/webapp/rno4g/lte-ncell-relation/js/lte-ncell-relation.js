@@ -25,22 +25,22 @@ $(function () {
     //验证邻区关系查询条件
     $("#queryBtn").click(function () {
         var reg = /^[0-9]+.?[0-9]*$/;
-        var cellPci =$("#cellPci").val();
-        var ncellPci =$("#ncellPci").val();
-        if(!reg.test(cellPci) && cellPci.trim() !==''){
+        var cellPci = $("#cellPci").val();
+        var ncellPci = $("#ncellPci").val();
+        if (!reg.test(cellPci) && cellPci.trim() !== '') {
             showInfoInAndOut("info", "主小区PCI值必须为数字");
             return false;
         }
-        if(cellPci.length >10 && cellPci.trim() !==''){
-            showInfoInAndOut("info","主小区PCI值输入过长");
+        if (cellPci.length > 10 && cellPci.trim() !== '') {
+            showInfoInAndOut("info", "主小区PCI值输入过长");
             return false;
         }
-        if(!reg.test(ncellPci) && ncellPci.trim() !==''){
+        if (!reg.test(ncellPci) && ncellPci.trim() !== '') {
             showInfoInAndOut("info", "邻小区PCI值必须为数字");
             return false;
         }
-        if(ncellPci.length >10 && ncellPci.trim() !==''){
-            showInfoInAndOut("info","邻小区PCI值输入过长");
+        if (ncellPci.length > 10 && ncellPci.trim() !== '') {
+            showInfoInAndOut("info", "邻小区PCI值输入过长");
             return false;
         }
         $(".loading").show();
@@ -68,6 +68,16 @@ $(function () {
     var progress = $('.upload-progress');
     var bar = $('.bar');
     var percent = $('.percent');
+
+    //导入文件类型判断
+    $("#importBtn").click(function () {
+        var path = $("#file").val();
+        var fileType = path.substring(path.lastIndexOf("."), path.length).toLowerCase();
+        if (fileType !== '.csv' && fileType != '.zip') {
+            showInfoInAndOut("info", "请上传csv或者zip格式的数据文件");
+            return false;
+        }
+    });
 
     $("#file-upload-form").ajaxForm({
         url: "/api/lte-ncell-relation/upload-file",
@@ -97,7 +107,7 @@ $(function () {
 
 //显示邻区关系查询结果
 function showNcellRelationResult(data) {
-    $(".loading").css("display","none");
+    $(".loading").css("display", "none");
     if (data == '') {
         showInfoInAndOut('info', '没有符合条件的邻区关系');
     }
@@ -119,7 +129,7 @@ function showNcellRelationResult(data) {
         "columnDefs": [{
             "render": function (data, type, row) {
                 var id = row['id'];
-                return "<a onclick=\"deleteCell('"+id+"')\">删除</a>";
+                return "<a onclick=\"deleteCell('" + id + "')\">删除</a>";
             },
             "targets": -1,
             "data": null
@@ -128,7 +138,7 @@ function showNcellRelationResult(data) {
         "lengthChange": false,
         "ordering": false,
         "searching": false,
-        "destroy":true,
+        "destroy": true,
         "language": {
             url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
         }
@@ -137,7 +147,7 @@ function showNcellRelationResult(data) {
 
 //显示邻区关系导入记录查询结果
 function showNcellImportResult(data) {
-    $(".loading").css("display","none");
+    $(".loading").css("display", "none");
     if (data == '') {
         showInfoInAndOut('info', '没有符合条件的邻区关系');
     }
@@ -145,30 +155,45 @@ function showNcellImportResult(data) {
     $('#queryRecordResTab').css("line-height", "12px");
     $('#queryRecordResTab').DataTable({
         "data": data,
-        "data": data,
         "columns": [
             {"data": "areaName"},
             {"data": "uploadTime"},
             {"data": "filename"},
             {"data": "fileSize"},
-            {"data": "launchTime"},
+            {"data": null},
             {"data": "completeTime"},
-            {"data": "account"},
+            {"data": "createdUser"},
             {"data": null}
         ],
-        "columnDefs": [ {
+        "columnDefs": [{
+            "render": function(data, type, row) {
+                if(row['startTime']==""||row['startTime']==null){
+                    return "---";
+                }
+            },
+            "targets": 4,
+            "data": "startTime"
+        },{
+            "render": function(data, type, row) {
+                if(row['completeTime']==""||row['completeTime']==null){
+                    return "---";
+                }
+            },
+            "targets": 5,
+            "data": "completeTime"
+        },{
             "render": function (data, type, row) {
-                switch (row['fileStatus']) {
-                    case "部分失败":
-                        return "<a style='color: red' onclick='showImportDetail()'>" + row['fileStatus'] + "</a>";
+                switch (row['status']) {
+                    case "部分成功":
+                        return "<a style='color: red' onclick='showImportDetail()'>" + row['status'] + "</a>";
                     case "全部失败":
-                        return "<a style='color: red' onclick='showImportDetail()'>" + row['fileStatus'] + "</a>";
+                        return "<a style='color: red' onclick='showImportDetail()'>" + row['status'] + "</a>";
                     case "全部成功":
-                        return "<a onclick='showImportDetail()'>" + row['fileStatus'] + "</a>";
-                    case "正在解析":
-                        return "<a onclick='showImportDetail()'>" + row['fileStatus'] + "</a>";
-                    case "等待解析":
-                        return "<a onclick='showImportDetail()'>" + row['fileStatus'] + "</a>";
+                        return "<a onclick='showImportDetail()'>" + row['status'] + "</a>";
+                    case "正在处理":
+                        return "<a onclick='showImportDetail()'>" + row['status'] + "</a>";
+                    case "等待处理":
+                        return "<a onclick='showImportDetail()'>" + row['status'] + "</a>";
                 }
             },
             "targets": -1,
@@ -178,7 +203,7 @@ function showNcellImportResult(data) {
         "lengthChange": false,
         "ordering": false,
         "searching": false,
-        "destroy":true,
+        "destroy": true,
         "language": {
             url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
         }
@@ -187,7 +212,7 @@ function showNcellImportResult(data) {
 
 //显示邻区关系数据查询结果
 function showNcellImportDtResult(data) {
-    $(".loading").css("display","none");
+    $(".loading").css("display", "none");
     if (data == '') {
         showInfoInAndOut('info', '没有符合条件的邻区关系');
     }
@@ -197,17 +222,16 @@ function showNcellImportDtResult(data) {
         "data": data,
         "columns": [
             {"data": "areaName"},
-            {"data": "meaTime"},
             {"data": "dataType"},
-            {"data": "areaType"},
             {"data": "fileName"},
             {"data": "recordCount"},
+            {"data": "jobId"},
             {"data": "createTime"}
         ],
         "lengthChange": false,
         "ordering": false,
         "searching": false,
-        "destroy":true,
+        "destroy": true,
         "language": {
             url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
         }
@@ -226,9 +250,9 @@ function deleteCell(id) {
     $.ajax({
         url: '/api/lte-ncell-relation/deleteByCellIdAndNcellId',
         dataType: 'text',
-        data: {id:id},
+        data: {id: id},
         success: function () {
-            showInfoInAndOut("info","删除邻区关系成功！");
+            showInfoInAndOut("info", "删除邻区关系成功！");
             $("#conditionForm").ajaxForm({
                 url: "/api/lte-ncell-relation/ncell-query",
                 success: showNcellRelationResult,
@@ -236,9 +260,9 @@ function deleteCell(id) {
                     console.log(err);
                 }
             });
-        },error: function (err) {
+        }, error: function (err) {
             console.log(err);
-            showInfoInAndOut("info","后台程序错误！");
+            showInfoInAndOut("info", "后台程序错误！");
         }
     })
 }

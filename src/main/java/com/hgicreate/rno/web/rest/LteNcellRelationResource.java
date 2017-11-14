@@ -1,9 +1,13 @@
 package com.hgicreate.rno.web.rest;
 
+import com.hgicreate.rno.domain.OriginFile;
 import com.hgicreate.rno.repository.NcellRepository;
+import com.hgicreate.rno.repository.OriginFileRepository;
+import com.hgicreate.rno.security.SecurityUtils;
 import com.hgicreate.rno.service.LteNcellRelationService;
 import com.hgicreate.rno.service.dto.DataCollectDTO;
 import com.hgicreate.rno.service.dto.LteNcellImportDtDTO;
+import com.hgicreate.rno.service.dto.LteNcellImportFileDTO;
 import com.hgicreate.rno.service.dto.LteNcellRelationDTO;
 import com.hgicreate.rno.web.rest.vm.FileUploadVM;
 import com.hgicreate.rno.web.rest.vm.LteNcellImportDtQueryVM;
@@ -19,6 +23,10 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Paths;
+import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,10 +40,12 @@ public class LteNcellRelationResource {
 
     private final LteNcellRelationService lteNcellRelationService;
     private final NcellRepository ncellRepository;
+    private final OriginFileRepository originFileRepository;
 
-    public LteNcellRelationResource(NcellRepository ncellRepository, LteNcellRelationService lteNcellRelationService) {
+    public LteNcellRelationResource(NcellRepository ncellRepository, LteNcellRelationService lteNcellRelationService, OriginFileRepository originFileRepository) {
         this.ncellRepository = ncellRepository;
         this.lteNcellRelationService = lteNcellRelationService;
+        this.originFileRepository = originFileRepository;
     }
 
     @PostMapping("/ncell-query")
@@ -45,7 +55,7 @@ public class LteNcellRelationResource {
     }
 
     @PostMapping("/ncell-import-query")
-    public List<DataCollectDTO> importQuery(LteNcellImportQueryVM vm){
+    public List<LteNcellImportFileDTO> importQuery(LteNcellImportQueryVM vm) throws ParseException {
         log.debug("查询 DT 文件导入记录。");
         log.debug("视图模型: " + vm);
         return lteNcellRelationService.queryImport(vm);
@@ -74,10 +84,25 @@ public class LteNcellRelationResource {
 
         log.debug("模块名：" + vm.getModuleName());
 
+        //创建OriginFile对象，保存数据
+        OriginFile originFile = new OriginFile();
+
         try {
             // 获取文件名，并构建为本地文件路径
             String filename = vm.getFile().getOriginalFilename();
             log.debug("上传的文件名：{}", filename);
+
+            //获取文件类型
+            String fileExtension = filename.substring(filename.lastIndexOf("."),filename.length()).toLowerCase();
+            String fileType = new String("ZIP");
+            if((".csv").equals(fileExtension)){
+                fileType = "CSV";
+            }
+            log.debug("上传的文件类型：{}",fileType);
+
+            //获取文件大小
+            int fileSize = (int) vm.getFile().getSize();
+            log.debug("上传的文件大小：{}",fileSize);
 
             // 如果目录不存在则创建目录
             File fileDirectory = new File(directory+"/"+vm.getModuleName());
@@ -86,7 +111,7 @@ public class LteNcellRelationResource {
             }
 
             // 以随机的 UUID 为文件名存储在本地
-            filename = UUID.randomUUID().toString()+".csv";
+            filename = UUID.randomUUID().toString()+fileExtension;
             String filepath = Paths.get(directory+"/"+vm.getModuleName(), filename).toString();
 
             log.debug("存储的文件名：{}", filename);
@@ -96,10 +121,21 @@ public class LteNcellRelationResource {
                     new BufferedOutputStream(new FileOutputStream(new File(filepath)));
             stream.write(vm.getFile().getBytes());
             stream.close();
+
+            originFile.setFilename(vm.getFile().getOriginalFilename());
+            originFile.setFileType(fileType);
+            originFile.setFileSize(fileSize);
+            originFile.setFullPath(filepath);
+            originFile.setDataType("LTE-NCELL-RELATION-DATA");
+            originFile.setCreatedUser(SecurityUtils.getCurrentUserLogin());
+            originFile.setCreatedDate(new Date());
+            originFile.setSourceType("上传");
+            originFileRepository.save(originFile);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
