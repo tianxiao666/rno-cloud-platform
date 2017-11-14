@@ -17,7 +17,7 @@
 </header>
 <main>
     <div class="login-main">
-        <div class="login-slide">
+        <div class="flexslider">
             <ul class="slides">
                 <li><img src="images/1.png"/></li>
                 <li><img src="images/2.png"/></li>
@@ -30,28 +30,19 @@
             <div class="login-bg"></div>
             <div class="login-form">
                 <form action="index.html" method="post">
-                    <em class="error-tip"></em>
-                    <div class="login-form-input">
-                        <input type="text" name="username" title="请输入帐号" placeholder="账号"
-                               class="login-form-td-input user-name-input"/>
-                        <div class="email-extensions">
-                            <label class="email-text">
-                                <span class="email-name" id="real_suffix">@hgicreate.com</span>
-                                <span class="arrow"></span>
-                            </label>
-                            <div class="email-list">
-                                <ul>
-                                    <li>@hgicreate.com</li>
-                                </ul>
-                            </div>
-                        </div>
+                    <strong class="error-tip"></strong>
+                    <div class="form-input">
+                        <input type="text" name="username" title="请输入帐号" placeholder="账号">
+                        <select class="email-selector" title="">
+                            <option>@hgicreate.com</option>
+                            <option>@iscreate.com</option>
+                        </select>
                     </div>
-                    <div class="login-form-input">
-                        <input type="password" name="password" title="请输入密码" placeholder="密码"
-                               class="login-form-td-input"/>
+                    <div class="form-input">
+                        <input type="password" name="password" title="请输入密码" placeholder="密码">
                     </div>
-                    <div class="login-form-input-th">
-                        <button type="submit" class="btn btn-login">登 录</button>
+                    <div class="form-btn">
+                        <button type="submit">登 录</button>
                     </div>
                 </form>
             </div>
@@ -66,8 +57,8 @@
         |<span>怡创移动通信4G网络优化软件平台 V1.0.0</span>
         <span>广东海格怡创科技有限公司 版权所有 &copy; 2013-2017</span>
     </div>
-    <a href="#" target="_blank" class="footer-trust">
-        <img src="images/knet.png" alt="可信网站，身份验证">
+    <a href="#" target="_blank" class="trusted-network">
+        <img src="images/trusted-network.png" alt="可信网站，身份验证">
     </a>
 </footer>
 </body>

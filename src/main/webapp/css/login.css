@@ -43,25 +43,19 @@ main {
 }
 
 /* 幻灯片部分 - start */
-.login-slide {
+.slides {
     padding-top: 65px;
-}
-
-.login-slide .slides > li {
-    display: none;
-}
-
-.login-slide .slides img {
-    display: block;
-    max-width: 100%;
-}
-
-.login-slide .slides {
     zoom: 1;
 }
 
-.login-slide .slides > li {
+.slides > li {
+    display: none;
     position: relative;
+}
+
+.slides img {
+    display: block;
+    max-width: 100%;
 }
 
 .login_slideNav {
@@ -153,7 +147,7 @@ main {
     color: red;
 }
 
-.login-form-input {
+.form-input {
     position: relative;
     clear: both;
     margin-top: 25px;
@@ -161,7 +155,7 @@ main {
     height: 34px;
 }
 
-.login-form-td-input {
+.form-input input {
     top: 0;
     left: 0;
     padding: 5px 8px;
@@ -173,118 +167,61 @@ main {
     font-size: 1pc;
 }
 
-.login-form-td-input:focus {
+.form-input input:focus {
     border: 1px solid rgb(28, 112, 197);
     box-shadow: rgba(28, 112, 197, 0.8) 0 0 4px;
 }
 
-.login-form-input-th {
-    margin: 30px 0 0 60px;
-    height: 35px;
-    border: medium none;
-}
-
-.user-name-input {
+.form-input input[type='text'] {
     width: 103px;
 }
 
-.login-form-input .email-text {
+.email-selector {
     position: absolute;
     top: 0;
     left: 121px;
     display: block;
     overflow: hidden;
-    padding: 0 3px;
-    width: 110px;
-    height: 33px;
+    width: 115px;
+    height: 35px;
     border-top: 1px solid rgb(204, 204, 204);
     border-right: 1px solid rgb(204, 204, 204);
     border-bottom: 1px solid rgb(204, 204, 204);
     border-image: initial;
     border-left: none;
     background-color: rgb(240, 240, 240);
-    font-size: 9pt;
+    font-size: 9px;
     line-height: 33px;
     cursor: pointer;
 }
 
-.email-text span {
-    display: inline-block;
+.form-btn {
+    margin: 30px 0 0 60px;
+    height: 35px;
+    border: medium none;
 }
 
-.email-name {
-    overflow: hidden;
-    width: 98px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.arrow {
-    position: absolute;
-    top: 14px;
-    right: 3px;
-    border-top: 5px solid rgb(153, 153, 153);
-    border-right: 5px solid transparent;
-    border-left: 5px solid transparent;
-    color: rgb(153, 153, 153);
-    font-size: 10px;
-}
-
-.email-list {
-    position: absolute;
-    left: 90pt;
-    z-index: 100;
-    display: none;
-    width: 87pt;
-    border-right: 1px solid rgb(204, 204, 204);
-    border-bottom: 1px solid rgb(204, 204, 204);
-    border-left: 1px solid rgb(204, 204, 204);
-    border-image: initial;
-    border-top: none;
-    background-color: rgb(240, 240, 240);
-}
-
-.email-list ul li {
-    overflow: hidden;
-    padding: 0 5px;
-    height: 26px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: 9pt;
-    line-height: 26px;
-    cursor: pointer;
-}
-
-.email-list ul li.hover {
-    background-color: rgb(83, 153, 224);
-}
-
-.btn {
+.form-btn button {
     display: inline-block;
     padding: 0;
+    width: 102px;
     height: 35px;
     outline: 0;
     border: 0 none;
-    background-image: url("../images/login-block.png");
     vertical-align: baseline;
     text-align: center;
     font-weight: 700;
     font-size: 18px;
     line-height: 35px;
     cursor: pointer;
-    font-family: "Microsoft YaHei", serif !important;
-}
-
-.btn-login {
-    width: 102px;
-    background-position: -2px -51px;
     color: rgb(255, 255, 255);
+    background: url("../images/login-block.png") -2px -51px;
 }
 
-.btn-login:hover {
+.form-btn button:hover {
     background-position: -87pt -51px;
 }
-/* 登录表单区域 - start */
+/* 登录表单区域 - end */
 
 /* 页脚部分 */
 footer {
@@ -310,7 +247,7 @@ footer {
     margin-left: 15px;
 }
 
-.footer-trust {
+.trusted-network {
     position: absolute;
     top: 24px;
     right: 30px;
