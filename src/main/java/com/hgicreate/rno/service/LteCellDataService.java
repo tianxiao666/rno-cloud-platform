@@ -3,7 +3,6 @@ package com.hgicreate.rno.service;
 import com.hgicreate.rno.domain.Area;
 import com.hgicreate.rno.domain.Cell;
 import com.hgicreate.rno.domain.DataJob;
-import com.hgicreate.rno.domain.OriginFile;
 import com.hgicreate.rno.repository.DataJobRepository;
 import com.hgicreate.rno.repository.LteCellDataRepository;
 import com.hgicreate.rno.repository.OriginFileRepository;
@@ -23,8 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

@@ -253,7 +253,7 @@ function showQueryList(data) {
 
 function showDetail(cellId) {
     $.ajax({
-        url: '/api/lte-cell-data/findCellDetailById',
+        url: '/api/lte-cell-data/cell-detail-Id',
         dataType: 'text',
         data: {cellId: cellId},
         success: showCellAndCoSiteCell,
@@ -283,7 +283,7 @@ function showEditor(cellId) {	//加载lte小区id保存到隐藏域
     //加载需要编辑的lte小区数据到页面
     $(".loading").css("display", "block");
     $.ajax({
-        url: '/api/lte-cell-data/findCellDetailForEdit',
+        url: '/api/lte-cell-data/cell-detail-edit',
         data: {
             'cellId': cellId
         },
@@ -417,7 +417,7 @@ function deleteCell(cellId) {
     var r = confirm("删除该条小区信息？");
     if(r === true){
         $.ajax({
-            url: '/api/lte-cell-data/deleteByCellId',
+            url: '/api/lte-cell-data/cell-delete',
             dataType: 'text',
             data: {cellId: cellId},
             success: function () {
@@ -518,7 +518,7 @@ function updateLteCellDetail(submitOK) {
     if (submitOK) {
         $("#lteCellDetailForm")
             .ajaxSubmit({
-                url: "/api/lte-cell-data/updateLteCellDetail",
+                url: "/api/lte-cell-data/cell-detail-update",
                 dataType: 'text',
                 success: function (flag) {
                     console.log(flag);

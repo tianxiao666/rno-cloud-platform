@@ -66,24 +66,24 @@ public class LteCellDataResource {
         return lteCellDataService.queryLteCell(lteCellDataVM);
     }
 
-    @GetMapping("/findCellDetailById")
+    @GetMapping("/cell-detail-Id")
     public List<Cell> findCellDetailById(@RequestParam String cellId) {
         String enodebId = lteCellDataRepository.findOne(cellId).getEnodebId();
         return lteCellDataRepository.findByEnodebId(enodebId);
     }
 
-    @GetMapping("/findCellDetailForEdit")
+    @GetMapping("/cell-detail-edit")
     public Cell findCellDetailForEdit(@RequestParam String cellId) {
         return lteCellDataRepository.findOne(cellId);
     }
 
-    @GetMapping("/deleteByCellId")
+    @GetMapping("/cell-delete")
     public void deleteByCellId(@RequestParam String cellId) {
         log.debug("待删除小区id为={}", cellId);
         lteCellDataRepository.delete(cellId);
     }
 
-    @PostMapping("/updateLteCellDetail")
+    @PostMapping("/cell-detail-update")
     public boolean updateLteCellDetail(Cell cell) {
         try {
             log.debug("要更新的小区={}", cell.getLatitude());
