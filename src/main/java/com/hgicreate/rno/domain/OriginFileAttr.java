@@ -11,8 +11,8 @@ import java.util.Set;
 @Table(name = "RNO_ORIGIN_FILE_ATTR")
 public class OriginFileAttr {
     @Id
-    @GeneratedValue(generator = "OriginFileSeq")
-    @SequenceGenerator(name = "OriginFileSeq", sequenceName = "SEQ_ORIGIN_FILE_ATTR", allocationSize = 1)
+    @GeneratedValue(generator = "OriginFileAttrSeq")
+    @SequenceGenerator(name = "OriginFileAttrSeq", sequenceName = "SEQ_ORIGIN_FILE_ATTR", allocationSize = 1)
     private Long id;
 
     private Integer originFileId;
