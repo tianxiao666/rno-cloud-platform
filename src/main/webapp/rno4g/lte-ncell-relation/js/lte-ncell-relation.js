@@ -22,6 +22,10 @@ $(function () {
         }
     });
 
+    $("#queryImportDT").click(function () {
+        $(".loading").show();
+    })
+
     //验证邻区关系查询条件
     $("#queryBtn").click(function () {
         var reg = /^[0-9]+.?[0-9]*$/;
@@ -171,18 +175,22 @@ function showNcellImportResult(data) {
             "render": function(data, type, row) {
                 if(row['startTime']==""||row['startTime']==null){
                     return "---";
+                }else{
+                    return row['startTime'];
                 }
             },
             "targets": 4,
-            "data": "startTime"
+            "data": null
         },{
             "render": function(data, type, row) {
                 if(row['completeTime']==""||row['completeTime']==null){
                     return "---";
+                }else{
+                    return row['completeTime'];
                 }
             },
             "targets": 5,
-            "data": "completeTime"
+            "data": null
         },{
             "render": function (data, type, row) {
                 switch (row['status']) {
