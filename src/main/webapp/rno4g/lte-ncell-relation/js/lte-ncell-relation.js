@@ -102,6 +102,9 @@ $(function () {
             var percentVal = '100%';
             bar.width(percentVal);
             percent.html(percentVal);
+
+            //AJAX 提交邻区导入记录查询条件表单
+            $("#importQuery").submit();
         }
     });
 
