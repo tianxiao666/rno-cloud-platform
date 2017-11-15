@@ -68,8 +68,6 @@ public class LteDtDataResource {
 
         log.debug("模块名：" + vm.getModuleName());
 
-        System.out.println(vm);
-
         try {
             // 获取文件名，并构建为本地文件路径
             String filename = vm.getFile().getOriginalFilename();
@@ -104,13 +102,13 @@ public class LteDtDataResource {
                 originFileAttr.setOriginFileId(originFileId);
             }
 
-            //更新文件记录
+            //更新文件记录RNO_ORIGIN_FILE_ATTR
             originFileAttr.setName(vm.getArea_type());
             originFileAttr.setValue(vm.getBusiness_type());
             originFileAttrRepository.save(originFileAttr);
 
             //更新文件记录RNO_ORIGIN_FILE
-            originFile.setFilename(filename);
+            originFile.setFilename(vm.getFile().getOriginalFilename());
             originFile.setDataType(vm.getModuleName().toUpperCase());
             originFile.setFullPath(filepath);
             originFile.setFileSize((int)vm.getFile().getSize());

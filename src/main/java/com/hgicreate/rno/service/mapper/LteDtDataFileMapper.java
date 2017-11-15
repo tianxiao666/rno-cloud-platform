@@ -13,10 +13,14 @@ public interface LteDtDataFileMapper {
     LteDtDataFileMapper INSTANCE = Mappers.getMapper(LteDtDataFileMapper.class);
 
     @Mappings({
-            @Mapping(source = "originFile.createdDate", target = "uploadTime"),
-            @Mapping(source = "area.name",target = "areaName"),
+            @Mapping(source = "originFile.createdDate", target = "uploadTime",dateFormat = "yyyy-MM-dd HH:mm:ss"),
+            @Mapping(source = "area.name", target = "areaName"),
             @Mapping(source = "originFile.filename", target = "filename"),
-            @Mapping(source = "originFile.fileSize", target = "fileSize")
+            @Mapping(source = "originFile.fileSize", target = "fileSize"),
+            @Mapping(source = "startTime", target = "startTime",dateFormat = "yyyy-MM-dd HH:mm:ss"),
+            @Mapping(source = "completeTime", target = "completeTime",dateFormat = "yyyy-MM-dd HH:mm:ss"),
+            @Mapping(source = "createdUser", target = "createdUser"),
+            @Mapping(source = "status", target = "status")
     })
     LteDtDataFileDTO lteDtDataFileToLteDtDataFileDto(DataJob dataJob);
 }

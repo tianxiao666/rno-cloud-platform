@@ -36,7 +36,6 @@ public class LteDtDataService {
             list = dataJobRepository.findTop1000ByAreaAndOriginFile_CreatedDateBetweenAndOriginFile_DataTypeOrderByOriginFile_CreatedDateDesc(
                     area, beginDate, endDate,"LTE-DT-DATA");
         }else{
-
             list= dataJobRepository.findTop1000ByAreaAndStatusAndOriginFile_CreatedDateBetweenAndOriginFile_DataTypeOrderByOriginFile_CreatedDateDesc(
                     area, vm.getStatus(), beginDate, endDate,"LTE-DT-DATA");
         }

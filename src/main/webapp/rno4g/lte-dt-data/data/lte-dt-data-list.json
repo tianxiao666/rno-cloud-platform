@@ -1,6 +1,16 @@
 {
   "data": [
     {
+      "RECORD_COUNT": 2108,
+      "FILE_NAME": "ATU_20150602_上传_A4A8早忙_0x51000005_083000_MS8.lte",
+      "CITY_ID": 93,
+      "DT_SAMPLING_DESC_ID": 84,
+      "MEA_TIME": "2015-06-02",
+      "CREATE_TIME": "2015-07-30 15:29:43",
+      "AREA_TYPE": "城区",
+      "DATA_TYPE": "数据业务"
+    },
+    {
       "RECORD_COUNT": 714,
       "FILE_NAME": "ATU_20150613_上传_C28-C29晚忙_0x51000005_192000_MS8.lte",
       "CITY_ID": 93,
@@ -8,7 +18,7 @@
       "MEA_TIME": "2015-06-13",
       "CREATE_TIME": "2015-07-30 15:42:08",
       "AREA_TYPE": "城区",
-      "DATA_TYPE": "DataService"
+      "DATA_TYPE": "扫频业务"
     },
     {
       "RECORD_COUNT": 714,
@@ -18,7 +28,7 @@
       "MEA_TIME": "2015-06-13",
       "CREATE_TIME": "2015-07-30 15:29:43",
       "AREA_TYPE": "城区",
-      "DATA_TYPE": "DataService"
+      "DATA_TYPE": "扫频业务"
     },
     {
       "RECORD_COUNT": 689,
@@ -28,7 +38,7 @@
       "MEA_TIME": "2015-06-13",
       "CREATE_TIME": "2015-07-30 15:29:43",
       "AREA_TYPE": "城区",
-      "DATA_TYPE": "DataService"
+      "DATA_TYPE": "扫频业务"
     },
     {
       "RECORD_COUNT": 728,
@@ -38,7 +48,7 @@
       "MEA_TIME": "2015-06-10",
       "CREATE_TIME": "2015-07-30 15:42:08",
       "AREA_TYPE": "城区",
-      "DATA_TYPE": "DataService"
+      "DATA_TYPE": "扫频业务"
     },
     {
       "RECORD_COUNT": 543,
@@ -47,8 +57,8 @@
       "DT_SAMPLING_DESC_ID": 88,
       "MEA_TIME": "2015-06-10",
       "CREATE_TIME": "2015-07-30 15:29:43",
-      "AREA_TYPE": "城区",
-      "DATA_TYPE": "DataService"
+      "AREA_TYPE": "高速",
+      "DATA_TYPE": "扫频业务"
     },
     {
       "RECORD_COUNT": 543,
@@ -57,8 +67,8 @@
       "DT_SAMPLING_DESC_ID": 102,
       "MEA_TIME": "2015-06-10",
       "CREATE_TIME": "2015-07-30 15:42:08",
-      "AREA_TYPE": "城区",
-      "DATA_TYPE": "DataService"
+      "AREA_TYPE": "高速",
+      "DATA_TYPE": "扫频业务"
     },
     {
       "RECORD_COUNT": 583,
@@ -68,7 +78,7 @@
       "MEA_TIME": "2015-06-05",
       "CREATE_TIME": "2015-07-30 15:29:43",
       "AREA_TYPE": "城区",
-      "DATA_TYPE": "DataService"
+      "DATA_TYPE": "扫频业务"
     },
     {
       "RECORD_COUNT": 583,
@@ -78,7 +88,7 @@
       "MEA_TIME": "2015-06-05",
       "CREATE_TIME": "2015-07-30 15:42:08",
       "AREA_TYPE": "城区",
-      "DATA_TYPE": "DataService"
+      "DATA_TYPE": "扫频业务"
     },
     {
       "RECORD_COUNT": 584,
@@ -87,8 +97,8 @@
       "DT_SAMPLING_DESC_ID": 85,
       "MEA_TIME": "2015-06-05",
       "CREATE_TIME": "2015-07-30 15:29:43",
-      "AREA_TYPE": "城区",
-      "DATA_TYPE": "DataService"
+      "AREA_TYPE": "非城区",
+      "DATA_TYPE": "扫频业务"
     },
     {
       "RECORD_COUNT": 584,
@@ -97,8 +107,8 @@
       "DT_SAMPLING_DESC_ID": 99,
       "MEA_TIME": "2015-06-05",
       "CREATE_TIME": "2015-07-30 15:42:08",
-      "AREA_TYPE": "城区",
-      "DATA_TYPE": "DataService"
+      "AREA_TYPE": "非城区",
+      "DATA_TYPE": "数据业务"
     },
     {
       "RECORD_COUNT": 2093,
@@ -108,17 +118,7 @@
       "MEA_TIME": "2015-06-02",
       "CREATE_TIME": "2015-07-30 15:42:08",
       "AREA_TYPE": "城区",
-      "DATA_TYPE": "DataService"
-    },
-    {
-      "RECORD_COUNT": 2108,
-      "FILE_NAME": "ATU_20150602_上传_A4A8早忙_0x51000005_083000_MS8.lte",
-      "CITY_ID": 93,
-      "DT_SAMPLING_DESC_ID": 84,
-      "MEA_TIME": "2015-06-02",
-      "CREATE_TIME": "2015-07-30 15:29:43",
-      "AREA_TYPE": "城区",
-      "DATA_TYPE": "DataService"
+      "DATA_TYPE": "数据业务"
     },
     {
       "RECORD_COUNT": 2108,
@@ -128,7 +128,7 @@
       "MEA_TIME": "2015-06-02",
       "CREATE_TIME": "2015-07-30 15:42:08",
       "AREA_TYPE": "城区",
-      "DATA_TYPE": "DataService"
+      "DATA_TYPE": "数据业务"
     },
     {
       "RECORD_COUNT": 11978,
@@ -138,7 +138,7 @@
       "MEA_TIME": "2015-06-01",
       "CREATE_TIME": "2015-07-30 15:29:43",
       "AREA_TYPE": "城区",
-      "DATA_TYPE": "DataService"
+      "DATA_TYPE": "数据业务"
     },
     {
       "RECORD_COUNT": 9833,
@@ -148,7 +148,7 @@
       "MEA_TIME": "2015-06-01",
       "CREATE_TIME": "2015-07-30 15:29:43",
       "AREA_TYPE": "城区",
-      "DATA_TYPE": "DataService"
+      "DATA_TYPE": "扫频业务"
     },
     {
       "RECORD_COUNT": 9929,
@@ -158,7 +158,7 @@
       "MEA_TIME": "2015-06-01",
       "CREATE_TIME": "2015-07-30 15:29:43",
       "AREA_TYPE": "城区",
-      "DATA_TYPE": "DataService"
+      "DATA_TYPE": "扫频业务"
     },
     {
       "RECORD_COUNT": 2330,
@@ -168,7 +168,7 @@
       "MEA_TIME": "2015-06-01",
       "CREATE_TIME": "2015-07-30 15:29:43",
       "AREA_TYPE": "城区",
-      "DATA_TYPE": "DataService"
+      "DATA_TYPE": "扫频业务"
     },
     {
       "RECORD_COUNT": 2377,
@@ -178,7 +178,7 @@
       "MEA_TIME": "2015-06-01",
       "CREATE_TIME": "2015-07-30 15:29:43",
       "AREA_TYPE": "城区",
-      "DATA_TYPE": "DataService"
+      "DATA_TYPE": "扫频业务"
     },
     {
       "RECORD_COUNT": 11720,
@@ -188,7 +188,7 @@
       "MEA_TIME": "2015-06-01",
       "CREATE_TIME": "2015-07-30 15:29:43",
       "AREA_TYPE": "城区",
-      "DATA_TYPE": "DataService"
+      "DATA_TYPE": "扫频业务"
     },
     {
       "RECORD_COUNT": 11978,
@@ -198,7 +198,7 @@
       "MEA_TIME": "2015-06-01",
       "CREATE_TIME": "2015-07-30 15:42:08",
       "AREA_TYPE": "城区",
-      "DATA_TYPE": "DataService"
+      "DATA_TYPE": "扫频业务"
     },
     {
       "RECORD_COUNT": 9833,
@@ -208,7 +208,7 @@
       "MEA_TIME": "2015-06-01",
       "CREATE_TIME": "2015-07-30 15:42:08",
       "AREA_TYPE": "城区",
-      "DATA_TYPE": "DataService"
+      "DATA_TYPE": "扫频业务"
     },
     {
       "RECORD_COUNT": 9929,
@@ -218,7 +218,7 @@
       "MEA_TIME": "2015-06-01",
       "CREATE_TIME": "2015-07-30 15:42:08",
       "AREA_TYPE": "城区",
-      "DATA_TYPE": "DataService"
+      "DATA_TYPE": "扫频业务"
     },
     {
       "RECORD_COUNT": 2330,
@@ -228,7 +228,7 @@
       "MEA_TIME": "2015-06-01",
       "CREATE_TIME": "2015-07-30 15:42:08",
       "AREA_TYPE": "城区",
-      "DATA_TYPE": "DataService"
+      "DATA_TYPE": "扫频业务"
     },
     {
       "RECORD_COUNT": 2377,
@@ -238,7 +238,7 @@
       "MEA_TIME": "2015-06-01",
       "CREATE_TIME": "2015-07-30 15:42:08",
       "AREA_TYPE": "城区",
-      "DATA_TYPE": "DataService"
+      "DATA_TYPE": "扫频业务"
     },
     {
       "RECORD_COUNT": 11720,
@@ -248,7 +248,7 @@
       "MEA_TIME": "2015-06-01",
       "CREATE_TIME": "2015-07-30 15:42:08",
       "AREA_TYPE": "城区",
-      "DATA_TYPE": "DataService"
+      "DATA_TYPE": "扫频业务"
     }
   ]
 }

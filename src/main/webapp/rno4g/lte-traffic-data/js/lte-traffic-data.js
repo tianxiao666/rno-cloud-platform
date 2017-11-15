@@ -55,9 +55,7 @@ $(function () {
     // 当上传文件域改变时，隐藏进度条
     $("input[name='file']").change(function () {
         var filename = fileid.value;
-        if(!(filename.toUpperCase().endsWith(".CSV")||filename.toUpperCase().endsWith(".XLS")
-                || filename.toUpperCase().endsWith(".XLSX") || filename.toUpperCase().endsWith(".XML")
-                || filename.toUpperCase().endsWith(".TXT") || filename.toUpperCase().endsWith(".ZIP"))){
+        if(!(filename.toUpperCase().endsWith(".CSV")||filename.toUpperCase().endsWith(".ZIP"))){
             $("#fileDiv").html("不支持该类型文件！");
             return false;
         }else {

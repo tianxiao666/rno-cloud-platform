@@ -52,6 +52,7 @@ $(function () {
             var percentVal = '100%';
             bar.width(percentVal);
             percent.html(percentVal);
+            $("#searchRecord").click();
         }
     });
 
@@ -83,15 +84,16 @@ $(function () {
                 "columnDefs": [
                     {
                         "render": function () {
-                            return "佛山";
+                            return "广州市";
                         },
                         "targets": 0,
                         "data": null
                     }
                 ],
-                "lengthChange": true,
+                "lengthChange": false,
                 "ordering": false,
-                "searching": true,
+                "searching": false,
+                "destroy": true,
                 "language": {
                     url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
                 }
@@ -113,6 +115,7 @@ function showImportDetail() {
             "lengthChange": false,
             "ordering": false,
             "searching": false,
+            "destroy": true,
             "language": {
                 url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
             }
