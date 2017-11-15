@@ -27,3 +27,7 @@ spring:
 rno:
     path:
         upload-files: d:/tmp/rno-cloud-platform/uploads
+
+mybatis:
+    configuration:
+        map-underscore-to-camel-case: true
