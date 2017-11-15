@@ -190,7 +190,7 @@ $(function () {
             percent.html(percentVal);
             $("#info").css("background","green");
             showInfoInAndOut("info","文件导入成功！");
-            $("#import-query-form").submit();
+            //$("#import-query-form").submit();
         }
     });
 
