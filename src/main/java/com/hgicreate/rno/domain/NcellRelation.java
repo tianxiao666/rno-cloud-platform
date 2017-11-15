@@ -9,7 +9,7 @@ import javax.persistence.Id;
 @Entity
 public class NcellRelation {
     @Id
-    private long id;
+    private Long id;
 
     private String cellId;
     private String cellName;
