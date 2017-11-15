@@ -6,6 +6,7 @@ import java.util.Date;
 
 @Data
 public class LteNcellImportFileDTO {
+    private Long id;
     private String uploadTime;
     private String areaName;
     private String filename;

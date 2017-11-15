@@ -59,14 +59,14 @@ public class LteNcellRelationResource {
 
     @PostMapping("/ncell-import-query")
     public List<LteNcellImportFileDTO> importQuery(LteNcellImportQueryVM vm) throws ParseException {
-        log.debug("查询 DT 文件导入记录。");
+        log.debug("查询邻区文件导入记录。");
         log.debug("视图模型: " + vm);
         return lteNcellRelationService.queryImport(vm);
     }
 
     @PostMapping("/ncell-import-data-query")
     public List<LteNcellImportDtDTO> ncellDataQuery(LteNcellImportDtQueryVM vm){
-        log.debug("查询 DT 文件导入记录。");
+        log.debug("查询 邻区 文件导入数据。");
         log.debug("视图模型: " + vm);
         return lteNcellRelationService.queryImportDt(vm);
     }

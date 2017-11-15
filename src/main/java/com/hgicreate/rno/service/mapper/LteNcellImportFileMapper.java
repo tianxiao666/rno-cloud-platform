@@ -16,7 +16,8 @@ public interface LteNcellImportFileMapper {
             @Mapping(source = "originFile.createdDate", target = "uploadTime"),
             @Mapping(source = "area.name",target = "areaName"),
             @Mapping(source = "originFile.filename", target = "filename"),
-            @Mapping(source = "originFile.fileSize", target = "fileSize")
+            @Mapping(source = "originFile.fileSize", target = "fileSize"),
+            @Mapping(source = "id", target = "id")
     })
     LteNcellImportFileDTO ncellImportFileToNcellImportFileDTO(DataJob dataJob);
 }
