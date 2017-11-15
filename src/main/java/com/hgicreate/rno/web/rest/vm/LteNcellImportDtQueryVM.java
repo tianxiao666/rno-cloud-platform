@@ -7,6 +7,6 @@ public class LteNcellImportDtQueryVM {
     private String provinceId;
     private String cityId;
     private String dataType;
-    private String begUploadDate;
-    private String endUploadDate;
+    private String begMetaDate;
+    private String endMetaDate;
 }

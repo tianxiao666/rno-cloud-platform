@@ -242,10 +242,10 @@ function showNcellImportDtResult(data) {
         "data": data,
         "columns": [
             {"data": "areaName"},
+            {"data": "metaTime"},
             {"data": "dataType"},
             {"data": "fileName"},
             {"data": "recordCount"},
-            {"data": "jobId"},
             {"data": "createTime"}
         ],
         "lengthChange": false,

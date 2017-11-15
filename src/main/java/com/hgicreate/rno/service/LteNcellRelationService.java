@@ -67,7 +67,7 @@ public class LteNcellRelationService {
     public List<LteNcellImportDtDTO> queryImportDt(LteNcellImportDtQueryVM vm){
         List<LteNcellImportDtDTO> dtoList = new ArrayList<>();
         dtoList.add(new LteNcellImportDtDTO("广州市","地市邻区关系",
-                "棠下小区邻区数据.csv","100","12","2015-10-9 11:35:49"));
+                "棠下小区邻区数据.csv","100","2015-10-05 11:35:49","2015-10-9 11:35:49"));
         return dtoList;
     }
 }

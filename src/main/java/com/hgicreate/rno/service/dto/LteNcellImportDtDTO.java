@@ -12,6 +12,6 @@ public class LteNcellImportDtDTO {
     private String dataType;
     private String fileName;
     private String recordCount;
-    private String jobId;
+    private String metaTime;
     private String createTime;
 }
