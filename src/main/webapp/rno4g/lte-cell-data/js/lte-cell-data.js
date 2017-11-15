@@ -158,6 +158,8 @@ $(function () {
     //导入文件类型判断
     $("#importBtn").click(function () {
         var path =$("#file").val();
+        var cityId = $("#cityId2").val();
+        $("#areaId").val(cityId);
         var format = path.substring(path.lastIndexOf("."), path.length).toLowerCase();
         if (format !== '.csv' && format !=='.zip') {
             showInfoInAndOut("info", "请上传csv或zip格式的小区文件");

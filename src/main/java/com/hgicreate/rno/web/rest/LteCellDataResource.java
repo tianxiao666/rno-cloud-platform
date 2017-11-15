@@ -141,7 +141,7 @@ public class LteCellDataResource {
             dataJob.setType(vm.getModuleName().toUpperCase());
             dataJob.setOriginFile(originFile);
             Area area = new Area();
-            area.setId(440100L);
+            area.setId(Long.parseLong(vm.getAreaId()));
             dataJob.setArea(area);
             dataJob.setCreatedDate(new Date());
             dataJob.setCreatedUser(SecurityUtils.getCurrentUserLogin());
