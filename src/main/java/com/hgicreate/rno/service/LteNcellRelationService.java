@@ -5,7 +5,6 @@ import com.hgicreate.rno.domain.Area;
 import com.hgicreate.rno.domain.DataJob;
 import com.hgicreate.rno.repository.DataJobRepository;
 import com.hgicreate.rno.repository.OriginFileRepository;
-import com.hgicreate.rno.service.dto.DataCollectDTO;
 import com.hgicreate.rno.service.dto.LteNcellImportDtDTO;
 import com.hgicreate.rno.service.dto.LteNcellImportFileDTO;
 import com.hgicreate.rno.service.dto.LteNcellRelationDTO;
