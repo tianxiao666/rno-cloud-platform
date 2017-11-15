@@ -3,6 +3,7 @@ package com.hgicreate.rno.domain;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Data
 @Entity
@@ -36,6 +37,11 @@ public class Cell {
 	private String relatedParam;
 	private String relatedResouce;
 	private String stationSpace;
+	private String createdUser;
+	private String lastModifiedUser;
+	private Date createdDate;
+	private Date lastModifiedDate;
+
 
 	@OneToOne
     @JoinColumn(name = "area_id", referencedColumnName = "id")

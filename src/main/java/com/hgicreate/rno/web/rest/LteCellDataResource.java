@@ -87,6 +87,8 @@ public class LteCellDataResource {
     public boolean updateLteCellDetail(Cell cell) {
         try {
             log.debug("要更新的小区={}", cell.getLatitude());
+            cell.setLastModifiedUser(SecurityUtils.getCurrentUserLogin());
+            cell.setLastModifiedDate(new Date());
             lteCellDataRepository.save(cell);
             return true;
         } catch (Exception e) {
