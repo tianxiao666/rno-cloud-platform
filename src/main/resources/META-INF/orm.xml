@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings
+        xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd"
+        version="2.0">
+
+    <!--
+    <named-query name="Area.selectByLevelUseNamedXml">
+        <query>
+            select a from Area a where a.areaLevel = ?1
+        </query>
+    </named-query>
+
+    <named-native-query name="Area.selectByParentUseNamedNativeXml"
+                        result-class="com.hgicreate.rno.demo.domain.Area">
+        <query>
+            SELECT a.*
+            FROM sys_area a
+            WHERE a.parent_id = ?1
+        </query>
+    </named-native-query>
+    -->
+
+</entity-mappings>
