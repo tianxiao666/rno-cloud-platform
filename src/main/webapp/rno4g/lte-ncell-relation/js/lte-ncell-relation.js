@@ -155,7 +155,7 @@ function showNcellRelationResult(data) {
 function showNcellImportResult(data) {
     $(".loading").css("display", "none");
     if (data == '') {
-        showInfoInAndOut('info', '没有符合条件的邻区关系');
+        showInfoInAndOut('info', '没有符合条件的邻区关系导入记录');
     }
 
     $('#queryRecordResTab').css("line-height", "12px");
