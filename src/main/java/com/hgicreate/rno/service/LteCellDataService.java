@@ -90,9 +90,9 @@ public class LteCellDataService {
 
     public List<LteCellDataRecordDTO> queryRecord(){
         List<LteCellDataRecordDTO> list = new ArrayList<>();
-        list.add(new LteCellDataRecordDTO("广州市","2015-06-18 09:33:05","地市工参","佛山顺德工参数据.csv","63243","2015-06-18 09:32:55"));
-        list.add(new LteCellDataRecordDTO("广州市","2015-06-20 13:45:11","地市工参","佛山市工参数据.csv","52134","2015-06-20 13:44:11"));
-        list.add(new LteCellDataRecordDTO("广州市","2015-01-03 15:21:01","地市工参","佛山市01-03工参.csv","5543","2015-01-03 15:20:08"));
+        list.add(new LteCellDataRecordDTO("佛山市","2015-06-18 09:33:05","地市工参","佛山顺德工参数据.csv","63243","2015-06-18 09:32:55"));
+        list.add(new LteCellDataRecordDTO("佛山市","2015-06-20 13:45:11","地市工参","佛山市工参数据.csv","52134","2015-06-20 13:44:11"));
+        list.add(new LteCellDataRecordDTO("佛山市","2015-01-03 15:21:01","地市工参","佛山市01-03工参.csv","5543","2015-01-03 15:20:08"));
         return list;
     }
 }
