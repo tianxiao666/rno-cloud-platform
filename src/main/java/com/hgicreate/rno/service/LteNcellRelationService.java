@@ -1,8 +1,8 @@
 package com.hgicreate.rno.service;
 
-import com.hgicreate.rno.dao.LteNcellRelationDao;
 import com.hgicreate.rno.domain.Area;
 import com.hgicreate.rno.domain.DataJob;
+import com.hgicreate.rno.mapper.LteNcellRelationQueryMapper;
 import com.hgicreate.rno.repository.DataJobRepository;
 import com.hgicreate.rno.repository.OriginFileRepository;
 import com.hgicreate.rno.service.dto.LteNcellImportDtDTO;
@@ -25,20 +25,20 @@ import java.util.stream.Collectors;
 @Service
 public class LteNcellRelationService {
 
-    private final LteNcellRelationDao lteNcellRelationDao;
+    private final LteNcellRelationQueryMapper lteNcellRelationQueryMapper;
 
     private final OriginFileRepository originFileRepository;
 
     private final DataJobRepository dataJobRepository;
 
-    public LteNcellRelationService(LteNcellRelationDao lteNcellRelationDao, OriginFileRepository originFileRepository, DataJobRepository dataJobRepository) {
-        this.lteNcellRelationDao = lteNcellRelationDao;
+    public LteNcellRelationService(LteNcellRelationQueryMapper lteNcellRelationQueryMapper, OriginFileRepository originFileRepository, DataJobRepository dataJobRepository) {
+        this.lteNcellRelationQueryMapper = lteNcellRelationQueryMapper;
         this.originFileRepository = originFileRepository;
         this.dataJobRepository = dataJobRepository;
     }
 
     public List<LteNcellRelationDTO> queryNcellRelationDTOs(LteNcellRelationQueryVM vm) {
-        List<LteNcellRelationDTO> dtoList = lteNcellRelationDao.queryNcellRelation(vm)
+        List<LteNcellRelationDTO> dtoList = lteNcellRelationQueryMapper.queryNcellRelation(vm)
                                                .stream()
                                                .map(LteNcellRelationMapper.INSTANCE::ncellRelationToNcellRelationDTO)
                                                .collect(Collectors.toList());

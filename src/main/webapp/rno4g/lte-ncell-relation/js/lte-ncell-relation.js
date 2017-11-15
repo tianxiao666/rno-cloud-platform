@@ -286,25 +286,25 @@ function deleteCell(id) {
 
 //显示导入记录的状态的详情
 function showImportDetail() {
-    $("#queryImportDetailTab").css("line-height", "12px")
-        .DataTable({
-            "ajax": "data/lte-dt-data-record-detail.json",
-            "columns": [
-                {"data": "STAGE"},
-                {"data": "BEG_TIME"},
-                {"data": "END_TIME"},
-                {"data": "STATE"},
-                {"data": "ATT_MSG"}
-            ],
-            "lengthChange": false,
-            "ordering": false,
-            "searching": false,
-            "language": {
-                url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
-            }
-        });
-    $("#reportDiv").css("display", "block");
-    $("#listInfoDiv").css("display", "none");
+    // $("#queryImportDetailTab").css("line-height", "12px")
+    //     .DataTable({
+    //         "ajax": "data/lte-dt-data-record-detail.json",
+    //         "columns": [
+    //             {"data": "STAGE"},
+    //             {"data": "BEG_TIME"},
+    //             {"data": "END_TIME"},
+    //             {"data": "STATE"},
+    //             {"data": "ATT_MSG"}
+    //         ],
+    //         "lengthChange": false,
+    //         "ordering": false,
+    //         "searching": false,
+    //         "language": {
+    //             url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
+    //         }
+    //     });
+    // $("#reportDiv").css("display", "block");
+    // $("#listInfoDiv").css("display", "none");
 }
 
 /**
