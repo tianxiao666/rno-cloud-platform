@@ -11,8 +11,8 @@ $(function () {
         async: false,
         success: function (data) {
             document.title = data.title;
-            $("#software-version").html(data.title + " " + data.version);
             $(".logo").html("<img src='images/" + data.logo + "'>");
+            $("#software-version").html(data.title + " " + data.version);
         }
     });
 
