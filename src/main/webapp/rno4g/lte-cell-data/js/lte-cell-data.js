@@ -414,24 +414,21 @@ function showCellDetail(index) {
 }
 
 function deleteCell(cellId) {
-    $.ajax({
-        url: '/api/lte-cell-data/deleteByCellId',
-        dataType: 'text',
-        data: {cellId: cellId},
-        success: function () {
-            showInfoInAndOut("info", "删除小区成功！");
-            $("#conditionForm").ajaxForm({
-                url: "/api/lte-cell-data/cell-query",
-                success: showQueryList,
-                error: function (err) {
-                    console.log(err);
-                }
-            });
-        }, error: function (err) {
-            console.log(err);
-            showInfoInAndOut("info", "后台程序错误！");
-        }
-    })
+    var r = confirm("删除该条小区信息？");
+    if(r === true){
+        $.ajax({
+            url: '/api/lte-cell-data/deleteByCellId',
+            dataType: 'text',
+            data: {cellId: cellId},
+            success: function () {
+                showInfoInAndOut("info", "删除小区成功！");
+                $("#conditionForm").submit();
+            }, error: function (err) {
+                console.log(err);
+                showInfoInAndOut("info", "后台程序错误！");
+            }
+        })
+    }
 }
 
 /*
