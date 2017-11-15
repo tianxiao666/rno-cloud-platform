@@ -4,29 +4,26 @@
     <meta charset="UTF-8">
     <title>KPI指标图表展现</title>
 
-    <link rel="stylesheet" type="text/css" href="css/lte-kpi-chart.css">
+    <link rel="stylesheet" href="css/lte-kpi-chart.css">
+    <link rel="stylesheet" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
 
     <script src="../../lib/jquery/1.8.2/jquery.js"></script>
     <script src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
     <script src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
     <script src="../../lib/jquery-plugins/jquery.metadata.js"></script>
-    <link rel="stylesheet" type="text/css" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
     <script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
     <script src="../../lib/validate.js"></script>
     <script src="../../lib/tab.js"></script>
-
     <script src="js/lte-kpi-chart.js"></script>
     <script src="../../lib/laydate/5.0.7/laydate.js"></script>
-    <script type="text/javascript">
+    <script>
         $(document).ready(function () {
         $(".draggable").draggable();
         $("#trigger").css("display", "none");
     });
     </script>
-
     <script src="js/lte-kpi-chart-index-display.js"></script>
 </head>
-
 <body>
 <div class="loading_cover" id="loadingDataDiv" style="display: none;">
     <div class="cover"></div>
