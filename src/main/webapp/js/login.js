@@ -4,6 +4,18 @@ localStorage['SelectedMenuFlag'] = "";
 localStorage['SelectedMenuRank'] = "";
 
 $(function () {
+    // 初始化系统标题、Logo与软件版本
+    $.ajax({
+        url: "data/system.json",
+        dataType: "json",
+        async: false,
+        success: function (data) {
+            document.title = data.title;
+            $("#software-version").html(data.title + " " + data.version);
+            $(".logo").html("<img src='images/" + data.logo + "'>");
+        }
+    });
+
     // 幻灯片
     $(window).load(function () {
         $(".flexslider").flexslider();

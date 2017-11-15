@@ -4,6 +4,18 @@ var secondLevelMenuSelected = "";
 var thirdLevelMenuSelected = "";
 
 $(function () {
+    // 初始化系统标题、Logo与软件版本
+    $.ajax({
+        url: "data/system.json",
+        dataType: "json",
+        async: false,
+        success: function (data) {
+            document.title = data.title;
+            $("#software-version").html(data.title + " " + data.version);
+            $(".logo").html("<img src='images/" + data.logo + "'>");
+        }
+    });
+
     //初始化菜单
     $.ajax({
         url: "data/menu.json",
