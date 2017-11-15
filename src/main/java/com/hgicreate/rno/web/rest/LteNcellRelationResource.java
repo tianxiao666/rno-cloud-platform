@@ -71,7 +71,7 @@ public class LteNcellRelationResource {
         return lteNcellRelationService.queryImportDt(vm);
     }
 
-    @GetMapping("/deleteByCellIdAndNcellId")
+    @GetMapping("/deleteById")
     public void deleteByCellId(@RequestParam long id){
         log.debug("待删除邻区id为={}", id);
         ncellRepository.delete(id);
