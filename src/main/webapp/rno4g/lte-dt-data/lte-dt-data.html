@@ -47,13 +47,13 @@
                             </td>
                             <td style="padding-left:30px"><label>状态:</label></td>
                             <td>
-                                <select id="import-status-menu" title="">
+                                <select id="import-status-menu" name="status" title="">
                                     <option value="全部" selected="selected">全部</option>
                                     <option value="全部成功">全部成功</option>
                                     <option value="部分失败">部分失败</option>
                                     <option value="全部失败">全部失败</option>
-                                    <option value="正在解析">正在解析</option>
-                                    <option value="等待解析">等待解析</option>
+                                    <option value="正在解析">正在处理</option>
+                                    <option value="等待解析">等待处理</option>
                                 </select>
                             </td>
                             <td style="padding-left:30px">
@@ -78,7 +78,7 @@
                                 数据类型<span class="required">*</span>
                             </td>
                             <td style="padding-left: 5px">
-                                <select id="dataType" title="">
+                                <select id="dataType" name="business_type" title="">
                                     <option value="数据业务">数据业务</option>
                                     <option value="扫频业务">扫频业务</option>
                                 </select>
@@ -89,7 +89,7 @@
                                 区域类型<span class="required">*</span>
                             </td>
                             <td style="padding-left: 5px">
-                                <select id="areaType" title="">
+                                <select id="areaType" name="area_type" title="">
                                     <option value="城区">城区</option>
                                     <option value="非城区">非城区</option>
                                     <option value="高速">高速</option>
@@ -101,9 +101,13 @@
                                 路测数据文件<span class="required">*</span>
                             </td>
                             <td style="padding-left: 5px">
-                                <input type="file" name="file" accept="*">
+                                <input type="file" name="file" id="fileid" accept="*">
                                 <input type="hidden" name="moduleName" value="lte-dt-data">
+                                <input type="hidden" name="sourceType" value="上传">
+                                <input type="hidden" id="area" name="areaId" value="">
                             </td>
+                            <td><span style="color:red;width:100px;font-family:华文中宋;text-align:center"
+                                      id="fileDiv"></span></td>
                         </tr>
                         </tbody>
                     </table>

@@ -31,6 +31,9 @@ $(function () {
     var progress = $('.upload-progress');
     var bar = $('.bar');
     var percent = $('.percent');
+    var upload_flag = true;
+    //获取area_id上传
+    $("#area").val($('#cityId option:selected').val())
 
     $("#file-upload-form").ajaxForm({
         url: "/api/lte-dt-data/upload-file",
@@ -54,6 +57,13 @@ $(function () {
 
     // 当上传文件域改变时，隐藏进度条
     $("input[name='file']").change(function () {
+        var filename = fileid.value;
+        if(!(filename.toUpperCase().endsWith(".CSV")||filename.toUpperCase().endsWith(".ZIP"))){
+            $("#fileDiv").html("不支持该类型文件！");
+            upload_flag = false;
+        }else {
+            $("#fileDiv").html("");
+        }
         progress.css("display", "none");
     });
 
@@ -116,39 +126,55 @@ function showQueryImportResult(data) {
         .DataTable({
             "data": data,
             "columns": [
-                {"data": null},
+                {"data": "areaName"},
                 {"data": "uploadTime"},
                 {"data": "filename"},
                 {"data": "fileSize"},
-                {"data": "launchTime"},
-                {"data": "completeTime"},
-                {"data": "account"},
+                {"data": null},
+                {"data": null},
+                {"data": "createdUser"},
                 {"data": null}
             ],
-            "columnDefs": [{
-                "render": function () {
-                    return "佛山";
-                },
-                "targets": 0,
-                "data": null
-            }, {
+            "columnDefs": [
+                {
                 "render": function (data, type, row) {
-                    switch (row['fileStatus']) {
-                        case "部分失败":
-                            return "<a style='color: red' onclick='showImportDetail()'>" + row['fileStatus'] + "</a>";
+                    switch (row['status']) {
                         case "全部失败":
-                            return "<a style='color: red' onclick='showImportDetail()'>" + row['fileStatus'] + "</a>";
+                            return "<a style='color: red' <!--onclick='showImportDetail()'-->>" + row['status'] + "</a>";
+                        case "部分失败":
+                            return "<a style='color: red'>" + row['status'] + "</a>";
                         case "全部成功":
-                            return "<a onclick='showImportDetail()'>" + row['fileStatus'] + "</a>";
-                        case "正在解析":
-                            return "<a onclick='showImportDetail()'>" + row['fileStatus'] + "</a>";
-                        case "等待解析":
-                            return "<a onclick='showImportDetail()'>" + row['fileStatus'] + "</a>";
-                    }
+                            return "<a>" + row['status'] + "</a>";
+                        case "正在处理":
+                            return "<a>" + row['status'] + "</a>";
+                        case "等待处理":
+                            return "<a>" + row['status'] + "</a>";
+                        }
+                    },
+                    "targets": -1,
+                    "data": null
+                    },
+                {
+                    "render": function(data, type, row) {
+                        if(row['startTime']==""||row['startTime']==null){
+                            return " --- ";
+                        }else {
+                            return row['startTime'];
+                        }
+                    },
+                    "targets": 4,
+                    "data": "startTime"
+                },{
+                    "render": function(data, type, row) {
+                        if(row['completeTime']==""||row['completeTime']==null){
+                            return " --- ";
+                        }else {
+                            return row['completeTime'];
+                        }
+                    },
+                    "targets": 5,
+                    "data": "completeTime"
                 },
-                "targets": -1,
-                "data": null
-            }
             ],
             "lengthChange": false,
             "ordering": false,

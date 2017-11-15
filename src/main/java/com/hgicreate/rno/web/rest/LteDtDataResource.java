@@ -1,9 +1,17 @@
 package com.hgicreate.rno.web.rest;
 
-import com.hgicreate.rno.service.DataCollectService;
-import com.hgicreate.rno.service.dto.DataCollectDTO;
-import com.hgicreate.rno.web.rest.vm.FileUploadVM;
-import com.hgicreate.rno.web.rest.vm.ImportQueryVM;
+import com.hgicreate.rno.domain.Area;
+import com.hgicreate.rno.domain.DataJob;
+import com.hgicreate.rno.domain.OriginFile;
+import com.hgicreate.rno.domain.OriginFileAttr;
+import com.hgicreate.rno.repository.DataJobRepository;
+import com.hgicreate.rno.repository.OriginFileAttrRepository;
+import com.hgicreate.rno.repository.OriginFileRepository;
+import com.hgicreate.rno.security.SecurityUtils;
+import com.hgicreate.rno.service.LteDtDataService;
+import com.hgicreate.rno.service.dto.LteDtDataFileDTO;
+import com.hgicreate.rno.web.rest.vm.LteDtImportQueryVM;
+import com.hgicreate.rno.web.rest.vm.LteDtUploadVM;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -16,6 +24,8 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Paths;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,17 +37,25 @@ public class LteDtDataResource {
     @Value("${rno.path.upload-files}")
     private String directory;
 
-    private final DataCollectService dataCollectService;
+    private final LteDtDataService lteDtDataService;
+    private final DataJobRepository dataJobRepository;
 
-    public LteDtDataResource(DataCollectService dataCollectService) {
-        this.dataCollectService = dataCollectService;
+    private  final OriginFileRepository originFileRepository;
+    private  final OriginFileAttrRepository originFileAttrRepository;
+
+    public LteDtDataResource(LteDtDataService lteDtDataService, OriginFileRepository originFileRepository,
+                             OriginFileAttrRepository originFileAttrRepository, DataJobRepository dataJobRepository) {
+        this.lteDtDataService = lteDtDataService;
+        this.originFileRepository = originFileRepository;
+        this.originFileAttrRepository = originFileAttrRepository;
+        this.dataJobRepository = dataJobRepository;
     }
 
     @PostMapping("/query-import")
-    public List<DataCollectDTO> queryImport(ImportQueryVM vm) {
+    public List<LteDtDataFileDTO> queryImport(LteDtImportQueryVM vm) throws ParseException {
         log.debug("查询 DT 文件导入记录。");
         log.debug("视图模型: " + vm);
-        return dataCollectService.queryDataCollectDTOs();
+        return lteDtDataService.queryDataCollectDTOs(vm);
     }
 
     /**
@@ -46,32 +64,82 @@ public class LteDtDataResource {
      * @return 成功情况下返回 HTTP OK 状态，错误情况下返回 HTTP 4xx 状态。
      */
     @PostMapping("/upload-file")
-    public ResponseEntity<?> uploadFile(FileUploadVM vm) {
+    public ResponseEntity<?> uploadFile(LteDtUploadVM vm) {
 
         log.debug("模块名：" + vm.getModuleName());
+
+        System.out.println(vm);
 
         try {
             // 获取文件名，并构建为本地文件路径
             String filename = vm.getFile().getOriginalFilename();
             log.debug("上传的文件名：{}", filename);
-
+            //创建更新对象
+            OriginFile originFile = new OriginFile();
+            OriginFileAttr originFileAttr = new OriginFileAttr();
             // 如果目录不存在则创建目录
-            File fileDirectory = new File(directory);
+            File fileDirectory = new File(directory + "/" + vm.getModuleName());
             if (!fileDirectory.exists() && !fileDirectory.mkdirs()) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
-
             // 以随机的 UUID 为文件名存储在本地
-            filename = UUID.randomUUID().toString();
-            String filepath = Paths.get(directory, filename).toString();
+            if("application/vnd.ms-excel".equals(vm.getFile().getContentType())){
+                filename = UUID.randomUUID().toString() +".csv";
+                originFile.setFileType("CSV");
+            }else if("application/x-zip-compressed".equals(vm.getFile().getContentType())){
+                filename = UUID.randomUUID().toString() +".zip";
+                originFile.setFileType("ZIP");
+            }
+            String filepath = Paths.get(directory + "/" + vm.getModuleName(), filename).toString();
 
             log.debug("存储的文件名：{}", filename);
+
+            //获取属性表当前关联字段值
+            Integer originFileId = 1;
+            Integer flag = originFileAttrRepository.getOriginFileAttrNum();
+            if(flag == null){
+                originFileAttr.setOriginFileId(originFileId);
+            }else {
+                originFileId = flag + 1;
+                originFileAttr.setOriginFileId(originFileId);
+            }
+
+            //更新文件记录
+            originFileAttr.setName(vm.getArea_type());
+            originFileAttr.setValue(vm.getBusiness_type());
+            originFileAttrRepository.save(originFileAttr);
+
+            //更新文件记录RNO_ORIGIN_FILE
+            originFile.setFilename(filename);
+            originFile.setDataType(vm.getModuleName().toUpperCase());
+            originFile.setFullPath(filepath);
+            originFile.setFileSize((int)vm.getFile().getSize());
+            originFile.setSourceType(vm.getSourceType());
+            originFile.setDataAttr(originFileId);
+            originFile.setCreatedUser(SecurityUtils.getCurrentUserLogin());
+            originFile.setCreatedDate(new Date());
+            originFileRepository.save(originFile);
 
             // 保存文件到本地
             BufferedOutputStream stream =
                     new BufferedOutputStream(new FileOutputStream(new File(filepath)));
             stream.write(vm.getFile().getBytes());
             stream.close();
+
+            //建立任务
+            DataJob dataJob = new DataJob();
+            dataJob.setName("路测数据导入");
+            dataJob.setType(vm.getModuleName().toUpperCase());
+            dataJob.setOriginFile(originFile);
+            Area area = new Area();
+            area.setId(Long.parseLong(vm.getAreaId()));
+            dataJob.setArea(area);
+            dataJob.setCreatedDate(new Date());
+            dataJob.setPriority(2);
+            dataJob.setCreatedUser(SecurityUtils.getCurrentUserLogin());
+            dataJob.setStatus("等待处理");
+            dataJobRepository.save(dataJob);
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
