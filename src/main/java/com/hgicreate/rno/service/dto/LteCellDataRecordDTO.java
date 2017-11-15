@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class LteCellDataRecordDTO {
     private String areaName;
-    private String beginTime;
-    private String endTime;
-    private String jobId;
+    private String createdDate;
+    private String dataType;
+    private String filename;
     private String dataNum;
     private String sysTime;
 }

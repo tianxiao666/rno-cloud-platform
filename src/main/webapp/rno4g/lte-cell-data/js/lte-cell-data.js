@@ -66,11 +66,14 @@ var chineseToCode = [{
 //显示同一站的小区
 var currentCellArray = null;
 var currentIndex = 0;
+//校验修改小区
+var submitOK = true;
 
 $(function () {
     //tab选项卡
     $("#tabs").tabs();//项目服务范围类别切换
-
+    //可拖拽对话框
+    $(".dialog2").draggable();
     //查询前输入校验
     $("#queryBtn").click(function () {
         $(".loading").show();
@@ -192,7 +195,7 @@ $(function () {
             percent.html(percentVal);
             $("#info").css("background","green");
             showInfoInAndOut("info","文件导入成功！");
-            //$("#import-query-form").submit();
+            $("#import-query-form").submit();
         }
     });
 
@@ -549,12 +552,12 @@ function showImportRecord(data) {
         .DataTable({
             "data": data,
             "columns": [
-                {"data": "uploadTime"},
                 {"data": "areaName"},
+                {"data": "uploadTime"},
                 {"data": "filename"},
-                {"data": "fileType"},
                 {"data": "fileSize"},
-                {"data": "fullPath"},
+                {"data": null},
+                {"data": null},
                 {"data": "createdUser"},
                 {"data": null}
             ],
@@ -575,8 +578,28 @@ function showImportRecord(data) {
                 },
                 "targets": -1,
                 "data": null
-            }
-            ],
+            },
+                {
+                    "render": function(data, type, row) {
+                        if(row['startTime']===""||row['startTime']===null){
+                            return " --- ";
+                        }else {
+                            return row['startTime'];
+                        }
+                    },
+                    "targets": 4,
+                    "data": "startTime"
+                },{
+                    "render": function(data, type, row) {
+                        if(row['completeTime']===""||row['completeTime']===null){
+                            return " --- ";
+                        }else {
+                            return row['completeTime'];
+                        }
+                    },
+                    "targets": 5,
+                    "data": "completeTime"
+                }],
             "lengthChange": false,
             "ordering": false,
             "searching": false,
@@ -593,15 +616,15 @@ function showRecord(data) {
             "data": data,
             "columns": [
                 {"data": "areaName"},
-                {"data": "beginTime"},
-                {"data": "endTime"},
-                {"data": "jobId"},
+                {"data": "createdDate"},
+                {"data": "dataType"},
+                {"data": "filename"},
                 {"data": "dataNum"},
                 {"data": "sysTime"}
             ],
-            "lengthChange": false,
+            "lengthChange": true,
             "ordering": false,
-            "searching": false,
+            "searching": true,
             "destroy": true,
             "language": {
                 url: '../../lib/datatables/1.10.16/i18n/Chinese.json'

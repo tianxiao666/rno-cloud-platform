@@ -131,7 +131,7 @@ public class LteCellDataResource {
             //更新文件记录
             originFile.setDataType(vm.getModuleName().toUpperCase());
             originFile.setFullPath(filepath);
-            originFile.setFileSize(filepath.getBytes().length);
+            originFile.setFileSize((int)vm.getFile().getSize());
             originFile.setSourceType("上传");
             originFile.setCreatedUser(SecurityUtils.getCurrentUserLogin());
             originFile.setCreatedDate(new Date());
