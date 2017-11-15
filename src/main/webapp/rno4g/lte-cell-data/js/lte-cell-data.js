@@ -417,7 +417,7 @@ function showCellDetail(index) {
 }
 
 function deleteCell(cellId) {
-    var r = confirm("删除该条小区信息？");
+    var r = confirm("删除该条小区工参信息？");
     if(r === true){
         $.ajax({
             url: '/api/lte-cell-data/cell-delete',
