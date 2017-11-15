@@ -80,11 +80,11 @@ public class LteCellDataService {
         Date endDate =sdf2.parse(vm.getEndUploadDate() +" 23:59:59");
         List<DataJob> list = new ArrayList<>();
         if(vm.getStatus().equals("全部")){
-            list= dataJobRepository.findTop1000ByAreaAndOriginFile_CreatedDateBetweenAndOriginFile_DataType(
+            list= dataJobRepository.findTop1000ByAreaAndOriginFile_CreatedDateBetweenAndOriginFile_DataTypeOrderByOriginFile_CreatedDateDesc(
                     area, beginDate, endDate,"LTE-CELL-DATA");
         }else{
 
-            list= dataJobRepository.findTop1000ByAreaAndStatusAndOriginFile_CreatedDateBetweenAndOriginFile_DataType(
+            list= dataJobRepository.findTop1000ByAreaAndStatusAndOriginFile_CreatedDateBetweenAndOriginFile_DataTypeOrderByOriginFile_CreatedDateDesc(
                     area, vm.getStatus(), beginDate, endDate,"LTE-CELL-DATA");
         }
         return list.stream().map(LteCellDataFileMapper.INSTANCE::lteCellDataFileToLteCellDataFileDto)

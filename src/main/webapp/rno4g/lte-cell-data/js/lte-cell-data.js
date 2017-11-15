@@ -158,9 +158,7 @@ $(function () {
     //导入文件类型判断
     $("#importBtn").click(function () {
         var path =$("#file").val();
-        console.log(path);
         var format = path.substring(path.lastIndexOf("."), path.length).toLowerCase();
-        console.log(format);
         if (format !== '.csv' && format !=='.zip') {
             showInfoInAndOut("info", "请上传csv或zip格式的小区文件");
             return false;
@@ -192,7 +190,7 @@ $(function () {
             percent.html(percentVal);
             $("#info").css("background","green");
             showInfoInAndOut("info","文件导入成功！");
-
+            $("#import-query-form").submit();
         }
     });
 

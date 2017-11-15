@@ -54,10 +54,10 @@ public class LteNcellRelationService {
         Date endDate =sdf.parse(vm.getEndUploadDate()+" 23:59:59");
         List<DataJob> list = new ArrayList<>();
         if(vm.getStatus().equals("全部")){
-            list = dataJobRepository.findTop1000ByAreaAndOriginFile_CreatedDateBetweenAndOriginFile_DataType(area,
+            list = dataJobRepository.findTop1000ByAreaAndOriginFile_CreatedDateBetweenAndOriginFile_DataTypeOrderByOriginFile_CreatedDateDesc(area,
                     beginDate,endDate,"LTE-NCELL-RELATION-DATA");
         }else{
-            list = dataJobRepository.findTop1000ByAreaAndStatusAndOriginFile_CreatedDateBetweenAndOriginFile_DataType(area,
+            list = dataJobRepository.findTop1000ByAreaAndStatusAndOriginFile_CreatedDateBetweenAndOriginFile_DataTypeOrderByOriginFile_CreatedDateDesc(area,
                     vm.getStatus(),beginDate,endDate,"LTE-NCELL-RELATION-DATA");
         }
         return list.stream()
