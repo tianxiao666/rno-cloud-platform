@@ -265,7 +265,7 @@ function showInfoInAndOut(div, info) {
 //删除邻区关系
 function deleteCell(id) {
     $.ajax({
-        url: '/api/lte-ncell-relation/deleteById',
+        url: '/api/lte-ncell-relation/delete-by-id',
         dataType: 'text',
         data: {id: id},
         success: function () {
