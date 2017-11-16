@@ -1,3 +1,4 @@
+var upload_flag = true;
 $(function () {
     $("#tabs").tabs();
 
@@ -31,9 +32,21 @@ $(function () {
     var progress = $('.upload-progress');
     var bar = $('.bar');
     var percent = $('.percent');
-    var upload_flag = true;
     //获取area_id上传
-    $("#area").val($('#cityId option:selected').val())
+    $("#area").val($('#cityId option:selected').val());
+
+    $("#dt-import").on('click', function() {
+        var excel_file = $("#fileid").val();
+        if (excel_file === "" || excel_file.length === 0) {
+            alert("请先选择文件");
+            return false;
+        }else if(upload_flag === false) {
+            alert("不支持该类型文件!");
+            return false;
+        } else {
+            return true;
+        }
+    });
 
     $("#file-upload-form").ajaxForm({
         url: "/api/lte-dt-data/upload-file",
@@ -63,6 +76,7 @@ $(function () {
             $("#fileDiv").html("不支持该类型文件！");
             upload_flag = false;
         }else {
+            upload_flag = true;
             $("#fileDiv").html("");
         }
         progress.css("display", "none");
