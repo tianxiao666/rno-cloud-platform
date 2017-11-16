@@ -18,7 +18,7 @@ $(function () {
 
     //初始化菜单
     $.ajax({
-        url: "data/menu.json",
+        url: "/api/query-menus",
         dataType: "json",
         async: false,
         success: function (data) {
@@ -253,27 +253,26 @@ function onLoadOpenHomeTab() {
 }
 
 // 渲染菜单
-function renderMenu(data) {
-    var menu = data.menu;
+function renderMenu(menu) {
     var menuHtml = [];
     $.each(menu, function (index) {
         var firstLevelMenu = menu[index];
-        menuHtml.push("<li id='" + firstLevelMenu.title + "' class='firstLevelMenu'><div>"
-            + firstLevelMenu.title + "</div><ul>");
+        menuHtml.push("<li id='" + firstLevelMenu.name + "' class='firstLevelMenu'><div>"
+            + firstLevelMenu.name + "</div><ul>");
 
-        var secondMenu = firstLevelMenu.sub;
+        var secondMenu = firstLevelMenu.children;
         $.each(secondMenu, function (secondIndex) {
             var secondLevelMenu = secondMenu[secondIndex];
-            menuHtml.push("<li id='" + secondLevelMenu.title + "' class='secondLevelMenu'>" + secondLevelMenu.title);
-            if (secondLevelMenu.sub === undefined) {
+            menuHtml.push("<li id='" + secondLevelMenu.name + "' class='secondLevelMenu'>" + secondLevelMenu.name);
+            if (secondLevelMenu.children.length === 0) {
                 menuHtml.push("<input type='hidden' value='" + secondLevelMenu.url + "'></li>");
             } else {
                 menuHtml.push("<div style='float:right;'><span class='arrow'></span></div><ul>");
 
-                var thirdMenu = secondLevelMenu.sub;
+                var thirdMenu = secondLevelMenu.children;
                 $.each(thirdMenu, function (thirdIndex) {
                     var thirdLevelMenu = thirdMenu[thirdIndex];
-                    menuHtml.push("<li id='" + thirdLevelMenu.title + "' class='thirdLevelMenu'>" + thirdLevelMenu.title);
+                    menuHtml.push("<li id='" + thirdLevelMenu.name + "' class='thirdLevelMenu'>" + thirdLevelMenu.name);
                     menuHtml.push("<input type='hidden' value='" + thirdLevelMenu.url + "'></li>");
                 });
                 menuHtml.push("</ul>");
