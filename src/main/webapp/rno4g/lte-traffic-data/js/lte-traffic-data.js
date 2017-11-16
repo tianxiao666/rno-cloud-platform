@@ -32,10 +32,10 @@ $(function () {
     var bar = $('.bar');
     var percent = $('.percent');
 
-    //获取area_id上传
-    $("#area").val($('#cityId option:selected').val());
 
     $("#traffic-import").on('click', function() {
+        //获取area_id上传
+        $("#area").val($("#cityId").val());
         var filename = fileid.value;
         if(!(filename.toUpperCase().endsWith(".CSV")||filename.toUpperCase().endsWith(".ZIP"))){
             showInfoInAndOut("info", "请选择csv或者zip格式的数据文件");

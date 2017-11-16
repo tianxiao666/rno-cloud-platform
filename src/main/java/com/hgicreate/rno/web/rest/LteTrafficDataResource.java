@@ -60,6 +60,7 @@ public class LteTrafficDataResource {
     public ResponseEntity<?> uploadFile(LteTrafficFileUploadVM vm) {
 
         log.debug("模块名：" + vm.getModuleName());
+        log.debug("视图模型: " + vm);
 
         try {
             // 获取文件名，并构建为本地文件路径
