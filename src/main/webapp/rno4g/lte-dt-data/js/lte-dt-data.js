@@ -36,14 +36,11 @@ $(function () {
     $("#area").val($('#cityId option:selected').val());
 
     $("#dt-import").on('click', function() {
-        var excel_file = $("#fileid").val();
-        if (excel_file === "" || excel_file.length === 0) {
-            alert("请先选择文件");
+        var filename = fileid.value;
+        if(!(filename.toUpperCase().endsWith(".CSV")||filename.toUpperCase().endsWith(".ZIP"))){
+            showInfoInAndOut("info", "请选择csv或者zip格式的数据文件");
             return false;
-        }else if(upload_flag === false) {
-            alert("不支持该类型文件!");
-            return false;
-        } else {
+        }else {
             return true;
         }
     });
@@ -138,7 +135,18 @@ function showImportDetail() {
     $("#listInfoDiv").css("display", "none");
 }
 
+function showInfoInAndOut(div, info) {
+    var divSet = $("#" + div);
+    divSet.html(info);
+    divSet.fadeIn(2000);
+    setTimeout("$('#" + div + "').fadeOut(2000)", 1000);
+}
+
 function showQueryImportResult(data) {
+    if (data === '') {
+        showInfoInAndOut('info', '没有符合条件的路测数据');
+    }
+
     $('#queryRecordResTab').css("line-height", "12px")
         .DataTable({
             "data": data,
@@ -154,23 +162,23 @@ function showQueryImportResult(data) {
             ],
             "columnDefs": [
                 {
-                "render": function (data, type, row) {
-                    switch (row['status']) {
-                        case "全部失败":
-                            return "<a style='color: red' <!--onclick='showImportDetail()'-->>" + row['status'] + "</a>";
-                        case "部分失败":
-                            return "<a style='color: red'>" + row['status'] + "</a>";
-                        case "全部成功":
-                            return "<a>" + row['status'] + "</a>";
-                        case "正在处理":
-                            return "<a>" + row['status'] + "</a>";
-                        case "等待处理":
-                            return "<a>" + row['status'] + "</a>";
+                    "render": function (data, type, row) {
+                        switch (row['status']) {
+                            case "全部失败":
+                                return "<a style='color: red' <!--onclick='showImportDetail()'-->>" + row['status'] + "</a>";
+                            case "部分失败":
+                                return "<a style='color: red'>" + row['status'] + "</a>";
+                            case "全部成功":
+                                return "<a>" + row['status'] + "</a>";
+                            case "正在处理":
+                                return "<a>" + row['status'] + "</a>";
+                            case "等待处理":
+                                return "<a>" + row['status'] + "</a>";
                         }
                     },
                     "targets": -1,
                     "data": null
-                    },
+                },
                 {
                     "render": function(data, type, row) {
                         if(row['startTime']==""||row['startTime']==null){
@@ -201,4 +209,5 @@ function showQueryImportResult(data) {
                 url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
             }
         });
+
 }
