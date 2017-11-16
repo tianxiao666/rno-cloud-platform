@@ -102,7 +102,8 @@ $(function () {
             var percentVal = '100%';
             bar.width(percentVal);
             percent.html(percentVal);
-
+            $("#info").css("background","green");
+            showInfoInAndOut("info","文件导入成功！");
             //AJAX 提交邻区导入记录查询条件表单
             $("#importQuery").submit();
         }
@@ -234,7 +235,7 @@ function showNcellImportResult(data) {
 function showNcellImportDtResult(data) {
     $(".loading").css("display", "none");
     if (data == '') {
-        showInfoInAndOut('info', '没有符合条件的邻区关系');
+        showInfoInAndOut('info', '没有符合条件的邻区数据记录');
     }
 
     $('#queryDataResultDT').css("line-height", "12px");
@@ -267,24 +268,22 @@ function showInfoInAndOut(div, info) {
 
 //删除邻区关系
 function deleteCell(id) {
-    $.ajax({
-        url: '/api/lte-ncell-relation/delete-by-id',
-        dataType: 'text',
-        data: {id: id},
-        success: function () {
-            showInfoInAndOut("info", "删除邻区关系成功！");
-            $("#conditionForm").ajaxForm({
-                url: "/api/lte-ncell-relation/ncell-query",
-                success: showNcellRelationResult,
-                error: function (err) {
-                    console.log(err);
-                }
-            });
-        }, error: function (err) {
-            console.log(err);
-            showInfoInAndOut("info", "后台程序错误！");
-        }
-    })
+    var r = confirm("删除该邻区关系？");
+    if(r==true){
+        $.ajax({
+            url: '/api/lte-ncell-relation/delete-by-id',
+            dataType: 'text',
+            data: {id: id},
+            success: function () {
+                showInfoInAndOut("info", "删除邻区关系成功！");
+                $("#conditionForm").submit();
+            }, error: function (err) {
+                console.log(err);
+                showInfoInAndOut("info", "后台程序错误！");
+            }
+        })
+    }
+
 }
 
 //显示导入记录的状态的详情
