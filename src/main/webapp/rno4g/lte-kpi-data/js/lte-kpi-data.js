@@ -1,95 +1,170 @@
 $(function () {
-
-    $(document).ready(function () {
-        $(".draggable").draggable();
-        $("#trigger").css("display", "none");
-
-    });
+    $("#tabs").tabs();
 
     //执行 laydate 实例 
-    laydate.render({elem: '#uploadQueryBegDate', value: new Date(new Date().getTime() - 7 * 86400000)});
-    laydate.render({elem: '#uploadQueryEndDate', value: new Date()});
+    laydate.render({elem: '#begUploadDate', value: new Date(new Date().getTime() - 7 * 86400000)});
+    laydate.render({elem: '#endUploadDate', value: new Date()});
 
     laydate.render({elem: '#kpiMeaBegDate', value: new Date(new Date().getTime() - 7 * 86400000)});
     laydate.render({elem: '#kpiMeaEndDate', value: new Date()});
 
-    $("#provincemenu").change(function () {
-        var provinceId = parseInt($(this).find("option:checked").val());
-        $.getJSON("../../data/area.json", function (data) {
-            renderArea(data, provinceId, "citymenu");
-        })
-    });
+    initAreaSelectors({selectors: ["province", "city"]});
+    initAreaSelectors({selectors: ["provincemenu2", "citymenu2"]});
 
-    $("#provincemenu2").change(function () {
-        var provinceId = parseInt($(this).find("option:checked").val());
-        $.getJSON("../../data/area.json", function (data) {
-            renderArea(data, provinceId, "citymenu2");
-        })
-    });
 
-    //初始化区域
-    $.ajax({
-        url: "../../data/area.json",
-        dataType: "json",
-        async: false,
-        success: function (data) {
-            renderArea(data, 0, "provincemenu");
-            renderArea(data, 0, "provincemenu2");
-            $("#provincemenu").change();
-            $("#provincemenu2").change();
-        }
-    });
-
-    $("#queryImportBtn").click(function () {
-        $('#queryImportTab').css("line-height", "12px");
-        $('#queryImportTab').DataTable( {
-            "ajax": "data/lte-kpi-data-import-list.json",
-            "columns": [
-                { "data": "cityId" },
-                { "data": "uploadTime" },
-                { "data": "fileName" },
-                { "data": "fileSize" },
-                { "data": "launchTime" },
-                { "data": "completeTime" },
-                { "data": "account" },
-                { "data": "fileStatus" }
-            ],
-        "language": {
-            url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
-        }
-        } );
+    //查询数据记录
+    $("#searchRecordForm").ajaxForm({
+        url: "/api/lte-kpi-data/query-record",
+        success: showRecord
     });
 
     $("#searchDataBtn").click(function () {
-        $('#queryDataTab').css("line-height", "12px");
-        $('#queryDataTab').DataTable( {
-            "ajax": "data/lte-kpi-data-query.json",
-            "columns": [
-                { "data": "cityId" },
-                { "data": "measureTime" },
-                { "data": "measureDataNum" },
-                { "data": "enterSysTime" }
-            ],
-        "language": {
-            url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
+
+    });
+
+    // AJAX 上传文件
+    var progress = $('.upload-progress');
+    var bar = $('.bar');
+    var percent = $('.percent');
+
+    //导入文件类型判断
+    $("#importBtn").click(function () {
+        var path =$("#file").val();
+        var cityId = $("#city").val();
+        $("#areaId").val(cityId);
+        var format = path.substring(path.lastIndexOf("."), path.length).toLowerCase();
+        if (format !== '.csv' && format !=='.zip') {
+            showInfoInAndOut("info", "请上传csv或zip格式的小区文件");
+            return false;
         }
-        } );
+    });
+
+    // 当上传文件域改变时，隐藏进度条
+    $("input[name='file']").change(function () {
+        progress.css("display", "none");
+    });
+
+    //上传
+    $("#file-upload-form").ajaxForm({
+        url: "/api/lte-kpi-data/upload-file",
+        beforeSend: function () {
+            progress.css("display", "block");
+            var percentVal = '0%';
+            bar.width(percentVal);
+            percent.html(percentVal);
+        },
+        uploadProgress: function (event, position, total, percentComplete) {
+            var percentVal = percentComplete + '%';
+            bar.width(percentVal);
+            percent.html(percentVal);
+        },
+        success: function () {
+            var percentVal = '100%';
+            bar.width(percentVal);
+            percent.html(percentVal);
+            $("#info").css("background","green");
+            showInfoInAndOut("info","文件导入成功！");
+            $("#import-query-form").submit();
+        }
+    });
+
+    // AJAX 查询导入记录
+    $("#import-query-form").ajaxForm({
+        url: "/api/lte-kpi-data/query-import",
+        success: showImportRecord
     });
 });
 
-// 渲染区域
-function renderArea(data, parentId, areaMenu) {
-    var arr = data.filter(function (v) {
-        return v.parentId === parentId;
-    });
-    if (arr.length > 0) {
-        var areaHtml = [];
-        $.each(arr, function (index) {
-            var area = arr[index];
-            areaHtml.push("<option value='"+area.id+"'>"+area.name+"</option>");
+function showRecord(data) {
+    $('#queryDataTab').css("line-height", "12px")
+        .DataTable( {
+            "data": data,
+            "columns": [
+                {"data": "areaName"},
+                {"data": "createdDate"},
+                {"data": "dataType"},
+                {"data": "filename"},
+                {"data": "dataNum"},
+                {"data": "sysTime"}
+            ],
+            "lengthChange": true,
+            "ordering": false,
+            "searching": true,
+            "destroy": true,
+            "language": {
+                url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
+            }
+        } );
+}
+
+function  showImportRecord(data) {
+    $('#queryImportTab')
+        .css("line-height", "12px")
+        .DataTable({
+            "data": data,
+            "columns": [
+                {"data": "areaName"},
+                {"data": "uploadTime"},
+                {"data": "filename"},
+                {"data": "fileSize"},
+                {"data": null},
+                {"data": null},
+                {"data": "createdUser"},
+                {"data": null}
+            ],
+            "columnDefs": [{
+                "render": function (data, type, row) {
+                    switch (row['status']) {
+                        case "部分成功":
+                            return "<a style='color: red' onclick='showImportDetail()'>" + row['status'] + "</a>";
+                        case "全部失败":
+                            return "<a style='color: red' onclick='showImportDetail()'>" + row['status'] + "</a>";
+                        case "全部成功":
+                            return "<a onclick='showImportDetail()'>" + row['status'] + "</a>";
+                        case "正在处理":
+                            return "<a onclick='showImportDetail()'>" + row['status'] + "</a>";
+                        case "等待处理":
+                            return "<a onclick='showImportDetail()'>" + row['status'] + "</a>";
+                    }
+                },
+                "targets": -1,
+                "data": null
+            },
+                {
+                    "render": function(data, type, row) {
+                        if(row['startTime']===""||row['startTime']===null){
+                            return " --- ";
+                        }else {
+                            return row['startTime'];
+                        }
+                    },
+                    "targets": 4,
+                    "data": "startTime"
+                },{
+                    "render": function(data, type, row) {
+                        if(row['completeTime']===""||row['completeTime']===null){
+                            return " --- ";
+                        }else {
+                            return row['completeTime'];
+                        }
+                    },
+                    "targets": 5,
+                    "data": "completeTime"
+                }],
+            "lengthChange": false,
+            "ordering": false,
+            "searching": false,
+            "destroy": true,
+            "language": {
+                url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
+            }
         });
-        $("#" + areaMenu).html(areaHtml.join(""));
-    } else {
-        console.log("父ID为" + parentId + "时未找到任何下级区域。");
-    }
+}
+
+
+function showInfoInAndOut(div, info) {
+    var divSet = $("#" + div);
+    divSet.html(info);
+    divSet.fadeIn(2000);
+    setTimeout("$('#" + div + "').fadeOut(2000)", 1000);
 }

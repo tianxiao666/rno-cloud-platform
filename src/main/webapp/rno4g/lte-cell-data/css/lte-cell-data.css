@@ -587,32 +587,6 @@ a.paging_link {
     border-radius: 2px;
 }
 
-a.page-first {
-    background: url("../images/page-first.gif") 2px 2px no-repeat;
-}
-
-a.page-prev {
-    background: url("../images/page-prev.gif") 2px 2px no-repeat;
-}
-
-a.page-next {
-    background: url("../images/page-next.gif") 2px 2px no-repeat;
-}
-
-a.page-last {
-    background: url("../images/page-last.gif") 2px 2px no-repeat;
-}
-
-a.page-go {
-    padding: 0 2px;
-    color: rgb(0, 0, 153);
-}
-
-a.paging_link:hover {
-    border: 1px solid rgb(153, 187, 232);
-    box-shadow: rgb(187, 187, 187) 1px 1px 3px;
-}
-
 body {
     font-family: "Microsoft yahei", Verdana, Geneva, sans-serif;
 }
