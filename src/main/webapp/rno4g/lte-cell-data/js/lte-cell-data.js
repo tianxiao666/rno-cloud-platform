@@ -56,7 +56,7 @@ var chineseToCode = [{
     'code': 'relatedParam',
     'name': '关联状态库工参'
 }, {
-    'code': 'relatedResoure',
+    'code': 'relatedResouce',
     'name': '关联状态库资源'
 }, {
     'code': 'stationSpace',
