@@ -331,7 +331,7 @@ function loadCellForEdit(oneLteCellDetail) {
                 "</br> <span id='span" + onekey['code'] + "'  style='font-family:华文中宋; color:red;width:100px;display:block;'></span></td>";
         } else if (onekey['code'] === 'remoteCell'
             || onekey['code'] === 'relatedParam'
-            || onekey['code'] === 'relatedResoure') {
+            || onekey['code'] === 'relatedResouce') {
             html += "<td class='menuTd'>" + onekey['name'] + " : " +
                 "<select style='width: 146px' id='" + onekey['code'] + "' name='" + onekey['code'] + "'> ";
             if (oneLteCellDetail[onekey['code']] === "是") {
