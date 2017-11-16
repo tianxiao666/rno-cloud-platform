@@ -11,7 +11,7 @@ import com.hgicreate.rno.security.SecurityUtils;
 import com.hgicreate.rno.service.LteDtDataService;
 import com.hgicreate.rno.service.dto.LteDtDataFileDTO;
 import com.hgicreate.rno.web.rest.vm.LteDtImportQueryVM;
-import com.hgicreate.rno.web.rest.vm.LteDtUploadVM;
+import com.hgicreate.rno.web.rest.vm.LteDtFileUploadVM;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -64,7 +64,7 @@ public class LteDtDataResource {
      * @return 成功情况下返回 HTTP OK 状态，错误情况下返回 HTTP 4xx 状态。
      */
     @PostMapping("/upload-file")
-    public ResponseEntity<?> uploadFile(LteDtUploadVM vm) {
+    public ResponseEntity<?> uploadFile(LteDtFileUploadVM vm) {
 
         log.debug("模块名：" + vm.getModuleName());
 

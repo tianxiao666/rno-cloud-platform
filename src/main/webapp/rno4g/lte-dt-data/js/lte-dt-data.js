@@ -1,4 +1,3 @@
-var upload_flag = true;
 $(function () {
     $("#tabs").tabs();
 
@@ -62,7 +61,7 @@ $(function () {
             var percentVal = '100%';
             bar.width(percentVal);
             percent.html(percentVal);
-            $("#searchRecord").click();
+            $("#search-traffic-record").click();
         }
     });
 
@@ -71,9 +70,7 @@ $(function () {
         var filename = fileid.value;
         if(!(filename.toUpperCase().endsWith(".CSV")||filename.toUpperCase().endsWith(".ZIP"))){
             $("#fileDiv").html("不支持该类型文件！");
-            upload_flag = false;
         }else {
-            upload_flag = true;
             $("#fileDiv").html("");
         }
         progress.css("display", "none");
@@ -143,7 +140,7 @@ function showInfoInAndOut(div, info) {
 }
 
 function showQueryImportResult(data) {
-    if (data === '') {
+    if (data == '') {
         showInfoInAndOut('info', '没有符合条件的路测数据');
     }
 

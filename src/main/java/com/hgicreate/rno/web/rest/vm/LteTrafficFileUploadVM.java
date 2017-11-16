@@ -4,11 +4,9 @@ import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 @Data
-public class LteDtUploadVM {
+public class LteTrafficFileUploadVM {
     private String moduleName;
     private String areaId;
     private MultipartFile file;
-    private String business_type;
-    private String area_type;
     private String sourceType;
 }

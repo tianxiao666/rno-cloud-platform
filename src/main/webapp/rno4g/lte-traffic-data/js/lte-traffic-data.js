@@ -32,6 +32,19 @@ $(function () {
     var bar = $('.bar');
     var percent = $('.percent');
 
+    //获取area_id上传
+    $("#area").val($('#cityId option:selected').val());
+
+    $("#traffic-import").on('click', function() {
+        var filename = fileid.value;
+        if(!(filename.toUpperCase().endsWith(".CSV")||filename.toUpperCase().endsWith(".ZIP"))){
+            showInfoInAndOut("info", "请选择csv或者zip格式的数据文件");
+            return false;
+        }else {
+            return true;
+        }
+    });
+
     $("#file-upload-form").ajaxForm({
         url: "/api/lte-traffic-data/upload-file",
         beforeSend: function () {
@@ -49,6 +62,7 @@ $(function () {
             var percentVal = '100%';
             bar.width(percentVal);
             percent.html(percentVal);
+            $("#search-traffic-record").click();
         }
     });
 
@@ -57,7 +71,6 @@ $(function () {
         var filename = fileid.value;
         if(!(filename.toUpperCase().endsWith(".CSV")||filename.toUpperCase().endsWith(".ZIP"))){
             $("#fileDiv").html("不支持该类型文件！");
-            return false;
         }else {
             $("#fileDiv").html("");
         }
@@ -80,9 +93,10 @@ $(function () {
                     { data: "CNT" },
                     { data: "CREATE_TIME" }
                 ],
-                "lengthChange": true,
+                "lengthChange": false,
                 "ordering": false,
-                "searching": true,
+                "searching": false,
+                "destroy": true,
                 "language": {
                     url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
                 }
@@ -90,39 +104,71 @@ $(function () {
     });
 });
 
+function showInfoInAndOut(div, info) {
+    var divSet = $("#" + div);
+    divSet.html(info);
+    divSet.fadeIn(2000);
+    setTimeout("$('#" + div + "').fadeOut(2000)", 1000);
+}
 
 function showQueryImportResult(data) {
+    if (data == '') {
+        showInfoInAndOut('info', '没有符合条件的网络统计数据');
+    }
+
     $('#queryRecordResTab').css("line-height", "12px")
         .DataTable({
             "data": data,
             "columns": [
-                { data: "cityName" },
-                { data: "uploadTime" },
-                { data: "fileName" },
-                { data: "fileSize" },
-                { data: "launchTime" },
-                { data: "completeTime" },
-                { data: "account" },
+                {"data": "areaName"},
+                {"data": "uploadTime"},
+                {"data": "filename"},
+                {"data": "fileSize"},
+                {"data": null},
+                {"data": null},
+                {"data": "createdUser"},
                 {"data": null}
             ],
             "columnDefs": [
-                {"render": function (data, type, row) {
-                    switch (row['fileStatus']) {
-                        case "部分失败":
-                            return "<a style='color: red' <!--onclick='showImportDetail()'-->>" + row['fileStatus'] + "</a>";
-                        case "全部失败":
-                            return "<a style='color: red'>" + row['fileStatus'] + "</a>";
-                        case "全部成功":
-                            return "<a>" + row['fileStatus'] + "</a>";
-                        case "正在解析":
-                            return "<a>" + row['fileStatus'] + "</a>";
-                        case "等待解析":
-                            return "<a>" + row['fileStatus'] + "</a>";
+                {
+                    "render": function (data, type, row) {
+                        switch (row['status']) {
+                            case "全部失败":
+                                return "<a style='color: red' <!--onclick='showImportDetail()'-->>" + row['status'] + "</a>";
+                            case "部分失败":
+                                return "<a style='color: red'>" + row['status'] + "</a>";
+                            case "全部成功":
+                                return "<a>" + row['status'] + "</a>";
+                            case "正在处理":
+                                return "<a>" + row['status'] + "</a>";
+                            case "等待处理":
+                                return "<a>" + row['status'] + "</a>";
                         }
                     },
-                "targets": -1,
-                "data": null
-                }
+                    "targets": -1,
+                    "data": null
+                },
+                {
+                    "render": function(data, type, row) {
+                        if(row['startTime']==""||row['startTime']==null){
+                            return " --- ";
+                        }else {
+                            return row['startTime'];
+                        }
+                    },
+                    "targets": 4,
+                    "data": "startTime"
+                },{
+                    "render": function(data, type, row) {
+                        if(row['completeTime']==""||row['completeTime']==null){
+                            return " --- ";
+                        }else {
+                            return row['completeTime'];
+                        }
+                    },
+                    "targets": 5,
+                    "data": "completeTime"
+                },
             ],
             "lengthChange": false,
             "ordering": false,

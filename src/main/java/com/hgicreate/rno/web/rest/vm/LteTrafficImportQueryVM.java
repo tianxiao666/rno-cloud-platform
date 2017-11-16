@@ -6,5 +6,6 @@ import lombok.Data;
 public class LteTrafficImportQueryVM {
     private String begUploadDate;
     private String endUploadDate;
+    private String city;
     private String status;
 }
