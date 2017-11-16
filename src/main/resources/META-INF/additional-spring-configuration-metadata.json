@@ -3,17 +3,17 @@
     {
       "name": "rno.path.upload-files",
       "type": "java.lang.String",
-      "description": "\u6d93\u5a41\u7d36\u93c2\u56e6\u6b22\u9366\u3126\u6e47\u9354\u2033\u6ad2\u6d93\u5a41\u7e5a\u701b\u6a3c\u6b91\u74ba\ue21a\u7dde."
+      "description": "上传文件在服务器上保存的路径."
     },
     {
       "name": "rno.scheduler.enabled",
       "type": "java.lang.Boolean",
-      "description": "\u93c4\ue21a\u60c1\u934f\u4f7d\ue18f\u7039\u6c2d\u6902\u6d60\u8bf2\u59df\u951b\u5c80\u5df1\u704f\u621c\u8d1ffalse."
+      "description": "是否允许定时任务，缺少为false."
     },
     {
       "name": "rno.scheduler.fixed-delay",
       "type": "java.lang.String",
-      "description": "\u7039\u6c2d\u6902\u6d60\u8bf2\u59df\u9428\u52ec\u6902\u95c2\u64ae\u68ff\u95c5\u65d3\u7d1d\u9357\u66da\u7d85\u93c4\ue21b\ue1e0\u7ec9\ufffd."
+      "description": "定时任务的时间间隔，单位是毫秒."
     }
   ]
 }
