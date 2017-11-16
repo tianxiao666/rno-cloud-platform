@@ -1,6 +1,5 @@
 package com.hgicreate.rno.domain;
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -23,10 +22,8 @@ public class Menu implements Serializable {
     @Column(name = "INDEX_OF_BROTHER")
     @JsonProperty("index_of_brother")
     private Integer indexOfBrother;
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "parentId")
     @OrderBy("indexOfBrother")
     private List<Menu> children;
-
 }

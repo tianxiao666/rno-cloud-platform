@@ -380,7 +380,7 @@ function submitMenu() {
     var submitDataList = transformJSONtoeachJSON();
     $.ajax({
         type: 'POST',
-        url: "submit-menu",
+        url: "/api/submit-menu",
         contentType: "application/json", //必须有
         data:JSON.stringify(submitDataList),
         success: function(data){
@@ -409,7 +409,7 @@ $(document).ready(function(){
     $.ajax({
         type: 'GET',
         dataType:'json',
-        url: "searchall",
+        url: "/api/query-menus",
         success: function(data){
             zNodes = data;
             console.log(data);

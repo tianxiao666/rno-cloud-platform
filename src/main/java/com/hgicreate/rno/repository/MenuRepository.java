@@ -8,13 +8,9 @@ import org.springframework.data.repository.CrudRepository;
 import javax.transaction.Transactional;
 import java.util.List;
 
-
 public interface MenuRepository extends CrudRepository<Menu, Integer> {
 
-    List<Menu> findAll();
-
     List<Menu> findAllByParentIdIsOrderByIndexOfBrother(Long pid);
-
 
     @Override
     <S extends Menu> S save(S s);
