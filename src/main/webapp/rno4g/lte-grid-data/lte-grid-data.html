@@ -16,218 +16,95 @@
     <script src="../../lib/validate.js"></script>
     <script src="../../lib/tab.js"></script>
     <script src="../../lib/laydate/5.0.7/laydate.js"></script>
-    <!--<script src="js/jquery-ui-timepicker-addon.js"></script>-->
     <script src="../../lib/datatables/1.10.16/datatables.min.js"></script>
+    <script src="../../js/common.js"></script>
     <script src="js/lte-grid-data.js"></script>
     <script src="js/lte-grid-data-origin.js"></script>
-    <script>
-        $(document).ready(function () {
-            $(".draggable").draggable();
-            $("#trigger").css("display", "none");
-
-        });
-    </script>
-    <script>
-        var $ = jQuery.noConflict();
-    </script>
-
-    <style>
-        .main-table1 .menuTd {
-            text-align: right;
-        }
-    </style>
-    <style>
-        body {
-            margin: 50px;
-        }
-
-        .greystyle-standard-noborder tr td {
-            padding: 0
-        }
-
-        .dict_left {
-            width: 130px;
-            float: left;
-            left: 0;
-            z-index: 1;
-            border: 1px;
-            margin: 5px
-        }
-
-        .dict_right {
-            width: 100%;
-            left: 200px;
-            float: left;
-            border: 1px;
-            margin: 5px
-        }
-
-        select {
-            width: 100px;
-        }
-
-        .sectionDivCls {
-            margin-top: 10px;
-        }
-
-        .importTitle {
-            background: url("images/ui-bg_glass_65_ffffff_1x400.png") repeat-x scroll 50% 50% #ffffff;
-            border: 1px solid #fbd850;
-            color: #eb8f00;
-            font-weight: bold;
-            padding-left: 2.2em;
-            height: 30px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        .importContent {
-            background: url("images/ui-bg_highlight-soft_100_eeeeee_1x100.png") repeat-x scroll 50% top #eeeeee;
-            border: 1px solid #dddddd;
-            padding: 1em 2.2em;
-            border-radius: 5px;
-        }
-    </style>
 </head>
 
-
 <body>
-
 <span class="navTitle"><h2>当前位置：场景管理 &gt; 网格数据管理 </h2></span>
-<div class="loading_cover" style="display: none">
-    <div class="cover"></div>
-    <h4 class="loading">
-        正在加载 <em class="loading_fb" id="tipcontentId"></em>,请稍侯...
-    </h4>
-</div>
-
-
+<div id="loading" class="loading" style="display: none">加载中...</div>
+<div id="info" class="info-style" style="display: none"></div>
 <div id="tabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
     <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
         <li class="ui-state-default ui-corner-top ui-tabs-active ui-state-active" role="tab" tabindex="0"
-            aria-controls="tabs-1" aria-labelledby="ui-id-1" aria-selected="true" aria-expanded="true"><a href="#tabs-1"
-                                                                                                          class="ui-tabs-anchor"
-                                                                                                          role="presentation"
-                                                                                                          tabindex="-1"
-                                                                                                          id="ui-id-1">网格数据导入</a>
+            aria-controls="tabs-1" aria-labelledby="ui-id-1" aria-selected="true" aria-expanded="true">
+            <a href="#tabs-1" class="ui-tabs-anchor" tabindex="0" id="ui-id-1">网格数据导入</a>
         </li>
-        <li class="ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="tabs-2"
-            aria-labelledby="ui-id-2" aria-selected="false" aria-expanded="false"><a href="#tabs-2"
-                                                                                     class="ui-tabs-anchor"
-                                                                                     role="presentation" tabindex="-1"
-                                                                                     id="ui-id-2">网格数据查询 </a></li>
+        <li class="ui-state-default ui-corner-top" role="tab" tabindex="1" aria-controls="tabs-2"
+            aria-labelledby="ui-id-2" aria-selected="false" aria-expanded="false">
+            <a href="#tabs-2" class="ui-tabs-anchor" tabindex="1" id="ui-id-2">网格数据记录 </a>
+        </li>
     </ul>
-    <div id="tabs-1" aria-labelledby="ui-id-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel"
+    <div id="tabs-1" aria-labelledby="ui-id-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom"
          aria-hidden="false">
         <div id="listinfoDiv">
-            <form id="searchImportForm" method="post" action="/api/lte-grid-data/import-query">
-                <select id="provincemenu" name="provinceId">
-
-                </select>
-                <select id="citymenu" name="cityId"></select>
+            <form id="searchImportForm" method="post">
+                <select id="provincemenu" name="provinceId" title=""></select>
+                <select id="citymenu" name="cityId" title=""></select>
                 <div style="margin: 9px"></div>
                 <div id="searchImportDiv"
                      style="height: 46px; background: rgb(255, 255, 255) url('images/ui-bg_glass_65_ffffff_1x400.png') repeat-x scroll 50% 50%; border: 1px solid rgb(251, 216, 80);">
                     <div style="margin: 9px"></div>
-                    <input name="fileCode" id="fileCode" value="LTEGRIDFILE" type="hidden"> <input id="hiddenPageSize"
-                                                                                                   name="page.pageSize"
-                                                                                                   value="25"
-                                                                                                   type="hidden"> <input
-                        id="hiddenCurrentPage" name="page.currentPage" value="1" type="hidden"> <input
-                        id="hiddenTotalPageCnt" value="0" type="hidden"> <input id="hiddenTotalCnt" value="0"
-                                                                                name="page.totalCnt" type="hidden">
                     <table>
                         <tbody>
                         <tr>
-
-                            <td style="padding-left:30px"><label>上传时间 从:</label> <input
-                                    value="" id="begUploadDate"
-                                    name="begUploadDate" class="hasDatepicker"
-                                    type="text"> 至：<input value="" id="endUploadDate"
-                                                          name="endUploadDate"
-                                                          class="hasDatepicker" type="text"></td>
+                            <td style="padding-left:30px">
+                                <label>上传时间 从:</label>
+                                <input value="" id="begUploadDate" name="begUploadDate" class="hasDatepicker" type="text" title="">
+                                至：<input value="" id="endUploadDate" name="endUploadDate" class="hasDatepicker" type="text" title="">
+                            </td>
                             <td style="padding-left:30px"><label>状态:</label></td>
-                            <td><select id="importstatusmenu" name="fileStatus">
-                                <option value="全部" selected="selected">全部</option>
-                                <option value="全部成功">全部成功</option>
-                                <option value="部分失败">部分失败</option>
-                                <option value="全部失败">全部失败</option>
-                                <option value="正在解析">正在解析</option>
-                                <option value="等待解析">等待解析</option>
-                            </select></td>
-                            <td style="padding-left:30px"><input id="queryBtn" value="查询导入记录" type="submit"></td>
+                            <td>
+                                <select id="import-status-menu" name="status" title="">
+                                    <option value="全部" selected="selected">全部</option>
+                                    <option value="全部成功">全部成功</option>
+                                    <option value="部分成功">部分成功</option>
+                                    <option value="全部失败">全部失败</option>
+                                    <option value="正在处理">正在处理</option>
+                                    <option value="等待处理">等待处理</option>
+                                </select>
+                            </td>
+                            <td style="padding-left:30px">
+                                <input id="queryBtn" value="查询导入记录" type="submit">
+                            </td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
             </form>
-
             <div style="margin: 9px"></div>
-
             <div id="importTitleDiv" class="importTitle">
                 <div style="margin: 9px"></div>
                 导入
             </div>
             <div id="importDiv" class="importContent" style="height: 180px;">
-                <form id="formImportNcs" enctype="multipart/form-data" method="post">
-                    <input name="fileCode" id="fileCode" value="LTEGRIDFILE" type="hidden"> <input name="token"
-                                                                                                   id="token" value=""
-                                                                                                   type="hidden">
-                    <input id="uploadCityId" name="cityId" value="98" type="hidden">
-                    <div>
-                        <table class="main-table1 half-width" style="margin-left:0;width:50%">
-                            <tbody>
-
-                            <tr style="display:none">
-                                <td class="menuTd">导入日期<span class="txt-impt">*</span>
-                                </td>
-                                <td>
-                                    <input name="meaTime" class="required" id="meatime" value="2017-10-26"
-                                           onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})" readonly="readonly"
-                                           style="width: 132px;" type="text"></td>
-                            </tr>
-                            <tr>
-                                <td class="menuTd">网格文件<span class="txt-impt">*</span>
-                                </td>
-                                <td style="width: 50%; font-weight: bold" colspan="0"><input style="width: 44%;"
-                                                                                             name="file" id="fileid"
-                                                                                             class="canclear required"
-                                                                                             type="file"></td>
-                            </tr>
-
-                            </tbody>
-
-                        </table>
+                <form id="formImportNcs"  method="post">
+                    <table class="main-table1 half-width" style="margin-left:0;width:50%">
+                        <tbody>
+                        <tr>
+                            <td class="menuTd">网格文件<span class="txt-impt">*</span></td>
+                            <td style="width: 50%; font-weight: bold" colspan="0">
+                                <input style="width: 44%;" name="file" id="file" class="canclear required" type="file">
+                                <input type="hidden" name="moduleName" value="lte-grid-data">
+                                <input type="hidden" id="areaId" name="areaId" value="">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div align="center" style="margin: 6px; width: 700px;">
+                        <input id="importBtn" value=" 导 入 " type="submit" class="btn btn-default" style="width: 120px">
                     </div>
-                    <div class="container-bottom" style="padding-top: 10px">
-                        <table style="width: 60%; margin: auto" align="center">
-                            <tbody>
-                            <tr>
-                                <td><input value="导    入" style="width: 90px;" id="importBtn" name="import"
-                                           type="button"> <br>
-                                    <div id="uploadMsgDiv" style="display:none"></div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <div id="importResultDiv" class="container-bottom" style="padding-top: 10px">
-                            <div id="progressInfoDiv" style="width:50%;display:none">
-                                <h2 id="progressNum">0%</h2>
-                                <div id="progressbar" class="ui-progressbar ui-widget ui-widget-content ui-corner-all"
-                                     role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                                    <div class="ui-progressbar-value ui-widget-header ui-corner-left"
-                                         style="display: none; width: 0%;"></div>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="upload-progress">
+                        <div class="bar"></div>
+                        <div class="percent">0%</div>
                     </div>
                 </form>
             </div>
 
             <div id="importListDiv" class="sectionDivCls">
                 <bold>网格上传记录列表</bold>
-
-                <!--<table id="importListTab" class="greystyle-standard" style="width:auto;margin-left:0">-->
                 <table id="queryResultTab" class="display rnoHeader" cellspacing="0" width="100%">
                     <thead>
                     <tr>
@@ -242,24 +119,17 @@
                     </tr>
                     </thead>
                 </table>
-
             </div>
         </div>
 
         <div id="reportDiv" style="display:none">
             <form id="viewReportForm">
-                <input name="attachParams['jobId']" id="hiddenJobId" value="" type="hidden"> <input id="hiddenPageSize"
-                                                                                                    name="page.pageSize"
-                                                                                                    value="25"
-                                                                                                    type="hidden">
-                <input id="hiddenCurrentPage" name="page.currentPage" value="1" type="hidden"> <input
-                    id="hiddenTotalPageCnt" type="hidden"> <input id="hiddenTotalCnt" value="-1" name="page.totalCnt"
-                                                                  type="hidden">
+                <input name="attachParams['jobId']" id="hiddenJobId" value="" type="hidden">
             </form>
             <ul id="icons" class="ui-widget ui-helper-clearfix" style="width:100px;cursor:pointer">
                 <li class="ui-state-default ui-corner-all" title="返回列表" style="width:100px"
-                    onclick="javascript:returnToImportList();"><span class="ui-icon ui-icon-arrowreturnthick-1-w"
-                                                                     style="width:20px"></span>返回列表
+                    onclick="returnToImportList();">
+                    <span class="ui-icon ui-icon-arrowreturnthick-1-w" style="width:20px"></span>返回列表
                 </li>
             </ul>
             <table id="reportListTab" class="greystyle-standard" style="width:auto;margin-left:0">
@@ -278,31 +148,31 @@
     </div>
     <div id="tabs-2" aria-labelledby="ui-id-2" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel"
          style="display: none;" aria-hidden="true">
-        <form id="searchNcsForm" method="post" action="/api/lte-grid-data/data-query">
-            <input name="fileCode" id="fileCode" value="LTEGRIDFILE" type="hidden"> <input id="hiddenPageSize"
-                                                                                           name="page.pageSize"
-                                                                                           value="25" type="hidden">
-            <input id="hiddenCurrentPage" name="page.currentPage" value="1" type="hidden"> <input
-                id="hiddenTotalPageCnt" type="hidden"> <input id="hiddenTotalCnt" value="-1" name="page.totalCnt"
-                                                              type="hidden">
+        <form id="searchNcsForm" method="post">
+            <input name="fileCode" id="fileCode" value="LTEGRIDFILE" type="hidden">
             <table>
                 <tbody>
                 <tr>
                     <td>
-                        <select id="province-menu-2" name="provinceId2"></select>
-                        <select id="city-menu-2" name="cityId2"></select>
+                        <select id="province-menu-2" name="provinceId2" title=""></select>
+                        <select id="city-menu-2" name="cityId2" title=""></select>
+                    </td>
+                    <td style="padding-left:10px">测试时间 从:</td>
+                    <td>
+                        <input id="begMetaDate" name="begMetaDate" type="text" title=""> 至：
+                        <input id="endMetaDate" name="endMetaDate" type="text" title="">
                     </td>
                     <td style="padding-left:10px"><input id="queryBtn1" value="查询网格" type="submit"></td>
                 </tr>
                 </tbody>
             </table>
-
         </form>
         <div id="ncsListDiv" class="sectionDivCls">
             <table id="queryResultTab1" class="display rnoHeader" cellspacing="0" width="100%">
                 <thead>
                 <tr>
                     <th>地市</th>
+                    <th>测量时间</th>
                     <th>网格序列</th>
                     <th>网格描述</th>
                     <th>网格中心点</th>
@@ -313,138 +183,6 @@
 
         </div>
     </div>
-</div>
-
-
-<div class="ui-selectmenu-menu ui-front">
-    <ul aria-hidden="true" aria-labelledby="importstatusmenu-button" id="importstatusmenu-menu"
-        class="ui-menu ui-widget ui-widget-content ui-corner-bottom" role="listbox" tabindex="0"></ul>
-</div>
-<div id="ui-datepicker-div" class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-    <div class="ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-all"><a
-            class="ui-datepicker-prev ui-corner-all" data-handler="prev" data-event="click" title="Prev"><span
-            class="ui-icon ui-icon-circle-triangle-w">Prev</span></a><a class="ui-datepicker-next ui-corner-all"
-                                                                        data-handler="next" data-event="click"
-                                                                        title="Next"><span
-            class="ui-icon ui-icon-circle-triangle-e">Next</span></a>
-        <div class="ui-datepicker-title"><select class="ui-datepicker-month" data-handler="selectMonth"
-                                                 data-event="change">
-            <option value="0">Jan</option>
-            <option value="1">Feb</option>
-            <option value="2">Mar</option>
-            <option value="3">Apr</option>
-            <option value="4">May</option>
-            <option value="5">Jun</option>
-            <option value="6">Jul</option>
-            <option value="7">Aug</option>
-            <option value="8">Sep</option>
-            <option value="9" selected="selected">Oct</option>
-            <option value="10">Nov</option>
-            <option value="11">Dec</option>
-        </select>&nbsp;<span class="ui-datepicker-year">2017</span></div>
-    </div>
-    <table class="ui-datepicker-calendar">
-        <thead>
-        <tr>
-            <th scope="col" class="ui-datepicker-week-end"><span title="Sunday">Su</span></th>
-            <th scope="col"><span title="Monday">Mo</span></th>
-            <th scope="col"><span title="Tuesday">Tu</span></th>
-            <th scope="col"><span title="Wednesday">We</span></th>
-            <th scope="col"><span title="Thursday">Th</span></th>
-            <th scope="col"><span title="Friday">Fr</span></th>
-            <th scope="col" class="ui-datepicker-week-end"><span title="Saturday">Sa</span></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="9"
-                data-year="2017"><a class="ui-state-default" href="#">1</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">2</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">3</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">4</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">5</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">6</a></td>
-            <td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="9"
-                data-year="2017"><a class="ui-state-default" href="#">7</a></td>
-        </tr>
-        <tr>
-            <td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="9"
-                data-year="2017"><a class="ui-state-default" href="#">8</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">9</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">10</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">11</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">12</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">13</a></td>
-            <td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="9"
-                data-year="2017"><a class="ui-state-default" href="#">14</a></td>
-        </tr>
-        <tr>
-            <td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="9"
-                data-year="2017"><a class="ui-state-default" href="#">15</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">16</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">17</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">18</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">19</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">20</a></td>
-            <td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="9"
-                data-year="2017"><a class="ui-state-default" href="#">21</a></td>
-        </tr>
-        <tr>
-            <td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="9"
-                data-year="2017"><a class="ui-state-default" href="#">22</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">23</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">24</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">25</a></td>
-            <td class="  ui-datepicker-current-day ui-datepicker-today" data-handler="selectDay" data-event="click"
-                data-month="9" data-year="2017"><a class="ui-state-default ui-state-highlight ui-state-active" href="#">26</a>
-            </td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">27</a></td>
-            <td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="9"
-                data-year="2017"><a class="ui-state-default" href="#">28</a></td>
-        </tr>
-        <tr>
-            <td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="9"
-                data-year="2017"><a class="ui-state-default" href="#">29</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">30</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">31</a></td>
-            <td class=" ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td>
-            <td class=" ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td>
-            <td class=" ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td>
-            <td class=" ui-datepicker-week-end ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">
-                &nbsp;
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-<div class="ui-selectmenu-menu ui-front">
-    <ul aria-hidden="true" aria-labelledby="citymenu2-button" id="citymenu2-menu"
-        class="ui-menu ui-widget ui-widget-content ui-corner-bottom" role="listbox" tabindex="0"></ul>
-</div>
-<div class="ui-selectmenu-menu ui-front">
-    <ul aria-hidden="true" aria-labelledby="provincemenu2-button" id="provincemenu2-menu"
-        class="ui-menu ui-widget ui-widget-content ui-corner-bottom" role="listbox" tabindex="0"></ul>
 </div>
 </body>
 </html>

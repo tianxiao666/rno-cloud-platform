@@ -4,7 +4,6 @@ import com.hgicreate.rno.domain.Area;
 import com.hgicreate.rno.domain.DataJob;
 import com.hgicreate.rno.mapper.LteNcellRelationQueryMapper;
 import com.hgicreate.rno.repository.DataJobRepository;
-import com.hgicreate.rno.repository.OriginFileRepository;
 import com.hgicreate.rno.service.dto.LteNcellImportDtDTO;
 import com.hgicreate.rno.service.dto.LteNcellImportFileDTO;
 import com.hgicreate.rno.service.dto.LteNcellRelationDTO;
@@ -27,13 +26,10 @@ public class LteNcellRelationService {
 
     private final LteNcellRelationQueryMapper lteNcellRelationQueryMapper;
 
-    private final OriginFileRepository originFileRepository;
-
     private final DataJobRepository dataJobRepository;
 
-    public LteNcellRelationService(LteNcellRelationQueryMapper lteNcellRelationQueryMapper, OriginFileRepository originFileRepository, DataJobRepository dataJobRepository) {
+    public LteNcellRelationService(LteNcellRelationQueryMapper lteNcellRelationQueryMapper,  DataJobRepository dataJobRepository) {
         this.lteNcellRelationQueryMapper = lteNcellRelationQueryMapper;
-        this.originFileRepository = originFileRepository;
         this.dataJobRepository = dataJobRepository;
     }
 
@@ -51,7 +47,7 @@ public class LteNcellRelationService {
         SimpleDateFormat sdf =   new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
         Date beginDate=sdf.parse(vm.getBegUploadDate()+" 00:00:00");
         Date endDate =sdf.parse(vm.getEndUploadDate()+" 23:59:59");
-        List<DataJob> list = new ArrayList<>();
+        List<DataJob> list;
         if(vm.getStatus().equals("全部")){
             list = dataJobRepository.findTop1000ByAreaAndOriginFile_CreatedDateBetweenAndOriginFile_DataTypeOrderByOriginFile_CreatedDateDesc(area,
                     beginDate,endDate,"LTE-NCELL-RELATION-DATA");

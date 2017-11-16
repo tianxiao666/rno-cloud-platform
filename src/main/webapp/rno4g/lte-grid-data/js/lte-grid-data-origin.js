@@ -16,63 +16,63 @@ $(document).ready(function() {
 });
 
 //绑定事件
-function bindEvent(){
-	$("#importBtn").click(function() {
-		var filename = fileid.value; 
-		if(!(filename.toUpperCase().endsWith(".CSV")||filename.toUpperCase().endsWith(".XLS")
-				||filename.toUpperCase().endsWith(".XLSX")||filename.toUpperCase().endsWith(".XML")
-				||filename.toUpperCase().endsWith(".TXT")||filename.toUpperCase().endsWith(".ZIP"))){
-			alert("不支持该类型文件！");
-			return false;
-		}
-		var flag = confirm("是否导入文件？");
-		if (flag == false){
-		  return false;
-		}
-		$("#err").remove();
-		if ($("#fileid").val() == "") {
-			$("#fileid").parent().append("<font id='err' color='red'>请选择网格文件</font>");
-			return;
-		}
-		if ($.trim($("#meatime").val()) == "") {
-			$("#meatime").parent().append("<font id='err' color='red'>请选择测试日期</font>");
-			return;
-		}
-		$("#uploadMsgDiv").css("display","none");
-		stopQueryProgress=false;
-		doUpload();
-	});
-	
-	//搜索导入记录
-	$("#searchImportBtn").click(function(){
-		initFormPage("searchImportForm");
-		queryImportDataRec();
-	});
-	
-	//查询爱立信ncs描述数据
-	$("#searchNcsBtn").click(function(){
-		initFormPage("searchNcsForm");
-		queryNcsDescData();
-	});
-				
-	//显示隐藏导入窗口
-	$("#importTitleDiv").click(function(){
-		var flag = $("#importDiv").is(":hidden");//是否隐藏
-		if(flag) {
-			$(".importContent").show("fast");
-		} else {
-			$(".importContent").hide("fast");
-		}
-	});
-
-	/*$("#provincemenu").change(function() {
-		getSubAreas("provincemenu", "citymenu", "市");
-	});*/
-	//切换区域时，赋值给uploadCityId
-	$("#citymenu").change(function() {	
-		$("#uploadCityId").val($("#citymenu").val());
-	});
-}
+// function bindEvent(){
+// 	$("#importBtn").click(function() {
+// 		var filename = fileid.value;
+// 		if(!(filename.toUpperCase().endsWith(".CSV")||filename.toUpperCase().endsWith(".XLS")
+// 				||filename.toUpperCase().endsWith(".XLSX")||filename.toUpperCase().endsWith(".XML")
+// 				||filename.toUpperCase().endsWith(".TXT")||filename.toUpperCase().endsWith(".ZIP"))){
+// 			alert("不支持该类型文件！");
+// 			return false;
+// 		}
+// 		var flag = confirm("是否导入文件？");
+// 		if (flag == false){
+// 		  return false;
+// 		}
+// 		$("#err").remove();
+// 		if ($("#fileid").val() == "") {
+// 			$("#fileid").parent().append("<font id='err' color='red'>请选择网格文件</font>");
+// 			return;
+// 		}
+// 		if ($.trim($("#meatime").val()) == "") {
+// 			$("#meatime").parent().append("<font id='err' color='red'>请选择测试日期</font>");
+// 			return;
+// 		}
+// 		$("#uploadMsgDiv").css("display","none");
+// 		stopQueryProgress=false;
+// 		doUpload();
+// 	});
+//
+// 	//搜索导入记录
+// 	$("#searchImportBtn").click(function(){
+// 		initFormPage("searchImportForm");
+// 		queryImportDataRec();
+// 	});
+//
+// 	//查询爱立信ncs描述数据
+// 	$("#searchNcsBtn").click(function(){
+// 		initFormPage("searchNcsForm");
+// 		queryNcsDescData();
+// 	});
+//
+// 	//显示隐藏导入窗口
+// 	$("#importTitleDiv").click(function(){
+// 		var flag = $("#importDiv").is(":hidden");//是否隐藏
+// 		if(flag) {
+// 			$(".importContent").show("fast");
+// 		} else {
+// 			$(".importContent").hide("fast");
+// 		}
+// 	});
+//
+// 	/*$("#provincemenu").change(function() {
+// 		getSubAreas("provincemenu", "citymenu", "市");
+// 	});*/
+// 	//切换区域时，赋值给uploadCityId
+// 	$("#citymenu").change(function() {
+// 		$("#uploadCityId").val($("#citymenu").val());
+// 	});
+// }
 
 
 /**
