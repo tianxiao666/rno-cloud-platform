@@ -27,6 +27,9 @@ spring:
 rno:
     path:
         upload-files: d:/tmp/rno-cloud-platform/uploads
+    scheduler:
+        enabled: false
+        fixed-delay: 10000 # 单位为毫秒
 
 mybatis:
     configuration:
