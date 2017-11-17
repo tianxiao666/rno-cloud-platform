@@ -43,12 +43,15 @@ var setting = {
 var zNodes;
 
 function onClick(event, treeId, treeNode) {
-    if(treeNode["url"] && treeNode["url"].trim().length>0 && treeNode["url"] != "null"){
-        $("#UrlTable").css({"visibility": "visible"});
+    if(treeNode["children"]){
+        if( treeNode["children"].length>0){
+            $("#UrlTable").css({"visibility": "hidden"});
+        }else{
+            $("#UrlTable").css({"visibility": "visible"});
+        }
     }else{
-        $("#UrlTable").css({"visibility": "hidden"});
+        $("#UrlTable").css({"visibility": "visible"});
     }
-    var index = zTreeObj.getNodeIndex(treeNode);
     $("#selectedItemURL").val(treeNode.url);
 }
 var curDragNodes;
@@ -226,6 +229,8 @@ function addHoverDom(treeId, treeNode) {
             pid = treeNode.getParentNode().id;
         }
         zTree.addNodes(treeNode, { id:biggestOfNowAll, pid:pid,name:"增加" + (addCount++), url:"#", index_of_brother:0});
+        var nNode = zTreeObj.getNodesByParam("id",biggestOfNowAll,null)[0];
+        zTree.editName(nNode);
         return false;
     });
 }
@@ -291,7 +296,7 @@ function addTreeNode() {
 
     }
     if (zTree.getSelectedNodes()[0]) {
-        if(zTree.getSelectedNodes()[0].getParentNode()){
+        if(zTree.getSelectedNodes()[0].getParentNode().getParentNode()){
             alert("不能有4级节点");
             return ;
         }
@@ -300,6 +305,7 @@ function addTreeNode() {
         zTree.addNodes(null, newNode);
     }
     var nNode = zTreeObj.getNodesByParam("id",biggestOfNowAll,null)[0];
+    zTree.editName(nNode);
     afterDrop(nNode);
 }
 
