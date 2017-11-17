@@ -210,9 +210,11 @@ function addHoverDom(treeId, treeNode) {
     var btn = $("#addBtn_"+treeNode.tId);
     if (btn) btn.bind("click", function(){
         var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-        if(treeNode.getParentNode().getParentNode()){
-            alert("不能有4级节点");
-            return;
+        if(treeNode.getParentNode()){
+            if(treeNode.getParentNode().getParentNode()){
+                alert("不能有4级节点");
+                return;
+            }
         }
         var nowAll = transformJSONtoeachJSON();
         var biggestOfNowAll = 0;
@@ -296,9 +298,11 @@ function addTreeNode() {
 
     }
     if (zTree.getSelectedNodes()[0]) {
-        if(zTree.getSelectedNodes()[0].getParentNode().getParentNode()){
-            alert("不能有4级节点");
-            return ;
+        if(zTree.getSelectedNodes()[0].getParentNode()){
+            if(zTree.getSelectedNodes()[0].getParentNode().getParentNode()){
+                alert("不能有4级节点");
+                return ;
+            }
         }
         zTree.addNodes(zTree.getSelectedNodes()[0], newNode);
     } else {
