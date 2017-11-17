@@ -228,7 +228,7 @@ function getSceneNameListTask(){
 	showOperTips("loadingDataDiv", "loadContentId", "正在查询");
     $.ajax({
 		type:'post',
-		url : 'getLteTimeSceneNameListForAjaxAction',
+		url : '/api/lte-time-scene/get-all-name',
 		dataType : 'text',
 		success : function(raw) {
 		//console.log(raw);
@@ -266,7 +266,7 @@ function fillSelectList(selectParentId,selectId,raw){
 				var str = "";
 				var one = "";
 				one = data[i];
-				str="<option value='"+getValidValue(one['ID'], '')+"'>"+getValidValue(one['NAME'], '')+"</option>";
+				str="<option value='"+getValidValue(one['id'], '')+"'>"+getValidValue(one['name'], '')+"</option>";
 				select.append(str);
 	}
 }
@@ -285,7 +285,7 @@ function getSceneInfoTask(sceneId){
 	};
     $.ajax({
 		type:'post',
-		url : 'getLteTimeSceneInfoListForAjaxAction',
+		url : '/api/lte-time-scene/get-scene-by-id',
 		data:data,
 		dataType : 'text',
 		success : function(raw) {
@@ -337,41 +337,41 @@ function displaySceneinfo(data){
 		$("span.oldDataTip").css({"display":"none"});
 		$(".editbox").css({"width":"100%"});
 			var one = data;
-			$("#INTERRATHOA2THDRSRP").html(getValidValue(one['INTERRATHOA2THDRSRP']));
-			$("#INTERRATHOA1THDRSRP").html(getValidValue(one['INTERRATHOA1THDRSRP']));
-			$("#INTERRATHOUTRANB1HYST").html(getValidValue(one['INTERRATHOUTRANB1HYST']));
-			$("#INTERRATHOUTRANB1THDRSCP").html(getValidValue(one['INTERRATHOUTRANB1THDRSCP']));
-			$("#INTERRATHOA1A2TIMETOTRIG").html(getValidValue(one['INTERRATHOA1A2TIMETOTRIG']));
-			$("#INTERRATHOA1A2HYST").html(getValidValue(one['INTERRATHOA1A2HYST']));
-			$("#BLINDHOA1A2THDRSRP").html(getValidValue(one['BLINDHOA1A2THDRSRP']));
-			$("#INTERFREQHOA1A2TIMETOTRIG").html(getValidValue(one['INTERFREQHOA1A2TIMETOTRIG']));
-			$("#A3INTERFREQHOA1THDRSRP").html(getValidValue(one['A3INTERFREQHOA1THDRSRP']));
-			$("#A3INTERFREQHOA2THDRSRP").html(getValidValue(one['A3INTERFREQHOA2THDRSRP']));
-			$("#INTERFREQHOA3OFFSET").html(getValidValue(one['INTERFREQHOA3OFFSET']));
-			$("#INTERFREQHOA1A2HYST").html(getValidValue(one['INTERFREQHOA1A2HYST']));
-			$("#QRXLEVMIN").html(getValidValue(one['QRXLEVMIN']));
-			$("#SNONINTRASEARCH").html(getValidValue(one['SNONINTRASEARCH']));
-			$("#THRSHSERVLOW").html(getValidValue(one['THRSHSERVLOW']));			
-			$("#TRESELEUTRAN").html(getValidValue(one['TRESELEUTRAN']));
-			$("#CELLRESELPRIORITY").html(getValidValue(one['CELLRESELPRIORITY']));
+			$("#interrathoa2thdrsrp").html(getValidValue(one['interrathoa2thdrsrp']));
+			$("#interrathoa1thdrsrp").html(getValidValue(one['interrathoa1thdrsrp']));
+			$("#interrathoutranb1hyst").html(getValidValue(one['interrathoutranb1hyst']));
+			$("#interrathoutranb1thdrscp").html(getValidValue(one['interrathoutranb1thdrscp']));
+			$("#interrathoa1a2timetotrig").html(getValidValue(one['interrathoa1a2timetotrig']));
+			$("#interrathoa1a2hyst").html(getValidValue(one['interrathoa1a2hyst']));
+			$("#blindhoa1a2thdrsrp").html(getValidValue(one['blindhoa1a2thdrsrp']));
+			$("#interfreqhoa1a2timetotrig").html(getValidValue(one['interfreqhoa1a2timetotrig']));
+			$("#a3interfreqhoa1thdrsrp").html(getValidValue(one['a3interfreqhoa1thdrsrp']));
+			$("#a3interfreqhoa2thdrsrp").html(getValidValue(one['a3interfreqhoa2thdrsrp']));
+			$("#interfreqhoa3offset").html(getValidValue(one['interfreqhoa3offset']));
+			$("#interfreqhoa1a2hyst").html(getValidValue(one['interfreqhoa1a2hyst']));
+			$("#qrxlevmin").html(getValidValue(one['qrxlevmin']));
+			$("#snonintrasearch").html(getValidValue(one['snonintrasearch']));
+			$("#thrshservlow").html(getValidValue(one['thrshservlow']));
+			$("#treseleutran").html(getValidValue(one['treseleutran']));
+			$("#cellreselpriority").html(getValidValue(one['cellreselpriority']));
 			
-			$("#INTERRATHOA2THDRSRP_old").html(getValidValue(one['INTERRATHOA2THDRSRP']));
-			$("#INTERRATHOA1THDRSRP_old").html(getValidValue(one['INTERRATHOA1THDRSRP']));
-			$("#INTERRATHOUTRANB1HYST_old").html(getValidValue(one['INTERRATHOUTRANB1HYST']));
-			$("#INTERRATHOUTRANB1THDRSCP_old").html(getValidValue(one['INTERRATHOUTRANB1THDRSCP']));
-			$("#INTERRATHOA1A2TIMETOTRIG_old").html(getValidValue(one['INTERRATHOA1A2TIMETOTRIG']));
-			$("#INTERRATHOA1A2HYST_old").html(getValidValue(one['INTERRATHOA1A2HYST']));
-			$("#BLINDHOA1A2THDRSRP_old").html(getValidValue(one['BLINDHOA1A2THDRSRP']));
-			$("#INTERFREQHOA1A2TIMETOTRIG_old").html(getValidValue(one['INTERFREQHOA1A2TIMETOTRIG']));
-			$("#A3INTERFREQHOA1THDRSRP_old").html(getValidValue(one['A3INTERFREQHOA1THDRSRP']));
-			$("#A3INTERFREQHOA2THDRSRP_old").html(getValidValue(one['A3INTERFREQHOA2THDRSRP']));
-			$("#INTERFREQHOA3OFFSET_old").html(getValidValue(one['INTERFREQHOA3OFFSET']));
-			$("#INTERFREQHOA1A2HYST_old").html(getValidValue(one['INTERFREQHOA1A2HYST']));
-			$("#QRXLEVMIN_old").html(getValidValue(one['QRXLEVMIN']));
-			$("#SNONINTRASEARCH_old").html(getValidValue(one['SNONINTRASEARCH']));
-			$("#THRSHSERVLOW_old").html(getValidValue(one['THRSHSERVLOW']));			
-			$("#TRESELEUTRAN_old").html(getValidValue(one['TRESELEUTRAN']));
-			$("#CELLRESELPRIORITY_old").html(getValidValue(one['CELLRESELPRIORITY']));
+			$("#interrathoa2thdrsrp_old").html(getValidValue(one['interrathoa2thdrsrp']));
+			$("#interrathoa1thdrsrp_old").html(getValidValue(one['interrathoa1thdrsrp']));
+			$("#interrathoutranb1hyst_old").html(getValidValue(one['interrathoutranb1hyst']));
+			$("#interrathoutranb1thdrscp_old").html(getValidValue(one['interrathoutranb1thdrscp']));
+			$("#interrathoa1a2timetotrig_old").html(getValidValue(one['interrathoa1a2timetotrig']));
+			$("#interrathoa1a2hyst_old").html(getValidValue(one['interrathoa1a2hyst']));
+			$("#blindhoa1a2thdrsrp_old").html(getValidValue(one['blindhoa1a2thdrsrp']));
+			$("#interfreqhoa1a2timetotrig_old").html(getValidValue(one['interfreqhoa1a2timetotrig']));
+			$("#a3interfreqhoa1thdrsrp_old").html(getValidValue(one['a3interfreqhoa1thdrsrp']));
+			$("#a3interfreqhoa2thdrsrp_old").html(getValidValue(one['a3interfreqhoa2thdrsrp']));
+			$("#interfreqhoa3offset_old").html(getValidValue(one['interfreqhoa3offset']));
+			$("#interfreqhoa1a2hyst_old").html(getValidValue(one['interfreqhoa1a2hyst']));
+			$("#qrxlevmin_old").html(getValidValue(one['qrxlevmin']));
+			$("#snonintrasearch_old").html(getValidValue(one['snonintrasearch']));
+			$("#thrshservlow_old").html(getValidValue(one['thrshservlow']));
+			$("#treseleutran_old").html(getValidValue(one['treseleutran']));
+			$("#cellreselpriority_old").html(getValidValue(one['cellreselpriority']));
 			
 	}
 //点击td转换可编辑
@@ -488,44 +488,45 @@ function submitUpdataData(){
 		return
 	}
 	
-	var INTERRATHOA2THDRSRP=$("#INTERRATHOA2THDRSRP").html().trim();
-	var INTERRATHOA1THDRSRP=$("#INTERRATHOA1THDRSRP").html().trim();
-	var INTERRATHOUTRANB1HYST=$("#INTERRATHOUTRANB1HYST").html().trim();
-	var INTERRATHOUTRANB1THDRSCP=$("#INTERRATHOUTRANB1THDRSCP").html().trim();
-	var INTERRATHOA1A2TIMETOTRIG=$("#INTERRATHOA1A2TIMETOTRIG").html().trim();
-	var INTERRATHOA1A2HYST=$("#INTERRATHOA1A2HYST").html().trim();
-	var BLINDHOA1A2THDRSRP=$("#BLINDHOA1A2THDRSRP").html().trim();
-	var INTERFREQHOA1A2TIMETOTRIG=$("#INTERFREQHOA1A2TIMETOTRIG").html().trim();
-	var A3INTERFREQHOA1THDRSRP=$("#A3INTERFREQHOA1THDRSRP").html().trim();
-	var A3INTERFREQHOA2THDRSRP=$("#A3INTERFREQHOA2THDRSRP").html().trim();
-	var INTERFREQHOA3OFFSET=$("#INTERFREQHOA3OFFSET").html().trim();
-	var INTERFREQHOA1A2HYST=$("#INTERFREQHOA1A2HYST").html().trim();
-	var QRXLEVMIN=$("#QRXLEVMIN").html().trim();
-	var SNONINTRASEARCH=$("#SNONINTRASEARCH").html().trim();
-	var THRSHSERVLOW=$("#THRSHSERVLOW").html().trim();
-	var TRESELEUTRAN=$("#TRESELEUTRAN").html().trim();
-	var CELLRESELPRIORITY=$("#CELLRESELPRIORITY").html().trim();
+	var interrathoa2thdrsrp=$("#interrathoa2thdrsrp").html().trim();
+	var interrathoa1thdrsrp=$("#interrathoa1thdrsrp").html().trim();
+	var interrathoutranb1hyst=$("#interrathoutranb1hyst").html().trim();
+	var interrathoutranb1thdrscp=$("#interrathoutranb1thdrscp").html().trim();
+	var interrathoa1a2timetotrig=$("#interrathoa1a2timetotrig").html().trim();
+	var interrathoa1a2hyst=$("#interrathoa1a2hyst").html().trim();
+	var blindhoa1a2thdrsrp=$("#blindhoa1a2thdrsrp").html().trim();
+	var interfreqhoa1a2timetotrig=$("#interfreqhoa1a2timetotrig").html().trim();
+	var a3interfreqhoa1thdrsrp=$("#a3interfreqhoa1thdrsrp").html().trim();
+	var a3interfreqhoa2thdrsrp=$("#a3interfreqhoa2thdrsrp").html().trim();
+	var interfreqhoa3offset=$("#interfreqhoa3offset").html().trim();
+	var interfreqhoa1a2hyst=$("#interfreqhoa1a2hyst").html().trim();
+	var qrxlevmin=$("#qrxlevmin").html().trim();
+	var snonintrasearch=$("#snonintrasearch").html().trim();
+	var thrshservlow=$("#thrshservlow").html().trim();
+	var treseleutran=$("#treseleutran").html().trim();
+	var cellreselpriority=$("#cellreselpriority").html().trim();
 	
 	var sceneDataMap={
-			'sceneParam.sceneId':$("#sceneNameList").val(),
-			'sceneParam.INTERRATHOA2THDRSRP':INTERRATHOA2THDRSRP,
-			'sceneParam.INTERRATHOA1THDRSRP':INTERRATHOA1THDRSRP,
-			'sceneParam.INTERRATHOUTRANB1HYST':INTERRATHOUTRANB1HYST,
-			'sceneParam.INTERRATHOUTRANB1THDRSCP':INTERRATHOUTRANB1THDRSCP,
-			'sceneParam.INTERRATHOA1A2TIMETOTRIG':INTERRATHOA1A2TIMETOTRIG,
-			'sceneParam.INTERRATHOA1A2HYST':INTERRATHOA1A2HYST,
-			'sceneParam.BLINDHOA1A2THDRSRP':BLINDHOA1A2THDRSRP,
-			'sceneParam.INTERFREQHOA1A2TIMETOTRIG':INTERFREQHOA1A2TIMETOTRIG,
-			'sceneParam.A3INTERFREQHOA1THDRSRP':A3INTERFREQHOA1THDRSRP,
-			'sceneParam.A3INTERFREQHOA2THDRSRP':A3INTERFREQHOA2THDRSRP,
-			'sceneParam.INTERFREQHOA3OFFSET':INTERFREQHOA3OFFSET,
-			'sceneParam.INTERFREQHOA1A2HYST':INTERFREQHOA1A2HYST,
-			'sceneParam.QRXLEVMIN':QRXLEVMIN,
-			'sceneParam.SNONINTRASEARCH':SNONINTRASEARCH,
-			'sceneParam.THRSHSERVLOW':THRSHSERVLOW,
-			'sceneParam.TRESELEUTRAN':TRESELEUTRAN,
-			'sceneParam.CELLRESELPRIORITY':CELLRESELPRIORITY,
-			};
+        'id':$("#sceneNameList").val(),
+        'name':$("#sceneNameList").find("option:selected").text(),
+        'interrathoa2thdrsrp':interrathoa2thdrsrp,
+        'interrathoa1thdrsrp':interrathoa1thdrsrp,
+        'interrathoutranb1hyst':interrathoutranb1hyst,
+        'interrathoutranb1thdrscp':interrathoutranb1thdrscp,
+        'interrathoa1a2timetotrig':interrathoa1a2timetotrig,
+        'interrathoa1a2hyst':interrathoa1a2hyst,
+        'blindhoa1a2thdrsrp':blindhoa1a2thdrsrp,
+        'interfreqhoa1a2timetotrig':interfreqhoa1a2timetotrig,
+        'a3interfreqhoa1thdrsrp':a3interfreqhoa1thdrsrp,
+        'a3interfreqhoa2thdrsrp':a3interfreqhoa2thdrsrp,
+        'interfreqhoa3offset':interfreqhoa3offset,
+        'interfreqhoa1a2hyst':interfreqhoa1a2hyst,
+        'qrxlevmin':qrxlevmin,
+        'snonintrasearch':snonintrasearch,
+        'thrshservlow':thrshservlow,
+        'treseleutran':treseleutran,
+        'cellreselpriority':cellreselpriority,
+    };
 	updateSceneInfo(sceneDataMap);
 	}
 /**
@@ -536,7 +537,7 @@ function updateSceneInfo(sceneDataMap){
 	showOperTips("loadingDataDiv", "loadContentId", "正在更新");
     $.ajax({
 		type:'post',
-		url : 'updateLteTimeSceneDataForAjaxAction',
+		url : '/api/lte-time-scene/update-scene-by-id',
 		data:sceneDataMap,
 		dataType : 'text',
 		success : function(raw) {
@@ -567,7 +568,7 @@ function deleteSceneInfo(sceneId){
 	showOperTips("loadingDataDiv", "loadContentId", "正在删除");
 	$.ajax({
 		type:'post',
-		url : 'deleteLteTimeSceneDataForAjaxAction',
+		url : '/api/lte-time-scene/delete-scene-by-id',
 		data:{
 			'sceneId':sceneId,
 		},
@@ -650,43 +651,44 @@ function submitInsertData(){
 		return
 	} 
 	
-	var INTERRATHOA2THDRSRP=$("#INTERRATHOA2THDRSRP").html().trim();
-	var INTERRATHOA1THDRSRP=$("#INTERRATHOA1THDRSRP").html().trim();
-	var INTERRATHOUTRANB1HYST=$("#INTERRATHOUTRANB1HYST").html().trim();
-	var INTERRATHOUTRANB1THDRSCP=$("#INTERRATHOUTRANB1THDRSCP").html().trim();
-	var INTERRATHOA1A2TIMETOTRIG=$("#INTERRATHOA1A2TIMETOTRIG").html().trim();
-	var INTERRATHOA1A2HYST=$("#INTERRATHOA1A2HYST").html().trim();
-	var BLINDHOA1A2THDRSRP=$("#BLINDHOA1A2THDRSRP").html().trim();
-	var INTERFREQHOA1A2TIMETOTRIG=$("#INTERFREQHOA1A2TIMETOTRIG").html().trim();
-	var A3INTERFREQHOA1THDRSRP=$("#A3INTERFREQHOA1THDRSRP").html().trim();
-	var A3INTERFREQHOA2THDRSRP=$("#A3INTERFREQHOA2THDRSRP").html().trim();
-	var INTERFREQHOA3OFFSET=$("#INTERFREQHOA3OFFSET").html().trim();
-	var INTERFREQHOA1A2HYST=$("#INTERFREQHOA1A2HYST").html().trim();
-	var QRXLEVMIN=$("#QRXLEVMIN").html().trim();
-	var SNONINTRASEARCH=$("#SNONINTRASEARCH").html().trim();
-	var THRSHSERVLOW=$("#THRSHSERVLOW").html().trim();
-	var TRESELEUTRAN=$("#TRESELEUTRAN").html().trim();
-	var CELLRESELPRIORITY=$("#CELLRESELPRIORITY").html().trim();
+	var interrathoa2thdrsrp=$("#interrathoa2thdrsrp").html().trim();
+	var interrathoa1thdrsrp=$("#interrathoa1thdrsrp").html().trim();
+	var interrathoutranb1hyst=$("#interrathoutranb1hyst").html().trim();
+	var interrathoutranb1thdrscp=$("#interrathoutranb1thdrscp").html().trim();
+	var interrathoa1a2timetotrig=$("#interrathoa1a2timetotrig").html().trim();
+	var interrathoa1a2hyst=$("#interrathoa1a2hyst").html().trim();
+	var blindhoa1a2thdrsrp=$("#blindhoa1a2thdrsrp").html().trim();
+	var interfreqhoa1a2timetotrig=$("#interfreqhoa1a2timetotrig").html().trim();
+	var a3interfreqhoa1thdrsrp=$("#a3interfreqhoa1thdrsrp").html().trim();
+	var a3interfreqhoa2thdrsrp=$("#a3interfreqhoa2thdrsrp").html().trim();
+	var interfreqhoa3offset=$("#interfreqhoa3offset").html().trim();
+	var interfreqhoa1a2hyst=$("#interfreqhoa1a2hyst").html().trim();
+	var qrxlevmin=$("#qrxlevmin").html().trim();
+	var snonintrasearch=$("#snonintrasearch").html().trim();
+	var thrshservlow=$("#thrshservlow").html().trim();
+	var treseleutran=$("#treseleutran").html().trim();
+	var cellreselpriority=$("#cellreselpriority").html().trim();
 	
 	var sceneDataMap={
-			'sceneParam.sceneName':$("#sceneNameInput").val().trim(),
-			'sceneParam.INTERRATHOA2THDRSRP':INTERRATHOA2THDRSRP,
-			'sceneParam.INTERRATHOA1THDRSRP':INTERRATHOA1THDRSRP,
-			'sceneParam.INTERRATHOUTRANB1HYST':INTERRATHOUTRANB1HYST,
-			'sceneParam.INTERRATHOUTRANB1THDRSCP':INTERRATHOUTRANB1THDRSCP,
-			'sceneParam.INTERRATHOA1A2TIMETOTRIG':INTERRATHOA1A2TIMETOTRIG,
-			'sceneParam.INTERRATHOA1A2HYST':INTERRATHOA1A2HYST,
-			'sceneParam.BLINDHOA1A2THDRSRP':BLINDHOA1A2THDRSRP,
-			'sceneParam.INTERFREQHOA1A2TIMETOTRIG':INTERFREQHOA1A2TIMETOTRIG,
-			'sceneParam.A3INTERFREQHOA1THDRSRP':A3INTERFREQHOA1THDRSRP,
-			'sceneParam.A3INTERFREQHOA2THDRSRP':A3INTERFREQHOA2THDRSRP,
-			'sceneParam.INTERFREQHOA3OFFSET':INTERFREQHOA3OFFSET,
-			'sceneParam.INTERFREQHOA1A2HYST':INTERFREQHOA1A2HYST,
-			'sceneParam.QRXLEVMIN':QRXLEVMIN,
-			'sceneParam.SNONINTRASEARCH':SNONINTRASEARCH,
-			'sceneParam.THRSHSERVLOW':THRSHSERVLOW,
-			'sceneParam.TRESELEUTRAN':TRESELEUTRAN,
-			'sceneParam.CELLRESELPRIORITY':CELLRESELPRIORITY,
+        'name':$("#sceneNameInput").val().trim(),
+        //'sceneParam.sceneType':$("#sceneTypeList").val(),
+        'interrathoa2thdrsrp':interrathoa2thdrsrp,
+        'interrathoa1thdrsrp':interrathoa1thdrsrp,
+        'interrathoutranb1hyst':interrathoutranb1hyst,
+        'interrathoutranb1thdrscp':interrathoutranb1thdrscp,
+        'interrathoa1a2timetotrig':interrathoa1a2timetotrig,
+        'interrathoa1a2hyst':interrathoa1a2hyst,
+        'blindhoa1a2thdrsrp':blindhoa1a2thdrsrp,
+        'interfreqhoa1a2timetotrig':interfreqhoa1a2timetotrig,
+        'a3interfreqhoa1thdrsrp':a3interfreqhoa1thdrsrp,
+        'a3interfreqhoa2thdrsrp':a3interfreqhoa2thdrsrp,
+        'interfreqhoa3offset':interfreqhoa3offset,
+        'interfreqhoa1a2hyst':interfreqhoa1a2hyst,
+        'qrxlevmin':qrxlevmin,
+        'snonintrasearch':snonintrasearch,
+        'thrshservlow':thrshservlow,
+        'treseleutran':treseleutran,
+        'cellreselpriority':cellreselpriority
 			};
 	insertSceneInfo(sceneDataMap);
 }
@@ -694,7 +696,7 @@ function insertSceneInfo(sceneDataMap){
 	showOperTips("loadingDataDiv", "loadContentId", "正在插入");
     $.ajax({
 		type:'post',
-		url : 'insertLteTimeSceneDataForAjaxAction',
+		url : '/api/lte-time-scene/insert-scene',
 		data:sceneDataMap,
 		dataType : 'text',
 		success : function(raw) {
@@ -722,23 +724,23 @@ function checkSceneParam(){
 	$("span.errTip").css({"display":"inline-block","width":"49%"});
 	$(".editbox").css({"display":"inline-block","width":"49%"});
 	clearErrTip();
-	var INTERRATHOA2THDRSRP=$("#INTERRATHOA2THDRSRP").html().trim();
-	var INTERRATHOA1THDRSRP=$("#INTERRATHOA1THDRSRP").html().trim();
-	var INTERRATHOUTRANB1HYST=$("#INTERRATHOUTRANB1HYST").html().trim();
-	var INTERRATHOUTRANB1THDRSCP=$("#INTERRATHOUTRANB1THDRSCP").html().trim();
-	var INTERRATHOA1A2TIMETOTRIG=$("#INTERRATHOA1A2TIMETOTRIG").html().trim();
-	var INTERRATHOA1A2HYST=$("#INTERRATHOA1A2HYST").html().trim();
-	var BLINDHOA1A2THDRSRP=$("#BLINDHOA1A2THDRSRP").html().trim();
-	var INTERFREQHOA1A2TIMETOTRIG=$("#INTERFREQHOA1A2TIMETOTRIG").html().trim();
-	var A3INTERFREQHOA1THDRSRP=$("#A3INTERFREQHOA1THDRSRP").html().trim();
-	var A3INTERFREQHOA2THDRSRP=$("#A3INTERFREQHOA2THDRSRP").html().trim();
-	var INTERFREQHOA3OFFSET=$("#INTERFREQHOA3OFFSET").html().trim();
-	var INTERFREQHOA1A2HYST=$("#INTERFREQHOA1A2HYST").html().trim();
-	var QRXLEVMIN=$("#QRXLEVMIN").html().trim();
-	var SNONINTRASEARCH=$("#SNONINTRASEARCH").html().trim();
-	var THRSHSERVLOW=$("#THRSHSERVLOW").html().trim();
-	var TRESELEUTRAN=$("#TRESELEUTRAN").html().trim();
-	var CELLRESELPRIORITY=$("#CELLRESELPRIORITY").html().trim();
+	var interrathoa2thdrsrp=$("#interrathoa2thdrsrp").html().trim();
+	var interrathoa1thdrsrp=$("#interrathoa1thdrsrp").html().trim();
+	var interrathoutranb1hyst=$("#interrathoutranb1hyst").html().trim();
+	var interrathoutranb1thdrscp=$("#interrathoutranb1thdrscp").html().trim();
+	var interrathoa1a2timetotrig=$("#interrathoa1a2timetotrig").html().trim();
+	var interrathoa1a2hyst=$("#interrathoa1a2hyst").html().trim();
+	var blindhoa1a2thdrsrp=$("#blindhoa1a2thdrsrp").html().trim();
+	var interfreqhoa1a2timetotrig=$("#interfreqhoa1a2timetotrig").html().trim();
+	var a3interfreqhoa1thdrsrp=$("#a3interfreqhoa1thdrsrp").html().trim();
+	var a3interfreqhoa2thdrsrp=$("#a3interfreqhoa2thdrsrp").html().trim();
+	var interfreqhoa3offset=$("#interfreqhoa3offset").html().trim();
+	var interfreqhoa1a2hyst=$("#interfreqhoa1a2hyst").html().trim();
+	var qrxlevmin=$("#qrxlevmin").html().trim();
+	var snonintrasearch=$("#snonintrasearch").html().trim();
+	var thrshservlow=$("#thrshservlow").html().trim();
+	var treseleutran=$("#treseleutran").html().trim();
+	var cellreselpriority=$("#cellreselpriority").html().trim();
 
 	var reg = /^[-+]?[0-9]+(\.[0-9]+)?$/; // 验证数字
 	//var reg= /^\d+$/;
@@ -762,144 +764,144 @@ function checkSceneParam(){
 		}
 	}
 	// console.log(SAMEFREQINTERTHRESHOLD + " "+ OVERSHOOTINGIDEALDISMULTIPLE);
-	if (!reg.test(INTERRATHOA2THDRSRP)) {
-		$("#INTERRATHOA2THDRSRP_err").html("※请输入数字※");
+	if (!reg.test(interrathoa2thdrsrp)) {
+		$("#interrathoa2thdrsrp_err").html("※请输入数字※");
 		flag = false;
-/*	} else if (INTERRATHOA2THDRSRP > 1) {
-		$("span#INTERRATHOA2THDRSRP_err").html("※值需要小于等于1※");
+/*	} else if (interrathoa2thdrsrp > 1) {
+		$("span#interrathoa2thdrsrp_err").html("※值需要小于等于1※");
 		flag = false;*/
 	}else{
-		$("#INTERRATHOA2THDRSRP_err").html("");
-		$("#INTERRATHOA2THDRSRP_err").css({"display":"none"});
-		$("#INTERRATHOA2THDRSRP").css({"width":"100%"});
+		$("#interrathoa2thdrsrp_err").html("");
+		$("#interrathoa2thdrsrp_err").css({"display":"none"});
+		$("#interrathoa2thdrsrp").css({"width":"100%"});
 	}
-	if (!reg.test(INTERRATHOA1THDRSRP)) {
-		$("#INTERRATHOA1THDRSRP_err").html("※请输入数字※");
+	if (!reg.test(interrathoa1thdrsrp)) {
+		$("#interrathoa1thdrsrp_err").html("※请输入数字※");
 		flag = false;
 	}else{
-		$("span#INTERRATHOA1THDRSRP_err").html("");
-		$("#INTERRATHOA1THDRSRP_err").css({"display":"none"});
-		$("#INTERRATHOA1THDRSRP").css({"width":"100%"});
+		$("span#interrathoa1thdrsrp_err").html("");
+		$("#interrathoa1thdrsrp_err").css({"display":"none"});
+		$("#interrathoa1thdrsrp").css({"width":"100%"});
 	}
-	if (!reg.test(INTERRATHOUTRANB1HYST)) {
-		$("span#INTERRATHOUTRANB1HYST_err").html("※请输入数字※");
+	if (!reg.test(interrathoutranb1hyst)) {
+		$("span#interrathoutranb1hyst_err").html("※请输入数字※");
 		flag = false;
 	}else{
-		$("span#INTERRATHOUTRANB1HYST_err").html("");
-		$("#INTERRATHOUTRANB1HYST_err").css({"display":"none"});
-		$("#INTERRATHOUTRANB1HYST").css({"width":"100%"});
+		$("span#interrathoutranb1hyst_err").html("");
+		$("#interrathoutranb1hyst_err").css({"display":"none"});
+		$("#interrathoutranb1hyst").css({"width":"100%"});
 	}
-	if (!reg.test(INTERRATHOUTRANB1THDRSCP)) {
-		$("span#INTERRATHOUTRANB1THDRSCP_err").html("※请输入数字※");
+	if (!reg.test(interrathoutranb1thdrscp)) {
+		$("span#interrathoutranb1thdrscp_err").html("※请输入数字※");
 		flag = false;
 	}else{
-		$("span#INTERRATHOUTRANB1THDRSCP_err").html("");
-		$("#INTERRATHOUTRANB1THDRSCP_err").css({"display":"none"});
-		$("#INTERRATHOUTRANB1THDRSCP").css({"width":"100%"});
+		$("span#interrathoutranb1thdrscp_err").html("");
+		$("#interrathoutranb1thdrscp_err").css({"display":"none"});
+		$("#interrathoutranb1thdrscp").css({"width":"100%"});
 	}
-	if (!reg.test(INTERRATHOA1A2TIMETOTRIG)) {
-		$("span#INTERRATHOA1A2TIMETOTRIG_err").html("※请输入数字※");
+	if (!reg.test(interrathoa1a2timetotrig)) {
+		$("span#interrathoa1a2timetotrig_err").html("※请输入数字※");
 		flag = false;
 	}else{
-		$("span#INTERRATHOA1A2TIMETOTRIG_err").html("");
-		$("#INTERRATHOA1A2TIMETOTRIG_err").css({"display":"none"});
-		$("#INTERRATHOA1A2TIMETOTRIG").css({"width":"100%"});
+		$("span#interrathoa1a2timetotrig_err").html("");
+		$("#interrathoa1a2timetotrig_err").css({"display":"none"});
+		$("#interrathoa1a2timetotrig").css({"width":"100%"});
 	}
-	if (!reg.test(INTERRATHOA1A2HYST)) {
-		$("span#INTERRATHOA1A2HYST_err").html("※请输入数字※");
+	if (!reg.test(interrathoa1a2hyst)) {
+		$("span#interrathoa1a2hyst_err").html("※请输入数字※");
 		flag = false;
 	}else{
-		$("span#INTERRATHOA1A2HYST_err").html("");
-		$("#INTERRATHOA1A2HYST_err").css({"display":"none"});
-		$("#INTERRATHOA1A2HYST").css({"width":"100%"});
+		$("span#interrathoa1a2hyst_err").html("");
+		$("#interrathoa1a2hyst_err").css({"display":"none"});
+		$("#interrathoa1a2hyst").css({"width":"100%"});
 	}
-	if (!reg.test(BLINDHOA1A2THDRSRP)) {
-		$("span#BLINDHOA1A2THDRSRP_err").html("※请输入数字※");
+	if (!reg.test(blindhoa1a2thdrsrp)) {
+		$("span#blindhoa1a2thdrsrp_err").html("※请输入数字※");
 		flag = false;
 	}else{
-		$("span#BLINDHOA1A2THDRSRP_err").html("");
-		$("#BLINDHOA1A2THDRSRP_err").css({"display":"none"});
-		$("#BLINDHOA1A2THDRSRP").css({"width":"100%"});
+		$("span#blindhoa1a2thdrsrp_err").html("");
+		$("#blindhoa1a2thdrsrp_err").css({"display":"none"});
+		$("#blindhoa1a2thdrsrp").css({"width":"100%"});
 	}
-	if (!reg.test(INTERFREQHOA1A2TIMETOTRIG)) {
-		$("span#INTERFREQHOA1A2TIMETOTRIG_err").html("※请输入数字※");
+	if (!reg.test(interfreqhoa1a2timetotrig)) {
+		$("span#interfreqhoa1a2timetotrig_err").html("※请输入数字※");
 		flag = false;
 	}else{
-		$("span#INTERFREQHOA1A2TIMETOTRIG_err").html("");
-		$("#INTERFREQHOA1A2TIMETOTRIG_err").css({"display":"none"});
-		$("#INTERFREQHOA1A2TIMETOTRIG").css({"width":"100%"});
+		$("span#interfreqhoa1a2timetotrig_err").html("");
+		$("#interfreqhoa1a2timetotrig_err").css({"display":"none"});
+		$("#interfreqhoa1a2timetotrig").css({"width":"100%"});
 	}
-	if (!reg.test(A3INTERFREQHOA1THDRSRP)) {
-		$("span#A3INTERFREQHOA1THDRSRP_err").html("※请输入数字※");
+	if (!reg.test(a3interfreqhoa1thdrsrp)) {
+		$("span#a3interfreqhoa1thdrsrp_err").html("※请输入数字※");
 		flag = false;
 	}else{
-		$("span#A3INTERFREQHOA1THDRSRP_err").html("");
-		$("#A3INTERFREQHOA1THDRSRP_err").css({"display":"none"});
-		$("#A3INTERFREQHOA1THDRSRP").css({"width":"100%"});
+		$("span#a3interfreqhoa1thdrsrp_err").html("");
+		$("#a3interfreqhoa1thdrsrp_err").css({"display":"none"});
+		$("#a3interfreqhoa1thdrsrp").css({"width":"100%"});
 	}
-	if (!reg.test(A3INTERFREQHOA2THDRSRP)) {
-		$("span#A3INTERFREQHOA2THDRSRP_err").html("※请输入数字※");
+	if (!reg.test(a3interfreqhoa2thdrsrp)) {
+		$("span#a3interfreqhoa2thdrsrp_err").html("※请输入数字※");
 		flag = false;
 	}else{
-		$("span#A3INTERFREQHOA2THDRSRP_err").html("");
-		$("#A3INTERFREQHOA2THDRSRP_err").css({"display":"none"});
-		$("#A3INTERFREQHOA2THDRSRP").css({"width":"100%"});
+		$("span#a3interfreqhoa2thdrsrp_err").html("");
+		$("#a3interfreqhoa2thdrsrp_err").css({"display":"none"});
+		$("#a3interfreqhoa2thdrsrp").css({"width":"100%"});
 	}
-	if (!reg.test(INTERFREQHOA3OFFSET)) {
-		$("span#INTERFREQHOA3OFFSET_err").html("※请输入数字※");
+	if (!reg.test(interfreqhoa3offset)) {
+		$("span#interfreqhoa3offset_err").html("※请输入数字※");
 		flag = false;
 	}else{
-		$("span#INTERFREQHOA3OFFSET_err").html("");
-		$("#INTERFREQHOA3OFFSET_err").css({"display":"none"});
-		$("#INTERFREQHOA3OFFSET").css({"width":"100%"});
+		$("span#interfreqhoa3offset_err").html("");
+		$("#interfreqhoa3offset_err").css({"display":"none"});
+		$("#interfreqhoa3offset").css({"width":"100%"});
 	}
-	if (!reg.test(INTERFREQHOA1A2HYST)) {
-		$("span#INTERFREQHOA1A2HYST_err").html("※请输入数字※");
+	if (!reg.test(interfreqhoa1a2hyst)) {
+		$("span#interfreqhoa1a2hyst_err").html("※请输入数字※");
 		flag = false;
 	}else{
-		$("span#INTERFREQHOA1A2HYST_err").html("");
-		$("#INTERFREQHOA1A2HYST_err").css({"display":"none"});
-		$("#INTERFREQHOA1A2HYST").css({"width":"100%"});
+		$("span#interfreqhoa1a2hyst_err").html("");
+		$("#interfreqhoa1a2hyst_err").css({"display":"none"});
+		$("#interfreqhoa1a2hyst").css({"width":"100%"});
 	}
-	if (!reg.test(QRXLEVMIN)) {
-		$("span#QRXLEVMIN_err").html("※请输入数字※");
+	if (!reg.test(qrxlevmin)) {
+		$("span#qrxlevmin_err").html("※请输入数字※");
 		flag = false;
 	}else{
-		$("span#QRXLEVMIN_err").html("");
-		$("#QRXLEVMIN_err").css({"display":"none"});
-		$("#QRXLEVMIN").css({"width":"100%"});
+		$("span#qrxlevmin_err").html("");
+		$("#qrxlevmin_err").css({"display":"none"});
+		$("#qrxlevmin").css({"width":"100%"});
 	}
-	if (!reg.test(SNONINTRASEARCH)) {
-		$("span#SNONINTRASEARCH_err").html("※请输入数字※");
+	if (!reg.test(snonintrasearch)) {
+		$("span#snonintrasearch_err").html("※请输入数字※");
 		flag = false;
 	}else{
-		$("span#SNONINTRASEARCH_err").html("");
-		$("#SNONINTRASEARCH_err").css({"display":"none"});
-		$("#SNONINTRASEARCH").css({"width":"100%"});
+		$("span#snonintrasearch_err").html("");
+		$("#snonintrasearch_err").css({"display":"none"});
+		$("#snonintrasearch").css({"width":"100%"});
 	}
-	if (!reg.test(THRSHSERVLOW)) {
-		$("span#THRSHSERVLOW_err").html("※请输入数字※");
+	if (!reg.test(thrshservlow)) {
+		$("span#thrshservlow_err").html("※请输入数字※");
 		flag = false;
 	}else{
-		$("span#THRSHSERVLOW_err").html("");
-		$("#THRSHSERVLOW_err").css({"display":"none"});
-		$("#THRSHSERVLOW").css({"width":"100%"});
+		$("span#thrshservlow_err").html("");
+		$("#thrshservlow_err").css({"display":"none"});
+		$("#thrshservlow").css({"width":"100%"});
 	}
-	if (!reg.test(TRESELEUTRAN)) {
-		$("span#TRESELEUTRAN_err").html("※请输入数字※");
+	if (!reg.test(treseleutran)) {
+		$("span#treseleutran_err").html("※请输入数字※");
 		flag = false;
 	}else{
-		$("span#TRESELEUTRAN_err").html("");
-		$("#TRESELEUTRAN_err").css({"display":"none"});
-		$("#TRESELEUTRAN").css({"width":"100%"});
+		$("span#treseleutran_err").html("");
+		$("#treseleutran_err").css({"display":"none"});
+		$("#treseleutran").css({"width":"100%"});
 	}
-	if (!reg.test(CELLRESELPRIORITY)) {
-		$("span#CELLRESELPRIORITY_err").html("※请输入数字※");
+	if (!reg.test(cellreselpriority)) {
+		$("span#cellreselpriority_err").html("※请输入数字※");
 		flag = false;
 	}else{
-		$("span#CELLRESELPRIORITY_err").html("");
-		$("#CELLRESELPRIORITY_err").css({"display":"none"});
-		$("#CELLRESELPRIORITY").css({"width":"100%"});
+		$("span#cellreselpriority_err").html("");
+		$("#cellreselpriority_err").css({"display":"none"});
+		$("#cellreselpriority").css({"width":"100%"});
 	}
 	if(!flag)alert("请按提示输入");
 	return flag;
