@@ -10,6 +10,9 @@ public final class Constants {
 
     public static final String SYSTEM_ACCOUNT = "system";
     public static final String ANONYMOUS_USER = "anonymous";
+    public static final Integer[] E_FREQUENCE = { 38950, 39000, 39050, 39150, 39250 };
+    public static final Integer WEAK_COVERAGE_RSRP_THRESHOLD = -110;
+    public static final Integer WEAK_COVERAGE_RS_SINR_THRESHOLD = -3;
 
     private Constants() {
     }

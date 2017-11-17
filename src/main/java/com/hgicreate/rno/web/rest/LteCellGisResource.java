@@ -20,12 +20,12 @@ public class LteCellGisResource {
         this.lteCellGisService = lteCellGisService;
     }
 
-    @GetMapping("/getCellByCellId")
+    @GetMapping("/cell-detail")
     public List<LteCellGisDTO> getCellByCellId(String cellId) {
         return lteCellGisService.getCellByCellId(cellId);
     }
 
-    @GetMapping("/getNcellByCellId")
+    @GetMapping("/ncell-detail")
     public List<String> getNcellByCellId(String cellId) {
         return lteCellGisService.getNcellByCellId(cellId);
     }

@@ -1,7 +1,5 @@
 package com.hgicreate.rno.service.dto;
 
-import com.hgicreate.rno.domain.Area;
-import com.hgicreate.rno.domain.Cell;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,11 +30,4 @@ public class LteCellGisDTO {
     private String relatedResouce;
     private String stationSpace;
 
-    public LteCellGisDTO(Cell cell) {
-        this(cell.getCellId(), cell.getCellName(), cell.getManufacturer(), cell.getBandType(),
-                cell.getBandIndicator(), cell.getEarfcn(), cell.getPci(), cell.getCoverType(),
-                cell.getCoverScene(), cell.getLongitude(), cell.getLatitude(), cell.getAzimuth(),
-                cell.getEDowntilt(), cell.getMDowntilt(), cell.getTotalDowntilt(), cell.getAntennaHeight(),
-                cell.getRemoteCell(), cell.getRelatedParam(), cell.getRelatedResouce(), cell.getStationSpace());
-    }
 }

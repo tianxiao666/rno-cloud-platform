@@ -39,6 +39,10 @@ function initAreaSelectors(options) {
                     $districtId.find("option[value='" + defaultAreaId + "']").attr("selected", true);
                 }
 
+                if(options.relate !== undefined) {
+                    $("#" + options.selectors[1] + "1").text($cityId.find("option:selected").text());
+                }
+
                 $districtId.trigger("change");
             });
         }
@@ -52,10 +56,15 @@ function initAreaSelectors(options) {
                 $cityId.find("option[value='" + (Math.round(defaultAreaId / 100) * 100) + "']").attr("selected", true);
             }
 
+            if(options.relate !== undefined) {
+                $("#" + options.selectors[0] + "1").text($provinceId.find("option:selected").text());
+            }
+
             $cityId.trigger("change");
         });
 
         $provinceId.trigger("change");
+
     }
 }
 

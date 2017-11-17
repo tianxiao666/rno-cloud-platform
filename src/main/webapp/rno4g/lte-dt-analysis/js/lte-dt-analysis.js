@@ -1,7 +1,8 @@
-var map, tiled;
+var map, tiled, samplePointLayer;
+var greenStyle;
 $(function () {
 
-    laydate.render({elem: '#endDate', value: new Date()});
+    laydate.render({elem: '#endDate', value: new Date(2017, 8, 15)});
 
     tab("div_tab", "li", "onclick");
     $(".draggable").draggable();
@@ -29,44 +30,120 @@ $(function () {
 
     var baseLayer = new ol.layer.Tile({
         source: new ol.source.XYZ({
-            url: 'http://rno-omt.hgicreate.com/styles/rno-omt/{z}/{x}/{y}.png'
+            url: 'http://rno-omt.hgicreate.com/styles/rno-omt/{z}/{x}/{y}.png',
+            zIndex: 1
         })
     });
 
-    $("#queryCellAreaId").change(function () {
+    $("#districtId").change(function () {
         var lon = parseFloat($(this).find("option:checked").attr("data-lon"));
         var lat = parseFloat($(this).find("option:checked").attr("data-lat"));
+        console.log(lon + ","+ lat);
         if (map === undefined) {
+            //采样点图层
+            samplePointLayer = new ol.layer.Vector({
+                source: new ol.source.Vector(),
+                zIndex: 3
+            });
+            clickedLayer = new ol.layer.Vector({
+                source: new ol.source.Vector(),
+                zIndex: 4
+            });
+
+            //采样点专用
+            greenStyle = new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    // 设置线条颜色
+                    color: 'yellow',
+                    size: 5
+                }),
+                fill: new ol.style.Fill({
+                    // 设置填充颜色与不透明度
+                    color: 'rgba(0, 255, 0, 1.0)'
+                })
+            });
+
             map = new ol.Map({
                 target: 'map',
-                layers: [baseLayer],
+                layers: [baseLayer, samplePointLayer],
                 view: new ol.View({
                     center: ol.proj.fromLonLat([lon, lat]),
-                    zoom: 16
+                    zoom: 16,
                 })
+            });
+
+            var feature;
+            map.on('singleclick', function (evt) {
+                //还原上一次点击的采样点为绿色
+                /*if(feature) {
+                    feature.setStyle(new ol.style.Style({
+                        image: new ol.style.Circle({
+                            radius: 4,
+                            fill: new ol.style.Fill({ color: 'rgba(0, 255, 0, 1.0)' }),
+                            stroke: new ol.style.Stroke({ color: 'blue', width: 1 }),
+                        })
+                    }));
+                }*/
+
+                //获取新点击采样点，渲染为红色
+                feature = map.forEachFeatureAtPixel(evt.pixel, function (feature) {
+                    return feature;
+                });
+
+                if(feature) {
+                    /*feature.setStyle(new ol.style.Style({
+                        image: new ol.style.Circle({
+                            radius: 4,
+                            fill: new ol.style.Fill({ color: 'rgba(255, 0, 0, 1.0)' }),
+                            stroke: new ol.style.Stroke({ color: 'blue', width: 1 }),
+                        })
+                    }));*/
+
+                    $.ajax({
+                        url: "/api/lte-dt-analysis/dt-data-detail",
+                        type: "GET",
+                        data:{
+                            'dataId': feature.getId()
+                        },
+                        success: function (data) {
+                            $("tr[name = 'ncell']").remove();
+                            var html = "";
+                            if(data!="") {
+                                var d = data['cell'][0];//console.log(d);
+                                if(d!=undefined) {
+                                    var date = new Date();
+                                    date.setTime(d.metaTime?d.metaTime:'');
+                                    $("#time").text(date.format("yyyy-MM-dd hh:mm:ss"));
+                                    $("#serverCell").text(d.cellName?d.cellName:'');
+                                    $("#serverCellFreq").text(d.earfcn?d.earfcn:'');
+                                    $("#serverCellPci").text(d.pci?d.pci:'');
+                                    $("#serverCellRsrp").text(d.rsrp?d.rsrp:'');
+                                    $("#serverCellRsSinr").text(d.rsSinr?d.rsSinr:'');
+                                    $("#serverCellToSampleDis").text(d.scellDist?d.scellDist:'');
+                                    $("#area2Type").text(d.areaType?d.areaType:'');
+                                }
+
+                                $.each(data['ncell'], function (index, value) {
+                                    html += "<tr name='ncell'><td class='menuTd'>邻区"+ (index+1)
+                                        +"</td><td>"+ value.ncellName +"</td></tr>";
+                                    html += "<tr name='ncell'><td class='menuTd'>邻区"+ (index+1)
+                                        +" RSRP</td><td>"+ value.ncellRsrp +"</td></tr>";
+                                })
+
+                                $("#sampleDetailTable").append(html);
+                                $('#sampleDetailLi').trigger("click");
+                            }
+                        }
+                    });
+                }
             });
         } else {
             map.getView().setCenter(ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:3857'));
         }
     });
 
-    $("#cityId").change(function () {
-        var cityId = parseInt($(this).find("option:checked").val());
-        $.getJSON("../../data/area.json", function (data) {
-            renderArea(data, cityId, "queryCellAreaId",true);
-            $("#queryCellAreaId").trigger("change");
-        })
-    });
-
-
-    $("#provinceId").change(function () {
-        var provinceId = parseInt($(this).find("option:checked").val());
-        console.log(""+cityId);
-        $.getJSON("../../data/area.json", function (data) {
-            renderArea(data, provinceId, "cityId",false);
-            $("#cityId").trigger("change");
-        })
-    });
+    //初始区域
+    initAreaSelectors({selectors: ["provinceId", "cityId", "districtId"], coord: true, relate: true});
 
     $("#provincemenu").change(function () {
         var provinceId = parseInt($(this).find("option:checked").val());
@@ -75,27 +152,11 @@ $(function () {
         })
     });
 
-
-    //初始化区域
-    $.ajax({
-        url: "../../data/area.json",
-        dataType: "json",
-        async: false,
-        success: function (data) {
-            renderArea(data, 0, "provincemenu");
-            renderArea(data, 0, "provinceId");
-            renderArea(data, 440000, "cityId");
-            $("#provinceId").change();
-            $("#cityId").change();
-            $("#provincemenu").change();
-        }
-    });
-
     $("#loadGisCell").click(function () {
         var cityId = parseInt($("#cityId").find("option:checked").val());
         map.removeLayer(tiled);
         tiled = new ol.layer.Tile({
-            zIndex : 3,
+            zIndex : 2,
             source : new ol.source.TileWMS({
                 url : 'http://rno-gis.hgicreate.com/geoserver/rnoprod/wms',
                 params : {
@@ -112,67 +173,245 @@ $(function () {
         map.addLayer(tiled);
     });
 
-    $("#queryDtDT").click(function () {
-        $('#listDtRes').css("line-height", "12px");
-        $('#listDtRes').DataTable( {
-            "ajax": "data/lte-dt-analysis-list.json",
+    $("#queryDt").click(function () {
+        $("#loading").css("display", "block");
+        var dataType = $('#factory').find("option:selected").val();
+        var areaType = $('#areaType').find("option:selected").val();
+        $.ajax({
+            url : "/api/lte-dt-analysis/dt-desc",
+            type: "GET",
+            data: {
+                "areaId": $('#cityId').val(),
+                    "createdDate": $('#endDate').val(),
+                    "dataType": dataType === 'ALL' ? '数据业务,扫频业务' : dataType,
+                    "areaType": areaType === 'ALL' ? '城区,非城区,高速' : areaType
+            },
+            success: showDatatables,
+            error: function (err) {
+                $("#loading").css("display", "none");
+                showInfoInAndOut('error', '程序出错了！');
+                console.log(err);
+            }
+        })
+    });
+
+    $("#loadDtData").click(function () {
+        $("#loading").css("display", "block");
+        var id_array = new Array();
+        $('input[name="fileId"]:checked').each(function(){
+            id_array.push($(this).val());//向数组中添加元素
+        });
+        $.ajax({
+            url : "/api/lte-dt-analysis/dt-data",
+            type: "GET",
+            data: {
+                "descId": id_array.join(','),
+            },
+            success: showDtData,
+            error: function (err) {
+                $("#loading").css("display", "none");
+                showInfoInAndOut('error', '程序出错了！');
+                console.log(err);
+            }
+        })
+    });
+
+    $("#weakCoverageBtn").click(function () {
+        $("#loading").css("display", "block");
+        var id_array = new Array();
+        $('input[name="fileId"]:checked').each(function(){
+            id_array.push($(this).val());//向数组中添加元素
+        });
+
+        $.ajax({
+            url : "/api/lte-dt-analysis/weak-coverage",
+            type: "GET",
+            data: {
+                "descId": id_array.join(','),
+            },
+            success: showAnalysisResult,
+            error: function (err) {
+                $("#loading").css("display", "none");
+                showInfoInAndOut('error', '程序出错了！');
+                console.log(err);
+            }
+        })
+    })
+
+    $("#roomLeakageBtn").click(function () {
+        $("#loading").css("display", "block");
+        var id_array = new Array();
+        $('input[name="fileId"]:checked').each(function(){
+            id_array.push($(this).val());//向数组中添加元素
+        });
+
+        $.ajax({
+            url : "/api/lte-dt-analysis/room-leakage",
+            type: "GET",
+            data: {
+                "descId": id_array.join(','),
+            },
+            success: showAnalysisResult,
+            error: function (err) {
+                $("#loading").css("display", "none");
+                showInfoInAndOut('error', '程序出错了！');
+                console.log(err);
+            }
+        })
+    });
+
+    $("#overlapCoverageBtn").click(function () {
+        $("#loading").css("display", "block");
+        var id_array = new Array();
+        $('input[name="fileId"]:checked').each(function(){
+            id_array.push($(this).val());//向数组中添加元素
+        });
+
+        $.ajax({
+            url : "/api/lte-dt-analysis/overlap-coverage",
+            type: "GET",
+            data: {
+                "descId": id_array.join(','),
+            },
+            success: showAnalysisResult,
+            error: function (err) {
+                $("#loading").css("display", "none");
+                showInfoInAndOut('error', '程序出错了！');
+                console.log(err);
+            }
+        })
+    });
+
+});
+
+function showDatatables(data) {
+    $("#loading").css("display", "none");
+    if(data === "") {
+        showInfoInAndOut('warn', '没有找到数据！');
+    }else {
+        $('#listDtRes').css("line-height", "12px").DataTable({
+            "data": data,
             "columns": [
-                { "data": null },
-                { "data": "AREA_TYPE" },
-                {"data" : "FILE_NAME"},
-                { "data": null }
+                { "data" : null },
+                { "data" : "filename" },
+                { "data" : "dataType" },
+                { "data" : "areaType" }
             ],
             "columnDefs": [
                 {
                     "render": function(data, type, row) {
-                        return "数据业务";
+                        return "<input name='fileId' value='" + row.id + "' type='checkbox'>";
                     },
                     "targets": 0,
-                    "data": null
-                },{
-                    "render": function(data, type, row) {
-                        return "<input name='fileList' value='77' type='checkbox'>";
-                    },
-                    "targets": 3,
-                    "data": null
+                    "data": null,
                 }
             ],
             "lengthChange": false,
-            "ordering": true,
+            "ordering": false,
             "searching": false,
-            "info" : false,
-            //"scrollCollapse": false,
             "scrollY":310,
+            "scrollX":310,
+            "destroy": true,
             "language": {
                 url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
             }
-        } );
-    });
-});
-
-// 渲染区域
-function renderArea(data, parentId, areaMenu, boolLonLat) {
-    var arr = data.filter(function (v) {
-        return v.parentId === parentId;
-    });
-    if (arr.length > 0) {
-        var areaHtml = [];
-        $.each(arr, function (index) {
-            var area = arr[index];
-
-            if (boolLonLat) {
-                areaHtml.push("<option value='"+area.id+"' data-lon='"+area.longitude+"' data-lat='"+area.latitude+"'>");
-            } else {
-                areaHtml.push("<option value='"+area.id+"'>");
-            }
-
-            areaHtml.push(area.name+"</option>");
         });
-        $("#" + areaMenu).html(areaHtml.join(""));
-    } else {
-        console.log("父ID为" + parentId + "时未找到任何下级区域。");
+        showInfoInAndOut('success', '加载完成！');
+    }
+
+}
+
+function showDtData(data) {
+    var point, feature;
+    samplePointLayer.getSource().clear();
+    $("#loading").css("display", "none");
+
+    if(data[0] === undefined) {
+        showInfoInAndOut('warn', '没有找到数据！');
+    }else  {
+        $.each(data, function (index, value) {
+            point = ol.proj.transform([parseFloat(value.longitude),
+                parseFloat(value.latitude)], 'EPSG:4326', 'EPSG:3857');
+            feature = new ol.Feature({
+                geometry: new ol.geom.Point(point),
+            });
+            feature.setId(value.id);
+            //console.log(feature.getId());
+            feature.setStyle(new ol.style.Style({
+                image: new ol.style.Circle({
+                    radius: 4,
+                    fill: new ol.style.Fill({ color: 'rgba(0, 255, 0, 1.0)' }),
+                    stroke: new ol.style.Stroke({ color: 'blue', width: 1 }),
+                })
+            }));
+            //console.log(feature);
+            samplePointLayer.getSource().addFeature(feature);
+            if(index===0) {
+                map.getView().animate({
+                    center: point,
+                    duration: 2000
+                });
+            }
+        });
+        showInfoInAndOut('success', '渲染完成！');
+    }
+
+}
+
+function showAnalysisResult(data) {
+
+    $.each(samplePointLayer.getSource().getFeatures(), function (index, value) {
+        value.setStyle(new ol.style.Style({
+            image: new ol.style.Circle({
+                radius: 4,
+                fill: new ol.style.Fill({ color: 'rgba(0, 255, 0, 1.0)' }),
+                stroke: new ol.style.Stroke({ color: 'blue', width: 1 }),
+            })
+        }));
+    });
+
+    $("#loading").css("display", "none");
+    if(data !== ""){
+        $.each(data, function (i, v) {
+            samplePointLayer.getSource().getFeatureById(v).setStyle(new ol.style.Style({
+                image: new ol.style.Circle({
+                    radius: 4,
+                    fill: new ol.style.Fill({ color: 'rgba(255, 0, 0, 1.0)' }),
+                    stroke: new ol.style.Stroke({ color: 'blue', width: 1 }),
+                })
+            }));
+        })
+        showInfoInAndOut('success', '渲染完成！');
+    }else {
+        showInfoInAndOut('warn', '没有找到数据！');
     }
 }
 
+//提示信息淡入淡出
+function showInfoInAndOut(div, info) {
+    $("#" + div).html(info);
+    $("#" + div).fadeIn(2000);
+    setTimeout("$('#" + div + "').fadeOut(2000)", 1000);
+}
 
-
+Date.prototype.format = function(format) {
+    var date = {
+        "M+": this.getMonth() + 1,
+        "d+": this.getDate(),
+        "h+": this.getHours(),
+        "m+": this.getMinutes(),
+        "s+": this.getSeconds(),
+        "q+": Math.floor((this.getMonth() + 3) / 3),
+        "S+": this.getMilliseconds()
+    };
+    if (/(y+)/i.test(format)) {
+        format = format.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length));
+    }
+    for (var k in date) {
+        if (new RegExp("(" + k + ")").test(format)) {
+            format = format.replace(RegExp.$1, RegExp.$1.length == 1
+                ? date[k] : ("00" + date[k]).substr(("" + date[k]).length));
+        }
+    }
+    return format;
+}
