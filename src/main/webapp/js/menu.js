@@ -111,19 +111,19 @@ function dropNext(treeId, nodes, targetNode) {
 }
 
 function afterDrop(treeNode) {
-    if(treeNode["children"] ){
-        if(treeNode["children"].length<=0){
-            treeNode.url = "#";
-        }
-        else if(treeNode["children"].length>0){
-            treeNode.url = "";
-        }
-    }
-    if(treeNode.getParentNode()){
-        if(treeNode.getParentNode()["children"].length > 0){
-            treeNode.getParentNode()["url"] = "null";
-        }
-    }
+    // if(treeNode["children"] ){
+    //     if(treeNode["children"].length<1){
+    //         treeNode.url = "#";
+    //     }
+    //     else if(treeNode["children"].length>0){
+    //         treeNode.url = "";
+    //     }
+    // }
+    // if(treeNode.getParentNode()){
+    //     if(treeNode.getParentNode()["children"].length > 0){
+    //         treeNode.getParentNode()["url"] = "null";
+    //     }
+    // }
     if(treeNode.getParentNode()){
         treeNode["pid"] = treeNode.getParentNode()["id"];
         var childs = treeNode.getParentNode()["children"];
@@ -144,11 +144,11 @@ function beforeDragOpen(treeId, treeNode) {
     return true;
 }
 function beforeDrop(treeId, treeNodes, targetNode, moveType, isCopy) {
-    if(treeNodes[0].getParentNode()){
-        if(treeNodes[0].getParentNode()["children"].length <=1){
-            treeNodes[0].getParentNode()["url"] = "#";
-        }
-    }
+    // if(treeNodes[0].getParentNode()){
+    //     if(treeNodes[0].getParentNode()["children"].length <=1){
+    //         treeNodes[0].getParentNode()["url"] = "#";
+    //     }
+    // }
     return true;
 }
 function onDrag(event, treeId, treeNodes) {
@@ -207,11 +207,25 @@ function addHoverDom(treeId, treeNode) {
     var btn = $("#addBtn_"+treeNode.tId);
     if (btn) btn.bind("click", function(){
         var zTree = $.fn.zTree.getZTreeObj("treeDemo");
-        if(treeNode.getParentNode()){
-            alert("子节点不能再有子节点");
+        if(treeNode.getParentNode().getParentNode()){
+            alert("不能有4级节点");
             return;
         }
-        zTree.addNodes(treeNode, {id:(100 + newCount), name:"new node" + (newCount++)});
+        var nowAll = transformJSONtoeachJSON();
+        var biggestOfNowAll = 0;
+        for(var i=0;i<nowAll.length;i++){
+            var id = nowAll[i].id;
+            if(id > biggestOfNowAll){
+                biggestOfNowAll = id;
+            }
+
+        }
+        biggestOfNowAll += 1;
+        var pid = 0;
+        if(treeNode.getParentNode()){
+            pid = treeNode.getParentNode().id;
+        }
+        zTree.addNodes(treeNode, { id:biggestOfNowAll, pid:pid,name:"增加" + (addCount++), url:"#", index_of_brother:0});
         return false;
     });
 }
@@ -269,10 +283,16 @@ function addTreeNode() {
 
     }
     biggestOfNowAll += 1;
-    var newNode = { id:biggestOfNowAll, pid:zTree.getSelectedNodes()[0].id,name:"增加" + (addCount++), url:"#", index_of_brother:0};
+    var newNode;
+    if (zTree.getSelectedNodes()[0]) {
+         newNode= { id:biggestOfNowAll, pid:zTree.getSelectedNodes()[0].id,name:"增加" + (addCount++), url:"#", index_of_brother:0};
+    }else {
+        newNode = { id:biggestOfNowAll, pid:0,name:"增加" + (addCount++), url:"#", index_of_brother:0};
+
+    }
     if (zTree.getSelectedNodes()[0]) {
         if(zTree.getSelectedNodes()[0].getParentNode()){
-            alert("子节点不能再增加子节点");
+            alert("不能有4级节点");
             return ;
         }
         zTree.addNodes(zTree.getSelectedNodes()[0], newNode);
@@ -376,6 +396,18 @@ function transformJSONtoeachJSON() {
     return submitDataList;
 }
 
+function addChildtoSubmitList(submitDataList, oneChildren) {
+    for (var j=0; j<oneChildren.length; j++){
+        submitDataList.push(oneChildren[j]);
+        if(oneChildren[j]["children"]){
+            for (var k=0; k<oneChildren[j]["children"].length; k++){
+                submitDataList.push(oneChildren[j]["children"][k]);
+            }
+        }
+    }
+    return submitDataList;
+}
+
 function submitMenu() {
     var submitDataList = transformJSONtoeachJSON();
     $.ajax({
@@ -392,17 +424,7 @@ function submitMenu() {
     });
 }
 
-function addChildtoSubmitList(submitDataList, oneChildren) {
-    for (var j=0; j<oneChildren.length; j++){
-        submitDataList.push(oneChildren[j]);
-        if(oneChildren[j]["children"]){
-            if(oneChildren[j]["children"].length > 0){
-                addChildtoSubmitList(submitDataList, oneChildren);
-            }
-        }
-    }
-    return submitDataList;
-}
+
 
 var zTree, rMenu;
 $(document).ready(function(){
