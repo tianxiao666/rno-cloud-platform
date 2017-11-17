@@ -63,7 +63,7 @@ public class LteCellDataService {
         if(!lteCellDataVM.getPci().trim().equals("")){
             cell.setPci(lteCellDataVM.getPci().trim());
         }
-        Example<Cell> example = matcher==null?Example.of(cell): Example.of(cell, matcher);
+        Example<Cell> example = Example.of(cell, matcher);
         List<Cell> cells =lteCellDataRepository.findAll(example, new PageRequest(0,1000)).getContent();
         return cells.stream().map(LteCellDataMapper.INSTANCE::lteCellDataToLteCellDto).collect(Collectors.toList());
     }
