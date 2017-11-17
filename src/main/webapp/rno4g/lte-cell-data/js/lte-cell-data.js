@@ -676,37 +676,6 @@ function showImportDatailResult(data) {
                 {"data": "status"},
                 {"data": "message"}
             ],
-            /*"columnDefs": [{
-                "render":function (data, row, type) {
-                    return row['stage']===""||row['stage']===null||row['stage']===undefined?"":row['stage'];
-                },
-                "targets": 0,
-                "data": "stage"
-            },{
-                "render":function (data, row, type) {
-                    return row['startTime']===""||row['startTime']===null||row['startTime']===undefined?"":row['startTime'];
-                },
-                "targets": 1,
-                "data": "startTime"
-            },{
-                "render":function (data, row, type) {
-                    return row['completeTime']===""||row['completeTime']===null||row['completeTime']===undefined?"":row['completeTime'];
-                },
-                "targets": 2,
-                "data": "completeTime"
-            },{
-                "render":function (data, row, type) {
-                    return row['status']===""||row['status']===null||row['status']===undefined?"":row['status'];
-                },
-                "targets": 3,
-                "data": "status"
-            },{
-                "render":function (data, row, type) {
-                    return row['message']===""||row['message']===null||row['message']===undefined?"":row['message'];
-                },
-                "targets": 4,
-                "data": "message"
-            }],*/
             "lengthChange": false,
             "ordering": false,
             "searching": false,

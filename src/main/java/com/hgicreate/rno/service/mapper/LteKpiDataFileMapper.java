@@ -13,6 +13,7 @@ public interface LteKpiDataFileMapper {
     LteKpiDataFileMapper INSTANCE = Mappers.getMapper(LteKpiDataFileMapper.class);
 
     @Mappings({
+            @Mapping(source = "id", target = "id"),
             @Mapping(source = "originFile.createdDate", target = "uploadTime",dateFormat = "yyyy-MM-dd HH:mm:ss"),
             @Mapping(source = "area.name", target = "areaName"),
             @Mapping(source = "originFile.filename", target = "filename"),

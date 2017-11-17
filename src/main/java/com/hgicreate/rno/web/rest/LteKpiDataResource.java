@@ -3,12 +3,15 @@ package com.hgicreate.rno.web.rest;
 import com.hgicreate.rno.domain.Area;
 import com.hgicreate.rno.domain.DataJob;
 import com.hgicreate.rno.domain.OriginFile;
+import com.hgicreate.rno.repository.DataJobReportRepository;
 import com.hgicreate.rno.repository.DataJobRepository;
 import com.hgicreate.rno.repository.OriginFileRepository;
 import com.hgicreate.rno.security.SecurityUtils;
 import com.hgicreate.rno.service.LteKpiDataService;
+import com.hgicreate.rno.service.dto.DataJobReportDTO;
 import com.hgicreate.rno.service.dto.LteKpiDataFileDTO;
 import com.hgicreate.rno.service.dto.LteKpiDataRecordDTO;
+import com.hgicreate.rno.service.mapper.DataJobReportMapper;
 import com.hgicreate.rno.web.rest.vm.FileUploadVM;
 import com.hgicreate.rno.web.rest.vm.LteKpiDataFileVM;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.BufferedOutputStream;
@@ -27,6 +31,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -38,12 +43,15 @@ public class LteKpiDataResource {
 
     private final OriginFileRepository originFileRepository;
 
+    private final DataJobReportRepository dataJobReportRepository;
+
     private final DataJobRepository dataJobRepository;
 
     private final LteKpiDataService lteKpiDataService;
 
-    public LteKpiDataResource(OriginFileRepository originFileRepository, DataJobRepository dataJobRepository, LteKpiDataService lteKpiDataService) {
+    public LteKpiDataResource(OriginFileRepository originFileRepository, DataJobReportRepository dataJobReportRepository, DataJobRepository dataJobRepository, LteKpiDataService lteKpiDataService) {
         this.originFileRepository = originFileRepository;
+        this.dataJobReportRepository = dataJobReportRepository;
         this.dataJobRepository = dataJobRepository;
         this.lteKpiDataService = lteKpiDataService;
     }
@@ -111,6 +119,13 @@ public class LteKpiDataResource {
     public List<LteKpiDataFileDTO> queryImport(LteKpiDataFileVM vm) throws ParseException {
         log.debug("视图模型: " + vm);
         return lteKpiDataService.queryFileUploadRecord(vm);
+    }
+
+    @PostMapping("/query-import-detail-id")
+    public List<DataJobReportDTO> queryImportDetailById(@RequestParam String id){
+        return dataJobReportRepository.findByDataJob_Id(Long.parseLong(id))
+                .stream().map(DataJobReportMapper.INSTANCE::dataJobReportToDataJobReportDTO)
+                .collect(Collectors.toList());
     }
 
     @PostMapping("/query-record")

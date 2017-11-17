@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LteKpiDataRecordDTO {
+
+
     private String areaName;
     private String createdDate;
     private String dataType;

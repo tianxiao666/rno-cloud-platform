@@ -114,17 +114,18 @@ function  showImportRecord(data) {
             ],
             "columnDefs": [{
                 "render": function (data, type, row) {
+                    var id = row['id'];
                     switch (row['status']) {
                         case "部分成功":
-                            return "<a style='color: red' onclick='showImportDetail()'>" + row['status'] + "</a>";
+                            return "<a style='color: red' onclick='showImportDetail("+id+")'>" + row['status'] + "</a>";
                         case "全部失败":
-                            return "<a style='color: red' onclick='showImportDetail()'>" + row['status'] + "</a>";
+                            return "<a style='color: red' onclick='showImportDetail("+id+")'>" + row['status'] + "</a>";
                         case "全部成功":
-                            return "<a onclick='showImportDetail()'>" + row['status'] + "</a>";
+                            return "<a onclick='showImportDetail("+id+")'>" + row['status'] + "</a>";
                         case "正在处理":
-                            return "<a onclick='showImportDetail()'>" + row['status'] + "</a>";
+                            return "<a onclick='showImportDetail("+id+")'>" + row['status'] + "</a>";
                         case "等待处理":
-                            return "<a onclick='showImportDetail()'>" + row['status'] + "</a>";
+                            return "<a onclick='showImportDetail("+id+")'>" + row['status'] + "</a>";
                     }
                 },
                 "targets": -1,
@@ -168,3 +169,52 @@ function showInfoInAndOut(div, info) {
     divSet.fadeIn(2000);
     setTimeout("$('#" + div + "').fadeOut(2000)", 1000);
 }
+
+function showImportDetail(id) {
+    $("#reportDiv").css("display","block");
+    $("#listinfoDiv").css("display","none");
+    $.ajax({
+       url: "/api/lte-kpi-data/query-import-detail-id",
+        data:{id:id},
+        dataType: 'text',
+        type:'post',
+        success:showImportDetailRecord,
+        error: function (err) {
+            console.log(err)
+        }
+    });
+}
+
+function showImportDetailRecord(data) {
+    if(data.length <= 2){
+        return false;
+    }
+    $("#reportListTab").css("line-height", "12px")
+        .dataTable({
+            "data": JSON.parse(data),
+            "columns": [
+                {"data": "stage"},
+                {"data": "startTime"},
+                {"data": "completeTime"},
+                {"data": "status"},
+                {"data": "message"}
+            ],
+            "lengthChange": false,
+            "ordering": false,
+            "searching": false,
+            "destroy": true,
+            "language": {
+                url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
+            }
+        });
+}
+
+
+/**
+ * 从报告的详情返回列表页面
+ */
+function returnToImportList(){
+    $("#reportDiv").css("display","none");
+    $("#listinfoDiv").css("display","block");
+}
+
