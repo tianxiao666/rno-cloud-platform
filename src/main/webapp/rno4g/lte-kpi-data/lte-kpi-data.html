@@ -61,7 +61,7 @@
                                 <label>状态:</label>
                             </td>
                             <td>
-                                <select id="" name="status" style="">
+                                <select id="" name="status" style="" title="">
                                     <option value="全部" selected="selected">全部</option>
                                     <option value="全部成功">全部成功</option>
                                     <option value="部分成功">部分失败</option>
@@ -136,7 +136,7 @@
             </form>
             <ul id="icons" class="ui-widget ui-helper-clearfix" style="width:100px;cursor:pointer">
                 <li class="ui-state-default ui-corner-all" title="返回列表" style="width:100px"
-                    onclick="javascript:returnToImportList();"><span class="ui-icon ui-icon-arrowreturnthick-1-w"
+                    onclick="returnToImportList();"><span class="ui-icon ui-icon-arrowreturnthick-1-w"
                                                                      style="width:20px"></span>返回列表
                 </li>
             </ul>
@@ -166,15 +166,15 @@
                 <tbody>
                 <tr>
                     <td>
-                        <select id="provincemenu2"></select>
-                        <select id="citymenu2" name="attachParams['cityId']"></select>
+                        <select id="provincemenu2" title=""></select>
+                        <select id="citymenu2" name="attachParams['cityId']" title=""></select>
                     </td>
                     <td style="padding-left:10px">测试时间 从:</td>
-                    <td><input value="" id="kpiMeaBegDate" name="kpiMeaBegDate"
-                               style="width:135px" class="hasDatepicker" type="text"></td>
+                    <td><label for="kpiMeaBegDate"></label><input value="" id="kpiMeaBegDate" name="kpiMeaBegDate"
+                                                                  style="width:135px" class="hasDatepicker" type="text"></td>
                     <td>至：</td>
-                    <td><input value="" id="kpiMeaEndDate" name="kpiMeaEndDate"
-                               style="width:135px" class="hasDatepicker" type="text"></td>
+                    <td><label for="kpiMeaEndDate"></label><input value="" id="kpiMeaEndDate" name="kpiMeaEndDate"
+                                                                  style="width:135px" class="hasDatepicker" type="text"></td>
                     <td style="padding-left:10px"><input id="searchDataBtn" value="查询KPI" type="submit"></td>
                 </tr>
                 </tbody>

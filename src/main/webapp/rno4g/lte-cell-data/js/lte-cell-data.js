@@ -259,6 +259,7 @@ function showDetail(cellId) {
         url: '/api/lte-cell-data/cell-detail-Id',
         dataType: 'text',
         data: {cellId: cellId},
+        async: true,
         success: showCellAndCoSiteCell,
         error: function (err) {
             console.log(err);
@@ -548,6 +549,7 @@ function updateLteCellDetail(submitOK) {
 }
 
 function showImportRecord(data) {
+
     $('#queryRecordResTab').css("line-height", "12px")
         .DataTable({
             "data": data,
@@ -563,17 +565,18 @@ function showImportRecord(data) {
             ],
             "columnDefs": [{
                 "render": function (data, type, row) {
+                    var importRecordId =row['id'];
                     switch (row['status']) {
                         case "部分成功":
-                            return "<a style='color: red' onclick='showImportDetail()'>" + row['status'] + "</a>";
+                            return "<a style='color: red' onclick='showImportDetail("+importRecordId+")'>" + row['status'] + "</a>";
                         case "全部失败":
-                            return "<a style='color: red' onclick='showImportDetail()'>" + row['status'] + "</a>";
+                            return "<a style='color: red' onclick='showImportDetail("+importRecordId+")'>" + row['status'] + "</a>";
                         case "全部成功":
-                            return "<a onclick='showImportDetail()'>" + row['status'] + "</a>";
+                            return "<a onclick='showImportDetail("+importRecordId+")'>" + row['status'] + "</a>";
                         case "正在处理":
-                            return "<a onclick='showImportDetail()'>" + row['status'] + "</a>";
+                            return "<a onclick='showImportDetail("+importRecordId+")'>" + row['status'] + "</a>";
                         case "等待处理":
-                            return "<a onclick='showImportDetail()'>" + row['status'] + "</a>";
+                            return "<a onclick='showImportDetail("+importRecordId+")'>" + row['status'] + "</a>";
                     }
                 },
                 "targets": -1,
@@ -632,6 +635,84 @@ function showRecord(data) {
         });
 }
 
-function showImportDetail() {
-    
+function showImportDetail(id) {
+    var reportForm =$("#reportDetailForm");
+    reportForm.find("input#jobId").val(id);
+    reportForm.ajaxSubmit({
+        url: '/api/lte-cell-data/query-import-detail-id',
+        dataType: 'text',
+        type:'post',
+        success: showImportDatailResult,
+        error: function (err) {
+            console.log(err);
+            showInfoInAndOut("info", "后台程序错误！");
+        }
+    });
+    $("#reportDiv").css("display","block");
+    $("#listinfoDiv").css("display","none");
+}
+
+/**
+ * 从报告的详情返回列表页面
+ */
+function returnToImportList(){
+    $("#reportDiv").css("display","none");
+    $("#listinfoDiv").css("display","block");
+}
+
+function showImportDatailResult(data) {
+    console.log(data.length);
+    console.log(data);
+    if(data.length <=2){
+        return;
+    }
+    $("#reportListTable").css("line-height", "12px")
+        .dataTable({
+            "data": JSON.parse(data),
+            "columns": [
+                {"data": "stage"},
+                {"data": "startTime"},
+                {"data": "completeTime"},
+                {"data": "status"},
+                {"data": "message"}
+            ],
+            /*"columnDefs": [{
+                "render":function (data, row, type) {
+                    return row['stage']===""||row['stage']===null||row['stage']===undefined?"":row['stage'];
+                },
+                "targets": 0,
+                "data": "stage"
+            },{
+                "render":function (data, row, type) {
+                    return row['startTime']===""||row['startTime']===null||row['startTime']===undefined?"":row['startTime'];
+                },
+                "targets": 1,
+                "data": "startTime"
+            },{
+                "render":function (data, row, type) {
+                    return row['completeTime']===""||row['completeTime']===null||row['completeTime']===undefined?"":row['completeTime'];
+                },
+                "targets": 2,
+                "data": "completeTime"
+            },{
+                "render":function (data, row, type) {
+                    return row['status']===""||row['status']===null||row['status']===undefined?"":row['status'];
+                },
+                "targets": 3,
+                "data": "status"
+            },{
+                "render":function (data, row, type) {
+                    return row['message']===""||row['message']===null||row['message']===undefined?"":row['message'];
+                },
+                "targets": 4,
+                "data": "message"
+            }],*/
+            "lengthChange": false,
+            "ordering": false,
+            "searching": false,
+            "destroy": true,
+            "language": {
+                url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
+            }
+        });
 }

@@ -1,17 +1,17 @@
 package com.hgicreate.rno.web.rest;
 
-import com.hgicreate.rno.domain.Area;
-import com.hgicreate.rno.domain.Cell;
-import com.hgicreate.rno.domain.DataJob;
-import com.hgicreate.rno.domain.OriginFile;
+import com.hgicreate.rno.domain.*;
+import com.hgicreate.rno.repository.DataJobReportRepository;
 import com.hgicreate.rno.repository.DataJobRepository;
 import com.hgicreate.rno.repository.LteCellDataRepository;
 import com.hgicreate.rno.repository.OriginFileRepository;
 import com.hgicreate.rno.security.SecurityUtils;
 import com.hgicreate.rno.service.LteCellDataService;
+import com.hgicreate.rno.service.dto.DataJobReportDTO;
 import com.hgicreate.rno.service.dto.LteCellDataDTO;
 import com.hgicreate.rno.service.dto.LteCellDataFileDTO;
 import com.hgicreate.rno.service.dto.LteCellDataRecordDTO;
+import com.hgicreate.rno.service.mapper.DataJobReportMapper;
 import com.hgicreate.rno.web.rest.vm.LteCellDataImportVM;
 import com.hgicreate.rno.web.rest.vm.LteCellDataVM;
 import com.hgicreate.rno.web.rest.vm.FileUploadVM;
@@ -29,6 +29,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -42,15 +43,18 @@ public class LteCellDataResource {
 
     private final DataJobRepository dataJobRepository;
 
+    private final DataJobReportRepository dataJobReportRepository;
+
     private final LteCellDataRepository lteCellDataRepository;
 
     private final LteCellDataService lteCellDataService;
 
     public LteCellDataResource(OriginFileRepository originFileRepository,
-                               DataJobRepository dataJobRepository, LteCellDataRepository lteCellDataRepository,
+                               DataJobRepository dataJobRepository, DataJobReportRepository dataJobReportRepository, LteCellDataRepository lteCellDataRepository,
                                LteCellDataService lteCellDataService) {
         this.originFileRepository = originFileRepository;
         this.dataJobRepository = dataJobRepository;
+        this.dataJobReportRepository = dataJobReportRepository;
         this.lteCellDataRepository = lteCellDataRepository;
         this.lteCellDataService = lteCellDataService;
     }
@@ -160,6 +164,13 @@ public class LteCellDataResource {
     public List<LteCellDataFileDTO> queryImport(LteCellDataImportVM vm) throws ParseException {
         log.debug("视图模型: " + vm);
         return lteCellDataService.queryFileUploadRecord(vm);
+    }
+
+    @PostMapping("/query-import-detail-id")
+    public List<DataJobReportDTO> queryImportDetailById(@RequestParam String id){
+        return dataJobReportRepository.findByDataJob_Id(Long.parseLong(id))
+                .stream().map(DataJobReportMapper.INSTANCE::dataJobReportToDataJobReportDTO)
+                .collect(Collectors.toList());
     }
 
     @PostMapping("/query-record")
