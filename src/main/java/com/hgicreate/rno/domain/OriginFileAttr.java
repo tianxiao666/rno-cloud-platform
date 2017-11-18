@@ -15,7 +15,7 @@ public class OriginFileAttr {
     @SequenceGenerator(name = "OriginFileAttrSeq", sequenceName = "SEQ_ORIGIN_FILE_ATTR", allocationSize = 1)
     private Long id;
 
-    private Integer originFileId;
+    private Long originFileId;
     private String name;
     private String value;
 
