@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>话务专题分析</title>
+
+    <link rel="stylesheet" href="css/gsm-traffic-map.css">
+    <link rel="stylesheet" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
+    <link rel="stylesheet" href="../../lib/openlayers/4.4.2/ol.css">
+
+    <script src="../../lib/jquery/1.8.2/jquery.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
+    <script src="../../lib/openlayers/4.4.2/ol.js"></script>
+    <script src="js/gsm-traffic-map.js"></script>
+</head>
+<body>
+<div id="map" class="map"></div>
+
+<div class="dialog draggable ui-draggable">
+    省：<select name="provinceId" class="required" id="provinceId" title=""></select>
+    市：<select name="cityId" class="required" id="cityId" title=""></select>
+    区：<select name="districtId" class="required" id="queryCellAreaId" title=""></select>
+</div>
+<div class="resource_list_icon" style="right:380px">
+    <a href="#" class="switch"></a>
+    <a href="#" class="switch_hidden"></a>
+    <div class="shad_v"></div>
+</div>
+<div class="resource_list300_box" style="height:100%;">
+    <div class="resource_list300">
+        <div id="div_tab" class="div_tab divtab_menu">
+            <ul>
+                <li class="selected">话务统计</li>
+            </ul>
+        </div>
+    </div>
+    <div class="divtab_content">
+        <div id="div_tab_0">
+            <div class="div_title_24px_blue">
+                <span class="sp_title"> 小区性能指标</span>
+            </div>
+            <div class="div_transparentstandard_nopaddming" id="analysisListDiv">
+                <table class="tb-transparent-standard" style="width:100%"
+                       id="analysisListTable"></table>
+                <div id="analysisBtnDiv" style="display:none"><input value="确定" id="confirmSelectionAnalysisBtn" type="button"></div>
+            </div>
+
+            <div class="div-m-split-10px">
+            </div>
+
+            <div class="div_transparent_standard_border">
+                <div class="div_title_24px_grey sp_title_left">
+                    <span> 分析应用</span>
+                </div>
+
+                <div id="analysisDiv">
+                    <input id="radioresourceutilizationbtn"
+                           onclick="javascript:commonstatics('radioresourcerate','staticsResourceUtilizationRateForAjaxAction');"
+                           value="无线资源利用率%" type="button">
+                    <input id="accsucratebtn"
+                           onclick="javascript:commonstatics('accsucrate','staticsResourceUtilizationRateForAjaxAction')"
+                           value="接通率%" type="button">
+                    <input id="dropratebtn"
+                           onclick="javascript:commonstatics('droprate','staticsResourceUtilizationRateForAjaxAction')"
+                           value="掉话率%" type="button">
+                    <input id="dropnumbtn"
+                           onclick="javascript:commonstatics('dropnum','staticsResourceUtilizationRateForAjaxAction')"
+                           value="掉话数" type="button">
+                    <input id="handoversucratebtn"
+                           onclick="javascript:commonstatics('handoversucrate','staticsResourceUtilizationRateForAjaxAction')"
+                           value="切换成功率" type="button">
+                    <br>
+                    <p>
+                        <input id="veryidlecellbtn"
+                               onclick="javascript:commonstatics('veryidlecell','staticsSpecialCellForAjaxAction')"
+                               value="超闲小区" type="button">
+                        <input id="overloadcellbtn"
+                               onclick="javascript:commonstatics('overloadcell','staticsSpecialCellForAjaxAction')"
+                               value="超忙小区" type="button">
+                        <input id="highuseradiocellbtn"
+                               onclick="javascript:commonstatics('highuseradiocell','staticsSpecialCellForAjaxAction')"
+                               value="高无线利用率小区" type="button">
+                        <input id="highcongindatacellbtn"
+                               onclick="javascript:commonstatics('highcongindatacell','staticsSpecialCellForAjaxAction')"
+                               value="数据高拥塞率小区" type="button">
+                        <input id="badlyicmcellbtn"
+                               onclick="javascript:commonstatics('badlyicmcell','staticsSpecialCellForAjaxAction')"
+                               value="高干扰小区" type="button">
+                    </p></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="analyze_Dialog" class="dialog2 draggable ui-draggable" style="display:none; ">
+    <div class="dialog_header">
+        <div class="dialog_title">话备性能专题分析</div>
+        <div class="dialog_tool">
+            <div class="dialog_tool_close dialog_closeBtn"
+                 onclick="$('#analyze_Dialog').hide();$('.colordialog2').hide();"></div>
+        </div>
+    </div>
+    <div class="dialog_content" style="width:300px; background:#f9f9f9">
+        <table class="tb-transparent-standard" style="width:300px" id="trafficTable">
+        </table>
+
+    </div>
+</div>
+
+<div>
+    <div class="black"></div>
+    <div id="analyzeedit_Dialog" class="dialog2 draggable ui-draggable" style="display:none; width:410px;">
+        <div class="dialog_header">
+            <div class="dialog_title">话备性能专题分析修改</div>
+            <div class="dialog_tool">
+                <div class="dialog_tool_close dialog_closeBtn2"
+                     onclick="$('#analyzeedit_Dialog').hide();$('.black').hide();$('.colordialog2').hide();"></div>
+            </div>
+        </div>
+        <div class="dialog_content" style="width:410px; background:#f9f9f9">
+            <form action="updateOrAddrnoTrafficRendererAction" id="rendererForm" method="post">
+                <table class="tb-transparent-standard" style="width:350px " id="analyzeedit_trafficTable">
+
+
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="divColorDiv">
+</div>
+<div id="operInfo"
+     style="display:none; top:40px;left:600px;z-index:999;width:400px; height:40px; background-color:#7dff3f; filter:alpha(Opacity=80);-moz-opacity:0.5;opacity: 0.5;z-index:9999;position: fixed;">
+    <table style="text-align:center" width="100%" height="100%">
+        <tbody>
+        <tr>
+            <td>
+                <span id="operTip"></span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+
+</body>
+</html>

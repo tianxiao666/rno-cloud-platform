@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>爱立信小区参数对比</title>
+
+    <link rel="stylesheet" href="css/gsm-param-change.css">
+
+    <script src="../../lib/jquery/1.8.2/jquery.js"></script>
+    <script src="../../lib/rno/selftools.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.treeview-1.5pre.js"></script>
+    <script src="js/gsm-param-change-origin.js"></script>
+    <script src="js/gsm-param-change.js"></script>
+    <script src="../../lib/laydate/5.0.7/laydate.js"></script>
+</head>
+<body>
+<div class="loading_cover" id="loadingDataDiv" style="display: none;">
+    <div class="cover"></div>
+    <h4 class="loading">
+        <em class="loading_fb" id="loadContentId">正在加载BSC</em>,请稍侯...<br>
+        <span id="progressDesc"></span>
+    </h4>
+</div>
+<div class="div_left_main" width="auto">
+    <table heigth="100%" class="main-table1 half-width" width="100%">
+        <tbody>
+        <tr>
+            <td width="255px;">
+                <input name="paramType" value="cell" checked="checked" onclick="changeParam()" type="radio"> Cell &nbsp;
+                <input name="paramType" value="channel" onclick="changeParam()" type="radio"> Channel &nbsp;
+                <input name="paramType" value="neighbour" onclick="changeParam()" type="radio"> Neighbour &nbsp;
+            </td>
+            <td>
+                <input
+                        value="" id="begUploadDate"
+                        name="attachParams['begUploadDate']" class="hasDatepicker"
+                        type="text"> 至：<input value="" id="endUploadDate"
+                                              name="attachParams['endUploadDate']"
+                                              class="hasDatepicker" type="text">
+                &nbsp;&nbsp;
+                <input id="compareBtn" value="比较" type="button">&nbsp;&nbsp;
+                <input id="exportBtn" value="导出" type="button">
+                <form id="downloadEriCellAnalysisDataFileForm" action="downloadEriCellAnalysisDataFileAction"
+                      method="post">
+                    <input id="token" name="token" value="" type="hidden">
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table>
+                    <tbody>
+                    <tr>
+                        <td>
+                            省：<select name="provinceId" id="province-id" style="width:80px;">
+
+
+                        </select>
+                            市：<select name="cityId" id="city-id" style="width:100px;">
+
+                        </select>
+                            <br>
+                            <div style="border:1px solid #CDCDCD;background:white;overflow-x:scroll;overflow-y:scroll;width: 240px;height: 400px">
+                                <ul id="allBsc" class="treeview">
+                                    <li class="collapsable lastCollapsable">
+                                        <div class="hitarea collapsable-hitarea lastCollapsable-hitarea"></div>
+                                        <input name="bscChk" type="checkbox"><span>全选</span>
+                                        <ul>
+                                            <li><input name="bsc" value="626" type="checkbox"> <span>GZA26</span></li>
+                                            <li><input name="bsc" value="31124" type="checkbox"> <span>GZA26R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30710" type="checkbox"> <span>GZA27</span></li>
+                                            <li><input name="bsc" value="31229" type="checkbox"> <span>GZA27R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="623" type="checkbox"> <span>GZA28</span></li>
+                                            <li><input name="bsc" value="31131" type="checkbox"> <span>GZA28R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="605" type="checkbox"> <span>GZC27</span></li>
+                                            <li><input name="bsc" value="31195" type="checkbox"> <span>GZC27R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30767" type="checkbox"> <span>GZE24</span></li>
+                                            <li><input name="bsc" value="31262" type="checkbox"> <span>GZE24R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30789" type="checkbox"> <span>GZF22</span></li>
+                                            <li><input name="bsc" value="31149" type="checkbox"> <span>GZF22R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31100" type="checkbox"> <span>GZM01B1</span>
+                                            </li>
+                                            <li><input name="bsc" value="31122" type="checkbox"> <span>GZM01B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="639" type="checkbox"> <span>GZM01B2</span></li>
+                                            <li><input name="bsc" value="31176" type="checkbox"> <span>GZM01B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="595" type="checkbox"> <span>GZM02A</span></li>
+                                            <li><input name="bsc" value="31218" type="checkbox"> <span>GZM02AR12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31073" type="checkbox"> <span>GZM02B2</span>
+                                            </li>
+                                            <li><input name="bsc" value="31183" type="checkbox"> <span>GZM02B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31101" type="checkbox"> <span>GZM03B1</span>
+                                            </li>
+                                            <li><input name="bsc" value="31191" type="checkbox"> <span>GZM03B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31091" type="checkbox"> <span>GZM03B2</span>
+                                            </li>
+                                            <li><input name="bsc" value="31202" type="checkbox"> <span>GZM03B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="611" type="checkbox"> <span>GZM04B1</span></li>
+                                            <li><input name="bsc" value="31151" type="checkbox"> <span>GZM04B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="610" type="checkbox"> <span>GZM04B2</span></li>
+                                            <li><input name="bsc" value="31243" type="checkbox"> <span>GZM04B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31081" type="checkbox"> <span>GZM05B1</span>
+                                            </li>
+                                            <li><input name="bsc" value="31172" type="checkbox"> <span>GZM05B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31096" type="checkbox"> <span>GZM05B2</span>
+                                            </li>
+                                            <li><input name="bsc" value="31212" type="checkbox"> <span>GZM05B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31087" type="checkbox"> <span>GZM06B1</span>
+                                            </li>
+                                            <li><input name="bsc" value="31141" type="checkbox"> <span>GZM06B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31093" type="checkbox"> <span>GZM06B2</span>
+                                            </li>
+                                            <li><input name="bsc" value="31256" type="checkbox"> <span>GZM06B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31070" type="checkbox"> <span>GZM07B1</span>
+                                            </li>
+                                            <li><input name="bsc" value="31242" type="checkbox"> <span>GZM07B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31098" type="checkbox"> <span>GZM07B2</span>
+                                            </li>
+                                            <li><input name="bsc" value="31132" type="checkbox"> <span>GZM07B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31092" type="checkbox"> <span>GZM08B1</span>
+                                            </li>
+                                            <li><input name="bsc" value="31118" type="checkbox"> <span>GZM08B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31094" type="checkbox"> <span>GZM08B2</span>
+                                            </li>
+                                            <li><input name="bsc" value="31223" type="checkbox"> <span>GZM08B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="591" type="checkbox"> <span>GZM09B2</span></li>
+                                            <li><input name="bsc" value="31228" type="checkbox"> <span>GZM09B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="646" type="checkbox"> <span>GZM09BA</span></li>
+                                            <li><input name="bsc" value="31215" type="checkbox"> <span>GZM09BAR12</span>
+                                            </li>
+                                            <li><input name="bsc" value="606" type="checkbox"> <span>GZM10B1</span></li>
+                                            <li><input name="bsc" value="31206" type="checkbox"> <span>GZM10B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="607" type="checkbox"> <span>GZM10B2</span></li>
+                                            <li><input name="bsc" value="31174" type="checkbox"> <span>GZM10B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31079" type="checkbox"> <span>GZM11B1</span>
+                                            </li>
+                                            <li><input name="bsc" value="31125" type="checkbox"> <span>GZM11B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31085" type="checkbox"> <span>GZM11B2</span>
+                                            </li>
+                                            <li><input name="bsc" value="31116" type="checkbox"> <span>GZM11B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="592" type="checkbox"> <span>GZM12B1</span></li>
+                                            <li><input name="bsc" value="31217" type="checkbox"> <span>GZM12B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="593" type="checkbox"> <span>GZM12B2</span></li>
+                                            <li><input name="bsc" value="31185" type="checkbox"> <span>GZM12B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="587" type="checkbox"> <span>GZM13B1</span></li>
+                                            <li><input name="bsc" value="31226" type="checkbox"> <span>GZM13B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31083" type="checkbox"> <span>GZM13B2</span>
+                                            </li>
+                                            <li><input name="bsc" value="31145" type="checkbox"> <span>GZM13B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30788" type="checkbox"> <span>GZM14B1</span>
+                                            </li>
+                                            <li><input name="bsc" value="31123" type="checkbox"> <span>GZM14B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30715" type="checkbox"> <span>GZM14B2</span>
+                                            </li>
+                                            <li><input name="bsc" value="31112" type="checkbox"> <span>GZM14B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="600" type="checkbox"> <span>GZM15B1</span></li>
+                                            <li><input name="bsc" value="31238" type="checkbox"> <span>GZM15B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="601" type="checkbox"> <span>GZM15B2</span></li>
+                                            <li><input name="bsc" value="31255" type="checkbox"> <span>GZM15B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31072" type="checkbox"> <span>GZM16B1</span>
+                                            </li>
+                                            <li><input name="bsc" value="31200" type="checkbox"> <span>GZM16B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31077" type="checkbox"> <span>GZM16B2</span>
+                                            </li>
+                                            <li><input name="bsc" value="31216" type="checkbox"> <span>GZM16B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="627" type="checkbox"> <span>GZM17B1</span></li>
+                                            <li><input name="bsc" value="31152" type="checkbox"> <span>GZM17B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="615" type="checkbox"> <span>GZM17B2</span></li>
+                                            <li><input name="bsc" value="31246" type="checkbox"> <span>GZM17B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="618" type="checkbox"> <span>GZM17B3</span></li>
+                                            <li><input name="bsc" value="31165" type="checkbox"> <span>GZM17B3R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31090" type="checkbox"> <span>GZM18B1</span>
+                                            </li>
+                                            <li><input name="bsc" value="31214" type="checkbox"> <span>GZM18B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="624" type="checkbox"> <span>GZM19B1</span></li>
+                                            <li><input name="bsc" value="31193" type="checkbox"> <span>GZM19B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31078" type="checkbox"> <span>GZM19B2</span>
+                                            </li>
+                                            <li><input name="bsc" value="31252" type="checkbox"> <span>GZM19B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31080" type="checkbox"> <span>GZM20B1</span>
+                                            </li>
+                                            <li><input name="bsc" value="31196" type="checkbox"> <span>GZM20B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31102" type="checkbox"> <span>GZM20B2</span>
+                                            </li>
+                                            <li><input name="bsc" value="31162" type="checkbox"> <span>GZM20B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31097" type="checkbox"> <span>GZM21B1</span>
+                                            </li>
+                                            <li><input name="bsc" value="31121" type="checkbox"> <span>GZM21B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31088" type="checkbox"> <span>GZM22B1</span>
+                                            </li>
+                                            <li><input name="bsc" value="31139" type="checkbox"> <span>GZM22B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="586" type="checkbox"> <span>GZM22B2</span></li>
+                                            <li><input name="bsc" value="31130" type="checkbox"> <span>GZM22B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31069" type="checkbox"> <span>GZM23B1</span>
+                                            </li>
+                                            <li><input name="bsc" value="31127" type="checkbox"> <span>GZM23B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30783" type="checkbox"> <span>GZM23B2</span>
+                                            </li>
+                                            <li><input name="bsc" value="31138" type="checkbox"> <span>GZM23B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31082" type="checkbox"> <span>GZM24B1</span>
+                                            </li>
+                                            <li><input name="bsc" value="31137" type="checkbox"> <span>GZM24B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="612" type="checkbox"> <span>GZM25B1</span></li>
+                                            <li><input name="bsc" value="31211" type="checkbox"> <span>GZM25B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31089" type="checkbox"> <span>GZM25B2</span>
+                                            </li>
+                                            <li><input name="bsc" value="31197" type="checkbox"> <span>GZM25B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="609" type="checkbox"> <span>GZM25B3</span></li>
+                                            <li><input name="bsc" value="31225" type="checkbox"> <span>GZM25B3R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="608" type="checkbox"> <span>GZM26B1</span></li>
+                                            <li><input name="bsc" value="31227" type="checkbox"> <span>GZM26B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31075" type="checkbox"> <span>GZM26B2</span>
+                                            </li>
+                                            <li><input name="bsc" value="31143" type="checkbox"> <span>GZM26B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="598" type="checkbox"> <span>GZM27B1</span></li>
+                                            <li><input name="bsc" value="31192" type="checkbox"> <span>GZM27B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="599" type="checkbox"> <span>GZM28B1</span></li>
+                                            <li><input name="bsc" value="31164" type="checkbox"> <span>GZM28B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="588" type="checkbox"> <span>GZM28B2</span></li>
+                                            <li><input name="bsc" value="31244" type="checkbox"> <span>GZM28B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="590" type="checkbox"> <span>GZM28B3</span></li>
+                                            <li><input name="bsc" value="31178" type="checkbox"> <span>GZM28B3R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31086" type="checkbox"> <span>GZM29B1</span>
+                                            </li>
+                                            <li><input name="bsc" value="31180" type="checkbox"> <span>GZM29B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31074" type="checkbox"> <span>GZM29B2</span>
+                                            </li>
+                                            <li><input name="bsc" value="31133" type="checkbox"> <span>GZM29B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30742" type="checkbox"> <span>GZM29B3</span>
+                                            </li>
+                                            <li><input name="bsc" value="31187" type="checkbox"> <span>GZM29B3R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31076" type="checkbox"> <span>GZM30B1</span>
+                                            </li>
+                                            <li><input name="bsc" value="31117" type="checkbox"> <span>GZM30B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31095" type="checkbox"> <span>GZM30B2</span>
+                                            </li>
+                                            <li><input name="bsc" value="31210" type="checkbox"> <span>GZM30B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30740" type="checkbox"> <span>GZM30B3</span>
+                                            </li>
+                                            <li><input name="bsc" value="31190" type="checkbox"> <span>GZM30B3R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31084" type="checkbox"> <span>GZM31B1</span>
+                                            </li>
+                                            <li><input name="bsc" value="31203" type="checkbox"> <span>GZM31B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="589" type="checkbox"> <span>GZM31B2</span></li>
+                                            <li><input name="bsc" value="31260" type="checkbox"> <span>GZM31B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="644" type="checkbox"> <span>GZM32A1</span></li>
+                                            <li><input name="bsc" value="31184" type="checkbox"> <span>GZM32A1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31099" type="checkbox"> <span>GZM32B2</span>
+                                            </li>
+                                            <li><input name="bsc" value="31115" type="checkbox"> <span>GZM32B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="31071" type="checkbox"> <span>GZM33B1</span>
+                                            </li>
+                                            <li><input name="bsc" value="31231" type="checkbox"> <span>GZM33B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30726" type="checkbox"> <span>GZM33B2</span>
+                                            </li>
+                                            <li><input name="bsc" value="31166" type="checkbox"> <span>GZM33B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30786" type="checkbox"> <span>GZM34B1</span>
+                                            </li>
+                                            <li><input name="bsc" value="31160" type="checkbox"> <span>GZM34B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30772" type="checkbox"> <span>GZM34B2</span>
+                                            </li>
+                                            <li><input name="bsc" value="31120" type="checkbox"> <span>GZM34B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30713" type="checkbox"> <span>GZM34B3</span>
+                                            </li>
+                                            <li><input name="bsc" value="31224" type="checkbox"> <span>GZM34B3R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30760" type="checkbox"> <span>GZM34B4</span>
+                                            </li>
+                                            <li><input name="bsc" value="31153" type="checkbox"> <span>GZM34B4R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30698" type="checkbox"> <span>GZM34B5</span>
+                                            </li>
+                                            <li><input name="bsc" value="31209" type="checkbox"> <span>GZM34B5R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30766" type="checkbox"> <span>GZM34B6</span>
+                                            </li>
+                                            <li><input name="bsc" value="31241" type="checkbox"> <span>GZM34B6R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30733" type="checkbox"> <span>GZM35B1</span>
+                                            </li>
+                                            <li><input name="bsc" value="31111" type="checkbox"> <span>GZM35B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30762" type="checkbox"> <span>GZM35B2</span>
+                                            </li>
+                                            <li><input name="bsc" value="31250" type="checkbox"> <span>GZM35B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30729" type="checkbox"> <span>GZM35B3</span>
+                                            </li>
+                                            <li><input name="bsc" value="31126" type="checkbox"> <span>GZM35B3R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30773" type="checkbox"> <span>GZM35B4</span>
+                                            </li>
+                                            <li><input name="bsc" value="31144" type="checkbox"> <span>GZM35B4R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30770" type="checkbox"> <span>GZM35B5</span>
+                                            </li>
+                                            <li><input name="bsc" value="31170" type="checkbox"> <span>GZM35B5R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="636" type="checkbox"> <span>GZM35B6</span></li>
+                                            <li><input name="bsc" value="31173" type="checkbox"> <span>GZM35B6R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="634" type="checkbox"> <span>GZM36B1</span></li>
+                                            <li><input name="bsc" value="31245" type="checkbox"> <span>GZM36B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="635" type="checkbox"> <span>GZM36B2</span></li>
+                                            <li><input name="bsc" value="31129" type="checkbox"> <span>GZM36B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="637" type="checkbox"> <span>GZM36B3</span></li>
+                                            <li><input name="bsc" value="31259" type="checkbox"> <span>GZM36B3R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="638" type="checkbox"> <span>GZM36B4</span></li>
+                                            <li><input name="bsc" value="31232" type="checkbox"> <span>GZM36B4R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="640" type="checkbox"> <span>GZM36B5</span></li>
+                                            <li><input name="bsc" value="31169" type="checkbox"> <span>GZM36B5R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="631" type="checkbox"> <span>GZM37B1</span></li>
+                                            <li><input name="bsc" value="31205" type="checkbox"> <span>GZM37B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="633" type="checkbox"> <span>GZM37B2</span></li>
+                                            <li><input name="bsc" value="31146" type="checkbox"> <span>GZM37B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="632" type="checkbox"> <span>GZM37B3</span></li>
+                                            <li><input name="bsc" value="31249" type="checkbox"> <span>GZM37B3R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="641" type="checkbox"> <span>GZM37B4</span></li>
+                                            <li><input name="bsc" value="31189" type="checkbox"> <span>GZM37B4R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="642" type="checkbox"> <span>GZM37B5</span></li>
+                                            <li><input name="bsc" value="31150" type="checkbox"> <span>GZM37B5R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="643" type="checkbox"> <span>GZM37B6</span></li>
+                                            <li><input name="bsc" value="31221" type="checkbox"> <span>GZM37B6R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30704" type="checkbox"> <span>GZM38B2</span>
+                                            </li>
+                                            <li><input name="bsc" value="31230" type="checkbox"> <span>GZM38B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="616" type="checkbox"> <span>GZM38B3</span></li>
+                                            <li><input name="bsc" value="31235" type="checkbox"> <span>GZM38B3R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="613" type="checkbox"> <span>GZM38B4</span></li>
+                                            <li><input name="bsc" value="31148" type="checkbox"> <span>GZM38B4R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="619" type="checkbox"> <span>GZM38B5</span></li>
+                                            <li><input name="bsc" value="31167" type="checkbox"> <span>GZM38B5R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="645" type="checkbox"> <span>GZM39B2</span></li>
+                                            <li><input name="bsc" value="31157" type="checkbox"> <span>GZM39B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30696" type="checkbox"> <span>GZM39B3</span>
+                                            </li>
+                                            <li><input name="bsc" value="31251" type="checkbox"> <span>GZM39B3R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30785" type="checkbox"> <span>GZM39B4</span>
+                                            </li>
+                                            <li><input name="bsc" value="31128" type="checkbox"> <span>GZM39B4R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30707" type="checkbox"> <span>GZM39B5</span>
+                                            </li>
+                                            <li><input name="bsc" value="31154" type="checkbox"> <span>GZM39B5R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30761" type="checkbox"> <span>GZM39B6</span>
+                                            </li>
+                                            <li><input name="bsc" value="31147" type="checkbox"> <span>GZM39B6R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30790" type="checkbox"> <span>GZM40B4</span>
+                                            </li>
+                                            <li><input name="bsc" value="31114" type="checkbox"> <span>GZM40B4R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30748" type="checkbox"> <span>GZM40B6</span>
+                                            </li>
+                                            <li><input name="bsc" value="31156" type="checkbox"> <span>GZM40B6R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30711" type="checkbox"> <span>GZM40B7</span>
+                                            </li>
+                                            <li><input name="bsc" value="31254" type="checkbox"> <span>GZM40B7R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30721" type="checkbox"> <span>GZM40B8</span>
+                                            </li>
+                                            <li><input name="bsc" value="31213" type="checkbox"> <span>GZM40B8R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30758" type="checkbox"> <span>GZM41B1</span>
+                                            </li>
+                                            <li><input name="bsc" value="31140" type="checkbox"> <span>GZM41B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30725" type="checkbox"> <span>GZM41B2</span>
+                                            </li>
+                                            <li><input name="bsc" value="31247" type="checkbox"> <span>GZM41B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30756" type="checkbox"> <span>GZM41B3</span>
+                                            </li>
+                                            <li><input name="bsc" value="31179" type="checkbox"> <span>GZM41B3R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="594" type="checkbox"> <span>GZM41B4</span></li>
+                                            <li><input name="bsc" value="31163" type="checkbox"> <span>GZM41B4R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30775" type="checkbox"> <span>GZM41B5</span>
+                                            </li>
+                                            <li><input name="bsc" value="31258" type="checkbox"> <span>GZM41B5R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30712" type="checkbox"> <span>GZM42B1</span>
+                                            </li>
+                                            <li><input name="bsc" value="31119" type="checkbox"> <span>GZM42B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="458" type="checkbox"> <span>GZM42B2</span></li>
+                                            <li><input name="bsc" value="31222" type="checkbox"> <span>GZM42B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="1277" type="checkbox"> <span>GZM42B5</span>
+                                            </li>
+                                            <li><input name="bsc" value="31110" type="checkbox"> <span>GZM42B5R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="1279" type="checkbox"> <span>GZM42B6</span>
+                                            </li>
+                                            <li><input name="bsc" value="31159" type="checkbox"> <span>GZM42B6R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30768" type="checkbox"> <span>GZM42B7</span>
+                                            </li>
+                                            <li><input name="bsc" value="31198" type="checkbox"> <span>GZM42B7R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="625" type="checkbox"> <span>GZM43B2</span></li>
+                                            <li><input name="bsc" value="31155" type="checkbox"> <span>GZM43B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30749" type="checkbox"> <span>GZM43B4</span>
+                                            </li>
+                                            <li><input name="bsc" value="31257" type="checkbox"> <span>GZM43B4R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30730" type="checkbox"> <span>GZM44B5</span>
+                                            </li>
+                                            <li><input name="bsc" value="31186" type="checkbox"> <span>GZM44B5R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="628" type="checkbox"> <span>GZM44B6</span></li>
+                                            <li><input name="bsc" value="31181" type="checkbox"> <span>GZM44B6R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30734" type="checkbox"> <span>GZM44B7</span>
+                                            </li>
+                                            <li><input name="bsc" value="31161" type="checkbox"> <span>GZM44B7R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30722" type="checkbox"> <span>GZM44B8</span>
+                                            </li>
+                                            <li><input name="bsc" value="31236" type="checkbox"> <span>GZM44B8R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="622" type="checkbox"> <span>GZM45B1</span></li>
+                                            <li><input name="bsc" value="31158" type="checkbox"> <span>GZM45B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="621" type="checkbox"> <span>GZM45B2</span></li>
+                                            <li><input name="bsc" value="31182" type="checkbox"> <span>GZM45B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="617" type="checkbox"> <span>GZM45B3</span></li>
+                                            <li><input name="bsc" value="31168" type="checkbox"> <span>GZM45B3R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="614" type="checkbox"> <span>GZM45B4</span></li>
+                                            <li><input name="bsc" value="31240" type="checkbox"> <span>GZM45B4R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="620" type="checkbox"> <span>GZM45B5</span></li>
+                                            <li><input name="bsc" value="31113" type="checkbox"> <span>GZM45B5R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30718" type="checkbox"> <span>GZM46B1</span>
+                                            </li>
+                                            <li><input name="bsc" value="31204" type="checkbox"> <span>GZM46B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30765" type="checkbox"> <span>GZM46B2</span>
+                                            </li>
+                                            <li><input name="bsc" value="31239" type="checkbox"> <span>GZM46B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30732" type="checkbox"> <span>GZM46B3</span>
+                                            </li>
+                                            <li><input name="bsc" value="31188" type="checkbox"> <span>GZM46B3R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="629" type="checkbox"> <span>GZM46B4</span></li>
+                                            <li><input name="bsc" value="31134" type="checkbox"> <span>GZM46B4R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30738" type="checkbox"> <span>GZM47B1</span>
+                                            </li>
+                                            <li><input name="bsc" value="31220" type="checkbox"> <span>GZM47B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="602" type="checkbox"> <span>GZM47B2</span></li>
+                                            <li><input name="bsc" value="31142" type="checkbox"> <span>GZM47B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="603" type="checkbox"> <span>GZM47B3</span></li>
+                                            <li><input name="bsc" value="31171" type="checkbox"> <span>GZM47B3R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="604" type="checkbox"> <span>GZM48B1</span></li>
+                                            <li><input name="bsc" value="31234" type="checkbox"> <span>GZM48B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30755" type="checkbox"> <span>GZM48B2</span>
+                                            </li>
+                                            <li><input name="bsc" value="31208" type="checkbox"> <span>GZM48B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30753" type="checkbox"> <span>GZM49B1</span>
+                                            </li>
+                                            <li><input name="bsc" value="31194" type="checkbox"> <span>GZM49B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30700" type="checkbox"> <span>GZM49B2</span>
+                                            </li>
+                                            <li><input name="bsc" value="31248" type="checkbox"> <span>GZM49B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30780" type="checkbox"> <span>GZM49B3</span>
+                                            </li>
+                                            <li><input name="bsc" value="31207" type="checkbox"> <span>GZM49B3R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30791" type="checkbox"> <span>GZM49B4</span>
+                                            </li>
+                                            <li><input name="bsc" value="31233" type="checkbox"> <span>GZM49B4R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30787" type="checkbox"> <span>GZM50B1</span>
+                                            </li>
+                                            <li><input name="bsc" value="31261" type="checkbox"> <span>GZM50B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30759" type="checkbox"> <span>GZM50B2</span>
+                                            </li>
+                                            <li><input name="bsc" value="31201" type="checkbox"> <span>GZM50B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30752" type="checkbox"> <span>GZM50B3</span>
+                                            </li>
+                                            <li><input name="bsc" value="31253" type="checkbox"> <span>GZM50B3R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="596" type="checkbox"> <span>GZM50B4</span></li>
+                                            <li><input name="bsc" value="31219" type="checkbox"> <span>GZM50B4R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="630" type="checkbox"> <span>GZM51B1</span></li>
+                                            <li><input name="bsc" value="31237" type="checkbox"> <span>GZM51B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30745" type="checkbox"> <span>GZM51B2</span>
+                                            </li>
+                                            <li><input name="bsc" value="31136" type="checkbox"> <span>GZM51B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30697" type="checkbox"> <span>GZM51B3</span>
+                                            </li>
+                                            <li><input name="bsc" value="31177" type="checkbox"> <span>GZM51B3R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30769" type="checkbox"> <span>GZM52B1</span>
+                                            </li>
+                                            <li><input name="bsc" value="31175" type="checkbox"> <span>GZM52B1R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30706" type="checkbox"> <span>GZM52B2</span>
+                                            </li>
+                                            <li><input name="bsc" value="31135" type="checkbox"> <span>GZM52B2R12</span>
+                                            </li>
+                                            <li><input name="bsc" value="30744" type="checkbox"> <span>GZM52B3</span>
+                                            </li>
+                                            <li class="last"><input name="bsc" value="31199" type="checkbox"> <span>GZM52B3R12</span>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="border:1px solid #CDCDCD;background:white;overflow-x:scroll;overflow-y:scroll;width: 240px;height: 400px">
+                                <ul id="paramCheckBox" class="treeview">
+                                    <li class="expandable lastExpandable">
+                                        <div class="hitarea expandable-hitarea lastExpandable-hitarea"></div>
+                                        <input name="pmChk" checked="checked" type="checkbox"><span>全选</span>
+                                        <ul style="display: none;">
+                                            <li class="expandable">
+                                                <div class="hitarea expandable-hitarea"></div>
+                                                <input name="pmChk" checked="checked" type="checkbox"> <span>A</span>
+                                                <ul style="display: none;">
+                                                    <li><input name="params" checked="checked" value="ACC"
+                                                               type="checkbox"> <span>ACC</span></li>
+                                                    <li><input name="params" checked="checked" value="ACCMIN"
+                                                               type="checkbox"> <span>ACCMIN</span></li>
+                                                    <li><input name="params" checked="checked" value="ACSTATE"
+                                                               type="checkbox"> <span>ACSTATE</span></li>
+                                                    <li><input name="params" checked="checked" value="ACTIVEMBCCHNO"
+                                                               type="checkbox"> <span>ACTIVEMBCCHNO</span></li>
+                                                    <li><input name="params" checked="checked" value="AGBLK"
+                                                               type="checkbox"> <span>AGBLK</span></li>
+                                                    <li><input name="params" checked="checked" value="ATT"
+                                                               type="checkbox"> <span>ATT</span></li>
+                                                    <li class="last"><input name="params" checked="checked" value="AW"
+                                                                            type="checkbox"> <span>AW</span></li>
+                                                </ul>
+                                            </li>
+                                            <li class="expandable">
+                                                <div class="hitarea expandable-hitarea"></div>
+                                                <input name="pmChk" checked="checked" type="checkbox"> <span>B</span>
+                                                <ul style="display: none;">
+                                                    <li><input name="params" checked="checked" value="BCCH"
+                                                               type="checkbox"> <span>BCCH</span></li>
+                                                    <li><input name="params" checked="checked" value="BCCHTYPE"
+                                                               type="checkbox"> <span>BCCHTYPE</span></li>
+                                                    <li><input name="params" checked="checked" value="BSIC"
+                                                               type="checkbox"> <span>BSIC</span></li>
+                                                    <li><input name="params" checked="checked" value="BSPWR"
+                                                               type="checkbox"> <span>BSPWR</span></li>
+                                                    <li><input name="params" checked="checked" value="BSPWRB"
+                                                               type="checkbox"> <span>BSPWRB</span></li>
+                                                    <li><input name="params" checked="checked" value="BSPWRMIN"
+                                                               type="checkbox"> <span>BSPWRMIN</span></li>
+                                                    <li><input name="params" checked="checked" value="BSPWRT"
+                                                               type="checkbox"> <span>BSPWRT</span></li>
+                                                    <li><input name="params" checked="checked" value="BSRXMIN"
+                                                               type="checkbox"> <span>BSRXMIN</span></li>
+                                                    <li><input name="params" checked="checked" value="BSRXSUFF"
+                                                               type="checkbox"> <span>BSRXSUFF</span></li>
+                                                    <li><input name="params" checked="checked" value="BSTXPWR"
+                                                               type="checkbox"> <span>BSTXPWR</span></li>
+                                                    <li><input name="params" checked="checked" value="BTSPS"
+                                                               type="checkbox"> <span>BTSPS</span></li>
+                                                    <li class="last"><input name="params" checked="checked"
+                                                                            value="BTSPSHYST" type="checkbox"> <span>BTSPSHYST</span>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="expandable">
+                                                <div class="hitarea expandable-hitarea"></div>
+                                                <input name="pmChk" checked="checked" type="checkbox"> <span>C</span>
+                                                <ul style="display: none;">
+                                                    <li><input name="params" checked="checked" value="CB"
+                                                               type="checkbox"> <span>CB</span></li>
+                                                    <li><input name="params" checked="checked" value="CBQ"
+                                                               type="checkbox"> <span>CBQ</span></li>
+                                                    <li><input name="params" checked="checked" value="CCHPWR"
+                                                               type="checkbox"> <span>CCHPWR</span></li>
+                                                    <li><input name="params" checked="checked" value="CELLQ"
+                                                               type="checkbox"> <span>CELLQ</span></li>
+                                                    <li><input name="params" checked="checked" value="CHAP"
+                                                               type="checkbox"> <span>CHAP</span></li>
+                                                    <li><input name="params" checked="checked" value="CHCSDL"
+                                                               type="checkbox"> <span>CHCSDL</span></li>
+                                                    <li><input name="params" checked="checked" value="CI"
+                                                               type="checkbox"> <span>CI</span></li>
+                                                    <li><input name="params" checked="checked" value="CLSACC"
+                                                               type="checkbox"> <span>CLSACC</span></li>
+                                                    <li><input name="params" checked="checked" value="CLSLEVEL"
+                                                               type="checkbox"> <span>CLSLEVEL</span></li>
+                                                    <li><input name="params" checked="checked" value="CLSRAMP"
+                                                               type="checkbox"> <span>CLSRAMP</span></li>
+                                                    <li><input name="params" checked="checked" value="CLS_STATUS"
+                                                               type="checkbox"> <span>CLS_STATUS</span></li>
+                                                    <li><input name="params" checked="checked" value="CRH"
+                                                               type="checkbox"> <span>CRH</span></li>
+                                                    <li><input name="params" checked="checked" value="CRO"
+                                                               type="checkbox"> <span>CRO</span></li>
+                                                    <li><input name="params" checked="checked" value="CSPSALLOC"
+                                                               type="checkbox"> <span>CSPSALLOC</span></li>
+                                                    <li><input name="params" checked="checked" value="CSPSPRIO"
+                                                               type="checkbox"> <span>CSPSPRIO</span></li>
+                                                    <li class="last"><input name="params" checked="checked"
+                                                                            value="C_SYS_TYPE" type="checkbox"> <span>C_SYS_TYPE</span>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="expandable">
+                                                <div class="hitarea expandable-hitarea"></div>
+                                                <input name="pmChk" checked="checked" type="checkbox"> <span>D</span>
+                                                <ul style="display: none;">
+                                                    <li><input name="params" checked="checked" value="DHA"
+                                                               type="checkbox"> <span>DHA</span></li>
+                                                    <li><input name="params" checked="checked" value="DMPR"
+                                                               type="checkbox"> <span>DMPR</span></li>
+                                                    <li><input name="params" checked="checked" value="DTMSTATE"
+                                                               type="checkbox"> <span>DTMSTATE</span></li>
+                                                    <li><input name="params" checked="checked" value="DTXD"
+                                                               type="checkbox"> <span>DTXD</span></li>
+                                                    <li><input name="params" checked="checked" value="DTXU"
+                                                               type="checkbox"> <span>DTXU</span></li>
+                                                    <li><input name="params" checked="checked" value="DYNBTSPWR_STATE"
+                                                               type="checkbox"> <span>DYNBTSPWR_STATE</span></li>
+                                                    <li class="last"><input name="params" checked="checked"
+                                                                            value="DYNMSPWR_STATE" type="checkbox">
+                                                        <span>DYNMSPWR_STATE</span></li>
+                                                </ul>
+                                            </li>
+                                            <li class="expandable">
+                                                <div class="hitarea expandable-hitarea"></div>
+                                                <input name="pmChk" checked="checked" type="checkbox"> <span>E</span>
+                                                <ul style="display: none;">
+                                                    <li class="last"><input name="params" checked="checked" value="ECSC"
+                                                                            type="checkbox"> <span>ECSC</span></li>
+                                                </ul>
+                                            </li>
+                                            <li class="expandable">
+                                                <div class="hitarea expandable-hitarea"></div>
+                                                <input name="pmChk" checked="checked" type="checkbox"> <span>F</span>
+                                                <ul style="display: none;">
+                                                    <li><input name="params" checked="checked" value="FASTMSREG"
+                                                               type="checkbox"> <span>FASTMSREG</span></li>
+                                                    <li><input name="params" checked="checked" value="FLEXHIGHGPRS"
+                                                               type="checkbox"> <span>FLEXHIGHGPRS</span></li>
+                                                    <li><input name="params" checked="checked" value="FNOFFSET"
+                                                               type="checkbox"> <span>FNOFFSET</span></li>
+                                                    <li class="last"><input name="params" checked="checked"
+                                                                            value="FPDCH" type="checkbox">
+                                                        <span>FPDCH</span></li>
+                                                </ul>
+                                            </li>
+                                            <li class="expandable">
+                                                <div class="hitarea expandable-hitarea"></div>
+                                                <input name="pmChk" checked="checked" type="checkbox"> <span>G</span>
+                                                <ul style="display: none;">
+                                                    <li><input name="params" checked="checked" value="GAMMA"
+                                                               type="checkbox"> <span>GAMMA</span></li>
+                                                    <li><input name="params" checked="checked" value="GPRSPRIO"
+                                                               type="checkbox"> <span>GPRSPRIO</span></li>
+                                                    <li class="last"><input name="params" checked="checked"
+                                                                            value="GPRSSUP" type="checkbox"> <span>GPRSSUP</span>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="expandable">
+                                                <div class="hitarea expandable-hitarea"></div>
+                                                <input name="pmChk" checked="checked" type="checkbox"> <span>H</span>
+                                                <ul style="display: none;">
+                                                    <li><input name="params" checked="checked" value="HCSIN"
+                                                               type="checkbox"> <span>HCSIN</span></li>
+                                                    <li><input name="params" checked="checked" value="HCSOUT"
+                                                               type="checkbox"> <span>HCSOUT</span></li>
+                                                    <li><input name="params" checked="checked" value="HOCLSACC"
+                                                               type="checkbox"> <span>HOCLSACC</span></li>
+                                                    <li class="last"><input name="params" checked="checked"
+                                                                            value="HYSTSEP" type="checkbox"> <span>HYSTSEP</span>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="expandable">
+                                                <div class="hitarea expandable-hitarea"></div>
+                                                <input name="pmChk" checked="checked" type="checkbox"> <span>I</span>
+                                                <ul style="display: none;">
+                                                    <li><input name="params" checked="checked" value="IDLEMBCCHNO"
+                                                               type="checkbox"> <span>IDLEMBCCHNO</span></li>
+                                                    <li><input name="params" checked="checked" value="IHO"
+                                                               type="checkbox"> <span>IHO</span></li>
+                                                    <li><input name="params" checked="checked" value="IRC"
+                                                               type="checkbox"> <span>IRC</span></li>
+                                                    <li class="last"><input name="params" checked="checked"
+                                                                            value="ISHOLEV" type="checkbox"> <span>ISHOLEV</span>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="expandable">
+                                                <div class="hitarea expandable-hitarea"></div>
+                                                <input name="pmChk" checked="checked" type="checkbox"> <span>L</span>
+                                                <ul style="display: none;">
+                                                    <li><input name="params" checked="checked" value="LA"
+                                                               type="checkbox"> <span>LA</span></li>
+                                                    <li><input name="params" checked="checked" value="LAC"
+                                                               type="checkbox"> <span>LAC</span></li>
+                                                    <li><input name="params" checked="checked" value="LAYER"
+                                                               type="checkbox"> <span>LAYER</span></li>
+                                                    <li><input name="params" checked="checked" value="LAYERHYST"
+                                                               type="checkbox"> <span>LAYERHYST</span></li>
+                                                    <li><input name="params" checked="checked" value="LAYERTHR"
+                                                               type="checkbox"> <span>LAYERTHR</span></li>
+                                                    <li><input name="params" checked="checked" value="LCOMPDL"
+                                                               type="checkbox"> <span>LCOMPDL</span></li>
+                                                    <li><input name="params" checked="checked" value="LCOMPUL"
+                                                               type="checkbox"> <span>LCOMPUL</span></li>
+                                                    <li><input name="params" checked="checked" value="LIMIT1"
+                                                               type="checkbox"> <span>LIMIT1</span></li>
+                                                    <li><input name="params" checked="checked" value="LIMIT2"
+                                                               type="checkbox"> <span>LIMIT2</span></li>
+                                                    <li><input name="params" checked="checked" value="LIMIT3"
+                                                               type="checkbox"> <span>LIMIT3</span></li>
+                                                    <li class="last"><input name="params" checked="checked"
+                                                                            value="LIMIT4" type="checkbox">
+                                                        <span>LIMIT4</span></li>
+                                                </ul>
+                                            </li>
+                                            <li class="expandable">
+                                                <div class="hitarea expandable-hitarea"></div>
+                                                <input name="pmChk" checked="checked" type="checkbox"> <span>M</span>
+                                                <ul style="display: none;">
+                                                    <li><input name="params" checked="checked" value="MAXIHO"
+                                                               type="checkbox"> <span>MAXIHO</span></li>
+                                                    <li><input name="params" checked="checked" value="MAXRET"
+                                                               type="checkbox"> <span>MAXRET</span></li>
+                                                    <li><input name="params" checked="checked" value="MAXTA"
+                                                               type="checkbox"> <span>MAXTA</span></li>
+                                                    <li><input name="params" checked="checked" value="MBCR"
+                                                               type="checkbox"> <span>MBCR</span></li>
+                                                    <li><input name="params" checked="checked" value="MFRMS"
+                                                               type="checkbox"> <span>MFRMS</span></li>
+                                                    <li><input name="params" checked="checked" value="MISSNM"
+                                                               type="checkbox"> <span>MISSNM</span></li>
+                                                    <li><input name="params" checked="checked" value="MPDCH"
+                                                               type="checkbox"> <span>MPDCH</span></li>
+                                                    <li><input name="params" checked="checked" value="MSRXMIN"
+                                                               type="checkbox"> <span>MSRXMIN</span></li>
+                                                    <li><input name="params" checked="checked" value="MSRXSUFF"
+                                                               type="checkbox"> <span>MSRXSUFF</span></li>
+                                                    <li class="last"><input name="params" checked="checked"
+                                                                            value="MSTXPWR" type="checkbox"> <span>MSTXPWR</span>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="expandable">
+                                                <div class="hitarea expandable-hitarea"></div>
+                                                <input name="pmChk" checked="checked" type="checkbox"> <span>N</span>
+                                                <ul style="display: none;">
+                                                    <li><input name="params" checked="checked" value="NCCPERM"
+                                                               type="checkbox"> <span>NCCPERM</span></li>
+                                                    <li class="last"><input name="params" checked="checked" value="NECI"
+                                                                            type="checkbox"> <span>NECI</span></li>
+                                                </ul>
+                                            </li>
+                                            <li class="expandable">
+                                                <div class="hitarea expandable-hitarea"></div>
+                                                <input name="pmChk" checked="checked" type="checkbox"> <span>P</span>
+                                                <ul style="display: none;">
+                                                    <li><input name="params" checked="checked" value="PDCHPREEMPT"
+                                                               type="checkbox"> <span>PDCHPREEMPT</span></li>
+                                                    <li><input name="params" checked="checked" value="PRIMPLIM"
+                                                               type="checkbox"> <span>PRIMPLIM</span></li>
+                                                    <li><input name="params" checked="checked" value="PSKONBCCH"
+                                                               type="checkbox"> <span>PSKONBCCH</span></li>
+                                                    <li><input name="params" checked="checked" value="PSSBQ"
+                                                               type="checkbox"> <span>PSSBQ</span></li>
+                                                    <li><input name="params" checked="checked" value="PSSHF"
+                                                               type="checkbox"> <span>PSSHF</span></li>
+                                                    <li><input name="params" checked="checked" value="PSSTA"
+                                                               type="checkbox"> <span>PSSTA</span></li>
+                                                    <li><input name="params" checked="checked" value="PSSTEMP"
+                                                               type="checkbox"> <span>PSSTEMP</span></li>
+                                                    <li><input name="params" checked="checked" value="PT"
+                                                               type="checkbox"> <span>PT</span></li>
+                                                    <li><input name="params" checked="checked" value="PTIMBQ"
+                                                               type="checkbox"> <span>PTIMBQ</span></li>
+                                                    <li><input name="params" checked="checked" value="PTIMHF"
+                                                               type="checkbox"> <span>PTIMHF</span></li>
+                                                    <li><input name="params" checked="checked" value="PTIMTA"
+                                                               type="checkbox"> <span>PTIMTA</span></li>
+                                                    <li class="last"><input name="params" checked="checked"
+                                                                            value="PTIMTEMP" type="checkbox"> <span>PTIMTEMP</span>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="expandable">
+                                                <div class="hitarea expandable-hitarea"></div>
+                                                <input name="pmChk" checked="checked" type="checkbox"> <span>Q</span>
+                                                <ul style="display: none;">
+                                                    <li><input name="params" checked="checked" value="QCOMPDL"
+                                                               type="checkbox"> <span>QCOMPDL</span></li>
+                                                    <li><input name="params" checked="checked" value="QCOMPUL"
+                                                               type="checkbox"> <span>QCOMPUL</span></li>
+                                                    <li><input name="params" checked="checked" value="QDESDL"
+                                                               type="checkbox"> <span>QDESDL</span></li>
+                                                    <li><input name="params" checked="checked" value="QDESUL"
+                                                               type="checkbox"> <span>QDESUL</span></li>
+                                                    <li><input name="params" checked="checked" value="QEVALSD"
+                                                               type="checkbox"> <span>QEVALSD</span></li>
+                                                    <li><input name="params" checked="checked" value="QEVALSI"
+                                                               type="checkbox"> <span>QEVALSI</span></li>
+                                                    <li><input name="params" checked="checked" value="QLENSD"
+                                                               type="checkbox"> <span>QLENSD</span></li>
+                                                    <li><input name="params" checked="checked" value="QLENSI"
+                                                               type="checkbox"> <span>QLENSI</span></li>
+                                                    <li><input name="params" checked="checked" value="QLIMDL"
+                                                               type="checkbox"> <span>QLIMDL</span></li>
+                                                    <li><input name="params" checked="checked" value="QLIMDLAFR"
+                                                               type="checkbox"> <span>QLIMDLAFR</span></li>
+                                                    <li><input name="params" checked="checked" value="QLIMUL"
+                                                               type="checkbox"> <span>QLIMUL</span></li>
+                                                    <li><input name="params" checked="checked" value="QLIMULAFR"
+                                                               type="checkbox"> <span>QLIMULAFR</span></li>
+                                                    <li><input name="params" checked="checked" value="QOFFSETDL"
+                                                               type="checkbox"> <span>QOFFSETDL</span></li>
+                                                    <li><input name="params" checked="checked" value="QOFFSETDLAFR"
+                                                               type="checkbox"> <span>QOFFSETDLAFR</span></li>
+                                                    <li><input name="params" checked="checked" value="QOFFSETUL"
+                                                               type="checkbox"> <span>QOFFSETUL</span></li>
+                                                    <li class="last"><input name="params" checked="checked"
+                                                                            value="QOFFSETULAFR" type="checkbox"> <span>QOFFSETULAFR</span>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="expandable">
+                                                <div class="hitarea expandable-hitarea"></div>
+                                                <input name="pmChk" checked="checked" type="checkbox"> <span>R</span>
+                                                <ul style="display: none;">
+                                                    <li><input name="params" checked="checked" value="RLINKT"
+                                                               type="checkbox"> <span>RLINKT</span></li>
+                                                    <li><input name="params" checked="checked" value="RLINKTAFR"
+                                                               type="checkbox"> <span>RLINKTAFR</span></li>
+                                                    <li><input name="params" checked="checked" value="RLINKTAHR"
+                                                               type="checkbox"> <span>RLINKTAHR</span></li>
+                                                    <li><input name="params" checked="checked" value="RLINKUP"
+                                                               type="checkbox"> <span>RLINKUP</span></li>
+                                                    <li><input name="params" checked="checked" value="RLINKUPAFR"
+                                                               type="checkbox"> <span>RLINKUPAFR</span></li>
+                                                    <li class="last"><input name="params" checked="checked"
+                                                                            value="RLINKUPAHR" type="checkbox"> <span>RLINKUPAHR</span>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="expandable">
+                                                <div class="hitarea expandable-hitarea"></div>
+                                                <input name="pmChk" checked="checked" type="checkbox"> <span>S</span>
+                                                <ul style="display: none;">
+                                                    <li><input name="params" checked="checked" value="SCALLOC"
+                                                               type="checkbox"> <span>SCALLOC</span></li>
+                                                    <li><input name="params" checked="checked" value="SCHO"
+                                                               type="checkbox"> <span>SCHO</span></li>
+                                                    <li><input name="params" checked="checked" value="SCLD"
+                                                               type="checkbox"> <span>SCLD</span></li>
+                                                    <li><input name="params" checked="checked" value="SCLDSC"
+                                                               type="checkbox"> <span>SCLDSC</span></li>
+                                                    <li><input name="params" checked="checked" value="SLEVEL"
+                                                               type="checkbox"> <span>SLEVEL</span></li>
+                                                    <li><input name="params" checked="checked" value="SSDESDL"
+                                                               type="checkbox"> <span>SSDESDL</span></li>
+                                                    <li><input name="params" checked="checked" value="SSDESDLAFR"
+                                                               type="checkbox"> <span>SSDESDLAFR</span></li>
+                                                    <li><input name="params" checked="checked" value="SSDESDLAHR"
+                                                               type="checkbox"> <span>SSDESDLAHR</span></li>
+                                                    <li><input name="params" checked="checked" value="SSDESUL"
+                                                               type="checkbox"> <span>SSDESUL</span></li>
+                                                    <li><input name="params" checked="checked" value="SSDESULAFR"
+                                                               type="checkbox"> <span>SSDESULAFR</span></li>
+                                                    <li><input name="params" checked="checked" value="SSDESULAHR"
+                                                               type="checkbox"> <span>SSDESULAHR</span></li>
+                                                    <li><input name="params" checked="checked" value="SSEVALSD"
+                                                               type="checkbox"> <span>SSEVALSD</span></li>
+                                                    <li><input name="params" checked="checked" value="SSEVALSI"
+                                                               type="checkbox"> <span>SSEVALSI</span></li>
+                                                    <li><input name="params" checked="checked" value="SSLENSD"
+                                                               type="checkbox"> <span>SSLENSD</span></li>
+                                                    <li><input name="params" checked="checked" value="SSLENSI"
+                                                               type="checkbox"> <span>SSLENSI</span></li>
+                                                    <li><input name="params" checked="checked" value="SSOFFSETDL"
+                                                               type="checkbox"> <span>SSOFFSETDL</span></li>
+                                                    <li><input name="params" checked="checked" value="SSOFFSETDLAFR"
+                                                               type="checkbox"> <span>SSOFFSETDLAFR</span></li>
+                                                    <li><input name="params" checked="checked" value="SSOFFSETUL"
+                                                               type="checkbox"> <span>SSOFFSETUL</span></li>
+                                                    <li><input name="params" checked="checked" value="SSOFFSETULAFR"
+                                                               type="checkbox"> <span>SSOFFSETULAFR</span></li>
+                                                    <li><input name="params" checked="checked" value="SSRAMPSD"
+                                                               type="checkbox"> <span>SSRAMPSD</span></li>
+                                                    <li><input name="params" checked="checked" value="SSRAMPSI"
+                                                               type="checkbox"> <span>SSRAMPSI</span></li>
+                                                    <li class="last"><input name="params" checked="checked"
+                                                                            value="STIME" type="checkbox">
+                                                        <span>STIME</span></li>
+                                                </ul>
+                                            </li>
+                                            <li class="expandable">
+                                                <div class="hitarea expandable-hitarea"></div>
+                                                <input name="pmChk" checked="checked" type="checkbox"> <span>T</span>
+                                                <ul style="display: none;">
+                                                    <li><input name="params" checked="checked" value="T3212"
+                                                               type="checkbox"> <span>T3212</span></li>
+                                                    <li><input name="params" checked="checked" value="TALIM"
+                                                               type="checkbox"> <span>TALIM</span></li>
+                                                    <li><input name="params" checked="checked" value="TBFDLLIM"
+                                                               type="checkbox"> <span>TBFDLLIM</span></li>
+                                                    <li><input name="params" checked="checked" value="TBFULLIM"
+                                                               type="checkbox"> <span>TBFULLIM</span></li>
+                                                    <li><input name="params" checked="checked" value="TIHO"
+                                                               type="checkbox"> <span>TIHO</span></li>
+                                                    <li><input name="params" checked="checked" value="TMAXIHO"
+                                                               type="checkbox"> <span>TMAXIHO</span></li>
+                                                    <li><input name="params" checked="checked" value="TO"
+                                                               type="checkbox"> <span>TO</span></li>
+                                                    <li class="last"><input name="params" checked="checked" value="TX"
+                                                                            type="checkbox"> <span>TX</span></li>
+                                                </ul>
+                                            </li>
+                                            <li class="expandable lastExpandable">
+                                                <div class="hitarea expandable-hitarea lastExpandable-hitarea"></div>
+                                                <input name="pmChk" checked="checked" type="checkbox"> <span>X</span>
+                                                <ul style="display: none;">
+                                                    <li class="last"><input name="params" checked="checked"
+                                                                            value="XRANGE" type="checkbox">
+                                                        <span>XRANGE</span></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </td>
+            <td style="vertical-align:top;">
+
+                <table id="contentTab" width="100%">
+                    <tbody>
+                    <tr>
+                        <td align="center">
+                            <span>BSC小区参数比较概要内容</span>
+                            <div id="paramDiffDiv" style="overflow: scroll; height: 470px; width: 1603px;">
+                                <table id="paramDiffTable" class="main-table1 half-width" width="80%">
+
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            参数：&nbsp;&nbsp;<span id="paramName" style="color :red;"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div id="paramDiffDetailDiv" style="overflow: scroll; height: 300px; width: 1603px;">
+                                <table id="paramDiffDetailTable" class="main-table1 half-width" width="80%">
+
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+</div>
+</body>
+</html>

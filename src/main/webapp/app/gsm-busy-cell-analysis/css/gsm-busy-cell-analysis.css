@@ -1,0 +1,770 @@
+
+html, body, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary, time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-variant: inherit;
+    font-weight: inherit;
+    font-stretch: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    font-family: inherit;
+    font-style: normal;
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+
+blockquote, q {
+    quotes: none;
+}
+
+blockquote::before, blockquote::after, q::before, q::after {
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+body {
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    font-stretch: normal;
+    font-size: 12px;
+    line-height: 1.231;
+    font-family: sans-serif;
+    height: 100%;
+    width: 100%;
+}
+
+select, input, textarea, button {
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    font-stretch: normal;
+    font-size: 99%;
+    line-height: normal;
+    font-family: sans-serif;
+}
+
+pre, code, kbd, samp {
+    font-family: monospace, sans-serif;
+}
+
+a {
+    color: rgb(21, 66, 139);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+a:hover {
+    text-decoration: underline;
+    outline: none;
+}
+
+a:active {
+    color: rgb(21, 66, 139);
+}
+
+ul, li, ol {
+    list-style: none outside none;
+}
+
+ol {
+    list-style-type: decimal;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+}
+
+.clearfix::before, .clearfix::after {
+    content: " ";
+    display: block;
+    height: 0;
+    overflow: hidden;
+}
+
+.clearfix::after {
+    clear: both;
+}
+
+.clearfix {
+    zoom: 1;
+}
+
+input, select, textarea {
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    font-stretch: normal;
+    font-size: 12px;
+    line-height: 1.5;
+    font-family: Tahoma, "Microsoft Yahei", Simsun, serif;
+    outline: none;
+}
+
+input[type="text"] {
+    padding: 4px;
+    background: url("../images/input.png") 0 -75px no-repeat;
+    border-width: 1px;
+    border-style: solid;
+    border-image: initial;
+    border-color: rgb(154, 154, 154) rgb(205, 205, 205) rgb(205, 205, 205) rgb(154, 154, 154);
+}
+
+input[type="button"], input[type="submit"] {
+    cursor: pointer;
+    height: 24px;
+    line-height: 24px;
+    padding: 2px 6px 3px;
+    border-right: 1px solid rgb(200, 200, 200);
+    border-left: none;
+    border-top: none;
+    border-bottom: none;
+    background: url("../images/input.png") 0 0 no-repeat;
+    position: relative;
+    top: -1px;
+}
+
+input[type="button"]:hover, input[type="submit"]:hover {
+    background-position: 0 -25px;
+    border-right: 1px solid rgb(204, 203, 203);
+}
+
+input[type="checkbox"], input[type="radio"] {
+    position: relative;
+    top: 2px;
+    left: -2px;
+    cursor: pointer;
+}
+
+select {
+    line-height: 20px;
+    padding: 2px;
+    background: url("../images/input.png") 0 -75px no-repeat;
+    border-width: 1px;
+    border-style: solid;
+    border-image: initial;
+    border-color: rgb(154, 154, 154) rgb(205, 205, 205) rgb(205, 205, 205) rgb(154, 154, 154);
+}
+
+textarea {
+    width: 400px;
+    height: 60px;
+    padding: 2px 0 0 2px;
+    background: url("../images/input.png") 0 -75px repeat-x rgb(255, 255, 255);
+    border-width: 1px;
+    border-style: solid;
+    border-image: initial;
+    border-color: rgb(154, 154, 154) rgb(205, 205, 205) rgb(205, 205, 205) rgb(154, 154, 154);
+    overflow-y: auto;
+    resize: none;
+}
+
+input, select, textarea {
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    font-stretch: normal;
+    font-size: 12px;
+    line-height: 1.5;
+    font-family: Tahoma, "Microsoft Yahei", Simsun, serif;
+    outline: none;
+}
+
+input[type="checkbox"], input[type="radio"] {
+    position: relative;
+    top: 2px;
+    left: -2px;
+    cursor: pointer;
+}
+
+input[type="text"], input[type="password"] {
+    width: 110px;
+    padding: 4px;
+    background: url("../images/input.png") 0 -75px repeat-x;
+    border-width: 1px;
+    border-style: solid;
+    border-image: initial;
+    border-color: rgb(154, 154, 154) rgb(205, 205, 205) rgb(205, 205, 205) rgb(154, 154, 154);
+    color: rgb(85, 85, 85);
+}
+
+textarea {
+    width: 400px;
+    height: 60px;
+    padding: 2px 0 0 2px;
+    background: url("../images/input.png") 0 -75px repeat-x rgb(255, 255, 255);
+    border-width: 1px;
+    border-style: solid;
+    border-image: initial;
+    border-color: rgb(154, 154, 154) rgb(205, 205, 205) rgb(205, 205, 205) rgb(154, 154, 154);
+    overflow-y: auto;
+    resize: none;
+}
+
+input[type="text"]:hover, input[type="password"]:hover, textarea:hover {
+    border: 1px solid rgb(153, 187, 232);
+}
+
+select {
+    width: auto;
+    padding: 2px;
+    background: url("../images/input.png") 0 -75px no-repeat;
+    border-width: 1px;
+    border-style: solid;
+    border-image: initial;
+    border-color: rgb(154, 154, 154) rgb(205, 205, 205) rgb(205, 205, 205) rgb(154, 154, 154);
+}
+
+input[type="button"], input[type="submit"], input[type="reset"] {
+    cursor: pointer;
+    height: 24px;
+    line-height: 24px;
+    border-right: 1px solid rgb(200, 200, 200);
+    border-left: none;
+    border-top: none;
+    border-bottom: none;
+    background: url("../images/input.png") no-repeat;
+}
+
+input[type="button"]:hover, input[type="submit"]:hover, input[type="reset"]:hover {
+    background-position: 0 -25px;
+    border-right: 1px solid rgb(204, 203, 203);
+}
+
+input[type="button"]:active, input[type="submit"]:active, input[type="reset"]:active {
+    background-position: 0 -50px;
+    border-right: 1px solid rgb(204, 203, 203);
+}
+
+.div_left_main {
+    margin: 5px;
+    background: rgb(195, 213, 237);
+    min-width: 500px;
+}
+
+.div_left_content {
+    border: 1px solid rgb(153, 188, 232);
+    background: none 0 0 repeat scroll rgb(255, 255, 255);
+    overflow: hidden;
+    min-height: 730px;
+}
+
+.div_left_top {
+    background: url("../images/white-top-bottom.gif") 0 -1px repeat-x scroll transparent;
+    border-bottom: 1px solid rgb(153, 187, 232);
+    color: rgb(21, 66, 139);
+    line-height: 26px;
+    padding: 0 5px;
+    font-weight: bold;
+}
+
+body {
+    font-family: "Microsoft yahei", Verdana, Geneva, sans-serif;
+}
+
+.map_hd {
+    margin: 0;
+    min-width: 960px;
+    position: relative;
+    width: 100%;
+    z-index: 10;
+}
+
+.head_box {
+    padding: 6px 6px 0;
+}
+
+.map_bd {
+    border-top: 1px solid rgb(204, 204, 204);
+    min-width: 960px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.dialog {
+    background: url("../images/panel_title.png") 0 0 repeat scroll transparent;
+    border: 1px solid rgb(153, 187, 232);
+    border-radius: 5px;
+    font-size: 12px;
+    padding: 10px;
+    position: absolute;
+    top: 5px;
+    left: 35px;
+    z-index: 20;
+}
+
+.resource_list_icon {
+    position: absolute;
+    right: 286px;
+    top: 0;
+    z-index: 2;
+    height: 100%;
+}
+
+.resource_list_icon .shad_v {
+    background: url("../images/shadv.png") 0 0 repeat-y transparent;
+    height: 100%;
+    right: 0;
+    position: absolute;
+    top: 0;
+    width: 4px;
+}
+
+.resource_list_icon .switch {
+    background: url("../images/flexArrow.png") no-repeat white;
+    height: 68px;
+    right: 0;
+    position: absolute;
+    top: 6px;
+    width: 18px;
+    z-index: 10;
+}
+
+.resource_list_icon .switch_hidden {
+    background: url("../images/flexArrow.png") -22px 0 no-repeat white;
+    height: 68px;
+    left: -18px;
+    position: absolute;
+    top: 6px;
+    width: 18px;
+    z-index: 10;
+    display: none;
+}
+
+.resource_list_box {
+    background: url("../images/shadh.png") 0 0 repeat-x scroll rgb(255, 255, 255);
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 286px;
+    z-index: 2;
+    box-shadow: rgb(153, 153, 153) -2px -2px 5px;
+}
+
+.resource_list_box .no_result {
+    line-height: 26px;
+    padding: 16px 0 0 20px;
+}
+
+.resource_list_box .sort_box {
+    margin: 8px 0 8px 4px;
+    padding-left: 1px;
+}
+
+.resource_list_box .sort_title {
+    float: left;
+    line-height: 18px;
+    padding: 5px 2px;
+}
+
+.resource_list {
+    overflow-y: auto;
+}
+
+.resource_list .resource_item {
+    border-bottom: 1px dashed rgb(204, 204, 204);
+    padding: 10px 0 10px 10px;
+    cursor: pointer;
+}
+
+.resource_list .resource_item:hover {
+    background-color: rgb(206, 229, 254);
+}
+
+.resource_list .resource_item .r {
+    float: left;
+    width: 220px;
+}
+
+.resource_list .resource_item .name {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 230px;
+}
+
+.resource_list .resource_item .mt5 {
+    margin-top: 5px;
+}
+
+.resource_list_box .resource_page {
+    margin: 10px 5px;
+    text-align: center;
+}
+
+.resource_list_box .resource_page a {
+    border: 1px solid rgb(154, 175, 229);
+    color: rgb(46, 106, 177);
+    margin-right: 2px;
+    padding: 2px 5px;
+    text-decoration: none;
+}
+
+.resource_list_box .resource_page a:hover {
+    background-color: lightyellow;
+    border: 1px solid rgb(43, 102, 165);
+    color: rgb(0, 0, 0);
+}
+
+.resource_list_box .resource_page span.current {
+    background-color: rgb(46, 106, 177);
+    border-right: 1px solid navy;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    margin-right: 2px;
+    padding: 2px 5px;
+}
+
+.resource_list300_icon .shad_v {
+    background: url("../images/shadv.png") 0 0 repeat-y transparent;
+    height: 100%;
+    right: 0;
+    position: absolute;
+    top: 0;
+    width: 4px;
+}
+
+.resource_list300_icon .switch {
+    background: url("../images/flexArrow.png") no-repeat transparent;
+    height: 68px;
+    right: 0;
+    position: absolute;
+    top: 6px;
+    width: 18px;
+    z-index: 10;
+}
+
+.resource_list300_icon .switch_hidden {
+    background: url("../images/flexArrow.png") -22px 0 no-repeat transparent;
+    height: 68px;
+    left: -18px;
+    position: absolute;
+    top: 6px;
+    width: 18px;
+    z-index: 10;
+    display: none;
+}
+
+.loading_cover {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 11;
+}
+
+.cover {
+    height: 100%;
+    width: 100%;
+    background: rgb(255, 255, 255);
+    opacity: 0.6;
+}
+
+.loading {
+    height: 36px;
+    line-height: 36px;
+    background: url("../images/loading_img.gif") no-repeat;
+    padding-left: 50px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -100px;
+    font-weight: normal;
+    font-size: 14px;
+}
+
+.loading_fb {
+    padding: 0 2px;
+    font-weight: bold;
+    color: rgb(0, 0, 255);
+}
+
+.dialog2 {
+    background: url("../images/panel_title.png") 0 0 repeat scroll transparent;
+    border: 1px solid rgb(153, 187, 232);
+    border-radius: 5px;
+    font-size: 12px;
+    padding: 5px;
+    position: absolute;
+    z-index: 20;
+}
+
+.ui-draggable .ui-dialog-titlebar {
+    cursor: move;
+}
+
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, input, button, textarea, p, blockquote, th, td, form {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    background: rgb(238, 238, 238);
+}
+
+#map_canvas {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 0;
+}
+
+.pano_close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 40px;
+    cursor: pointer;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 3px;
+    background: rgba(37, 37, 37, 0.9) url("http://api0.map.bdimg.com/images/panorama/close.png") no-repeat center center;
+    background-size: 90%;
+}
+
+.pano_close:hover {
+    background-image: url("http://api0.map.bdimg.com/images/panorama/close_hover.png");
+}
+
+.pano_pc_indoor_exit {
+    position: absolute;
+    right: 60px;
+    top: 10px;
+    width: 89px;
+    cursor: pointer;
+    height: 40px;
+    line-height: 40px;
+    color: rgb(235, 237, 240);
+    border-radius: 3px;
+    background: rgba(37, 37, 37, 0.9) url("http://api0.map.bdimg.com/images/panorama/indoor_exit.png") no-repeat 15px 12px;
+}
+
+.pano_pc_indoor_exit:hover {
+    background-image: url("http://api0.map.bdimg.com/images/panorama/indoor_exit_hover.png");
+    color: rgb(36, 149, 255);
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    background: #EEEEEE;
+}
+
+#map_canvas {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 0;
+}
+
+.iw_rt b {
+    color: #fff;
+    font-weight: bold;
+}
+
+.route_tip_con .route_tip span {
+    position: absolute;
+    top: 0;
+    right: 0;
+    _right: 1px;
+    width: 14px;
+    height: 13px;
+    background: url(http://api0.map.bdimg.com/images/addrPage.png?v=20121107) no-repeat 0 -121px;
+    cursor: pointer;
+}
+
+.sel_n1 .sel_body_button a {
+    display: none;
+}
+
+.sel_y .sel_body_button a {
+    display: none;
+}
+
+.sel_x .sel_body_button a {
+}
+
+.sel_x1 .sel_body_button a {
+    display: none;
+}
+
+.sel_body_resitem table {
+    margin-right: 5px;
+}
+
+.sel_body_resitem tr {
+    cursor: pointer;
+}
+
+.sel_body_resitem th {
+    padding-top: 5px;
+    padding-left: 5px;
+    text-align: left;
+    vertical-align: top;
+    width: 22px;
+}
+
+.sel_body_resitem td {
+    line-height: 160%;
+    padding: 3px 0 3px 3px;
+    vertical-align: top;
+}
+
+.sel_body_resitem div.ra_td_button input {
+    height: 18px;
+    font-size: 12px;
+    width: 40px;
+}
+
+.sel_body_body td a {
+    text-decoration: none;
+    cursor: auto;
+}
+
+.sel_body_body td a:hover, .sel_body_body td a:focus {
+    text-decoration: underline;
+}
+
+.pano_photo_item img {
+    display: inline-block;
+    border: solid 1px #252525
+}
+
+.pano_photo_item:hover img {
+    border-color: #005efc
+}
+
+.pano_close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 40px;
+    cursor: pointer;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 3px;
+    background: rgba(37, 37, 37, .9) url(http://api0.map.bdimg.com/images/panorama/close.png) no-repeat center center;
+    background-size: 90%
+}
+
+.pano_close:hover {
+    background-image: url(http://api0.map.bdimg.com/images/panorama/close_hover.png)
+}
+
+.pano_pc_indoor_exit {
+    position: absolute;
+    right: 60px;
+    top: 10px;
+    width: 89px;
+    cursor: pointer;
+    height: 40px;
+    line-height: 40px;
+    color: #ebedf0;
+    border-radius: 3px;
+    background-color: #252525;
+    background-color: rgba(37, 37, 37, .9);
+    background-image: url(http://api0.map.bdimg.com/images/panorama/indoor_exit.png);
+    background-repeat: no-repeat;
+    background-position: 15px 12px
+}
+
+.pano_pc_indoor_exit:hover {
+    background-image: url(http://api0.map.bdimg.com/images/panorama/indoor_exit_hover.png);
+    color: #2495ff
+}
+
+.navtrans-table tr {
+    color: #666
+}
+
+.navtrans-table tr:hover {
+    color: #333
+}
+
+.ui_city_change_top .ui_city_change_inner i, .ui_city_change_bottom .ui_city_change_inner i {
+    width: 8px;
+    height: 6px;
+    position: relative;
+    top: 9px;
+    left: 5px;
+    -webkit-transition: all ease-in-out .15s;
+    transition: all ease-in-out .15s;
+    display: none
+}
+
+.ui_city_change_click .ui_city_change_inner i, .ui_city_change_click_close .ui_city_change_inner i {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg)
+}
+
+.ui_city_change_top .ui_city_change_inner:hover em {
+    border-top-color: #0C88E8
+}
+
+.ui_city_change_top .ui_city_change_inner em {
+    width: 0;
+    height: 0;
+    border: 4px solid rgba(255, 255, 255, 0);
+    border-top-color: #D0D4DA;
+}
+
+.ui_city_change_bottom .ui_city_change_inner:hover em {
+    border-bottom-color: #0C88E8
+}
+
+.ui_city_change_bottom .ui_city_change_inner em {
+    width: 0;
+    height: 0;
+    border: 4px solid rgba(255, 255, 255, 0);
+    border-bottom-color: #D0D4DA;
+    position: relative;
+    top: -18px
+}
+
+#sel_city_letter_list a {
+    white-space: nowrap;
+    margin-right: 11px;
+    line-height: 18px;
+    font-size: 13px;
+    font-family: Arial, Helvetica, SimSun, sans-serif
+}
+
+#city_detail_table tr td {
+    vertical-align: top
+}
+
+.sel_city_hotcity a {
+    color: #3d6dcc
+}
+
+.sel_city_letter div {
+    font-size: 24px;
+    line-height: 24px;
+    font-weight: 700;
+    color: #ccc;
+    padding: 0;
+    margin: 0;
+    font-family: Arial, Helvetica, SimSun, sans-serif
+}
+
+.sel_city_sf a {
+    white-space: nowrap;
+    line-height: 18px;
+    color: #3d6dcc
+}

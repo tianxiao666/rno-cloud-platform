@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>结构分析任务信息</title>
+
+    <link rel="stylesheet" href="css/gsm-struct-analysis.css">
+    <link rel="stylesheet" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
+
+    <script src="../../lib/jquery/1.8.2/jquery.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.metadata.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
+    <script src="../../lib/validate.js"></script>
+    <script src="../../lib/tab.js"></script>
+    <script src="../../lib/laydate/5.0.7/laydate.js"></script>
+    <script src="js/gsm-struct-analysis-origin.js"></script>
+    <script src="js/gsm-struct-analysis.js"></script>
+</head>
+<body>
+
+<div class="loading_cover" id="loadingDataDiv" style="display: none">
+    <div class="cover"></div>
+    <h4 class="loading">
+        <em class="loading_fb" id="loadContentId"></em>,请稍侯...
+    </h4>
+</div>
+
+<font style="font-weight: bold;">当前位置： 专项优化 &gt; 结构分析 &gt; 新建结构分析任务</font>
+<br>
+<center>
+    <a href="gsm-struct-analysis.html" style="text-decoration: underline;font-weight: bold;">&lt;&lt;返回任务列表</a><br><br>
+    <font style="color: #31FF81;font-weight: bold;">任务信息</font><font
+        style="font-weight: bold;">&gt;&gt;参数配置&gt;&gt;提交任务</font>
+    <br>
+</center>
+
+<input id="provinceIdFromSession" value="0" type="hidden">
+<input id="cityIdFromSession" value="0" type="hidden">
+<input id="startTimeFromSession" value="" type="hidden">
+<input id="endTimeFromSession" value="" type="hidden">
+<input id="useEriDataSession" value="" type="hidden">
+<input id="useHwDataSession" value="" type="hidden">
+<input id="CALCONCLUSTERSession" value="" type="hidden">
+<input id="CALCLUSTERCONSTRAINSession" value="" type="hidden">
+<input id="CALCLUSTERWEIGHTSession" value="" type="hidden">
+<input id="CALCELLRESSession" value="" type="hidden">
+<input id="CALIDEALDISSession" value="" type="hidden">
+
+
+<div style="width: 100%;margin-top: 20px">
+    <table style="width:600px;margin: 0px auto;">
+        <tbody>
+        <tr>
+            <td><a id="taskInfoNextStep" name="" value="下一步 &gt;" type="button" href="gsm-struct-analysis-params.html"><input
+                    type="button" value="下一步"/></a></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <table class="taskInfoTab" rules="none">
+        <tbody>
+        <tr>
+            <td align="right">
+                区域<font style="color: red;">*</font>：<br>
+            </td>
+            <td align="left">
+                省：<select name="" class="required" id="provinceId2">
+
+            </select>
+                <input id="cityIdParam" value="88" type="hidden">
+                市：<select name="" class="required" id="cityId2">
+
+            </select>
+            </td>
+        </tr>
+        <tr>
+            <td align="right">
+                任务名称<font style="color: red;">*</font>：<br>
+                <span style="color:red;width:100px;font-family:华文中宋;" id="nameErrorText"></span>
+            </td>
+            <td align="left">
+                <textarea style="width: 330px; height: 25px; " id="taskName"></textarea>
+                <span style="color:red;width:100px;font-family:华文中宋;" id="nameError"></span>
+            </td>
+        </tr>
+        <tr>
+            <td align="right">
+                任务描述：<br>
+                <span style="color:red;width:100px;font-family:华文中宋;" id="descErrorText"></span>
+            </td>
+            <td align="left"><br>
+                <textarea style="width: 330px; height: 184px; " id="taskDescription"></textarea>
+                <span style="color:red;width:100px;font-family:华文中宋;" id="descError"></span>
+            </td>
+        </tr>
+        <tr>
+
+            <td align="right">
+                测试时间<font style="color: red;">*</font>：<br>
+                <span style="color:red;width:100px;font-family:华文中宋;" id="dateErrorText"></span>
+            </td>
+            <td align="left">
+                <input id="begDate2" name="attachParams['begDate2']"
+                       class="hasDatepicker Wdate input-text" style="width: 132px;" type="text">
+                到
+
+                <input id="endDate2" name="attachParams['endDate2']"
+                       class="hasDatepicker Wdate input-text" style="width: 132px;" type="text">
+                <span style="color:red;width:100px;font-family:华文中宋;" id="dateError"></span>
+            </td>
+        </tr>
+        <tr>
+            <td align="right">数据类型：</td>
+            <td>爱立信<input id="useEriData" name="busDataType['USEERIDATA']" checked="checked" type="checkbox">　华为<input
+                    id="useHwData" name="busDataType['USEHWDATA']" checked="checked" type="checkbox"><span
+                    id="dataTypeErrorText" style="color:red;width:100px;font-family:华文中宋;"></span></td>
+        </tr>
+        <tr>
+            <td align="right">计算步骤：</td>
+            <td>最大连通簇<input id="calConCluster" name="calProcedure['CALCONCLUSTER']" checked="checked" type="checkbox">　簇约束因子<input
+                    id="calClusterConstrain" name="calProcedure['CALCLUSTERCONSTRAIN']" checked="checked"
+                    type="checkbox">　簇权重<input id="calClusterWeight" name="calProcedure['CALCLUSTERWEIGHT']"
+                                               checked="checked" type="checkbox">　结构指数<input id="calCellRes"
+                                                                                             name="calProcedure['CALCELLRES']"
+                                                                                             checked="checked"
+                                                                                             type="checkbox">　理想距离<input
+                    id="calIdealDis" name="calProcedure['CALIDEALDIS']" checked="checked" type="checkbox"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+    var cityIdParam = $("#cityIdParam").val();
+    var cityIdFromSession = $("#cityIdFromSession").val();
+    var provinceIdFromSession = $("#provinceIdFromSession").val();
+    var startTimeFromSession = $("#startTimeFromSession").val();
+    var endTimeFromSession = $("#endTimeFromSession").val();
+
+    //console.log(cityIdFromSession+"  "+provinceIdFromSession );
+    //优先读取session的值，session值不存在读取初始值
+    if (cityIdFromSession == 0 || provinceIdFromSession == 0) {
+        $("#cityId2").val(cityIdParam);
+    } else {
+        $("#cityId2").val(cityIdFromSession);
+    }
+    if (startTimeFromSession != "" || endTimeFromSession != "") {
+        $("#beginTime").val(startTimeFromSession);
+        $("#latestAllowedTime").val(endTimeFromSession);
+    }
+
+
+    //其他设置
+    //使用数据类型
+    //是否用爱立信数据
+    if ($("#useEriDataSession").val() != "false") {
+        $("#useEriData").attr("checked", "checked");
+    } else {
+        $("#useEriData").removeAttr("checked");
+    }
+    //是否用华为数据
+    if ($("#useHwDataSession").val() != "false") {
+        $("#useHwData").attr("checked", "checked");
+    } else {
+        $("#useHwData").removeAttr("checked");
+    }
+
+    //计算步骤
+    if ($("#CALCONCLUSTERSession").val() != "false") {
+        $("#calConCluster").attr("checked", "checked");
+    } else {
+        $("#calConCluster").removeAttr("checked");
+    }
+    if ($("#CALCLUSTERCONSTRAINSession").val() != "false") {
+        $("#calClusterConstrain").attr("checked", "checked");
+    } else {
+        $("#calClusterConstrain").removeAttr("checked");
+    }
+    if ($("#CALCLUSTERWEIGHTSession").val() != "false") {
+        $("#calClusterWeight").attr("checked", "checked");
+    } else {
+        $("#calClusterWeight").removeAttr("checked");
+    }
+    if ($("#CALCELLRESSession").val() != "false") {
+        $("#calCellRes").attr("checked", "checked");
+    } else {
+        $("#calCellRes").removeAttr("checked");
+    }
+    if ($("#CALIDEALDISSession").val() != "false") {
+        $("#calIdealDis").attr("checked", "checked");
+    } else {
+        $("#calIdealDis").removeAttr("checked");
+    }
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>NCS小区信息查看</title>
+
+    <link rel="stylesheet" href="css/gsm-ncs-analysis.css">
+    <link rel="stylesheet" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
+
+    <script src="../../lib/jquery/1.8.2/jquery.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.metadata.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
+    <script src="../../lib/validate.js"></script>
+    <script src="../../lib/tab.js"></script>
+    <script src="../../lib/laydate/5.0.7/laydate.js"></script>
+    <script src="js/gsm-ncs-analysis.js"></script>
+    <script src="js/gsm-ncs-analysis-report.js"></script>
+</head>
+
+<body>
+
+<div class="loading_cover" id="loadingDataDiv" style="display: none;">
+    <div class="cover"></div>
+    <h4 class="loading">
+        <em class="loading_fb" id="loadContentId">加载BSC中</em>,请稍侯...
+    </h4>
+</div>
+
+<div id="selectCheckDateDiv" class="dialog2 draggable ui-draggable"
+     style="display:none; left:25%; top: 40%;width: 360px;">
+    <div class="dialog_header">
+        <div class="dialog_title">选择日期</div>
+        <div class="dialog_tool">
+            <div class="dialog_tool_close dialog_closeBtn" onclick="$('#selectCheckDateDiv').hide();">
+            </div>
+        </div>
+    </div>
+    <div class="dialog_content" style="background:#f9f9f9;padding:10px">
+        开始日期<input value="2017-09-25 " id="mrrMeaBegDate" name="" style="width:100px;margin-left:8px;margin-right:8px"
+                   class="hasDatepicker" type="text">
+        结束日期<input value="2017-10-25 " id="mrrMeaEndDate" name="" style="width:100px;margin-left:8px;margin-right:8px"
+                   class="hasDatepicker" type="text">
+    </div>
+</div>
+
+<table width="100%" height="100%">
+    <tbody>
+    <tr>
+        <td style="vertical-align: top" width="16%" bgcolor="#E2ECF7">
+            <div style="margin:10px">
+                <div style=" width:163px">
+                    <select name="provinceId" class="required" id="provinceId1"></select>
+                    <select name="cityId" class="required" id="cityId1"></select> <br>
+                    输入小区:<input name="" id="inputCell" style="width: 194px" type="text">
+                </div>
+                <div style="border:1px solid #CDCDCD;background:white;overflow-x:scroll;overflow-y:scroll;width: 192px;height: 524px">
+                    <ul id="allBscCell" class="filetree treeview">
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZA26R12">GZA26R12(小区数量：222)</span>
+                            <ul id="GZA26R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZA27R12">GZA27R12(小区数量：220)</span>
+                            <ul id="GZA27R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZA28R12">GZA28R12(小区数量：226)</span>
+                            <ul id="GZA28R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZC27R12">GZC27R12(小区数量：409)</span>
+                            <ul id="GZC27R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZE24R12">GZE24R12(小区数量：366)</span>
+                            <ul id="GZE24R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZF22R12">GZF22R12(小区数量：385)</span>
+                            <ul id="GZF22R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM01B1R12">GZM01B1R12(小区数量：203)</span>
+                            <ul id="GZM01B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM01B2R12">GZM01B2R12(小区数量：351)</span>
+                            <ul id="GZM01B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM02AR12">GZM02AR12(小区数量：228)</span>
+                            <ul id="GZM02AR12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM02B2R12">GZM02B2R12(小区数量：191)</span>
+                            <ul id="GZM02B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM03B1R12">GZM03B1R12(小区数量：231)</span>
+                            <ul id="GZM03B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM03B2R12">GZM03B2R12(小区数量：294)</span>
+                            <ul id="GZM03B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM04B1R12">GZM04B1R12(小区数量：212)</span>
+                            <ul id="GZM04B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM04B2R12">GZM04B2R12(小区数量：342)</span>
+                            <ul id="GZM04B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM05B1R12">GZM05B1R12(小区数量：141)</span>
+                            <ul id="GZM05B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM05B2R12">GZM05B2R12(小区数量：330)</span>
+                            <ul id="GZM05B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM06B1R12">GZM06B1R12(小区数量：245)</span>
+                            <ul id="GZM06B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM06B2R12">GZM06B2R12(小区数量：165)</span>
+                            <ul id="GZM06B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM07B1R12">GZM07B1R12(小区数量：304)</span>
+                            <ul id="GZM07B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM07B2R12">GZM07B2R12(小区数量：195)</span>
+                            <ul id="GZM07B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM08B1R12">GZM08B1R12(小区数量：150)</span>
+                            <ul id="GZM08B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM08B2R12">GZM08B2R12(小区数量：200)</span>
+                            <ul id="GZM08B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM09B2R12">GZM09B2R12(小区数量：168)</span>
+                            <ul id="GZM09B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM09BAR12">GZM09BAR12(小区数量：199)</span>
+                            <ul id="GZM09BAR12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM10B1R12">GZM10B1R12(小区数量：323)</span>
+                            <ul id="GZM10B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM10B2R12">GZM10B2R12(小区数量：214)</span>
+                            <ul id="GZM10B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM11B1R12">GZM11B1R12(小区数量：309)</span>
+                            <ul id="GZM11B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM11B2R12">GZM11B2R12(小区数量：314)</span>
+                            <ul id="GZM11B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM12B1R12">GZM12B1R12(小区数量：335)</span>
+                            <ul id="GZM12B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM12B2R12">GZM12B2R12(小区数量：183)</span>
+                            <ul id="GZM12B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM13B1R12">GZM13B1R12(小区数量：355)</span>
+                            <ul id="GZM13B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM13B2R12">GZM13B2R12(小区数量：249)</span>
+                            <ul id="GZM13B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM14B1R12">GZM14B1R12(小区数量：417)</span>
+                            <ul id="GZM14B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM14B2R12">GZM14B2R12(小区数量：176)</span>
+                            <ul id="GZM14B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM15B1R12">GZM15B1R12(小区数量：172)</span>
+                            <ul id="GZM15B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM15B2R12">GZM15B2R12(小区数量：298)</span>
+                            <ul id="GZM15B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM16B1R12">GZM16B1R12(小区数量：311)</span>
+                            <ul id="GZM16B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM16B2R12">GZM16B2R12(小区数量：317)</span>
+                            <ul id="GZM16B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM17B1R12">GZM17B1R12(小区数量：298)</span>
+                            <ul id="GZM17B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM17B2R12">GZM17B2R12(小区数量：177)</span>
+                            <ul id="GZM17B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM17B3R12">GZM17B3R12(小区数量：337)</span>
+                            <ul id="GZM17B3R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM18B1R12">GZM18B1R12(小区数量：339)</span>
+                            <ul id="GZM18B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM19B1R12">GZM19B1R12(小区数量：307)</span>
+                            <ul id="GZM19B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM19B2R12">GZM19B2R12(小区数量：318)</span>
+                            <ul id="GZM19B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM20B1R12">GZM20B1R12(小区数量：165)</span>
+                            <ul id="GZM20B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM20B2R12">GZM20B2R12(小区数量：279)</span>
+                            <ul id="GZM20B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM21B1R12">GZM21B1R12(小区数量：305)</span>
+                            <ul id="GZM21B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM22B1R12">GZM22B1R12(小区数量：238)</span>
+                            <ul id="GZM22B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM22B2R12">GZM22B2R12(小区数量：189)</span>
+                            <ul id="GZM22B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM23B1R12">GZM23B1R12(小区数量：333)</span>
+                            <ul id="GZM23B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM23B2R12">GZM23B2R12(小区数量：305)</span>
+                            <ul id="GZM23B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM24B1R12">GZM24B1R12(小区数量：297)</span>
+                            <ul id="GZM24B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM25B1R12">GZM25B1R12(小区数量：315)</span>
+                            <ul id="GZM25B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM25B2R12">GZM25B2R12(小区数量：173)</span>
+                            <ul id="GZM25B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM25B3R12">GZM25B3R12(小区数量：238)</span>
+                            <ul id="GZM25B3R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM26B1R12">GZM26B1R12(小区数量：315)</span>
+                            <ul id="GZM26B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM26B2R12">GZM26B2R12(小区数量：214)</span>
+                            <ul id="GZM26B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM27B1R12">GZM27B1R12(小区数量：317)</span>
+                            <ul id="GZM27B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM28B1R12">GZM28B1R12(小区数量：283)</span>
+                            <ul id="GZM28B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM28B2R12">GZM28B2R12(小区数量：355)</span>
+                            <ul id="GZM28B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM28B3R12">GZM28B3R12(小区数量：358)</span>
+                            <ul id="GZM28B3R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM29B1R12">GZM29B1R12(小区数量：368)</span>
+                            <ul id="GZM29B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM29B2R12">GZM29B2R12(小区数量：237)</span>
+                            <ul id="GZM29B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM29B3R12">GZM29B3R12(小区数量：327)</span>
+                            <ul id="GZM29B3R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM30B1R12">GZM30B1R12(小区数量：293)</span>
+                            <ul id="GZM30B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM30B2R12">GZM30B2R12(小区数量：212)</span>
+                            <ul id="GZM30B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM30B3R12">GZM30B3R12(小区数量：332)</span>
+                            <ul id="GZM30B3R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM31B1R12">GZM31B1R12(小区数量：279)</span>
+                            <ul id="GZM31B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM31B2R12">GZM31B2R12(小区数量：187)</span>
+                            <ul id="GZM31B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM32A1R12">GZM32A1R12(小区数量：259)</span>
+                            <ul id="GZM32A1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM32B2R12">GZM32B2R12(小区数量：211)</span>
+                            <ul id="GZM32B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM33B1R12">GZM33B1R12(小区数量：272)</span>
+                            <ul id="GZM33B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM33B2R12">GZM33B2R12(小区数量：248)</span>
+                            <ul id="GZM33B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM34B1R12">GZM34B1R12(小区数量：193)</span>
+                            <ul id="GZM34B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM34B2R12">GZM34B2R12(小区数量：176)</span>
+                            <ul id="GZM34B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM34B3R12">GZM34B3R12(小区数量：118)</span>
+                            <ul id="GZM34B3R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM34B4R12">GZM34B4R12(小区数量：83)</span>
+                            <ul id="GZM34B4R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM34B5R12">GZM34B5R12(小区数量：181)</span>
+                            <ul id="GZM34B5R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM34B6R12">GZM34B6R12(小区数量：116)</span>
+                            <ul id="GZM34B6R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM35B1R12">GZM35B1R12(小区数量：339)</span>
+                            <ul id="GZM35B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM35B2R12">GZM35B2R12(小区数量：184)</span>
+                            <ul id="GZM35B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM35B3R12">GZM35B3R12(小区数量：168)</span>
+                            <ul id="GZM35B3R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM35B4R12">GZM35B4R12(小区数量：207)</span>
+                            <ul id="GZM35B4R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM35B5R12">GZM35B5R12(小区数量：151)</span>
+                            <ul id="GZM35B5R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM35B6R12">GZM35B6R12(小区数量：222)</span>
+                            <ul id="GZM35B6R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM36B1R12">GZM36B1R12(小区数量：257)</span>
+                            <ul id="GZM36B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM36B2R12">GZM36B2R12(小区数量：119)</span>
+                            <ul id="GZM36B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM36B3R12">GZM36B3R12(小区数量：88)</span>
+                            <ul id="GZM36B3R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM36B4R12">GZM36B4R12(小区数量：187)</span>
+                            <ul id="GZM36B4R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM36B5R12">GZM36B5R12(小区数量：187)</span>
+                            <ul id="GZM36B5R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM37B1R12">GZM37B1R12(小区数量：297)</span>
+                            <ul id="GZM37B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM37B2R12">GZM37B2R12(小区数量：161)</span>
+                            <ul id="GZM37B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM37B3R12">GZM37B3R12(小区数量：199)</span>
+                            <ul id="GZM37B3R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM37B4R12">GZM37B4R12(小区数量：204)</span>
+                            <ul id="GZM37B4R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM37B5R12">GZM37B5R12(小区数量：195)</span>
+                            <ul id="GZM37B5R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM37B6R12">GZM37B6R12(小区数量：301)</span>
+                            <ul id="GZM37B6R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM38B2R12">GZM38B2R12(小区数量：317)</span>
+                            <ul id="GZM38B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM38B3R12">GZM38B3R12(小区数量：254)</span>
+                            <ul id="GZM38B3R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM38B4R12">GZM38B4R12(小区数量：227)</span>
+                            <ul id="GZM38B4R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM38B5R12">GZM38B5R12(小区数量：285)</span>
+                            <ul id="GZM38B5R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM39B2R12">GZM39B2R12(小区数量：311)</span>
+                            <ul id="GZM39B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM39B3R12">GZM39B3R12(小区数量：207)</span>
+                            <ul id="GZM39B3R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM39B4R12">GZM39B4R12(小区数量：388)</span>
+                            <ul id="GZM39B4R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM39B5R12">GZM39B5R12(小区数量：317)</span>
+                            <ul id="GZM39B5R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM39B6R12">GZM39B6R12(小区数量：171)</span>
+                            <ul id="GZM39B6R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM40B4R12">GZM40B4R12(小区数量：335)</span>
+                            <ul id="GZM40B4R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM40B6R12">GZM40B6R12(小区数量：356)</span>
+                            <ul id="GZM40B6R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM40B7R12">GZM40B7R12(小区数量：258)</span>
+                            <ul id="GZM40B7R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM40B8R12">GZM40B8R12(小区数量：337)</span>
+                            <ul id="GZM40B8R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM41B1R12">GZM41B1R12(小区数量：283)</span>
+                            <ul id="GZM41B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM41B2R12">GZM41B2R12(小区数量：343)</span>
+                            <ul id="GZM41B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM41B3R12">GZM41B3R12(小区数量：257)</span>
+                            <ul id="GZM41B3R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM41B4R12">GZM41B4R12(小区数量：256)</span>
+                            <ul id="GZM41B4R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM41B5R12">GZM41B5R12(小区数量：356)</span>
+                            <ul id="GZM41B5R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM42B1R12">GZM42B1R12(小区数量：297)</span>
+                            <ul id="GZM42B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM42B2R12">GZM42B2R12(小区数量：428)</span>
+                            <ul id="GZM42B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM42B5R12">GZM42B5R12(小区数量：176)</span>
+                            <ul id="GZM42B5R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM42B6R12">GZM42B6R12(小区数量：304)</span>
+                            <ul id="GZM42B6R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM42B7R12">GZM42B7R12(小区数量：380)</span>
+                            <ul id="GZM42B7R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM43B2R12">GZM43B2R12(小区数量：331)</span>
+                            <ul id="GZM43B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM43B4R12">GZM43B4R12(小区数量：201)</span>
+                            <ul id="GZM43B4R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM44B5R12">GZM44B5R12(小区数量：207)</span>
+                            <ul id="GZM44B5R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM44B6R12">GZM44B6R12(小区数量：385)</span>
+                            <ul id="GZM44B6R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM44B7R12">GZM44B7R12(小区数量：335)</span>
+                            <ul id="GZM44B7R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM44B8R12">GZM44B8R12(小区数量：352)</span>
+                            <ul id="GZM44B8R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM45B1R12">GZM45B1R12(小区数量：316)</span>
+                            <ul id="GZM45B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM45B2R12">GZM45B2R12(小区数量：271)</span>
+                            <ul id="GZM45B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM45B3R12">GZM45B3R12(小区数量：252)</span>
+                            <ul id="GZM45B3R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM45B4R12">GZM45B4R12(小区数量：368)</span>
+                            <ul id="GZM45B4R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM45B5R12">GZM45B5R12(小区数量：290)</span>
+                            <ul id="GZM45B5R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM46B1R12">GZM46B1R12(小区数量：372)</span>
+                            <ul id="GZM46B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM46B2R12">GZM46B2R12(小区数量：329)</span>
+                            <ul id="GZM46B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM46B3R12">GZM46B3R12(小区数量：375)</span>
+                            <ul id="GZM46B3R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM46B4R12">GZM46B4R12(小区数量：344)</span>
+                            <ul id="GZM46B4R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM47B1R12">GZM47B1R12(小区数量：369)</span>
+                            <ul id="GZM47B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM47B2R12">GZM47B2R12(小区数量：342)</span>
+                            <ul id="GZM47B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM47B3R12">GZM47B3R12(小区数量：309)</span>
+                            <ul id="GZM47B3R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM48B1R12">GZM48B1R12(小区数量：366)</span>
+                            <ul id="GZM48B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM48B2R12">GZM48B2R12(小区数量：336)</span>
+                            <ul id="GZM48B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM49B1R12">GZM49B1R12(小区数量：322)</span>
+                            <ul id="GZM49B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM49B2R12">GZM49B2R12(小区数量：261)</span>
+                            <ul id="GZM49B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM49B3R12">GZM49B3R12(小区数量：274)</span>
+                            <ul id="GZM49B3R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM49B4R12">GZM49B4R12(小区数量：292)</span>
+                            <ul id="GZM49B4R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM50B1R12">GZM50B1R12(小区数量：316)</span>
+                            <ul id="GZM50B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM50B2R12">GZM50B2R12(小区数量：263)</span>
+                            <ul id="GZM50B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM50B3R12">GZM50B3R12(小区数量：276)</span>
+                            <ul id="GZM50B3R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM50B4R12">GZM50B4R12(小区数量：314)</span>
+                            <ul id="GZM50B4R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM51B1R12">GZM51B1R12(小区数量：377)</span>
+                            <ul id="GZM51B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM51B2R12">GZM51B2R12(小区数量：352)</span>
+                            <ul id="GZM51B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM51B3R12">GZM51B3R12(小区数量：369)</span>
+                            <ul id="GZM51B3R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM52B1R12">GZM52B1R12(小区数量：321)</span>
+                            <ul id="GZM52B1R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable">
+                            <div class="hitarea expandable-hitarea"></div>
+                            <span class="bscCls" id="GZM52B2R12">GZM52B2R12(小区数量：296)</span>
+                            <ul id="GZM52B2R12" style="display: none;"></ul>
+                        </li>
+                        <li class="expandable lastExpandable">
+                            <div class="hitarea expandable-hitarea lastExpandable-hitarea"></div>
+                            <span class="bscCls" id="GZM52B3R12">GZM52B3R12(小区数量：370)</span>
+                            <ul id="GZM52B3R12" style="display: none;"></ul>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+
+
+        </td>
+        <td style="vertical-align: top" bgcolor="#E2ECF7">
+            <table width="100%">
+                <tbody>
+                <tr>
+                    <td style="vertical-align: top" colspan="3">
+                        <div style="margin:10px">
+                            日期:<input id="beginTime" class="Wdate required input-text" value="" style="width:80px"> &nbsp;&nbsp;&nbsp;
+                            时间:<select id="ncsTime" style="width:80px"></select> &nbsp;&nbsp;&nbsp;
+
+                            数据类型:<select id="ncsDataType" style="width:120px">
+                            <option value="six" selected="selected">六强比例</option>
+                            <option value="two">两强比例</option>
+                            <option value="cellrate">强于主小区比例</option>
+                            <option value="abss">ABSS</option>
+                            <option value="alone">ALONE</option>
+                        </select>&nbsp;&nbsp;
+
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="width:70%;vertical-align: top">
+                        <div id="chartDiv" style="padding:3px;width:800px;height: 572px" data-highcharts-chart="0">
+                            <div class="highcharts-container" id="highcharts-0"
+                                 style="position: relative; overflow: hidden; width: 800px; height: 572px; text-align: left; line-height: normal; z-index: 0; font-family: &quot;Lucida Grande&quot;,&quot;Lucida Sans Unicode&quot;,Verdana,Arial,Helvetica,sans-serif; font-size: 12px; left: 0.799988px; top: 0px;">
+                                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="800" height="572">
+                                    <desc>Created with Highcharts 3.0.9</desc>
+                                    <defs>
+                                        <linearGradient x1="0" y1="0" x2="500" y2="500" gradientUnits="userSpaceOnUse"
+                                                        id="highcharts-1">
+                                            <stop offset="0" stop-color="rgb(255, 255, 255)" stop-opacity="1"></stop>
+                                            <stop offset="1" stop-color="rgb(240, 240, 255)" stop-opacity="1"></stop>
+                                        </linearGradient>
+                                        <clipPath id="highcharts-2">
+                                            <rect fill="none" x="0" y="0" width="780" height="517"></rect>
+                                        </clipPath>
+                                    </defs>
+                                    <rect rx="5" ry="5" fill="url(#highcharts-1)" x="1" y="1" width="798" height="570"
+                                          stroke="#4572A7" stroke-width="2"></rect>
+                                    <rect rx="0" ry="0" fill="none" x="10" y="40" width="780" height="517"
+                                          fill-opacity="0.9" isShadow="true" stroke="black"
+                                          stroke-opacity="0.049999999999999996" stroke-width="5"
+                                          transform="translate(1, 1)"></rect>
+                                    <rect rx="0" ry="0" fill="none" x="10" y="40" width="780" height="517"
+                                          fill-opacity="0.9" isShadow="true" stroke="black"
+                                          stroke-opacity="0.09999999999999999" stroke-width="3"
+                                          transform="translate(1, 1)"></rect>
+                                    <rect rx="0" ry="0" fill="none" x="10" y="40" width="780" height="517"
+                                          fill-opacity="0.9" isShadow="true" stroke="black" stroke-opacity="0.15"
+                                          stroke-width="1" transform="translate(1, 1)"></rect>
+                                    <rect rx="0" ry="0" fill="rgb(255,255,255)" x="10" y="40" width="780" height="517"
+                                          fill-opacity="0.9"></rect>
+                                    <g class="highcharts-button" style="cursor:default;" title="Chart context menu"
+                                       stroke-linecap="round" transform="translate(766,10)"><title>Chart context
+                                        menu</title>
+                                        <rect rx="2" ry="2" fill="white" x="0.5" y="0.5" width="24" height="22"
+                                              stroke="none" stroke-width="1"></rect>
+                                        <path fill="#E0E0E0" d="M 6 6.5 L 20 6.5 M 6 11.5 L 20 11.5 M 6 16.5 L 20 16.5"
+                                              stroke="#666" stroke-width="3" zIndex="1"></path>
+                                        <text x="0" y="13"
+                                              style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:12px;color:black;fill:black;"
+                                              zIndex="1"></text>
+                                    </g>
+                                    <rect rx="0" ry="0" fill="none" x="9.5" y="39.5" width="781" height="518"
+                                          stroke="#C0C0C0" stroke-width="1" zIndex="1"></rect>
+                                    <g class="highcharts-series-group" zIndex="3"></g>
+                                    <text x="400" y="25"
+                                          style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:16px;color:#274b6d;fill:#274b6d;"
+                                          text-anchor="middle" class="highcharts-title" zIndex="4">
+                                        <tspan x="400">六强比例</tspan>
+                                    </text>
+                                    <g class="highcharts-legend" zIndex="7">
+                                        <rect rx="5" ry="5" fill="#FFFFFF" x="0.5" y="0.5" width="7" height="7"
+                                              stroke="#909090" stroke-width="1" visibility="hidden"></rect>
+                                        <g zIndex="1">
+                                            <g></g>
+                                        </g>
+                                    </g>
+                                    <g class="highcharts-tooltip" zIndex="8"
+                                       style="cursor:default;padding:0;white-space:nowrap;"
+                                       transform="translate(0,-999)">
+                                        <rect rx="3" ry="3" fill="none" x="0.5" y="0.5" width="16" height="16"
+                                              fill-opacity="0.85" isShadow="true" stroke="black"
+                                              stroke-opacity="0.049999999999999996" stroke-width="5"
+                                              transform="translate(1, 1)"></rect>
+                                        <rect rx="3" ry="3" fill="none" x="0.5" y="0.5" width="16" height="16"
+                                              fill-opacity="0.85" isShadow="true" stroke="black"
+                                              stroke-opacity="0.09999999999999999" stroke-width="3"
+                                              transform="translate(1, 1)"></rect>
+                                        <rect rx="3" ry="3" fill="none" x="0.5" y="0.5" width="16" height="16"
+                                              fill-opacity="0.85" isShadow="true" stroke="black" stroke-opacity="0.15"
+                                              stroke-width="1" transform="translate(1, 1)"></rect>
+                                        <rect rx="3" ry="3" fill="rgb(255,255,255)" x="0.5" y="0.5" width="16"
+                                              height="16" fill-opacity="0.85"></rect>
+                                        <text x="8" y="21"
+                                              style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:12px;color:#333333;fill:#333333;"
+                                              zIndex="1"></text>
+                                    </g>
+                                    <text x="790" y="567"
+                                          style="font-family:&quot;Lucida Grande&quot;, &quot;Lucida Sans Unicode&quot;, Verdana, Arial, Helvetica, sans-serif;font-size:9px;cursor:pointer;color:#909090;fill:#909090;"
+                                          text-anchor="end" zIndex="8">
+                                        <tspan x="790">Highcharts.com</tspan>
+                                    </text>
+                                </svg>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="vertical-align: top">
+                        <div id="ncsInfoDiv" style="float: left; width:240px">
+                            <table class="main-table1 half-width" id="ncsInfoTab" width="100%">
+                                <tbody>
+                                <tr>
+                                    <td colspan="2">测量信息</td>
+                                </tr>
+                                <tr>
+                                    <td class="menuTd">BSC</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="menuTd">CREATE_TIME</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="menuTd">RECORDCOUNT</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="menuTd">RID</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="menuTd">RELSS</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="menuTd">RELSS2</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="menuTd">RELSS3</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="menuTd">RELSS4</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="menuTd">RELSS5</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="menuTd">NCELLTYPE</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="menuTd">NUMFREQ</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="menuTd">PERIODLEN</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="menuTd">TERMREASON</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="menuTd">RECTIME</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="menuTd">ECNOABSS</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="menuTd">NUCELLTYPE</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="menuTd">TFDDMRR</td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td class="menuTd">NUMUMFI</td>
+                                    <td></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+
+                    </td>
+
+                </tr>
+
+                </tbody>
+            </table>
+
+        </td>
+    </tr>
+    <tr valign="top">
+        <td colspan="2" bgcolor="#E2ECF7">
+            <div style="margin-left: 10px">
+                <div id="toggleCellInfoDiv" style="padding:2px;background:#B1C3D9;cursor:pointer; margin-left:6px">
+                    原始数据(点击展开)
+                </div>
+
+                <table class="greystyle-standard" id="cellInfoTab" style="display:none" align="left">
+                    <tbody>
+                    <tr>
+                        <td>序号</td>
+                        <td>CELL</td>
+                        <td>BSIC</td>
+                        <td>ARFCN</td>
+                        <td>REP</td>
+                        <td>TOPSIX</td>
+                        <td>TOPTWO</td>
+                        <td>ABSS</td>
+                        <td>ALONE</td>
+                        <td>NCELL</td>
+                        <td>DISTANCE</td>
+                        <td>NCELLS</td>
+                        <td>DEFINED</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div id="operInfo"
+     style="display:none; top: 40%; left:35%; width: 400px; height: 40px; background-color: rgb(125, 255, 63); opacity: 0.8; z-index: 9999; position: fixed;">
+    <table style="text-align:center" width="100%" height="100%">
+        <tbody>
+        <tr>
+            <td><span id="operTip"></span></td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+
+<div id="ui-datepicker-div" class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
+    <div class="ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-all"><a
+            class="ui-datepicker-prev ui-corner-all" data-handler="prev" data-event="click" title="Prev"><span
+            class="ui-icon ui-icon-circle-triangle-w">Prev</span></a><a
+            class="ui-datepicker-next ui-corner-all ui-state-disabled" title="Next"><span
+            class="ui-icon ui-icon-circle-triangle-e">Next</span></a>
+        <div class="ui-datepicker-title"><select class="ui-datepicker-month" data-handler="selectMonth"
+                                                 data-event="change">
+            <option value="0">一月</option>
+            <option value="1">二月</option>
+            <option value="2">三月</option>
+            <option value="3">四月</option>
+            <option value="4">五月</option>
+            <option value="5">六月</option>
+            <option value="6">七月</option>
+            <option value="7">八月</option>
+            <option value="8">九月</option>
+            <option value="9" selected="selected">十月</option>
+        </select>&nbsp;<span class="ui-datepicker-year">2017</span></div>
+    </div>
+    <table class="ui-datepicker-calendar">
+        <thead>
+        <tr>
+            <th class="ui-datepicker-week-end"><span title="Sunday">日</span></th>
+            <th><span title="Monday">一</span></th>
+            <th><span title="Tuesday">二</span></th>
+            <th><span title="Wednesday">三</span></th>
+            <th><span title="Thursday">四</span></th>
+            <th><span title="Friday">五</span></th>
+            <th class="ui-datepicker-week-end"><span title="Saturday">六</span></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="9"
+                data-year="2017"><a class="ui-state-default" href="#">1</a></td>
+            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
+                    class="ui-state-default" href="#">2</a></td>
+            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
+                    class="ui-state-default" href="#">3</a></td>
+            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
+                    class="ui-state-default" href="#">4</a></td>
+            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
+                    class="ui-state-default" href="#">5</a></td>
+            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
+                    class="ui-state-default" href="#">6</a></td>
+            <td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="9"
+                data-year="2017"><a class="ui-state-default" href="#">7</a></td>
+        </tr>
+        <tr>
+            <td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="9"
+                data-year="2017"><a class="ui-state-default" href="#">8</a></td>
+            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
+                    class="ui-state-default" href="#">9</a></td>
+            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
+                    class="ui-state-default" href="#">10</a></td>
+            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
+                    class="ui-state-default" href="#">11</a></td>
+            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
+                    class="ui-state-default" href="#">12</a></td>
+            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
+                    class="ui-state-default" href="#">13</a></td>
+            <td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="9"
+                data-year="2017"><a class="ui-state-default" href="#">14</a></td>
+        </tr>
+        <tr>
+            <td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="9"
+                data-year="2017"><a class="ui-state-default" href="#">15</a></td>
+            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
+                    class="ui-state-default" href="#">16</a></td>
+            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
+                    class="ui-state-default" href="#">17</a></td>
+            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
+                    class="ui-state-default" href="#">18</a></td>
+            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
+                    class="ui-state-default" href="#">19</a></td>
+            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
+                    class="ui-state-default" href="#">20</a></td>
+            <td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="9"
+                data-year="2017"><a class="ui-state-default" href="#">21</a></td>
+        </tr>
+        <tr>
+            <td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="9"
+                data-year="2017"><a class="ui-state-default" href="#">22</a></td>
+            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
+                    class="ui-state-default" href="#">23</a></td>
+            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
+                    class="ui-state-default" href="#">24</a></td>
+            <td class=" ui-datepicker-days-cell-over  ui-datepicker-current-day ui-datepicker-today"
+                data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
+                    class="ui-state-default ui-state-highlight ui-state-active ui-state-hover" href="#">25</a></td>
+            <td class=" ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">26</span></td>
+            <td class=" ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">27</span></td>
+            <td class=" ui-datepicker-week-end ui-datepicker-unselectable ui-state-disabled "><span
+                    class="ui-state-default">28</span></td>
+        </tr>
+        <tr>
+            <td class=" ui-datepicker-week-end ui-datepicker-unselectable ui-state-disabled "><span
+                    class="ui-state-default">29</span></td>
+            <td class=" ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">30</span></td>
+            <td class=" ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">31</span></td>
+            <td class=" ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td>
+            <td class=" ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td>
+            <td class=" ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td>
+            <td class=" ui-datepicker-week-end ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">
+                &nbsp;
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="ui-timepicker-div">
+        <dl>
+            <dt class="ui_tpicker_time_label"></dt>
+            <dd class="ui_tpicker_time"></dd>
+            <dt class="ui_tpicker_hour_label" style="display:none;">Hour</dt>
+            <dd class="ui_tpicker_hour">
+                <div class="ui_tpicker_hour_slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"
+                     style="display:none;" aria-disabled="false"><a
+                        class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 100%;"></a></div>
+            </dd>
+            <dt class="ui_tpicker_minute_label" style="display:none;">Minute</dt>
+            <dd class="ui_tpicker_minute">
+                <div class="ui_tpicker_minute_slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"
+                     style="display:none;" aria-disabled="false"><a
+                        class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 100%;"></a></div>
+            </dd>
+            <dt class="ui_tpicker_second_label" style="display:none;">Second</dt>
+            <dd class="ui_tpicker_second">
+                <div class="ui_tpicker_second_slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"
+                     style="display:none;" aria-disabled="false"><a
+                        class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 100%;"></a></div>
+            </dd>
+            <dt class="ui_tpicker_millisec_label" style="display:none;">Millisecond</dt>
+            <dd class="ui_tpicker_millisec">
+                <div class="ui_tpicker_millisec_slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"
+                     style="display:none;" aria-disabled="false"><a
+                        class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 100%;"></a></div>
+            </dd>
+            <dt class="ui_tpicker_microsec_label" style="display:none;">Microsecond</dt>
+            <dd class="ui_tpicker_microsec">
+                <div class="ui_tpicker_microsec_slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"
+                     style="display:none;" aria-disabled="false"><a
+                        class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 0%;"></a></div>
+            </dd>
+            <dt class="ui_tpicker_timezone_label" style="display:none;">Time Zone</dt>
+            <dd class="ui_tpicker_timezone" style="display:none;"><select>
+                <option value="-720">-1200</option>
+                <option value="-660">-1100</option>
+                <option value="-600">-1000</option>
+                <option value="-570">-0930</option>
+                <option value="-540">-0900</option>
+                <option value="-480">-0800</option>
+                <option value="-420">-0700</option>
+                <option value="-360">-0600</option>
+                <option value="-300">-0500</option>
+                <option value="-270">-0430</option>
+                <option value="-240">-0400</option>
+                <option value="-210">-0330</option>
+                <option value="-180">-0300</option>
+                <option value="-120">-0200</option>
+                <option value="-60">-0100</option>
+                <option value="0">+0000</option>
+                <option value="60">+0100</option>
+                <option value="120">+0200</option>
+                <option value="180">+0300</option>
+                <option value="210">+0330</option>
+                <option value="240">+0400</option>
+                <option value="270">+0430</option>
+                <option value="300">+0500</option>
+                <option value="330">+0530</option>
+                <option value="345">+0545</option>
+                <option value="360">+0600</option>
+                <option value="390">+0630</option>
+                <option value="420">+0700</option>
+                <option value="480" selected="selected">+0800</option>
+                <option value="525">+0845</option>
+                <option value="540">+0900</option>
+                <option value="570">+0930</option>
+                <option value="600">+1000</option>
+                <option value="630">+1030</option>
+                <option value="660">+1100</option>
+                <option value="690">+1130</option>
+                <option value="720">+1200</option>
+                <option value="765">+1245</option>
+                <option value="780">+1300</option>
+                <option value="840">+1400</option>
+            </select></dd>
+        </dl>
+    </div>
+    <div class="ui-datepicker-buttonpane ui-widget-content">
+        <button type="button" class="ui-datepicker-current ui-state-default ui-priority-secondary ui-corner-all"
+                data-handler="today" data-event="click">加载数据
+        </button>
+        <button type="button" class="ui-datepicker-close ui-state-default ui-priority-primary ui-corner-all"
+                data-handler="hide" data-event="click">关闭
+        </button>
+    </div>
+</div>
+</body>
+</html>

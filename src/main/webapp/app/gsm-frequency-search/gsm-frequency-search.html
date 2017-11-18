@@ -1,0 +1,473 @@
+<!DOCTYPE html >
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>总干扰分析</title>
+
+    <link rel="stylesheet" href="css/gsm-frequency-search.css">
+    <link rel="stylesheet" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
+    <link rel="stylesheet" href="../../lib/openlayers/4.4.2/ol.css">
+
+    <script src="../../lib/jquery/1.8.2/jquery.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.metadata.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
+    <script src="../../lib/validate.js"></script>
+    <script src="../../lib/tab.js"></script>
+    <script src="../../lib/openlayers/4.4.2/ol.js"></script>
+    <script src="js/gsm-frequency-search-origin.js"></script>
+    <script src="js/gsm-frequency-search.js"></script>
+</head>
+<body>
+<!--<div class="loading_cover" style="display: none">
+    <div class="cover"></div>
+    <h4 class="loading">
+        正在加载 <em class="loading_fb">小区</em>资源,请稍侯...
+    </h4>
+</div>
+<div class="loading_cover" id="loadingDataDiv" style="display: none">
+    <div class="cover"></div>
+    <h4 class="loading">
+        <em class="loading_fb" id="loadContentId"></em>,请稍侯...
+    </h4>
+</div>-->
+<div id="map" class="map"></div>
+
+<div class="dialog draggable ui-draggable">
+    <div style="padding: 5px">
+
+        <form id="conditionForm" method="post">
+            省：<select name="provinceId" class="required" id="provinceId">
+
+        </select> 市：<select name="cityId" class="required" id="cityId">
+
+
+        </select> 区：<select name="areaId" class="required" id="areaId">
+        </select>
+            <input class="queryButton" value="打开搜索面板" 　style="font-size: 12px" type="button">
+            <input id="showCellName" class="showCellNameButton" value="显示小区名字" type="button">
+            <span id="loadingCellTip"></span>
+            <input id="trigger" name="trigger" value="切换谷歌" style="display: none;" type="button">
+            <div id="hiddenAreaLngLatDiv" style="display:none">
+
+                <input id="areaid_187" value="113.361397,23.12489" type="hidden">
+
+                <input id="areaid_188" value="113.26664,23.128836" type="hidden">
+
+                <input id="areaid_189" value="113.244324,23.126310999999998" type="hidden">
+
+                <input id="areaid_190" value="113.317451,23.084153" type="hidden">
+
+                <input id="areaid_191" value="113.273849,23.159301" type="hidden">
+
+                <input id="areaid_192" value="113.45941499999999,23.106734" type="hidden">
+
+                <input id="areaid_193" value="113.384399,22.936895" type="hidden">
+
+                <input id="areaid_194" value="113.220291,23.405286" type="hidden">
+
+                <input id="areaid_195" value="113.608932,22.772382999999998" type="hidden">
+
+                <input id="areaid_196" value="113.481216,23.181395" type="hidden">
+
+                <input id="areaid_197" value="113.810806,23.261533999999997" type="hidden">
+
+                <input id="areaid_198" value="113.586365,23.548403999999998" type="hidden">
+
+            </div>
+
+            <input id="hiddenZoom" name="zoom" value="16" type="hidden">
+            <input id="hiddenLng" value="" type="hidden"> <input id="hiddenLat" value=""
+                                                                 type="hidden"> <input
+                id="hiddenPageSize" name="page.pageSize" value="100" type="hidden"> <input
+                id="hiddenCurrentPage" name="page.currentPage" value="1" type="hidden"> <input
+                id="hiddenForcedStartIndex" name="page.forcedStartIndex" value="-1" type="hidden">
+            <input id="hiddenTotalPageCnt" type="hidden">
+            <input id="hiddenTotalCnt" type="hidden">
+        </form>
+
+    </div>
+</div>
+<div class="resource_list_icon" style="right: 381px;">
+    <a href="#" class="switch"></a>
+    <a href="#" class="switch_hidden" style="display: none;"></a>
+    <div class="shad_v"></div>
+</div>
+<div class="resource_list300_box" style="height: 100%">
+    <div class="resource_list300">
+            <div id="div_tab" class="div_tab divtab_menu">
+                <ul>
+                    <li class="selected" id="interPlanLi">规划优化</li>
+                    <li id="interDetailsLi">干扰信息</li>
+                </ul>
+            </div>
+        </div>
+        <div class="divtab_content" style="overflow-y:auto; overflow-x:auto; width:360px; height:600px">
+            <div id="div_tab_0">
+                <input value="显示小区干扰窗口" id="showCellInterWinBtn" type="button">
+
+                <div class="div_title_24px_blue">
+                    <span class="sp_title"> 频点类型选择</span>
+                </div>
+                <div style="margin: 3px"></div>
+                请选择：<input name="freqType" id="freqType" value="GSM900" type="radio">GSM900　<input
+                    name="freqType" id="freqType" value="GSM1800" type="radio">GSM1800　<input
+                    name="freqType" id="freqType" value="-1" checked="checked" type="radio">全部
+                　　<br><br><input id="loadGsmCellToMap" value="加载小区信息" name="loadCellToMap"
+                                 style="margin-right: 0" type="button">
+                <span id="loadingStatus"></span>
+                <div class="div_transparentstandard_nopaddming" id="analysisListDiv_cellconfig">
+                    <table class="tb-transparent-standard" style="width:100%"
+                           id="analysisListTable_cellconfig">
+
+                    </table>
+
+                    <div id="showCellBtnDiv" style="display:none">
+                        <input value="显示小区" id="showCellBtn" type="button">
+                    </div>
+                </div>
+
+
+                <div class="div_title_24px_blue">
+                    <span class="sp_title">最新干扰矩阵计算时间</span>
+                </div>
+                <div style="margin: 3px"></div>
+                <span id="latelytasktime">2017-01-22 14:52:23</span>
+
+                <input id="latelyMartixDescId" value="83" type="hidden">
+                <div class="div_title_24px_blue">
+                    <span class="sp_title">图例参考</span>
+                </div>
+                <div style="margin: 3px"></div>
+                <table width="66%" border="0" cellspacing="0" cellpadding="0">
+                    <tbody>
+                    <tr>
+                        <td valign="top">
+                            <table style="border:1px solid #ccc; font-size:12px" width="100%" align="right"
+                                   cellspacing="0" cellpadding="0">
+                                <tbody>
+                                <tr>
+                                    <td colspan="2" style="border:1px solid #ccc;font-weight: bold;"
+                                        align="center">与选定频点的同邻频小区颜色设置
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border:1px solid #ccc;" width="37%" align="center">同邻频情况</td>
+                                    <td style="border:1px solid #ccc;" width="40%" align="center">颜色</td>
+                                </tr>
+                                <tr>
+                                    <td style="border:1px solid #ccc;" align="center">同频</td>
+                                    <td style="border:1px solid #ccc; background-color: #CE110F">
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border:1px solid #ccc;" align="center">邻频</td>
+                                    <td style="border:1px solid #ccc;background-color:#E9D713"></td>
+                                </tr>
+                                <tr>
+                                    <td style="border:1px solid #ccc;" align="center">自身</td>
+                                    <td style="border:1px solid #ccc;background-color:#10000E"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td valign="top">
+
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="div_tab_1" style="display: none;">
+
+                <div class="div_title_24px_blue">
+                    <span class="sp_title">小区连线颜色设置</span>
+                </div>
+                <div style="margin: 3px"></div>
+                <table style=" border:1px solid #ccc;font-size:12px" width="60%" align="left"
+                       cellspacing="0" cellpadding="0">
+                    <tbody>
+                    <tr>
+                        <td style="border:1px solid #ccc;" width="37%" align="center">干扰值范围</td>
+                        <td style="border:1px solid #ccc;" width="42%" align="center">颜色</td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #ccc;" align="center">小于0.05</td>
+                        <td style="border:1px solid #ccc;background-color:#0080FF"></td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid #CCC;" align="center">大于等于0.05</td>
+                        <td style="border:1px solid #ccc;background-color:#AE0000"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div style="margin: 80px"></div>
+
+                <div style="margin: 3px"></div>
+                <div class="div_transparent_standard_border" style="margin: 3px;" id="listdisplay">
+                    <div class="div_title_24px_grey sp_title_left" style="background-color: #bdd3ef">
+                        <span class="sp_title" id="interDetailTitle">小区〖〗的 干扰情况</span>
+                    </div>
+                    <div style="margin: 3px"></div>
+                    <table style=" font-size:12px" id="listdistab" width="100%" border="1" cellspacing="0"
+                           cellpadding="0">
+                        <tbody>
+                        <tr>
+                            <td style="border:1px solid #ccc;height: 24px;font-weight:bold;" width="97">
+                                干扰邻区
+                            </td>
+                            <td style="border:1px solid #ccc;height: 24px;font-weight:bold;" width="95">
+                                同频干扰系数
+                            </td>
+                            <td style="border:1px solid #ccc;height: 24px;font-weight:bold;" width="100">
+                                邻频干扰系数
+                            </td>
+                            <td style="border:1px solid #ccc;height: 24px;font-weight:bold;" width="100">
+                                是否邻区
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div></div>
+
+
+<div class="div_left_main" style="width: auto">
+    <div class="div_left_content">
+
+        <div style="padding-bottom: 0; padding-top: 0">
+            <div class="map_hd" style="padding-bottom: 0">
+                <div class="head_box clearfix" style="padding-bottom: 0">
+                    <div class="dialog2 draggable ui-draggable">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div id="analyze_Dialog" class="dialog2 draggable ui-draggable" style="display: none;">
+            <div class="dialog_header">
+                <div class="dialog_title">渲染图例</div>
+                <div class="dialog_tool">
+                    <div class="dialog_tool_close dialog_closeBtn"
+                         onclick="$('#analyze_Dialog').hide();$('.colordialog2').hide();"></div>
+                </div>
+            </div>
+            <div class="dialog_content" style="width:300px; background:#f9f9f9">
+                <table class="tb-transparent-standard" style="width:300px" id="trafficTable">
+
+                </table>
+
+            </div>
+        </div>
+
+
+        <div id="reSelNcs_Dialog" class="dialog2 draggable ui-draggable" style="display:none;left: 60px;top: 60px">
+            <div class="dialog_header">
+                <div class="dialog_title">NCS详情查看</div>
+                <div class="dialog_tool">
+                    <div class="dialog_tool_close dialog_closeBtn"
+                         onclick="$('#reSelNcs_Dialog').hide();$('.colordialog2').hide();"></div>
+                </div>
+            </div>
+            <div class="dialog_content" id="ncs_dialog_content"
+                 style="width:1133px; height:300px; background:#f9f9f9;overflow-x:hidden">
+
+            </div>
+        </div>
+
+        <div class="interferDialog" id="interference_dialogId" style="display:none; top:40px;z-index:30;">
+            <div id="dialogHeader" class="interferDialog_header">
+                <span id="celllabel"></span>&nbsp;〖<label id="cellname"></label>〗PCI智能优化
+                <div class="dialog_tool">
+                    <div class="dialog_tool_close dialog_closeBtn2"
+                         onclick="$('#interference_dialogId').hide();$('.black').hide();$('#detailedinterdiv').hide();"></div>
+                </div>
+            </div>
+
+            <div id="DialogBody">
+                <div class="interferDialog_content" style="background:#FFFFFF;padding: 0;height: auto;">
+
+
+                    <div style="width: 370px; float: left; height:500px;overflow-y:auto;">
+                        <div style="width:100%;height: auto;text-align: center; padding-top: 6px;">
+                            <span id="cellFreq" style="font-weight: bold;">bcch:&nbsp;&nbsp;tch:</span>
+                        </div>
+                        <table id="freqintersituation" class="greystyle-standard" width="100%" border="1px">
+                            <tbody>
+                            <tr>
+                                <th align="center">
+                                    小区频点
+                                </th>
+                                <th align="center">
+                                    干扰-in
+                                </th>
+                                <th align="center">
+                                    干扰-out
+                                </th>
+                                <th align="center">
+                                    干扰-total
+                                </th>
+                                <th align="center">
+                                    频点类型
+                                </th>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="detailedinterdiv"
+                         style="width: 550px; float: left;display: none;margin-left: 2px; height:500px;overflow-y:auto;">
+                        <div style="width:100%;height: 24px;text-align: center; padding-top: 6px;font-weight: bold;">
+                            详细干扰情况〖频点<label id="cellfreqlabel"></label>〗
+                        </div>
+                        <table id="detailedintersituation" class="greystyle-standard" width="100%" border="1px"
+                               cellspacing="0" cellpadding="0">
+
+                            <tbody>
+                            <tr>
+                                <th align="center">
+                                    邻区
+                                </th>
+                                <th align="center">
+                                    频点
+                                </th>
+                                <th align="center">
+                                    干扰-in
+                                </th>
+                                <th align="center">
+                                    干扰-out
+                                </th>
+                                <th align="center">
+                                    干扰-total
+                                </th>
+                                <th align="center">
+                                    是否邻区
+                                </th>
+                                <th align="center">
+                                    是否同站
+                                </th>
+                                <th align="center">
+                                    邻频关系
+                                </th>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                    <div style="font: 0/0 sans-serif;clear: both;display: block"></div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="interferDialog" id="freq_dialogId" style="display:none; top:270px;z-index:30;left：500px;">
+            <div id="freq_dialogHeader" class="interferDialog_header">
+                <label>频点编辑</label>
+                <div class="dialog_tool">
+                    <div class="dialog_tool_close dialog_closeBtn2" onclick="$('#freq_dialogId').hide();"></div>
+                </div>
+            </div>
+
+            <div id="freq_DialogBody">
+                <div class="interferDialog_content" style="background:#FFFFFF;padding: 0;height: auto;">
+                    <div style="width: 450px; float: left;">
+                        <input id="freqCellName" value="" type="hidden">
+                        <table class="greystyle-standard" width="100%" border="1px">
+                            <tbody>
+                            <tr>
+                                <td>bcch</td>
+                                <td><input id="cellBcch" style="width: 100px;" type="text">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>tch（半角逗号分隔）</td>
+                                <td><input id="cellTch" style="width: 300px;" type="text">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" align="right">
+                                    <input onclick="updateCellFreq()" value="确定" type="button">
+                                    <input onclick="$('#freq_dialogId').hide();" value="取消" type="button">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="searchDiv" class="dialog2 draggable ui-draggable" style="display:none; left: 55px; top: 74px;">
+            <div class="dialog_header">
+                <div class="dialog_title">小区查找</div>
+                <div class="dialog_tool">
+                    <div class="dialog_tool_close dialog_closeBtn" onclick="$('#searchDiv').hide();"></div>
+                </div>
+            </div>
+            <div class="dialog_content" style="background:#f9f9f9;padding:10px">
+                搜索条件： <select id="conditionType">
+                <option value="cell" selected="selected">CELL</option>
+                <option value="chineseName">小区中文名</option>
+                <option value="site">SITE</option>
+                <option value="lac">LAC</option>
+                <option value="ci">CI</option>
+            </select>
+                <input id="conditionValue" type="text">
+                <input id="searchCellBtn" value="搜小区" type="button"><br>
+                输入邻区：<input id="cellForNcell" type="text">
+                <input id="searchNcellBtn" value="搜邻区" type="button"> <br>
+                输入频点： <input id="freqValue" type="text">
+                <input id="searchFreqBtn" value="搜频点" type="button"> <br><br>
+                <input value="清除搜索结果" id="clearSearchResultBtn" type="button">
+                <span style="color:red;width:100px;font-family:华文中宋;text-align:center" id="errorDiv"></span>
+            </div>
+        </div>
+        <div>
+            <div class="black"></div>
+            <div id="analyzeedit_Dialog" class="dialog2 draggable ui-draggable" style="display:none;width:362px">
+                <div class="dialog_header">
+                    <div class="dialog_title">话备性能专题分析修改</div>
+                    <div class="dialog_tool">
+                        <div class="dialog_tool_close dialog_closeBtn2"
+                             onclick="$('#analyzeedit_Dialog').hide();$('.black').hide();$('.colordialog2').hide();"></div>
+                    </div>
+                </div>
+                <div class="dialog_content" style="width:360px; background:#f9f9f9">
+                    <form action="updateOrAddrnoTrafficRendererAction" id="rendererForm" method="post">
+                        <table class="tb-transparent-standard" style="width:350px " id="analyzeedit_trafficTable">
+
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div id="divColorDiv"></div>
+
+        <div id="operInfo"
+             style="display:none; top:40px;left:600px;z-index:999;width:400px; height:40px; background-color:#7dff3f; filter:alpha(Opacity=80);-moz-opacity:0.5;opacity: 0.5;z-index:9999;position: fixed;">
+            <table style="text-align:center" height="100%" width="100%">
+                <tbody>
+                <tr>
+                    <td><span id="operTip"></span></td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+
+    </div>
+</div>
+</body>
+</html>

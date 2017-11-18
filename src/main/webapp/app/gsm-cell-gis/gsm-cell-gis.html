@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>小区GIS呈现</title>
+
+    <link rel="stylesheet" href="../../lib/bootstrap/3.3.7/bootstrap.min.css">
+    <link rel="stylesheet" href="../../lib/openlayers/4.4.2/ol.css">
+    <link rel="stylesheet" href="css/gsm-cell-gis.css">
+
+    <script src="../../lib/jquery/3.2.1/jquery.js"></script>
+    <script src="../../lib/bootstrap/3.3.7/bootstrap.min.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
+    <script src="../../lib/openlayers/4.4.2/ol.js"></script>
+    <script src="js/gsm-cell-gis.js"></script>
+</head>
+<body>
+<div id="map" class="map"></div>
+<div style="display: none"> 
+    <div id="popup"></div>
+</div>
+<div class="dialog draggable ui-draggable">
+    省：<select name="provinceId" class="required" id="provinceId" title=""></select>
+    市：<select name="cityId" class="required" id="cityId" title=""></select>
+    区：<select name="districtId" class="required" id="districtId" title=""></select>
+    <input id="loadGisCell" value="加载小区" type="button">
+</div>
+<div class="resource_list_icon">
+    <a href="#" class="switch"></a>
+    <a href="#" class="switch_hidden"></a>
+    <div class="shad_v"></div>
+</div>
+<div class="resource_list_box">
+    <div class="resource_list">
+        <table class="main-table1 half-width">
+            <tbody>
+            <tr>
+                <td class="menuTd">小区名</td>
+                <td id="showCellLabelId"></td>
+            </tr>
+            <tr>
+                <td class="menuTd">小区中文名</td>
+                <td id="showCellNameId"></td>
+            </tr>
+            <tr>
+                <td class="menuTd">LAC</td>
+                <td id="showCellLacId"></td>
+            </tr>
+            <tr>
+                <td class="menuTd">CI</td>
+                <td id="showCellCiId"></td>
+            </tr>
+            <tr>
+                <td class="menuTd">BCCH</td>
+                <td id="showCellBcchId"></td>
+            </tr>
+            <tr>
+                <td class="menuTd">TCH</td>
+                <td id="showCellTchId"></td>
+            </tr>
+            <tr>
+                <td class="menuTd">BSIC</td>
+                <td id="showCellBsicId"></td>
+            </tr>
+            <tr>
+                <td class="menuTd">天线方向</td>
+                <td id="showCellAzimuthId"></td>
+            </tr>
+            <tr>
+                <td class="menuTd">天线下倾</td>
+                <td id="showCellDownId"></td>
+            </tr>
+            <tr>
+                <td class="menuTd">基站类型</td>
+                <td id="showCellBtsTypeId"></td>
+            </tr>
+            <tr>
+                <td class="menuTd">天线高度</td>
+                <td id="showCellAntHeightId"></td>
+            </tr>
+            <tr>
+                <td class="menuTd">天线类型</td>
+                <td id="showCellAntTypeId"></td>
+            </tr>
+            <tr>
+                <td class="menuTd">经度</td>
+                <td id="showCellLngId"></td>
+            </tr>
+            <tr>
+                <td class="menuTd">纬度</td>
+                <td id="showCellLatId"></td>
+            </tr>
+            <tr>
+                <td class="menuTd">覆盖范围</td>
+                <td id="showCellCoverareaId"></td>
+            </tr>
+            <tr>
+                <td class="menuTd">频段</td>
+                <td id="showCellFreqSectionId"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

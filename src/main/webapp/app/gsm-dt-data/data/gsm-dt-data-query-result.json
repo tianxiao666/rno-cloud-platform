@@ -1,0 +1,94 @@
+{
+  "data": [
+    {
+      "taskName": "17hao",
+      "networkStandard": "GSM",
+      "testType": "DT",
+      "measureTime": "2016-6-7 15:36:12",
+      "factory": "DingLi",
+      "equipment":"SagemOT160",
+      "version":"2.0.0.0"
+    },
+    {
+      "taskName": "珠海香洲",
+      "networkStandard": "GSM",
+      "testType": "DT",
+      "measureTime": "2016-6-7 15:34:22",
+      "factory": "DingLi",
+      "equipment":"SagemOT160",
+      "version":"2.0.0.0"
+    },
+    {
+      "taskName": "广州天河",
+      "networkStandard": "GSM",
+      "testType": "DT",
+      "measureTime": "2015-9-29 12:09:15",
+      "factory": "DingLi",
+      "equipment":"SagemOT160",
+      "version":"2.0.0.0"
+    },
+    {
+      "taskName": "广州番禺",
+      "networkStandard": "GSM",
+      "testType": "DT",
+      "measureTime": "2015-9-29 10:33:10",
+      "factory": "DingLi",
+      "equipment":"SagemOT160",
+      "version":"2.0.0.0"
+    },
+    {
+      "taskName": "广州白云",
+      "networkStandard": "GSM",
+      "testType": "DT",
+      "measureTime": "2015-9-28 17:24:02",
+      "factory": "DingLi",
+      "equipment":"SagemOT160",
+      "version":"2.0.0.0"
+    },
+    {
+      "taskName": "东莞",
+      "networkStandard": "GSM",
+      "testType": "DT",
+      "measureTime": "2015-9-28 17:19:06",
+      "factory": "DingLi",
+      "equipment":"SagemOT160",
+      "version":"2.0.0.0"
+    },
+    {
+      "taskName": "梅州",
+      "networkStandard": "GSM",
+      "testType": "DT",
+      "measureTime": "2015-9-28 17:07:56",
+      "factory": "DingLi",
+      "equipment":"SagemOT160",
+      "version":"2.0.0.0"
+    },
+    {
+      "taskName": "广州黄埔",
+      "networkStandard": "GSM",
+      "testType": "DT",
+      "measureTime": "2015-9-28 17:06:00",
+      "factory": "DingLi",
+      "equipment":"SagemOT160",
+      "version":"2.0.0.0"
+    },
+    {
+      "taskName": "广州越秀",
+      "networkStandard": "GSM",
+      "testType": "DT",
+      "measureTime": "2015-9-28 16:39:17",
+      "factory": "DingLi",
+      "equipment":"SagemOT160",
+      "version":"2.0.0.0"
+    },
+    {
+      "taskName": "广州萝岗",
+      "networkStandard": "GSM",
+      "testType": "DT",
+      "measureTime": "2015-9-28 15:59:48",
+      "factory": "DingLi",
+      "equipment":"SagemOT160",
+      "version":"2.0.0.0"
+    }
+  ]
+}

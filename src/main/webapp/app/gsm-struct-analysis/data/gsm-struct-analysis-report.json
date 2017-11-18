@@ -1,0 +1,69 @@
+{
+  "data": [
+    {
+      "JOB_ID": 4579,
+      "END_TIME": "2016-08-16 18:33:03",
+      "STAGE": "完成爱立信NCS数据准备",
+      "STATE": "Succeded",
+      "BEG_TIME": "2016-08-16 17:29:34",
+      "REPORT_ID": 3466616
+    },
+    {
+      "JOB_ID": 4579,
+      "END_TIME": "2016-08-16 18:34:33",
+      "STAGE": "完成爱立信MRR数据准备",
+      "STATE": "Succeded",
+      "BEG_TIME": "2016-08-16 18:33:03",
+      "REPORT_ID": 3466619
+    },
+    {
+      "JOB_ID": 4579,
+      "END_TIME": "2016-08-16 18:34:34",
+      "STAGE": "完成华为NCS数据准备",
+      "STATE": "Succeded",
+      "BEG_TIME": "2016-08-16 18:34:33",
+      "REPORT_ID": 3466621
+    },
+    {
+      "JOB_ID": 4579,
+      "END_TIME": "2016-08-16 18:34:34",
+      "STAGE": "完成华为MRR数据准备",
+      "STATE": "Succeded",
+      "BEG_TIME": "2016-08-16 18:34:34",
+      "REPORT_ID": 3466624
+    },
+    {
+      "JOB_ID": 4579,
+      "END_TIME": "2016-08-16 18:40:51",
+      "STAGE": "计算最大连通簇",
+      "STATE": "Succeded",
+      "BEG_TIME": "2016-08-16 18:34:35",
+      "REPORT_ID": 3466625
+    },
+    {
+      "JOB_ID": 4579,
+      "END_TIME": "2016-08-16 18:43:28",
+      "STAGE": "计算结构指数",
+      "STATE": "Succeded",
+      "BEG_TIME": "2016-08-16 18:40:51",
+      "REPORT_ID": 3466635
+    },
+    {
+      "JOB_ID": 4579,
+      "END_TIME": "2016-08-16 18:43:47",
+      "STAGE": "保存分析结果",
+      "STATE": "Succeded",
+      "BEG_TIME": "2016-08-16 18:43:28",
+      "REPORT_ID": 3466636
+    },
+    {
+      "JOB_ID": 4579,
+      "END_TIME": "2016-08-16 18:43:47",
+      "STAGE": "任务总结",
+      "STATE": "全部成功",
+      "ATT_MSG": "结构分析完成！",
+      "BEG_TIME": "2016-08-16 17:29:34",
+      "REPORT_ID": 3466637
+    }
+  ]
+}

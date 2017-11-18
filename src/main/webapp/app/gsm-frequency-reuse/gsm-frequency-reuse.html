@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=UTF-8>
+    <title>频率复用分析</title>
+
+    <link rel="stylesheet" href="css/gsm-frequency-reuse.css">
+    <link rel="stylesheet" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
+    <link rel="stylesheet" href="../../lib/openlayers/4.4.2/ol.css">
+
+    <script src="../../lib/jquery/1.8.2/jquery.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.metadata.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
+    <script src="../../lib/validate.js"></script>
+    <script src="../../lib/tab.js"></script>
+    <script src="../../lib/openlayers/4.4.2/ol.js"></script>
+    <script src="js/gsm-frequency-reuse-origin.js"></script>
+    <script src="js/gsm-frequency-reuse.js"></script>
+</head>
+<body>
+<!--<div class="loading_cover" style="display: none">
+    <div class="cover"></div>
+    <h4 class="loading">
+        正在加载 <em class="loading_fb">小区</em>资源,请稍侯...
+    </h4>
+</div>-->
+<div id="map" class="map"></div>
+<div class="dialog draggable ui-draggable">
+    <div style="padding: 5px">
+
+        <form id="conditionForm" method="post">
+            省：<select name="provinceId" class="required" id="provinceId">
+
+
+        </select> 市：<select name="cityId" class="required" id="cityId">
+
+
+        </select> 区：<select name="areaId" class="required" id="queryCellAreaId">
+        </select>
+            <input id="queryGsmCell" value="加载小区" name="loadCellToMap" style="margin-right: 0px"
+                   type="button">
+            <input id="hiddenZoom" name="zoom" value="14" type="hidden">
+            <input id="hiddenLng" value="113.361397" type="hidden"> <input id="hiddenLat"
+                                                                           value="23.12489"
+                                                                           type="hidden"> <input
+                id="hiddenPageSize" name="page.pageSize" value="100" type="hidden"> <input
+                id="hiddenCurrentPage" name="page.currentPage" value="1" type="hidden"> <input
+                name="page.forcedStartIndex" id="hiddenForcedStartIndex" type="hidden"> <input
+                id="hiddenTotalPageCnt" type="hidden"> <input id="hiddenTotalCnt" type="hidden">
+            <input value="" name="type" type="hidden">
+        </form>
+        <div id="hiddenAreaLngLatDiv" style="display:none">
+
+            <input id="areaid_187" value="113.361397,23.12489" type="hidden">
+
+            <input id="areaid_188" value="113.26664,23.128836" type="hidden">
+
+            <input id="areaid_189" value="113.244324,23.126310999999998" type="hidden">
+
+            <input id="areaid_190" value="113.317451,23.084153" type="hidden">
+
+            <input id="areaid_191" value="113.273849,23.159301" type="hidden">
+
+            <input id="areaid_192" value="113.45941499999999,23.106734" type="hidden">
+
+            <input id="areaid_193" value="113.384399,22.936895" type="hidden">
+
+            <input id="areaid_194" value="113.220291,23.405286" type="hidden">
+
+            <input id="areaid_195" value="113.608932,22.772382999999998" type="hidden">
+
+            <input id="areaid_196" value="113.481216,23.181395" type="hidden">
+
+            <input id="areaid_197" value="113.810806,23.261533999999997" type="hidden">
+
+            <input id="areaid_198" value="113.586365,23.548403999999998" type="hidden">
+
+        </div>
+    </div>
+</div>
+<div class="resource_list_icon" style="right: 381px;">
+    <a href="#" class="switch"></a>
+    <a href="#" class="switch_hidden" style="display: none;"></a>
+    <div class="shad_v"></div>
+</div>
+<div class="resource_list300_box" style="height: 100%">
+    <div class="resource_list300">
+        <div id="div_tab" class="div_tab divtab_menu">
+            <ul>
+                <li class="selected">规划优化</li>
+            </ul>
+        </div>
+    </div>
+    <div class="divtab_content">
+        <div id="div_tab_0">
+
+
+            <div class="div_title_24px_blue">
+                <span class="sp_title"> 小区配置</span>
+            </div>
+            <div class="div_transparentstandard_nopaddming" id="analysisListDiv_cellconfig">
+                <table class="tb-transparent-standard" style="width:100%"
+                       id="analysisListTable_cellconfig"></table>
+                <div id="showCellBtnDiv" style="display:none">
+                    <input value="显示" id="showCellBtn" type="button">
+                </div>
+            </div>
+
+
+            <div class="div_title_24px_blue">
+                <span class="sp_title"> 小区干扰</span>
+            </div>
+            <div class="div_transparentstandard_nopaddming" id="analysisListDiv_cellinterference">
+                <table class="tb-transparent-standard" style="width:100%"
+                       id="analysisListTable_cellinterference">
+
+                </table>
+                <div id="analysisBtnDiv" style="display:none">
+                    <input value="确定" id="confirmSelectionAnalysisBtn" type="button">
+                </div>
+            </div>
+
+            <div class="div-m-split-10px"></div>
+
+            <div class="div_transparent_standard_border">
+                <div class="div_title_24px_grey sp_title_left">
+                    <span class="sp_title"> 分析应用</span>
+                </div>
+
+                <div id="analysisDiv" style="text-align:center">
+                    <br> <input id="reportbtn" onclick="reportFreqReuse();" value="频点复用统计"
+                                type="button">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input id="analyzebtn" onclick="analyzeFreqReuse();"
+                                                          value="频点复用分布标记" type="button"> <br> <span>&nbsp;</span>
+                </div>
+            </div>
+        </div>
+    </div></div>
+
+<div id="report_Dialog" class="dialog2" style="display:none;height:510px;top: 40px; right: 298px; z-index: 30;">
+    <div class="dialog_header">
+        <div class="dialog_title">频点复用统计</div>
+        <div class="dialog_tool">
+            <div class="dialog_tool_close dialog_closeBtn" onclick="$('#report_Dialog').hide();"></div>
+        </div>
+    </div>
+    <form id="reportForm" method="post">
+        <input id="reportPageSize" name="page.pageSize" value="20" type="hidden"> <input id="reportCurrentPage"
+                                                                                         name="page.currentPage"
+                                                                                         value="0" type="hidden"> <input
+            id="reportTotalCount" type="hidden"> <input id="reportPageCount" type="hidden">
+        <input id="reportId" name="id" type="hidden"> <input id="reportType" name="type" type="hidden">
+    </form>
+    <div class="dialog_content" id="report_Div" style="width:900px;height:422px; background:#f9f9f9"></div>
+    <br>
+    <div class="paging_div" style="border: 1px solid #ddd">
+        <span class="mr10"><a href="javascript:void(0);" onclick="reportFreqByPage('all')">显示全部</a></span> <span
+            class="mr10">每页
+				20 条记录,共 <em id="emTotalCnt" class="blue">0</em> 条记录
+			</span> <a class="paging_link page-first" title="首页" onclick="reportFreqByPage('first')"></a> <a
+            class="paging_link page-prev" title="上一页" onclick="reportFreqByPage('back')"></a> 第 <input
+            id="showCurrentPage" class="paging_input_text" value="0" type="text"> 页/<em id="emTotalPageCnt">0</em>页 <a
+            class="paging_link page-go" title="GO" onclick="reportFreqByPage('num')">GO</a> <a
+            class="paging_link page-next" title="下一页" onclick="reportFreqByPage('next')"></a> <a
+            class="paging_link page-last" title="末页" onclick="reportFreqByPage('last')"></a>
+    </div>
+    <div class="loading_cover" id="reportCoverDiv" style="display: none;position:absolute">
+        <div class="cover"></div>
+        <h4 class="loading">正在加载频点复用统计数据,请稍侯...</h4>
+    </div>
+</div>
+<div>
+
+    <div id="analyzeedit_Dialog" class="dialog2"
+         style="display:none;right: 174px;text-align: center;top:242px;width: 183px; z-index: 30;">
+        <div class="dialog_header">
+            <div class="dialog_title">频点复用分析</div>
+            <div class="dialog_tool">
+                <div class="dialog_tool_close dialog_closeBtn2"
+                     onclick="$('#analyzeedit_Dialog').hide();$('.black').hide();"></div>
+            </div>
+        </div>
+        <div class="dialog_content" style="background:#f9f9f9">
+            <div>
+                频点：<input name="freq_value" onchange="checkNumber(this);" onkeyup="checkNumber(this);"
+                          onafterpaste="checkNumber(this);" autocomplete="off" type="text">
+            </div>
+            <br>
+            <div>
+                <input name="freq_value" value="标记" onclick="markCellForFreqReuse();"
+                       type="button">&nbsp;&nbsp;&nbsp;<input name="freq_value" value="清除"
+                                                              onclick="clearMarkCellForFreqReuse();" type="button">
+            </div>
+        </div>
+    </div>
+</div>
+<div id="operInfo"
+     style="display:none; top:40px;left:600px;z-index:999;width:400px; height:40px; background-color:#7dff3f; filter:alpha(Opacity=80);-moz-opacity:0.5;opacity: 0.5;z-index:9999;position: fixed;">
+    <table style="text-align:center" height="100%" width="100%">
+        <tbody>
+        <tr>
+            <td><span id="operTip"></span></td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,213 @@
+{
+  "data": [
+    {
+      "BSC": "HBSM27A",
+      "CELL":"A20CCL7",
+      "CHGR":"1",
+      "HOP":"ON",
+      "SPOT_NUM":"100",
+      "SPOT_LIST":"1,3,7,8,9,0,2,4,2,3",
+      "ORDER":"RLCHC:CELL=&HOP=ON"
+    },{
+      "BSC": "HBSM07A",
+      "CELL":"A20CCL7",
+      "CHGR":"2",
+      "HOP":"ON",
+      "SPOT_NUM":"100",
+      "SPOT_LIST":"1,3,7,8,9,0,2,4,2,3",
+      "ORDER":"RLCHC:CELL=&HOP=ON"
+    },{
+      "BSC": "QYM09B2",
+      "CELL":"A20CCL4",
+      "CHGR":"3",
+      "HOP":"ON",
+      "SPOT_NUM":"100",
+      "SPOT_LIST":"1,3,7,8,9,0,2,4,2,3",
+      "ORDER":"RLCHC:CELL=&HOP=ON"
+    },{
+      "BSC": "QYM09B2",
+      "CELL":"A20CCL5",
+      "CHGR":"2",
+      "HOP":"ON",
+      "SPOT_NUM":"100",
+      "SPOT_LIST":"1,3,7,8,9,0,2,4,2,3",
+      "ORDER":"RLCHC:CELL=&HOP=ON"
+    },{
+      "BSC": "HBSM03B",
+      "CELL":"A20CCL4",
+      "CHGR":"3",
+      "HOP":"ON",
+      "SPOT_NUM":"100",
+      "SPOT_LIST":"1,3,7,8,9,0,2,4,2,3",
+      "ORDER":"RLCHC:CELL=&HOP=ON"
+    },{
+      "BSC": "HBSM03B",
+      "CELL":"A20CCL7",
+      "CHGR":"4",
+      "HOP":"ON",
+      "SPOT_NUM":"100",
+      "SPOT_LIST":"1,3,7,8,9,0,2,4,2,3",
+      "ORDER":"RLCHC:CELL=&HOP=ON"
+    },{
+      "BSC": "HBSM03B",
+      "CELL":"A20CCL6",
+      "CHGR":"5",
+      "HOP":"ON",
+      "SPOT_NUM":"100",
+      "SPOT_LIST":"1,3,7,8,9,0,2,4,2,3",
+      "ORDER":"RLCHC:CELL=&HOP=ON"
+    },{
+      "BSC": "HBSM03B",
+      "CELL":"A20CCL7",
+      "CHGR":"9",
+      "HOP":"ON",
+      "SPOT_NUM":"100",
+      "SPOT_LIST":"1,3,7,8,9,0,2,4,2,3",
+      "ORDER":"RLCHC:CELL=&HOP=ON"
+    },{
+      "BSC": "HBSM03B",
+      "CELL":"A20HXQ1",
+      "CHGR":"1",
+      "HOP":"ON",
+      "SPOT_NUM":"100",
+      "SPOT_LIST":"1,3,7,8,9,0,2,4,2,3",
+      "ORDER":"RLCHC:CELL=&HOP=ON"
+    },{
+      "BSC": "HBSM03B",
+      "CELL":"A20HXQ2",
+      "CHGR":"0",
+      "HOP":"ON",
+      "SPOT_NUM":"100",
+      "SPOT_LIST":"1,3,7,8,9,0,2,4,2,3",
+      "ORDER":"RLCHC:CELL=&HOP=ON"
+    },{
+      "BSC": "HBSM03B",
+      "CELL":"A20HXQ3",
+      "CHGR":"2",
+      "HOP":"ON",
+      "SPOT_NUM":"100",
+      "SPOT_LIST":"1,3,7,8,9,0,2,4,2,3",
+      "ORDER":"RLCHC:CELL=&HOP=ON"
+    },{
+      "BSC": "HBSM03B",
+      "CELL":"A20HXQ7",
+      "CHGR":"0",
+      "HOP":"ON",
+      "SPOT_NUM":"100",
+      "SPOT_LIST":"1,3,7,8,9,0,2,4,2,3",
+      "ORDER":"RLCHC:CELL=&HOP=ON"
+    },{
+      "BSC": "HBSM09A",
+      "CELL":"A20BHW1",
+      "CHGR":"1",
+      "HOP":"ON",
+      "SPOT_NUM":"100",
+      "SPOT_LIST":"1,3,7,8,9,0,2,4,2,3",
+      "ORDER":"RLCHC:CELL=&HOP=ON"
+    },{
+      "BSC": "HBSM03B",
+      "CELL":"A20BHW1",
+      "CHGR":"2",
+      "HOP":"ON",
+      "SPOT_NUM":"100",
+      "SPOT_LIST":"1,3,7,8,9,0,2,4,2,3",
+      "ORDER":"RLCHC:CELL=&HOP=ON"
+    },{
+      "BSC": "HBSM34A",
+      "CELL":"A20BHW6",
+      "CHGR":"3",
+      "HOP":"ON",
+      "SPOT_NUM":"100",
+      "SPOT_LIST":"1,3,7,8,9,0,2,4,2,3",
+      "ORDER":"RLCHC:CELL=&HOP=ON"
+    },{
+      "BSC": "HBSM23A",
+      "CELL":"A20BHW6",
+      "CHGR":"5",
+      "HOP":"ON",
+      "SPOT_NUM":"100",
+      "SPOT_LIST":"1,3,7,8,9,0,2,4,2,3",
+      "ORDER":"RLCHC:CELL=&HOP=ON"
+    },{
+      "BSC": "HBSM03B",
+      "CELL":"A20BHW7",
+      "CHGR":"4",
+      "HOP":"ON",
+      "SPOT_NUM":"100",
+      "SPOT_LIST":"1,3,7,8,9,0,2,4,2,3",
+      "ORDER":"RLCHC:CELL=&HOP=ON"
+    },{
+      "BSC": "HBSM03B",
+      "CELL":"A20BJD1",
+      "CHGR":"3",
+      "HOP":"ON",
+      "SPOT_NUM":"100",
+      "SPOT_LIST":"1,3,7,8,9,0,2,4,2,3",
+      "ORDER":"RLCHC:CELL=&HOP=ON"
+    },{
+      "BSC": "HBSM03B",
+      "CELL":"A20BJD2",
+      "CHGR":"2",
+      "HOP":"OF",
+      "SPOT_NUM":"100",
+      "SPOT_LIST":"1,3,7,8,9,0,2,4,2,3",
+      "ORDER":"RLCHC:CELL=&HOP=ON"
+    },{
+      "BSC": "HBSM03B",
+      "CELL":"A20BJD1",
+      "CHGR":"1",
+      "HOP":"ON",
+      "SPOT_NUM":"100",
+      "SPOT_LIST":"1,3,7,8,9,0,2,4,2,3",
+      "ORDER":"RLCHC:CELL=&HOP=ON"
+    },{
+      "BSC": "HBSM03B",
+      "CELL":"A20BJD6",
+      "CHGR":"0",
+      "HOP":"ON",
+      "SPOT_NUM":"100",
+      "SPOT_LIST":"1,3,7,8,9,0,2,4,2,3",
+      "ORDER":"RLCHC:CELL=&HOP=ON"
+    },{
+      "BSC": "HBSM03B",
+      "CELL":"A20BJD6",
+      "CHGR":"2",
+      "HOP":"ON",
+      "SPOT_NUM":"100",
+      "SPOT_LIST":"1,3,7,8,9,0,2,4,2,3",
+      "ORDER":"RLCHC:CELL=&HOP=ON"
+    },{
+      "BSC": "HBSM03B",
+      "CELL":"A20BJD7",
+      "CHGR":"1",
+      "HOP":"ON",
+      "SPOT_NUM":"100",
+      "SPOT_LIST":"1,3,7,8,9,0,2,4,2,3",
+      "ORDER":"RLCHC:CELL=&HOP=ON"
+    },{
+      "BSC": "HBSM03B",
+      "CELL":"A20BJD6",
+      "CHGR":"0",
+      "HOP":"ON",
+      "SPOT_NUM":"100",
+      "SPOT_LIST":"1,3,7,8,9,0,2,4,2,3",
+      "ORDER":"RLCHC:CELL=&HOP=ON"
+    },{
+      "BSC": "HBSM03B",
+      "CELL":"A20BJD6",
+      "CHGR":"2",
+      "HOP":"OFF",
+      "SPOT_NUM":"100",
+      "SPOT_LIST":"1,3,7,8,9,0,2,4,2,3",
+      "ORDER":"RLCHC:CELL=&HOP=ON"
+    },{
+      "BSC": "QYMO9B2",
+      "CELL":"A20BJD5",
+      "CHGR":"1",
+      "HOP":"ON",
+      "SPOT_NUM":"100",
+      "SPOT_LIST":"1,3,7,8,9,0,2,4,2,3",
+      "ORDER":"RLCHC:CELL=&HOP=ON"
+    }
+  ]
+}

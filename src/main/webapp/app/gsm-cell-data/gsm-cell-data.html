@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>小区信息管理</title>
+
+    <link rel="stylesheet" href="css/gsm-cell-data.css">
+    <link rel="stylesheet" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
+    <link rel="stylesheet" href="../../lib/datatables/1.10.16/datatables.min.css">
+
+    <script src="../../lib/jquery/1.8.2/jquery.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.metadata.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
+    <script src="../../lib/validate.js"></script>
+    <script src="../../lib/tab.js"></script>
+    <script src="js/gsm-cell-data-import.js"></script>
+    <script src="js/gsm-cell-data-manage.js"></script>
+    <script src="../../lib/datatables/1.10.16/datatables.min.js"></script>
+    <script src="../../lib/laydate/5.0.7/laydate.js"></script>
+    <script src="js/gsm-cell-data.js"></script>
+    <script>
+        var $ = jQuery.noConflict();
+        $(function () {
+            $(".draggable").draggable();
+            $("#trigger").css("display", "none");
+
+            //tab选项卡
+            tab("div_tab", "li", "onclick");//项目服务范围类别切换
+        })
+    </script>
+</head>
+<body>
+<div class="loading_cover" style="display: none">
+    <div class="cover"></div>
+    <h4 class="loading">
+        正在加载 <em class="loading_fb">小区</em>资源,请稍侯...
+    </h4>
+</div>
+<div class="div_left_main" style="width: 100%">
+    <div class="div_left_content">
+
+        <div style="padding: 10px">
+            <div id="frame" style="border: 1px solid #ddd">
+                <div id="div_tab" class="div_tab divtab_menu">
+                    <ul>
+                        <li class="selected">GSM小区信息导入</li>
+                        <li>GSM小区信息查询</li>
+
+                    </ul>
+                </div>
+
+                <div class="divtab_content">
+                    <div id="div_tab_0">
+                        <div id="listinfoDiv">
+                            <form id="searchImportForm">
+                                <select id="provincemenu"></select>
+                                <select id="citymenu" name="attachParams['cityId']"></select>
+                                <div style="margin: 9px"></div>
+                                <div id="searchImportDiv"
+                                     style="height: 46px; background: rgb(255, 255, 255) url(&quot;images/ui-bg_glass_65_ffffff_1x400.png&quot;) repeat-x scroll 50% 50%; border: 1px solid rgb(251, 216, 80);">
+                                    <div style="margin: 9px"></div>
+                                    <table>
+                                        <tbody>
+                                        <tr>
+                                            <td style="padding-left:30px;display:none">所选区域:<input id="area1" name=""
+                                                                                                   readonly="readonly"
+                                                                                                   type="text"></td>
+                                            <td style="padding-left:30px"><label>上传时间 从:</label> <input
+                                                    value="" id="begUploadDate"
+                                                    name="attachParams['begUploadDate']" class="hasDatepicker"
+                                                    type="text"> 至：<input value="" id="endUploadDate"
+                                                                          name="attachParams['endUploadDate']"
+                                                                          class="hasDatepicker" type="text"></td>
+                                            <td style="padding-left:30px"><label>状态:</label></td>
+                                            <td><select id="fileStatus" name="attachParams['fileStatus']">
+                                                <option value="全部" selected="selected">全部</option>
+                                                <option value="全部成功">全部成功</option>
+                                                <option value="成功">成功</option>
+                                                <option value="全部失败">全部失败</option>
+                                                <option value="正在解析">正在解析</option>
+                                                <option value="等待解析">等待解析</option>
+                                            </select></td>
+                                            <td style="padding-left:30px"><input id="searchImportBtn" value="查询导入记录"
+                                                                                 type="button"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </form>
+
+                            <div style="margin: 9px"></div>
+
+                            <div id="importTitleDiv" class="importTitle">
+                                <div style="margin: 9px"></div>
+                                导入
+                            </div>
+                            <div id="importDiv" class="importContent" style="height:250px">
+                                <form id="formImportNcs" enctype="multipart/form-data" method="post">
+                                    <input name="fileCode" id="fileCode" value="GSM_CELL_FILE" type="hidden"> <input
+                                        name="token" id="token" value="" type="hidden"> <input id="uploadCityId"
+                                                                                               name="cityId" value="88"
+                                                                                               type="hidden">
+                                    <div>
+                                        <table class="main-table1 half-width" style="margin-left:0;width:50%">
+                                            <tbody>
+                                            <tr style="display:none">
+                                                <td class="menuTd">所选区域<span class="txt-impt">*</span></td>
+                                                <td><input id="area2" name="" readonly="readonly" style="width: 132px;"
+                                                           type="text"></td>
+                                            </tr>
+                                            <tr style="display:none">
+                                                <td class="menuTd">文件日期<span class="txt-impt">*</span>
+                                                </td>
+                                                <td><input name="meaTime" class="required" id="meatime"
+                                                           value="2017-10-25"
+                                                           onfocus="WdatePicker({dateFmt:'yyyy-MM-dd'})"
+                                                           readonly="readonly" style="width: 132px;" type="text"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="menuTd">GSM工参数据文件(EXCEL)<span class="txt-impt">*</span>
+                                                </td>
+                                                <td style="width: 50%; font-weight: bold" colspan="0"><input
+                                                        style="width: 44%;" name="file" id="fileid"
+                                                        class="canclear required" type="file"> <span
+                                                        style="color:red;width:100px;font-family:华文中宋;text-align:center"
+                                                        id="fileDiv"></span> <a
+                                                        href="http://rno.iscreate.com/ops/op/rno/fileDownloadAction?fileName=GSM%E5%B0%8F%E5%8C%BA%E4%BF%A1%E6%81%AF%E5%AF%BC%E5%85%A5%E6%A8%A1%E6%9D%BF.xlsx"
+                                                        title="点击下载模板" id="downloadHref">GSM小区信息导入模板</a><br></td>
+                                            </tr>
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+                                    <div class="container-bottom" style="padding-top: 10px">
+                                        <table style="width: 60%; margin: auto" align="left">
+                                            <tbody>
+                                            <tr>
+                                                <td><input value="导    入" style="width: 90px;" id="importBtn"
+                                                           name="import" type="button"> <br>
+                                                    <div id="uploadMsgDiv" style="display:none"></div>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <div id="importResultDiv" class="container-bottom" style="padding-top: 10px">
+                                            <div id="progressInfoDiv" style="width:50%;display:none">
+                                                <h2 id="progressNum">0%</h2>
+                                                <div id="progressbar"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div id="importListDiv" class="sectionDivCls">
+                                <bold>文件上传记录列表</bold>
+
+                                <table id="importListTab" class="display rnoHeader" cellspacing="0" width="100%">
+                                    <thead>
+                                    <tr>
+                                        <th>上传日期</th>
+                                        <th>文件名称</th>
+                                        <th>文件大小</th>
+                                        <th>开始时间</th>
+                                        <th>完成时间</th>
+                                        <th>上传账号</th>
+                                        <th>状态</th>
+                                    </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                        <div id="reportDiv" style="display:none">
+                            <form id="viewReportForm">
+                                <input name="attachParams['jobId']" id="hiddenJobId" value="" type="hidden"> <input
+                                    id="hiddenPageSize" name="page.pageSize" value="25" type="hidden"> <input
+                                    id="hiddenCurrentPage" name="page.currentPage" value="1" type="hidden"> <input
+                                    id="hiddenTotalPageCnt" type="hidden">
+                                <input id="hiddenTotalCnt" value="-1" name="page.totalCnt" type="hidden">
+                            </form>
+                            <ul id="icons" class="ui-widget ui-helper-clearfix" style="width:100px;cursor:pointer">
+                                <li class="ui-state-default ui-corner-all" title="返回列表" style="width:100px"
+                                    onclick="javascript:returnToImportList();"><span
+                                        class="ui-icon ui-icon-arrowreturnthick-1-w" style="width:20px"></span>返回列表
+                                </li>
+                            </ul>
+                            <table id="reportListTab" class="greystyle-standard" style="width:auto;margin-left:0">
+                                <thead>
+                                <tr>
+                                    <th>阶段</th>
+                                    <th>开始时间</th>
+                                    <th>结束</th>
+                                    <th>结果</th>
+                                    <th>详细信息</th>
+                                </tr>
+                                </thead>
+                            </table>
+                            <div class="paging_div" id="reportListPageDiv" style="border: 1px solid #ddd">
+									<span class="mr10">共 <em id="emTotalCnt" class="blue">0</em>
+										条记录
+									</span> <a class="paging_link page-first" title="首页"
+                                               onclick="showListViewByPage('first',queryReportData,'viewReportForm','reportListPageDiv')"></a>
+                                <a class="paging_link page-prev" title="上一页"
+                                   onclick="showListViewByPage('back',queryReportData,'viewReportForm','reportListPageDiv')"></a>
+                                第 <input id="showCurrentPage" class="paging_input_text" value="0" type="text"> 页/<em
+                                    id="emTotalPageCnt">0</em>页 <a class="paging_link page-go" title="GO"
+                                                                   onclick="showListViewByPage('num',queryReportData,'viewReportForm','reportListPageDiv')">GO</a>
+                                <a class="paging_link page-next" title="下一页"
+                                   onclick="showListViewByPage('next',queryReportData,'viewReportForm','reportListPageDiv')"></a>
+                                <a class="paging_link page-last" title="末页"
+                                   onclick="showListViewByPage('last',queryReportData,'viewReportForm','reportListPageDiv')"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="div_tab_1" style="display: none;">
+                        <div>
+                            <form id="conditionForm" method="post">
+                                <input id="hiddenPageSize1" name="page.pageSize" value="25" type="hidden"> <input
+                                    id="hiddenCurrentPage1" name="page.currentPage" value="1" type="hidden"> <input
+                                    id="hiddenTotalPageCnt1" name="page.totalPageCnt" value="-1" type="hidden">
+                                <input id="hiddenTotalCnt1" name="page.totalCnt" value="-1" type="hidden">
+                                <table class="main-table1 half-width" style="width: 100%; padding-top: 10px">
+
+                                    <tbody>
+                                    <tr>
+                                        <td class="menuTd" style="text-align:center">区域</td>
+                                        <td class="menuTd" style="text-align:center">BSC/NodeB</td>
+                                        <td class="menuTd" style="text-align:center">CELL</td>
+                                        <td class="menuTd" style="text-align:center">小区中文名</td>
+
+                                        <td class="menuTd" style="text-align:center">重要级别</td>
+                                        <td class="menuTd" style="text-align:center">覆盖范围</td>
+                                        <td class="menuTd" style="text-align:center">覆盖类型</td>
+
+                                    </tr>
+                                    <tr>
+
+                                        <td style="text-align:left">省：<select class="areaCls" id="provinceId" style="width:70px">
+
+                                        </select><br> 市：<select class="areaCls" id="cityId" style="width:70px">
+
+                                        </select> <br>区：<select class="areaCls" id="districtId" style="width:70px">
+                                            <option value="-1" selected="selected">全部</option>
+                                        </select>
+                                        </td>
+
+                                        <td style=" text-align:left"><select id="queryCellBscId" name="queryCell.bscId">
+                                            <option value="-1" selected="selected">请选择</option>
+                                            <option value="458">GZM42B2</option>
+                                            <option value="1277">GZM42B5</option>
+                                            <option value="1279">GZM42B6</option>
+                                            <option value="586">GZM22B2</option>
+                                            <option value="587">GZM13B1</option>
+                                            <option value="588">GZM28B2</option>
+                                            <option value="589">GZM31B2</option>
+                                            <option value="590">GZM28B3</option>
+                                        </select></td>
+                                        <td style="text-align: left"><input name="queryCell.label" id="celllabel"
+                                                                            type="text"> <span
+                                                style="color:red;width:100px;font-family:华文中宋;text-align:center"
+                                                id="celllabelDiv"></span></td>
+                                        <td style="width: 10%; text-align: left"><input name="queryCell.name"
+                                                                                        id="cellname" type="text"> <span
+                                                style="color:red;width:100px;font-family:华文中宋;text-align:center"
+                                                id="cellnameDiv"></span></td>
+
+                                        <td style=" text-align: left"><select name="queryCell.importancegrade">
+                                            <option value="" selected="selected">请选择</option>
+
+                                            <option value="一级VIP">
+                                                一级VIP
+                                            </option>
+
+                                            <option value="二级VIP">
+                                                二级VIP
+                                            </option>
+
+                                            <option value="非VIP">
+                                                非VIP
+                                            </option>
+
+                                            <option value="N/A">
+                                                N/A
+                                            </option>
+
+                                            <option value="否">
+                                                否
+                                            </option>
+
+                                            <option value="VVIP类型">
+                                                VVIP类型
+                                            </option>
+
+                                            <option value="普通">
+                                                普通
+                                            </option>
+
+                                            <option value="VIP">
+                                                VIP
+                                            </option>
+
+
+                                        </select></td>
+
+                                        <td style="text-align: left"><select name="queryCell.coverarea">
+                                            <option value="" selected="selected">请选择</option>
+
+                                            <option value="休闲娱乐场所">
+                                                休闲娱乐场所
+                                            </option>
+
+                                            <option value="三圳">
+                                                三圳
+                                            </option>
+
+                                            <option value="南口">
+                                                南口
+                                            </option>
+
+                                            <option value="转水">
+                                                转水
+                                            </option>
+
+                                            <option value="茶阳">
+                                                茶阳
+                                            </option>
+
+                                            <option value="柘东">
+                                                柘东
+                                            </option>
+
+                                            <option value="其它城区">
+                                                其它城区
+                                            </option>
+
+                                        </select></td>
+                                        <td style=" text-align: left"><select name="queryCell.coverType">
+                                            <option value="" selected="selected">请选择</option>
+
+                                            <option value="休闲娱乐场所">
+                                                休闲娱乐场所
+                                            </option>
+
+                                            <option value="城区道路">
+                                                城区道路
+                                            </option>
+
+                                            <option value="铁路">
+                                                铁路
+                                            </option>
+
+                                            <option value="商业区">
+                                                商业区
+                                            </option>
+
+                                            <option value="广场公园">
+                                                广场公园
+                                            </option>
+
+                                            <option value="室外">
+                                                室外
+                                            </option>
+
+                                            <option value="其它">
+                                                其它
+                                            </option>
+
+                                            <option value="居民小区">
+                                                居民小区
+                                            </option>
+
+                                            <option value="城中村">
+                                                城中村
+                                            </option>
+
+                                            <option value="村庄">
+                                                村庄
+                                            </option>
+
+                                            <option value="郊区道路">
+                                                郊区道路
+                                            </option>
+
+                                            <option value="城区">
+                                                城区
+                                            </option>
+
+                                            <option value="室内">
+                                                室内
+                                            </option>
+
+                                            <option value="集贸市场">
+                                                集贸市场
+                                            </option>
+
+                                            <option value="中小学">
+                                                中小学
+                                            </option>
+
+                                            <option value="星级酒店">
+                                                星级酒店
+                                            </option>
+
+                                            <option value="道路">
+                                                道路
+                                            </option>
+
+                                            <option value="工业园区">
+                                                工业园区
+                                            </option>
+
+                                            <option value="N/A">
+                                                N/A
+                                            </option>
+
+                                            <option value="高校">
+                                                高校
+                                            </option>
+
+                                            <option value="高层居民区">
+                                                高层居民区
+                                            </option>
+
+                                            <option value="集团客户">
+                                                集团客户
+                                            </option>
+
+                                            <option value="酒店">
+                                                酒店
+                                            </option>
+
+                                            <option value="长途汽车站">
+                                                长途汽车站
+                                            </option>
+
+                                            <option value="大型企业">
+                                                大型企业
+                                            </option>
+
+                                            <option value="室外覆盖">
+                                                室外覆盖
+                                            </option>
+
+                                            <option value="内河航道">
+                                                内河航道
+                                            </option>
+
+                                            <option value="小区">
+                                                小区
+                                            </option>
+
+                                            <option value="高层写字楼">
+                                                高层写字楼
+                                            </option>
+
+                                            <option value="政府机关">
+                                                政府机关
+                                            </option>
+
+                                            <option value="大型厂区">
+                                                大型厂区
+                                            </option>
+
+                                            <option value="住宅小区">
+                                                住宅小区
+                                            </option>
+
+                                            <option value="餐厅">
+                                                餐厅
+                                            </option>
+
+                                            <option value="宾馆">
+                                                宾馆
+                                            </option>
+
+                                            <option value="高铁">
+                                                高铁
+                                            </option>
+
+                                            <option value="平远差干镇相思河沿岸">
+                                                平远差干镇相思河沿岸
+                                            </option>
+
+                                            <option value="农场">
+                                                农场
+                                            </option>
+
+                                            <option value="商业中心">
+                                                商业中心
+                                            </option>
+
+                                            <option value="工厂">
+                                                工厂
+                                            </option>
+
+                                            <option value="厂房">
+                                                厂房
+                                            </option>
+
+                                            <option value="火车站">
+                                                火车站
+                                            </option>
+
+                                            <option value="写字楼">
+                                                写字楼
+                                            </option>
+
+                                            <option value="高速道路">
+                                                高速道路
+                                            </option>
+
+                                            <option value="其他">
+                                                其他
+                                            </option>
+
+                                            <option value="企事业单位">
+                                                企事业单位
+                                            </option>
+
+                                            <option value="医院">
+                                                医院
+                                            </option>
+
+                                            <option value="中心市场">
+                                                中心市场
+                                            </option>
+
+                                            <option value="政府机关单位">
+                                                政府机关单位
+                                            </option>
+
+                                            <option value="揭东文化广场附近">
+                                                揭东文化广场附近
+                                            </option>
+
+                                            <option value="企业">
+                                                企业
+                                            </option>
+
+                                            <option value="高铁车站">
+                                                高铁车站
+                                            </option>
+
+                                            <option value="国道">
+                                                国道
+                                            </option>
+
+                                            <option value="路面">
+                                                路面
+                                            </option>
+
+                                            <option value="一般室外">
+                                                一般室外
+                                            </option>
+
+                                            <option value="体育场馆">
+                                                体育场馆
+                                            </option>
+
+                                            <option value="机场">
+                                                机场
+                                            </option>
+
+                                            <option value="居民楼">
+                                                居民楼
+                                            </option>
+
+                                            <option value="高层住宅区">
+                                                高层住宅区
+                                            </option>
+
+                                            <option value="低层居民区">
+                                                低层居民区
+                                            </option>
+
+                                            <option value="停车场">
+                                                停车场
+                                            </option>
+
+                                            <option value="党政军宿舍">
+                                                党政军宿舍
+                                            </option>
+
+                                            <option value="居民区">
+                                                居民区
+                                            </option>
+
+                                            <option value="办公楼">
+                                                办公楼
+                                            </option>
+
+                                            <option value="车站">
+                                                车站
+                                            </option>
+
+                                            <option value="别墅群">
+                                                别墅群
+                                            </option>
+
+                                            <option value="商厂">
+                                                商厂
+                                            </option>
+
+                                            <option value="高速路">
+                                                高速路
+                                            </option>
+
+                                            <option value="隧道">
+                                                隧道
+                                            </option>
+
+                                            <option value="风景区">
+                                                风景区
+                                            </option>
+
+                                            <option value="商业街">
+                                                商业街
+                                            </option>
+
+                                            <option value="水域">
+                                                水域
+                                            </option>
+
+                                            <option value="武警军区">
+                                                武警军区
+                                            </option>
+
+                                            <option value="旅游景点">
+                                                旅游景点
+                                            </option>
+
+                                            <option value="乡镇">
+                                                乡镇
+                                            </option>
+
+                                            <option value="商场酒店">
+                                                商场酒店
+                                            </option>
+
+                                            <option value="郊区站">
+                                                郊区站
+                                            </option>
+
+                                            <option value="超市">
+                                                超市
+                                            </option>
+
+                                            <option value="大型产区">
+                                                大型产区
+                                            </option>
+
+                                            <option value="驾校">
+                                                驾校
+                                            </option>
+
+                                            <option value="高速公路">
+                                                高速公路
+                                            </option>
+
+                                            <option value="省道">
+                                                省道
+                                            </option>
+
+                                            <option value="国道高速">
+                                                国道高速
+                                            </option>
+
+                                            <option value="普铁">
+                                                普铁
+                                            </option>
+
+                                            <option value="党政军机关">
+                                                党政军机关
+                                            </option>
+
+                                            <option value="餐饮娱乐">
+                                                餐饮娱乐
+                                            </option>
+
+                                            <option value="工业区">
+                                                工业区
+                                            </option>
+
+                                            <option value="农村">
+                                                农村
+                                            </option>
+
+                                            <option value="隧道内">
+                                                隧道内
+                                            </option>
+
+                                            <option value="娱乐场所">
+                                                娱乐场所
+                                            </option>
+
+                                            <option value="国道省道">
+                                                国道省道
+                                            </option>
+
+                                            <option value="旅游景区">
+                                                旅游景区
+                                            </option>
+
+                                            <option value="专业市场">
+                                                专业市场
+                                            </option>
+
+                                            <option value="住宅区">
+                                                住宅区
+                                            </option>
+
+                                            <option value="学校">
+                                                学校
+                                            </option>
+
+                                            <option value="主要道路">
+                                                主要道路
+                                            </option>
+
+                                            <option value="餐饮娱乐场所">
+                                                餐饮娱乐场所
+                                            </option>
+
+                                            <option value="校园">
+                                                校园
+                                            </option>
+
+                                            <option value="移动营业厅">
+                                                移动营业厅
+                                            </option>
+
+                                            <option value="生活区">
+                                                生活区
+                                            </option>
+
+                                            <option value="高层居民楼">
+                                                高层居民楼
+                                            </option>
+
+                                            <option value="广场">
+                                                广场
+                                            </option>
+
+                                            <option value="商场影院">
+                                                商场影院
+                                            </option>
+
+                                            <option value="会展中心">
+                                                会展中心
+                                            </option>
+
+                                        </select></td>
+
+                                    </tr>
+
+                                    <tr>
+
+                                        <td style="width: 10%; text-align: center" colspan="7">
+                                            <input onclick="" value="查  询" name="search" id="subBtn" type="button">
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+
+                        <div style="padding-top: 10px">
+                            <table width="100%">
+                                <tbody>
+                                <tr>
+                                    <td style="width: 20%">
+                                        <p>
+                                            <font style="font-weight: bold">小区信息表：</font>
+                                        </p>
+                                    </td>
+
+
+                                </tr>
+
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div style="padding-top: 10px">
+                            <table id="queryResultTab" class="display rnoHeader" cellspacing="0" width="100%">
+                                <thead>
+                                <tr>
+                                    <th>CELL</th>
+                                    <th>小区中文名</th>
+                                    <th>LAC</th>
+                                    <th>CI</th>
+                                    <th>BCCH</th>
+                                    <th>BSIC</th>
+                                    <th>TCH</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

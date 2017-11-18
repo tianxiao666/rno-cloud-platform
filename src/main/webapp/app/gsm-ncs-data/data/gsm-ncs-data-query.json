@@ -1,0 +1,279 @@
+{
+  "data": [
+    {
+      "BSC": "GZM28B3",
+      "CITY_NAME": "广州市",
+      "MEA_TIME": "2015-10-28 08:00:08",
+      "RNO_2G_ERI_NCS_DESC_ID": 81157,
+      "RECORD_COUNT": 10617,
+      "CREATE_TIME": "2015-11-04 16:27:04",
+      "FACTORY": "ERI",
+      "NAME": "BARFIL01-00000026764",
+      "FREQ_SECTION": "GSM1800"
+    },
+    {
+      "BSC": "GZM39B2",
+      "CITY_NAME": "广州市",
+      "MEA_TIME": "2015-10-28 08:00:12",
+      "RNO_2G_ERI_NCS_DESC_ID": 81190,
+      "RECORD_COUNT": 14946,
+      "CREATE_TIME": "2015-11-04 16:30:47",
+      "FACTORY": "ERI",
+      "NAME": "BARFIL00-0000003853",
+      "FREQ_SECTION": "GSM900"
+    },
+    {
+      "BSC": "GZA26",
+      "CITY_NAME": "广州市",
+      "MEA_TIME": "2015-10-28 08:00:17",
+      "RNO_2G_ERI_NCS_DESC_ID": 81174,
+      "RECORD_COUNT": 14343,
+      "CREATE_TIME": "2015-11-04 16:29:14",
+      "FACTORY": "ERI",
+      "NAME": "BARFIL00-0000002088",
+      "FREQ_SECTION": "GSM900"
+    },
+    {
+      "BSC": "GZM18A",
+      "CITY_NAME": "广州市",
+      "MEA_TIME": "2015-10-28 08:00:27",
+      "RNO_2G_ERI_NCS_DESC_ID": 81140,
+      "RECORD_COUNT": 6515,
+      "CREATE_TIME": "2015-11-04 16:25:41",
+      "FACTORY": "ERI",
+      "NAME": "BARFIL01-0000003565",
+      "FREQ_SECTION": "GSM1800"
+    },
+    {
+      "BSC": "GZM09B",
+      "CITY_NAME": "广州市",
+      "MEA_TIME": "2015-10-28 08:00:50",
+      "RNO_2G_ERI_NCS_DESC_ID": 81154,
+      "RECORD_COUNT": 5804,
+      "CREATE_TIME": "2015-11-04 16:26:50",
+      "FACTORY": "ERI",
+      "NAME": "BARFIL01-0000002023",
+      "FREQ_SECTION": "GSM1800"
+    },
+    {
+      "BSC": "GZM44B7",
+      "CITY_NAME": "广州市",
+      "MEA_TIME": "2015-10-28 08:00:52",
+      "RNO_2G_ERI_NCS_DESC_ID": 81143,
+      "RECORD_COUNT": 6667,
+      "CREATE_TIME": "2015-11-04 16:25:58",
+      "FACTORY": "ERI",
+      "NAME": "BARFIL01-0000003086",
+      "FREQ_SECTION": "GSM1800"
+    },
+    {
+      "BSC": "GZM50B1",
+      "CITY_NAME": "广州市",
+      "MEA_TIME": "2015-10-28 08:01:02",
+      "RNO_2G_ERI_NCS_DESC_ID": 81221,
+      "RECORD_COUNT": 9813,
+      "CREATE_TIME": "2015-11-04 16:34:16",
+      "FACTORY": "ERI",
+      "NAME": "BARFIL00-0000002697",
+      "FREQ_SECTION": "GSM900"
+    },
+    {
+      "BSC": "GZM50B3",
+      "CITY_NAME": "广州市",
+      "MEA_TIME": "2015-10-28 08:01:28",
+      "RNO_2G_ERI_NCS_DESC_ID": 81166,
+      "RECORD_COUNT": 12112,
+      "CREATE_TIME": "2015-11-04 16:28:30",
+      "FACTORY": "ERI",
+      "NAME": "BARFIL01-0000002383",
+      "FREQ_SECTION": "GSM1800"
+    },
+    {
+      "BSC": "GZM22A",
+      "CITY_NAME": "广州市",
+      "MEA_TIME": "2015-10-28 08:01:31",
+      "RNO_2G_ERI_NCS_DESC_ID": 81159,
+      "RECORD_COUNT": 8918,
+      "CREATE_TIME": "2015-11-04 16:27:45",
+      "FACTORY": "ERI",
+      "NAME": "BARFIL01-0000003511",
+      "FREQ_SECTION": "GSM1800"
+    },
+    {
+      "BSC": "GZM01B",
+      "CITY_NAME": "广州市",
+      "MEA_TIME": "2015-10-28 08:01:33",
+      "RNO_2G_ERI_NCS_DESC_ID": 81170,
+      "RECORD_COUNT": 12832,
+      "CREATE_TIME": "2015-11-04 16:28:48",
+      "FACTORY": "ERI",
+      "NAME": "BARFIL01-0000003245",
+      "FREQ_SECTION": "GSM1800"
+    },
+    {
+      "BSC": "GZM33B2",
+      "CITY_NAME": "广州市",
+      "MEA_TIME": "2015-10-28 08:02:13",
+      "RNO_2G_ERI_NCS_DESC_ID": 81195,
+      "RECORD_COUNT": 10495,
+      "CREATE_TIME": "2015-11-04 16:31:30",
+      "FACTORY": "ERI",
+      "NAME": "BARFIL00-0000003370",
+      "FREQ_SECTION": "GSM900"
+    },
+    {
+      "BSC": "GZM37B3",
+      "CITY_NAME": "广州市",
+      "MEA_TIME": "2015-10-28 08:02:14",
+      "RNO_2G_ERI_NCS_DESC_ID": 81179,
+      "RECORD_COUNT": 5979,
+      "CREATE_TIME": "2015-11-04 16:29:57",
+      "FACTORY": "ERI",
+      "NAME": "BARFIL01-0000003191",
+      "FREQ_SECTION": "GSM1800"
+    },
+    {
+      "BSC": "GZM46B3",
+      "CITY_NAME": "广州市",
+      "MEA_TIME": "2015-10-28 08:02:22",
+      "RNO_2G_ERI_NCS_DESC_ID": 81134,
+      "RECORD_COUNT": 11656,
+      "CREATE_TIME": "2015-11-04 16:24:56",
+      "FACTORY": "ERI",
+      "NAME": "BARFIL01-0000003214",
+      "FREQ_SECTION": "GSM1800"
+    },
+    {
+      "BSC": "GZM04B",
+      "CITY_NAME": "广州市",
+      "MEA_TIME": "2015-10-28 08:02:25",
+      "RNO_2G_ERI_NCS_DESC_ID": 81206,
+      "RECORD_COUNT": 12587,
+      "CREATE_TIME": "2015-11-04 16:32:37",
+      "FACTORY": "ERI",
+      "NAME": "BARFIL00-0000001335",
+      "FREQ_SECTION": "GSM900"
+    },
+    {
+      "BSC": "GZM42B1",
+      "CITY_NAME": "广州市",
+      "MEA_TIME": "2015-10-28 08:02:40",
+      "RNO_2G_ERI_NCS_DESC_ID": 81129,
+      "RECORD_COUNT": 14836,
+      "CREATE_TIME": "2015-11-04 16:24:12",
+      "FACTORY": "ERI",
+      "NAME": "BARFIL00-0000003540",
+      "FREQ_SECTION": "GSM900"
+    },
+    {
+      "BSC": "GZM34B3",
+      "CITY_NAME": "广州市",
+      "MEA_TIME": "2015-10-28 08:02:41",
+      "RNO_2G_ERI_NCS_DESC_ID": 81150,
+      "RECORD_COUNT": 5437,
+      "CREATE_TIME": "2015-11-04 16:26:37",
+      "FACTORY": "ERI",
+      "NAME": "BARFIL00-0000003271",
+      "FREQ_SECTION": "GSM900"
+    },
+    {
+      "BSC": "GZM15B",
+      "CITY_NAME": "广州市",
+      "MEA_TIME": "2015-10-28 08:02:42",
+      "RNO_2G_ERI_NCS_DESC_ID": 81202,
+      "RECORD_COUNT": 8754,
+      "CREATE_TIME": "2015-11-04 16:32:14",
+      "FACTORY": "ERI",
+      "NAME": "BARFIL00-0000003870",
+      "FREQ_SECTION": "GSM900"
+    },
+    {
+      "BSC": "GZM26B",
+      "CITY_NAME": "广州市",
+      "MEA_TIME": "2015-10-28 08:02:49",
+      "RNO_2G_ERI_NCS_DESC_ID": 81146,
+      "RECORD_COUNT": 8385,
+      "CREATE_TIME": "2015-11-04 16:26:16",
+      "FACTORY": "ERI",
+      "NAME": "BARFIL00-0000003939",
+      "FREQ_SECTION": "GSM900"
+    },
+    {
+      "BSC": "GZM42B2",
+      "CITY_NAME": "广州市",
+      "MEA_TIME": "2015-10-28 08:02:52",
+      "RNO_2G_ERI_NCS_DESC_ID": 81214,
+      "RECORD_COUNT": 22660,
+      "CREATE_TIME": "2015-11-04 16:33:34",
+      "FACTORY": "ERI",
+      "NAME": "BARFIL00-0000003417",
+      "FREQ_SECTION": "GSM900"
+    },
+    {
+      "BSC": "GZM38B3",
+      "CITY_NAME": "广州市",
+      "MEA_TIME": "2015-10-28 08:02:56",
+      "RNO_2G_ERI_NCS_DESC_ID": 81137,
+      "RECORD_COUNT": 7917,
+      "CREATE_TIME": "2015-11-04 16:25:20",
+      "FACTORY": "ERI",
+      "NAME": "BARFIL00-0000003361",
+      "FREQ_SECTION": "GSM900"
+    },
+    {
+      "BSC": "GZM27A",
+      "CITY_NAME": "广州市",
+      "MEA_TIME": "2015-10-28 08:02:58",
+      "RNO_2G_ERI_NCS_DESC_ID": 81185,
+      "RECORD_COUNT": 8615,
+      "CREATE_TIME": "2015-11-04 16:30:31",
+      "FACTORY": "ERI",
+      "NAME": "BARFIL00-0000003925",
+      "FREQ_SECTION": "GSM900"
+    },
+    {
+      "BSC": "GZM34B5",
+      "CITY_NAME": "广州市",
+      "MEA_TIME": "2015-10-28 08:03:03",
+      "RNO_2G_ERI_NCS_DESC_ID": 81210,
+      "RECORD_COUNT": 6550,
+      "CREATE_TIME": "2015-11-04 16:33:06",
+      "FACTORY": "ERI",
+      "NAME": "BARFIL01-0000002320",
+      "FREQ_SECTION": "GSM1800"
+    },
+    {
+      "BSC": "GZM47B3",
+      "CITY_NAME": "广州市",
+      "MEA_TIME": "2015-10-28 08:03:04",
+      "RNO_2G_ERI_NCS_DESC_ID": 81164,
+      "RECORD_COUNT": 10058,
+      "CREATE_TIME": "2015-11-04 16:28:06",
+      "FACTORY": "ERI",
+      "NAME": "BARFIL00-00000026802",
+      "FREQ_SECTION": "GSM900"
+    },
+    {
+      "BSC": "GZM47B3",
+      "CITY_NAME": "广州市",
+      "MEA_TIME": "2015-10-28 08:03:09",
+      "RNO_2G_ERI_NCS_DESC_ID": 81182,
+      "RECORD_COUNT": 8774,
+      "CREATE_TIME": "2015-11-04 16:30:10",
+      "FACTORY": "ERI",
+      "NAME": "BARFIL01-0000002465",
+      "FREQ_SECTION": "GSM1800"
+    },
+    {
+      "BSC": "GZM17B2",
+      "CITY_NAME": "广州市",
+      "MEA_TIME": "2015-10-28 08:03:24",
+      "RNO_2G_ERI_NCS_DESC_ID": 81200,
+      "RECORD_COUNT": 5802,
+      "CREATE_TIME": "2015-11-04 16:31:56",
+      "FACTORY": "ERI",
+      "NAME": "BARFIL00-0000003499",
+      "FREQ_SECTION": "GSM900"
+    }
+  ]
+}

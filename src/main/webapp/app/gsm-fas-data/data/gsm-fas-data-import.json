@@ -1,0 +1,19 @@
+{
+  "data": [
+    {
+      "dataCollectId": 2325,
+      "uploadTime": "2015-9-8 10:28:07",
+      "businessTime": "2015-8-31 0:00:00",
+      "fileName": "FAS_20150831_PM_21点.zip",
+      "oriFileName": "FAS_20150831_PM_21点.zip",
+      "account": "liu.xm@iscreate.com",
+      "area_name": "广州市",
+      "businessDataType": 8,
+      "fileSize": "8.71M",
+      "fileStatus": "全部成功",
+      "jobId": 2781,
+      "launchTime": "2015-9-8 10:28:31",
+      "completeTime": "2015-9-8 10:29:10"
+    }
+  ]
+}

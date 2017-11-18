@@ -1,0 +1,1317 @@
+
+html, body, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary, time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-variant: inherit;
+    font-weight: inherit;
+    font-stretch: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    font-family: inherit;
+    font-style: normal;
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+
+blockquote, q {
+    quotes: none;
+}
+
+blockquote::before, blockquote::after, q::before, q::after {
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+body {
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    font-stretch: normal;
+    font-size: 12px;
+    line-height: 1.231;
+    font-family: sans-serif;
+    height: 100%;
+    width: 100%;
+}
+
+select, input, textarea, button {
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    font-stretch: normal;
+    font-size: 99%;
+    line-height: normal;
+    font-family: sans-serif;
+}
+
+pre, code, kbd, samp {
+    font-family: monospace, sans-serif;
+}
+
+a {
+    color: rgb(21, 66, 139);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+a:hover {
+    text-decoration: underline;
+    outline: none;
+}
+
+a:active {
+    color: rgb(21, 66, 139);
+}
+
+ul, li, ol {
+    list-style: none outside none;
+}
+
+ol {
+    list-style-type: decimal;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+}
+
+.clearfix::before, .clearfix::after {
+    content: " ";
+    display: block;
+    height: 0;
+    overflow: hidden;
+}
+
+.clearfix::after {
+    clear: both;
+}
+
+.clearfix {
+    zoom: 1;
+}
+
+input, select, textarea {
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    font-stretch: normal;
+    font-size: 12px;
+    line-height: 1.5;
+    font-family: Tahoma, "Microsoft Yahei", Simsun, serif;
+    outline: none;
+}
+
+input[type="text"] {
+    padding: 4px;
+    background: url("../images/input.png") 0 -75px no-repeat;
+    border-width: 1px;
+    border-style: solid;
+    border-image: initial;
+    border-color: rgb(154, 154, 154) rgb(205, 205, 205) rgb(205, 205, 205) rgb(154, 154, 154);
+}
+
+input[type="button"], input[type="submit"] {
+    cursor: pointer;
+    height: 24px;
+    line-height: 24px;
+    padding: 2px 6px 3px;
+    border-right: 1px solid rgb(200, 200, 200);
+    border-left: none;
+    border-top: none;
+    border-bottom: none;
+    background: url("../images/input.png") 0 0 no-repeat;
+    position: relative;
+    top: -1px;
+}
+
+input[type="button"]:hover, input[type="submit"]:hover {
+    background-position: 0 -25px;
+    border-right: 1px solid rgb(204, 203, 203);
+}
+
+input[type="checkbox"], input[type="radio"] {
+    position: relative;
+    top: 2px;
+    left: -2px;
+    cursor: pointer;
+}
+
+select {
+    line-height: 20px;
+    padding: 2px;
+    background: url("../images/input.png") 0 -75px no-repeat;
+    border-width: 1px;
+    border-style: solid;
+    border-image: initial;
+    border-color: rgb(154, 154, 154) rgb(205, 205, 205) rgb(205, 205, 205) rgb(154, 154, 154);
+}
+
+textarea {
+    width: 400px;
+    height: 60px;
+    padding: 2px 0 0 2px;
+    background: url("../images/input.png") 0 -75px repeat-x rgb(255, 255, 255);
+    border-width: 1px;
+    border-style: solid;
+    border-image: initial;
+    border-color: rgb(154, 154, 154) rgb(205, 205, 205) rgb(205, 205, 205) rgb(154, 154, 154);
+    overflow-y: auto;
+    resize: none;
+}
+
+.black {
+    color: rgb(0, 0, 0);
+    padding-left: 20px;
+}
+
+input, select, textarea {
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    font-stretch: normal;
+    font-size: 12px;
+    line-height: 1.5;
+    font-family: Tahoma, "Microsoft Yahei", Simsun, serif;
+    outline: none;
+}
+
+input[type="checkbox"], input[type="radio"] {
+    position: relative;
+    top: 2px;
+    left: -2px;
+    cursor: pointer;
+}
+
+input[type="text"], input[type="password"] {
+    width: 110px;
+    padding: 4px;
+    background: url("../images/input.png") 0 -75px repeat-x;
+    border-width: 1px;
+    border-style: solid;
+    border-image: initial;
+    border-color: rgb(154, 154, 154) rgb(205, 205, 205) rgb(205, 205, 205) rgb(154, 154, 154);
+    color: rgb(85, 85, 85);
+}
+
+textarea {
+    width: 400px;
+    height: 60px;
+    padding: 2px 0 0 2px;
+    background: url("../images/input.png") 0 -75px repeat-x rgb(255, 255, 255);
+    border-width: 1px;
+    border-style: solid;
+    border-image: initial;
+    border-color: rgb(154, 154, 154) rgb(205, 205, 205) rgb(205, 205, 205) rgb(154, 154, 154);
+    overflow-y: auto;
+    resize: none;
+}
+
+input[type="text"]:hover, input[type="password"]:hover, textarea:hover {
+    border: 1px solid rgb(153, 187, 232);
+}
+
+select {
+    width: auto;
+    padding: 2px;
+    background: url("../images/input.png") 0 -75px no-repeat;
+    border-width: 1px;
+    border-style: solid;
+    border-image: initial;
+    border-color: rgb(154, 154, 154) rgb(205, 205, 205) rgb(205, 205, 205) rgb(154, 154, 154);
+}
+
+input[type="button"], input[type="submit"], input[type="reset"] {
+    cursor: pointer;
+    height: 24px;
+    line-height: 24px;
+    border-right: 1px solid rgb(200, 200, 200);
+    border-left: none;
+    border-top: none;
+    border-bottom: none;
+    background: url("../images/input.png") no-repeat;
+}
+
+input[type="button"]:hover, input[type="submit"]:hover, input[type="reset"]:hover {
+    background-position: 0 -25px;
+    border-right: 1px solid rgb(204, 203, 203);
+}
+
+input[type="button"]:active, input[type="submit"]:active, input[type="reset"]:active {
+    background-position: 0 -50px;
+    border-right: 1px solid rgb(204, 203, 203);
+}
+
+.main-table1 {
+    width: 100%;
+    margin: 0 auto 10px;
+    background: rgb(255, 255, 255);
+    position: relative;
+}
+
+.main-table1 th {
+    padding: 0 10px;
+    background: url("../images/cmp-bg2.gif") repeat-x;
+    color: rgb(68, 68, 68);
+    white-space: nowrap;
+    border: 1px solid rgb(204, 204, 204);
+    line-height: 30px;
+    font-weight: bold;
+}
+
+.main-table1 tr td {
+    border: 1px solid rgb(204, 204, 204);
+    padding: 4px 4px 4px 6px;
+    color: rgb(0, 0, 0);
+    line-height: 21px;
+    vertical-align: middle;
+    background: whitesmoke;
+}
+
+.main-table1 tr td a {
+    color: rgb(0, 51, 255);
+}
+
+.main-table1 .main-table1-title {
+    padding: 0 10px;
+    background: url("../images/cmp-bg2.gif") repeat-x;
+    color: rgb(68, 68, 68);
+    height: 30px;
+    line-height: 30px;
+}
+
+.main-table1 .main-table1-greentitle {
+    padding: 0 10px;
+    color: rgb(68, 68, 68);
+    height: 30px;
+    line-height: 30px;
+    background: rgb(215, 242, 194) none;
+}
+
+.main-table1 .menuTd {
+    width: 10%;
+    background: rgb(232, 237, 255);
+    text-align: left;
+    white-space: nowrap;
+}
+
+.main-table1 .table-head {
+    text-align: center;
+    border: rgb(0, 0, 0);
+    font-weight: bold;
+}
+
+.main-table1 img {
+    position: relative;
+    left: -4px;
+    top: 3px;
+}
+
+.main-table1 .higherLine {
+    height: 80px;
+}
+
+.main-table1 tr td select {
+    width: 133px;
+}
+
+.main-table1 tr td select option {
+    padding: 1px 0;
+}
+
+.main-table1 .tr2 {
+    border: 1px solid rgb(204, 204, 204);
+    padding: 4px 4px 4px 6px;
+    color: rgb(0, 0, 0);
+    line-height: 21px;
+    vertical-align: middle;
+    background: white;
+}
+
+.black {
+    width: 100%;
+    height: 100%;
+    background: rgb(153, 153, 153);
+    opacity: 0.6;
+}
+
+.main-table1 .main-table1-whitetr {
+    border: 1px solid rgb(204, 204, 204);
+    padding: 4px 4px 4px 6px;
+    color: rgb(0, 0, 0);
+    line-height: 21px;
+    vertical-align: middle;
+    background-color: rgb(255, 255, 255);
+}
+
+.main-table1 .main-table1-whitetr td {
+    border: 1px solid rgb(204, 204, 204);
+    padding: 4px 4px 4px 6px;
+    color: rgb(0, 0, 0);
+    line-height: 21px;
+    vertical-align: middle;
+    background: rgb(255, 255, 255);
+}
+
+.main-table1 .main-table1-tinredtr td {
+    border: 1px solid rgb(204, 204, 204);
+    padding: 4px 4px 4px 6px;
+    color: rgb(0, 0, 0);
+    line-height: 21px;
+    vertical-align: middle;
+    background: rgb(255, 230, 230);
+}
+
+.main-table1 .main-table1-tintyellowtr td {
+    border: 1px solid rgb(204, 204, 204);
+    padding: 4px 4px 4px 6px;
+    color: rgb(0, 0, 0);
+    line-height: 21px;
+    vertical-align: middle;
+    background: rgb(255, 254, 230);
+}
+
+.main-table1 .main-table1-coldwhitetr td {
+    border: 1px solid rgb(204, 204, 204);
+    padding: 4px 4px 4px 6px;
+    color: rgb(0, 0, 0);
+    line-height: 21px;
+    vertical-align: middle;
+    background: rgb(249, 252, 254);
+}
+
+.main-table1 .main-table1-12pxredboldfont {
+    font-size: 12px;
+    font-weight: bold;
+    color: red;
+}
+
+.main-table1 .main-table1-13pxredboldfont {
+    font-size: 13px;
+    font-weight: bold;
+    color: red;
+}
+
+.main-table1 .main-table1-14pxredboldfont {
+    font-size: 14px;
+    font-weight: bold;
+    color: red;
+}
+
+.main-table1 .main-table1-14pxtintredboldfont {
+    font-size: 14px;
+    font-weight: bold;
+    color: rgb(255, 85, 85);
+}
+
+.div_transparentstandard_nopaddming {
+    width: 100%;
+}
+
+.div_title_24px_blue {
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    border: 1px solid rgb(221, 221, 221);
+    margin-top: 5px;
+    background-color: rgb(189, 211, 239);
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.div_left_main {
+    margin: 5px;
+    background: rgb(195, 213, 237);
+    min-width: 500px;
+}
+
+.div_left_content {
+    border: 1px solid rgb(153, 188, 232);
+    background: none 0 0 repeat scroll rgb(255, 255, 255);
+    overflow: hidden;
+    min-height: 730px;
+}
+
+.divtab_menu {
+    clear: both;
+    height: 25px;
+}
+
+.divtab_menu ul {
+    position: absolute;
+    z-index: 2;
+}
+
+.divtab_menu ul li {
+    background: none 0 0 repeat scroll rgb(238, 238, 238);
+    border-top: 1px solid rgb(153, 187, 232);
+    border-right: 1px solid rgb(153, 187, 232);
+    border-left: 1px solid rgb(153, 187, 232);
+    border-image: initial;
+    border-bottom: none;
+    cursor: pointer;
+    float: left;
+    line-height: 24px;
+    padding: 0 3px;
+    position: relative;
+    text-align: center;
+    width: 100px;
+    border-radius: 3px 3px 0 0;
+    margin: 0 2px;
+}
+
+.divtab_menu ul li.selected {
+    background: none 0 0 repeat scroll rgb(255, 255, 255);
+    border-right: 1px solid rgb(153, 187, 232);
+    border-top: 3px solid rgb(153, 188, 232);
+    height: 23px;
+    line-height: 22px;
+}
+
+.divtab_content {
+    border-top: 1px solid rgb(153, 187, 232);
+    padding: 10px;
+}
+
+.divtab_menu150px ul li.selected {
+    background: none 0 0 repeat scroll rgb(255, 255, 255);
+    border-right: 1px solid rgb(153, 187, 232);
+    border-top: 3px solid rgb(153, 188, 232);
+    height: 23px;
+    line-height: 22px;
+}
+
+.divtab_menu250px {
+    clear: both;
+    height: 25px;
+}
+
+.divtab_menu250px ul {
+    position: absolute;
+    z-index: 2;
+}
+
+.divtab_menu250px ul li {
+    background: none 0 0 repeat scroll rgb(238, 238, 238);
+    border-top: 1px solid rgb(153, 187, 232);
+    border-right: 1px solid rgb(153, 187, 232);
+    border-left: 1px solid rgb(153, 187, 232);
+    border-image: initial;
+    border-bottom: none;
+    cursor: pointer;
+    float: left;
+    line-height: 24px;
+    padding: 0 3px;
+    position: relative;
+    text-align: center;
+    width: 250px;
+    border-radius: 3px 3px 0 0;
+    margin: 0 2px;
+}
+
+.divtab_menu250px ul li.selected {
+    background: none 0 0 repeat scroll rgb(255, 255, 255);
+    border-right: 1px solid rgb(153, 187, 232);
+    border-top: 3px solid rgb(153, 188, 232);
+    height: 23px;
+    line-height: 22px;
+}
+
+.div_title_24px_grey {
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    border: 1px solid rgb(221, 221, 221);
+    background-color: rgb(244, 244, 244);
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.div_transparent_standard_border {
+    border: 1px solid rgb(221, 221, 221);
+}
+
+.div-m-split-10px {
+    background: transparent;
+    height: 10px;
+    line-height: 10px;
+}
+
+.tb-transparent-standard {
+    display: inline;
+    margin: auto;
+}
+
+.tb-transparent-standard td {
+    overflow: hidden;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.tb-transparent-standard .tb-right-border {
+    border-right: 1px solid;
+}
+
+.tb-transparent-standard .tb-tr td {
+    height: 40px;
+}
+
+.tb-transparent-standard .tb-tr-bg-coldwhite td {
+    height: 40px;
+    background: rgb(239, 252, 253);
+}
+
+.tb-transparent-standard .tb-tr-bg-warmwhite td {
+    height: 40px;
+    background: rgb(251, 251, 251);
+}
+
+.tb-transparent-standard .tb-tr-bg {
+    height: 40px;
+}
+
+.sp_title_left {
+    text-align: left;
+    font-weight: bold;
+}
+
+.sp_title {
+    font-weight: bold;
+}
+
+body {
+    font-family: "Microsoft yahei", Verdana, Geneva, sans-serif;
+}
+
+.map_hd {
+    margin: 0;
+    min-width: 960px;
+    position: relative;
+    width: 100%;
+    z-index: 10;
+}
+
+.head_box {
+    padding: 6px 6px 0;
+}
+
+.present_box a.selected {
+    background: url("../images/frameBg.png") 0 -24px repeat-x scroll transparent;
+    border: 1px solid rgb(241, 137, 52);
+    color: rgb(132, 57, 0);
+    text-decoration: none;
+}
+
+.present_box a.selected em {
+    background: url("../images/list.png") -12px 0 no-repeat scroll transparent;
+}
+
+.map_bd {
+    border-top: 1px solid rgb(204, 204, 204);
+    min-width: 960px;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.resource_list_icon {
+    position: absolute;
+    right: 286px;
+    top: 0;
+    z-index: 2;
+    height: 100%;
+}
+
+.resource_list_icon .shad_v {
+    background: url("../images/shadv.png") 0 0 repeat-y transparent;
+    height: 100%;
+    right: 0;
+    position: absolute;
+    top: 0;
+    width: 4px;
+}
+
+.resource_list_icon .switch {
+    background: url("../images/flexArrow.png") no-repeat white;
+    height: 68px;
+    right: 0;
+    position: absolute;
+    top: 6px;
+    width: 18px;
+    z-index: 10;
+}
+
+.resource_list_icon .switch_hidden {
+    background: url("../images/flexArrow.png") -22px 0 no-repeat white;
+    height: 68px;
+    left: -18px;
+    position: absolute;
+    top: 6px;
+    width: 18px;
+    z-index: 10;
+    display: none;
+}
+
+.dialog_content h4 {
+    line-height: 26px;
+    padding-left: 4px;
+    background: rgb(187, 187, 187);
+    color: rgb(255, 255, 255);
+}
+
+.resource_list300_icon {
+    position: absolute;
+    right: 286px;
+    top: 0;
+    z-index: 2;
+    height: 100%;
+}
+
+.resource_list300_icon .shad_v {
+    background: url("../images/shadv.png") 0 0 repeat-y transparent;
+    height: 100%;
+    right: 0;
+    position: absolute;
+    top: 0;
+    width: 4px;
+}
+
+.resource_list300_icon .switch {
+    background: url("../images/flexArrow.png") no-repeat transparent;
+    height: 68px;
+    right: 0;
+    position: absolute;
+    top: 6px;
+    width: 18px;
+    z-index: 10;
+}
+
+
+.resource_list300_icon .switch_hidden {
+    background: url("../images/flexArrow.png") -22px 0 no-repeat transparent;
+    height: 68px;
+    left: -18px;
+    position: absolute;
+    top: 6px;
+    width: 18px;
+    z-index: 10;
+    display: none;
+}
+
+.resource_list300_box {
+    background: url("../images/shadh.png") 0 0 repeat-x scroll rgb(255, 255, 255);
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 380px;
+    z-index: 2;
+    box-shadow: rgb(153, 153, 153) -2px -2px 5px;
+}
+
+.resource_list300_box .no_result {
+    line-height: 26px;
+    padding: 16px 0 0 20px;
+}
+
+.resource_list300_box .sort_box {
+    margin: 8px 0 8px 4px;
+    padding-left: 1px;
+}
+
+.resource_list300_box .sort_title {
+    float: left;
+    line-height: 18px;
+    padding: 5px 2px;
+}
+
+.resource_list300_box .sort_box a {
+    background: url("../images/frameBg.png") 0 3px repeat-x scroll transparent;
+    border: 1px solid rgb(153, 153, 153);
+    color: rgb(0, 0, 0);
+    float: left;
+    margin-left: -1px;
+    padding: 5px 15px 5px 8px;
+    position: relative;
+}
+
+.resource_list300_box .sort_box a .down_tip {
+    display: block;
+    height: 12px;
+    width: 12px;
+    background: url("../images/down.png") no-repeat;
+    position: absolute;
+    top: 7px;
+    right: 0;
+}
+
+.resource_list300_box .sort_box a:hover {
+    background: url("../images/frameBg.png") 0 -88px repeat-x scroll transparent;
+    border: 1px solid rgb(71, 141, 203);
+    position: relative;
+    text-decoration: none;
+}
+
+.resource_list300_box .sort_box .current {
+    background: url("../images/frameBg.png") 0 -24px repeat-x scroll transparent;
+    border: 1px solid rgb(241, 137, 52);
+    position: relative;
+    z-index: 1;
+}
+
+.resource_list300 {
+    overflow-y: auto;
+}
+
+.resource_list300 .resource_item {
+    border-bottom: 1px dashed rgb(204, 204, 204);
+    padding: 10px 0 10px 10px;
+    cursor: pointer;
+}
+
+.resource_list300 .resource_item:hover {
+    background-color: rgb(206, 229, 254);
+}
+
+.resource_list300 .resource_item .num {
+    background: url("../images/numBg.png") 0 0 no-repeat scroll transparent;
+    color: rgb(255, 255, 255);
+    float: left;
+    font-family: Tahoma, serif;
+    font-weight: bold;
+    height: 32px;
+    margin: 2px 6px 0 0;
+    padding: 4px 4px 0 0;
+    text-align: center;
+    width: 32px;
+}
+
+.resource_list300 .resource_item .r {
+    float: left;
+    width: 220px;
+}
+
+.resource_list300 .resource_item .name {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 230px;
+}
+
+.resource_list300 .resource_item .mt5 {
+    margin-top: 5px;
+}
+
+.resource_list300_box .resource_page {
+    margin: 10px 5px;
+    text-align: center;
+}
+
+.resource_list300_box .resource_page a {
+    border: 1px solid rgb(154, 175, 229);
+    color: rgb(46, 106, 177);
+    margin-right: 2px;
+    padding: 2px 5px;
+    text-decoration: none;
+}
+
+.resource_list300_box .resource_page a:hover {
+    background-color: lightyellow;
+    border: 1px solid rgb(43, 102, 165);
+    color: rgb(0, 0, 0);
+}
+
+.resource_list300_box .resource_page span.current {
+    background-color: rgb(46, 106, 177);
+    border-right: 1px solid navy;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    margin-right: 2px;
+    padding: 2px 5px;
+}
+
+.loading_cover {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 11;
+}
+
+.cover {
+    height: 100%;
+    width: 100%;
+    background: rgb(255, 255, 255);
+    opacity: 0.6;
+}
+
+.loading {
+    height: 36px;
+    line-height: 36px;
+    background: url("../images/loading_img.gif") no-repeat;
+    padding-left: 50px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-left: -100px;
+    font-weight: normal;
+    font-size: 14px;
+}
+
+.loading_fb {
+    padding: 0 2px;
+    font-weight: bold;
+    color: rgb(0, 0, 255);
+}
+
+.dialog2 {
+    background: url("../images/panel_title.png") 0 0 repeat scroll transparent;
+    border: 1px solid rgb(153, 187, 232);
+    border-radius: 5px;
+    font-size: 12px;
+    padding: 5px;
+    position: absolute;
+    z-index: 20;
+}
+
+.dialog_header {
+    color: rgb(21, 66, 139);
+    font-size: 12px;
+    font-weight: bold;
+    line-height: 15px;
+    padding: 2px 0 4px;
+    position: relative;
+}
+
+.dialog_tool {
+    position: absolute;
+    right: 1px;
+    top: 0;
+}
+
+.dialog_tool div {
+    cursor: pointer;
+    display: block;
+    float: right;
+    height: 16px;
+    margin-left: 2px;
+    opacity: 0.8;
+    width: 16px;
+}
+
+.dialog_tool_close {
+    background: url("../images/panel_tools.gif") -16px 0 no-repeat scroll transparent;
+}
+
+.dialog_content {
+    border: 1px solid rgb(153, 187, 232);
+    background-color: rgb(255, 255, 255);
+    padding: 10px 0;
+}
+
+.black {
+    background-color: rgb(0, 0, 0);
+    height: 100%;
+    left: 0;
+    opacity: 0.5;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: none;
+    z-index: 10;
+}
+
+.ui-draggable .ui-dialog-titlebar {
+    cursor: move;
+}
+
+.main-table1 .menuTd {
+    text-align: right;
+}
+
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, input, button, textarea, p, blockquote, th, td, form {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    background: #EEEEEE;
+}
+
+#map_canvas {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 0;
+}
+
+#sampleDetailTable td {
+    padding: 1px;
+}
+
+.BMap_mask {
+    background: url("http://api0.map.bdimg.com/images/blank.gif") transparent;
+}
+
+.BMap_button {
+    cursor: pointer;
+}
+
+.BMap_zoomer {
+    background: url("http://api0.map.bdimg.com/images/mapctrls1d3.gif") no-repeat;
+    overflow: hidden;
+    font-size: 1px;
+    position: absolute;
+    width: 7px;
+    height: 7px;
+}
+
+.BMap_stdMpCtrl div {
+    position: absolute;
+}
+
+.BMap_stdMpPan {
+    width: 44px;
+    height: 44px;
+    overflow: hidden;
+    background: url("http://api0.map.bdimg.com/images/mapctrls2d0.png") no-repeat;
+}
+
+.BMap_ie6 .BMap_stdMpPan {
+    background: none;
+}
+
+.BMap_ie6 .BMap_smcbg {
+    left: 0;
+    width: 44px;
+    height: 464px;
+}
+
+.BMap_ie6 .BMap_stdMpPanBg {
+    z-index: -1;
+}
+
+.BMap_stdMpPan .BMap_button {
+    height: 15px;
+    width: 15px;
+}
+
+.BMap_panN, .BMap_panW, .BMap_panE, .BMap_panS {
+    overflow: hidden;
+}
+
+.BMap_panN {
+    left: 14px;
+    top: 0;
+}
+
+.BMap_panW {
+    left: 1px;
+    top: 12px;
+}
+
+.BMap_panE {
+    left: 27px;
+    top: 12px;
+}
+
+.BMap_panS {
+    left: 14px;
+    top: 25px;
+}
+
+.BMap_stdMpZoom {
+    top: 45px;
+    overflow: hidden;
+}
+
+.BMap_stdMpZoom .BMap_button {
+    width: 22px;
+    height: 21px;
+    left: 12px;
+    overflow: hidden;
+    background: url("http://api0.map.bdimg.com/images/mapctrls2d0.png") no-repeat;
+    z-index: 10;
+}
+
+.BMap_ie6 .BMap_stdMpZoom .BMap_button {
+    background: none;
+}
+
+.BMap_stdMpZoomIn {
+    background-position: 0 -221px;
+}
+
+.BMap_stdMpZoomOut {
+    background-position: 0 -265px;
+}
+
+.BMap_ie6 .BMap_stdMpZoomIn div {
+    left: 0;
+    top: -221px;
+}
+
+.BMap_ie6 .BMap_stdMpZoomOut div {
+    left: 0;
+    top: -265px;
+}
+
+.BMap_stdMpType4 .BMap_stdMpZoom .BMap_button {
+    left: 0;
+    overflow: hidden;
+    background: -webkit-gradient(linear, 50% 0, 50% 100%, from(rgba(255, 255, 255, 0.85)), to(rgba(217, 217, 217, 0.85)));
+    z-index: 10;
+    border-radius: 22px;
+    width: 34px;
+    height: 34px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: rgb(204, 204, 204) 0 2px 4px;
+    display: -webkit-box;
+    -webkit-box-align: center;
+    -webkit-box-pack: center;
+    box-sizing: border-box;
+}
+
+.BMap_stdMpType4 .BMap_smcbg {
+    position: static;
+    background: url("http://api0.map.bdimg.com/images/mapctrls2d0_mb.png") 0 0 / 24px 32px no-repeat;
+}
+
+.BMap_stdMpType4 .BMap_stdMpZoomIn {
+    background-position: 0 0;
+}
+
+.BMap_stdMpType4 .BMap_stdMpZoomIn .BMap_smcbg {
+    width: 24px;
+    height: 24px;
+    background-position: 0 0;
+}
+
+.BMap_stdMpType4 .BMap_stdMpZoomOut {
+    background-position: 0 0;
+}
+
+.BMap_stdMpType4 .BMap_stdMpZoomOut .BMap_smcbg {
+    width: 24px;
+    height: 6px;
+    background-position: 0 -25px;
+}
+
+.BMap_stdMpSlider {
+    width: 37px;
+    top: 18px;
+}
+
+.BMap_stdMpSliderBgTop {
+    left: 18px;
+    width: 10px;
+    overflow: hidden;
+    background: url("http://api0.map.bdimg.com/images/mapctrls2d0.png") -23px -226px no-repeat;
+}
+
+.BMap_stdMpSliderBgBot {
+    left: 19px;
+    height: 8px;
+    width: 10px;
+    top: 124px;
+    overflow: hidden;
+    background: url("http://api0.map.bdimg.com/images/mapctrls2d0.png") -33px bottom no-repeat;
+}
+
+.BMap_ie6 .BMap_stdMpSliderBgTop, .BMap_ie6 .BMap_stdMpSliderBgBot {
+    background: none;
+}
+
+.BMap_ie6 .BMap_stdMpSliderBgTop div {
+    left: -23px;
+    top: -226px;
+}
+
+.BMap_ie6 .BMap_stdMpSliderBgBot div {
+    left: -33px;
+    bottom: 0;
+}
+
+.BMap_stdMpSliderMask {
+    height: 100%;
+    width: 24px;
+    left: 10px;
+    cursor: pointer;
+}
+
+.BMap_stdMpSliderBar {
+    height: 11px;
+    width: 19px;
+    left: 13px;
+    top: 80px;
+    overflow: hidden;
+    background: url("http://api0.map.bdimg.com/images/mapctrls2d0.png") 0 -309px no-repeat;
+}
+
+.BMap_ie6 .BMap_stdMpSliderBar, .BMap_ie6 .BMap_stdMpSliderBar.h {
+    background: none;
+}
+
+.BMap_ie6 .BMap_stdMpSliderBar div {
+    top: -309px;
+}
+
+.BMap_zlSt, .BMap_zlCity, .BMap_zlProv, .BMap_zlCountry {
+    position: absolute;
+    left: 34px;
+    height: 21px;
+    width: 28px;
+    background: url("http://api0.map.bdimg.com/images/mapctrls2d0.png") no-repeat;
+    font-size: 0;
+    cursor: pointer;
+}
+
+.BMap_ie6 .BMap_zlSt, .BMap_ie6 .BMap_zlCity, .BMap_ie6 .BMap_zlProv, .BMap_ie6 .BMap_zlCountry {
+    background: none;
+    overflow: hidden;
+}
+
+.BMap_zlHolder {
+    display: none;
+    position: absolute;
+    top: 0;
+}
+
+.BMap_zlSt {
+    background-position: 0 -380px;
+    top: 21px;
+}
+
+.BMap_zlCity {
+    background-position: 0 -401px;
+    top: 52px;
+}
+
+.BMap_zlProv {
+    background-position: 0 -422px;
+    top: 76px;
+}
+
+.BMap_zlCountry {
+    background-position: 0 -443px;
+    top: 100px;
+}
+
+.BMap_ie6 .BMap_zlSt div {
+    top: -380px;
+}
+
+.BMap_ie6 .BMap_zlCity div {
+    top: -401px;
+}
+
+.BMap_ie6 .BMap_zlProv div {
+    top: -422px;
+}
+
+.BMap_ie6 .BMap_zlCountry div {
+    top: -443px;
+}
+
+.BMap_stdMpType1 .BMap_stdMpSlider, .BMap_stdMpType2 .BMap_stdMpSlider, .BMap_stdMpType3 .BMap_stdMpSlider, .BMap_stdMpType4 .BMap_stdMpSlider, .BMap_stdMpType2 .BMap_stdMpZoom, .BMap_stdMpType3 .BMap_stdMpPan, .BMap_stdMpType4 .BMap_stdMpPan {
+    display: none;
+}
+
+.BMap_stdMpType3 .BMap_stdMpZoom {
+    top: 0;
+}
+
+.BMap_stdMpType4 .BMap_stdMpZoom {
+    top: 0;
+}
+
+.BMap_cpyCtrl a {
+    font-size: 11px;
+    color: rgb(121, 121, 204);
+}
+
+.anchorTR .BMap_omOutFrame {
+    border-bottom: 1px solid rgb(153, 153, 153);
+    border-left: 1px solid rgb(153, 153, 153);
+}
+
+.anchorBL .BMap_omOutFrame {
+    border-top: 1px solid rgb(153, 153, 153);
+    border-right: 1px solid rgb(153, 153, 153);
+}
+
+.anchorTL .BMap_omOutFrame {
+    border-bottom: 1px solid rgb(153, 153, 153);
+    border-right: 1px solid rgb(153, 153, 153);
+}
+
+.BMap_checkbox {
+    background: url("http://api0.map.bdimg.com/images/mapctrls1d3.gif") -14px 90px;
+    vertical-align: middle;
+    display: inline-block;
+    width: 11px;
+    height: 11px;
+    margin-right: 4px;
+}
+
+.pano_close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    width: 40px;
+    cursor: pointer;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 3px;
+    background: rgba(37, 37, 37, 0.9) url("http://api0.map.bdimg.com/images/panorama/close.png") no-repeat center center;
+    background-size: 90%;
+}
+
+.pano_close:hover {
+    background-image: url("http://api0.map.bdimg.com/images/panorama/close_hover.png");
+}
+
+.pano_pc_indoor_exit {
+    position: absolute;
+    right: 60px;
+    top: 10px;
+    width: 89px;
+    cursor: pointer;
+    height: 40px;
+    line-height: 40px;
+    color: rgb(235, 237, 240);
+    border-radius: 3px;
+    background: rgba(37, 37, 37, 0.9) url("http://api0.map.bdimg.com/images/panorama/indoor_exit.png") no-repeat 15px 12px;
+}
+
+.pano_pc_indoor_exit:hover {
+    background-image: url("http://api0.map.bdimg.com/images/panorama/indoor_exit_hover.png");
+    color: rgb(36, 149, 255);
+}
+
+.map {
+    height: 100%;
+    width: 100%;
+}
+
+.dialog {
+    background: url("../images/panel_title.png") 0 0 repeat scroll transparent;
+    border: 1px solid rgb(153, 187, 232);
+    border-radius: 5px;
+    font-size: 12px;
+    padding: 10px;
+    position: absolute;
+    top: 5px;
+    left: 35px;
+    z-index: 20;
+}

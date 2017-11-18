@@ -1,0 +1,204 @@
+{
+  "data": [
+    {
+      "RECORD_COUNT": 49,
+      "BSC": "GZM02B",
+      "CREATE_TIME": "2015-09-08 10:29:10",
+      "MEA_TIME": "2015-08-31 18:00:39",
+      "FAS_DESC_ID": 287,
+      "CITY_NAME": "广州市"
+    },
+    {
+      "RECORD_COUNT": 71,
+      "BSC": "GZM01B2",
+      "CREATE_TIME": "2015-09-08 10:29:09",
+      "MEA_TIME": "2015-08-31 18:06:11",
+      "FAS_DESC_ID": 281,
+      "CITY_NAME": "广州市"
+    },
+    {
+      "RECORD_COUNT": 56,
+      "BSC": "GZM09B",
+      "CREATE_TIME": "2015-09-08 10:29:09",
+      "MEA_TIME": "2015-08-31 18:00:31",
+      "FAS_DESC_ID": 285,
+      "CITY_NAME": "广州市"
+    },
+    {
+      "RECORD_COUNT": 53,
+      "BSC": "GZM37B1",
+      "CREATE_TIME": "2015-09-08 10:29:09",
+      "MEA_TIME": "2015-08-31 18:06:11",
+      "FAS_DESC_ID": 286,
+      "CITY_NAME": "广州市"
+    },
+    {
+      "RECORD_COUNT": 66,
+      "BSC": "GZM09A",
+      "CREATE_TIME": "2015-09-08 10:29:08",
+      "MEA_TIME": "2015-08-31 18:00:46",
+      "FAS_DESC_ID": 275,
+      "CITY_NAME": "广州市"
+    },
+    {
+      "RECORD_COUNT": 66,
+      "BSC": "GZM50B4",
+      "CREATE_TIME": "2015-09-08 10:29:07",
+      "MEA_TIME": "2015-08-31 18:00:49",
+      "FAS_DESC_ID": 267,
+      "CITY_NAME": "广州市"
+    },
+    {
+      "RECORD_COUNT": 32,
+      "BSC": "GZM37B2",
+      "CREATE_TIME": "2015-09-08 10:29:07",
+      "MEA_TIME": "2015-08-31 18:06:08",
+      "FAS_DESC_ID": 263,
+      "CITY_NAME": "广州市"
+    },
+    {
+      "RECORD_COUNT": 70,
+      "BSC": "GZC27",
+      "CREATE_TIME": "2015-09-08 10:29:06",
+      "MEA_TIME": "2015-08-31 18:01:19",
+      "FAS_DESC_ID": 256,
+      "CITY_NAME": "广州市"
+    },
+    {
+      "RECORD_COUNT": 38,
+      "BSC": "GZM47B2",
+      "CREATE_TIME": "2015-09-08 10:29:06",
+      "MEA_TIME": "2015-08-31 18:06:15",
+      "FAS_DESC_ID": 255,
+      "CITY_NAME": "广州市"
+    },
+    {
+      "RECORD_COUNT": 60,
+      "BSC": "GZM45B5",
+      "CREATE_TIME": "2015-09-08 10:29:06",
+      "MEA_TIME": "2015-08-31 18:00:42",
+      "FAS_DESC_ID": 254,
+      "CITY_NAME": "广州市"
+    },
+    {
+      "RECORD_COUNT": 56,
+      "BSC": "GZM37B4",
+      "CREATE_TIME": "2015-09-08 10:29:06",
+      "MEA_TIME": "2015-08-31 18:00:27",
+      "FAS_DESC_ID": 259,
+      "CITY_NAME": "广州市"
+    },
+    {
+      "RECORD_COUNT": 92,
+      "BSC": "GZM45B2",
+      "CREATE_TIME": "2015-09-08 10:29:05",
+      "MEA_TIME": "2015-08-31 18:00:33",
+      "FAS_DESC_ID": 249,
+      "CITY_NAME": "广州市"
+    },
+    {
+      "RECORD_COUNT": 46,
+      "BSC": "GZM02B",
+      "CREATE_TIME": "2015-09-08 10:29:05",
+      "MEA_TIME": "2015-08-31 18:06:13",
+      "FAS_DESC_ID": 247,
+      "CITY_NAME": "广州市"
+    },
+    {
+      "RECORD_COUNT": 45,
+      "BSC": "GZM37B5",
+      "CREATE_TIME": "2015-09-08 10:29:04",
+      "MEA_TIME": "2015-08-31 18:00:52",
+      "FAS_DESC_ID": 240,
+      "CITY_NAME": "广州市"
+    },
+    {
+      "RECORD_COUNT": 56,
+      "BSC": "GZM25B1",
+      "CREATE_TIME": "2015-09-08 10:29:03",
+      "MEA_TIME": "2015-08-31 18:06:10",
+      "FAS_DESC_ID": 231,
+      "CITY_NAME": "广州市"
+    },
+    {
+      "RECORD_COUNT": 29,
+      "BSC": "GZM37B5",
+      "CREATE_TIME": "2015-09-08 10:29:02",
+      "MEA_TIME": "2015-08-31 18:06:00",
+      "FAS_DESC_ID": 224,
+      "CITY_NAME": "广州市"
+    },
+    {
+      "RECORD_COUNT": 98,
+      "BSC": "GZM46B4",
+      "CREATE_TIME": "2015-09-08 10:29:02",
+      "MEA_TIME": "2015-08-31 18:06:27",
+      "FAS_DESC_ID": 227,
+      "CITY_NAME": "广州市"
+    },
+    {
+      "RECORD_COUNT": 79,
+      "BSC": "GZM32A1",
+      "CREATE_TIME": "2015-09-08 10:29:02",
+      "MEA_TIME": "2015-08-31 18:01:01",
+      "FAS_DESC_ID": 228,
+      "CITY_NAME": "广州市"
+    },
+    {
+      "RECORD_COUNT": 20,
+      "BSC": "GZM31B2",
+      "CREATE_TIME": "2015-09-08 10:29:01",
+      "MEA_TIME": "2015-08-31 18:00:13",
+      "FAS_DESC_ID": 221,
+      "CITY_NAME": "广州市"
+    },
+    {
+      "RECORD_COUNT": 69,
+      "BSC": "GZM25B3",
+      "CREATE_TIME": "2015-09-08 10:29:01",
+      "MEA_TIME": "2015-08-31 18:00:47",
+      "FAS_DESC_ID": 220,
+      "CITY_NAME": "广州市"
+    },
+    {
+      "RECORD_COUNT": 79,
+      "BSC": "GZM28B2",
+      "CREATE_TIME": "2015-09-08 10:29:01",
+      "MEA_TIME": "2015-08-31 18:00:31",
+      "FAS_DESC_ID": 219,
+      "CITY_NAME": "广州市"
+    },
+    {
+      "RECORD_COUNT": 65,
+      "BSC": "GZM45B2",
+      "CREATE_TIME": "2015-09-08 10:29:01",
+      "MEA_TIME": "2015-08-31 18:06:09",
+      "FAS_DESC_ID": 216,
+      "CITY_NAME": "广州市"
+    },
+    {
+      "RECORD_COUNT": 96,
+      "BSC": "GZA26",
+      "CREATE_TIME": "2015-09-08 10:29:01",
+      "MEA_TIME": "2015-08-31 18:01:04",
+      "FAS_DESC_ID": 222,
+      "CITY_NAME": "广州市"
+    },
+    {
+      "RECORD_COUNT": 51,
+      "BSC": "GZM44B6",
+      "CREATE_TIME": "2015-09-08 10:29:00",
+      "MEA_TIME": "2015-08-31 18:06:14",
+      "FAS_DESC_ID": 214,
+      "CITY_NAME": "广州市"
+    },
+    {
+      "RECORD_COUNT": 69,
+      "BSC": "GZM28B3",
+      "CREATE_TIME": "2015-09-08 10:29:00",
+      "MEA_TIME": "2015-08-31 18:00:21",
+      "FAS_DESC_ID": 213,
+      "CITY_NAME": "广州市"
+    }
+  ]
+}

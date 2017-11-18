@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta  charset="UTF-8">
+    <title>爱立信小区参数一致性检查</title>
+
+    <link rel="stylesheet" href="css/gsm-param-check.css">
+    <link rel="stylesheet" href="../../lib/datatables/1.10.16/datatables.min.css">
+
+    <script src="../../lib/jquery/1.8.2/jquery.js"></script>
+    <script src="../../lib/rno/selftools.js"></script>
+    <script src="../../lib/rno/libfileupload.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.treeview-1.5pre.js"></script>
+    <script src="js/gsm-param-check-origin.js"></script>
+    <script src="../../lib/tab.js"></script>
+    <script src="../../lib/datatables/1.10.16/datatables.min.js"></script>
+    <script src="../../lib/laydate/5.0.7/laydate.js"></script>
+    <script src="js/gsm-param-check.js"></script>
+</head>
+<body>
+
+
+<div class="loading_cover" id="loadingDataDiv" style="display: none;">
+    <div class="cover"></div>
+    <h4 class="loading">
+        <em class="loading_fb" id="loadContentId">正在加载</em>,请稍侯...<br>
+        <span id="progressDesc"></span>
+    </h4>
+</div>
+<div class="div_left_main" width="auto">
+    <table id="contentTab" heigth="100%" class="main-table1 half-width" width="100%">
+        <tbody>
+        <tr>
+            <td style="vertical-align:top;">
+                <div style="border: 1px solid #CDCDCD; background: white; overflow-x: scroll;
+								width:240px; overflow-y: scroll; height: 700px;">
+                    <ul id="paramCheckMenu" class="treeview">
+                        <li class="collapsable">
+                            <div class="hitarea collapsable-hitarea"></div>
+                            <input name="oneChk" type="checkbox"><span>内部数据检查</span>
+                            <ul>
+                                <li><input name="twoChk" value="powerCheck" type="checkbox"><span
+                                        id="powerCheck">功率检查</span></li>
+                                <li><input name="twoChk" value="freqHopCheck" type="checkbox"><span id="freqHopCheck">跳频检查</span>
+                                </li>
+                                <li><input name="twoChk" value="nccperm" type="checkbox"><span
+                                        id="nccperm">NCCPERM检查</span></li>
+                                <li><input name="twoChk" value="meaFreqMultidefined" type="checkbox"><span
+                                        id="meaFreqMultidefined">测量频点多定义</span></li>
+                                <li><input name="twoChk" value="meaFreqMomit" type="checkbox"><span id="meaFreqMomit">测量频点漏定义</span>
+                                </li>
+                                <li><input name="twoChk" value="baNumCheck" type="checkbox"><span id="baNumCheck">BA表个数检查</span>
+                                </li>
+                                <li><input name="twoChk" value="sameFreqBsicCheck" type="checkbox"><span
+                                        id="sameFreqBsicCheck">同频同bsic检查</span></li>
+                                <li class="last"><input name="twoChk" value="talimMaxTa" type="checkbox"><span
+                                        id="talimMaxTa">TALIM_MAXTA检查</span></li>
+                            </ul>
+                        </li>
+                        <li class="collapsable lastCollapsable">
+                            <div class="hitarea collapsable-hitarea lastCollapsable-hitarea"></div>
+                            <input name="oneChk" type="checkbox"><span>邻区检查</span>
+                            <ul>
+                                <li><input name="twoChk" value="ncellMomit" type="checkbox"><span id="ncellMomit">本站邻区漏定义</span>
+                                </li>
+                                <li><input name="twoChk" value="unidirNcell" type="checkbox"><span
+                                        id="unidirNcell">单向邻区</span></li>
+                                <li><input name="twoChk" value="ncellNumCheck" type="checkbox"><span id="ncellNumCheck">邻区过多过少检查</span>
+                                </li>
+                                <li class="last"><input name="twoChk" value="sameNcellFreqCheck" type="checkbox"><span
+                                        id="sameNcellFreqCheck">同邻频检查</span></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </td>
+            <td style="vertical-align:top;">
+                <div style="width: 100%">
+                    BSC: <input id="bscStr" style="width:200px;" disabled="true" type="text">
+                    &nbsp;
+                    <span style="color:red;width:100px;font-family:华文中宋;text-align:center" id="bscDiv"></span>
+                    <a onclick="$('#selectBscDiv').show()">点击选择BSC</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                    日期:
+                    <input
+                            value="" id="uploadDate"
+                            name="attachParams['begUploadDate']" class="hasDatepicker"
+                            type="text">
+                    &nbsp;&nbsp;
+                    <input id="checkBtnDT" value="查询" type="button">&nbsp;&nbsp;
+                    <input id="exportBtn" value="导出" type="button">&nbsp;&nbsp;
+                    <input id="settingsBtn" value="设置" type="button">
+                    <form id="downloadEriCellAnalysisDataFileForm" action="downloadEriCellAnalysisDataFileAction"
+                          method="post">
+                        <input id="token" name="token" value="" type="hidden">
+                    </form>
+                </div>
+                <div style="margin-top: 10px;"></div>
+                <div style="width: 100%">
+                    <div style="position: relative; z-index: 4;float:left;height: 0px;">
+                        <button id="left" class="btnLeft">&lt;&lt;</button>
+                        <button id="right" class="btnRight">&gt;&gt;</button>
+                    </div>
+                    <div id="frame" style="overflow: hidden; margin-left: 72px; width: 921px;">
+                        <div id="div_tab" class="div_tab divtab_menu" style="width: 2000px; position: relative;">
+                            <ul id="paramCheckTab">
+                                <li>调频检查</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="" class="divtab_content">
+                        <table id="parameterCheckResultDT" class="greystyle-standard display " cellspacing="0" width="100%">
+                            <thead>
+                            <tr>
+                                <th>BSC</th>
+                                <th >CELL</th>
+                                <th>CHGR</th>
+                                <th>HOP</th>
+                                <th>频点数</th>
+                                <th>频点列表</th>
+                                <th>指令</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div id="settingsDiv" class="dialog2 draggable ui-draggable" style="display:none; left:25%; top: 40%;width: 350px;">
+        <div class="dialog_header">
+            <div class="dialog_title">查询设置</div>
+            <div class="dialog_tool">
+                <div class="dialog_tool_close dialog_closeBtn" onclick="$('#settingsDiv').hide();">
+                </div>
+            </div>
+        </div>
+        <div class="dialog_content" style="background:#f9f9f9;padding:10px">
+            <table class="main-table1" width="100%">
+                <tbody>
+                <tr>
+                    <td><input id="isCheckMaxChgr" name="isCheckMaxChgr" type="checkbox">启动最大信道组检查</td>
+                </tr>
+                <tr>
+                    <td><input id="isCheckBaNum" name="isCheckBaNum" type="checkbox">BA表个数:&nbsp;
+                        少于&nbsp;<input id="MINNUM" style="width: 50px;" type="text">&nbsp;&nbsp;
+                        或多于&nbsp;<input id="MAXNUM" style="width: 50px;" type="text"></td>
+                </tr>
+                <tr>
+                    <td><input id="isCheckCoBsic" name="isCheckCoBsic" type="checkbox">同频同bsic检查:&nbsp;
+                        距离&nbsp;<input id="DISTANCE" style="width: 100px;" type="text"></td>
+                </tr>
+                <tr>
+                    <td><input id="isCheckNcellNum" name="isCheckNcellNum" type="checkbox">邻区过多过少检查:&nbsp;
+                        少于&nbsp;<input id="NCELL_MINNUM" style="width: 50px;" type="text">&nbsp;&nbsp;
+                        或多于&nbsp;<input id="NCELL_MAXNUM" style="width: 50px;" type="text"></td>
+                </tr>
+                <tr>
+                    <td align="right"><input value="确认" onclick="$('#settingsDiv').hide();" type="button"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <div id="selectBscDiv" class="dialog2 draggable ui-draggable"
+         style="display:none; left:25%; top: 40%;width: 690px;">
+        <div class="dialog_header">
+            <div class="dialog_title">选择BSC</div>
+            <div class="dialog_tool">
+                <div class="dialog_tool_close dialog_closeBtn" onclick="$('#selectBscDiv').hide();">
+                </div>
+            </div>
+        </div>
+        <div class="dialog_content" style="background:#f9f9f9;padding:10px">
+            省：<select name="provinceMenu" id="province-menu" style="width:80px;">
+
+        </select>
+            市：<select name="cityMenu" id="city-menu" style="width:100px;">
+
+        </select><br>
+            <div style="float: left;">
+                <select size="10" id="defaultBsc" style="width: 300px; height: 200px;" multiple="multiple"
+                        ondblclick="PutRightOneClk()">
+                    <option value="626">GZA26</option>
+                    <option value="31124">GZA26R12</option>
+                    <option value="30710">GZA27</option>
+                    <option value="31229">GZA27R12</option>
+                    <option value="623">GZA28</option>
+                    <option value="31131">GZA28R12</option>
+                    <option value="605">GZC27</option>
+                    <option value="31195">GZC27R12</option>
+                    <option value="30767">GZE24</option>
+                    <option value="31262">GZE24R12</option>
+                    <option value="30789">GZF22</option>
+                    <option value="31149">GZF22R12</option>
+                    <option value="31100">GZM01B1</option>
+                    <option value="31122">GZM01B1R12</option>
+                    <option value="639">GZM01B2</option>
+                    <option value="31176">GZM01B2R12</option>
+                    <option value="595">GZM02A</option>
+                    <option value="31218">GZM02AR12</option>
+                    <option value="31073">GZM02B2</option>
+                    <option value="31183">GZM02B2R12</option>
+                    <option value="31101">GZM03B1</option>
+                    <option value="31191">GZM03B1R12</option>
+                    <option value="31091">GZM03B2</option>
+                    <option value="31202">GZM03B2R12</option>
+                    <option value="611">GZM04B1</option>
+                    <option value="31151">GZM04B1R12</option>
+                    <option value="610">GZM04B2</option>
+                    <option value="31243">GZM04B2R12</option>
+                    <option value="31081">GZM05B1</option>
+                    <option value="31172">GZM05B1R12</option>
+                    <option value="31096">GZM05B2</option>
+                    <option value="31212">GZM05B2R12</option>
+                    <option value="31087">GZM06B1</option>
+                    <option value="31141">GZM06B1R12</option>
+                    <option value="31093">GZM06B2</option>
+                    <option value="31256">GZM06B2R12</option>
+                    <option value="31070">GZM07B1</option>
+                    <option value="31242">GZM07B1R12</option>
+                    <option value="31098">GZM07B2</option>
+                    <option value="31132">GZM07B2R12</option>
+                    <option value="31092">GZM08B1</option>
+                    <option value="31118">GZM08B1R12</option>
+                    <option value="31094">GZM08B2</option>
+                    <option value="31223">GZM08B2R12</option>
+                    <option value="591">GZM09B2</option>
+                    <option value="31228">GZM09B2R12</option>
+                    <option value="646">GZM09BA</option>
+                    <option value="31215">GZM09BAR12</option>
+                    <option value="606">GZM10B1</option>
+                    <option value="31206">GZM10B1R12</option>
+                    <option value="607">GZM10B2</option>
+                    <option value="31174">GZM10B2R12</option>
+                    <option value="31079">GZM11B1</option>
+                    <option value="31125">GZM11B1R12</option>
+                    <option value="31085">GZM11B2</option>
+                    <option value="31116">GZM11B2R12</option>
+                    <option value="592">GZM12B1</option>
+                    <option value="31217">GZM12B1R12</option>
+                    <option value="593">GZM12B2</option>
+                    <option value="31185">GZM12B2R12</option>
+                    <option value="587">GZM13B1</option>
+                    <option value="31226">GZM13B1R12</option>
+                    <option value="31083">GZM13B2</option>
+                    <option value="31145">GZM13B2R12</option>
+                    <option value="30788">GZM14B1</option>
+                    <option value="31123">GZM14B1R12</option>
+                    <option value="30715">GZM14B2</option>
+                    <option value="31112">GZM14B2R12</option>
+                    <option value="600">GZM15B1</option>
+                    <option value="31238">GZM15B1R12</option>
+                    <option value="601">GZM15B2</option>
+                    <option value="31255">GZM15B2R12</option>
+                    <option value="31072">GZM16B1</option>
+                    <option value="31200">GZM16B1R12</option>
+                    <option value="31077">GZM16B2</option>
+                    <option value="31216">GZM16B2R12</option>
+                    <option value="627">GZM17B1</option>
+                    <option value="31152">GZM17B1R12</option>
+                    <option value="615">GZM17B2</option>
+                    <option value="31246">GZM17B2R12</option>
+                    <option value="618">GZM17B3</option>
+                    <option value="31165">GZM17B3R12</option>
+                    <option value="31090">GZM18B1</option>
+                    <option value="31214">GZM18B1R12</option>
+                    <option value="624">GZM19B1</option>
+                    <option value="31193">GZM19B1R12</option>
+                    <option value="31078">GZM19B2</option>
+                    <option value="31252">GZM19B2R12</option>
+                    <option value="31080">GZM20B1</option>
+                    <option value="31196">GZM20B1R12</option>
+                    <option value="31102">GZM20B2</option>
+                    <option value="31162">GZM20B2R12</option>
+                    <option value="31097">GZM21B1</option>
+                    <option value="31121">GZM21B1R12</option>
+                    <option value="31088">GZM22B1</option>
+                    <option value="31139">GZM22B1R12</option>
+                    <option value="586">GZM22B2</option>
+                    <option value="31130">GZM22B2R12</option>
+                    <option value="31069">GZM23B1</option>
+                    <option value="31127">GZM23B1R12</option>
+                    <option value="30783">GZM23B2</option>
+                    <option value="31138">GZM23B2R12</option>
+                    <option value="31082">GZM24B1</option>
+                    <option value="31137">GZM24B1R12</option>
+                    <option value="612">GZM25B1</option>
+                    <option value="31211">GZM25B1R12</option>
+                    <option value="31089">GZM25B2</option>
+                    <option value="31197">GZM25B2R12</option>
+                    <option value="609">GZM25B3</option>
+                    <option value="31225">GZM25B3R12</option>
+                    <option value="608">GZM26B1</option>
+                    <option value="31227">GZM26B1R12</option>
+                    <option value="31075">GZM26B2</option>
+                    <option value="31143">GZM26B2R12</option>
+                    <option value="598">GZM27B1</option>
+                    <option value="31192">GZM27B1R12</option>
+                    <option value="599">GZM28B1</option>
+                    <option value="31164">GZM28B1R12</option>
+                    <option value="588">GZM28B2</option>
+                    <option value="31244">GZM28B2R12</option>
+                    <option value="590">GZM28B3</option>
+                    <option value="31178">GZM28B3R12</option>
+                    <option value="31086">GZM29B1</option>
+                    <option value="31180">GZM29B1R12</option>
+                    <option value="31074">GZM29B2</option>
+                    <option value="31133">GZM29B2R12</option>
+                    <option value="30742">GZM29B3</option>
+                    <option value="31187">GZM29B3R12</option>
+                    <option value="31076">GZM30B1</option>
+                    <option value="31117">GZM30B1R12</option>
+                    <option value="31095">GZM30B2</option>
+                    <option value="31210">GZM30B2R12</option>
+                    <option value="30740">GZM30B3</option>
+                    <option value="31190">GZM30B3R12</option>
+                    <option value="31084">GZM31B1</option>
+                    <option value="31203">GZM31B1R12</option>
+                    <option value="589">GZM31B2</option>
+                    <option value="31260">GZM31B2R12</option>
+                    <option value="644">GZM32A1</option>
+                    <option value="31184">GZM32A1R12</option>
+                    <option value="31099">GZM32B2</option>
+                    <option value="31115">GZM32B2R12</option>
+                    <option value="31071">GZM33B1</option>
+                    <option value="31231">GZM33B1R12</option>
+                    <option value="30726">GZM33B2</option>
+                    <option value="31166">GZM33B2R12</option>
+                    <option value="30786">GZM34B1</option>
+                    <option value="31160">GZM34B1R12</option>
+                    <option value="30772">GZM34B2</option>
+                    <option value="31120">GZM34B2R12</option>
+                    <option value="30713">GZM34B3</option>
+                    <option value="31224">GZM34B3R12</option>
+                    <option value="30760">GZM34B4</option>
+                    <option value="31153">GZM34B4R12</option>
+                    <option value="30698">GZM34B5</option>
+                    <option value="31209">GZM34B5R12</option>
+                    <option value="30766">GZM34B6</option>
+                    <option value="31241">GZM34B6R12</option>
+                    <option value="30733">GZM35B1</option>
+                    <option value="31111">GZM35B1R12</option>
+                    <option value="30762">GZM35B2</option>
+                    <option value="31250">GZM35B2R12</option>
+                    <option value="30729">GZM35B3</option>
+                    <option value="31126">GZM35B3R12</option>
+                    <option value="30773">GZM35B4</option>
+                    <option value="31144">GZM35B4R12</option>
+                    <option value="30770">GZM35B5</option>
+                    <option value="31170">GZM35B5R12</option>
+                    <option value="636">GZM35B6</option>
+                    <option value="31173">GZM35B6R12</option>
+                    <option value="634">GZM36B1</option>
+                    <option value="31245">GZM36B1R12</option>
+                    <option value="635">GZM36B2</option>
+                    <option value="31129">GZM36B2R12</option>
+                    <option value="637">GZM36B3</option>
+                    <option value="31259">GZM36B3R12</option>
+                    <option value="638">GZM36B4</option>
+                    <option value="31232">GZM36B4R12</option>
+                    <option value="640">GZM36B5</option>
+                    <option value="31169">GZM36B5R12</option>
+                    <option value="631">GZM37B1</option>
+                    <option value="31205">GZM37B1R12</option>
+                    <option value="633">GZM37B2</option>
+                    <option value="31146">GZM37B2R12</option>
+                    <option value="632">GZM37B3</option>
+                    <option value="31249">GZM37B3R12</option>
+                    <option value="641">GZM37B4</option>
+                    <option value="31189">GZM37B4R12</option>
+                    <option value="642">GZM37B5</option>
+                    <option value="31150">GZM37B5R12</option>
+                    <option value="643">GZM37B6</option>
+                    <option value="31221">GZM37B6R12</option>
+                    <option value="30704">GZM38B2</option>
+                    <option value="31230">GZM38B2R12</option>
+                    <option value="616">GZM38B3</option>
+                    <option value="31235">GZM38B3R12</option>
+                    <option value="613">GZM38B4</option>
+                    <option value="31148">GZM38B4R12</option>
+                    <option value="619">GZM38B5</option>
+                    <option value="31167">GZM38B5R12</option>
+                    <option value="645">GZM39B2</option>
+                    <option value="31157">GZM39B2R12</option>
+                    <option value="30696">GZM39B3</option>
+                    <option value="31251">GZM39B3R12</option>
+                    <option value="30785">GZM39B4</option>
+                    <option value="31128">GZM39B4R12</option>
+                    <option value="30707">GZM39B5</option>
+                    <option value="31154">GZM39B5R12</option>
+                    <option value="30761">GZM39B6</option>
+                    <option value="31147">GZM39B6R12</option>
+                    <option value="30790">GZM40B4</option>
+                    <option value="31114">GZM40B4R12</option>
+                    <option value="30748">GZM40B6</option>
+                    <option value="31156">GZM40B6R12</option>
+                    <option value="30711">GZM40B7</option>
+                    <option value="31254">GZM40B7R12</option>
+                    <option value="30721">GZM40B8</option>
+                    <option value="31213">GZM40B8R12</option>
+                    <option value="30758">GZM41B1</option>
+                    <option value="31140">GZM41B1R12</option>
+                    <option value="30725">GZM41B2</option>
+                    <option value="31247">GZM41B2R12</option>
+                    <option value="30756">GZM41B3</option>
+                    <option value="31179">GZM41B3R12</option>
+                    <option value="594">GZM41B4</option>
+                    <option value="31163">GZM41B4R12</option>
+                    <option value="30775">GZM41B5</option>
+                    <option value="31258">GZM41B5R12</option>
+                    <option value="30712">GZM42B1</option>
+                    <option value="31119">GZM42B1R12</option>
+                    <option value="458">GZM42B2</option>
+                    <option value="31222">GZM42B2R12</option>
+                    <option value="1277">GZM42B5</option>
+                    <option value="31110">GZM42B5R12</option>
+                    <option value="1279">GZM42B6</option>
+                    <option value="31159">GZM42B6R12</option>
+                    <option value="30768">GZM42B7</option>
+                    <option value="31198">GZM42B7R12</option>
+                    <option value="625">GZM43B2</option>
+                    <option value="31155">GZM43B2R12</option>
+                    <option value="30749">GZM43B4</option>
+                    <option value="31257">GZM43B4R12</option>
+                    <option value="30730">GZM44B5</option>
+                    <option value="31186">GZM44B5R12</option>
+                    <option value="628">GZM44B6</option>
+                    <option value="31181">GZM44B6R12</option>
+                    <option value="30734">GZM44B7</option>
+                    <option value="31161">GZM44B7R12</option>
+                    <option value="30722">GZM44B8</option>
+                    <option value="31236">GZM44B8R12</option>
+                    <option value="622">GZM45B1</option>
+                    <option value="31158">GZM45B1R12</option>
+                    <option value="621">GZM45B2</option>
+                    <option value="31182">GZM45B2R12</option>
+                    <option value="617">GZM45B3</option>
+                    <option value="31168">GZM45B3R12</option>
+                    <option value="614">GZM45B4</option>
+                    <option value="31240">GZM45B4R12</option>
+                    <option value="620">GZM45B5</option>
+                    <option value="31113">GZM45B5R12</option>
+                    <option value="30718">GZM46B1</option>
+                    <option value="31204">GZM46B1R12</option>
+                    <option value="30765">GZM46B2</option>
+                    <option value="31239">GZM46B2R12</option>
+                    <option value="30732">GZM46B3</option>
+                    <option value="31188">GZM46B3R12</option>
+                    <option value="629">GZM46B4</option>
+                    <option value="31134">GZM46B4R12</option>
+                    <option value="30738">GZM47B1</option>
+                    <option value="31220">GZM47B1R12</option>
+                    <option value="602">GZM47B2</option>
+                    <option value="31142">GZM47B2R12</option>
+                    <option value="603">GZM47B3</option>
+                    <option value="31171">GZM47B3R12</option>
+                    <option value="604">GZM48B1</option>
+                    <option value="31234">GZM48B1R12</option>
+                    <option value="30755">GZM48B2</option>
+                    <option value="31208">GZM48B2R12</option>
+                    <option value="30753">GZM49B1</option>
+                    <option value="31194">GZM49B1R12</option>
+                    <option value="30700">GZM49B2</option>
+                    <option value="31248">GZM49B2R12</option>
+                    <option value="30780">GZM49B3</option>
+                    <option value="31207">GZM49B3R12</option>
+                    <option value="30791">GZM49B4</option>
+                    <option value="31233">GZM49B4R12</option>
+                    <option value="30787">GZM50B1</option>
+                    <option value="31261">GZM50B1R12</option>
+                    <option value="30759">GZM50B2</option>
+                    <option value="31201">GZM50B2R12</option>
+                    <option value="30752">GZM50B3</option>
+                    <option value="31253">GZM50B3R12</option>
+                    <option value="596">GZM50B4</option>
+                    <option value="31219">GZM50B4R12</option>
+                    <option value="630">GZM51B1</option>
+                    <option value="31237">GZM51B1R12</option>
+                    <option value="30745">GZM51B2</option>
+                    <option value="31136">GZM51B2R12</option>
+                    <option value="30697">GZM51B3</option>
+                    <option value="31177">GZM51B3R12</option>
+                    <option value="30769">GZM52B1</option>
+                    <option value="31175">GZM52B1R12</option>
+                    <option value="30706">GZM52B2</option>
+                    <option value="31135">GZM52B2R12</option>
+                    <option value="30744">GZM52B3</option>
+                    <option value="31199">GZM52B3R12</option>
+                </select>
+            </div>
+            <div style="float: left; padding: 0 10 0 10;">
+                <input value="选择" id="PutRightOne" onclick="PutRightOneClk()" type="button"><br><br>
+                <input value="删除" id="PutLeftOne" onclick="PutLeftOneClk()" type="button"><br><br>
+                <input value="确认" id="PutLeftOne" onclick="sumBsc()" type="button"><br><br>
+            </div>
+            <div>
+                <select size="10" id="selectedBsc" style="width: 300px; height: 200px;" multiple="multiple"
+                        ondblclick="PutLeftOneClk()">
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=UTF-8>
+    <title>小区Co-BSIC干扰分析</title>
+
+    <link rel="stylesheet" href="css/gsm-co-bisc-analysis.css">
+    <link rel="stylesheet" href="../../lib/openlayers/4.4.2/ol.css">
+    <link rel="stylesheet" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
+
+    <script src="../../lib/jquery/1.8.2/jquery.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
+    <script src="../../lib/validate.js"></script>
+    <script src="../../lib/tab.js"></script>
+    <script src="../../lib/openlayers/4.4.2/ol.js"></script>
+    <script src="js/gsm-co-bisc-cell-display.js"></script>
+    <script src="js/gsm-co-bisc-analysis-origin.js"></script>
+    <script src="js/gsm-co-bisc-analysis.js"></script>
+
+</head>
+<body>
+<!--div class="loading_cover" style="display: none">
+    <div class="cover"></div>
+    <h4 class="loading">
+        正在加载
+        <em class="loading_fb">小区或干扰分析中</em>,请稍侯...
+    </h4>
+</div>-->
+<div id="map" class="map"></div>
+<div class="dialog draggable ui-draggable">
+    <div style="padding: 5px">
+
+        <form id="conditionForm" method="post">
+             省：
+            <select name="provinceId" class="required" id="provinceId">
+            </select>
+            市：
+            <select name="cityId" class="required" id="cityId">
+            </select>
+            区：
+            <select name="areaId" class="required" id="queryCellAreaId">
+                <!--<option value="-1">全部</option>-->
+            </select>
+            bcch：
+            <input name="bcch" id="bcch" style="width: 50px" class="required"
+                   onkeyup="value=value.replace(/[^\d]/g,'')" type="text">
+            bsic：
+            <input name="bsic" id="bsic" style="width: 50px" class="canclear  required"
+                   onkeyup="value=value.replace(/[^\d]/g,'')" type="text">
+            <input name="interferquery" id="interferquery" value="干扰查询" type="button">
+            <input name="wholenetinterferquery" id="wholenetinterferquery" value="全网干扰查询"
+                   type="button">
+            <input id="trigger" name="trigger" value="切换谷歌" style="display: none;" type="button">
+            <div id="hiddenAreaLngLatDiv" style="display: none">
+
+                <input id="areaid_187" value="113.361397,23.12489" type="hidden">
+
+                <input id="areaid_188" value="113.26664,23.128836" type="hidden">
+
+                <input id="areaid_189" value="113.244324,23.126310999999998" type="hidden">
+
+                <input id="areaid_190" value="113.317451,23.084153" type="hidden">
+
+                <input id="areaid_191" value="113.273849,23.159301" type="hidden">
+
+                <input id="areaid_192" value="113.45941499999999,23.106734" type="hidden">
+
+                <input id="areaid_193" value="113.384399,22.936895" type="hidden">
+
+                <input id="areaid_194" value="113.220291,23.405286" type="hidden">
+
+                <input id="areaid_195" value="113.608932,22.772382999999998" type="hidden">
+
+                <input id="areaid_196" value="113.481216,23.181395" type="hidden">
+
+                <input id="areaid_197" value="113.810806,23.261533999999997" type="hidden">
+
+                <input id="areaid_198" value="113.586365,23.548403999999998" type="hidden">
+
+            </div>
+            <input id="hiddenZoom" name="zoom" value="14" type="hidden">
+            <input id="hiddenLng" value="113.361397" type="hidden">
+            <input id="hiddenLat" value="23.12489" type="hidden">
+            <input id="hiddenPageSize" name="page.pageSize" value="100" type="hidden">
+            <input id="hiddenCurrentPage" name="page.currentPage" value="1" type="hidden">
+            <input id="hiddenTotalPageCnt" type="hidden">
+            <input id="hiddenTotalCnt" type="hidden">
+        </form>
+
+    </div>
+</div>
+<div class="resource_list_icon" style="right: 286px;">
+    <a href="#" class="switch"></a>
+    <a href="#" class="switch_hidden" style="display: none;"></a>
+    <div class="shad_v"></div>
+</div>
+<div class="resource_list_box" style="height: 100%">
+    <div class="resource_list">
+        <div id="div_tab" class="div_tab divtab_menu250px">
+            <ul>
+                <li class="selected" style="width: 80px">
+                    小区数据配置
+                </li>
+                <li class="" style="width: 80px">
+                    小区基本信息
+                </li>
+                <li style="width: 60px" class="selected2">
+                    小区干扰组
+                </li>
+            </ul>
+        </div>
+        <div id="div_tab_0">
+            <table class="main-table1 half-width" id="selecttable">
+                <tbody><tr><td class="menuTd" style="width: 30%">重选数据/恢复默认</td><td><input name="showCellConfigBtn" id="showCellConfigBtn" value="重新选择" type="button"><input name="restoreDefaultBtn" id="restoreDefaultBtn" value="恢复默认" style="margin-left: 4px" type="button"></td></tr>
+                </tbody></table>
+            <div style="margin-top: 0px;display: block;">
+                <table id="loadRefreshlistTable3" class="greystyle-standard" width="100%"><tbody><tr><th>标题</th><th>方案名称</th><th>上传时间</th><th style="width: 10%">操作</th></tr></tbody></table>
+            </div>
+            <div id="cellConfigAnalysisBtnDiv">
+                <input id="cellConfigConfirmSelectionAnalysisBtn" class="selectOneItem" data="cellConfig" value="加载小区到地图" type="button">
+            </div>
+        </div>
+        <div id="div_tab_1" style="display: none">
+            <div class="resource_list">
+                <table class="main-table1 half-width">
+                    <tbody><tr>
+                        <td class="menuTd" style="width: 20%">
+                            小区名
+                        </td>
+                        <td id="showCellLabelId"></td>
+                    </tr>
+                    <tr>
+                        <td class="menuTd" style="width: 20%">
+                            小区中文名
+                        </td>
+                        <td id="showCellNameId"></td>
+                    </tr>
+                    <tr>
+                        <td class="menuTd" style="width: 20%">
+                            LAC
+                        </td>
+                        <td id="showCellLacId"></td>
+                    </tr>
+                    <tr>
+                        <td class="menuTd" style="width: 20%">
+                            CI
+                        </td>
+                        <td id="showCellCiId"></td>
+                    </tr>
+                    <tr>
+                        <td class="menuTd" style="width: 20%">
+                            BCCH
+                        </td>
+                        <td id="showCellBcchId"></td>
+                    </tr>
+                    <tr>
+                        <td class="menuTd" style="width: 20%">
+                            TCH
+                        </td>
+                        <td id="showCellTchId"></td>
+                    </tr>
+                    <tr>
+                        <td class="menuTd" style="width: 20%">
+                            BSIC
+                        </td>
+                        <td id="showCellBsicId"></td>
+                    </tr>
+                    <tr>
+                        <td class="menuTd" style="width: 20%">
+                            天线方向
+                        </td>
+                        <td id="showCellAzimuthId"></td>
+                    </tr>
+                    <tr>
+                        <td class="menuTd" style="width: 20%">
+                            天线下倾
+                        </td>
+                        <td id="showCellDownId"></td>
+                    </tr>
+                    <tr>
+                        <td class="menuTd" style="width: 20%">
+                            基站类型
+                        </td>
+                        <td id="showCellBtsTypeId"></td>
+                    </tr>
+                    <tr>
+                        <td class="menuTd" style="width: 20%">
+                            天线高度
+                        </td>
+                        <td id="showCellAntHeightId"></td>
+                    </tr>
+                    <tr>
+                        <td class="menuTd" style="width: 20%">
+                            天线类型
+                        </td>
+                        <td id="showCellAntTypeId"></td>
+                    </tr>
+                    <tr>
+                        <td class="menuTd" style="width: 20%">
+                            经度
+                        </td>
+                        <td id="showCellLngId"></td>
+                    </tr>
+                    <tr>
+                        <td class="menuTd" style="width: 20%">
+                            纬度
+                        </td>
+                        <td id="showCellLatId"></td>
+                    </tr>
+                    <tr>
+                        <td class="menuTd" style="width: 20%">
+                            覆盖范围
+                        </td>
+                        <td id="showCellCoverareaId"></td>
+                    </tr>
+                    <tr>
+                        <td class="menuTd" style="width: 20%">
+                            频段
+                        </td>
+                        <td id="showCellFreqSectionId"></td>
+                    </tr>
+                    </tbody></table>
+            </div>
+        </div>
+        <div id="div_tab_2" style="display: none">
+            <table class="main-table1 half-width" id="interfertable">
+                <tbody><tr><td class="menuTd" style="width: 30%">bcch&amp;bsic</td><td align="center">干扰小区组</td></tr>
+                </tbody></table>
+        </div>
+    </div>
+</div>
+
+
+<div id="reSelCellConfig_Dialog" class="dialog2 draggable ui-draggable" style="display:none;left: 60px;top: 60px">
+    <div class="dialog_header">
+        <div class="dialog_title">选择小区配置数据</div>
+        <div class="dialog_tool">
+            <div class="dialog_tool_close dialog_closeBtn"
+                 onclick="$('#reSelCellConfig_Dialog').hide();$('.colordialog2').hide();"></div>
+        </div>
+    </div>
+    <div class="dialog_content" style="width:650px; height:300px; background:#f9f9f9;overflow-x:hidden">
+
+    </div>
+</div>
+<div id="operInfo"
+     style="display:none; top:40px;left:600px;z-index:999;width:400px; height:40px; background-color:#7dff3f; filter:alpha(Opacity=80);-moz-opacity:0.5;opacity: 0.5;z-index:9999;position: fixed;">
+    <table style="text-align:center" height="100%" width="100%">
+        <tbody>
+        <tr>
+            <td><span id="operTip"></span></td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+
+</body>
+</html>
