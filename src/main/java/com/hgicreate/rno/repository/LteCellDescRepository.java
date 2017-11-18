@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface LteCellDescRepository extends JpaRepository<LteCellDesc,Long>{
 
-    List<LteCellDesc> findTop1000ByArea_IdAndDataTypeAndCreatedDateBetweenOrderByCreatedDateDesc(
-      Long areaId,String dataType, Date beginTime, Date endTime);
+    List<LteCellDesc> findTop1000ByArea_IdAndCreatedDateBetweenOrderByCreatedDateDesc(
+      Long areaId, Date beginTime, Date endTime);
 }

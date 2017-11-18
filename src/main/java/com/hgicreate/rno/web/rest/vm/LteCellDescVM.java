@@ -6,7 +6,6 @@ import lombok.Data;
 public class LteCellDescVM {
 
     private String city;
-    private String dataType;
     private String beginTestDate;
     private String endTestDate;
 }

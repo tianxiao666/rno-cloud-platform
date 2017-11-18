@@ -98,9 +98,8 @@ public class LteCellDataService {
         SimpleDateFormat sdf2 =   new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
         Date beginDate = sdf.parse(vm.getBeginTestDate());
         Date endDate =sdf2.parse(vm.getEndTestDate() + " 23:59:59");
-        List<LteCellDesc> list = lteCellDescRepository.findTop1000ByArea_IdAndDataTypeAndCreatedDateBetweenOrderByCreatedDateDesc(
+        List<LteCellDesc> list = lteCellDescRepository.findTop1000ByArea_IdAndCreatedDateBetweenOrderByCreatedDateDesc(
           Long.parseLong(vm.getCity()),
-                vm.getDataType(),
                 beginDate,
                 endDate
         );
