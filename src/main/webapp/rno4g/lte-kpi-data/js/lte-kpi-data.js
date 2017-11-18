@@ -9,7 +9,7 @@ $(function () {
     laydate.render({elem: '#kpiMeaEndDate', value: new Date()});
 
     initAreaSelectors({selectors: ["province", "city"]});
-    initAreaSelectors({selectors: ["provincemenu2", "citymenu2"]});
+    initAreaSelectors({selectors: ["province2", "city2"]});
 
 
     //查询数据记录
@@ -81,11 +81,10 @@ function showRecord(data) {
             "data": data,
             "columns": [
                 {"data": "areaName"},
-                {"data": "createdDate"},
                 {"data": "dataType"},
                 {"data": "filename"},
                 {"data": "dataNum"},
-                {"data": "sysTime"}
+                {"data": "createdDate"}
             ],
             "lengthChange": true,
             "ordering": false,

@@ -10,10 +10,11 @@ import com.hgicreate.rno.security.SecurityUtils;
 import com.hgicreate.rno.service.LteKpiDataService;
 import com.hgicreate.rno.service.dto.DataJobReportDTO;
 import com.hgicreate.rno.service.dto.LteKpiDataFileDTO;
-import com.hgicreate.rno.service.dto.LteKpiDataRecordDTO;
+import com.hgicreate.rno.service.dto.LteKpiDescDTO;
 import com.hgicreate.rno.service.mapper.DataJobReportMapper;
 import com.hgicreate.rno.web.rest.vm.FileUploadVM;
 import com.hgicreate.rno.web.rest.vm.LteKpiDataFileVM;
+import com.hgicreate.rno.web.rest.vm.LteKpiDescVM;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -129,7 +130,8 @@ public class LteKpiDataResource {
     }
 
     @PostMapping("/query-record")
-    public List<LteKpiDataRecordDTO> queryRecord(){
-        return lteKpiDataService.queryRecord();
+    public List<LteKpiDescDTO> queryRecord(LteKpiDescVM vm) throws ParseException{
+        log.debug("视图模型vm={}",vm);
+        return lteKpiDataService.queryRecord(vm);
     }
 }

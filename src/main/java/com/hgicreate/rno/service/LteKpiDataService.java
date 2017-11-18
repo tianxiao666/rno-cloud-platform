@@ -3,11 +3,15 @@ package com.hgicreate.rno.service;
 
 import com.hgicreate.rno.domain.Area;
 import com.hgicreate.rno.domain.DataJob;
+import com.hgicreate.rno.domain.LteKpiDesc;
 import com.hgicreate.rno.repository.DataJobRepository;
+import com.hgicreate.rno.repository.LteKpiDescRepository;
 import com.hgicreate.rno.service.dto.LteKpiDataFileDTO;
-import com.hgicreate.rno.service.dto.LteKpiDataRecordDTO;
+import com.hgicreate.rno.service.dto.LteKpiDescDTO;
 import com.hgicreate.rno.service.mapper.LteKpiDataFileMapper;
+import com.hgicreate.rno.service.mapper.LteKpiDescMapper;
 import com.hgicreate.rno.web.rest.vm.LteKpiDataFileVM;
+import com.hgicreate.rno.web.rest.vm.LteKpiDescVM;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +28,11 @@ public class LteKpiDataService {
 
     private final DataJobRepository dataJobRepository;
 
-    public LteKpiDataService(DataJobRepository dataJobRepository) {
+    private final LteKpiDescRepository lteKpiDescRepository;
+
+    public LteKpiDataService(DataJobRepository dataJobRepository, LteKpiDescRepository lteKpiDescRepository) {
         this.dataJobRepository = dataJobRepository;
+        this.lteKpiDescRepository = lteKpiDescRepository;
     }
 
     public List<LteKpiDataFileDTO> queryFileUploadRecord(LteKpiDataFileVM vm) throws ParseException {
@@ -48,11 +55,17 @@ public class LteKpiDataService {
                 .collect(Collectors.toList());
     }
 
-    public List<LteKpiDataRecordDTO> queryRecord(){
-        List<LteKpiDataRecordDTO> list = new ArrayList<>();
-        list.add(new LteKpiDataRecordDTO("珠海市","2016-06-18 09:33:05","","珠海市KPI数据.csv","23142","2015-06-18 09:32:55"));
-        list.add(new LteKpiDataRecordDTO("珠海市","2016-06-20 13:45:11","","珠海市KPI数据.csv","821","2015-06-20 13:44:11"));
-        list.add(new LteKpiDataRecordDTO("珠海市","2016-01-03 15:21:01","","珠海市01-03KPI.csv","5437","2015-01-03 15:20:08"));
-        return list;
+    public List<LteKpiDescDTO> queryRecord(LteKpiDescVM vm) throws ParseException{
+        SimpleDateFormat sdf =   new SimpleDateFormat( "yyyy-MM-dd" );
+        SimpleDateFormat sdf2 =   new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
+        Date beginDate = sdf.parse(vm.getKpiMeaBegDate());
+        Date endDate =sdf2.parse(vm.getKpiMeaEndDate() + " 23:59:59");
+        List<LteKpiDesc> list = lteKpiDescRepository.findTop1000ByArea_IdAndCreatedDateBetweenOrderByCreatedDateDesc(
+                Long.parseLong(vm.getCity2()),
+                beginDate,
+                endDate
+        );
+        return list.stream().map(LteKpiDescMapper.INSTANCE::lteKpiDescToLteKpiDescDTO)
+                .collect(Collectors.toList());
     }
 }

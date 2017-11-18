@@ -152,20 +152,14 @@
     <div id="tabs-2" aria-labelledby="ui-id-2" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel"
          style="display: none;" aria-hidden="true">
         <form id="searchRecordForm" method="post">
-            <input name="fileCode" id="fileCode" value="G4KPIFILE" type="hidden"> <input id="hiddenPageSize"
-                                                                                         name="page.pageSize" value="25"
-                                                                                         type="hidden"> <input
-                id="hiddenCurrentPage" name="page.currentPage" value="1" type="hidden"> <input id="hiddenTotalPageCnt"
-                                                                                               type="hidden"> <input
-                id="hiddenTotalCnt" value="-1" name="page.totalCnt" type="hidden">
             <table>
                 <tbody>
                 <tr>
                     <td>
-                        <select id="provincemenu2" title=""></select>
-                        <select id="citymenu2" name="attachParams['cityId']" title=""></select>
+                        <select id="province2" name="province2" title=""></select>
+                        <select id="city2" name="city2" title=""></select>
                     </td>
-                    <td style="padding-left:10px">测试时间 从:</td>
+                    <td style="padding-left:10px">进入系统时间从:</td>
                     <td><label for="kpiMeaBegDate"></label><input value="" id="kpiMeaBegDate" name="kpiMeaBegDate"
                                                                   style="width:135px" class="hasDatepicker" type="text">
                     </td>
@@ -183,10 +177,9 @@
                 <thead>
                 <tr>
                     <th>地市</th>
-                    <th>测量时间</th>
                     <th>数据类型</th>
                     <th>文件名</th>
-                    <th>测试数据量</th>
+                    <th>数据量</th>
                     <th>进入系统时间</th>
                 </tr>
                 </thead>
