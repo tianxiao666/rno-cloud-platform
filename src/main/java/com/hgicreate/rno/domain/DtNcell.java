@@ -18,7 +18,7 @@ public class DtNcell implements Serializable{
     private Integer earfcn;
     private Integer pci;
     private Integer ncellOrder;
-    private Long ncellId;
+    private String ncellId;
     private Integer rsrp;
 
 }

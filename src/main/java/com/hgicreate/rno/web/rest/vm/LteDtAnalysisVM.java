@@ -9,7 +9,7 @@ import java.util.Date;
 
 @Data
 public class LteDtAnalysisVM {
-    private String areaId;
+    private Long areaId;
     private String dataType;
     private String areaType;
     private String createdDate;

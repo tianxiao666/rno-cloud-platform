@@ -12,7 +12,7 @@ import java.util.List;
 public interface DtDescRepository extends PagingAndSortingRepository<DtDesc, Long> {
 
     List<DtDesc> findByAreaIdAndDataTypeInAndAreaTypeInAndCreatedDate
-            (String areaId, String[] dataType, String[] areaType, Date createdDate, Pageable pageable);
+            (Long areaId, String[] dataType, String[] areaType, Date createdDate, Pageable pageable);
 
     DtDesc findById(Long id);
 }

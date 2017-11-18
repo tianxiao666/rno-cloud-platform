@@ -196,6 +196,11 @@ $(function () {
     });
 
     $("#loadDtData").click(function () {
+        samplePointLayer.getSource().clear();
+        if($('input[name="fileId"]:checked').val() === undefined) {
+            showInfoInAndOut('warn', '请先选择文件后加载！');
+            return;
+        }
         $("#loading").css("display", "block");
         var id_array = new Array();
         $('input[name="fileId"]:checked').each(function(){
@@ -217,6 +222,10 @@ $(function () {
     });
 
     $("#weakCoverageBtn").click(function () {
+        if(samplePointLayer.getSource().getFeatures().length === 0) {
+            showInfoInAndOut('warn', '请先加载数据后进行分析！');
+            return;
+        }
         $("#loading").css("display", "block");
         var id_array = new Array();
         $('input[name="fileId"]:checked').each(function(){
@@ -239,6 +248,10 @@ $(function () {
     })
 
     $("#roomLeakageBtn").click(function () {
+        if(samplePointLayer.getSource().getFeatures().length === 0) {
+            showInfoInAndOut('warn', '请先加载数据后进行分析！');
+            return;
+        }
         $("#loading").css("display", "block");
         var id_array = new Array();
         $('input[name="fileId"]:checked').each(function(){
@@ -261,6 +274,10 @@ $(function () {
     });
 
     $("#overlapCoverageBtn").click(function () {
+        if(samplePointLayer.getSource().getFeatures().length === 0) {
+            showInfoInAndOut('warn', '请先加载数据后进行分析！');
+            return;
+        }
         $("#loading").css("display", "block");
         var id_array = new Array();
         $('input[name="fileId"]:checked').each(function(){
