@@ -25,11 +25,13 @@ spring:
             max-request-size: 300MB
 
 rno:
+    app-code: rno4g
     path:
         upload-files: d:/tmp/rno-cloud-platform/uploads
     scheduler:
         enabled: false
         fixed-delay: 10000 # 单位为毫秒
+        job-type: LTE-DT-DATA
 
 mybatis:
     configuration:

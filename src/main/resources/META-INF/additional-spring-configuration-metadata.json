@@ -14,6 +14,16 @@
       "name": "rno.scheduler.fixed-delay",
       "type": "java.lang.String",
       "description": "定时任务的时间间隔，单位是毫秒."
+    },
+    {
+      "name": "rno.scheduler.job-type",
+      "type": "java.lang.String",
+      "description": "任务类型，缺省为NONE."
+    },
+    {
+      "name": "rno.app-code",
+      "type": "java.lang.String",
+      "description": "系统应用的代码，如 rno、rno4g 等."
     }
   ]
 }
