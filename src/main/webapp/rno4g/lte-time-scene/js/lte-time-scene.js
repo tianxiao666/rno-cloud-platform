@@ -2,17 +2,13 @@
 var editHTML;
 var editText;
 var submitStatus = true;
-//var sceneType="time";
 var sceneNames; //保存场景名列表
 
 
 $(document).ready(function () {
-    // 设置jquery ui
-//	jqueryUiSet();
     //绑定事件
     bindEvent();
     //获取场景名列表
-    //getSceneNameListTask(sceneType);
     clearAll();
     getSceneNameListTask();
 
@@ -237,20 +233,17 @@ function setEditHTML(value) {
 // 修改
 function ok(obtn) {
     var $obj = $(obtn).parent(); //div
-    //var objId = $obj.attr("id");  //div id 为场景ID
-//	var tdClass = $(obtn).parent().parent().attr("class"); //TD class为场景的列名
     var spanvalue = $(obtn).parent().parent().find("span").html();
-    //console.log("objId="+objId+",spanvalue="+spanvalue);
     var value = $obj.find("input:text")[0].value; // 取得文本框的值，即新数据
     if (value === "") {
         value = "   ";
     }
-    if (value !== spanvalue) {
-        $(obtn).parent().parent().find("span.oldDataTip").css({"display": "inline-block", "width": "49%"});
-        $(obtn).parent().css({"width": "49%"});
-    } else {
+    if (value === spanvalue) {
         $(obtn).parent().parent().find("span.oldDataTip").css({"display": "none"});
         $(obtn).parent().css({"width": "100%"});
+    } else {
+        $(obtn).parent().parent().find("span.oldDataTip").css({"display": "inline-block", "width": "49%"});
+        $(obtn).parent().css({"width": "49%"});
     }
     // alert("success");
     $obj.data("oldtxt", value); // 设置此单元格缓存为新数据
@@ -260,10 +253,7 @@ function ok(obtn) {
 }
 
 function editThis(obtn) {
-    //var objId = $(obtn).attr("id");
-    //	$("span#" + objId).html("");
     editText = $(obtn).html().trim(); // 取得表格单元格的文本
-    // console.log(editText);
     setEditHTML(editText); // 初始化控件
     $(obtn).data("oldtxt", editText);  // 将单元格原文本保存在其缓存中，便修改失败或取消时用
     $(obtn).html(editHTML); // 改变单元格内容为编辑状态
@@ -378,7 +368,6 @@ function deleteSceneInfo(sceneId) {
             }
         },
         complete: function () {
-            /*			doTableLock();*/
             hideOperTips("loadingDataDiv");
         }
     });
@@ -505,10 +494,6 @@ function checkSceneParam() {
     var cellreselpriority = $("#cellreselpriority").html().trim();
 
     var reg = /^[-+]?[0-9]+(\.[0-9]+)?$/; // 验证数字
-    //var reg= /^\d+$/;
-    //var reg1 = /^[0-9]*[1-9][0-9]*$/; // 正整数
-    //var reg2 = /^(?:[1-9]?\d|100)$/; // 0-100的整数，适用于验证百分数
-    //var reg3=/^([1-9]\d*|0)$/; //非负整数
     var flag = true;
     if (!submitStatus) {
         var sceneName = $("#sceneNameInput").val().trim();
@@ -525,13 +510,10 @@ function checkSceneParam() {
             }
         }
     }
-    // console.log(SAMEFREQINTERTHRESHOLD + " "+ OVERSHOOTINGIDEALDISMULTIPLE);
+
     if (!reg.test(interrathoa2thdrsrp)) {
         $("#interrathoa2thdrsrp_err").html("※请输入数字※");
         flag = false;
-        /*	} else if (interrathoa2thdrsrp > 1) {
-                $("span#interrathoa2thdrsrp_err").html("※值需要小于等于1※");
-                flag = false;*/
     } else {
         $("#interrathoa2thdrsrp_err").html("");
         $("#interrathoa2thdrsrp_err").css({"display": "none"});

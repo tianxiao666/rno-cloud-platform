@@ -8,10 +8,6 @@
 
     <script src="/lib/jquery/1.8.2/jquery.js"></script>
     <script>
-       /* $(document).ready(function () {
-            $(".draggable").draggable();
-            $("#trigger").css("display", "none");
-        });*/
     </script>
     <script src="js/lte-time-scene.js"></script>
     <script src="/lib/rno/selftools.js"></script>
@@ -22,6 +18,7 @@
             padding-left: 5px;
             width: 100%
         }
+
         .paramTable th {
             padding: 0 10px;
             background: url('images/cmp-bg2.gif') repeat-x;
@@ -34,8 +31,7 @@
 
         .paramTable tr td {
             border: 1px solid #CCC;
-            padding: 4px;
-            padding-left: 6px;
+            padding: 4px 4px 4px 6px;
             color: #000;
             line-height: 21px;
             vertical-align: middle;
@@ -69,9 +65,9 @@
     </h4>
 </div>
 <h2><span class="navTitle">当前位置：场景管理 &gt; 时间场景管理 </span></h2>
-<center>
-    <font style="font-weight: bold;font-size:16px">时间场景信息</font> <br>
-</center>
+<div style="text-align: center;">
+    <span style="font-weight: bold;font-size:16px">时间场景信息</span> <br>
+</div>
 <div id="displaySceneInfoDiv" style="padding-top: 10px">
     <div id="sceneAction" align="center">
         <div id="optionsDiv">
@@ -97,13 +93,16 @@
                 <tbody>
                     <tr id="sceneNameTr">
                         <td style="margin: 0; text-align: center">场景名称：</td>
-                            <td id="sceneNameTd" style="text-align: left">
-                                <select name="cond[sceneNameList]" id="sceneNameList">
-                                    <option value="61" selected="selected">周日</option>
-                                    <option value="143">节假日</option>
-                                </select>
-                            </td>
-                        <td><span id="sceneNameTip"></span></td>
+                        <td id="sceneNameTd" style="text-align: left">
+                            <label for="sceneNameList"></label>
+                            <select name="cond[sceneNameList]" id="sceneNameList">
+                                <option value="61" selected="selected">周日</option>
+                                <option value="143">节假日</option>
+                            </select>
+                        </td>
+                        <td>
+                            <span id="sceneNameTip"></span>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -114,7 +113,7 @@
 
         <div style="width: 600px;height: 100%;padding-top: 10px">
             <table class="paramTable" id="scenceInfoTable">
-                <caption><font style="color: red;font-weight: bold;">周日</font> 的场景信息<br></caption>
+                <caption><span style="color: red;font-weight: bold;">周日</span> 的场景信息<br></caption>
                 <thead>
                 <tr>
                     <th style="width: 360px">参数名</th>
