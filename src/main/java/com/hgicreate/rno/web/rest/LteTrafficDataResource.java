@@ -97,10 +97,10 @@ public class LteTrafficDataResource {
             Integer originFileId = 1;
             Integer flag = originFileAttrRepository.getOriginFileAttrNum();
             if(flag == null){
-                originFileAttr.setOriginFileId(originFileId);
+                originFileAttr.setOriginFileId((long)originFileId);
             }else {
                 originFileId = flag + 1;
-                originFileAttr.setOriginFileId(originFileId);
+                originFileAttr.setOriginFileId((long)originFileId);
             }
             originFileAttr.setName("business_type");
             originFileAttr.setValue(vm.getBusiness_type());
