@@ -9,4 +9,5 @@ public class LteTrafficFileUploadVM {
     private String areaId;
     private MultipartFile file;
     private String sourceType;
+    private String business_type;
 }

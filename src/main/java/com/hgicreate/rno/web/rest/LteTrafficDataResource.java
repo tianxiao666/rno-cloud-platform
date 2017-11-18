@@ -3,7 +3,9 @@ package com.hgicreate.rno.web.rest;
 import com.hgicreate.rno.domain.Area;
 import com.hgicreate.rno.domain.DataJob;
 import com.hgicreate.rno.domain.OriginFile;
+import com.hgicreate.rno.domain.OriginFileAttr;
 import com.hgicreate.rno.repository.DataJobRepository;
+import com.hgicreate.rno.repository.OriginFileAttrRepository;
 import com.hgicreate.rno.repository.OriginFileRepository;
 import com.hgicreate.rno.security.SecurityUtils;
 import com.hgicreate.rno.service.LteTrafficDataService;
@@ -37,10 +39,13 @@ public class LteTrafficDataResource {
     private final LteTrafficDataService lteTrafficDataService;
     private final DataJobRepository dataJobRepository;
     private  final OriginFileRepository originFileRepository;
+    private  final OriginFileAttrRepository originFileAttrRepository;
 
-    public LteTrafficDataResource(LteTrafficDataService lteTrafficDataService, DataJobRepository dataJobRepository, OriginFileRepository originFileRepository) {
+    public LteTrafficDataResource(LteTrafficDataService lteTrafficDataService, DataJobRepository dataJobRepository,
+                                  OriginFileRepository originFileRepository,OriginFileAttrRepository originFileAttrRepository) {
         this.lteTrafficDataService = lteTrafficDataService;
         this.originFileRepository = originFileRepository;
+        this.originFileAttrRepository = originFileAttrRepository;
         this.dataJobRepository = dataJobRepository;
     }
 
@@ -86,12 +91,28 @@ public class LteTrafficDataResource {
 
             log.debug("存储的文件名：{}", filename);
 
+            //更新文件记录RNO_ORIGIN_FILE_Attr
+            OriginFileAttr originFileAttr = new OriginFileAttr();
+            //获取属性表当前关联字段值
+            Integer originFileId = 1;
+            Integer flag = originFileAttrRepository.getOriginFileAttrNum();
+            if(flag == null){
+                originFileAttr.setOriginFileId(originFileId);
+            }else {
+                originFileId = flag + 1;
+                originFileAttr.setOriginFileId(originFileId);
+            }
+            originFileAttr.setName("business_type");
+            originFileAttr.setValue(vm.getBusiness_type());
+            originFileAttrRepository.save(originFileAttr);
+
             //更新文件记录RNO_ORIGIN_FILE
             originFile.setFilename(vm.getFile().getOriginalFilename());
             originFile.setDataType(vm.getModuleName().toUpperCase());
             originFile.setFullPath(filepath);
             originFile.setFileSize((int)vm.getFile().getSize());
             originFile.setSourceType(vm.getSourceType());
+            originFile.setDataAttr(originFileId);
             originFile.setCreatedUser(SecurityUtils.getCurrentUserLogin());
             originFile.setCreatedDate(new Date());
             originFileRepository.save(originFile);

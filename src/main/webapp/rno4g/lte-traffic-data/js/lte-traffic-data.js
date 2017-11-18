@@ -37,7 +37,7 @@ $(function () {
         //获取area_id上传
         $("#area").val($("#cityId").val());
         var filename = fileid.value;
-        if(!(filename.toUpperCase().endsWith(".xml")||filename.toUpperCase().endsWith(".gz"))){
+        if(!(filename.toUpperCase().endsWith(".XML")||filename.toUpperCase().endsWith(".GZ"))){
             showInfoInAndOut("info", "请选择xml或者gz格式的数据文件");
             return false;
         }else {
@@ -69,7 +69,7 @@ $(function () {
     // 当上传文件域改变时，隐藏进度条
     $("input[name='file']").change(function () {
         var filename = fileid.value;
-        if(!(filename.toUpperCase().endsWith(".xml")||filename.toUpperCase().endsWith(".gz"))){
+        if(!(filename.toUpperCase().endsWith(".XML")||filename.toUpperCase().endsWith(".GZ"))){
             $("#fileDiv").html("不支持该类型文件！");
         }else {
             $("#fileDiv").html("");
