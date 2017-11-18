@@ -6,13 +6,13 @@ localStorage['SelectedMenuRank'] = "";
 $(function () {
     // 初始化系统标题、Logo与软件版本
     $.ajax({
-        url: "data/system.json",
+        url: "/api/app-info",
         dataType: "json",
         async: false,
         success: function (data) {
-            document.title = data.title;
+            document.title = data.name;
             $(".logo").html("<img src='images/" + data.logo + "'>");
-            $("#software-version").html(data.title + " " + data.version);
+            $("#software-version").html(data.name + " " + data.version);
         }
     });
 
