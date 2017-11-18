@@ -6,6 +6,5 @@ import lombok.Data;
 public class LteGridDataQueryVM {
     private String provinceId;
     private String cityId;
-    private String begMetaDate;
-    private String endMetaDate;
+    private String gridType;
 }

@@ -3,19 +3,25 @@ package com.hgicreate.rno.web.rest;
 import com.hgicreate.rno.domain.Area;
 import com.hgicreate.rno.domain.DataJob;
 import com.hgicreate.rno.domain.OriginFile;
+import com.hgicreate.rno.domain.OriginFileAttr;
+import com.hgicreate.rno.repository.DataJobReportRepository;
 import com.hgicreate.rno.repository.DataJobRepository;
+import com.hgicreate.rno.repository.OriginFileAttrRepository;
 import com.hgicreate.rno.repository.OriginFileRepository;
 import com.hgicreate.rno.security.SecurityUtils;
 import com.hgicreate.rno.service.LteGridDataService;
+import com.hgicreate.rno.service.dto.DataJobReportDTO;
 import com.hgicreate.rno.service.dto.LteGridDataImportFileDTO;
-import com.hgicreate.rno.service.dto.LteGridDataResultDTO;
-import com.hgicreate.rno.web.rest.vm.FileUploadVM;
+import com.hgicreate.rno.service.dto.LteGridDescDTO;
+import com.hgicreate.rno.service.mapper.DataJobReportMapper;
+import com.hgicreate.rno.web.rest.vm.LteGridDataFileUploadVM;
 import com.hgicreate.rno.web.rest.vm.LteGridDataImportVM;
 import com.hgicreate.rno.web.rest.vm.LteGridDataQueryVM;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,6 +34,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -37,14 +44,18 @@ public class LteGridDataResource {
     private String directory;
 
     private final OriginFileRepository originFileRepository;
+    private  final OriginFileAttrRepository originFileAttrRepository;
 
     private final DataJobRepository dataJobRepository;
+    private final DataJobReportRepository dataJobReportRepository;
 
     private final LteGridDataService lteGridDataService;
 
-    public LteGridDataResource(OriginFileRepository originFileRepository, DataJobRepository dataJobRepository, LteGridDataService lteGridDataService) {
+    public LteGridDataResource(OriginFileRepository originFileRepository, OriginFileAttrRepository originFileAttrRepository, DataJobRepository dataJobRepository, DataJobReportRepository dataJobReportRepository, LteGridDataService lteGridDataService) {
         this.originFileRepository = originFileRepository;
+        this.originFileAttrRepository = originFileAttrRepository;
         this.dataJobRepository = dataJobRepository;
+        this.dataJobReportRepository = dataJobReportRepository;
         this.lteGridDataService = lteGridDataService;
     }
 
@@ -56,10 +67,18 @@ public class LteGridDataResource {
     }
 
     @PostMapping("/data-query")
-    public List<LteGridDataResultDTO> dataQuery(LteGridDataQueryVM vm){
+    public List<LteGridDescDTO> dataQuery(LteGridDataQueryVM vm){
         log.debug("查询网格数据记录。");
         log.debug("视图模型: " + vm);
         return lteGridDataService.dataQuery(vm);
+    }
+
+    @GetMapping("/query-report")
+    public List<DataJobReportDTO> queryReport(String id){
+        log.debug("查询任务报告的任务id：{}",id);
+        return dataJobReportRepository.findByDataJob_Id(Long.parseLong(id))
+                .stream().map(DataJobReportMapper.INSTANCE::dataJobReportToDataJobReportDTO)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -68,7 +87,7 @@ public class LteGridDataResource {
      * @return 成功情况下返回 HTTP OK 状态，错误情况下返回 HTTP 4xx 状态。
      */
     @PostMapping("/upload-file")
-    public ResponseEntity<?> uploadFile(FileUploadVM vm) {
+    public ResponseEntity<?> uploadFile(LteGridDataFileUploadVM vm) {
 
         log.debug("模块名：" + vm.getModuleName());
 
@@ -79,9 +98,9 @@ public class LteGridDataResource {
 
             //获取文件类型
             String fileExtension = filename.substring(filename.lastIndexOf("."),filename.length()).toLowerCase();
-            String fileType = new String("ZIP");
-            if((".csv").equals(fileExtension)){
-                fileType = "CSV";
+            String fileType = new String();
+            if((".zip").equals(fileExtension)){
+                fileType = "ZIP";
             }
             log.debug("上传的文件类型：{}",fileType);
 
@@ -118,6 +137,13 @@ public class LteGridDataResource {
             originFile.setCreatedDate(new Date());
             originFile.setSourceType("上传");
             originFileRepository.save(originFile);
+
+            //创建OriginFileAttr对象，保存文件属性
+            OriginFileAttr originFileAttr = new OriginFileAttr();
+            originFileAttr.setName("grid_type");
+            originFileAttr.setValue(vm.getGridType());
+            originFileAttr.setOriginFileId(originFile.getId());
+            originFileAttrRepository.save(originFileAttr);
 
             //创建DataJob对象，创建文件任务
             Area area = new Area();

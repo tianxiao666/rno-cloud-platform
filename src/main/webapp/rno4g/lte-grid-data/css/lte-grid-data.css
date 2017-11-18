@@ -349,19 +349,6 @@ body {
     min-height: 0;
 }
 
-.ui-icon {
-    display: block;
-    text-indent: -99999px;
-    overflow: hidden;
-    background-repeat: no-repeat;
-}
-
-.ui-button-icon-only .ui-icon, .ui-button-text-icon-primary .ui-icon, .ui-button-text-icon-secondary .ui-icon, .ui-button-text-icons .ui-icon, .ui-button-icons-only .ui-icon {
-    position: absolute;
-    top: 50%;
-    margin-top: -8px;
-}
-
 .ui-tabs {
     position: relative;
     padding: 0.2em;
@@ -409,11 +396,6 @@ body {
     background: none;
 }
 
-.ui-widget {
-    font-family: "Trebuchet MS", Tahoma, Verdana, Arial, sans-serif;
-    font-size: 1.1em;
-}
-
 .ui-widget .ui-widget {
     font-size: 1em;
 }
@@ -442,18 +424,6 @@ body {
 
 .ui-widget-header a {
     color: rgb(255, 255, 255);
-}
-
-.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
-    border: 1px solid rgb(204, 204, 204);
-    background: url("../images/ui-bg_glass_100_f6f6f6_1x400.png") 50% 50% repeat-x rgb(246, 246, 246);
-    font-weight: bold;
-    color: rgb(28, 148, 196);
-}
-
-.ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited {
-    color: rgb(28, 148, 196);
-    text-decoration: none;
 }
 
 .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
@@ -511,26 +481,6 @@ body {
 .ui-state-disabled, .ui-widget-content .ui-state-disabled, .ui-widget-header .ui-state-disabled {
     opacity: 0.35;
     background-image: none;
-}
-
-.ui-state-disabled .ui-icon {
-}
-
-.ui-icon {
-    width: 16px;
-    height: 16px;
-}
-
-.ui-icon, .ui-widget-content .ui-icon {
-    background-image: url("../images/ui-icons_222222_256x240.png");
-}
-
-.ui-widget-header .ui-icon {
-    background-image: url("../images/ui-icons_ffffff_256x240.png");
-}
-
-.ui-state-default .ui-icon {
-    background-image: url("../images/ui-icons_ef8c08_256x240.png");
 }
 
 .ui-state-hover .ui-icon, .ui-state-focus .ui-icon {
@@ -624,13 +574,6 @@ body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, input, button, textar
     cursor: default !important;
 }
 
-.ui-icon {
-    display: block;
-    text-indent: -99999px;
-    overflow: hidden;
-    background-repeat: no-repeat;
-}
-
 .ui-tabs {
     position: relative;
     padding: 0.2em;
@@ -674,20 +617,6 @@ body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, input, button, textar
     background: none;
 }
 
-.ui-widget {
-    font-family: "Trebuchet MS", Tahoma, Verdana, Arial, sans-serif;
-    font-size: 1.1em;
-}
-
-.ui-widget .ui-widget {
-    font-size: 1em;
-}
-
-.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
-    font-family: "Trebuchet MS", Tahoma, Verdana, Arial, sans-serif;
-    font-size: 1em;
-}
-
 .ui-widget-content {
     border: 1px solid rgb(221, 221, 221);
     background: url("../images/ui-bg_highlight-soft_100_eeeeee_1x100.png") 50% top repeat-x rgb(238, 238, 238);
@@ -709,18 +638,6 @@ body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, input, button, textar
     color: rgb(255, 255, 255);
 }
 
-.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
-    border: 1px solid rgb(204, 204, 204);
-    background: url("../images/ui-bg_glass_100_f6f6f6_1x400.png") 50% 50% repeat-x rgb(246, 246, 246);
-    font-weight: bold;
-    color: rgb(28, 148, 196);
-}
-
-.ui-state-default a, .ui-state-default a:link, .ui-state-default a:visited {
-    color: rgb(28, 148, 196);
-    text-decoration: none;
-}
-
 .ui-state-hover, .ui-widget-content .ui-state-hover, .ui-widget-header .ui-state-hover, .ui-state-focus, .ui-widget-content .ui-state-focus, .ui-widget-header .ui-state-focus {
     border: 1px solid rgb(251, 203, 9);
     background: url("../images/ui-bg_glass_100_fdf5ce_1x400.png") 50% 50% repeat-x rgb(253, 245, 206);
@@ -738,27 +655,6 @@ body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, input, button, textar
 .ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited {
     color: rgb(235, 143, 0);
     text-decoration: none;
-}
-
-.ui-icon {
-    width: 16px;
-    height: 16px;
-}
-
-.ui-icon, .ui-widget-content .ui-icon {
-    background-image: url("../images/ui-icons_222222_256x240.png");
-}
-
-.ui-widget-header .ui-icon {
-    background-image: url("../images/ui-icons_ffffff_256x240.png");
-}
-
-.ui-state-default .ui-icon {
-    background-image: url("../images/ui-icons_ef8c08_256x240.png");
-}
-
-.ui-state-active .ui-icon {
-    background-image: url("../images/ui-icons_ef8c08_256x240.png");
 }
 
 .ui-icon-arrowreturnthick-1-w {
@@ -849,4 +745,8 @@ select {
     display: inline-block;
     top: 3px;
     left: 48%;
+}
+
+.ui-state-default .ui-icon {
+    background-image: url("../images/ui-icons_ef8c08_256x240.png");
 }

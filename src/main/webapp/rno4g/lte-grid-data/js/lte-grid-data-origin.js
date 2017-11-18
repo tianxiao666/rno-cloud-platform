@@ -629,11 +629,3 @@ function displayReportRec(data){
 	}
 	$("#reportListTab").append(html);
 }
-
-/**
- * 从报告的详情返回列表页面
- */
-function returnToImportList(){
-	$("#reportDiv").css("display","none");
-	$("#listinfoDiv").css("display","block");
-}

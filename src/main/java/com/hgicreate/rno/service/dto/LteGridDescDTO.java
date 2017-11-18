@@ -1,15 +1,11 @@
 package com.hgicreate.rno.service.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class LteNcellDescDTO {
+public class LteGridDescDTO {
     private String areaName;
-    private String dataType;
+    private String gridType;
     private String filename;
     private String recordCount;
     private String createdDate;

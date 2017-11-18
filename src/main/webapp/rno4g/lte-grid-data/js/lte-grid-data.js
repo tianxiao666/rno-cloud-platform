@@ -43,8 +43,8 @@ $(function () {
         var cityId = $("#citymenu").val();
         $("#areaId").val(cityId);
         var fileType = path.substring(path.lastIndexOf("."), path.length).toLowerCase();
-        if (fileType !== '.csv' && fileType != '.zip') {
-            showInfoInAndOut("info", "请上传csv或者zip格式的数据文件");
+        if (fileType !== '.zip') {
+            showInfoInAndOut("info", "请上传zip格式的数据文件");
             return false;
         }
     });
@@ -134,15 +134,15 @@ function showLteGridImportResult(data) {
             "render": function (data, type, row) {
                 switch (row['status']) {
                     case "部分成功":
-                        return "<a style='color: red' onclick='showImportDetail()'>" + row['status'] + "</a>";
+                        return "<a style='color: red' onclick=\"showImportDetail('"+row['id']+"')\">" + row['status'] + "</a>";
                     case "全部失败":
-                        return "<a style='color: red' onclick='showImportDetail()'>" + row['status'] + "</a>";
+                        return "<a style='color: red' onclick=\"showImportDetail('"+row['id']+"')\">" + row['status'] + "</a>";
                     case "全部成功":
-                        return "<a onclick='showImportDetail()'>" + row['status'] + "</a>";
+                        return "<a onclick=\"showImportDetail('"+row['id']+"')\">" + row['status'] + "</a>";
                     case "正在处理":
-                        return "<a onclick='showImportDetail()'>" + row['status'] + "</a>";
+                        return "<a onclick=\"showImportDetail('"+row['id']+"')\">" + row['status'] + "</a>";
                     case "等待处理":
-                        return "<a onclick='showImportDetail()'>" + row['status'] + "</a>";
+                        return "<a onclick=\"showImportDetail('"+row['id']+"')\">" + row['status'] + "</a>";
                 }
             },
             "targets": -1,
@@ -163,7 +163,7 @@ function showLteGridImportResult(data) {
 function showLteGridDataResult(data) {
     $(".loading").css("display", "none");
     if (data == '') {
-        showInfoInAndOut('info', '没有符合条件的网格数据导入记录');
+        showInfoInAndOut('info', '没有符合条件的网格数据记录');
     }
 
     $('#queryResultTab1').css("line-height", "12px");
@@ -171,11 +171,10 @@ function showLteGridDataResult(data) {
         "data": data,
         "columns": [
             {data: "areaName"},
-            {data: "metaTime"},
-            {data: "gridSequ"},
-            {data: "gridDesc"},
-            {data: "gridCenter"},
-            {data: "createTime"}
+            {data: "gridType"},
+            {data: "filename"},
+            {data: "recordCount"},
+            {data: "createdDate"}
         ],
         "lengthChange": false,
         "ordering": false,
@@ -195,6 +194,43 @@ function showInfoInAndOut(div, info) {
 }
 
 //显示导入记录的状态的结果报告
-function showImportDetail() {
+function showImportDetail(id) {
+    $.ajax({
+        url: '/api/lte-grid-data/query-report',
+        dataType: 'text',
+        data: {id: id},
+        success:function(data){
+            $("#reportListTab").css("line-height", "12px");
+            $("#reportDiv").css("display", "block");
+            $("#listInfoDiv").css("display", "none");
+            $("#reportListTab").DataTable({
+                "data": JSON.parse(data),
+                "columns": [
+                    {"data": "stage"},
+                    {"data": "startTime"},
+                    {"data": "completeTime"},
+                    {"data": "status"},
+                    {"data": "message"}
+                ],
+                "lengthChange": false,
+                "ordering": false,
+                "searching": false,
+                "destroy": true,
+                "language": {
+                    url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
+                }
+            });
+        }, error: function (err) {
+            console.log(err);
+            showInfoInAndOut("info", "后台程序错误！");
+        }
+    });
+}
 
+/**
+ * 从报告的详情返回列表页面
+ */
+function returnToImportList(){
+    $("#reportDiv").css("display","none");
+    $("#listInfoDiv").css("display","block");
 }

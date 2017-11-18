@@ -3,9 +3,11 @@ package com.hgicreate.rno.service;
 import com.hgicreate.rno.domain.Area;
 import com.hgicreate.rno.domain.DataJob;
 import com.hgicreate.rno.repository.DataJobRepository;
+import com.hgicreate.rno.repository.LteGridDescRepository;
 import com.hgicreate.rno.service.dto.LteGridDataImportFileDTO;
-import com.hgicreate.rno.service.dto.LteGridDataResultDTO;
+import com.hgicreate.rno.service.dto.LteGridDescDTO;
 import com.hgicreate.rno.service.mapper.LteGridDataImportMapper;
+import com.hgicreate.rno.service.mapper.LteGridDescMapper;
 import com.hgicreate.rno.web.rest.vm.LteGridDataImportVM;
 import com.hgicreate.rno.web.rest.vm.LteGridDataQueryVM;
 import org.springframework.stereotype.Service;
@@ -22,8 +24,11 @@ public class LteGridDataService {
 
     private final DataJobRepository dataJobRepository;
 
-    public LteGridDataService(DataJobRepository dataJobRepository) {
+    private final LteGridDescRepository lteGridDescRepository;
+
+    public LteGridDataService(DataJobRepository dataJobRepository, LteGridDescRepository lteGridDescRepository) {
         this.dataJobRepository = dataJobRepository;
+        this.lteGridDescRepository = lteGridDescRepository;
     }
 
     public List<LteGridDataImportFileDTO> importQuery(LteGridDataImportVM vm) throws ParseException {
@@ -45,10 +50,22 @@ public class LteGridDataService {
                    .collect(Collectors.toList());
     }
 
-    public List<LteGridDataResultDTO> dataQuery(LteGridDataQueryVM vm){
-        List<LteGridDataResultDTO> dtoList = new ArrayList<>();
-        dtoList.add(new LteGridDataResultDTO("广州市","2017-11-05 11:35:49",
-                "24","020-0040-gz","113.28300870813194,23.10955693866624","2017/11/16 16:34:56"));
+    public List<LteGridDescDTO> dataQuery(LteGridDataQueryVM vm){
+        Area area = new Area();
+        area.setId(Long.parseLong(vm.getCityId()));
+        List<LteGridDescDTO> dtoList;
+        if(vm.getGridType().equals("全部")){
+            dtoList = lteGridDescRepository.findTop1000ByAreaOrderByCreatedDateDesc(area)
+                                           .stream()
+                                           .map(LteGridDescMapper.INSTANCE::gridDescToGridDescDTO)
+                                           .collect(Collectors.toList());
+        }else{
+            dtoList = lteGridDescRepository.findTop1000ByAreaAndGridTypeOrderByCreatedDateDesc(area,vm.getGridType())
+                                           .stream()
+                                           .map(LteGridDescMapper.INSTANCE::gridDescToGridDescDTO)
+                                           .collect(Collectors.toList());
+        }
+
         return dtoList;
     }
 }
