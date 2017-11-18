@@ -75,7 +75,8 @@ public class LteDtDataResource {
             log.debug("上传的文件名：{}", filename);
             //创建更新对象
             OriginFile originFile = new OriginFile();
-            OriginFileAttr originFileAttr = new OriginFileAttr();
+            OriginFileAttr originFileAttr1 = new OriginFileAttr();
+            OriginFileAttr originFileAttr2 = new OriginFileAttr();
             // 如果目录不存在则创建目录
             File fileDirectory = new File(directory + "/" + vm.getModuleName());
             if (!fileDirectory.exists() && !fileDirectory.mkdirs()) {
@@ -97,16 +98,20 @@ public class LteDtDataResource {
             Integer originFileId = 1;
             Integer flag = originFileAttrRepository.getOriginFileAttrNum();
             if(flag == null){
-                originFileAttr.setOriginFileId(originFileId);
+                originFileAttr1.setOriginFileId(originFileId);
             }else {
                 originFileId = flag + 1;
-                originFileAttr.setOriginFileId(originFileId);
+                originFileAttr1.setOriginFileId(originFileId);
             }
 
             //更新文件记录RNO_ORIGIN_FILE_ATTR
-            originFileAttr.setName(vm.getArea_type());
-            originFileAttr.setValue(vm.getBusiness_type());
-            originFileAttrRepository.save(originFileAttr);
+            originFileAttr1.setName("area_type");
+            originFileAttr1.setValue(vm.getArea_type());
+            originFileAttrRepository.save(originFileAttr1);
+            originFileAttr2.setOriginFileId(originFileId);
+            originFileAttr2.setName("business_type");
+            originFileAttr2.setValue(vm.getBusiness_type());
+            originFileAttrRepository.save(originFileAttr2);
 
             //更新文件记录RNO_ORIGIN_FILE
             originFile.setFilename(vm.getFile().getOriginalFilename());

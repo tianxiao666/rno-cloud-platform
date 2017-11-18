@@ -75,12 +75,12 @@ public class LteTrafficDataResource {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             // 以随机的 UUID 为文件名存储在本地
-            if("application/vnd.ms-excel".equals(vm.getFile().getContentType())){
-                filename = UUID.randomUUID().toString() +".csv";
-                originFile.setFileType("CSV");
-            }else if("application/x-zip-compressed".equals(vm.getFile().getContentType())){
-                filename = UUID.randomUUID().toString() +".zip";
-                originFile.setFileType("ZIP");
+            if(filename.endsWith("xml")){
+                filename = UUID.randomUUID().toString() +".xml";
+                originFile.setFileType("XML");
+            }else if(filename.endsWith("gz")){
+                filename = UUID.randomUUID().toString() +".gz";
+                originFile.setFileType("GZ");
             }
             String filepath = Paths.get(directory + "/" + vm.getModuleName(), filename).toString();
 
