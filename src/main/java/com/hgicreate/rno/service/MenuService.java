@@ -7,10 +7,12 @@ import com.hgicreate.rno.repository.MenuRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class MenuService {
 
     @Autowired
@@ -28,10 +30,15 @@ public class MenuService {
     }
 
     public void delAll() {
-        menuRepository.delAll();
+        List<App> appCode = getAllByAppCode();
+        menuRepository.deleteAllByAppId(appCode.get(0).getId());
     }
 
     public void saveData(Menu menu) {
         menuRepository.save(menu);
+    }
+
+    public List<App> getAllByAppCode(){
+        return appRepository.findAllByCode(app_code);
     }
 }

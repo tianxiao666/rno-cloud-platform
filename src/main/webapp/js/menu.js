@@ -217,7 +217,7 @@ function addHoverDom(treeId, treeNode) {
             }
         }
         var nowAll = transformJSONtoeachJSON();
-        var biggestOfNowAll = 0;
+        var biggestOfNowAll = $("#appId").text()*1000;
         for(var i=0;i<nowAll.length;i++){
             var id = nowAll[i].id;
             if(id > biggestOfNowAll){
@@ -230,7 +230,8 @@ function addHoverDom(treeId, treeNode) {
         if(treeNode.getParentNode()){
             pid = treeNode.getParentNode().id;
         }
-        zTree.addNodes(treeNode, { id:biggestOfNowAll, pid:pid,name:"增加" + (addCount++), url:"#", index_of_brother:0});
+
+        zTree.addNodes(treeNode, { id:biggestOfNowAll, pid:pid,name:"增加" + (addCount++), app_id:$("#appId").text(), url:"#", index_of_brother:0});
         var nNode = zTreeObj.getNodesByParam("id",biggestOfNowAll,null)[0];
         zTree.editName(nNode);
         return false;
@@ -281,20 +282,19 @@ var addCount = 1;
 function addTreeNode() {
     hideRMenu();
     var nowAll = transformJSONtoeachJSON();
-    var biggestOfNowAll = 0;
+    var biggestOfNowAll = $("#appId").text()*1000;
     for(var i=0;i<nowAll.length;i++){
         var id = nowAll[i].id;
         if(id > biggestOfNowAll){
             biggestOfNowAll = id;
         }
-
     }
     biggestOfNowAll += 1;
     var newNode;
     if (zTree.getSelectedNodes()[0]) {
-         newNode= { id:biggestOfNowAll, pid:zTree.getSelectedNodes()[0].id,name:"增加" + (addCount++), url:"#", index_of_brother:0};
+         newNode= { id:biggestOfNowAll, pid:zTree.getSelectedNodes()[0].id,name:"增加" + (addCount++), app_id:$("#appId").text(), url:"#", index_of_brother:0};
     }else {
-        newNode = { id:biggestOfNowAll, pid:0,name:"增加" + (addCount++), url:"#", index_of_brother:0};
+        newNode = { id:biggestOfNowAll, pid:0,name:"增加" + (addCount++),app_id:$("#appId").text(), url:"#", index_of_brother:0};
 
     }
     if (zTree.getSelectedNodes()[0]) {
@@ -408,10 +408,12 @@ function transformJSONtoeachJSON() {
 
 function addChildtoSubmitList(submitDataList, oneChildren) {
     for (var j=0; j<oneChildren.length; j++){
+        var secondLevel = oneChildren[j]["children"];
+        delete oneChildren[j]["children"];
         submitDataList.push(oneChildren[j]);
-        if(oneChildren[j]["children"]){
-            for (var k=0; k<oneChildren[j]["children"].length; k++){
-                submitDataList.push(oneChildren[j]["children"][k]);
+        if(secondLevel){
+            for (var k=0; k<secondLevel.length; k++){
+                submitDataList.push(secondLevel[k]);
             }
         }
     }
@@ -435,7 +437,6 @@ function submitMenu() {
 }
 
 
-
 var zTree, rMenu;
 $(document).ready(function(){
     $.ajax({
@@ -444,13 +445,22 @@ $(document).ready(function(){
         url: "/api/query-menus",
         success: function(data){
             zNodes = data;
-            console.log(data);
             zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, zNodes);
             zTree = $.fn.zTree.getZTreeObj("treeDemo");
             rMenu = $("#rMenu");
         },
         error: function (err) {
             console.log("读取出错");
+        }
+    });
+    $.ajax({
+        type: 'GET',
+        url: "/api/query-appId",
+        success: function(data){
+            $("#appId").text(data);
+        },
+        error: function (err) {
+            console.log("读取AppId出错");
         }
     });
 });
