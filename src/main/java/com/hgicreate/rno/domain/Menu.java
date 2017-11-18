@@ -19,6 +19,9 @@ public class Menu implements Serializable {
     private Long parentId;
     private String name;
     private String url;
+    @Column(name = "APP_ID")
+    @JsonProperty("app_id")
+    private Long appId;
     @Column(name = "INDEX_OF_BROTHER")
     @JsonProperty("index_of_brother")
     private Integer indexOfBrother;

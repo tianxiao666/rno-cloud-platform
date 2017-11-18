@@ -10,6 +10,6 @@ import java.util.List;
 @Repository
 public interface AppRepository extends JpaRepository<App, Long> {
 
-    public List<App> findAllByCode(String code);
+    List<App> findAllByCode(String code);
 
 }
