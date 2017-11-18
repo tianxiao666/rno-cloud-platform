@@ -116,6 +116,28 @@
                 </table>
             </div>
         </div>
+        <div id="reportDiv" style="display:none">
+            <!--<form id="viewReportForm">-->
+                <!--<input name="attachParams['jobId']" id="hiddenJobId" value="" type="hidden">-->
+            <!--</form>-->
+            <ul id="icons" class="ui-widget ui-helper-clearfix" style="width:100px;cursor:pointer">
+                <li class="ui-state-default ui-corner-all" title="返回列表" style="width:100px"
+                    onclick="returnToImportList();">
+                    <span class="ui-icon ui-icon-arrowreturnthick-1-w" style="width:20px"></span>返回列表
+                </li>
+            </ul>
+            <table id="reportListTab" class="display rnoHeader" cellspacing="0" style="width:100%;">
+                <thead>
+                <tr>
+                    <th>阶段</th>
+                    <th>开始时间</th>
+                    <th>结束时间</th>
+                    <th>结果</th>
+                    <th>详细信息</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
     </div>
     <div id="tabs-2" class="ui-tabs-panel ui-widget-content ui-corner-bottom" style="display: none">
         <form id="searchNcellDtForm" method="post">
@@ -129,15 +151,10 @@
                     <td style="padding-left:10px">数据类型：</td>
                     <td>
                         <select id="factory" title="" name="dataType">
-                            <option value="ALL">全部</option>
-                            <option value="DataService">全省邻区关系</option>
-                            <option value="SweepFreq">地市邻区关系</option>
+                            <option value="全部">全部</option>
+                            <option value="全省邻区关系">全省邻区关系</option>
+                            <option value="地市邻区关系">地市邻区关系</option>
                         </select>
-                    </td>
-                    <td style="padding-left:10px">测试时间 从:</td>
-                    <td>
-                        <input id="begUploadDate2" name="begMetaDate" type="text" title=""> 至：
-                        <input id="endUploadDate2" name="endMetaDate" type="text" title="">
                     </td>
                     <td style="padding-left:10px">
                         <input id="queryDataTab" value="查询" type="submit" class="">
@@ -151,7 +168,6 @@
                 <thead>
                 <tr>
                     <th>地市</th>
-                    <th>测量时间</th>
                     <th>数据类型</th>
                     <th>文件名</th>
                     <th>测试数据量</th>

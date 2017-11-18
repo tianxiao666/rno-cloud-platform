@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LteNcellImportDtDTO {
+public class LteNcellDescDTO {
     private String areaName;
     private String dataType;
-    private String fileName;
+    private String filename;
     private String recordCount;
-    private String metaTime;
-    private String createTime;
+    private String createdDate;
+    private String createdUser;
 }

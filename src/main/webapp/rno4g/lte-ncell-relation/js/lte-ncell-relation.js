@@ -24,7 +24,7 @@ $(function () {
 
     $("#queryImportDT").click(function () {
         $(".loading").show();
-    })
+    });
 
     //验证邻区关系查询条件
     $("#queryBtn").click(function () {
@@ -79,7 +79,7 @@ $(function () {
         var cityId = $("#cityId").val();
         $("#areaId").val(cityId);
         var fileType = path.substring(path.lastIndexOf("."), path.length).toLowerCase();
-        if (fileType !== '.csv' && fileType != '.zip') {
+        if (fileType !== '.csv' && fileType !== '.zip') {
             showInfoInAndOut("info", "请上传csv或者zip格式的数据文件");
             return false;
         }
@@ -102,8 +102,8 @@ $(function () {
             var percentVal = '100%';
             bar.width(percentVal);
             percent.html(percentVal);
-            $("#info").css("background","green");
-            showInfoInAndOut("info","文件导入成功！");
+            $("#info").css("background", "green");
+            showInfoInAndOut("info", "文件导入成功！");
             //AJAX 提交邻区导入记录查询条件表单
             $("#importQuery").submit();
         }
@@ -118,7 +118,7 @@ $(function () {
 //显示邻区关系查询结果
 function showNcellRelationResult(data) {
     $(".loading").css("display", "none");
-    if (data == '') {
+    if (data === '') {
         showInfoInAndOut('info', '没有符合条件的邻区关系');
     }
 
@@ -158,7 +158,7 @@ function showNcellRelationResult(data) {
 //显示邻区关系导入记录查询结果
 function showNcellImportResult(data) {
     $(".loading").css("display", "none");
-    if (data == '') {
+    if (data === '') {
         showInfoInAndOut('info', '没有符合条件的邻区关系导入记录');
     }
 
@@ -176,45 +176,45 @@ function showNcellImportResult(data) {
             {"data": null}
         ],
         "columnDefs": [{
-            "render": function(data, type, row) {
+            "render": function (data, type, row) {
                 var d = new Date(parseInt(row['uploadTime'])).Format("yyyy-MM-dd hh:mm:ss");
                 return d;
             },
             "targets": 1,
             "data": null
-        },{
-            "render": function(data, type, row) {
-                if(row['startTime']==""||row['startTime']==null){
+        }, {
+            "render": function (data, type, row) {
+                if (row['startTime'] == "" || row['startTime'] == null) {
                     return "---";
-                }else{
+                } else {
                     return new Date(parseInt(row['startTime'])).Format("yyyy-MM-dd hh:mm:ss");
                 }
             },
             "targets": 4,
             "data": null
-        },{
-            "render": function(data, type, row) {
-                if(row['completeTime']==""||row['completeTime']==null){
+        }, {
+            "render": function (data, type, row) {
+                if (row['completeTime'] == "" || row['completeTime'] == null) {
                     return "---";
-                }else{
+                } else {
                     return new Date(parseInt(row['completeTime'])).Format("yyyy-MM-dd hh:mm:ss");
                 }
             },
             "targets": 5,
             "data": null
-        },{
+        }, {
             "render": function (data, type, row) {
                 switch (row['status']) {
                     case "部分成功":
-                        return "<a style='color: red' onclick='showImportDetail()'>" + row['status'] + "</a>";
+                        return "<a style='color: red' onclick=\"showImportDetail('" + row['id'] + "')\">" + row['status'] + "</a>";
                     case "全部失败":
-                        return "<a style='color: red' onclick='showImportDetail()'>" + row['status'] + "</a>";
+                        return "<a style='color: red' onclick=\"showImportDetail('" + row['id'] + "')\">" + row['status'] + "</a>";
                     case "全部成功":
-                        return "<a onclick='showImportDetail()'>" + row['status'] + "</a>";
+                        return "<a onclick=\"showImportDetail('" + row['id'] + "')\">" + row['status'] + "</a>";
                     case "正在处理":
-                        return "<a onclick='showImportDetail()'>" + row['status'] + "</a>";
+                        return "<a onclick=\"showImportDetail('" + row['id'] + "')\">" + row['status'] + "</a>";
                     case "等待处理":
-                        return "<a onclick='showImportDetail()'>" + row['status'] + "</a>";
+                        return "<a onclick=\"showImportDetail('" + row['id'] + "')\">" + row['status'] + "</a>";
                 }
             },
             "targets": -1,
@@ -243,11 +243,10 @@ function showNcellImportDtResult(data) {
         "data": data,
         "columns": [
             {"data": "areaName"},
-            {"data": "metaTime"},
             {"data": "dataType"},
-            {"data": "fileName"},
+            {"data": "filename"},
             {"data": "recordCount"},
-            {"data": "createTime"}
+            {"data": "createdDate"}
         ],
         "lengthChange": false,
         "ordering": false,
@@ -269,7 +268,7 @@ function showInfoInAndOut(div, info) {
 //删除邻区关系
 function deleteCell(id) {
     var r = confirm("删除该邻区关系？");
-    if(r==true){
+    if (r == true) {
         $.ajax({
             url: '/api/lte-ncell-relation/delete-by-id',
             dataType: 'text',
@@ -287,26 +286,48 @@ function deleteCell(id) {
 }
 
 //显示导入记录的状态的详情
-function showImportDetail() {
-    // $("#queryImportDetailTab").css("line-height", "12px")
-    //     .DataTable({
-    //         "ajax": "data/lte-dt-data-record-detail.json",
-    //         "columns": [
-    //             {"data": "STAGE"},
-    //             {"data": "BEG_TIME"},
-    //             {"data": "END_TIME"},
-    //             {"data": "STATE"},
-    //             {"data": "ATT_MSG"}
-    //         ],
-    //         "lengthChange": false,
-    //         "ordering": false,
-    //         "searching": false,
-    //         "language": {
-    //             url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
-    //         }
-    //     });
-    // $("#reportDiv").css("display", "block");
-    // $("#listInfoDiv").css("display", "none");
+function showImportDetail(id) {
+    $.ajax({
+        url: '/api/lte-ncell-relation/query-report',
+        dataType: 'text',
+        data: {id: id},
+        success:function(data){
+            $("#reportListTab").css("line-height", "12px");
+            $("#reportDiv").css("display", "block");
+            $("#listInfoDiv").css("display", "none");
+            // if(data.length <=2){
+            //     return;
+            // }
+            $("#reportListTab").DataTable({
+                    "data": JSON.parse(data),
+                    "columns": [
+                        {"data": "stage"},
+                        {"data": "startTime"},
+                        {"data": "completeTime"},
+                        {"data": "status"},
+                        {"data": "message"}
+                    ],
+                    "lengthChange": false,
+                    "ordering": false,
+                    "searching": false,
+                    "destroy": true,
+                    "language": {
+                        url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
+                    }
+                });
+        }, error: function (err) {
+            console.log(err);
+            showInfoInAndOut("info", "后台程序错误！");
+        }
+    });
+}
+
+/**
+ * 从报告的详情返回列表页面
+ */
+function returnToImportList(){
+    $("#reportDiv").css("display","none");
+    $("#listInfoDiv").css("display","block");
 }
 
 /**
@@ -320,21 +341,20 @@ function showImportDetail() {
  * @param fmt
  * @returns
  */
-Date.prototype.Format = function(fmt)
-{
+Date.prototype.Format = function (fmt) {
     var o = {
-        "M+" : this.getMonth()+1,                 //月份
-        "d+" : this.getDate(),                    //日
-        "h+" : this.getHours(),                   //小时
-        "m+" : this.getMinutes(),                 //分
-        "s+" : this.getSeconds(),                 //秒
-        "q+" : Math.floor((this.getMonth()+3)/3), //季度
-        "S"  : this.getMilliseconds()             //毫秒
+        "M+": this.getMonth() + 1,                 //月份
+        "d+": this.getDate(),                    //日
+        "h+": this.getHours(),                   //小时
+        "m+": this.getMinutes(),                 //分
+        "s+": this.getSeconds(),                 //秒
+        "q+": Math.floor((this.getMonth() + 3) / 3), //季度
+        "S": this.getMilliseconds()             //毫秒
     };
-    if(/(y+)/.test(fmt))
-        fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
-    for(var k in o)
-        if(new RegExp("("+ k +")").test(fmt))
-            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+    if (/(y+)/.test(fmt))
+        fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    for (var k in o)
+        if (new RegExp("(" + k + ")").test(fmt))
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
     return fmt;
 }

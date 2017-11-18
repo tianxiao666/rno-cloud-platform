@@ -3,14 +3,17 @@ package com.hgicreate.rno.web.rest;
 import com.hgicreate.rno.domain.Area;
 import com.hgicreate.rno.domain.DataJob;
 import com.hgicreate.rno.domain.OriginFile;
+import com.hgicreate.rno.repository.DataJobReportRepository;
 import com.hgicreate.rno.repository.DataJobRepository;
 import com.hgicreate.rno.repository.NcellRepository;
 import com.hgicreate.rno.repository.OriginFileRepository;
 import com.hgicreate.rno.security.SecurityUtils;
 import com.hgicreate.rno.service.LteNcellRelationService;
-import com.hgicreate.rno.service.dto.LteNcellImportDtDTO;
+import com.hgicreate.rno.service.dto.DataJobReportDTO;
+import com.hgicreate.rno.service.dto.LteNcellDescDTO;
 import com.hgicreate.rno.service.dto.LteNcellImportFileDTO;
 import com.hgicreate.rno.service.dto.LteNcellRelationDTO;
+import com.hgicreate.rno.service.mapper.DataJobReportMapper;
 import com.hgicreate.rno.web.rest.vm.FileUploadVM;
 import com.hgicreate.rno.web.rest.vm.LteNcellImportDtQueryVM;
 import com.hgicreate.rno.web.rest.vm.LteNcellImportQueryVM;
@@ -29,6 +32,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -41,14 +45,15 @@ public class LteNcellRelationResource {
     private final LteNcellRelationService lteNcellRelationService;
     private final NcellRepository ncellRepository;
     private final OriginFileRepository originFileRepository;
-
     private final DataJobRepository dataJobRepository;
+    private final DataJobReportRepository dataJobReportRepository;
 
-    public LteNcellRelationResource(NcellRepository ncellRepository, LteNcellRelationService lteNcellRelationService, OriginFileRepository originFileRepository, DataJobRepository dataJobRepository) {
+    public LteNcellRelationResource(NcellRepository ncellRepository, LteNcellRelationService lteNcellRelationService, OriginFileRepository originFileRepository, DataJobRepository dataJobRepository, DataJobReportRepository dataJobReportRepository) {
         this.ncellRepository = ncellRepository;
         this.lteNcellRelationService = lteNcellRelationService;
         this.originFileRepository = originFileRepository;
         this.dataJobRepository = dataJobRepository;
+        this.dataJobReportRepository = dataJobReportRepository;
     }
 
     @PostMapping("/ncell-query")
@@ -65,8 +70,8 @@ public class LteNcellRelationResource {
     }
 
     @PostMapping("/ncell-import-data-query")
-    public List<LteNcellImportDtDTO> ncellDataQuery(LteNcellImportDtQueryVM vm){
-        log.debug("查询 邻区 文件导入数据。");
+    public List<LteNcellDescDTO> ncellDataQuery(LteNcellImportDtQueryVM vm){
+        log.debug("查询 邻区 数据记录。");
         log.debug("视图模型: " + vm);
         return lteNcellRelationService.queryImportDt(vm);
     }
@@ -75,6 +80,14 @@ public class LteNcellRelationResource {
     public void deleteByCellId(@RequestParam long id){
         log.debug("待删除邻区id为={}", id);
         ncellRepository.delete(id);
+    }
+
+    @GetMapping("/query-report")
+    public List<DataJobReportDTO> queryReport(String id){
+        log.debug("查询任务报告的任务id：{}",id);
+        return dataJobReportRepository.findByDataJob_Id(Long.parseLong(id))
+                .stream().map(DataJobReportMapper.INSTANCE::dataJobReportToDataJobReportDTO)
+                .collect(Collectors.toList());
     }
 
     /**

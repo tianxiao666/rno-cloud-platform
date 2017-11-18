@@ -2,11 +2,14 @@ package com.hgicreate.rno.service;
 
 import com.hgicreate.rno.domain.Area;
 import com.hgicreate.rno.domain.DataJob;
+import com.hgicreate.rno.domain.NcellDesc;
 import com.hgicreate.rno.mapper.LteNcellRelationQueryMapper;
 import com.hgicreate.rno.repository.DataJobRepository;
-import com.hgicreate.rno.service.dto.LteNcellImportDtDTO;
+import com.hgicreate.rno.repository.LteNcellDescRepository;
+import com.hgicreate.rno.service.dto.LteNcellDescDTO;
 import com.hgicreate.rno.service.dto.LteNcellImportFileDTO;
 import com.hgicreate.rno.service.dto.LteNcellRelationDTO;
+import com.hgicreate.rno.service.mapper.LteNcellDescMapper;
 import com.hgicreate.rno.service.mapper.LteNcellImportFileMapper;
 import com.hgicreate.rno.service.mapper.LteNcellRelationMapper;
 import com.hgicreate.rno.web.rest.vm.LteNcellImportDtQueryVM;
@@ -25,12 +28,13 @@ import java.util.stream.Collectors;
 public class LteNcellRelationService {
 
     private final LteNcellRelationQueryMapper lteNcellRelationQueryMapper;
-
     private final DataJobRepository dataJobRepository;
+    private final LteNcellDescRepository lteNcellDescRepository;
 
-    public LteNcellRelationService(LteNcellRelationQueryMapper lteNcellRelationQueryMapper,  DataJobRepository dataJobRepository) {
+    public LteNcellRelationService(LteNcellRelationQueryMapper lteNcellRelationQueryMapper, DataJobRepository dataJobRepository, LteNcellDescRepository lteNcellDescRepository) {
         this.lteNcellRelationQueryMapper = lteNcellRelationQueryMapper;
         this.dataJobRepository = dataJobRepository;
+        this.lteNcellDescRepository = lteNcellDescRepository;
     }
 
     public List<LteNcellRelationDTO> queryNcellRelationDTOs(LteNcellRelationQueryVM vm) {
@@ -60,10 +64,21 @@ public class LteNcellRelationService {
                    .collect(Collectors.toList());
     }
 
-    public List<LteNcellImportDtDTO> queryImportDt(LteNcellImportDtQueryVM vm){
-        List<LteNcellImportDtDTO> dtoList = new ArrayList<>();
-        dtoList.add(new LteNcellImportDtDTO("广州市","地市邻区关系",
-                "棠下小区邻区数据.csv","100","2015-10-05 11:35:49","2015-10-9 11:35:49"));
+    public List<LteNcellDescDTO> queryImportDt(LteNcellImportDtQueryVM vm){
+        Area area = new Area();
+        area.setId(Long.parseLong(vm.getCityId()));
+        List<LteNcellDescDTO> dtoList;
+        if(vm.getDataType().equals("全部")){
+            dtoList = lteNcellDescRepository.findTop1000ByAreaOrderByCreatedDateDesc(area)
+                                            .stream()
+                                            .map(LteNcellDescMapper.INSTANCE::ncellDescToNcellDescDTO)
+                                            .collect(Collectors.toList());
+        }else{
+            dtoList = lteNcellDescRepository.findTop1000ByAreaAndAndDataTypeOrderByCreatedDateDesc(area,vm.getDataType())
+                                            .stream()
+                                            .map(LteNcellDescMapper.INSTANCE::ncellDescToNcellDescDTO)
+                                            .collect(Collectors.toList());
+        }
         return dtoList;
     }
 }
