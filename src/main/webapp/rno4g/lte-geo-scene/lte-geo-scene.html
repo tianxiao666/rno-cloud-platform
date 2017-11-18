@@ -7,57 +7,8 @@
     <link rel="stylesheet" href="css/lte-geo-scene.css">
 
     <script src="/lib/jquery/1.8.2/jquery.js"></script>
-    <script>
-
-    </script>
     <script src="js/lte-geo-scene.js"></script>
     <script src="/lib/rno/selftools.js"></script>
-
-
-    <style>
-        .paramTable {
-            margin: auto;
-            padding-left: 5px;
-            width: 100%
-        }
-
-        .paramTable th {
-            padding: 0 10px;
-            background: url('images/cmp-bg2.gif') repeat-x;
-            color: #444;
-            white-space: nowrap;
-            border: #CCC 1px solid;
-            line-height: 30px;
-            font-size: 14px;
-        }
-
-        .paramTable tr td {
-            border: 1px solid #CCC;
-            padding: 4px 4px 4px 6px;
-            color: #000;
-            line-height: 21px;
-            vertical-align: middle;
-            background: WhiteSmoke;
-        }
-
-        .paramTable input {
-            width: 100%;
-        }
-
-        .paramTable div {
-            display: inline-block;
-            height: 21px;
-            width: 100%;
-            text-align: center;
-        }
-
-        .paramTable span {
-            text-align: center;
-            font-weight: bold;
-            color: red;
-            display: none;
-        }
-    </style>
 </head>
 <body>
 <div class="loading_cover" id="loadingDataDiv" style="display: none;">
@@ -75,238 +26,225 @@
         <div id="optionsDiv">
             <table class="options" cellspacing="0" cellpadding="0" border="0">
                 <tbody>
-                <tr>
-                    <td><input value="刷新" style="width: 120px;" id="flashtable" name="flashtable"
-                               title="刷新页面的内容，未提交的修改将消失。" type="button"></td>
-
-                    <td><input value="删除" style="width: 120px;" id="deleteScene" name="deleteScene" title="删除当前的场景信息"
-                               type="button"></td>
-                    <td><input value="新增" style="width: 120px;" id="addScene" name="addScene" title="增加新场景"
-                               type="button"></td>
-                    <td><input value="提交" style="width: 120px;" id="submitalter" name="submitalter"
-                               title="修改场景信息或增加新场景后提交更改" type="button"></td>
-                </tr>
+                    <tr>
+                        <td><input value="刷新" style="width: 120px;" id="flashtable" name="flashtable"
+                                   type="button" title="刷新页面的内容，未提交的修改将消失。"></td>
+                        <td><input value="删除" style="width: 120px;" id="deleteScene" name="deleteScene"
+                                   type="button" title="删除当前的场景信息"></td>
+                        <td><input value="新增" style="width: 120px;" id="addScene" name="addScene"
+                                   type="button" title="增加新场景"></td>
+                        <td><input value="提交" style="width: 120px;" id="submitalter" name="submitalter"
+                                   type="button" title="修改场景信息或增加新场景后提交更改"></td>
+                    </tr>
                 </tbody>
             </table>
         </div>
+
         <div style="padding-top: 10px">
             <br>
             <table id="sceneSelect">
                 <tbody>
-                <tr id="sceneNameTr">
-
-                    <td style="margin: 0; text-align: center">场景名称：</td>
-                    <td id="sceneNameTd" style="text-align: left"><label for="sceneNameList"></label><select
-                            name="cond[sceneNameList]" id="sceneNameList">
-                        <option value="21" selected="selected">室外</option>
-                        <option value="41">商业区</option>
-                        <option value="42">居民区</option>
-                        <option value="164">室内</option>
-                        <option value="61">测试场景1</option>
-                    </select></td>
-                    <td><span id="sceneNameTip"></span></td>
-                </tr>
+                    <tr id="sceneNameTr">
+                        <td style="margin: 0; text-align: center">场景名称：</td>
+                            <td id="sceneNameTd" style="text-align: left">
+                                <label for="sceneNameList"></label>
+                                <select name="cond[sceneNameList]" id="sceneNameList">
+                                    <option value="21" selected="selected">室外</option>
+                                    <option value="41">商业区</option>
+                                    <option value="42">居民区</option>
+                                    <option value="164">室内</option>
+                                    <option value="61">测试场景1</option>
+                                </select>
+                            </td>
+                        <td>
+                            <span id="sceneNameTip"></span>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <br>
         </div>
     </div>
-    <div style="width: 100%;" align="center">
 
+    <div style="width: 100%;" align="center">
         <div style="width: 600px;height: 100%;padding-top: 10px">
             <table class="paramTable" id="scenceInfoTable">
-                <caption><span style="color: red;font-weight: bold;">室外</span> 的场景信息<br></caption>
+                <caption>
+                    <span style="color: red;font-weight: bold;">室外</span> 的场景信息<br>
+                </caption>
                 <thead>
-                <tr>
-                    <th style="width: 360px">参数名</th>
-                    <th style="width: 240px">参数值(点击修改)</th>
-
-                </tr>
+                    <tr>
+                        <th style="width: 360px">参数名</th>
+                        <th style="width: 240px">参数值(点击修改)</th>
+                    </tr>
                 </thead>
                 <tfoot></tfoot>
                 <tbody>
-                <tr>
-                    <td>异系统小区测量启动门限A2</td>
-                    <td id="interrathoa2thdrsrp_td">
-                        <div id="interrathoa2thdrsrp" class="editbox" style="width: 100%;" onclick="editThis(this)">
-                            123
-                        </div>
-                        <span id="interrathoa2thdrsrp_old" class="oldDataTip" style="display: none;">123</span>
-                        <span id="interrathoa2thdrsrp_err" class="errTip"></span>
-                    </td>
+                    <tr>
+                        <td>异系统小区测量启动门限A2</td>
+                        <td id="interrathoa2thdrsrp_td">
+                            <div id="interrathoa2thdrsrp" class="editbox" style="width: 100%;" onclick="editThis(this)">
+                                123
+                            </div>
+                            <span id="interrathoa2thdrsrp_old" class="oldDataTip" style="display: none;">123</span>
+                            <span id="interrathoa2thdrsrp_err" class="errTip"></span>
+                        </td>
 
-                </tr>
-                <tr>
-                    <td>异系统小区测量停止门限A1</td>
-                    <td id="interrathoa1thdrsrp_td">
-                        <div id="interrathoa1thdrsrp" class="editbox" style="width: 100%;" onclick="editThis(this)">
-                            -115
-                        </div>
-                        <span id="interrathoa1thdrsrp_old" class="oldDataTip" style="display: none;">-115</span>
-                        <span id="interrathoa1thdrsrp_err" class="errTip"></span>
-                    </td>
-
-                </tr>
-                <tr>
-                    <td>B1事件迟滞值</td>
-                    <td id="interrathoutranb1hyst_td">
-                        <div id="interrathoutranb1hyst" class="editbox" style="width: 100%;" onclick="editThis(this)">
-                            2
-                        </div>
-                        <span id="interrathoutranb1hyst_old" class="oldDataTip" style="display: none;">2</span>
-                        <span id="interrathoutranb1hyst_err" class="errTip"></span>
-                    </td>
-
-                </tr>
-                <tr>
-                    <td>B1事件异系统判决门限</td>
-                    <td id="interrathoutranb1thdrscp_td">
-                        <div id="interrathoutranb1thdrscp" class="editbox" style="width: 100%;"
-                             onclick="editThis(this)">-92
-                        </div>
-                        <span id="interrathoutranb1thdrscp_old" class="oldDataTip" style="display: none;">-92</span>
-                        <span id="interrathoutranb1thdrscp_err" class="errTip"></span>
-                    </td>
-
-                </tr>
-                <tr>
-                    <td>A1\A2事件触发时间</td>
-                    <td id="interrathoa1a2timetotrig_td">
-                        <div id="interrathoa1a2timetotrig" class="editbox" style="width: 100%;"
-                             onclick="editThis(this)">640
-                        </div>
-                        <span id="interrathoa1a2timetotrig_old" class="oldDataTip" style="display: none;">640</span>
-                        <span id="interrathoa1a2timetotrig_err" class="errTip"></span>
-                    </td>
-
-                </tr>
-                <tr>
-                    <td>A1、A2事件迟滞值</td>
-                    <td id="interrathoa1a2hyst_td">
-                        <div id="interrathoa1a2hyst" class="editbox" style="width: 100%;" onclick="editThis(this)">2
-                        </div>
-                        <span id="interrathoa1a2hyst_old" class="oldDataTip" style="display: none;">2</span>
-                        <span id="interrathoa1a2hyst_err" class="errTip"></span>
-                    </td>
-
-                </tr>
-                <tr>
-                    <td>4G往3G盲重定向</td>
-                    <td id="blindhoa1a2thdrsrp_td">
-                        <div id="blindhoa1a2thdrsrp" class="editbox" style="width: 100%;" onclick="editThis(this)">
-                            -122
-                        </div>
-                        <span id="blindhoa1a2thdrsrp_old" class="oldDataTip" style="display: none;">-122</span>
-                        <span id="blindhoa1a2thdrsrp_err" class="errTip"></span>
-                    </td>
-
-                </tr>
-                <tr>
-                    <td>事件触发持续时间</td>
-                    <td id="interfreqhoa1a2timetotrig_td">
-                        <div id="interfreqhoa1a2timetotrig" class="editbox" style="width: 100%;"
-                             onclick="editThis(this)">320
-                        </div>
-                        <span id="interfreqhoa1a2timetotrig_old" class="oldDataTip" style="display: none;">320</span>
-                        <span id="interfreqhoa1a2timetotrig_err" class="errTip"></span>
-                    </td>
-
-                </tr>
-                <tr>
-                    <td>异频小区测量停止门限A1</td>
-                    <td id="a3interfreqhoa1thdrsrp_td">
-                        <div id="a3interfreqhoa1thdrsrp" class="editbox" style="width: 100%;" onclick="editThis(this)">
-                            -89
-                        </div>
-                        <span id="a3interfreqhoa1thdrsrp_old" class="oldDataTip" style="display: none;">-89</span>
-                        <span id="a3interfreqhoa1thdrsrp_err" class="errTip"></span>
-                    </td>
-
-                </tr>
-                <tr>
-                    <td>异频小区测量启动门限 A2</td>
-                    <td id="a3interfreqhoa2thdrsrp_td">
-                        <div id="a3interfreqhoa2thdrsrp" class="editbox" style="width: 100%;" onclick="editThis(this)">
-                            -91
-                        </div>
-                        <span id="a3interfreqhoa2thdrsrp_old" class="oldDataTip" style="display: none;">-91</span>
-                        <span id="a3interfreqhoa2thdrsrp_err" class="errTip"></span>
-                    </td>
-
-                </tr>
-                <tr>
-                    <td>异频A3事件偏移量</td>
-                    <td id="interfreqhoa3offset_td">
-                        <div id="interfreqhoa3offset" class="editbox" style="width: 100%;" onclick="editThis(this)">0
-                        </div>
-                        <span id="interfreqhoa3offset_old" class="oldDataTip" style="display: none;">0</span>
-                        <span id="interfreqhoa3offset_err" class="errTip"></span>
-                    </td>
-
-                </tr>
-                <tr>
-                    <td>A1\A2事件的迟滞值</td>
-                    <td id="interfreqhoa1a2hyst_td">
-                        <div id="interfreqhoa1a2hyst" class="editbox" style="width: 100%;" onclick="editThis(this)">2
-                        </div>
-                        <span id="interfreqhoa1a2hyst_old" class="oldDataTip" style="display: none;">2</span>
-                        <span id="interfreqhoa1a2hyst_err" class="errTip"></span>
-                    </td>
-
-                </tr>
-                <tr>
-                    <td>最低接入电平</td>
-                    <td id="qrxlevmin_td">
-                        <div id="qrxlevmin" class="editbox" style="width: 100%;" onclick="editThis(this)">-122</div>
-                        <span id="qrxlevmin_old" class="oldDataTip" style="display: none;">-122</span>
-                        <span id="qrxlevmin_err" class="errTip"></span>
-                    </td>
-
-                </tr>
-                <tr>
-                    <td>频异系统启动测门限</td>
-                    <td id="snonintrasearch_td">
-                        <div id="snonintrasearch" class="editbox" style="width: 100%;" onclick="editThis(this)">-92
-                        </div>
-                        <span id="snonintrasearch_old" class="oldDataTip" style="display: none;">-92</span>
-                        <span id="snonintrasearch_err" class="errTip"></span>
-                    </td>
-
-                </tr>
-                <tr>
-                    <td>判决门限</td>
-                    <td id="thrshservlow_td">
-                        <div id="thrshservlow" class="editbox" style="width: 100%;" onclick="editThis(this)">2</div>
-                        <span id="thrshservlow_old" class="oldDataTip" style="display: none;">2</span>
-                        <span id="thrshservlow_err" class="errTip"></span>
-                    </td>
-
-                </tr>
-                <tr>
-                    <td>异系统重选迟滞时间</td>
-                    <td id="treseleutran_td">
-                        <div id="treseleutran" class="editbox" style="width: 100%;" onclick="editThis(this)">2</div>
-                        <span id="treseleutran_old" class="oldDataTip" style="display: none;">2</span>
-                        <span id="treseleutran_err" class="errTip"></span>
-                    </td>
-
-                </tr>
-                <tr>
-                    <td>小区重选优先级</td>
-                    <td id="cellreselpriority_td">
-                        <div id="cellreselpriority" class="editbox" style="width: 100%;" onclick="editThis(this)">4
-                        </div>
-                        <span id="cellreselpriority_old" class="oldDataTip" style="display: none;">4</span>
-                        <span id="cellreselpriority_err" class="errTip"></span>
-                    </td>
-
-                </tr>
+                    </tr>
+                    <tr>
+                        <td>异系统小区测量停止门限A1</td>
+                        <td id="interrathoa1thdrsrp_td">
+                            <div id="interrathoa1thdrsrp" class="editbox" style="width: 100%;" onclick="editThis(this)">
+                                -115
+                            </div>
+                            <span id="interrathoa1thdrsrp_old" class="oldDataTip" style="display: none;">-115</span>
+                            <span id="interrathoa1thdrsrp_err" class="errTip"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>B1事件迟滞值</td>
+                        <td id="interrathoutranb1hyst_td">
+                            <div id="interrathoutranb1hyst" class="editbox" style="width: 100%;" onclick="editThis(this)">
+                                2
+                            </div>
+                            <span id="interrathoutranb1hyst_old" class="oldDataTip" style="display: none;">2</span>
+                            <span id="interrathoutranb1hyst_err" class="errTip"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>B1事件异系统判决门限</td>
+                        <td id="interrathoutranb1thdrscp_td">
+                            <div id="interrathoutranb1thdrscp" class="editbox" style="width: 100%;"
+                                 onclick="editThis(this)">-92
+                            </div>
+                            <span id="interrathoutranb1thdrscp_old" class="oldDataTip" style="display: none;">-92</span>
+                            <span id="interrathoutranb1thdrscp_err" class="errTip"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>A1\A2事件触发时间</td>
+                        <td id="interrathoa1a2timetotrig_td">
+                            <div id="interrathoa1a2timetotrig" class="editbox" style="width: 100%;"
+                                 onclick="editThis(this)">640
+                            </div>
+                            <span id="interrathoa1a2timetotrig_old" class="oldDataTip" style="display: none;">640</span>
+                            <span id="interrathoa1a2timetotrig_err" class="errTip"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>A1、A2事件迟滞值</td>
+                        <td id="interrathoa1a2hyst_td">
+                            <div id="interrathoa1a2hyst" class="editbox" style="width: 100%;" onclick="editThis(this)">2
+                            </div>
+                            <span id="interrathoa1a2hyst_old" class="oldDataTip" style="display: none;">2</span>
+                            <span id="interrathoa1a2hyst_err" class="errTip"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>4G往3G盲重定向</td>
+                        <td id="blindhoa1a2thdrsrp_td">
+                            <div id="blindhoa1a2thdrsrp" class="editbox" style="width: 100%;" onclick="editThis(this)">
+                                -122
+                            </div>
+                            <span id="blindhoa1a2thdrsrp_old" class="oldDataTip" style="display: none;">-122</span>
+                            <span id="blindhoa1a2thdrsrp_err" class="errTip"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>事件触发持续时间</td>
+                        <td id="interfreqhoa1a2timetotrig_td">
+                            <div id="interfreqhoa1a2timetotrig" class="editbox" style="width: 100%;"
+                                 onclick="editThis(this)">320
+                            </div>
+                            <span id="interfreqhoa1a2timetotrig_old" class="oldDataTip" style="display: none;">320</span>
+                            <span id="interfreqhoa1a2timetotrig_err" class="errTip"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>异频小区测量停止门限A1</td>
+                        <td id="a3interfreqhoa1thdrsrp_td">
+                            <div id="a3interfreqhoa1thdrsrp" class="editbox" style="width: 100%;" onclick="editThis(this)">
+                                -89
+                            </div>
+                            <span id="a3interfreqhoa1thdrsrp_old" class="oldDataTip" style="display: none;">-89</span>
+                            <span id="a3interfreqhoa1thdrsrp_err" class="errTip"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>异频小区测量启动门限 A2</td>
+                        <td id="a3interfreqhoa2thdrsrp_td">
+                            <div id="a3interfreqhoa2thdrsrp" class="editbox" style="width: 100%;" onclick="editThis(this)">
+                                -91
+                            </div>
+                            <span id="a3interfreqhoa2thdrsrp_old" class="oldDataTip" style="display: none;">-91</span>
+                            <span id="a3interfreqhoa2thdrsrp_err" class="errTip"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>异频A3事件偏移量</td>
+                        <td id="interfreqhoa3offset_td">
+                            <div id="interfreqhoa3offset" class="editbox" style="width: 100%;" onclick="editThis(this)">0
+                            </div>
+                            <span id="interfreqhoa3offset_old" class="oldDataTip" style="display: none;">0</span>
+                            <span id="interfreqhoa3offset_err" class="errTip"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>A1\A2事件的迟滞值</td>
+                        <td id="interfreqhoa1a2hyst_td">
+                            <div id="interfreqhoa1a2hyst" class="editbox" style="width: 100%;" onclick="editThis(this)">2
+                            </div>
+                            <span id="interfreqhoa1a2hyst_old" class="oldDataTip" style="display: none;">2</span>
+                            <span id="interfreqhoa1a2hyst_err" class="errTip"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>最低接入电平</td>
+                        <td id="qrxlevmin_td">
+                            <div id="qrxlevmin" class="editbox" style="width: 100%;" onclick="editThis(this)">-122</div>
+                            <span id="qrxlevmin_old" class="oldDataTip" style="display: none;">-122</span>
+                            <span id="qrxlevmin_err" class="errTip"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>频异系统启动测门限</td>
+                        <td id="snonintrasearch_td">
+                            <div id="snonintrasearch" class="editbox" style="width: 100%;" onclick="editThis(this)">-92
+                            </div>
+                            <span id="snonintrasearch_old" class="oldDataTip" style="display: none;">-92</span>
+                            <span id="snonintrasearch_err" class="errTip"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>判决门限</td>
+                        <td id="thrshservlow_td">
+                            <div id="thrshservlow" class="editbox" style="width: 100%;" onclick="editThis(this)">2</div>
+                            <span id="thrshservlow_old" class="oldDataTip" style="display: none;">2</span>
+                            <span id="thrshservlow_err" class="errTip"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>异系统重选迟滞时间</td>
+                        <td id="treseleutran_td">
+                            <div id="treseleutran" class="editbox" style="width: 100%;" onclick="editThis(this)">2</div>
+                            <span id="treseleutran_old" class="oldDataTip" style="display: none;">2</span>
+                            <span id="treseleutran_err" class="errTip"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>小区重选优先级</td>
+                        <td id="cellreselpriority_td">
+                            <div id="cellreselpriority" class="editbox" style="width: 100%;" onclick="editThis(this)">4
+                            </div>
+                            <span id="cellreselpriority_old" class="oldDataTip" style="display: none;">4</span>
+                            <span id="cellreselpriority_err" class="errTip"></span>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <br><br><br><br><br>
         </div>
     </div>
 </div>
-
 </body>
 </html>

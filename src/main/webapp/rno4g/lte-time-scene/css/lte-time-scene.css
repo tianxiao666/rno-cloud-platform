@@ -92,7 +92,7 @@ input, select, textarea {
     font-stretch: normal;
     font-size: 12px;
     line-height: 1.5;
-    font-family: Tahoma, "Microsoft Yahei", Simsun;
+    font-family: Tahoma, "Microsoft Yahei", Simsun, serif;
     outline: none;
 }
 
@@ -161,7 +161,7 @@ input, select, textarea {
     font-stretch: normal;
     font-size: 12px;
     line-height: 1.5;
-    font-family: Tahoma, "Microsoft Yahei", Simsun;
+    font-family: Tahoma, "Microsoft Yahei", Simsun, serif;
     outline: none;
 }
 
@@ -298,6 +298,49 @@ body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, input, button, textar
     line-height: 21px;
     vertical-align: middle;
     background: whitesmoke;
+}
+
+.paramTable input {
+    width: 100%;
+}
+
+.paramTable div {
+    display: inline-block;
+    height: 21px;
+    width: 100%;
+    text-align: center;
+}
+
+.paramTable span {
+    text-align: center;
+    font-weight: bold;
+    color: red;
+    display: none;
+}
+
+.paramTable {
+    margin: auto;
+    padding-left: 5px;
+    width: 100%
+}
+
+.paramTable th {
+    padding: 0 10px;
+    background: url('/rno4g/lte-time-scene/images/cmp-bg2.gif') repeat-x;
+    color: #444;
+    white-space: nowrap;
+    border: #CCC 1px solid;
+    line-height: 30px;
+    font-size: 14px;
+}
+
+.paramTable tr td {
+    border: 1px solid #CCC;
+    padding: 4px 4px 4px 6px;
+    color: #000;
+    line-height: 21px;
+    vertical-align: middle;
+    background: WhiteSmoke;
 }
 
 .paramTable input {

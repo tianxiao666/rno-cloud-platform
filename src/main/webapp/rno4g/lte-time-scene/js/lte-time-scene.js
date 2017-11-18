@@ -678,3 +678,4 @@ function clearAll() {
     $(".editbox").html("");
     $("#sceneNameTip").html("");
 }
+
