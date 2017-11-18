@@ -1,20 +1,15 @@
 package com.hgicreate.rno.web.rest;
 
 import com.hgicreate.rno.domain.*;
-import com.hgicreate.rno.repository.DataJobReportRepository;
-import com.hgicreate.rno.repository.DataJobRepository;
-import com.hgicreate.rno.repository.LteCellDataRepository;
-import com.hgicreate.rno.repository.OriginFileRepository;
+import com.hgicreate.rno.repository.*;
 import com.hgicreate.rno.security.SecurityUtils;
 import com.hgicreate.rno.service.LteCellDataService;
-import com.hgicreate.rno.service.dto.DataJobReportDTO;
-import com.hgicreate.rno.service.dto.LteCellDataDTO;
-import com.hgicreate.rno.service.dto.LteCellDataFileDTO;
-import com.hgicreate.rno.service.dto.LteCellDataRecordDTO;
+import com.hgicreate.rno.service.dto.*;
 import com.hgicreate.rno.service.mapper.DataJobReportMapper;
 import com.hgicreate.rno.web.rest.vm.LteCellDataImportVM;
 import com.hgicreate.rno.web.rest.vm.LteCellDataVM;
 import com.hgicreate.rno.web.rest.vm.FileUploadVM;
+import com.hgicreate.rno.web.rest.vm.LteCellDescVM;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -174,7 +169,9 @@ public class LteCellDataResource {
     }
 
     @PostMapping("/query-record")
-    public List<LteCellDataRecordDTO> queryRecord(){
-        return lteCellDataService.queryRecord();
+    public List<LteCellDescDTO> queryRecord(LteCellDescVM vm) throws ParseException{
+
+        log.debug("视图模型vm ={}", vm);
+        return lteCellDataService.queryRecord(vm);
     }
 }

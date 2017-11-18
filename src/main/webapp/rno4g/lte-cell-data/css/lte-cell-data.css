@@ -397,19 +397,6 @@ input[type="button"]:active, input[type="submit"]:active, input[type="reset"]:ac
     color: rgb(255, 85, 85);
 }
 
-.div_left_main {
-    margin: 5px;
-    background: rgb(195, 213, 237);
-    min-width: 500px;
-}
-
-.div_left_content {
-    border: 1px solid rgb(153, 188, 232);
-    background: none 0 0 repeat scroll rgb(255, 255, 255);
-    overflow: hidden;
-    min-height: 730px;
-}
-
 .divtab_menu {
     clear: both;
     height: 25px;
@@ -543,48 +530,6 @@ input[type="button"]:active, input[type="submit"]:active, input[type="reset"]:ac
 
 .greystyle-standard-whitetr .greystyle-standard-whitetr-textalign-right td {
     text-align: right;
-}
-
-.paging_div {
-    font-family: ΢微软雅黑, serif;
-    padding-right: 5px;
-    line-height: 30px;
-    border-top: 1px solid rgb(204, 204, 204);
-    text-align: right;
-    background: rgb(246, 246, 246);
-}
-
-input.paging_input_text {
-    height: 18px;
-    vertical-align: middle;
-    line-height: 15px;
-    padding: 3px 1px 2px;
-    width: 32px;
-    text-align: center;
-    background: rgb(255, 255, 255);
-}
-
-select.paging_input_text {
-    padding: 1px;
-    width: 45px;
-    background: rgb(255, 255, 255);
-    vertical-align: middle;
-}
-
-a.paging_link {
-    cursor: pointer;
-    height: 19px;
-    line-height: 18px;
-    width: 20px;
-    margin-left: 3px;
-    text-align: center;
-    background: rgb(255, 255, 255);
-    border: 1px solid rgb(204, 204, 204);
-    color: rgb(0, 0, 0);
-    text-decoration: none;
-    display: inline-block;
-    vertical-align: middle;
-    border-radius: 2px;
 }
 
 body {

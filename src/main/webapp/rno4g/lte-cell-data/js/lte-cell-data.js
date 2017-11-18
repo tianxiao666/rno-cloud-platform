@@ -619,11 +619,10 @@ function showRecord(data) {
             "data": data,
             "columns": [
                 {"data": "areaName"},
-                {"data": "createdDate"},
                 {"data": "dataType"},
                 {"data": "filename"},
                 {"data": "dataNum"},
-                {"data": "sysTime"}
+                {"data": "createdDate"}
             ],
             "lengthChange": true,
             "ordering": false,
@@ -636,10 +635,15 @@ function showRecord(data) {
 }
 
 function showImportDetail(id) {
-    var reportForm =$("#reportDetailForm");
-    reportForm.find("input#jobId").val(id);
-    reportForm.ajaxSubmit({
+    $("#reportDiv").css("display","block");
+    $("#listinfoDiv").css("display","none");
+    var dataTable=$("#reportListTable");
+    if (dataTable.hasClass('dataTable')) {
+        dataTable.dataTable().fnClearTable();
+    }
+    $.ajax({
         url: '/api/lte-cell-data/query-import-detail-id',
+        data:{id:id},
         dataType: 'text',
         type:'post',
         success: showImportDatailResult,
@@ -648,8 +652,6 @@ function showImportDetail(id) {
             showInfoInAndOut("info", "后台程序错误！");
         }
     });
-    $("#reportDiv").css("display","block");
-    $("#listinfoDiv").css("display","none");
 }
 
 /**
@@ -661,11 +663,6 @@ function returnToImportList(){
 }
 
 function showImportDatailResult(data) {
-    console.log(data.length);
-    console.log(data);
-    if(data.length <=2){
-        return;
-    }
     $("#reportListTable").css("line-height", "12px")
         .dataTable({
             "data": JSON.parse(data),

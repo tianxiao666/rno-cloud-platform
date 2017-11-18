@@ -55,7 +55,7 @@
                                                      name="begUploadDate"
                                                      type="text" title="" style="height: 23px">
                                 至：<input value="" id="endUploadDate" name="endUploadDate"
-                                          type="text" title="" style="height: 23px">
+                                         type="text" title="" style="height: 23px">
                             </td>
                             <td style="padding-left:30px">
                                 <label>状态:</label>
@@ -84,7 +84,7 @@
                 导入
             </div>
             <div id="importDiv" class="importContent" style="height: 180px;">
-                <form id="file-upload-form" method="post"  enctype="multipart/form-data">
+                <form id="file-upload-form" method="post" enctype="multipart/form-data">
                     <div>
                         <table class="table-bordered" style="margin-left:0;width:50%">
                             <tbody>
@@ -130,13 +130,10 @@
             </div>
         </div>
         <div id="reportDiv" style="display:none">
-            <form id="viewReportForm">
-                <input name="attachParams['jobId']" id="hiddenJobId" value="" type="hidden">
-            </form>
             <ul id="icons" class="ui-widget ui-helper-clearfix" style="width:100px;cursor:pointer">
                 <li class="ui-state-default ui-corner-all" title="返回列表" style="width:100px"
                     onclick="returnToImportList();"><span class="ui-icon ui-icon-arrowreturnthick-1-w"
-                       style="width:20px;background-image: url(images/ui-icons_ef8c08_256x240.png)"></span>返回列表
+                                                          style="width:20px;background-image: url(images/ui-icons_ef8c08_256x240.png)"></span>返回列表
                 </li>
             </ul>
             <table id="reportListTab" class="display rnoHeader" cellspacing="0" width="100%">
@@ -170,10 +167,12 @@
                     </td>
                     <td style="padding-left:10px">测试时间 从:</td>
                     <td><label for="kpiMeaBegDate"></label><input value="" id="kpiMeaBegDate" name="kpiMeaBegDate"
-                                                                  style="width:135px" class="hasDatepicker" type="text"></td>
+                                                                  style="width:135px" class="hasDatepicker" type="text">
+                    </td>
                     <td>至：</td>
                     <td><label for="kpiMeaEndDate"></label><input value="" id="kpiMeaEndDate" name="kpiMeaEndDate"
-                                                                  style="width:135px" class="hasDatepicker" type="text"></td>
+                                                                  style="width:135px" class="hasDatepicker" type="text">
+                    </td>
                     <td style="padding-left:10px"><input id="searchDataBtn" value="查询KPI" type="submit"></td>
                 </tr>
                 </tbody>

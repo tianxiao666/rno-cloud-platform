@@ -173,6 +173,10 @@ function showInfoInAndOut(div, info) {
 function showImportDetail(id) {
     $("#reportDiv").css("display","block");
     $("#listinfoDiv").css("display","none");
+    var dataTable=$("#reportListTab");
+    if (dataTable.hasClass('dataTable')) {
+        dataTable.dataTable().fnClearTable();
+    }
     $.ajax({
        url: "/api/lte-kpi-data/query-import-detail-id",
         data:{id:id},
@@ -186,9 +190,6 @@ function showImportDetail(id) {
 }
 
 function showImportDetailRecord(data) {
-    if(data.length <= 2){
-        return false;
-    }
     $("#reportListTab").css("line-height", "12px")
         .dataTable({
             "data": JSON.parse(data),

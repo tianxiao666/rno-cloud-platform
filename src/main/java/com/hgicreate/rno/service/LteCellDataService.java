@@ -3,16 +3,20 @@ package com.hgicreate.rno.service;
 import com.hgicreate.rno.domain.Area;
 import com.hgicreate.rno.domain.Cell;
 import com.hgicreate.rno.domain.DataJob;
+import com.hgicreate.rno.domain.LteCellDesc;
 import com.hgicreate.rno.repository.DataJobRepository;
 import com.hgicreate.rno.repository.LteCellDataRepository;
+import com.hgicreate.rno.repository.LteCellDescRepository;
 import com.hgicreate.rno.repository.OriginFileRepository;
 import com.hgicreate.rno.service.dto.LteCellDataDTO;
 import com.hgicreate.rno.service.dto.LteCellDataFileDTO;
-import com.hgicreate.rno.service.dto.LteCellDataRecordDTO;
+import com.hgicreate.rno.service.dto.LteCellDescDTO;
 import com.hgicreate.rno.service.mapper.LteCellDataFileMapper;
 import com.hgicreate.rno.service.mapper.LteCellDataMapper;
+import com.hgicreate.rno.service.mapper.LteCellDescMapper;
 import com.hgicreate.rno.web.rest.vm.LteCellDataImportVM;
 import com.hgicreate.rno.web.rest.vm.LteCellDataVM;
+import com.hgicreate.rno.web.rest.vm.LteCellDescVM;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -36,13 +40,13 @@ public class LteCellDataService {
 
     private final LteCellDataRepository lteCellDataRepository;
 
-    private final OriginFileRepository originFileRepository;
+    private final LteCellDescRepository lteCellDescRepository;
 
     private final DataJobRepository dataJobRepository;
 
-    public LteCellDataService(LteCellDataRepository lteCellDataRepository, OriginFileRepository originFileRepository, DataJobRepository dataJobRepository) {
+    public LteCellDataService(LteCellDataRepository lteCellDataRepository, LteCellDescRepository lteCellDescRepository, DataJobRepository dataJobRepository) {
         this.lteCellDataRepository = lteCellDataRepository;
-        this.originFileRepository = originFileRepository;
+        this.lteCellDescRepository = lteCellDescRepository;
         this.dataJobRepository = dataJobRepository;
     }
 
@@ -88,11 +92,19 @@ public class LteCellDataService {
                 .collect(Collectors.toList());
     }
 
-    public List<LteCellDataRecordDTO> queryRecord(){
-        List<LteCellDataRecordDTO> list = new ArrayList<>();
-        list.add(new LteCellDataRecordDTO("佛山市","2015-06-18 09:33:05","地市工参","佛山顺德工参数据.csv","63243","2015-06-18 09:32:55"));
-        list.add(new LteCellDataRecordDTO("佛山市","2015-06-20 13:45:11","地市工参","佛山市工参数据.csv","52134","2015-06-20 13:44:11"));
-        list.add(new LteCellDataRecordDTO("佛山市","2015-01-03 15:21:01","地市工参","佛山市01-03工参.csv","5543","2015-01-03 15:20:08"));
-        return list;
+
+    public List<LteCellDescDTO> queryRecord(LteCellDescVM vm) throws ParseException{
+        SimpleDateFormat sdf =   new SimpleDateFormat( "yyyy-MM-dd" );
+        SimpleDateFormat sdf2 =   new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
+        Date beginDate = sdf.parse(vm.getBeginTestDate());
+        Date endDate =sdf2.parse(vm.getEndTestDate() + " 23:59:59");
+        List<LteCellDesc> list = lteCellDescRepository.findTop1000ByArea_IdAndDataTypeAndCreatedDateBetweenOrderByCreatedDateDesc(
+          Long.parseLong(vm.getCity()),
+                vm.getDataType(),
+                beginDate,
+                endDate
+        );
+        return list.stream().map(LteCellDescMapper.INSTANCE::lteCellDescToLteCellDescDTO)
+                .collect(Collectors.toList());
     }
 }
