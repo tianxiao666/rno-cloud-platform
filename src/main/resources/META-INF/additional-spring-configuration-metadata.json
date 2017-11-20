@@ -24,6 +24,31 @@
       "name": "rno.app-code",
       "type": "java.lang.String",
       "description": "系统应用的代码，如 rno、rno4g 等."
+    },
+    {
+      "name": "rno.ftp.host",
+      "type": "java.lang.String",
+      "description": "Description for rno.ftp.host."
+    },
+    {
+      "name": "rno.ftp.port",
+      "type": "java.lang.String",
+      "description": "Description for rno.ftp.port."
+    },
+    {
+      "name": "rno.ftp.username",
+      "type": "java.lang.String",
+      "description": "Description for rno.ftp.username."
+    },
+    {
+      "name": "rno.ftp.password",
+      "type": "java.lang.String",
+      "description": "Description for rno.ftp.password."
+    },
+    {
+      "name": "rno.ftp.remote-path",
+      "type": "java.lang.String",
+      "description": "Description for rno.ftp.remote-path."
     }
   ]
 }
