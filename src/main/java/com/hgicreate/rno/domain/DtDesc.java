@@ -2,11 +2,9 @@ package com.hgicreate.rno.domain;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
 @Data
 @Entity
@@ -18,7 +16,7 @@ public class DtDesc implements Serializable {
     @Id
     private Long id;
 
-    private Long areaId;
+   // private Long areaId;
 
     private String dataType;
 
@@ -27,5 +25,15 @@ public class DtDesc implements Serializable {
     private Date createdDate;
 
     private String filename;
+
+    private Integer recordCount;
+    private Long jobId;
+    private Long originFileId;
+    private String createdUser;
+    private String importFlag;
+
+    @OneToOne
+    @JoinColumn(name = "area_id", referencedColumnName = "id")
+    private Area area;
 
 }

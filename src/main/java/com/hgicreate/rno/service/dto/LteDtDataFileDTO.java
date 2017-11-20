@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class LteDtDataFileDTO {
 
+    private String id;
+
     private String uploadTime;
     private String areaName;
     private String filename;

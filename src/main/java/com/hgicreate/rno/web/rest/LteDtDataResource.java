@@ -4,21 +4,24 @@ import com.hgicreate.rno.domain.Area;
 import com.hgicreate.rno.domain.DataJob;
 import com.hgicreate.rno.domain.OriginFile;
 import com.hgicreate.rno.domain.OriginFileAttr;
+import com.hgicreate.rno.repository.DataJobReportRepository;
 import com.hgicreate.rno.repository.DataJobRepository;
 import com.hgicreate.rno.repository.OriginFileAttrRepository;
 import com.hgicreate.rno.repository.OriginFileRepository;
 import com.hgicreate.rno.security.SecurityUtils;
 import com.hgicreate.rno.service.LteDtDataService;
+import com.hgicreate.rno.service.dto.DataJobReportDTO;
 import com.hgicreate.rno.service.dto.LteDtDataFileDTO;
+import com.hgicreate.rno.service.dto.LteDtDescDTO;
+import com.hgicreate.rno.service.mapper.DataJobReportMapper;
+import com.hgicreate.rno.web.rest.vm.LteDtDescVM;
 import com.hgicreate.rno.web.rest.vm.LteDtImportQueryVM;
 import com.hgicreate.rno.web.rest.vm.LteDtFileUploadVM;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -28,6 +31,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -39,16 +43,18 @@ public class LteDtDataResource {
 
     private final LteDtDataService lteDtDataService;
     private final DataJobRepository dataJobRepository;
+    private final DataJobReportRepository dataJobReportRepository;
 
     private  final OriginFileRepository originFileRepository;
     private  final OriginFileAttrRepository originFileAttrRepository;
 
     public LteDtDataResource(LteDtDataService lteDtDataService, OriginFileRepository originFileRepository,
-                             OriginFileAttrRepository originFileAttrRepository, DataJobRepository dataJobRepository) {
+                             OriginFileAttrRepository originFileAttrRepository, DataJobRepository dataJobRepository, DataJobReportRepository dataJobReportRepository) {
         this.lteDtDataService = lteDtDataService;
         this.originFileRepository = originFileRepository;
         this.originFileAttrRepository = originFileAttrRepository;
         this.dataJobRepository = dataJobRepository;
+        this.dataJobReportRepository = dataJobReportRepository;
     }
 
     @PostMapping("/query-import")
@@ -150,5 +156,18 @@ public class LteDtDataResource {
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/query-import-detail-id")
+    public List<DataJobReportDTO> queryImportDetailById(@RequestParam String id){
+        return dataJobReportRepository.findByDataJob_Id(Long.parseLong(id))
+                .stream().map(DataJobReportMapper.INSTANCE::dataJobReportToDataJobReportDTO)
+                .collect(Collectors.toList());
+    }
+
+    @PostMapping("/query-record")
+    public List<LteDtDescDTO> queryRecord(LteDtDescVM vm) throws ParseException{
+        log.debug("视图模型vm={}",vm);
+        return lteDtDataService.queryRecord(vm);
     }
 }

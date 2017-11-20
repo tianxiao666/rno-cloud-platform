@@ -76,61 +76,12 @@ $(function () {
         progress.css("display", "none");
     });
 
-    $("#searchDtBtnDT").click(function () {
-        $('#dtDataResultDT').css("line-height", "12px")
-            .DataTable({
-                "ajax": "data/lte-dt-data-list.json",
-                "columns": [
-                    {"data": null},
-                    {"data": "MEA_TIME"},
-                    {"data": "DATA_TYPE"},
-                    {"data": "AREA_TYPE"},
-                    {"data": "FILE_NAME"},
-                    {"data": "RECORD_COUNT"},
-                    {"data": "CREATE_TIME"}
-                ],
-                "columnDefs": [
-                    {
-                        "render": function () {
-                            return "广州市";
-                        },
-                        "targets": 0,
-                        "data": null
-                    }
-                ],
-                "lengthChange": false,
-                "ordering": false,
-                "searching": false,
-                "destroy": true,
-                "language": {
-                    url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
-                }
-            });
+    $("#searchDtRecordForm").ajaxForm({
+       url: "/api/lte-dt-data/query-record",
+        success: showDtRecord
     });
-});
 
-function showImportDetail() {
-    $("#queryImportDetailTab").css("line-height", "12px")
-        .DataTable({
-            "ajax": "data/lte-dt-data-record-detail.json",
-            "columns": [
-                {"data": "STAGE"},
-                {"data": "BEG_TIME"},
-                {"data": "END_TIME"},
-                {"data": "STATE"},
-                {"data": "ATT_MSG"}
-            ],
-            "lengthChange": false,
-            "ordering": false,
-            "searching": false,
-            "destroy": true,
-            "language": {
-                url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
-            }
-        });
-    $("#reportDiv").css("display", "block");
-    $("#listInfoDiv").css("display", "none");
-}
+});
 
 function showInfoInAndOut(div, info) {
     var divSet = $("#" + div);
@@ -140,7 +91,7 @@ function showInfoInAndOut(div, info) {
 }
 
 function showQueryImportResult(data) {
-    if (data == '') {
+    if (data === '') {
         showInfoInAndOut('info', '没有符合条件的路测数据');
     }
 
@@ -160,17 +111,18 @@ function showQueryImportResult(data) {
             "columnDefs": [
                 {
                     "render": function (data, type, row) {
+                        var id = row['id'];
                         switch (row['status']) {
                             case "全部失败":
-                                return "<a style='color: red' <!--onclick='showImportDetail()'-->>" + row['status'] + "</a>";
-                            case "部分失败":
-                                return "<a style='color: red'>" + row['status'] + "</a>";
+                                return "<a style='color: red;cursor: pointer' onclick='showImportDtDetail("+id+")'>" + row['status'] + "</a>";
+                            case "部分成功":
+                                return "<a style='color: red;cursor: pointer' onclick='showImportDtDetail("+id+")'>" + row['status'] + "</a>";
                             case "全部成功":
-                                return "<a>" + row['status'] + "</a>";
+                                return "<a style='cursor: pointer' onclick='showImportDtDetail("+id+")'>" + row['status'] + "</a>";
                             case "正在处理":
-                                return "<a>" + row['status'] + "</a>";
+                                return "<a style='cursor: pointer' onclick='showImportDtDetail("+id+")'>" + row['status'] + "</a>";
                             case "等待处理":
-                                return "<a>" + row['status'] + "</a>";
+                                return "<a style='cursor: pointer' onclick='showImportDtDetail("+id+")'>" + row['status'] + "</a>";
                         }
                     },
                     "targets": -1,
@@ -178,7 +130,7 @@ function showQueryImportResult(data) {
                 },
                 {
                     "render": function(data, type, row) {
-                        if(row['startTime']==""||row['startTime']==null){
+                        if(row['startTime']===""||row['startTime']===null){
                             return " --- ";
                         }else {
                             return row['startTime'];
@@ -188,7 +140,7 @@ function showQueryImportResult(data) {
                     "data": "startTime"
                 },{
                     "render": function(data, type, row) {
-                        if(row['completeTime']==""||row['completeTime']==null){
+                        if(row['completeTime']===""||row['completeTime']===null){
                             return " --- ";
                         }else {
                             return row['completeTime'];
@@ -207,4 +159,79 @@ function showQueryImportResult(data) {
             }
         });
 
+}
+
+/**
+ * 从报告的详情返回列表页面
+ */
+function returnToImportDtList(){
+    $("#reportDtDiv").css("display","none");
+    $("#listInfoDtDiv").css("display","block");
+}
+
+function showImportDtDetail(id) {
+    $("#reportDtDiv").css("display","block");
+    $("#listInfoDtDiv").css("display","none");
+    var dataTable=$("#reportDtListTable");
+    if (dataTable.hasClass('dataTable')) {
+        dataTable.dataTable().fnClearTable();
+    }
+    $.ajax({
+        url: '/api/lte-dt-data/query-import-detail-id',
+        data:{id:id},
+        dataType: 'text',
+        type:'post',
+        success: showImportDtDatailResult,
+        error: function (err) {
+            console.log(err);
+            showInfoInAndOut("info", "后台程序错误！");
+        }
+    });
+}
+
+function showImportDtDatailResult(data) {
+    $("#reportDtListTable").css("line-height", "12px")
+        .dataTable({
+            "data": JSON.parse(data),
+            "columns": [
+                {"data": "stage"},
+                {"data": "startTime"},
+                {"data": "completeTime"},
+                {"data": "status"},
+                {"data": "message"}
+            ],
+            "lengthChange": false,
+            "ordering": false,
+            "searching": false,
+            "destroy": true,
+            "language": {
+                url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
+            }
+        });
+}
+
+function showDtRecord(data) {
+    //console.log(data);
+    if (data === '') {
+        showInfoInAndOut('info', '没有符合条件的路测数据');
+    }
+    $('#dtDataResultDT').css("line-height", "12px")
+        .DataTable({
+            "data": data,
+            "columns": [
+                {"data": "areaName"},
+                {"data": "dataType"},
+                {"data": "areaType"},
+                {"data": "filename"},
+                {"data": "dataNum"},
+                {"data": "createdDate"}
+            ],
+            "lengthChange": false,
+            "ordering": false,
+            "searching": false,
+            "destroy": true,
+            "language": {
+                url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
+            }
+        });
 }

@@ -59,7 +59,7 @@ public class LteDtAnalysisResource {
         Sort sort = new Sort(Sort.Direction.ASC, "id");
         Pageable pageable = new PageRequest(start, length, sort);
         return dtDescRepository.
-                findByAreaIdAndDataTypeInAndAreaTypeInAndCreatedDate(lteDtAnalysisVM.getAreaId(),
+                findByArea_IdAndDataTypeInAndAreaTypeInAndCreatedDate(lteDtAnalysisVM.getAreaId(),
                         lteDtAnalysisVM.getDataType(), lteDtAnalysisVM.getAreaType(),
                         lteDtAnalysisVM.getCreatedDate(), pageable)
                 .stream().map(DtDescMapper.INSTANCE::toDtDescDto).collect(Collectors.toList());

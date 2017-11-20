@@ -30,7 +30,7 @@
         </li>
     </ul>
     <div id="tabs-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom">
-        <div id="listInfoDiv">
+        <div id="listInfoDtDiv">
             <form id="import-query-form" method="post">
                 <select id="provinceId" name="province" title=""></select>
                 <select id="cityId" name="city" title=""></select>
@@ -137,31 +137,52 @@
                 </table>
             </div>
         </div>
+        <div id="reportDtDiv" style="display:none">
+            <ul id="icons" class="ui-widget ui-helper-clearfix" style="width:100px;cursor:pointer">
+                <li class="ui-state-default ui-corner-all" title="返回列表" style="width:100px"
+                    onclick="returnToImportDtList();">
+                    <span class="ui-icon ui-icon-arrowreturnthick-1-w"
+                          style="width:20px"></span>返回列表
+                </li>
+            </ul>
+
+            <table id="reportDtListTable" class="display rnoHeader" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                    <th>阶段</th>
+                    <th>开始时间</th>
+                    <th>结束时间</th>
+                    <th>结果</th>
+                    <th>详细信息</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
     </div>
     <div id="tabs-2" class="ui-tabs-panel ui-widget-content ui-corner-bottom" style="display: none;">
-        <form id="searchMrForm">
+        <form id="searchDtRecordForm" method="post">
             <table>
                 <tbody>
                 <tr>
                     <td>
-                        <select id="provinceId2" name="province" title=""></select>
-                        <select id="cityId2" name="city" title=""></select>
+                        <select id="provinceId2" name="province2" title=""></select>
+                        <select id="cityId2" name="city2" title=""></select>
                     </td>
                     <td style="padding-left:10px">数据类型：</td>
                     <td>
-                        <select id="factory" title="">
-                            <option value="ALL">全部</option>
-                            <option value="DataService">数据业务</option>
-                            <option value="SweepFreq">扫频业务</option>
+                        <select id="factory" name="dataType" title="">
+                            <option value="全部">全部</option>
+                            <option value="数据业务">数据业务</option>
+                            <option value="扫频业务">扫频业务</option>
                         </select>
                     </td>
                     <td style="padding-left:10px">测试时间 从:</td>
                     <td>
-                        <input id="beginTestDate" class="hasDatepicker" type="text" title=""> 至：
-                        <input id="endTestDate" class="hasDatepicker" type="text" title="">
+                        <input id="beginTestDate" name="beginTestDate" class="hasDatepicker" type="text" title=""> 至：
+                        <input id="endTestDate" name="endTestDate" class="hasDatepicker" type="text" title="">
                     </td>
                     <td style="padding-left:10px">
-                        <input id="searchDtBtnDT" value="查询DT" type="button">
+                        <input id="searchDtBtnDT" value="查询DT" type="submit">
                     </td>
                 </tr>
                 </tbody>
@@ -172,7 +193,6 @@
                 <thead>
                 <tr>
                     <th>地市</th>
-                    <th>测量时间</th>
                     <th>数据类型</th>
                     <th>区域类型</th>
                     <th>文件名</th>

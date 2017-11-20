@@ -3,7 +3,7 @@ body {
     line-height: 1.231;
     font-family: sans-serif;
     height: 100%;
-    width: 95%;
+    width: 99%;
 }
 
 select {
@@ -109,4 +109,26 @@ select {
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     border-radius: 10px;
+}
+
+.ui-icon-arrowreturnthick-1-w {
+    background-position: 0 -64px;
+}
+
+.ui-state-default .ui-icon {
+    background-image: url("../images/ui-icons_ef8c08_256x240.png");
+}
+
+ul,li{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-variant: inherit;
+    font-weight: inherit;
+    font-stretch: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    font-family: inherit;
+    font-style: normal;
+    list-style: none outside none;
 }
