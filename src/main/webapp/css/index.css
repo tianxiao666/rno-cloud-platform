@@ -57,6 +57,10 @@ header {
     text-decoration: underline;
 }
 
+.split {
+    color: #777777
+}
+
 .user-default {
     position: absolute;
     top: 34px;
