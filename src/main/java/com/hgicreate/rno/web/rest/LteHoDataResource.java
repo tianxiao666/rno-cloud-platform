@@ -9,14 +9,14 @@ import com.hgicreate.rno.repository.DataJobRepository;
 import com.hgicreate.rno.repository.OriginFileAttrRepository;
 import com.hgicreate.rno.repository.OriginFileRepository;
 import com.hgicreate.rno.security.SecurityUtils;
-import com.hgicreate.rno.service.LteMrDataService;
+import com.hgicreate.rno.service.LteHoDataService;
 import com.hgicreate.rno.service.dto.DataJobReportDTO;
-import com.hgicreate.rno.service.dto.LteMrDataImportDTO;
-import com.hgicreate.rno.service.dto.LteMrDescDTO;
+import com.hgicreate.rno.service.dto.LteHoDataImportDTO;
+import com.hgicreate.rno.service.dto.LteHoDescDTO;
 import com.hgicreate.rno.service.mapper.DataJobReportMapper;
-import com.hgicreate.rno.web.rest.vm.LteMrDataFileUploadVM;
-import com.hgicreate.rno.web.rest.vm.LteMrDataImportVM;
-import com.hgicreate.rno.web.rest.vm.LteMrDataQueryVM;
+import com.hgicreate.rno.web.rest.vm.LteHoDataFileUploadVM;
+import com.hgicreate.rno.web.rest.vm.LteHoDataImportVM;
+import com.hgicreate.rno.web.rest.vm.LteHoDataQueryVM;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -38,12 +38,12 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/lte-mr-data")
-public class LteMrDataResource {
+@RequestMapping("/api/lte-ho-data")
+public class LteHoDataResource {
     @Value("${rno.path.upload-files}")
     private String directory;
 
-    private final LteMrDataService lteMrDataService;
+    private final LteHoDataService lteHoDataService;
 
     private final OriginFileRepository originFileRepository;
     private  final OriginFileAttrRepository originFileAttrRepository;
@@ -51,20 +51,20 @@ public class LteMrDataResource {
     private final DataJobRepository dataJobRepository;
     private final DataJobReportRepository dataJobReportRepository;
 
-    public LteMrDataResource(LteMrDataService lteMrDataService, OriginFileRepository originFileRepository, OriginFileAttrRepository originFileAttrRepository,
+    public LteHoDataResource(LteHoDataService lteHoDataService, OriginFileRepository originFileRepository, OriginFileAttrRepository originFileAttrRepository,
                              DataJobRepository dataJobRepository, DataJobReportRepository dataJobReportRepository) {
-        this.lteMrDataService = lteMrDataService;
+        this.lteHoDataService = lteHoDataService;
         this.originFileRepository = originFileRepository;
         this.originFileAttrRepository = originFileAttrRepository;
         this.dataJobRepository = dataJobRepository;
         this.dataJobReportRepository = dataJobReportRepository;
     }
 
-    @PostMapping("/mr-import-query")
-    public List<LteMrDataImportDTO> importQuery(LteMrDataImportVM vm) throws ParseException {
-        log.debug("查询Mr数据文件导入记录。");
+    @PostMapping("/ho-import-query")
+    public List<LteHoDataImportDTO> importQuery(LteHoDataImportVM vm) throws ParseException {
+        log.debug("查询切换数据文件导入记录。");
         log.debug("视图模型: " + vm);
-        return lteMrDataService.queryImport(vm);
+        return lteHoDataService.queryImport(vm);
     }
 
     @GetMapping("/query-report")
@@ -76,10 +76,10 @@ public class LteMrDataResource {
     }
 
     @PostMapping("/data-query")
-    public List<LteMrDescDTO> dataQuery(LteMrDataQueryVM vm) throws ParseException {
-        log.debug("查询Mr数据记录。");
+    public List<LteHoDescDTO> dataQuery(LteHoDataQueryVM vm) throws ParseException {
+        log.debug("查询Ho切换数据记录。");
         log.debug("视图模型: " + vm);
-        return lteMrDataService.dataQuery(vm);
+        return lteHoDataService.dataQuery(vm);
     }
 
     /**
@@ -88,7 +88,7 @@ public class LteMrDataResource {
      * @return 成功情况下返回 HTTP OK 状态，错误情况下返回 HTTP 4xx 状态。
      */
     @PostMapping("/upload-file")
-    public ResponseEntity<?> uploadFile(LteMrDataFileUploadVM vm) {
+    public ResponseEntity<?> uploadFile(LteHoDataFileUploadVM vm) {
 
         log.debug("模块名：" + vm.getModuleName());
 
@@ -133,7 +133,7 @@ public class LteMrDataResource {
             originFile.setFileType(fileType);
             originFile.setFileSize(fileSize);
             originFile.setFullPath(filepath);
-            originFile.setDataType("LTE-MR-DATA");
+            originFile.setDataType("LTE-HO-DATA");
             originFile.setCreatedUser(SecurityUtils.getCurrentUserLogin());
             originFile.setCreatedDate(new Date());
             originFile.setSourceType("上传");
@@ -156,8 +156,8 @@ public class LteMrDataResource {
             area.setId(Long.parseLong(vm.getAreaId()));
 
             DataJob dataJob = new DataJob();
-            dataJob.setName("MR测量数据导入");
-            dataJob.setType("LTE-MR-DATA");
+            dataJob.setName("Ho切换数据导入");
+            dataJob.setType("LTE-HO-DATA");
             dataJob.setPriority(1);
             dataJob.setArea(area);
             dataJob.setOriginFile(originFile);

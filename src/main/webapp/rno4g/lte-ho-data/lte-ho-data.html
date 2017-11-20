@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>MR测量数据管理</title>
+
+    <link rel="stylesheet" href="../../lib/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
+    <link rel="stylesheet" href="../../lib/datatables/1.10.16/datatables.min.css">
+    <link rel="stylesheet" href="css/lte-ho-data.css">
+
+    <script src="../../lib/jquery/1.8.2/jquery.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
+    <script src="../../lib/laydate/5.0.7/laydate.js"></script>
+    <script src="../../lib/datatables/1.10.16/datatables.min.js"></script>
+    <script src="../../js/common.js"></script>
+    <script src="js/lte-ho-data.js"></script>
+</head>
+<body>
+<div id="loading" class="loading" style="display: none">加载中...</div>
+<div id="info" class="info-style" style="display: none"></div>
+<div style="margin-top: 10px"><b style="font-weight: bold">当前位置：PCI优化 &gt; HO切换数据管理 </b></div>
+<div id="tabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
+    <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+        <li class="ui-state-default ui-corner-top ui-tabs-active ui-state-active">
+            <a href="#tabs-1" class="ui-tabs-anchor" tabindex="0" id="ui-id-1">切换数据导入</a>
+        </li>
+        <li class="ui-state-default ui-corner-top" role="tab" tabindex="1">
+            <a href="#tabs-2" class="ui-tabs-anchor" tabindex="1" id="ui-id-2">切换数据记录</a>
+        </li>
+    </ul>
+    <div id="tabs-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom">
+        <div id="listInfoDiv">
+            <form id="importQuery" method="post">
+                <select id="provinceId" name="provinceId" title=""></select>
+                <select id="cityId" name="cityId" title=""></select>
+                <div style="margin: 9px"></div>
+                <div id="searchImportDiv">
+                    <div style="margin: 9px"></div>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td style="padding-left:30px"><label>上传时间 从:</label>
+                                <input id="begUploadDate" name="begUploadDate" type="text" title=""> 至：
+                                <input id="endUploadDate" name="endUploadDate" type="text" title="">
+                            </td>
+                            <td style="padding-left:30px"><label>状态:</label></td>
+                            <td>
+                                <select id="import-status-menu" title="" name="status">
+                                    <option value="全部" selected="selected">全部</option>
+                                    <option value="全部成功">全部成功</option>
+                                    <option value="部分失败">部分成功</option>
+                                    <option value="全部失败">全部失败</option>
+                                    <option value="正在处理">正在处理</option>
+                                    <option value="等待处理">等待处理</option>
+                                </select>
+                            </td>
+                            <td style="padding-left:30px">
+                                <input id="queryImportDT" value="查询导入记录" type="submit" class="btn btn-default">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+            <div style="margin: 9px"></div>
+            <div id="importTitleDiv" class="importTitle">
+                <div style="margin: 9px"></div>
+                导入
+            </div>
+            <div id="importDiv" class="importContent">
+                <form id="file-upload-form" method="post" enctype="multipart/form-data">
+                    <table class="table-bordered" width="700">
+                        <tbody>
+                        <tr>
+                            <td class="td-label">测量日期<span class="required">*</span></td>
+                            <td>
+                                <input type="text" name="recordDate" id="recordDate" accept="*" style="width: 140px">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-label">
+                                切换数据文件<span class="required">*</span>
+                            </td>
+                            <td style="padding-left: 5px">
+                                <input type="file" name="file" id="file" accept="*">
+                                <input type="hidden" name="moduleName" value="lte-ho-data">
+                                <input type="hidden" id="areaId" name="areaId" value="">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-label">厂家<span class="required">*</span></td>
+                            <td>
+                                <select name="vendor" title="" style="width: 140px">
+                                    <option value="中兴" selected="selected">中兴</option>
+                                    <option value="爱立信">爱立信</option>
+                                </select>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div align="center" style="margin: 6px; width: 700px;">
+                        <input id="importBtn" value=" 导 入 " type="submit" class="btn btn-default" style="width: 120px">
+                    </div>
+                    <div class="upload-progress">
+                        <div class="bar"></div>
+                        <div class="percent">0%</div>
+                    </div>
+                </form>
+            </div>
+            <div id="importListDiv" class="sectionDivCls">
+                <b style="font-weight: bold">切换数据导入记录列表</b>
+                <table id="queryRecordResTab" class="display rnoHeader" cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th>地市</th>
+                        <th>上传时间</th>
+                        <th>文件名称</th>
+                        <th>文件大小</th>
+                        <th>开始时间</th>
+                        <th>完成时间</th>
+                        <th>上传账号</th>
+                        <th>状态</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div id="reportDiv" style="display:none">
+            <ul id="icons" class="ui-widget ui-helper-clearfix" style="width:100px;cursor:pointer">
+                <li class="ui-state-default ui-corner-all" title="返回列表" style="width:100px"
+                    onclick="returnToImportList();">
+                    <span class="ui-icon ui-icon-arrowreturnthick-1-w" style="width:20px"></span>返回列表
+                </li>
+            </ul>
+            <table id="reportListTab" class="display rnoHeader" cellspacing="0" style="width:100%;">
+                <thead>
+                <tr>
+                    <th>阶段</th>
+                    <th>开始时间</th>
+                    <th>结束时间</th>
+                    <th>结果</th>
+                    <th>详细信息</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <div id="tabs-2" class="ui-tabs-panel ui-widget-content ui-corner-bottom" style="display: none">
+        <form id="searchMrDtForm" method="post">
+            <table>
+                <tbody>
+                <tr>
+                    <td>
+                        <select id="provinceId2" name="provinceId" title=""></select>
+                        <select id="cityId2" name="cityId" title=""></select>
+                    </td>
+                    <td style="padding-left:10px">厂家：</td>
+                    <td>
+                        <select id="vendor" title="" name="vendor">
+                            <option value="全部">全部</option>
+                            <option value="中兴">中兴</option>
+                            <option value="爱立信">爱立信</option>
+                        </select>
+                    </td>
+                    <td style="padding-left:10px">测量时间 从:</td>
+                    <td>
+                        <input id="beginRecordDate" name="beginRecordDate"  type="text" title=""> 至：
+                        <input id="endRecordDate" name="endRecordDate" type="text" title="">
+                    </td>
+                    <td style="padding-left:10px">
+                        <input id="queryDataTab" value="查询" type="submit" class="">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+        <div class="sectionDivCls">
+            <table id="queryDataResultDT" class="display rnoHeader" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                    <th>地市</th>
+                    <th>测量时间</th>
+                    <th>厂家</th>
+                    <th>文件名</th>
+                    <th>测试数据量</th>
+                    <th>进入系统时间</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

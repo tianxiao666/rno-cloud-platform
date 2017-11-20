@@ -47,7 +47,7 @@ $(function () {
     });
 
     $("#file-upload-form").ajaxForm({
-        url: "/api/lte-mr-data/upload-file",
+        url: "/api/lte-ho-data/upload-file",
         beforeSend: function () {
             progress.css("display", "block");
             var percentVal = '0%';
@@ -65,7 +65,7 @@ $(function () {
             percent.html(percentVal);
             $("#info").css("background", "green");
             showInfoInAndOut("info", "文件导入成功！");
-            //AJAX 提交Mr数据导入记录查询条件表单
+            //AJAX 提交切换数据导入记录查询条件表单
             $("#importQuery").submit();
         }
     });
@@ -75,15 +75,15 @@ $(function () {
         progress.css("display", "none");
     });
 
-    //AJAX 提交MR数据导入记录查询条件表单
+    //AJAX 提交切换数据导入记录查询条件表单
     $("#importQuery").ajaxForm({
-        url: "/api/lte-mr-data/mr-import-query",
+        url: "/api/lte-ho-data/ho-import-query",
         success: showNcellImportResult
     });
 
-    //AJAX 提交Mr数据记录查询条件表单
+    //AJAX 提交切换数据记录查询条件表单
     $("#searchMrDtForm").ajaxForm({
-        url: "/api/lte-mr-data/data-query",
+        url: "/api/lte-ho-data/data-query",
         success: showNcellImportDtResult
     });
 });
@@ -93,7 +93,7 @@ function showNcellImportResult(data) {
     $(".loading").css("display", "none");
     if (data == '') {
         $("#info").css("background", "red");
-        showInfoInAndOut('info', '没有符合条件的MR数据导入记录');
+        showInfoInAndOut('info', '没有符合条件的切换数据导入记录');
     }
 
     $('#queryRecordResTab').css("line-height", "12px")
@@ -158,12 +158,12 @@ function showNcellImportResult(data) {
         });
 }
 
-//显示Mr数据记录查询结果
+//显示切换数据记录查询结果
 function showNcellImportDtResult(data) {
     $(".loading").css("display", "none");
     if (data == '') {
         $("#info").css("background", "red");
-        showInfoInAndOut('info', '没有符合条件的Mr数据记录');
+        showInfoInAndOut('info', '没有符合条件的Ho切换数据记录');
     }
 
     $('#queryDataResultDT').css("line-height", "12px")
@@ -190,7 +190,7 @@ function showNcellImportDtResult(data) {
 //显示导入记录的状态的详情
 function showImportDetail(id) {
     $.ajax({
-        url: '/api/lte-mr-data/query-report',
+        url: '/api/lte-ho-data/query-report',
         dataType: 'text',
         data: {id: id},
         success:function(data){
