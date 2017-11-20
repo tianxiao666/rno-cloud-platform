@@ -44,6 +44,7 @@ $(function () {
         $("#areaId").val(cityId);
         var fileType = path.substring(path.lastIndexOf("."), path.length).toLowerCase();
         if (fileType !== '.zip') {
+            $("#info").css("background", "red");
             showInfoInAndOut("info", "请上传zip格式的数据文件");
             return false;
         }
@@ -95,6 +96,7 @@ $(function () {
 function showLteGridImportResult(data) {
     $(".loading").css("display", "none");
     if (data == '') {
+        $("#info").css("background", "red");
         showInfoInAndOut('info', '没有符合条件的网格数据导入记录');
     }
 
@@ -163,6 +165,7 @@ function showLteGridImportResult(data) {
 function showLteGridDataResult(data) {
     $(".loading").css("display", "none");
     if (data == '') {
+        $("#info").css("background", "red");
         showInfoInAndOut('info', '没有符合条件的网格数据记录');
     }
 
@@ -222,6 +225,7 @@ function showImportDetail(id) {
             });
         }, error: function (err) {
             console.log(err);
+            $("#info").css("background", "red");
             showInfoInAndOut("info", "后台程序错误！");
         }
     });

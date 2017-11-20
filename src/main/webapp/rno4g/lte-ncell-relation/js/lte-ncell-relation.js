@@ -31,6 +31,7 @@ $(function () {
         var reg = /^[0-9]+.?[0-9]*$/;
         var cellPci = $("#cellPci").val();
         var ncellPci = $("#ncellPci").val();
+        $("#info").css("background", "red");
         if (!reg.test(cellPci) && cellPci.trim() !== '') {
             showInfoInAndOut("info", "主小区PCI值必须为数字");
             return false;
@@ -80,6 +81,7 @@ $(function () {
         $("#areaId").val(cityId);
         var fileType = path.substring(path.lastIndexOf("."), path.length).toLowerCase();
         if (fileType !== '.csv' && fileType !== '.zip') {
+            $("#info").css("background", "red");
             showInfoInAndOut("info", "请上传csv或者zip格式的数据文件");
             return false;
         }
@@ -119,6 +121,7 @@ $(function () {
 function showNcellRelationResult(data) {
     $(".loading").css("display", "none");
     if (data === '') {
+        $("#info").css("background", "red");
         showInfoInAndOut('info', '没有符合条件的邻区关系');
     }
 
@@ -159,6 +162,7 @@ function showNcellRelationResult(data) {
 function showNcellImportResult(data) {
     $(".loading").css("display", "none");
     if (data === '') {
+        $("#info").css("background", "red");
         showInfoInAndOut('info', '没有符合条件的邻区关系导入记录');
     }
 
@@ -235,6 +239,7 @@ function showNcellImportResult(data) {
 function showNcellImportDtResult(data) {
     $(".loading").css("display", "none");
     if (data == '') {
+        $("#info").css("background", "red");
         showInfoInAndOut('info', '没有符合条件的邻区数据记录');
     }
 
@@ -267,6 +272,7 @@ function showInfoInAndOut(div, info) {
 
 //删除邻区关系
 function deleteCell(id) {
+    $("#info").css("background", "red");
     var r = confirm("删除该邻区关系？");
     if (r == true) {
         $.ajax({
@@ -317,6 +323,7 @@ function showImportDetail(id) {
                 });
         }, error: function (err) {
             console.log(err);
+            $("#info").css("background", "red");
             showInfoInAndOut("info", "后台程序错误！");
         }
     });
