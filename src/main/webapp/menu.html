@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<TITLE> ZTREE DEMO - beforeEditName / beforeRemove / onRemove / beforeRename / onRename</TITLE>
-	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-	<link rel="stylesheet" href="/css/zTreeStyle/demo.css">
-	<link rel="stylesheet" href="/css/zTreeStyle/zTreeStyle.css">
-    <link rel="stylesheet" href="/css/zTreeStyle/menu.css">
-	<script src="/lib/ztree/jquery-1.4.4.min.js"></script>
-	<script src="/lib/ztree/jquery.ztree.core.js"></script>
-	<script src="/lib/ztree/jquery.ztree.excheck.js"></script>
-	<script src="/lib/ztree/jquery.ztree.exedit.js"></script>
+	<TITLE>菜单管理</TITLE>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="css/zTreeStyle/demo.css">
+	<link rel="stylesheet" href="css/zTreeStyle/zTreeStyle.css">
+    <link rel="stylesheet" href="css/zTreeStyle/menu.css">
+	<script src="lib/ztree/jquery-1.4.4.min.js"></script>
+	<script src="lib/ztree/jquery.ztree.core.js"></script>
+	<script src="lib/ztree/jquery.ztree.excheck.js"></script>
+	<script src="lib/ztree/jquery.ztree.exedit.js"></script>
 	<script src="js/menu.js"></script>
 </head>
 
 <body>
 <div class="content_wrap">
-	<div class="zTreeDemoBackground left" style="margin: 200px 0 0 200px">
+	<div class="zTreeDemoBackground left">
         <div style="width: 400px;">
             <span id="appId" style="visibility: hidden"></span>
             <ul id="treeDemo" class="ztree" style="width: 300px;"></ul>
@@ -34,8 +34,7 @@
     <ul>
         <li id="m_add" onclick="addTreeNode();">增加节点</li>
         <li id="m_del" onclick="removeTreeNode();">删除节点</li>
-        <!--<li id="m_addParent" onclick="addParentNode();">增加父节点</li>-->
-        <li id="m_reset" onclick="resetTree();">恢复zTree</li>
+        <li id="m_reset" onclick="resetTree();">恢复菜单树</li>
     </ul>
 </div>
 </body>
