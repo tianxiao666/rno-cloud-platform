@@ -107,7 +107,7 @@ public class LteNcellRelationResource {
 
             //获取文件类型
             String fileExtension = filename.substring(filename.lastIndexOf("."),filename.length()).toLowerCase();
-            String fileType = new String("ZIP");
+            String fileType = "ZIP";
             if((".csv").equals(fileExtension)){
                 fileType = "CSV";
             }

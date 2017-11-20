@@ -1,18 +1,18 @@
 $(function () {
-
-    $(".draggable").draggable();
-    $("#trigger").css("display", "none");
+    //tab选项卡
+    $("#tabs").tabs();//项目服务范围类别切换
 
     // 执行 laydate 实例 
     laydate.render({elem: '#begUploadDate', value: new Date(new Date().getTime() - 7 * 86400000)});
     laydate.render({elem: '#endUploadDate', value: new Date()});
-    laydate.render({elem: '#fileDate', value: new Date()});
-    laydate.render({elem: '#begMetaDate', value: new Date(new Date().getTime() - 7 * 86400000)});
-    laydate.render({elem: '#endMetaDate', value: new Date()});
+    laydate.render({elem: '#beginRecordDate', value: new Date(new Date().getTime() - 7 * 86400000)});
+    laydate.render({elem: '#endRecordDate', value: new Date()});
+
+    laydate.render({elem: '#recordDate', value: new Date()});
 
     // 初始化区域联动
-    initAreaSelectors({selectors: ["provincemenu", "citymenu"]});
-    initAreaSelectors({selectors: ["province-menu-2", "city-menu-2"]});
+    initAreaSelectors({selectors: ["provinceId", "cityId"]});
+    initAreaSelectors({selectors: ["provinceId2", "cityId2"]});
 
     //显示隐藏导入窗口
     $("#importTitleDiv").click(function () {
@@ -24,11 +24,7 @@ $(function () {
         }
     });
 
-    $("#queryBtn").click(function () {
-        $(".loading").show();
-    });
-
-    $("#queryBtn1").click(function () {
+    $("#queryImportDT").click(function () {
         $(".loading").show();
     });
 
@@ -40,18 +36,18 @@ $(function () {
     //导入文件类型判断
     $("#importBtn").click(function () {
         var path = $("#file").val();
-        var cityId = $("#citymenu").val();
+        var cityId = $("#cityId").val();
         $("#areaId").val(cityId);
         var fileType = path.substring(path.lastIndexOf("."), path.length).toLowerCase();
-        if (fileType !== '.zip') {
+        if (fileType !== '.csv' && fileType !== '.zip') {
             $("#info").css("background", "red");
-            showInfoInAndOut("info", "请上传zip格式的数据文件");
+            showInfoInAndOut("info", "请上传csv或者zip格式的数据文件");
             return false;
         }
     });
 
-    $("#formImportNcs").ajaxForm({
-        url: "/api/lte-grid-data/upload-file",
+    $("#file-upload-form").ajaxForm({
+        url: "/api/lte-mr-data/upload-file",
         beforeSend: function () {
             progress.css("display", "block");
             var percentVal = '0%';
@@ -70,49 +66,50 @@ $(function () {
             $("#info").css("background", "green");
             showInfoInAndOut("info", "文件导入成功！");
             //AJAX 提交邻区导入记录查询条件表单
-            $("#searchImportForm").submit();
+            $("#importQuery").submit();
         }
-    });
-
-    //AJAX 提交网格数据导入记录查询条件表单
-    $("#searchImportForm").ajaxForm({
-        url: "/api/lte-grid-data/import-query",
-        success: showLteGridImportResult
-    });
-
-    //AJAX 提交网格数据记录查询条件表单
-    $("#searchNcsForm").ajaxForm({
-        url: "/api/lte-grid-data/data-query",
-        success: showLteGridDataResult
     });
 
     // 当上传文件域改变时，隐藏进度条
     $("input[name='file']").change(function () {
         progress.css("display", "none");
     });
+
+    //AJAX 提交MR数据导入记录查询条件表单
+    $("#importQuery").ajaxForm({
+        url: "/api/lte-mr-data/mr-import-query",
+        success: showNcellImportResult
+    });
+
+    //AJAX 提交Mr数据记录查询条件表单
+    $("#searchMrDtForm").ajaxForm({
+        url: "/api/lte-mr-data/data-query",
+        success: showNcellImportDtResult
+    });
 });
 
-//显示网格数据导入记录查询结果
-function showLteGridImportResult(data) {
+//显示Mr数据导入记录查询结果
+function showNcellImportResult(data) {
     $(".loading").css("display", "none");
     if (data == '') {
         $("#info").css("background", "red");
-        showInfoInAndOut('info', '没有符合条件的网格数据导入记录');
+        showInfoInAndOut('info', '没有符合条件的MR数据导入记录');
     }
 
-    $('#queryResultTab').css("line-height", "12px")
+    $('#queryRecordResTab').css("line-height", "12px")
         .DataTable({
             "data": data,
             "columns": [
-                {data: "areaName"},
-                {data: "uploadTime"},
-                {data: "filename"},
-                {data: "fileSize"},
-                {data: null},
-                {data: null},
-                {data: "createdUser"},
-                {data: null}
-            ], "columnDefs": [{
+                {"data": "areaName"},
+                {"data": "uploadTime"},
+                {"data": "filename"},
+                {"data": "fileSize"},
+                {"data": null},
+                {"data": null},
+                {"data": "createdUser"},
+                {"data": null}
+            ],
+            "columnDefs": [{
                 "render": function (data, type, row) {
                     if (row['startTime'] === "" || row['startTime'] === null) {
                         return "---";
@@ -161,23 +158,24 @@ function showLteGridImportResult(data) {
         });
 }
 
-//显示网格数据查询结果
-function showLteGridDataResult(data) {
+//显示邻区关系数据查询结果
+function showNcellImportDtResult(data) {
     $(".loading").css("display", "none");
     if (data == '') {
         $("#info").css("background", "red");
-        showInfoInAndOut('info', '没有符合条件的网格数据记录');
+        showInfoInAndOut('info', '没有符合条件的Mr数据记录');
     }
 
-    $('#queryResultTab1').css("line-height", "12px")
+    $('#queryDataResultDT').css("line-height", "12px")
         .DataTable({
             "data": data,
             "columns": [
-                {data: "areaName"},
-                {data: "gridType"},
-                {data: "filename"},
-                {data: "recordCount"},
-                {data: "createdDate"}
+                {"data": "areaName"},
+                {"data": "recordDate"},
+                {"data": "vendor"},
+                {"data": "filename"},
+                {"data": "recordCount"},
+                {"data": "createdDate"}
             ],
             "lengthChange": false,
             "ordering": false,
@@ -189,20 +187,13 @@ function showLteGridDataResult(data) {
         });
 }
 
-function showInfoInAndOut(div, info) {
-    var divSet = $("#" + div);
-    divSet.html(info);
-    divSet.fadeIn(2000);
-    setTimeout("$('#" + div + "').fadeOut(2000)", 1000);
-}
-
-//显示导入记录的状态的结果报告
+//显示导入记录的状态的详情
 function showImportDetail(id) {
     $.ajax({
-        url: '/api/lte-grid-data/query-report',
+        url: '/api/lte-mr-data/query-report',
         dataType: 'text',
         data: {id: id},
-        success: function (data) {
+        success:function(data){
             $("#reportDiv").css("display", "block");
             $("#listInfoDiv").css("display", "none");
             $("#reportListTab").css("line-height", "12px")
@@ -231,10 +222,17 @@ function showImportDetail(id) {
     });
 }
 
+function showInfoInAndOut(div, info) {
+    var divSet = $("#" + div);
+    divSet.html(info);
+    divSet.fadeIn(2000);
+    setTimeout("$('#" + div + "').fadeOut(2000)", 1000);
+}
+
 /**
  * 从报告的详情返回列表页面
  */
-function returnToImportList() {
-    $("#reportDiv").css("display", "none");
-    $("#listInfoDiv").css("display", "block");
+function returnToImportList(){
+    $("#reportDiv").css("display","none");
+    $("#listInfoDiv").css("display","block");
 }

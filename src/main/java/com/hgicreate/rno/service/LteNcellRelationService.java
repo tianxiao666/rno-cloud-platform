@@ -2,7 +2,6 @@ package com.hgicreate.rno.service;
 
 import com.hgicreate.rno.domain.Area;
 import com.hgicreate.rno.domain.DataJob;
-import com.hgicreate.rno.domain.NcellDesc;
 import com.hgicreate.rno.mapper.LteNcellRelationQueryMapper;
 import com.hgicreate.rno.repository.DataJobRepository;
 import com.hgicreate.rno.repository.LteNcellDescRepository;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;

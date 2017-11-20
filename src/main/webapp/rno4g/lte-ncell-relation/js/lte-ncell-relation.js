@@ -5,8 +5,6 @@ $(function () {
     // 执行 laydate 实例 
     laydate.render({elem: '#begUploadDate', value: new Date(new Date().getTime() - 7 * 86400000)});
     laydate.render({elem: '#endUploadDate', value: new Date()});
-    laydate.render({elem: '#begUploadDate2', value: new Date(new Date().getTime() - 7 * 86400000)});
-    laydate.render({elem: '#endUploadDate2', value: new Date()});
 
     // 初始化区域联动
     initAreaSelectors({selectors: ["provinceId", "cityId"]});
@@ -120,13 +118,13 @@ $(function () {
 //显示邻区关系查询结果
 function showNcellRelationResult(data) {
     $(".loading").css("display", "none");
-    if (data === '') {
+    if (data == '') {
         $("#info").css("background", "red");
         showInfoInAndOut('info', '没有符合条件的邻区关系');
     }
 
-    $('#queryResultTab').css("line-height", "12px");
-    $('#queryResultTab').DataTable({
+    $('#queryResultTab').css("line-height", "12px")
+    .DataTable({
         "data": data,
         "columns": [
             {"data": "cellName"},
@@ -161,13 +159,13 @@ function showNcellRelationResult(data) {
 //显示邻区关系导入记录查询结果
 function showNcellImportResult(data) {
     $(".loading").css("display", "none");
-    if (data === '') {
+    if (data == '') {
         $("#info").css("background", "red");
         showInfoInAndOut('info', '没有符合条件的邻区关系导入记录');
     }
 
-    $('#queryRecordResTab').css("line-height", "12px");
-    $('#queryRecordResTab').DataTable({
+    $('#queryRecordResTab').css("line-height", "12px")
+    .DataTable({
         "data": data,
         "columns": [
             {"data": "areaName"},
@@ -181,14 +179,13 @@ function showNcellImportResult(data) {
         ],
         "columnDefs": [{
             "render": function (data, type, row) {
-                var d = new Date(parseInt(row['uploadTime'])).Format("yyyy-MM-dd hh:mm:ss");
-                return d;
+                return new Date(parseInt(row['uploadTime'])).Format("yyyy-MM-dd hh:mm:ss");
             },
             "targets": 1,
             "data": null
         }, {
             "render": function (data, type, row) {
-                if (row['startTime'] == "" || row['startTime'] == null) {
+                if (row['startTime'] === "" || row['startTime'] === null) {
                     return "---";
                 } else {
                     return new Date(parseInt(row['startTime'])).Format("yyyy-MM-dd hh:mm:ss");
@@ -198,7 +195,7 @@ function showNcellImportResult(data) {
             "data": null
         }, {
             "render": function (data, type, row) {
-                if (row['completeTime'] == "" || row['completeTime'] == null) {
+                if (row['completeTime'] === "" || row['completeTime'] === null) {
                     return "---";
                 } else {
                     return new Date(parseInt(row['completeTime'])).Format("yyyy-MM-dd hh:mm:ss");
@@ -243,8 +240,8 @@ function showNcellImportDtResult(data) {
         showInfoInAndOut('info', '没有符合条件的邻区数据记录');
     }
 
-    $('#queryDataResultDT').css("line-height", "12px");
-    $('#queryDataResultDT').DataTable({
+    $('#queryDataResultDT').css("line-height", "12px")
+    .DataTable({
         "data": data,
         "columns": [
             {"data": "areaName"},
@@ -274,7 +271,7 @@ function showInfoInAndOut(div, info) {
 function deleteCell(id) {
     $("#info").css("background", "red");
     var r = confirm("删除该邻区关系？");
-    if (r == true) {
+    if (r === true) {
         $.ajax({
             url: '/api/lte-ncell-relation/delete-by-id',
             dataType: 'text',
@@ -298,13 +295,10 @@ function showImportDetail(id) {
         dataType: 'text',
         data: {id: id},
         success:function(data){
-            $("#reportListTab").css("line-height", "12px");
             $("#reportDiv").css("display", "block");
             $("#listInfoDiv").css("display", "none");
-            // if(data.length <=2){
-            //     return;
-            // }
-            $("#reportListTab").DataTable({
+            $("#reportListTab").css("line-height", "12px")
+            .DataTable({
                     "data": JSON.parse(data),
                     "columns": [
                         {"data": "stage"},
@@ -360,8 +354,10 @@ Date.prototype.Format = function (fmt) {
     };
     if (/(y+)/.test(fmt))
         fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-    for (var k in o)
-        if (new RegExp("(" + k + ")").test(fmt))
-            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+    for (var k in o) {
+        if (new RegExp("(" + k + ")").test(fmt)){
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        }
+    }
     return fmt;
-}
+};
