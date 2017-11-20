@@ -164,13 +164,7 @@ function onExpand(event, treeId, treeNode) {
 
 function beforeEditName(treeId, treeNode) {
     zTree.selectNode(treeNode);
-    setTimeout(function() {
-        if (confirm("进入节点 -- " + treeNode.name + " 的编辑状态吗？")) {
-            setTimeout(function() {
-                zTree.editName(treeNode);
-            }, 0);
-        }
-    }, 0);
+    zTree.editName(treeNode);
     return false;
 }
 function beforeRemove(treeId, treeNode) {
