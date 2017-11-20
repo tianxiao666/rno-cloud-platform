@@ -26,11 +26,11 @@ spring:
 
 rno:
     ftp:
-        host: localhost
+        host: 192.168.9.78
         port: 21
-        username: test
-        password: test
-        remote-path: /var/rno4g/data
+        username: rnoftp
+        password: rnodev
+        remote-path: /var/rno/data
     app-code: rno4g
     path:
         upload-files: d:/tmp/rno-cloud-platform/uploads

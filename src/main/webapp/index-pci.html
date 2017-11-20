@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+
+    <link rel="stylesheet" href="lib/bootstrap/3.3.7/css/bootstrap.css">
+    <link rel="stylesheet" href="lib/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="lib/sb-admin2-sidebar-toggle-collapse/css/sb-admin-2.css">
+    <link rel="stylesheet" href="css/index-pci.css">
+
+    <script src="lib/jquery/3.2.1/jquery.js"></script>
+    <script src="lib/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="js/extend.js"></script>
+    <script src="js/index-pci.js"></script>
+
+    <!--由于在 index-pci.js 中动态生成菜单，所以 sb-admin-2.js 需放在最后-->
+    <script src="lib/sb-admin2-sidebar-toggle-collapse/js/sb-admin-2.js"></script>
+</head>
+<body>
+<header>
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-brand" id="system-name"></a>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <div class="menu-toggler sidebar-toggler">
+
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </div>
+
+            <ul class="nav navbar-top-links navbar-right">
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" >
+                        <i class="fa fa-user fa-fw"></i> <span id="username">网优开发</span>
+                        <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#"><i class="fa fa-user fa-fw"></i> 用户信息</a>
+                        </li>
+                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> 设置</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i> 注销</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+            <!-- /.navbar-top-links -->
+        </div>
+        <!-- /.navbar-header -->
+    </nav>
+</header>
+
+<div id="wrapper">
+    <!-- Navigation --><!--SideBar侧边栏-->
+    <nav role="navigation" style="margin-top: 51px ">
+        <div class="navbar sidebar" role="navigation">
+            <div class="sidebar-nav navbar-collapse" id="sidebar-area">
+                <ul class="nav" id="sidebar">
+                </ul>
+            </div>
+            <!-- /.sidebar-collapse -->
+        </div>
+        <!-- /.navbar-static-side -->
+    </nav>
+
+    <!-- Page Content -->
+    <div id="page-wrapper">
+        <div class="page-content">
+            <div class="row" >
+                <div class="col-lg-12">
+                    <div style="margin-left: -25px;margin-right:-25px">
+                        <ul class="closeable-tabs nav nav-tabs">
+
+                        </ul>
+                    </div>
+                    <div class="tab-content" style="margin-left: -25px;margin-right:-25px" id="mainDiv">
+                        <div id="workZonesiteFrame_">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="footermaindiv">
+    <div id="footer">
+        <div class="copyright">2017 © 广东海格怡创科技有限公司</div>
+    </div>
+</div>
+</body>
+</html>
