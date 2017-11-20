@@ -163,7 +163,7 @@ function showNcellImportDtResult(data) {
     $(".loading").css("display", "none");
     if (data == '') {
         $("#info").css("background", "red");
-        showInfoInAndOut('info', '没有符合条件的Ho切换数据记录');
+        showInfoInAndOut('info', '没有符合条件的切换数据记录');
     }
 
     $('#queryDataResultDT').css("line-height", "12px")
