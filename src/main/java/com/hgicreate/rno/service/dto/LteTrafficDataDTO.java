@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class LteTrafficDataDTO {
+    private Long id;
     private String uploadTime;
     private String areaName;
     private String filename;

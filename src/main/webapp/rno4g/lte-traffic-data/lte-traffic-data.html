@@ -18,7 +18,7 @@
     <script src="js/lte-traffic-data.js"></script>
 </head>
 <body>
-<b>当前位置：业务分析优化 &gt;  网络统计数据管理  </b>
+<b>当前位置：业务分析优化 &gt; 网络统计数据管理 </b>
 <div id="info" class="info-style" style="display: none"></div>
 <div id="tabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
     <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
@@ -26,7 +26,7 @@
             <a href="#tabs-1" class="ui-tabs-anchor" tabindex="0" id="ui-id-1">网络统计数据导入</a>
         </li>
         <li class="ui-state-default ui-corner-top" role="tab" tabindex="1">
-            <a href="#tabs-2" class="ui-tabs-anchor" tabindex="1" id="ui-id-2">网络统计数据查询 </a>
+            <a href="#tabs-2" class="ui-tabs-anchor" tabindex="1" id="ui-id-2">网络统计数据查询</a>
         </li>
     </ul>
     <div id="tabs-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom">
@@ -99,11 +99,12 @@
                         </tbody>
                     </table>
                     <div align="center" style="margin: 6px; width: 700px;">
-                        <input value=" 导 入 " id="traffic-import" type="submit" class="btn btn-default" style="width: 120px">
+                        <input value=" 导 入 " id="traffic-import" type="submit" class="btn btn-default"
+                               style="width: 120px">
                     </div>
                     <div class="upload-progress">
-                        <div class="bar"></div >
-                        <div class="percent">0%</div >
+                        <div class="bar"></div>
+                        <div class="percent">0%</div>
                     </div>
                 </form>
             </div>
@@ -125,9 +126,28 @@
                 </table>
             </div>
         </div>
+        <div id="reportDiv" style="display:none">
+            <ul id="icons" class="ui-widget ui-helper-clearfix" style="width:100px;cursor:pointer">
+                <li class="ui-state-default ui-corner-all" title="返回列表" style="width:100px"
+                    onclick="returnToImportList();">
+                    <span class="ui-icon ui-icon-arrowreturnthick-1-w" style="width:20px"></span>返回列表
+                </li>
+            </ul>
+            <table id="reportListTab" class="display rnoHeader" cellspacing="0" style="width:100%;">
+                <thead>
+                <tr>
+                    <th>阶段</th>
+                    <th>开始时间</th>
+                    <th>结束时间</th>
+                    <th>结果</th>
+                    <th>详细信息</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
     </div>
-    <div id="tabs-2" class="ui-tabs-panel ui-widget-content ui-corner-bottom" style="display: none;">
-        <form id="searchMrForm">
+    <div id="tabs-2" class="ui-tabs-panel ui-widget-content ui-corner-bottom" style="display: none">
+        <form id="searchRecordForm" method="post">
             <table>
                 <tbody>
                 <tr>
@@ -137,18 +157,19 @@
                     </td>
                     <td style="padding-left:10px">测试时间 从:</td>
                     <td>
-                        <input id="beginTestDate" class="hasDatepicker" type="text" title=""> 至：
-                        <input id="endTestDate" class="hasDatepicker" type="text" title="">
+                        <input id="beginTestDate" name="beginTestDate" class="hasDatepicker" type="text" title=""> 至：
+                        <input id="endTestDate" name="endTestDate" class="hasDatepicker" type="text" title="">
                     </td>
                     <td style="padding-left:10px">
-                        <input id="searchDtBtnDT" value="查询" type="button">
+                        <input id="searchTraffice" value="查 询" type="submit">
                     </td>
                 </tr>
                 </tbody>
             </table>
         </form>
+        <div style="height: 10px"></div>
         <div class="sectionDivCls">
-            <table id="dtDataResultDT" class="display rnoHeader" cellspacing="0" width="100%">
+            <table id="recordResult" class="display rnoHeader" cellspacing="0" width="100%">
                 <thead>
                 <tr>
                     <th>地市</th>

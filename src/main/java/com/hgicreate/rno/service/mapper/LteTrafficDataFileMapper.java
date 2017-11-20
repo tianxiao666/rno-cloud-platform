@@ -20,7 +20,8 @@ public interface LteTrafficDataFileMapper {
             @Mapping(source = "startTime", target = "startTime",dateFormat = "yyyy-MM-dd HH:mm:ss"),
             @Mapping(source = "completeTime", target = "completeTime",dateFormat = "yyyy-MM-dd HH:mm:ss"),
             @Mapping(source = "createdUser", target = "createdUser"),
-            @Mapping(source = "status", target = "status")
+            @Mapping(source = "status", target = "status"),
+            @Mapping(source = "id", target = "id")
     })
     LteTrafficDataDTO lteTrafficDataFileToLteTrafficDataDTO(DataJob dataJob);
 }

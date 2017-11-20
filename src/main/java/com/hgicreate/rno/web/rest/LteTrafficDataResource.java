@@ -4,18 +4,24 @@ import com.hgicreate.rno.domain.Area;
 import com.hgicreate.rno.domain.DataJob;
 import com.hgicreate.rno.domain.OriginFile;
 import com.hgicreate.rno.domain.OriginFileAttr;
+import com.hgicreate.rno.repository.DataJobReportRepository;
 import com.hgicreate.rno.repository.DataJobRepository;
 import com.hgicreate.rno.repository.OriginFileAttrRepository;
 import com.hgicreate.rno.repository.OriginFileRepository;
 import com.hgicreate.rno.security.SecurityUtils;
 import com.hgicreate.rno.service.LteTrafficDataService;
+import com.hgicreate.rno.service.dto.DataJobReportDTO;
 import com.hgicreate.rno.service.dto.LteTrafficDataDTO;
+import com.hgicreate.rno.service.dto.LteTrafficDescDTO;
+import com.hgicreate.rno.service.mapper.DataJobReportMapper;
+import com.hgicreate.rno.web.rest.vm.LteTrafficDataDescVM;
 import com.hgicreate.rno.web.rest.vm.LteTrafficFileUploadVM;
 import com.hgicreate.rno.web.rest.vm.LteTrafficImportQueryVM;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,6 +34,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -40,20 +47,37 @@ public class LteTrafficDataResource {
     private final DataJobRepository dataJobRepository;
     private  final OriginFileRepository originFileRepository;
     private  final OriginFileAttrRepository originFileAttrRepository;
+    private final DataJobReportRepository dataJobReportRepository;
 
     public LteTrafficDataResource(LteTrafficDataService lteTrafficDataService, DataJobRepository dataJobRepository,
+                                  DataJobReportRepository dataJobReportRepository,
                                   OriginFileRepository originFileRepository,OriginFileAttrRepository originFileAttrRepository) {
         this.lteTrafficDataService = lteTrafficDataService;
         this.originFileRepository = originFileRepository;
         this.originFileAttrRepository = originFileAttrRepository;
         this.dataJobRepository = dataJobRepository;
+        this.dataJobReportRepository = dataJobReportRepository;
     }
 
     @PostMapping("/query-import")
     public List<LteTrafficDataDTO> queryImport(LteTrafficImportQueryVM vm) throws ParseException {
         log.debug("查询 DT 文件导入记录。");
         log.debug("视图模型: " + vm);
-        return lteTrafficDataService.queryTrafficDataCollectDTOs(vm);
+        return lteTrafficDataService.queryTrafficData(vm);
+    }
+
+    @GetMapping("/query-report")
+    public List<DataJobReportDTO> queryReport(String id){
+        log.debug("查询任务报告的任务id：{}",id);
+        return dataJobReportRepository.findByDataJob_Id(Long.parseLong(id))
+                .stream().map(DataJobReportMapper.INSTANCE::dataJobReportToDataJobReportDTO)
+                .collect(Collectors.toList());
+    }
+
+    @PostMapping("/query-record")
+    public List<LteTrafficDescDTO> queryRecord(LteTrafficDataDescVM vm) throws ParseException{
+        log.debug("视图模型vm ={}", vm);
+        return lteTrafficDataService.queryRecord(vm);
     }
 
     /**
