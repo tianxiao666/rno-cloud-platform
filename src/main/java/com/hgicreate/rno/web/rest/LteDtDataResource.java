@@ -14,14 +14,18 @@ import com.hgicreate.rno.service.dto.DataJobReportDTO;
 import com.hgicreate.rno.service.dto.LteDtDataFileDTO;
 import com.hgicreate.rno.service.dto.LteDtDescDTO;
 import com.hgicreate.rno.service.mapper.DataJobReportMapper;
+import com.hgicreate.rno.util.FtpUtils;
 import com.hgicreate.rno.web.rest.vm.LteDtDescVM;
-import com.hgicreate.rno.web.rest.vm.LteDtImportQueryVM;
 import com.hgicreate.rno.web.rest.vm.LteDtFileUploadVM;
+import com.hgicreate.rno.web.rest.vm.LteDtImportQueryVM;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -38,9 +42,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/lte-dt-data")
 public class LteDtDataResource {
 
-    @Value("${rno.path.upload-files}")
-    private String directory;
-
     private final LteDtDataService lteDtDataService;
     private final DataJobRepository dataJobRepository;
     private final DataJobReportRepository dataJobReportRepository;
@@ -48,13 +49,20 @@ public class LteDtDataResource {
     private  final OriginFileRepository originFileRepository;
     private  final OriginFileAttrRepository originFileAttrRepository;
 
-    public LteDtDataResource(LteDtDataService lteDtDataService, OriginFileRepository originFileRepository,
-                             OriginFileAttrRepository originFileAttrRepository, DataJobRepository dataJobRepository, DataJobReportRepository dataJobReportRepository) {
+    private final Environment env;
+
+    public LteDtDataResource(LteDtDataService lteDtDataService,
+                             OriginFileRepository originFileRepository,
+                             OriginFileAttrRepository originFileAttrRepository,
+                             DataJobRepository dataJobRepository,
+                             DataJobReportRepository dataJobReportRepository,
+                             Environment env) {
         this.lteDtDataService = lteDtDataService;
         this.originFileRepository = originFileRepository;
         this.originFileAttrRepository = originFileAttrRepository;
         this.dataJobRepository = dataJobRepository;
         this.dataJobReportRepository = dataJobReportRepository;
+        this.env = env;
     }
 
     @PostMapping("/query-import")
@@ -84,6 +92,7 @@ public class LteDtDataResource {
             OriginFileAttr originFileAttr1 = new OriginFileAttr();
             OriginFileAttr originFileAttr2 = new OriginFileAttr();
             // 如果目录不存在则创建目录
+            String directory = env.getProperty("rno.path.upload-files");
             File fileDirectory = new File(directory + "/" + vm.getModuleName());
             if (!fileDirectory.exists() && !fileDirectory.mkdirs()) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -135,6 +144,10 @@ public class LteDtDataResource {
                     new BufferedOutputStream(new FileOutputStream(new File(filepath)));
             stream.write(vm.getFile().getBytes());
             stream.close();
+
+            // 保存文件到FTP
+            String ftpFullPath = FtpUtils.sendToFtp(vm.getModuleName(), filepath, true, env);
+            log.debug("获取FTP文件的全路径：{}", ftpFullPath);
 
             //建立任务
             DataJob dataJob = new DataJob();
