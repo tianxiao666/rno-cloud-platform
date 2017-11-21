@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("/api")
@@ -23,7 +26,19 @@ public class AppResource {
     }
 
     @GetMapping("/app-info")
-    public App getAppInfo() {
-        return appRepository.findAllByCode(code).get(0);
+    public App getAppInfo(HttpServletRequest request) {
+        String url = request.getServerName();
+        log.debug("URL : {}", url);
+        String[] array = url.split("\\.");
+
+        // 查询数据是否有和url前缀同名的应用
+        List<App> list = appRepository.findAllByCode(array[0]);
+
+        // 如果有则以返回url前缀的应用
+        if (list.size() > 0) {
+            return list.get(0);
+        } else {
+            return appRepository.findAllByCode(code).get(0);
+        }
     }
 }

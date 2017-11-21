@@ -22,7 +22,7 @@ $(function () {
         dataType: "json",
         async: false,
         success: function (data) {
-            renderMenu(data);
+            renderMenu(data.menus);
         }
     });
 

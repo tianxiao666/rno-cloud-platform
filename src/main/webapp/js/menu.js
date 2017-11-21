@@ -418,9 +418,9 @@ function submitMenu() {
     var submitDataList = transformJSONtoeachJSON();
     $.ajax({
         type: 'POST',
-        url: "/api/submit-menu",
+        url: "/api/submit-menu?appId=" + $("#appId").text(),
         contentType: "application/json", //必须有
-        data:JSON.stringify(submitDataList),
+        data: JSON.stringify(submitDataList),
         success: function(data){
             alert("完成提交");
         },
@@ -430,7 +430,6 @@ function submitMenu() {
     });
 }
 
-
 var zTree, rMenu;
 $(document).ready(function(){
     $.ajax({
@@ -438,7 +437,8 @@ $(document).ready(function(){
         dataType:'json',
         url: "/api/query-menus",
         success: function(data){
-            zNodes = data;
+            $("#appId").text(data.appId);
+            zNodes = data.menus;
             zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, zNodes);
             zTree = $.fn.zTree.getZTreeObj("treeDemo");
             rMenu = $("#rMenu");
@@ -446,15 +446,5 @@ $(document).ready(function(){
         error: function (err) {
             console.log("读取出错");
         }
-    });
-    $.ajax({
-        type: 'GET',
-        url: "/api/query-appId",
-        success: function(data){
-            $("#appId").text(data);
-        },
-        error: function (err) {
-            console.log("读取AppId出错");
-        }
-    });
+    })
 });
