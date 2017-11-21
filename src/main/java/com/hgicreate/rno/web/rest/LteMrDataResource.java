@@ -172,7 +172,7 @@ public class LteMrDataResource {
             dataJob.setCreatedDate(new Date());
             dataJob.setStatus("等待处理");
             dataJob.setDataStorePath(ftpFullPath);
-            dataJob.setDataStoreType("ftp");
+            dataJob.setDataStoreType("FTP");
             dataJobRepository.save(dataJob);
         } catch (Exception e) {
             System.out.println(e.getMessage());
