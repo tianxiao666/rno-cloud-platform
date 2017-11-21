@@ -15,8 +15,11 @@ public class OriginFileAttr {
     @SequenceGenerator(name = "OriginFileAttrSeq", sequenceName = "SEQ_ORIGIN_FILE_ATTR", allocationSize = 1)
     private Long id;
 
-    private Long originFileId;
     private String name;
     private String value;
+
+    @ManyToOne
+    @JoinColumn(name = "origin_file_id")
+    private OriginFile originFile;
 
 }

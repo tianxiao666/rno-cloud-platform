@@ -20,7 +20,6 @@ public class OriginFile {
     private Integer fileSize;
     private String fullPath;
     private String dataType;
-    private Integer dataAttr;
     private String sourceType;
     private String createdUser;
     private Date createdDate;
