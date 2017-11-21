@@ -3,6 +3,7 @@ package com.hgicreate.rno.service;
 import com.hgicreate.rno.domain.App;
 import com.hgicreate.rno.repository.AppRepository;
 import com.hgicreate.rno.service.dto.AppDTO;
+import com.hgicreate.rno.service.dto.AppNameDTO;
 import com.hgicreate.rno.service.mapper.AppMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -21,28 +24,23 @@ public class AppService {
         this.appRepository = appRepository;
     }
 
-    public List<String> getAllName(){
-        List<String> result = new ArrayList<>();
-        List<App> apps = appRepository.findAll();
-        for (App app: apps) {
-            result.add(app.getName());
-        }
-        return result;
+    public List<AppNameDTO> getAllName(){
+        return appRepository.findAll().stream().map(AppMapper.INSTANCE::appToAppNameDTO).collect(Collectors.toList());
     }
 
-    public AppDTO getAppByName(String name){
-        List<App> apps = appRepository.findByName(name);
-        return AppMapper.INSTANCE.appToAppDTO(apps.get(0));
+    public AppDTO getAppById(Long id){
+        return AppMapper.INSTANCE.appToAppDTO(appRepository.findById(id));
     }
 
-    public String updateApp(App app){
+    public Long updateApp(App app){
         appRepository.save(app);
-        return "success";
+        Long id = appRepository.findAllByCode(app.getCode()).get(0).getId();
+        System.out.println("id = " + id);
+        return id;
     }
 
-    public String deleteAppByName(String name){
-        List<App> list = appRepository.findByName(name);
-        appRepository.delete(list.get(0).getId());
+    public String deleteAppById(Long id){
+        appRepository.delete(id);
         return "success";
     }
 }

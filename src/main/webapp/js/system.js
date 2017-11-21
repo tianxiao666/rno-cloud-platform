@@ -2,6 +2,7 @@ var editHTML;
 var submitStatus=true;
 var appId;
 var appCode;
+var appNames;
 function editThis(obtn){
     if ($(obtn).text() === "rno") {
         alert("禁止修改rno！");
@@ -54,7 +55,8 @@ $(document).ready(function() {
     bindEvent();
     //clearAll();
     getAppNameList();
-
+    appId=$("#appNameList").val();
+    getAppById(appId);
 
 });
 
@@ -71,6 +73,7 @@ function bindEvent(){
         submitStatus=true;
         clearAll();
         getAppNameList();
+        getAppById(appId);
     });
 
     //提交记录
@@ -95,8 +98,8 @@ function bindEvent(){
         if(submitStatus){
             var flag=confirm("确定要删除《"+$("#appNameList").find("option:selected").text()+"》的场景信息吗？");
             if(flag===false) return false;
-            var appName=$("#appNameList").val();
-            deleteAppInfo(appName);
+            appId=$("#appNameList").val();
+            deleteAppInfo(appId);
         }
     });
 
@@ -139,19 +142,21 @@ function initAppTable(){
 /**
  * 删除系统记录
  */
-function deleteAppInfo(appName){
+function deleteAppInfo(appId){
     showOperTips("loadingDataDiv", "loadContentId", "正在删除");
     $.ajax({
         type:'post',
-        url : '/api/deleteAppByName',
+        url : '/api/deleteAppById',
         data:{
-            'appName':appName
+            'appId':appId
         },
         dataType : 'text',
         success : function(raw) {
             if(raw){
                 if(raw==="success"){
                     getAppNameList();
+                    //返回第一个系统选项，id为1
+                    getAppById(1);
                 }
             }
         },
@@ -184,32 +189,31 @@ function getAppNameList(){
         success : function(raw) {
             //console.log(raw);
             fillSelectList("appNameTd","appNameList",raw);
-
+            appId=$("#appNameList").val();
         },
         complete : function() {
-            var appName=$("#appNameList").val();
-            getAppListByName(appName);
+            appId=$("#appNameList").val();
             //hideOperTips("loadingDataDiv");
         }
     });
 }
 //系统名称选择事件
 $("#appNameList").live("change",function(){
-    var appName=$("#appNameList").val();
-    getAppListByName(appName);
+    appId=$("#appNameList").val();
+    getAppById(appId);
 });
 
 /*
 *   根据系统名称查找系统信息
 * */
-function getAppListByName(appName){
+function getAppById(appId){
     clearAll();
     var data={
-        'appName':appName
+        'appId':appId
     };
     $.ajax({
         type:'post',
-        url : '/api/getAppListByName',
+        url : '/api/getAppById',
         data:data,
         dataType : 'text',
         success : function(raw) {
@@ -257,12 +261,12 @@ function fillSelectList(selectParentId,selectId,raw){
     //清空下拉框
     selectParent.empty();
     if(raw){
-        var data =  JSON.parse(raw);
+        var data = eval("(" + raw + ")");
         //console.log(data);
         if (data === null || data === undefined) {
             return;
         }
-        //sysCodes = data;
+        appNames = data;
         var selectStr="<select 	name='cond[appNameList]' id='"+selectId+"'></select>";
         selectParent.append(selectStr);
         var select=$("#"+selectId);
@@ -271,9 +275,10 @@ function fillSelectList(selectParentId,selectId,raw){
             var str = "";
             var one = "";
             one = data[i];
-            str="<option value='"+getValidValue(one, '')+"'>"+getValidValue(one, '')+"</option>";
+            str="<option value='"+getValidValue(one['appId'], '')+"'>"+getValidValue(one['appName'], '')+"</option>";
             select.append(str);
         }
+        $("#"+selectId).val(appId);
     }
 }
 
@@ -317,9 +322,9 @@ function updateAppInfo(appDataMap){
         dataType : 'text',
         success : function(raw) {
             if(raw){
-                if(raw==="success"){
-                    getAppNameList();
-                }
+                getAppNameList();
+                appId = raw;
+                getAppById(appId);
             }
         },
         error:function(XMLResponse){
@@ -327,6 +332,7 @@ function updateAppInfo(appDataMap){
         },
         complete : function() {
             hideOperTips("loadingDataDiv");
+
         }
     });
 }
