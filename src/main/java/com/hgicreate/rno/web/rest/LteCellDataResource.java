@@ -33,9 +33,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/lte-cell-data")
 public class LteCellDataResource {
 
-    @Value("${rno.path.upload-files}")
-    private String directory;
-
     private final OriginFileRepository originFileRepository;
 
     private final DataJobRepository dataJobRepository;
@@ -110,12 +107,13 @@ public class LteCellDataResource {
             OriginFile originFile = new OriginFile();
             originFile.setFilename(filename);
             // 如果目录不存在则创建目录
+            String directory = env.getProperty("rno.path.upload-files");
             File file = new File(directory + "/" + vm.getModuleName());
             if (!file.exists() && !file.mkdirs()) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             // 以随机的 UUID 为文件名存储在本地
-            if(filename.endsWith(".csv")){
+            if("application/vnd.ms-excel".equals(vm.getFile().getContentType())){
                 filename = UUID.randomUUID().toString() +".csv";
                 originFile.setFileType("CSV");
             }else{
