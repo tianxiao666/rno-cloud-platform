@@ -39,4 +39,10 @@ public class AppService {
         appRepository.save(app);
         return "success";
     }
+
+    public String deleteAppByName(String name){
+        List<App> list = appRepository.findByName(name);
+        appRepository.delete(list.get(0).getId());
+        return "success";
+    }
 }

@@ -64,4 +64,9 @@ public class AppResource {
     public String updateApp(App app){
         return appService.updateApp(app);
     }
+
+    @PostMapping("/deleteAppByName")
+    public String deleteAppByName(String appName){
+        return appService.deleteAppByName(appName);
+    }
 }

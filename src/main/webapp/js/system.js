@@ -1,9 +1,14 @@
 var editHTML;
 var submitStatus=true;
 var appId;
+var appCode;
 function editThis(obtn){
+    if ($(obtn).text() === "rno") {
+        alert("禁止修改rno！");
+        return false;
+    }
     editText = $(obtn).html().trim(); // 取得表格单元格的文本
-    setEditHTML(editText); // 初始化控件
+    setEditHTML(editText,obtn); // 初始化控件
     $(obtn).data("oldtxt", editText);  // 将单元格原文本保存在其缓存中，便修改失败或取消时用
     $(obtn).html(editHTML); // 改变单元格内容为编辑状态
     $(obtn).removeAttr("onclick"); // 删除单元格单击事件，避免多次单击
@@ -12,17 +17,22 @@ function editThis(obtn){
 }
 
 //点击td转换可编辑
-function setEditHTML(value) {
-    editHTML = '<input id="editTd" type="text" maxlength="10" onBlur="ok(this)" value="'
-        + value + '" />';
-
+function setEditHTML(value, obtn) {
+    if ($(obtn).attr("id") === "appDescription"){
+        editHTML = '<textarea id="editTd" type="text" style="width: 100%;" maxlength="100" onBlur="ok(this)" value="'
+            + value + '" >' + value + '</textarea>';
+    }else {
+        editHTML = '<input id="editTd" type="text" maxlength="40" onBlur="ok(this)" value="'
+            + value + '" />';
+    }
 }
 
 // 修改
 function ok(obtn) {
+    var value;
     var $obj = $(obtn).parent(); //div
     var spanvalue=$(obtn).parent().parent().find("span").html();
-    var value = $obj.find("input:text")[0].value; // 取得文本框的值，即新数据
+    value = $(obtn).val();
     if (value === "") {
         value = "   ";
     }
@@ -50,10 +60,10 @@ $(document).ready(function() {
 
 function bindEvent(){
     $("#flashtable").click(function() {
-        var flag = confirm("确定刷新页面？你将放弃所有未提交的修改。");
+        /*var flag = confirm("确定刷新页面？你将放弃所有未提交的修改。");
         if (flag === false){
             return false;
-        }
+        }*/
         //添加记录
        $("#addApp").bind("click",function(){
             initAppTable();
@@ -66,6 +76,10 @@ function bindEvent(){
     //提交记录
     $("#submitalter").bind("click",function(){
         //console.log(submitStatus);
+        var flag = confirm("将新增以及修改的数据提交？");
+        if (flag === false){
+            return false;
+        }
         chooseTask();
     });
 
@@ -74,10 +88,14 @@ function bindEvent(){
 
     //删除记录
     $("#deleteApp").click(function(){
-        var appName=$("#appNameList").val();
+        if (appCode === "rno"){
+            alert("禁止删除rno！");
+            return false;
+        }
         if(submitStatus){
             var flag=confirm("确定要删除《"+$("#appNameList").find("option:selected").text()+"》的场景信息吗？");
             if(flag===false) return false;
+            var appName=$("#appNameList").val();
             deleteAppInfo(appName);
         }
     });
@@ -152,7 +170,7 @@ function clearAll(){
 
 
 /**
- * 初始化系统CODE列表
+ * 初始化系统名称
  */
 function getAppNameList(){
     /*$("#addSys").bind("click",function(){
@@ -214,6 +232,7 @@ function showAppInfo(raw){
     if (raw) {
         var data = eval("(" + raw + ")");
         appId = data['appId'];
+        appCode = data['appCode'];
         if (data === null || data === undefined) {
             return;
         }
@@ -299,9 +318,7 @@ function updateAppInfo(appDataMap){
         success : function(raw) {
             if(raw){
                 if(raw==="success"){
-                    //var sceneType=$("#sceneTypeList").val();
-                    var appName=$("#sceneNameList").val();
-                    getSceneInfoTask(appName);
+                    getAppNameList();
                 }
             }
         },
