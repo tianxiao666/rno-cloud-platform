@@ -92,6 +92,8 @@ public class LteCellDataResource {
             cellVM.setCellName(cell1.getCellName());
             cellVM.setEnodebId(cell1.getEnodebId());
             cellVM.setArea(cell1.getArea());
+            cellVM.setBandIndicator(cell1.getBandIndicator());
+            cellVM.setBandAmount(cell1.getBandAmount());
             cellVM.setLastModifiedUser(SecurityUtils.getCurrentUserLogin());
             cellVM.setLastModifiedDate(new Date());
             lteCellDataRepository.save(cellVM);
