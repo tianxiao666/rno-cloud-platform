@@ -19,10 +19,10 @@ function editThis(obtn){
 //点击td转换可编辑
 function setEditHTML(value, obtn) {
     if ($(obtn).attr("id") === "appDescription"){
-        editHTML = '<textarea id="editTd" type="text" style="width: 100%;" maxlength="100" onBlur="ok(this)" value="'
+        editHTML = '<textarea id="editTd" type="text" style="width: 100%; height: 300px;" onBlur="ok(this)" value="'
             + value + '" >' + value + '</textarea>';
     }else {
-        editHTML = '<input id="editTd" type="text" maxlength="40" onBlur="ok(this)" value="'
+        editHTML = '<input id="editTd" type="text" onBlur="ok(this)" value="'
             + value + '" />';
     }
 }
