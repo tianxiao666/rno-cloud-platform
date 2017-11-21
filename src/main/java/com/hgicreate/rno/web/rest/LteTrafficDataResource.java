@@ -14,11 +14,13 @@ import com.hgicreate.rno.service.dto.DataJobReportDTO;
 import com.hgicreate.rno.service.dto.LteTrafficDataDTO;
 import com.hgicreate.rno.service.dto.LteTrafficDescDTO;
 import com.hgicreate.rno.service.mapper.DataJobReportMapper;
+import com.hgicreate.rno.util.FtpUtils;
 import com.hgicreate.rno.web.rest.vm.LteTrafficDataDescVM;
 import com.hgicreate.rno.web.rest.vm.LteTrafficFileUploadVM;
 import com.hgicreate.rno.web.rest.vm.LteTrafficImportQueryVM;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,14 +51,19 @@ public class LteTrafficDataResource {
     private  final OriginFileAttrRepository originFileAttrRepository;
     private final DataJobReportRepository dataJobReportRepository;
 
+    private final Environment env;
+
     public LteTrafficDataResource(LteTrafficDataService lteTrafficDataService, DataJobRepository dataJobRepository,
                                   DataJobReportRepository dataJobReportRepository,
-                                  OriginFileRepository originFileRepository,OriginFileAttrRepository originFileAttrRepository) {
+                                  OriginFileRepository originFileRepository,
+                                  OriginFileAttrRepository originFileAttrRepository,
+                                  Environment env) {
         this.lteTrafficDataService = lteTrafficDataService;
         this.originFileRepository = originFileRepository;
         this.originFileAttrRepository = originFileAttrRepository;
         this.dataJobRepository = dataJobRepository;
         this.dataJobReportRepository = dataJobReportRepository;
+        this.env = env;
     }
 
     @PostMapping("/query-import")
@@ -115,37 +122,33 @@ public class LteTrafficDataResource {
 
             log.debug("存储的文件名：{}", filename);
 
-            //更新文件记录RNO_ORIGIN_FILE_Attr
-            OriginFileAttr originFileAttr = new OriginFileAttr();
-            //获取属性表当前关联字段值
-            Integer originFileId = 1;
-            Integer flag = originFileAttrRepository.getOriginFileAttrNum();
-            if(flag == null){
-                originFileAttr.setOriginFileId((long)originFileId);
-            }else {
-                originFileId = flag + 1;
-                originFileAttr.setOriginFileId((long)originFileId);
-            }
-            originFileAttr.setName("business_type");
-            originFileAttr.setValue(vm.getBusiness_type());
-            originFileAttrRepository.save(originFileAttr);
-
             //更新文件记录RNO_ORIGIN_FILE
             originFile.setFilename(vm.getFile().getOriginalFilename());
             originFile.setDataType(vm.getModuleName().toUpperCase());
             originFile.setFullPath(filepath);
             originFile.setFileSize((int)vm.getFile().getSize());
             originFile.setSourceType(vm.getSourceType());
-            originFile.setDataAttr(originFileId);
             originFile.setCreatedUser(SecurityUtils.getCurrentUserLogin());
             originFile.setCreatedDate(new Date());
             originFileRepository.save(originFile);
+
+            //更新文件记录RNO_ORIGIN_FILE_Attr
+            OriginFileAttr originFileAttr = new OriginFileAttr();
+            //更新文件记录RNO_ORIGIN_FILE_ATTR
+            originFileAttr.setOriginFile(originFile);
+            originFileAttr.setName("business_type");
+            originFileAttr.setValue(vm.getBusiness_type());
+            originFileAttrRepository.save(originFileAttr);
 
             // 保存文件到本地
             BufferedOutputStream stream =
                     new BufferedOutputStream(new FileOutputStream(new File(filepath)));
             stream.write(vm.getFile().getBytes());
             stream.close();
+
+            // 保存文件到FTP
+            String ftpFullPath = FtpUtils.sendToFtp(vm.getModuleName(), filepath, true, env);
+            log.debug("获取FTP文件的全路径：{}", ftpFullPath);
 
             //建立任务
             DataJob dataJob = new DataJob();
@@ -159,6 +162,8 @@ public class LteTrafficDataResource {
             dataJob.setPriority(2);
             dataJob.setCreatedUser(SecurityUtils.getCurrentUserLogin());
             dataJob.setStatus("等待处理");
+            dataJob.setDataStoreType("FTP");
+            dataJob.setDataStorePath(ftpFullPath);
             dataJobRepository.save(dataJob);
 
         } catch (Exception e) {
