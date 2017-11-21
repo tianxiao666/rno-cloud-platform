@@ -7,34 +7,120 @@
     <link rel="stylesheet" href="lib/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/system.css">
 
-    <script src="lib/jquery/3.2.1/jquery.js"></script>
+    <script src="lib/jquery/1.8.2/jquery.js"></script>
     <script src="js/system.js"></script>
+    <script src="lib/rno/selftools.js"></script>
 </head>
 <body>
 <div class="container">
     <div class="row">
         <div class="col-md-6">
-            <form>
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Email address</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+            <div class="loading_cover" id="loadingDataDiv" style="display: none;">
+                <div class="cover"></div>
+                <h4 class="loading">
+                    <em class="loading_fb" id="loadContentId">正在查询</em>,请稍侯...
+                </h4>
+            </div>
+
+            <div style="text-align: center;">
+                <span style="font-weight: bold;font-size:16px">RNO系统管理</span> <br>
+            </div>
+            <div id="displayAppInfoDiv" style="padding-top: 10px">
+                <div id="appAction" align="center">
+                    <div id="optionsDiv">
+                        <table class="options" cellspacing="0" cellpadding="0" border="0">
+                            <tbody>
+                            <tr>
+                                <td><input value="刷新" style="width: 120px;" id="flashtable" name="flashtable"
+                                           type="button" title="刷新页面的内容，未提交的修改将消失。"></td>
+                                <td><input value="删除" style="width: 120px;" id="deleteApp" name="deleteApp"
+                                           type="button" title="删除当前的系统信息"></td>
+                                <td><input value="新增" style="width: 120px;" id="addApp" name="addApp"
+                                           type="button" title="添加新系统"></td>
+                                <td><input value="提交" style="width: 120px;" id="submitalter" name="submitalter"
+                                           type="button" title="修改系统信息或添加新系统后提交更改"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div style="padding-top: 10px">
+                        <br>
+                        <table id="appSelect">
+                            <tbody>
+                            <tr>
+                                <td style="margin: 0; text-align: center" id="nameInfo">系统名称：</td>
+                                <td id="appNameTd" style="text-align: left">
+                                    <label for="appNameList"></label>
+                                    <select name="cond[appNameList]" id="appNameList">
+                                        <option value="1" selected="selected">rno</option>
+                                        <option value="2">rno4g</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <br>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+
+                <div style="width: 100%;" align="center">
+                    <div style="width: 480px;height: 100%;padding-top: 10px">
+                        <table class="paramTable" id="appInfoTable">
+                            <thead>
+                                <tr>
+                                    <th style="width: 10px">参数名</th>
+                                    <th style="width: 240px; text-align: center">参数值(点击修改)</th>
+                                </tr>
+                            </thead>
+                            <tfoot></tfoot>
+                            <tbody>
+                            <tr>
+                                <td>系统名称</td>
+                                <td id="appName_td">
+                                    <div id="appName" class="editbox" style="width: 100%;" onclick="editThis(this)">
+                                        -115
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>CODE</td>
+                                <td id="appCode_td">
+                                    <div id="appCode" class="editbox" style="width: 100%;" onclick="editThis(this)">
+                                        -115
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>版本</td>
+                                <td id="appVersion_td">
+                                    <div id="appVersion" class="editbox" style="width: 100%;" onclick="editThis(this)">
+                                        2
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>系统LOGO</td>
+                                <td id="appLogo_td">
+                                    <div id="appLogo" class="editbox" style="width: 100%;"
+                                         onclick="editThis(this)">-92
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>系统描述</td>
+                                <td id="appDescription_td">
+                                    <div id="appDescription" class="editbox" style="width: 100%;"
+                                         onclick="editThis(this)">640
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <br><br><br><br><br>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="exampleInputFile">File input</label>
-                    <input type="file" id="exampleInputFile">
-                    <p class="help-block">Example block-level help text here.</p>
-                </div>
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox"> Check me out
-                    </label>
-                </div>
-                <button type="submit" class="btn btn-default">Submit</button>
-            </form>
+            </div>
         </div>
         <div class="col-md-6">
             <iframe src="menu.html"></iframe>

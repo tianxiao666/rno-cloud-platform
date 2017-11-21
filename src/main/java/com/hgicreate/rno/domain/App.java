@@ -2,9 +2,7 @@ package com.hgicreate.rno.domain;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -12,6 +10,8 @@ import javax.persistence.Table;
 public class App {
 
   @Id
+  @GeneratedValue(generator = "AppSeq")
+  @SequenceGenerator(name = "AppSeq", sequenceName = "SEQ_RNO_SYS_APP", allocationSize = 1)
   private Long id;
   private String code;
   private String name;

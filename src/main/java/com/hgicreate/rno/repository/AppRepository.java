@@ -11,5 +11,6 @@ import java.util.List;
 public interface AppRepository extends JpaRepository<App, Long> {
 
     List<App> findAllByCode(String code);
-
+    List<App> findAll();
+    List<App> findByName(String name);
 }
