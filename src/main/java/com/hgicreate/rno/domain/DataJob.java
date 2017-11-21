@@ -23,6 +23,8 @@ public class DataJob {
     private Date startTime;
     private Date completeTime;
     private String status;
+    private String dataStoreType;
+    private String dataStorePath;
 
     @OneToOne
     @JoinColumn(name = "area_id", referencedColumnName = "id")
