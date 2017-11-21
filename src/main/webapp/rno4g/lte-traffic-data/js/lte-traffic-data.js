@@ -211,29 +211,11 @@ function showRecord(data) {
                 {"data": "areaName"},
                 {"data": "beginTime"},
                 {"data": "endTime"},
-                {"data": null},
-                {"data": null},
                 {"data": "pmDn"},
                 {"data": "vendor"},
                 {"data": "jobId"},
                 {"data": "recordCount"},
                 {"data": "createdDate"}
-            ],
-            "columnDefs": [
-                {
-                    "render": function(data, type, row) {
-                        return " --- ";
-                    },
-                    "targets": 3,
-                    "data": "startTime"
-                },
-                {
-                    "render": function(data, type, row) {
-                        return " --- ";
-                    },
-                    "targets": 4,
-                    "data": "startTime"
-                },
             ],
             "lengthChange": false,
             "ordering": false,
