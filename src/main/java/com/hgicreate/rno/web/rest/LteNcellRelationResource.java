@@ -14,12 +14,13 @@ import com.hgicreate.rno.service.dto.LteNcellDescDTO;
 import com.hgicreate.rno.service.dto.LteNcellImportFileDTO;
 import com.hgicreate.rno.service.dto.LteNcellRelationDTO;
 import com.hgicreate.rno.service.mapper.DataJobReportMapper;
+import com.hgicreate.rno.util.FtpUtils;
 import com.hgicreate.rno.web.rest.vm.FileUploadVM;
 import com.hgicreate.rno.web.rest.vm.LteNcellImportDtQueryVM;
 import com.hgicreate.rno.web.rest.vm.LteNcellImportQueryVM;
 import com.hgicreate.rno.web.rest.vm.LteNcellRelationQueryVM;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,21 +40,21 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/lte-ncell-relation")
 public class LteNcellRelationResource {
 
-    @Value("${rno.path.upload-files}")
-    private String directory;
-
     private final LteNcellRelationService lteNcellRelationService;
     private final NcellRepository ncellRepository;
     private final OriginFileRepository originFileRepository;
     private final DataJobRepository dataJobRepository;
     private final DataJobReportRepository dataJobReportRepository;
 
-    public LteNcellRelationResource(NcellRepository ncellRepository, LteNcellRelationService lteNcellRelationService, OriginFileRepository originFileRepository, DataJobRepository dataJobRepository, DataJobReportRepository dataJobReportRepository) {
+    private final Environment env;
+
+    public LteNcellRelationResource(NcellRepository ncellRepository, LteNcellRelationService lteNcellRelationService, OriginFileRepository originFileRepository, DataJobRepository dataJobRepository, DataJobReportRepository dataJobReportRepository, Environment env) {
         this.ncellRepository = ncellRepository;
         this.lteNcellRelationService = lteNcellRelationService;
         this.originFileRepository = originFileRepository;
         this.dataJobRepository = dataJobRepository;
         this.dataJobReportRepository = dataJobReportRepository;
+        this.env = env;
     }
 
     @PostMapping("/ncell-query")
@@ -118,6 +119,7 @@ public class LteNcellRelationResource {
             log.debug("上传的文件大小：{}",fileSize);
 
             // 如果目录不存在则创建目录
+            String directory = env.getProperty("rno.path.upload-files");
             File fileDirectory = new File(directory+"/"+vm.getModuleName());
             if (!fileDirectory.exists() && !fileDirectory.mkdirs()) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -134,6 +136,10 @@ public class LteNcellRelationResource {
                     new BufferedOutputStream(new FileOutputStream(new File(filepath)));
             stream.write(vm.getFile().getBytes());
             stream.close();
+
+            // 保存文件到FTP
+            String ftpFullPath = FtpUtils.sendToFtp(vm.getModuleName(), filepath, true, env);
+            log.debug("获取FTP文件的全路径：{}", ftpFullPath);
 
             //创建OriginFile对象，保存文件记录
             OriginFile originFile = new OriginFile();
@@ -160,6 +166,8 @@ public class LteNcellRelationResource {
             dataJob.setCreatedUser(SecurityUtils.getCurrentUserLogin());
             dataJob.setCreatedDate(new Date());
             dataJob.setStatus("等待处理");
+            dataJob.setDataStorePath(ftpFullPath);
+            dataJob.setDataStoreType("ftp");
             dataJobRepository.save(dataJob);
         } catch (Exception e) {
             System.out.println(e.getMessage());

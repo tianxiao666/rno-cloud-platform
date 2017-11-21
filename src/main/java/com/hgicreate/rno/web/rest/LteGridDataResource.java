@@ -14,11 +14,12 @@ import com.hgicreate.rno.service.dto.DataJobReportDTO;
 import com.hgicreate.rno.service.dto.LteGridDataImportFileDTO;
 import com.hgicreate.rno.service.dto.LteGridDescDTO;
 import com.hgicreate.rno.service.mapper.DataJobReportMapper;
+import com.hgicreate.rno.util.FtpUtils;
 import com.hgicreate.rno.web.rest.vm.LteGridDataFileUploadVM;
 import com.hgicreate.rno.web.rest.vm.LteGridDataImportVM;
 import com.hgicreate.rno.web.rest.vm.LteGridDataQueryVM;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,8 +41,6 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/lte-grid-data")
 public class LteGridDataResource {
-    @Value("${rno.path.upload-files}")
-    private String directory;
 
     private final OriginFileRepository originFileRepository;
     private  final OriginFileAttrRepository originFileAttrRepository;
@@ -51,14 +50,17 @@ public class LteGridDataResource {
 
     private final LteGridDataService lteGridDataService;
 
+    private final Environment env;
+
     public LteGridDataResource(OriginFileRepository originFileRepository, OriginFileAttrRepository originFileAttrRepository,
                                DataJobRepository dataJobRepository, DataJobReportRepository dataJobReportRepository,
-                               LteGridDataService lteGridDataService) {
+                               LteGridDataService lteGridDataService, Environment env) {
         this.originFileRepository = originFileRepository;
         this.originFileAttrRepository = originFileAttrRepository;
         this.dataJobRepository = dataJobRepository;
         this.dataJobReportRepository = dataJobReportRepository;
         this.lteGridDataService = lteGridDataService;
+        this.env = env;
     }
 
     @PostMapping("/import-query")
@@ -111,6 +113,7 @@ public class LteGridDataResource {
             log.debug("上传的文件大小：{}",fileSize);
 
             // 如果目录不存在则创建目录
+            String directory = env.getProperty("rno.path.upload-files");
             File fileDirectory = new File(directory+"/"+vm.getModuleName());
             if (!fileDirectory.exists() && !fileDirectory.mkdirs()) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -128,6 +131,10 @@ public class LteGridDataResource {
             stream.write(vm.getFile().getBytes());
             stream.close();
 
+            // 保存文件到FTP
+            String ftpFullPath = FtpUtils.sendToFtp(vm.getModuleName(), filepath, true, env);
+            log.debug("获取FTP文件的全路径：{}", ftpFullPath);
+
             //创建OriginFile对象，保存文件记录
             OriginFile originFile = new OriginFile();
             originFile.setFilename(vm.getFile().getOriginalFilename());
@@ -144,7 +151,7 @@ public class LteGridDataResource {
             OriginFileAttr originFileAttr = new OriginFileAttr();
             originFileAttr.setName("grid_type");
             originFileAttr.setValue(vm.getGridType());
-            originFileAttr.setOriginFileId(originFile.getId());
+            originFileAttr.setOriginFile(originFile);
             originFileAttrRepository.save(originFileAttr);
 
             //创建DataJob对象，创建文件任务
@@ -160,6 +167,8 @@ public class LteGridDataResource {
             dataJob.setCreatedUser(SecurityUtils.getCurrentUserLogin());
             dataJob.setCreatedDate(new Date());
             dataJob.setStatus("等待处理");
+            dataJob.setDataStorePath(ftpFullPath);
+            dataJob.setDataStoreType("ftp");
             dataJobRepository.save(dataJob);
         } catch (Exception e) {
             System.out.println(e.getMessage());

@@ -14,11 +14,12 @@ import com.hgicreate.rno.service.dto.DataJobReportDTO;
 import com.hgicreate.rno.service.dto.LteMrDataImportDTO;
 import com.hgicreate.rno.service.dto.LteMrDescDTO;
 import com.hgicreate.rno.service.mapper.DataJobReportMapper;
+import com.hgicreate.rno.util.FtpUtils;
 import com.hgicreate.rno.web.rest.vm.LteMrDataFileUploadVM;
 import com.hgicreate.rno.web.rest.vm.LteMrDataImportVM;
 import com.hgicreate.rno.web.rest.vm.LteMrDataQueryVM;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,8 +41,6 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/lte-mr-data")
 public class LteMrDataResource {
-    @Value("${rno.path.upload-files}")
-    private String directory;
 
     private final LteMrDataService lteMrDataService;
 
@@ -51,13 +50,16 @@ public class LteMrDataResource {
     private final DataJobRepository dataJobRepository;
     private final DataJobReportRepository dataJobReportRepository;
 
+    private final Environment env;
+
     public LteMrDataResource(LteMrDataService lteMrDataService, OriginFileRepository originFileRepository, OriginFileAttrRepository originFileAttrRepository,
-                             DataJobRepository dataJobRepository, DataJobReportRepository dataJobReportRepository) {
+                             DataJobRepository dataJobRepository, DataJobReportRepository dataJobReportRepository, Environment env) {
         this.lteMrDataService = lteMrDataService;
         this.originFileRepository = originFileRepository;
         this.originFileAttrRepository = originFileAttrRepository;
         this.dataJobRepository = dataJobRepository;
         this.dataJobReportRepository = dataJobReportRepository;
+        this.env = env;
     }
 
     @PostMapping("/mr-import-query")
@@ -110,6 +112,7 @@ public class LteMrDataResource {
             log.debug("上传的文件大小：{}",fileSize);
 
             // 如果目录不存在则创建目录
+            String directory = env.getProperty("rno.path.upload-files");
             File fileDirectory = new File(directory+"/"+vm.getModuleName());
             if (!fileDirectory.exists() && !fileDirectory.mkdirs()) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -126,6 +129,10 @@ public class LteMrDataResource {
                     new BufferedOutputStream(new FileOutputStream(new File(filepath)));
             stream.write(vm.getFile().getBytes());
             stream.close();
+
+            // 保存文件到FTP
+            String ftpFullPath = FtpUtils.sendToFtp(vm.getModuleName(), filepath, true, env);
+            log.debug("获取FTP文件的全路径：{}", ftpFullPath);
 
             //创建OriginFile对象，保存文件记录
             OriginFile originFile = new OriginFile();
@@ -144,11 +151,11 @@ public class LteMrDataResource {
             OriginFileAttr originFileAttr2 = new OriginFileAttr();
             originFileAttr.setName("record_date");
             originFileAttr.setValue(vm.getRecordDate());
-            originFileAttr.setOriginFileId(originFile.getId());
+            originFileAttr.setOriginFile(originFile);
             originFileAttrRepository.save(originFileAttr);
             originFileAttr2.setName("vendor");
             originFileAttr2.setValue(vm.getVendor());
-            originFileAttr2.setOriginFileId(originFile.getId());
+            originFileAttr2.setOriginFile(originFile);
             originFileAttrRepository.save(originFileAttr2);
 
             //创建DataJob对象，创建文件任务
@@ -164,6 +171,8 @@ public class LteMrDataResource {
             dataJob.setCreatedUser(SecurityUtils.getCurrentUserLogin());
             dataJob.setCreatedDate(new Date());
             dataJob.setStatus("等待处理");
+            dataJob.setDataStorePath(ftpFullPath);
+            dataJob.setDataStoreType("ftp");
             dataJobRepository.save(dataJob);
         } catch (Exception e) {
             System.out.println(e.getMessage());
