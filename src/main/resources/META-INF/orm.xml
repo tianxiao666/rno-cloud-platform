@@ -22,17 +22,6 @@
     </named-native-query>
     -->
 
-    <named-native-query name="OriginFileAttr.getOriginFileAttrNum">
-        <query>
-            SELECT ORIGIN_FILE_ID
-            FROM RNO_ORIGIN_FILE_ATTR
-            WHERE ORIGIN_FILE_ID=(
-                  SELECT Max(ORIGIN_FILE_ID)
-                  FROM RNO_ORIGIN_FILE_ATTR
-              )
-        </query>
-    </named-native-query>
-
     <named-native-query name="DtDataForDetail.findDtCellDetailById"
                         result-class="com.hgicreate.rno.domain.DtDataForDetail">
         <query>

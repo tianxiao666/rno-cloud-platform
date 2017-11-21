@@ -7,5 +7,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OriginFileAttrRepository extends JpaRepository<OriginFileAttr,Long> {
-    Integer getOriginFileAttrNum();
 }

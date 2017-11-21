@@ -109,35 +109,28 @@ public class LteDtDataResource {
 
             log.debug("存储的文件名：{}", filename);
 
-            //获取属性表当前关联字段值
-            Integer originFileId = 1;
-            Integer flag = originFileAttrRepository.getOriginFileAttrNum();
-            if(flag == null){
-                originFileAttr1.setOriginFileId((long)originFileId);
-            }else {
-                originFileId = flag + 1;
-                originFileAttr1.setOriginFileId((long)originFileId);
-            }
-
-            //更新文件记录RNO_ORIGIN_FILE_ATTR
-            originFileAttr1.setName("area_type");
-            originFileAttr1.setValue(vm.getArea_type());
-            originFileAttrRepository.save(originFileAttr1);
-            originFileAttr2.setOriginFileId((long)originFileId);
-            originFileAttr2.setName("business_type");
-            originFileAttr2.setValue(vm.getBusiness_type());
-            originFileAttrRepository.save(originFileAttr2);
-
             //更新文件记录RNO_ORIGIN_FILE
             originFile.setFilename(vm.getFile().getOriginalFilename());
             originFile.setDataType(vm.getModuleName().toUpperCase());
             originFile.setFullPath(filepath);
             originFile.setFileSize((int)vm.getFile().getSize());
             originFile.setSourceType(vm.getSourceType());
-            originFile.setDataAttr(originFileId);
             originFile.setCreatedUser(SecurityUtils.getCurrentUserLogin());
             originFile.setCreatedDate(new Date());
             originFileRepository.save(originFile);
+
+            //更新文件记录RNO_ORIGIN_FILE_ATTR
+            originFileAttr1.setOriginFile(originFile);
+            originFileAttr1.setName("area_type");
+            originFileAttr1.setValue(vm.getArea_type());
+            originFileAttrRepository.save(originFileAttr1);
+
+            originFileAttr2.setOriginFile(originFile);
+            originFileAttr2.setName("business_type");
+            originFileAttr2.setValue(vm.getBusiness_type());
+            originFileAttrRepository.save(originFileAttr2);
+
+
 
             // 保存文件到本地
             BufferedOutputStream stream =
@@ -161,6 +154,8 @@ public class LteDtDataResource {
             dataJob.setPriority(2);
             dataJob.setCreatedUser(SecurityUtils.getCurrentUserLogin());
             dataJob.setStatus("等待处理");
+            dataJob.setDataStoreType("ftp");
+            dataJob.setDataStorePath(ftpFullPath);
             dataJobRepository.save(dataJob);
 
         } catch (Exception e) {

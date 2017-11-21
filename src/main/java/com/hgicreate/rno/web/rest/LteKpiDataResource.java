@@ -12,11 +12,13 @@ import com.hgicreate.rno.service.dto.DataJobReportDTO;
 import com.hgicreate.rno.service.dto.LteKpiDataFileDTO;
 import com.hgicreate.rno.service.dto.LteKpiDescDTO;
 import com.hgicreate.rno.service.mapper.DataJobReportMapper;
+import com.hgicreate.rno.util.FtpUtils;
 import com.hgicreate.rno.web.rest.vm.FileUploadVM;
 import com.hgicreate.rno.web.rest.vm.LteKpiDataFileVM;
 import com.hgicreate.rno.web.rest.vm.LteKpiDescVM;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,11 +52,14 @@ public class LteKpiDataResource {
 
     private final LteKpiDataService lteKpiDataService;
 
-    public LteKpiDataResource(OriginFileRepository originFileRepository, DataJobReportRepository dataJobReportRepository, DataJobRepository dataJobRepository, LteKpiDataService lteKpiDataService) {
+    private final Environment env;
+
+    public LteKpiDataResource(OriginFileRepository originFileRepository, DataJobReportRepository dataJobReportRepository, DataJobRepository dataJobRepository, LteKpiDataService lteKpiDataService, Environment env) {
         this.originFileRepository = originFileRepository;
         this.dataJobReportRepository = dataJobReportRepository;
         this.dataJobRepository = dataJobRepository;
         this.lteKpiDataService = lteKpiDataService;
+        this.env = env;
     }
 
     @PostMapping("/upload-file")
@@ -97,6 +102,10 @@ public class LteKpiDataResource {
             originFile.setCreatedDate(new Date());
             originFileRepository.save(originFile);
 
+            // 保存文件到FTP
+            String ftpFullPath = FtpUtils.sendToFtp(vm.getModuleName(), filepath, true, env);
+            log.debug("获取FTP文件的全路径：{}", ftpFullPath);
+
             //建立任务
             DataJob dataJob = new DataJob();
             dataJob.setName("KPI数据导入");
@@ -108,6 +117,8 @@ public class LteKpiDataResource {
             dataJob.setCreatedDate(new Date());
             dataJob.setCreatedUser(SecurityUtils.getCurrentUserLogin());
             dataJob.setStatus("等待处理");
+            dataJob.setDataStoreType("ftp");
+            dataJob.setDataStorePath(ftpFullPath);
             dataJobRepository.save(dataJob);
         } catch (Exception e) {
             System.out.println(e.getMessage());

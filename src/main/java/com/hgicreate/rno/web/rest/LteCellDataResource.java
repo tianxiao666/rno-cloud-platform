@@ -6,12 +6,14 @@ import com.hgicreate.rno.security.SecurityUtils;
 import com.hgicreate.rno.service.LteCellDataService;
 import com.hgicreate.rno.service.dto.*;
 import com.hgicreate.rno.service.mapper.DataJobReportMapper;
+import com.hgicreate.rno.util.FtpUtils;
 import com.hgicreate.rno.web.rest.vm.LteCellDataImportVM;
 import com.hgicreate.rno.web.rest.vm.LteCellDataVM;
 import com.hgicreate.rno.web.rest.vm.FileUploadVM;
 import com.hgicreate.rno.web.rest.vm.LteCellDescVM;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,14 +46,17 @@ public class LteCellDataResource {
 
     private final LteCellDataService lteCellDataService;
 
+    private final Environment env;
+
     public LteCellDataResource(OriginFileRepository originFileRepository,
                                DataJobRepository dataJobRepository, DataJobReportRepository dataJobReportRepository, LteCellDataRepository lteCellDataRepository,
-                               LteCellDataService lteCellDataService) {
+                               LteCellDataService lteCellDataService, Environment env) {
         this.originFileRepository = originFileRepository;
         this.dataJobRepository = dataJobRepository;
         this.dataJobReportRepository = dataJobReportRepository;
         this.lteCellDataRepository = lteCellDataRepository;
         this.lteCellDataService = lteCellDataService;
+        this.env = env;
     }
 
     @PostMapping("/cell-query")
@@ -127,6 +132,7 @@ public class LteCellDataResource {
             stream.write(vm.getFile().getBytes());
             stream.close();
 
+
             //更新文件记录
             originFile.setDataType(vm.getModuleName().toUpperCase());
             originFile.setFullPath(filepath);
@@ -135,6 +141,10 @@ public class LteCellDataResource {
             originFile.setCreatedUser(SecurityUtils.getCurrentUserLogin());
             originFile.setCreatedDate(new Date());
             originFileRepository.save(originFile);
+
+            // 保存文件到FTP
+            String ftpFullPath = FtpUtils.sendToFtp(vm.getModuleName(), filepath, true, env);
+            log.debug("获取FTP文件的全路径：{}", ftpFullPath);
 
             //建立任务
             DataJob dataJob = new DataJob();
@@ -147,6 +157,8 @@ public class LteCellDataResource {
             dataJob.setCreatedDate(new Date());
             dataJob.setCreatedUser(SecurityUtils.getCurrentUserLogin());
             dataJob.setStatus("等待处理");
+            dataJob.setDataStoreType("ftp");
+            dataJob.setDataStorePath(ftpFullPath);
             dataJobRepository.save(dataJob);
         } catch (Exception e) {
             System.out.println(e.getMessage());
