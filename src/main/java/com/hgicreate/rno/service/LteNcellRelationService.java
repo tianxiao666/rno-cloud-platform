@@ -52,10 +52,10 @@ public class LteNcellRelationService {
         List<DataJob> list;
         if(vm.getStatus().equals("全部")){
             list = dataJobRepository.findTop1000ByAreaAndOriginFile_CreatedDateBetweenAndOriginFile_DataTypeOrderByOriginFile_CreatedDateDesc(area,
-                    beginDate,endDate,"LTE-NCELL-RELATION-DATA");
+                    beginDate,endDate,"LTE-NCELL-RELATION");
         }else{
             list = dataJobRepository.findTop1000ByAreaAndStatusAndOriginFile_CreatedDateBetweenAndOriginFile_DataTypeOrderByOriginFile_CreatedDateDesc(area,
-                    vm.getStatus(),beginDate,endDate,"LTE-NCELL-RELATION-DATA");
+                    vm.getStatus(),beginDate,endDate,"LTE-NCELL-RELATION");
         }
         return list.stream()
                    .map(LteNcellImportFileMapper.INSTANCE::ncellImportFileToNcellImportFileDTO)

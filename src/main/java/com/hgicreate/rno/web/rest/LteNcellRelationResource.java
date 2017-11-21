@@ -147,7 +147,7 @@ public class LteNcellRelationResource {
             originFile.setFileType(fileType);
             originFile.setFileSize(fileSize);
             originFile.setFullPath(filepath);
-            originFile.setDataType("LTE-NCELL-RELATION-DATA");
+            originFile.setDataType("LTE-NCELL-RELATION");
             originFile.setCreatedUser(SecurityUtils.getCurrentUserLogin());
             originFile.setCreatedDate(new Date());
             originFile.setSourceType("上传");
@@ -159,7 +159,7 @@ public class LteNcellRelationResource {
 
             DataJob dataJob = new DataJob();
             dataJob.setName("邻区关系导入");
-            dataJob.setType("LTE-NCELL-RELATION-DATA");
+            dataJob.setType("LTE-NCELL-RELATION");
             dataJob.setPriority(1);
             dataJob.setArea(area);
             dataJob.setOriginFile(originFile);
