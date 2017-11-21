@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hgicreate.rno.mapper.LteTrafficDataQueryMapper">
+    <select id="queryTop1000TrafficData"
+            resultType="com.hgicreate.rno.domain.LteTrafficData">
+        select
+                trafficdes0_.begin_time,
+                trafficdes0_.created_date,
+                trafficdes0_.data_type,
+                trafficdes0_.end_time,
+                trafficdes0_.job_id,
+                trafficdes0_.record_count,
+                trafficdes0_.vendor,
+                area1_.name AS area_name,
+                data1_.PM_DN AS pm_dn
+        from
+            rno_lte_traffic_desc trafficdes0_
+        left outer join
+            rno_sys_area area1_
+                on trafficdes0_.area_id=area1_.id
+        left outer join
+            RNO_LTE_TRAFFIC_DATA data1_
+        on trafficdes0_.id=data1_.DESC_ID
+        <![CDATA[
+            where area1_.id=#{param1} and trafficdes0_.created_date between #{param2} and #{param3} and rownum <= 1000
+        ]]>
+    </select>
+</mapper>

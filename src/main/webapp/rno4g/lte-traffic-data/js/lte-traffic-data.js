@@ -82,31 +82,6 @@ $(function () {
         progress.css("display", "none");
     });
 
-    /*$("#searchDtBtnDT").click(function () {
-        $('#dtDataResultDT').css("line-height", "12px")
-            .DataTable({
-                "ajax": "data/lte-traffic-data-list.json",
-                "columns": [
-                    { data: "AREA_ID" },
-                    { data: "BEGINTIME" },
-                    { data: "ENDTIME" },
-                    { data: "INFOMODELREFERENCED" },
-                    { data: "DNPREFIX" },
-                    { data: "SENDERNAME" },
-                    { data: "VENDORNAME" },
-                    { data: "JOBID" },
-                    { data: "CNT" },
-                    { data: "CREATE_TIME" }
-                ],
-                "lengthChange": false,
-                "ordering": false,
-                "searching": false,
-                "destroy": true,
-                "language": {
-                    url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
-                }
-            });
-    });*/
 });
 
 function showInfoInAndOut(div, info) {
@@ -238,7 +213,7 @@ function showRecord(data) {
                 {"data": "endTime"},
                 {"data": null},
                 {"data": null},
-                {"data": null},
+                {"data": "pmDn"},
                 {"data": "vendor"},
                 {"data": "jobId"},
                 {"data": "recordCount"},
@@ -257,13 +232,6 @@ function showRecord(data) {
                         return " --- ";
                     },
                     "targets": 4,
-                    "data": "startTime"
-                },
-                {
-                    "render": function(data, type, row) {
-                        return " --- ";
-                    },
-                    "targets": 5,
                     "data": "startTime"
                 },
             ],

@@ -82,7 +82,7 @@ public class LteTrafficDataResource {
     }
 
     @PostMapping("/query-record")
-    public List<LteTrafficDescDTO> queryRecord(LteTrafficDataDescVM vm) throws ParseException{
+    public List<LteTrafficDescDTO>  queryRecord(LteTrafficDataDescVM vm) throws ParseException{
         log.debug("视图模型vm ={}", vm);
         return lteTrafficDataService.queryRecord(vm);
     }

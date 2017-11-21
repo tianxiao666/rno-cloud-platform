@@ -2,9 +2,8 @@ package com.hgicreate.rno.service;
 
 import com.hgicreate.rno.domain.Area;
 import com.hgicreate.rno.domain.DataJob;
-import com.hgicreate.rno.domain.TrafficDesc;
+import com.hgicreate.rno.mapper.LteTrafficDataQueryMapper;
 import com.hgicreate.rno.repository.DataJobRepository;
-import com.hgicreate.rno.repository.TrafficDataRepository;
 import com.hgicreate.rno.service.dto.LteTrafficDataDTO;
 import com.hgicreate.rno.service.dto.LteTrafficDescDTO;
 import com.hgicreate.rno.service.mapper.LteTrafficDataFileMapper;
@@ -24,11 +23,11 @@ import java.util.stream.Collectors;
 public class LteTrafficDataService {
 
     private final DataJobRepository dataJobRepository;
-    private final TrafficDataRepository trafficDataRepository;
+    private final LteTrafficDataQueryMapper lteTrafficDataQueryMapper;
 
-    public LteTrafficDataService(DataJobRepository dataJobRepository,TrafficDataRepository trafficDataRepository) {
+    public LteTrafficDataService(DataJobRepository dataJobRepository,LteTrafficDataQueryMapper lteTrafficDataQueryMapper) {
         this.dataJobRepository = dataJobRepository;
-        this.trafficDataRepository = trafficDataRepository;
+        this.lteTrafficDataQueryMapper = lteTrafficDataQueryMapper;
     }
 
     public List<LteTrafficDataDTO> queryTrafficData(LteTrafficImportQueryVM vm) throws ParseException {
@@ -55,13 +54,10 @@ public class LteTrafficDataService {
         SimpleDateFormat sdf2 =   new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
         Date beginDate = sdf.parse(vm.getBeginTestDate());
         Date endDate =sdf2.parse(vm.getEndTestDate() + " 23:59:59");
-        List<TrafficDesc> list = trafficDataRepository.findTop1000ByArea_IdAndCreatedDateBetweenOrderByCreatedDateDesc(
-                Long.parseLong(vm.getCity()),
-                beginDate,
-                endDate
-        );
-        return list.stream().map(LteTrafficDescMapper.INSTANCE::lteTrafficDescToLteTrafficDescDTO)
-                .collect(Collectors.toList());
+        List<LteTrafficDescDTO> list = lteTrafficDataQueryMapper.queryTop1000TrafficData(Long.parseLong(vm.getCity()),beginDate,endDate)
+                                    .stream().map(LteTrafficDescMapper.INSTANCE::lteTrafficDescToLteTrafficDescDTO)
+                                    .collect(Collectors.toList());
+        return list;
     }
 
 }

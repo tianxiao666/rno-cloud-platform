@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class LteTrafficDescDTO {
 
+    private Long id;
     private String areaName;
     private String beginTime;
     private String endTime;
