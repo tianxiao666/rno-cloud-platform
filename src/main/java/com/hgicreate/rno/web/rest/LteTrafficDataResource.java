@@ -111,12 +111,15 @@ public class LteTrafficDataResource {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             // 以随机的 UUID 为文件名存储在本地
-            if(filename.endsWith("xml")){
+            if(filename.toUpperCase().endsWith("XML")){
                 filename = UUID.randomUUID().toString() +".xml";
                 originFile.setFileType("XML");
-            }else if(filename.endsWith("gz")){
+            }else if(filename.toUpperCase().endsWith("gz")){
                 filename = UUID.randomUUID().toString() +".gz";
                 originFile.setFileType("GZ");
+            }else if(filename.toUpperCase().endsWith("ZIP")){
+                filename = UUID.randomUUID().toString() +".zip";
+                originFile.setFileType("ZIP");
             }
             String filepath = Paths.get(directory + "/" + vm.getModuleName(), filename).toString();
 
