@@ -63,10 +63,10 @@ public final class FtpUtils {
                         log.debug("文件删除失败。");
                     }
                 }
-                return "ftp:///" + username + ":" + password +
-                        "@" + host + ":" + port +
-                        "/" + remoteModulePath +
-                        "/" + filename;
+                return
+//                        "ftp:///" + username + ":" + password +
+//                        "@" + host + ":" + port + "/" +
+                          remoteModulePath + "/" + filename;
             } else {
                 log.error("文件发送到FTP失败。");
                 return null;
