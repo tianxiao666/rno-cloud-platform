@@ -85,12 +85,16 @@ public class LteCellDataResource {
     }
 
     @PostMapping("/cell-detail-update")
-    public boolean updateLteCellDetail(Cell cell) {
+    public boolean updateLteCellDetail(Cell cellVM) {
         try {
-            log.debug("要更新的小区={}", cell.getLatitude());
-            cell.setLastModifiedUser(SecurityUtils.getCurrentUserLogin());
-            cell.setLastModifiedDate(new Date());
-            lteCellDataRepository.save(cell);
+            log.debug("要更新的小区={}", cellVM.getLatitude());
+            Cell cell1=lteCellDataRepository.findOne(cellVM.getCellId());
+            cellVM.setCellName(cell1.getCellName());
+            cellVM.setEnodebId(cell1.getEnodebId());
+            cellVM.setArea(cell1.getArea());
+            cellVM.setLastModifiedUser(SecurityUtils.getCurrentUserLogin());
+            cellVM.setLastModifiedDate(new Date());
+            lteCellDataRepository.save(cellVM);
             return true;
         } catch (Exception e) {
             System.out.println(e.getMessage());
