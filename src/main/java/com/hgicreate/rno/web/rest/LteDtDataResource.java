@@ -151,7 +151,7 @@ public class LteDtDataResource {
             area.setId(Long.parseLong(vm.getAreaId()));
             dataJob.setArea(area);
             dataJob.setCreatedDate(new Date());
-            dataJob.setPriority(2);
+            dataJob.setPriority(1);
             dataJob.setCreatedUser(SecurityUtils.getCurrentUserLogin());
             dataJob.setStatus("等待处理");
             dataJob.setDataStoreType("FTP");
