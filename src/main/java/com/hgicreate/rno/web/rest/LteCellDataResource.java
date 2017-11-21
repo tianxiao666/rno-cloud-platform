@@ -152,10 +152,11 @@ public class LteCellDataResource {
             Area area = new Area();
             area.setId(Long.parseLong(vm.getAreaId()));
             dataJob.setArea(area);
+            dataJob.setPriority(1);
             dataJob.setCreatedDate(new Date());
             dataJob.setCreatedUser(SecurityUtils.getCurrentUserLogin());
             dataJob.setStatus("等待处理");
-            dataJob.setDataStoreType("ftp");
+            dataJob.setDataStoreType("FTP");
             dataJob.setDataStorePath(ftpFullPath);
             dataJobRepository.save(dataJob);
         } catch (Exception e) {

@@ -111,11 +111,12 @@ public class LteKpiDataResource {
             dataJob.setOriginFile(originFile);
             Area area = new Area();
             area.setId(Long.parseLong(vm.getAreaId()));
+            dataJob.setPriority(1);
             dataJob.setArea(area);
             dataJob.setCreatedDate(new Date());
             dataJob.setCreatedUser(SecurityUtils.getCurrentUserLogin());
             dataJob.setStatus("等待处理");
-            dataJob.setDataStoreType("ftp");
+            dataJob.setDataStoreType("FTP");
             dataJob.setDataStorePath(ftpFullPath);
             dataJobRepository.save(dataJob);
         } catch (Exception e) {

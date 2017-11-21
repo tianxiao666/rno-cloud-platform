@@ -154,7 +154,7 @@ public class LteDtDataResource {
             dataJob.setPriority(2);
             dataJob.setCreatedUser(SecurityUtils.getCurrentUserLogin());
             dataJob.setStatus("等待处理");
-            dataJob.setDataStoreType("ftp");
+            dataJob.setDataStoreType("FTP");
             dataJob.setDataStorePath(ftpFullPath);
             dataJobRepository.save(dataJob);
 
