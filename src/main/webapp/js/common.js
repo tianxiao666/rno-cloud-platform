@@ -25,9 +25,6 @@ function initAreaSelectors(options) {
 
     if (options.selectors.length > 1) {
         var $cityId = $("#" + options.selectors[1]);
-
-        console.log(options.selectors.length);
-
         if (options.selectors.length > 2) {
             var $districtId = $("#" + options.selectors[2]);
             $cityId.change(function () {
