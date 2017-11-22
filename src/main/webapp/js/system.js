@@ -154,6 +154,7 @@ function deleteAppInfo(appId){
         success : function(raw) {
             if(raw){
                 if(raw==="success"){
+                    alert("成功删除数据！");
                     getAppNameList();
                     //返回第一个系统选项，id为1
                     getAppById(1);
@@ -322,6 +323,7 @@ function updateAppInfo(appDataMap){
         dataType : 'text',
         success : function(raw) {
             if(raw){
+                alert("成功修改数据！");
                 getAppNameList();
                 appId = raw;
                 getAppById(appId);
@@ -335,4 +337,40 @@ function updateAppInfo(appDataMap){
 
         }
     });
+}
+
+
+function showOperTips(outerId, tipId, tips) {
+    try {
+        $("#" + outerId).css("display", "");
+        $("#" + outerId).find("#" + tipId).html(tips);
+    } catch (err) {
+    }
+}
+
+function hideOperTips(outerId) {
+    try {
+        $("#" + outerId).css("display", "none");
+    } catch (err) {
+    }
+}
+
+// ---------------------//
+function getValidValue(v, defaultValue, precision) {
+    if (v === null || v === undefined || v === "null" || v === "NULL"
+        || v === "undefined" || v === "UNDEFINED") {
+        if (defaultValue !== null && defaultValue !== undefined)
+            return defaultValue;
+        else
+            return "";
+    }
+
+    if (typeof v === "number") {
+        try {
+            v = Number(v).toFixed(precision);
+        } catch (err) {
+            // console.error("v=" + v + "," + err);
+        }
+    }
+    return v;
 }
