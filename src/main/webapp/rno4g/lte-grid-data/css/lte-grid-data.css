@@ -750,3 +750,7 @@ select {
 .ui-state-default .ui-icon {
     background-image: url("../images/ui-icons_ef8c08_256x240.png");
 }
+
+#navTitle {
+    font-weight: bold;
+}

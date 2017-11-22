@@ -70,6 +70,9 @@ var currentIndex = 0;
 var submitOK = true;
 
 $(function () {
+    // 设置导航标题
+    setNavTitle("navTitle");
+
     //tab选项卡
     $("#tabs").tabs();//项目服务范围类别切换
     //可拖拽对话框

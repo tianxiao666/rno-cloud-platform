@@ -27,7 +27,7 @@ $(function () {
     });
 
     //初始化区域联动
-    initAreaSelectors({ selectors: ["province", "city"] });
+    initAreaSelectors({selectors: ["province", "city"]});
 
     //初始化内容显示区域高度
     var clientHeight = document.documentElement.clientHeight;
@@ -90,9 +90,7 @@ $(function () {
         if (cl1 === cl || cl1 === cl2 || i === 0) {
             i++;
 
-            var href = $(this).children("input").val();
-
-            $("#iframe").attr("src", href);
+            openModulePage($(this));
 
             //删除原来选中的菜单的选中样式
             if (localStorage['selectedMenuRank'] == 2) {
@@ -120,9 +118,7 @@ $(function () {
     //鼠标点三级级菜单，窗口加载相应的模块
     $menu.find(">li>ul>li>ul>li").click(function () {
 
-        var href = $(this).children("input").val();
-
-        $("#iframe").attr("src", href);
+        openModulePage($(this));
 
         //删除原来选中的菜单的选中样式
         $("li[class$='thirdLevelMenuSelected']").removeClass("thirdLevelMenuSelected");
@@ -248,8 +244,7 @@ function onLoadOpenHomeTab() {
         $selectedMenuId.parent().parent().addClass("secondLevelMenuSelected");
         $selectedMenuId.addClass("thirdLevelMenuSelected");
     }
-    var href = $selectedMenuId.children("input").val();
-    $("#iframe").attr("src", href);
+    openModulePage($selectedMenuId)
 }
 
 // 渲染菜单
@@ -285,7 +280,7 @@ function renderMenu(menu) {
 }
 
 //浏览器大小变化时修改门户主体高度
-$(window).resize(function() {
+$(window).resize(function () {
     if (window.timerLayout) {
         clearTimeout(window.timerLayout);
     }
@@ -297,3 +292,31 @@ function windowsResize() {
     var docH = document.documentElement.clientHeight;
     $("main").css("height", docH - 95 - 40);
 }
+
+var openModulePage = function (obj) {
+
+    var href = obj.children("input").val();
+    if (href === undefined || href === "#") {
+        return;
+    }
+
+    var className = obj.attr("class");
+    if (className !== undefined) {
+        var nav;
+        var firstClass = className.split(/\s+/)[0];
+        if (firstClass === "secondLevelMenu") {
+            nav = obj.parent().parent().attr("id") + " > " + obj.attr("id");
+        } else if (firstClass === "thirdLevelMenu") {
+            nav = obj.parent().parent().parent().parent().attr("id") + " > " +
+                obj.parent().parent().attr("id") + " > " + obj.attr("id");
+        }
+
+        if (href.indexOf("?") > 0) {
+            href += "&nav=" + nav;
+        } else {
+            href += "?nav=" + nav;
+        }
+    }
+
+    $("#iframe").attr("src", href);
+};

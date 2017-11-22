@@ -1,9 +1,10 @@
 $(function () {
-
     $(".draggable").draggable();
     $("#trigger").css("display", "none");
-
     $("#tabs").tabs();
+
+    // 设置导航标题
+    setNavTitle("navTitle");
 
     // 执行 laydate 实例 
     laydate.render({elem: '#begUploadDate', value: new Date(new Date().getTime() - 7 * 86400000)});

@@ -4,20 +4,19 @@ var editText;
 var submitStatus = true;
 var sceneNames; //保存场景名列表
 
-
 $(document).ready(function () {
+    // 设置导航标题
+    setNavTitle("navTitle");
+
     //绑定事件
     bindEvent();
     //获取场景名列表
     clearAll();
     getSceneNameListTask();
-
-
 });
 
 //绑定事件
 function bindEvent() {
-
     $("#flashtable").click(function () {
         var flag = confirm("确定刷新页面？你将放弃所有未提交的修改。");
         if (flag === false) {
@@ -61,8 +60,6 @@ function bindEvent() {
     $("#addScene").bind("click", function () {
         initSceneTable();
     });
-
-
 }
 
 function chooseTask() {
@@ -266,7 +263,6 @@ function addEdit() {
 }
 
 function submitUpdataData() {
-
 
 //检查参数是否可以上传
     if (!checkSceneParam()) {
@@ -679,8 +675,6 @@ function clearAll() {
     $("#sceneNameTip").html("");
 }
 
-
-
 function showOperTips(outerId, tipId, tips) {
     try {
         $("#" + outerId).css("display", "");
@@ -696,7 +690,6 @@ function hideOperTips(outerId) {
     }
 }
 
-// ---------------------//
 function getValidValue(v, defaultValue, precision) {
     if (v === null || v === undefined || v === "null" || v === "NULL"
         || v === "undefined" || v === "UNDEFINED") {

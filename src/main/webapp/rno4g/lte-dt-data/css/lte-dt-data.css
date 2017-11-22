@@ -132,3 +132,7 @@ ul,li{
     font-style: normal;
     list-style: none outside none;
 }
+
+#navTitle {
+    font-weight: bold;
+}

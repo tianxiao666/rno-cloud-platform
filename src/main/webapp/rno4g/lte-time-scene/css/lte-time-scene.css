@@ -360,3 +360,7 @@ body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, input, button, textar
     color: red;
     display: none;
 }
+
+#navTitle {
+    font-weight: bold;
+}

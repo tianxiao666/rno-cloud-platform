@@ -1,6 +1,9 @@
 $(function () {
     $("#tabs").tabs();
 
+    // 设置导航标题
+    setNavTitle("navTitle");
+
     // 初始化区域联动
     initAreaSelectors({selectors: ["provinceId", "cityId"]});
     initAreaSelectors({selectors: ["provinceId2", "cityId2"]});

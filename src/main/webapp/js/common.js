@@ -95,3 +95,18 @@ function renderArea(parentId, areaSelector, boolLonLat) {
         }
     });
 }
+
+/**
+ * 设置导航标题
+ * @param navTitleId 放置导航标题元素的ID
+ */
+function setNavTitle(navTitleId) {
+    var navTitle = "";
+    var param = location.search.split("nav=");
+    if (param.length > 1) {
+        navTitle = decodeURI(param[1]);
+    }
+    if (navTitle !== "") {
+        $("#" + navTitleId).html("当前位置：" + navTitle);
+    }
+}

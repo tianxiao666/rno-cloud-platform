@@ -2,6 +2,9 @@ $(function () {
     //tab选项卡
     $("#tabs").tabs();//项目服务范围类别切换
 
+    // 设置导航标题
+    setNavTitle("navTitle");
+
     // 执行 laydate 实例 
     laydate.render({elem: '#begUploadDate', value: new Date(new Date().getTime() - 7 * 86400000)});
     laydate.render({elem: '#endUploadDate', value: new Date()});

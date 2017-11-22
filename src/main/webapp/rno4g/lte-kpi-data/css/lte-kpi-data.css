@@ -1067,3 +1067,7 @@ select {
     white-space: nowrap;
     padding-right: 3px;
 }
+
+#navTitle {
+    font-weight: bold;
+}
