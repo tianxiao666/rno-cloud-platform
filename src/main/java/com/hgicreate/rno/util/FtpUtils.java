@@ -33,6 +33,7 @@ public final class FtpUtils {
         try {
             ftpClient.connect(host, port);
             ftpClient.login(username, password);
+            ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
 
             File file = new File(localFullPath);
             String filename = file.getName();
