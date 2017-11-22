@@ -15,11 +15,11 @@ $(document).ready(function () {
 
     //初始化菜单
     $.ajax({
-        url: "/api/query-menus",
+        url: "/api/app-menu",
         dataType: "json",
         async: false,
         success: function (data) {
-            renderMenu(data.menus);
+            renderMenu(data);
         }
     });
 

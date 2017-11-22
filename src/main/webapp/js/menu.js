@@ -114,19 +114,6 @@ function dropNext(treeId, nodes, targetNode) {
 }
 
 function afterDrop(treeNode) {
-    // if(treeNode["children"] ){
-    //     if(treeNode["children"].length<1){
-    //         treeNode.url = "#";
-    //     }
-    //     else if(treeNode["children"].length>0){
-    //         treeNode.url = "";
-    //     }
-    // }
-    // if(treeNode.getParentNode()){
-    //     if(treeNode.getParentNode()["children"].length > 0){
-    //         treeNode.getParentNode()["url"] = "null";
-    //     }
-    // }
     if(treeNode.getParentNode()){
         treeNode["pid"] = treeNode.getParentNode()["id"];
         var childs = treeNode.getParentNode()["children"];
@@ -147,11 +134,6 @@ function beforeDragOpen(treeId, treeNode) {
     return true;
 }
 function beforeDrop(treeId, treeNodes, targetNode, moveType, isCopy) {
-    // if(treeNodes[0].getParentNode()){
-    //     if(treeNodes[0].getParentNode()["children"].length <=1){
-    //         treeNodes[0].getParentNode()["url"] = "#";
-    //     }
-    // }
     return true;
 }
 function onDrag(event, treeId, treeNodes) {
@@ -432,13 +414,16 @@ function submitMenu() {
 
 var zTree, rMenu;
 $(document).ready(function(){
+    // 从 URL 的 appId 属性获取需要管理的菜单
+    var appId = (location.search.split('appId=')[1] || '').split('&')[0];
+    $("#appId").text(appId);
+
     $.ajax({
         type: 'GET',
         dataType:'json',
-        url: "/api/query-menus",
+        url: "/api/get-menu?appId=" + appId,
         success: function(data){
-            $("#appId").text(data.appId);
-            zNodes = data.menus;
+            zNodes = data;
             zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, zNodes);
             zTree = $.fn.zTree.getZTreeObj("treeDemo");
             rMenu = $("#rMenu");
