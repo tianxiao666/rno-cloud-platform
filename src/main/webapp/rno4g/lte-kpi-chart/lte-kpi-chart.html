@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>KPI指标图表展现</title>
+    <title>覆盖类KPI指标</title>
 
     <link rel="stylesheet" href="css/lte-kpi-chart.css">
     <link rel="stylesheet" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
@@ -12,412 +12,114 @@
     <script src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
     <script src="../../lib/jquery-plugins/jquery.metadata.js"></script>
     <script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
+    <script src="../../lib/echarts/echarts.common.min.js"></script>
     <script src="../../lib/validate.js"></script>
     <script src="../../lib/tab.js"></script>
-    <script src="js/lte-kpi-chart.js"></script>
+    <script src="../../js/common.js"></script>
     <script src="../../lib/laydate/5.0.7/laydate.js"></script>
-    <script>
-        $(document).ready(function () {
-        $(".draggable").draggable();
-        $("#trigger").css("display", "none");
-    });
-    </script>
-    <script src="js/lte-kpi-chart-index-display.js"></script>
+    <script src="js/lte-kpi-chart.js"></script>
 </head>
 <body>
-<div class="loading_cover" id="loadingDataDiv" style="display: none;">
-    <div class="cover"></div>
-    <h4 class="loading">
-        正在加载 <em class="loading_fb" id="tipcontentId">
-        惠州市
-        小区数据</em>,请稍侯...
-    </h4>
-</div>
-<table width="100%" height="100%">
+<div id="loading" class="loading" style="display: none">加载中...</div>
+<div id="info" class="info-style" style="display: none"></div>
+<table style="width: 100%;height: 100%" bgcolor="#E2ECF7">
     <tbody>
     <tr>
-        <td style="vertical-align: top" width="16%" bgcolor="#E2ECF7">
-            <div style="margin:10px">
-                <div style=" width:163px">
-                    <select name="provinceId" class="required" id="provinceId1"></select>
-                    <select name="cityId" class="required" id="cityId1"></select> <br>
-                    输入小区:<input name="" id="inputCell" style="width: 194px" type="text">
+        <td style="vertical-align: top;height: 100%" >
+            <div id="main" style="width: 1000px;height: 600px;margin-left:150px;"></div>
+        </td>
+        <td style="vertical-align: top">
+            <div class="resource_list300_box" style="height:100%;width: 300px">
+                <div class="resource_list300">
+                    <div id="div_tab" class="div_tab divtab_menu">
+                        <ul>
+                            <li class="selected">查询条件</li>
+                            <li>指标详情</li>
+                        </ul>
+                    </div>
                 </div>
-                <div style="border:1px solid #CDCDCD;background:white;overflow-x:scroll;overflow-y:scroll;width: 192px;height: 524px">
-                    <ul id="allBscCell" class="filetree treeview">
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_10054">TAC_10054(小区数量：292)</span>
-                            <ul id="TAC_10054" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_10055">TAC_10055(小区数量：392)</span>
-                            <ul id="TAC_10055" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_10056">TAC_10056(小区数量：391)</span>
-                            <ul id="TAC_10056" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_10057">TAC_10057(小区数量：103)</span>
-                            <ul id="TAC_10057" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_10058">TAC_10058(小区数量：152)</span>
-                            <ul id="TAC_10058" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_10059">TAC_10059(小区数量：282)</span>
-                            <ul id="TAC_10059" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_10060">TAC_10060(小区数量：113)</span>
-                            <ul id="TAC_10060" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_10061">TAC_10061(小区数量：271)</span>
-                            <ul id="TAC_10061" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_10062">TAC_10062(小区数量：195)</span>
-                            <ul id="TAC_10062" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_10362">TAC_10362(小区数量：284)</span>
-                            <ul id="TAC_10362" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_10363">TAC_10363(小区数量：143)</span>
-                            <ul id="TAC_10363" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_10364">TAC_10364(小区数量：323)</span>
-                            <ul id="TAC_10364" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_10365">TAC_10365(小区数量：564)</span>
-                            <ul id="TAC_10365" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_10366">TAC_10366(小区数量：274)</span>
-                            <ul id="TAC_10366" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_10367">TAC_10367(小区数量：128)</span>
-                            <ul id="TAC_10367" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_10369">TAC_10369(小区数量：375)</span>
-                            <ul id="TAC_10369" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_10371">TAC_10371(小区数量：108)</span>
-                            <ul id="TAC_10371" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9267">TAC_9267(小区数量：315)</span>
-                            <ul id="TAC_9267" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9268">TAC_9268(小区数量：314)</span>
-                            <ul id="TAC_9268" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9269">TAC_9269(小区数量：389)</span>
-                            <ul id="TAC_9269" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9270">TAC_9270(小区数量：192)</span>
-                            <ul id="TAC_9270" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9271">TAC_9271(小区数量：261)</span>
-                            <ul id="TAC_9271" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9272">TAC_9272(小区数量：489)</span>
-                            <ul id="TAC_9272" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9273">TAC_9273(小区数量：376)</span>
-                            <ul id="TAC_9273" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9274">TAC_9274(小区数量：309)</span>
-                            <ul id="TAC_9274" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9275">TAC_9275(小区数量：163)</span>
-                            <ul id="TAC_9275" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9276">TAC_9276(小区数量：117)</span>
-                            <ul id="TAC_9276" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9277">TAC_9277(小区数量：403)</span>
-                            <ul id="TAC_9277" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9278">TAC_9278(小区数量：170)</span>
-                            <ul id="TAC_9278" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9279">TAC_9279(小区数量：408)</span>
-                            <ul id="TAC_9279" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9280">TAC_9280(小区数量：122)</span>
-                            <ul id="TAC_9280" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9281">TAC_9281(小区数量：264)</span>
-                            <ul id="TAC_9281" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9282">TAC_9282(小区数量：95)</span>
-                            <ul id="TAC_9282" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9549">TAC_9549(小区数量：232)</span>
-                            <ul id="TAC_9549" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9550">TAC_9550(小区数量：161)</span>
-                            <ul id="TAC_9550" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9551">TAC_9551(小区数量：254)</span>
-                            <ul id="TAC_9551" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9553">TAC_9553(小区数量：502)</span>
-                            <ul id="TAC_9553" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9554">TAC_9554(小区数量：60)</span>
-                            <ul id="TAC_9554" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9555">TAC_9555(小区数量：201)</span>
-                            <ul id="TAC_9555" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9556">TAC_9556(小区数量：266)</span>
-                            <ul id="TAC_9556" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9559">TAC_9559(小区数量：246)</span>
-                            <ul id="TAC_9559" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9560">TAC_9560(小区数量：222)</span>
-                            <ul id="TAC_9560" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9561">TAC_9561(小区数量：295)</span>
-                            <ul id="TAC_9561" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9833">TAC_9833(小区数量：406)</span>
-                            <ul id="TAC_9833" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9834">TAC_9834(小区数量：277)</span>
-                            <ul id="TAC_9834" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9835">TAC_9835(小区数量：131)</span>
-                            <ul id="TAC_9835" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9836">TAC_9836(小区数量：21)</span>
-                            <ul id="TAC_9836" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9837">TAC_9837(小区数量：369)</span>
-                            <ul id="TAC_9837" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable">
-                            <div class="hitarea expandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9838">TAC_9838(小区数量：264)</span>
-                            <ul id="TAC_9838" style="display: none;"></ul>
-                        </li>
-                        <li class="expandable lastExpandable">
-                            <div class="hitarea expandable-hitarea lastExpandable-hitarea"></div>
-                            <span class="bscCls" id="TAC_9839">TAC_9839(小区数量：138)</span>
-                            <ul id="TAC_9839" style="display: none;"></ul>
-                        </li>
-                    </ul>
+                <div class="divtab_content"
+                     style="overflow-y:auto; overflow-x:auto; width:100%; height:600px;">
+                    <div id="div_tab_0" style="background-color: #F5F5F5">
+                        <form id="queryKpiForm" method="post">
+                            <div class="div-m-split-10px"></div>
+                            <div class="div_title_24px_blue title_width">
+                                &nbsp;&nbsp;<span class="sp_title">省</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span class="sp_title">份</span>
+                                <select name="provinceId" id="provinceId1" style="width: 110px;margin-left: 8px"
+                                        title=""></select>
 
+                            </div>
+                            <div class="div-m-split-10px"></div>
+                            <div class="div_title_24px_blue title_width">
+                                &nbsp;&nbsp;&nbsp;<span class="sp_title">地</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <span class="sp_title">市</span>
+                                <select title="" name="cityId" id="cityId1"
+                                        style="width: 110px;margin-left: 8px"></select> <br>
+                            </div>
+                            <div class="div-m-split-10px"></div>
+                            <div class="div_title_24px_blue title_width">
+                                &nbsp;&nbsp;<span class="sp_title">开始日期</span>&nbsp;<input
+                                    title="" id="mrMeaBegDate" name="mrMeaBegDate"
+                                    style="width:100px;margin-left: 8px"
+                                    type="text">
+                            </div>
+
+                            <div class="div-m-split-10px"></div>
+                            <div class="div_title_24px_blue title_width">
+                                &nbsp;&nbsp;<span class="sp_title">结束日期</span>&nbsp;<input
+                                    title="" id="mrMeaEndDate" name="mrMeaEndDate"
+                                    style="width:100px;margin-left: 8px"
+                                    type="text">
+                            </div>
+
+                            <div class="div-m-split-10px"></div>
+                            <div class="div_title_24px_blue title_width">
+                                &nbsp;&nbsp;<span class="sp_title">数据类型</span>&nbsp;<select title=""
+                                                                                            id="mrDataType"
+                                                                                            name="mrDataType"
+                                                                                            style="width:110px;margin-left: 8px">
+                                <option selected="selected">RSRP</option>
+                                <option>RSRQ</option>
+                                <option>覆盖率</option>
+                            </select>
+                            </div>
+
+
+                            <div class="div-m-split-10px"></div>
+                            <div class="div_title_24px_blue title_width">
+                                &nbsp;&nbsp;<span class="sp_title">展示方式</span><select title=""
+                                                                                      id="mrDisMode" name="mrDisMode"
+                                                                                      style="width:110px;margin-left: 8px">
+                                <option selected="selected">柱状图</option>
+                            </select>
+                            </div>
+                            <div class="div-m-split-10px"></div>
+                            <div class="div_title_24px_blue title_width">
+                                &nbsp;&nbsp;<span class="sp_title">小区</span>&nbsp;&nbsp;
+                                <span class="sp_title">ID</span>
+                                <input name="inputCell" id="inputCell" style="width:100px;margin-left: 7px" type="text"
+                                       title="">
+                            </div>
+                            <div class="div-m-split-10px"></div>
+                            <div style="text-align: center">
+                                <input type="submit" style="width: 80px;height: 30px;" title="" value="查询">
+                            </div>
+                        </form>
+                    </div>
+                    <div id="div_tab_1" style="display:none">
+                        <div id="mrrInfoDiv"
+                             style="background:white;float: left; width:100%;">
+                            <table class="main-table1 half-width" id="mrrInfoTab" width="100%">
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-
-        </td>
-        <td style="vertical-align: top" bgcolor="#E2ECF7">
-            <table width="100%">
-                <tbody>
-                <tr style="vertical-align: top">
-                    <td></td>
-                </tr>
-
-                <tr>
-                    <td style="width:70%;vertical-align: top" align="center">
-                        <div id="chartDiv"
-                             style="width: 100%; height: 755px; background-color: rgba(0, 0, 0, 0); cursor: default;"
-                             title="双击全屏" alt="双击全屏" _echarts_instance_="1508999225675">
-                            <div style="position: relative; overflow: hidden; width: 1129px; height: 755px;">
-                                <div style="position: absolute; left: 0px; top: 0px; width: 1129px; height: 755px; -moz-user-select: none;"
-                                     width="1129" height="755" data-zr-dom-id="bg"></div>
-                                <canvas style="position: absolute; left: 0px; top: 0px; width: 1129px; height: 755px; -moz-user-select: none;"
-                                        width="1129" height="755" data-zr-dom-id="0"></canvas>
-                                <canvas style="position: absolute; left: 0px; top: 0px; width: 1129px; height: 755px; -moz-user-select: none;"
-                                        width="1129" height="755" data-zr-dom-id="1"></canvas>
-                                <canvas style="position: absolute; left: 0px; top: 0px; width: 1129px; height: 755px; -moz-user-select: none;"
-                                        width="1129" height="755" data-zr-dom-id="6"></canvas>
-                                <canvas style="position: absolute; left: 0px; top: 0px; width: 1129px; height: 755px; -moz-user-select: none;"
-                                        width="1129" height="755" data-zr-dom-id="8"></canvas>
-                                <canvas style="position: absolute; left: 0px; top: 0px; width: 1129px; height: 755px; -moz-user-select: none;"
-                                        width="1129" height="755" data-zr-dom-id="_zrender_hover_"></canvas>
-                                <div class="echarts-dataview"
-                                     style="position: absolute; display: block; overflow: hidden; transition: height 0.8s ease 0s, background-color 1s ease 0s; z-index: 1; left: 0px; top: 0px; width: 1129px; height: 0px; background-color: rgb(240, 255, 255);"></div>
-                            </div>
-                        </div>
-                    </td>
-                    <td style="vertical-align: top">
-                        <div class="resource_list300_box" style="height:610px;width: 250px">
-                            <div class="resource_list300">
-                                <div id="div_tab" class="div_tab divtab_menu">
-                                    <ul>
-                                        <li class="selected">查询条件</li>
-                                        <li>指标详情</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="divtab_content"
-                                 style="overflow-y:auto; overflow-x:auto; width:100%; height:600px;">
-                                <div id="div_tab_0" style="background-color: #F5F5F5">
-
-                                    <div class="div-m-split-10px"></div>
-                                    <div class="div_title_24px_blue title_width">
-                                        <span class="sp_title analysis_list_title">开始日期</span>&nbsp;&nbsp;&nbsp;<input
-                                            value="" id="mrMeaBegDate" name=""
-                                            style="width:100px;margin-left:8px;margin-right:8px" class="hasDatepicker"
-                                            type="text">
-                                    </div>
-
-                                    <div class="div-m-split-10px"></div>
-                                    <div class="div_title_24px_blue title_width">
-                                        <span class="sp_title analysis_list_title">结束日期</span>&nbsp;&nbsp;&nbsp;<input
-                                            value="" id="mrMeaEndDate" name=""
-                                            style="width:100px;margin-left:8px;margin-right:8px" class="hasDatepicker"
-                                            type="text">
-                                    </div>
-
-                                    <div class="div-m-split-10px"></div>
-                                    <div class="div_title_24px_blue title_width">
-                                        <span class="sp_title analysis_list_title">数据类型</span>&nbsp;&nbsp;&nbsp;<select
-                                            id="mrDataType" style="width:100px;margin-left:8px;margin-right:8px">
-                                        <option selected="selected">RSRP</option>
-                                        <option>RSRQ</option>
-                                        <option>覆盖率</option>
-                                    </select>
-                                    </div>
-
-
-                                    <div class="div-m-split-10px"></div>
-                                    <div class="div_title_24px_blue title_width">
-                                        <span class="sp_title analysis_list_title">展示方式</span>&nbsp;&nbsp;&nbsp;<select
-                                            id="mrDisMode" style="width:100px;margin-left:8px;margin-right:8px">
-                                        <option selected="selected">柱状图</option>
-                                    </select>
-                                    </div>
-                                </div>
-                                <div id="div_tab_1" style="display:none">
-                                    <div id="mrrInfoDiv"
-                                         style="border:1px solid #CDCDCD;background:white;float: left; width:100%;overflow: scroll;height: 565px">
-                                        <table class="main-table1 half-width" id="mrrInfoTab" width="100%">
-                                            <tbody>
-                                            <tr>
-                                                <td colspan="2">RSRP测量信息</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td class="menuTd">CELL_NAME</td>
-                                                <td></td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </td>
-                    <td>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-
-                    </td>
-
-                </tr>
-
-                </tbody>
-            </table>
-
         </td>
     </tr>
-    <tr valign="top">
+    <!--<tr valign="top">
         <td colspan="2" bgcolor="#E2ECF7">
             <div style="margin-left: 10px">
                 <div id="fullScreenChart" style="display:none" title="双击关闭" alt="双击关闭">
@@ -430,7 +132,7 @@
                 </div>
                 <div id="operInfo"
                      style="display:none; top:40px;left:600px;z-index:999;width:400px; height:40px; background-color:#7dff3f; filter:alpha(Opacity=80);-moz-opacity:0.5;opacity: 0.5;z-index:9999;position: fixed;">
-                    <table style="text-align:center" width="100%" height="100%">
+                    <table style="text-align:center;width:100%;height: 100%"  >
                         <tbody>
                         <tr>
                             <td><span id="operTip"></span></td>
@@ -443,207 +145,11 @@
 
             </div>
         </td>
-    </tr>
+    </tr>-->
     </tbody>
+
+
 </table>
-<div id="ui-datepicker-div" class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-    <div class="ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-all"><a
-            class="ui-datepicker-prev ui-corner-all" data-handler="prev" data-event="click" title="Prev"><span
-            class="ui-icon ui-icon-circle-triangle-w">Prev</span></a><a
-            class="ui-datepicker-next ui-corner-all ui-state-disabled" title="Next"><span
-            class="ui-icon ui-icon-circle-triangle-e">Next</span></a>
-        <div class="ui-datepicker-title"><select class="ui-datepicker-month" data-handler="selectMonth"
-                                                 data-event="change">
-            <option value="0">一月</option>
-            <option value="1">二月</option>
-            <option value="2">三月</option>
-            <option value="3">四月</option>
-            <option value="4">五月</option>
-            <option value="5">六月</option>
-            <option value="6">七月</option>
-            <option value="7">八月</option>
-            <option value="8">九月</option>
-            <option value="9" selected="selected">十月</option>
-        </select>&nbsp;<span class="ui-datepicker-year">2017</span></div>
-    </div>
-    <table class="ui-datepicker-calendar">
-        <thead>
-        <tr>
-            <th class="ui-datepicker-week-end"><span title="Sunday">日</span></th>
-            <th><span title="Monday">一</span></th>
-            <th><span title="Tuesday">二</span></th>
-            <th><span title="Wednesday">三</span></th>
-            <th><span title="Thursday">四</span></th>
-            <th><span title="Friday">五</span></th>
-            <th class="ui-datepicker-week-end"><span title="Saturday">六</span></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="9"
-                data-year="2017"><a class="ui-state-default" href="#">1</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">2</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">3</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">4</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">5</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">6</a></td>
-            <td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="9"
-                data-year="2017"><a class="ui-state-default" href="#">7</a></td>
-        </tr>
-        <tr>
-            <td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="9"
-                data-year="2017"><a class="ui-state-default" href="#">8</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">9</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">10</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">11</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">12</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">13</a></td>
-            <td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="9"
-                data-year="2017"><a class="ui-state-default" href="#">14</a></td>
-        </tr>
-        <tr>
-            <td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="9"
-                data-year="2017"><a class="ui-state-default" href="#">15</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">16</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">17</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">18</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">19</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">20</a></td>
-            <td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="9"
-                data-year="2017"><a class="ui-state-default" href="#">21</a></td>
-        </tr>
-        <tr>
-            <td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="9"
-                data-year="2017"><a class="ui-state-default" href="#">22</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">23</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">24</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">25</a></td>
-            <td class=" ui-datepicker-days-cell-over  ui-datepicker-current-day ui-datepicker-today"
-                data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default ui-state-highlight ui-state-active ui-state-hover" href="#">26</a></td>
-            <td class=" ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">27</span></td>
-            <td class=" ui-datepicker-week-end ui-datepicker-unselectable ui-state-disabled "><span
-                    class="ui-state-default">28</span></td>
-        </tr>
-        <tr>
-            <td class=" ui-datepicker-week-end ui-datepicker-unselectable ui-state-disabled "><span
-                    class="ui-state-default">29</span></td>
-            <td class=" ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">30</span></td>
-            <td class=" ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">31</span></td>
-            <td class=" ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td>
-            <td class=" ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td>
-            <td class=" ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td>
-            <td class=" ui-datepicker-week-end ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">
-                &nbsp;
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <div class="ui-timepicker-div">
-        <dl>
-            <dt class="ui_tpicker_time_label"></dt>
-            <dd class="ui_tpicker_time"></dd>
-            <dt class="ui_tpicker_hour_label" style="display:none;">Hour</dt>
-            <dd class="ui_tpicker_hour">
-                <div class="ui_tpicker_hour_slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"
-                     style="display:none;" aria-disabled="false"><a
-                        class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 100%;"></a></div>
-            </dd>
-            <dt class="ui_tpicker_minute_label" style="display:none;">Minute</dt>
-            <dd class="ui_tpicker_minute">
-                <div class="ui_tpicker_minute_slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"
-                     style="display:none;" aria-disabled="false"><a
-                        class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 100%;"></a></div>
-            </dd>
-            <dt class="ui_tpicker_second_label" style="display:none;">Second</dt>
-            <dd class="ui_tpicker_second">
-                <div class="ui_tpicker_second_slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"
-                     style="display:none;" aria-disabled="false"><a
-                        class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 100%;"></a></div>
-            </dd>
-            <dt class="ui_tpicker_millisec_label" style="display:none;">Millisecond</dt>
-            <dd class="ui_tpicker_millisec">
-                <div class="ui_tpicker_millisec_slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"
-                     style="display:none;" aria-disabled="false"><a
-                        class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 100%;"></a></div>
-            </dd>
-            <dt class="ui_tpicker_microsec_label" style="display:none;">Microsecond</dt>
-            <dd class="ui_tpicker_microsec">
-                <div class="ui_tpicker_microsec_slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"
-                     style="display:none;" aria-disabled="false"><a
-                        class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 0%;"></a></div>
-            </dd>
-            <dt class="ui_tpicker_timezone_label" style="display:none;">Time Zone</dt>
-            <dd class="ui_tpicker_timezone" style="display:none;"><select>
-                <option value="-720">-1200</option>
-                <option value="-660">-1100</option>
-                <option value="-600">-1000</option>
-                <option value="-570">-0930</option>
-                <option value="-540">-0900</option>
-                <option value="-480">-0800</option>
-                <option value="-420">-0700</option>
-                <option value="-360">-0600</option>
-                <option value="-300">-0500</option>
-                <option value="-270">-0430</option>
-                <option value="-240">-0400</option>
-                <option value="-210">-0330</option>
-                <option value="-180">-0300</option>
-                <option value="-120">-0200</option>
-                <option value="-60">-0100</option>
-                <option value="0">+0000</option>
-                <option value="60">+0100</option>
-                <option value="120">+0200</option>
-                <option value="180">+0300</option>
-                <option value="210">+0330</option>
-                <option value="240">+0400</option>
-                <option value="270">+0430</option>
-                <option value="300">+0500</option>
-                <option value="330">+0530</option>
-                <option value="345">+0545</option>
-                <option value="360">+0600</option>
-                <option value="390">+0630</option>
-                <option value="420">+0700</option>
-                <option value="480" selected="selected">+0800</option>
-                <option value="525">+0845</option>
-                <option value="540">+0900</option>
-                <option value="570">+0930</option>
-                <option value="600">+1000</option>
-                <option value="630">+1030</option>
-                <option value="660">+1100</option>
-                <option value="690">+1130</option>
-                <option value="720">+1200</option>
-                <option value="765">+1245</option>
-                <option value="780">+1300</option>
-                <option value="840">+1400</option>
-            </select></dd>
-        </dl>
-    </div>
-    <div class="ui-datepicker-buttonpane ui-widget-content">
-        <button type="button" class="ui-datepicker-current ui-state-default ui-priority-secondary ui-corner-all"
-                data-handler="today" data-event="click">加载数据
-        </button>
-        <button type="button" class="ui-datepicker-close ui-state-default ui-priority-primary ui-corner-all"
-                data-handler="hide" data-event="click">关闭
-        </button>
-    </div>
-</div>
+
 </body>
 </html>

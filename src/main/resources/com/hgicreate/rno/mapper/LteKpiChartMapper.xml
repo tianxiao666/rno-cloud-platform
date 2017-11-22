@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hgicreate.rno.mapper.LteKpiChartMapper">
+    <select id="queryChartRsrp"
+            resultType="com.hgicreate.rno.service.dto.LteKpiChartRsrpDTO">
+      select kpi.CELL_NAME as cellName, count(kpi.LTE_SC_RSRP) as sampleNum,
+        count( CASE when kpi.LTE_SC_RSRP &lt; -110 then 1 END) as xBelowNegative110,
+        count(CASE when kpi.LTE_SC_RSRP &gt;= -110 and kpi.LTE_SC_RSRP &lt; -95 then 1 END) as xBetweenNegative110And95,
+        count(CASE when kpi.LTE_SC_RSRP &gt;=-95 and kpi.LTE_SC_RSRP &lt; -80 then 1 END) as xBetweenNegative95And80,
+        count(CASE when kpi.LTE_SC_RSRP &gt;= -80 then 1 END) as xOnNegative80
+        from RNO_LTE_KPI_DATA kpi
+       left outer join rno_lte_cell cell on kpi.CELL_ID = cell.CELL_ID
+       where kpi.CELL_ID= #{param2}
+       and TIME_STAMP BETWEEN #{param3} and #{param4}
+       and cell.AREA_ID= #{param1}
+       group by kpi.CELL_NAME
+    </select>
+    <select id="queryChartRsrq"
+            resultType="com.hgicreate.rno.service.dto.LteKpiChartRsrqDTO">
+        select kpi.CELL_NAME as cellName, count(kpi.LTE_SC_RSRQ) as sampleNum,
+        count( CASE when kpi.LTE_SC_RSRQ &lt; 8 then 1 END) as xBelow8,
+        count(CASE when kpi.LTE_SC_RSRQ &gt;= 8 and kpi.LTE_SC_RSRQ &lt; 15 then 1 END) as xBetween8And15,
+        count(CASE when kpi.LTE_SC_RSRQ &gt;=15  then 1 END) as xOn15
+        from RNO_LTE_KPI_DATA kpi
+        left outer join rno_lte_cell cell on kpi.CELL_ID = cell.CELL_ID
+        where kpi.CELL_ID= #{param2}
+        and TIME_STAMP BETWEEN #{param3} and #{param4}
+        and cell.AREA_ID= #{param1}
+        group by kpi.CELL_NAME
+    </select>
+    <select id="queryChartCoverRate"
+            resultType="com.hgicreate.rno.service.dto.LteKpiChartCoverRateDTO">
+        select kpi.CELL_NAME as cellName, count(kpi.LTE_SC_RSRP) as sampleNum,
+               count( CASE when kpi.LTE_SC_RSRP &lt; -110 then 1 END) as xBelowNegative110,
+               count(CASE when kpi.LTE_SC_RSRP &gt;=-110 and kpi.LTE_SC_RSRP &lt; -95 then 1 END) as xBetweenNegative110And95,
+               count(CASE when kpi.LTE_SC_RSRP &gt;=-95 and kpi.LTE_SC_RSRP &lt; -85 then 1 END) as xBetweenNegative95And85,
+               count(CASE when kpi.LTE_SC_RSRP &gt;= -85 then 1 END) as xOnNegative85
+        from RNO_LTE_KPI_DATA kpi
+            left outer join rno_lte_cell cell on kpi.CELL_ID = cell.CELL_ID
+        where kpi.CELL_ID= #{param2}
+              and TIME_STAMP BETWEEN #{param3} and #{param4}
+              and cell.AREA_ID= #{param1}
+        group by kpi.CELL_NAME
+    </select>
+</mapper>
