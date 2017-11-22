@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/public.css">
+    <link rel="stylesheet" href="css/public-table.css">
+    <link rel="stylesheet" href="css/personal_info.css">
+    <script src="../../lib/jquery/1.8.2/jquery.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
+    <script type="text/javascript" src="js/selfinfoviewandedit.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            if ($("#accounthide").val() == "xiangyu@iscreate.com") {
+                var a = $("#accounthide").val();
+                var k = a.substring(0, a.indexOf("@"));
+                $("#aclabel").html(k + "@gz.gd.chinamobile.com");
+            }
+            else if ($("#accounthide").val() == "huangjinguang@iscreate.com") {
+                var a = $("#accounthide").val();
+                var k = a.substring(0, a.indexOf("@"));
+                $("#aclabel").html(k + "@gd.chinamobile.com");
+            }
+            else {
+                $("#aclabel").html($("#accounthide").val());
+            }
+        });
+    </script>
+    <title>个人资料查看修改</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="header-top">
+        <h2>
+            用户个人资料
+        </h2>
+    </div>
+</div>
+<form id="personalInfoForm" action="saveSelfServiceInfoForAjaxAction" target="stay" method="post">
+    <div id="container">
+        <div class="personal_info_title">
+            <h4>
+                账号基本信息：
+            </h4>
+        </div>
+        <div class="personal_info_content clearfix">
+
+            <input name="sysOrgUser.orgUserId" value="13" type="hidden">
+            <input name="sysOrgUser.name" value="网优开发" type="hidden">
+            <input name="sysAccount.account" id="accounthide" value="rnodev@iscreate.com" type="hidden">
+            <input name="sysOrgUser.status" value="1" type="hidden">
+            <input name="sysAccount.accountId" value="20" type="hidden">
+            <input name="sysOrgUser.email" value="rnodev@iscreate.com" type="hidden">
+
+
+            <input id="hidden_backUpEmailAddress" value="" type="hidden">
+            <input id="hidden_cellPhoneNumber" value="12345678" type="hidden">
+
+
+            <ul class="personal_info_ul">
+                <li>
+                    <span class="li_left">账号<em class="red">*</em>：</span>
+                    <label id="aclabel">rnodev@iscreate.com</label>
+                </li>
+                <li>
+                    <span class="li_left">姓名<em class="red">*</em>：</span>
+                    <label>网优开发</label>
+                </li>
+                <li>
+                    <span class="li_left">邮箱<em class="red">*</em>：</span>
+                    <label>rnodev@iscreate.com</label>
+
+
+                </li>
+                <li>
+                    <span class="li_left">备用邮箱：</span>
+                    <label class="modified_person_info"></label>
+                    <span class="now_person_info">
+							<input id="backUpEmailAddress" name="sysOrgUser.backupemail"
+                                   class="{chineseNotAllowed:true,uemail:true, maxlength:64}" type="text">
+						    
+						    </span>
+                </li>
+                <li>
+                    <span class="li_left">手机号码<em class="red">*</em>：</span>
+                    <label class="modified_person_info">12345678</label>
+                    <span class="now_person_info">
+							<input id="cellPhoneNumber" name="sysOrgUser.mobile" value="12345678"
+                                   class="{digits:true,required:true,maxlength:11}" type="text">
+							</span>
+                </li>
+
+
+                <li>
+                    <span class="li_left">状态：</span>
+                    <label>
+
+                        <input checked="checked" disabled="disabled" type="checkbox">
+                        有效
+
+
+                    </label>
+                </li>
+            </ul>
+        </div>
+        <div class="personal_info_bottom clear">
+            <input class="sava_personal_info" name="saveBtn" id="saveBtn" disabled="disabled" value="保存" type="submit">
+            &nbsp;&nbsp;&nbsp;
+            <input class="modify_personal_info" name="modifyBtn" id="modifyBtn" value="修改" type="button">
+            &nbsp;&nbsp;&nbsp;
+            <input class="cancel_personal_info" name="cancelBtn" id="cancelBtn" disabled="disabled" value="放弃"
+                   type="button">
+        </div>
+    </div>
+</form>
+
+
+</body>
+</html>
