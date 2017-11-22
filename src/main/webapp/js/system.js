@@ -209,6 +209,7 @@ $("#appNameList").live("change",function(){
 * */
 function getAppById(appId){
     clearAll();
+    $("#menu").attr("src","menu.html?appId="+appId);
     var data={
         'appId':appId
     };
