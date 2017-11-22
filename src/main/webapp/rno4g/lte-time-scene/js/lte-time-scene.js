@@ -679,3 +679,39 @@ function clearAll() {
     $("#sceneNameTip").html("");
 }
 
+
+
+function showOperTips(outerId, tipId, tips) {
+    try {
+        $("#" + outerId).css("display", "");
+        $("#" + outerId).find("#" + tipId).html(tips);
+    } catch (err) {
+    }
+}
+
+function hideOperTips(outerId) {
+    try {
+        $("#" + outerId).css("display", "none");
+    } catch (err) {
+    }
+}
+
+// ---------------------//
+function getValidValue(v, defaultValue, precision) {
+    if (v === null || v === undefined || v === "null" || v === "NULL"
+        || v === "undefined" || v === "UNDEFINED") {
+        if (defaultValue !== null && defaultValue !== undefined)
+            return defaultValue;
+        else
+            return "";
+    }
+
+    if (typeof v === "number") {
+        try {
+            v = Number(v).toFixed(precision);
+        } catch (err) {
+            // console.error("v=" + v + "," + err);
+        }
+    }
+    return v;
+}

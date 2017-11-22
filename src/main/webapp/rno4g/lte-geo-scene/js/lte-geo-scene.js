@@ -81,7 +81,7 @@ function getSceneNameListTask(){
     $("#addScene").bind("click",function(){
         initSceneTable();
     });
-    //showOperTips("loadingDataDiv", "loadContentId", "正在查询");
+    showOperTips("loadingDataDiv", "loadContentId", "正在查询");
     $.ajax({
         type:'post',
         url : '/api/lte-geo-scene/get-all-name',
@@ -393,6 +393,7 @@ function initSceneTable(){
     $("#addScene").unbind("click");
 }
 
+
 function submitInsertData(){
 
     //检查参数是否可以上传
@@ -667,4 +668,40 @@ function clearAll(){
     $(".errTip").html("");
     $(".editbox").html("");
     $("#sceneNameTip").html("");
+}
+
+
+function showOperTips(outerId, tipId, tips) {
+    try {
+        $("#" + outerId).css("display", "");
+        $("#" + outerId).find("#" + tipId).html(tips);
+    } catch (err) {
+    }
+}
+
+function hideOperTips(outerId) {
+    try {
+        $("#" + outerId).css("display", "none");
+    } catch (err) {
+    }
+}
+
+// ---------------------//
+function getValidValue(v, defaultValue, precision) {
+    if (v === null || v === undefined || v === "null" || v === "NULL"
+        || v === "undefined" || v === "UNDEFINED") {
+        if (defaultValue !== null && defaultValue !== undefined)
+            return defaultValue;
+        else
+            return "";
+    }
+
+    if (typeof v === "number") {
+        try {
+            v = Number(v).toFixed(precision);
+        } catch (err) {
+            // console.error("v=" + v + "," + err);
+        }
+    }
+    return v;
 }
