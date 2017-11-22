@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    $("#passwordUpdate").hide();
 	//
 	$(".modify_personal_info").click(function() {
 		$(".modified_person_info").hide();
@@ -30,7 +31,7 @@ $(document).ready(function() {
 				 $(form).ajaxSubmit({
 					 success:function(d){
 					    var data=eval("("+d+")");
-					    if(data['flag']==true){
+					    if(data['flag']===true){
 					    	alert("修改成功");
 					    	window.location.href="loadSelfServiceInfoViewAndEditAction";
 					    }else{
@@ -41,3 +42,12 @@ $(document).ready(function() {
 			}
 		});		
 	});
+
+function toUserUpdate(){
+	$("#userUpdate").show();
+	$("#passwordUpdate").hide();
+}
+function toPasswordUpdate(){
+	$("#passwordUpdate").show();
+	$("#userUpdate").hide();
+}
