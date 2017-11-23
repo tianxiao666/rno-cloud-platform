@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>LTE容量优化</title>
+
+
+    <link rel="stylesheet" href="../../lib/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/lte-capicity-optimization.css">
+    <link rel="stylesheet" href="../../lib/datatables/1.10.16/datatables.min.css">
+    <link rel="stylesheet" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
+
+    <script src="../../lib/jquery/1.8.2/jquery.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.metadata.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
+    <script src="../../lib/validate.js"></script>
+    <script src="../../lib/tab.js"></script>
+    <script src="../../lib/laydate/5.0.7/laydate.js"></script>
+    <script src="../../lib/datatables/1.10.16/datatables.min.js"></script>
+    <script src="../../js/common.js"></script>
+    <script src="js/lte-capicity-optimization.js"></script>
+</head>
+<body>
+<div><b style="font-weight: 700">当前位置：容量优化&gt; LTE容量优化</b></div>
+<div id="loading" class="loading" style="display: none">加载中...</div>
+<div id="info" class="info-style" style="display: none"></div>
+<div id="tabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
+    <div id="tabs-1" aria-labelledby="ui-id-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel"
+         aria-hidden="false">
+        <div id="listinfoDiv">
+            <form id="import-query-form" method="post">
+                <table>
+                    <tr>
+                        <td><div style="padding: 5px;"><select id="province" name="province" title=""></select></div></td>
+                        <td><div style="padding: 5px;"><select id="city" name="city" title=""></select></div></td>
+                        <td><div style="padding: 5px;"><select id="district" name="district" title=""></select></div></td>
+                        <td><div style="padding: 5px;"><input type="checkbox" id="onlyShowHighPressCells" name="onlyShowHighPressCells" ><label for="onlyShowHighPressCells">高负荷小区</label></div></td>
+                        <td><div style="padding: 5px;"><input value="查询小区" type="button" onclick="beforeSubmitForm()"></div></td>
+                    </tr>
+                </table>
+            </form>
+            <div id="importListDiv" class="sectionDivCls">
+                <div style="margin-top: 10px"><b style="font-weight: 700">小区容量信息列表</b></div>
+                <table id="queryImportTab" class="display rnoHeader" cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th>小区名</th>
+                        <th>是否为高负荷小区</th>
+                        <th>RRC数量</th>
+                        <th>上行利用率(%)</th>
+                        <th>下行利用率(%)</th>
+                        <th>上行流量(GB)</th>
+                        <th>下行流量(GB)</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+        <div id="capicityOptimizationDetailDialog" style = "position: fixed;opacity: 1;z-index: 1000;display:none;">
+            <div style="position: fixed;width: 100%;height: 100%;top:0;left:0;background: rgba(0,0,0,0.3);">
+                <div id="lteCellDetailDiv" class="dialog2" style="position: relative;right: 10px;opacity: 0;">
+                    <div class="dialog_header">
+                        <div class="dialog_title">
+                            LTE小区详情查看
+                        </div>
+                        <div class="dialog_tool">
+                            <div class="dialog_tool_close dialog_closeBtn"
+                                 onclick="detailDialogClose()"></div>
+                        </div>
+                    </div>
+                    <div class="dialog_content">
+                        <div style="font-weight: bold;margin-bottom:5px">
+                            小区ID：<span id="detailCellId"></span>
+                            -&gt;小区名称：<span id="detailCellName"></span>
+                        </div>
+                        <!--<input value="同站下一小区详情" id="nextCellDetailBtn" type="button">-->
+                        <div>
+                        </div>
+                        <table class="greystyle-standard" id="viewCellDetailTable">
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="capicityOptimizationAdviceDialog" style = "position: fixed;opacity: 1;z-index: 1000;display:none;">
+            <div style="position: fixed;width: 100%;height: 100%;top:0;left:0;background: rgba(0,0,0,0.3);">
+                <div id="lteCellAdviceDiv" class="dialog2" style="position: relative;right: 10px;width: 400px;opacity: 0;">
+                    <div class="dialog_header">
+                        <div class="dialog_title">
+                            LTE小区建议显示
+                        </div>
+                        <div class="dialog_tool">
+                            <div class="dialog_tool_close dialog_closeBtn"
+                                 onclick="adviceDialogClose()"></div>
+                        </div>
+                    </div>
+                    <div class="dialog_content">
+                        <div style="font-weight: bold;margin-bottom:5px">
+                            小区ID：<span id="adviceCellId"></span>
+                            -&gt;小区名称：<span id="adviceCellName"></span>
+                        </div>
+                        <!--<input value="同站下一小区详情" id="nextCellDetailBtn" type="button">-->
+                        <div>
+                        </div>
+                        <table class="greystyle-standard" id="viewCellAdviceTable">
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--
+        <div id="reportDiv" style="display:none">
+            <form id="viewReportForm">
+                <input name="attachParams['jobId']" id="hiddenJobId" value="" type="hidden">
+            </form>
+            <ul id="icons" class="ui-widget ui-helper-clearfix" style="width:100px;cursor:pointer">
+                <li class="ui-state-default ui-corner-all" title="返回列表" style="width:100px"
+                    onclick="javascript:returnToImportList();"><span class="ui-icon ui-icon-arrowreturnthick-1-w"
+                                                                     style="width:20px"></span>返回列表
+                </li>
+            </ul>
+            <table id="reportListTab" class="greystyle-standard" style="width:auto;margin-left:0">
+                <thead>
+                <tr>
+                    <th>阶段</th>
+                    <th>开始时间</th>
+                    <th>结束</th>
+                    <th>结果</th>
+                    <th>详细信息</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+        -->
+    </div>
+</div>
+
+</body>
+</html>
