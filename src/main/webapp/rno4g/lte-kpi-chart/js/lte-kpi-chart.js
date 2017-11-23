@@ -45,13 +45,7 @@ $(function () {
     //初始化图表
     var myChart=echarts.init(document.getElementById('main'));
     var option ={
-        color: ['#3398DB'],
-        tooltip : {
-            trigger: 'axis',
-            axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-                type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-            }
-        },
+        color: ['#E2ECF7'],
         title: {
             text:  '标题',
             left: 'center',
@@ -76,8 +70,9 @@ $(function () {
             type : 'category',
             splitArea : {
                 show : true,
-                areaStyle: {color: '#FFFFFF'}
+                areaStyle: {color: '#E2ECF7'}
             },
+            splitLine:{show: true},
             data: ['0.0','0.2','0.4','0.6', '0.8','1.0','1.2']
         },
         series: [{

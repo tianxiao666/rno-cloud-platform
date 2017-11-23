@@ -1345,7 +1345,7 @@ body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, input, button, textar
 }
 
 .resource_list_icon .switch {
-    background: url("../images/flexArrow.png") no-repeat #FFFFFF;
+    background: url("../images/flexArrow.png") no-repeat #E2ECF7;
     height: 68px;
     right: 0;
     position: absolute;
@@ -1355,7 +1355,7 @@ body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, input, button, textar
 }
 
 .resource_list_icon .switch_hidden {
-    background: url("../images/flexArrow.png") -22px 0 no-repeat #FFFFFF;
+    background: url("../images/flexArrow.png") -22px 0 no-repeat #E2ECF7;
     height: 68px;
     left: -18px;
     position: absolute;
