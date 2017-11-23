@@ -1,9 +1,6 @@
 package com.hgicreate.rno.web.rest;
 
-import com.hgicreate.rno.domain.Area;
-import com.hgicreate.rno.domain.DataJob;
-import com.hgicreate.rno.domain.OriginFile;
-import com.hgicreate.rno.domain.OriginFileAttr;
+import com.hgicreate.rno.domain.*;
 import com.hgicreate.rno.repository.DataJobReportRepository;
 import com.hgicreate.rno.repository.DataJobRepository;
 import com.hgicreate.rno.repository.OriginFileAttrRepository;
@@ -96,6 +93,7 @@ public class LteGridDataResource {
         log.debug("模块名：" + vm.getModuleName());
 
         try {
+            Date uploadBeginTime = new Date();
             // 获取文件名，并构建为本地文件路径
             String filename = vm.getFile().getOriginalFilename();
             log.debug("上传的文件名：{}", filename);
@@ -170,6 +168,16 @@ public class LteGridDataResource {
             dataJob.setDataStorePath(ftpFullPath);
             dataJob.setDataStoreType("FTP");
             dataJobRepository.save(dataJob);
+
+            //建立任务报告
+            DataJobReport dataJobReport = new DataJobReport();
+            dataJobReport.setDataJob(dataJob);
+            dataJobReport.setStage("文件上传");
+            dataJobReport.setStartTime(uploadBeginTime);
+            dataJobReport.setCompleteTime(new Date());
+            dataJobReport.setStatus("成功");
+            dataJobReport.setMessage("文件成功上传到服务器");
+            dataJobReportRepository.save(dataJobReport);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
