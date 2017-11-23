@@ -96,6 +96,7 @@ public class LteTrafficDataResource {
         log.debug("视图模型: " + vm);
 
         try {
+            Date uploadBeginTime = new Date();
             // 获取文件名，并构建为本地文件路径
             String filename = vm.getFile().getOriginalFilename();
             log.debug("上传的文件名：{}", filename);
@@ -169,7 +170,7 @@ public class LteTrafficDataResource {
             DataJobReport dataJobReport = new DataJobReport();
             dataJobReport.setDataJob(dataJob);
             dataJobReport.setStage("文件上传");
-            dataJobReport.setStartTime(new Date());
+            dataJobReport.setStartTime(uploadBeginTime);
             dataJobReport.setCompleteTime(new Date());
             dataJobReport.setStatus("成功");
             dataJobReport.setMessage("文件成功上传至服务器");
