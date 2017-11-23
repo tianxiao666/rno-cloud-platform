@@ -12,6 +12,8 @@ import java.util.List;
 public class DataJobReport {
 
     @Id
+    @GeneratedValue(generator = "DataJobReportSeq")
+    @SequenceGenerator(name = "DataJobReportSeq", sequenceName = "SEQ_DATA_JOB_REPORT", allocationSize = 1)
     private Long id;
 
     private String stage;

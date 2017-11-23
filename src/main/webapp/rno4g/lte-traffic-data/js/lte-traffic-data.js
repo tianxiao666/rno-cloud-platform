@@ -118,15 +118,15 @@ function showQueryImportResult(data) {
                     "render": function (data, type, row) {
                         switch (row['status']) {
                             case "部分成功":
-                                return "<a style='color: red' onclick=\"showImportDetail('" + row['id'] + "')\">" + row['status'] + "</a>";
+                                return "<a style='color: red;cursor: pointer' onclick=\"showImportDetail('" + row['id'] + "')\">" + row['status'] + "</a>";
                             case "全部失败":
-                                return "<a style='color: red' onclick=\"showImportDetail('" + row['id'] + "')\">" + row['status'] + "</a>";
+                                return "<a style='color: red;cursor: pointer' onclick=\"showImportDetail('" + row['id'] + "')\">" + row['status'] + "</a>";
                             case "全部成功":
-                                return "<a onclick=\"showImportDetail('" + row['id'] + "')\">" + row['status'] + "</a>";
+                                return "<a style='cursor: pointer' onclick=\"showImportDetail('" + row['id'] + "')\">" + row['status'] + "</a>";
                             case "正在处理":
-                                return "<a onclick=\"showImportDetail('" + row['id'] + "')\">" + row['status'] + "</a>";
+                                return "<a style='cursor: pointer' onclick=\"showImportDetail('" + row['id'] + "')\">" + row['status'] + "</a>";
                             case "等待处理":
-                                return "<a onclick=\"showImportDetail('" + row['id'] + "')\">" + row['status'] + "</a>";
+                                return "<a style='cursor: pointer' onclick=\"showImportDetail('" + row['id'] + "')\">" + row['status'] + "</a>";
                         }
                     },
                     "targets": -1,

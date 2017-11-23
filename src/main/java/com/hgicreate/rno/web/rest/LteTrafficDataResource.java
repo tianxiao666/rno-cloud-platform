@@ -1,9 +1,6 @@
 package com.hgicreate.rno.web.rest;
 
-import com.hgicreate.rno.domain.Area;
-import com.hgicreate.rno.domain.DataJob;
-import com.hgicreate.rno.domain.OriginFile;
-import com.hgicreate.rno.domain.OriginFileAttr;
+import com.hgicreate.rno.domain.*;
 import com.hgicreate.rno.repository.DataJobReportRepository;
 import com.hgicreate.rno.repository.DataJobRepository;
 import com.hgicreate.rno.repository.OriginFileAttrRepository;
@@ -168,6 +165,15 @@ public class LteTrafficDataResource {
             dataJob.setDataStoreType("FTP");
             dataJob.setDataStorePath(ftpFullPath);
             dataJobRepository.save(dataJob);
+            //建立任务报告
+            DataJobReport dataJobReport = new DataJobReport();
+            dataJobReport.setDataJob(dataJob);
+            dataJobReport.setStage("文件上传");
+            dataJobReport.setStartTime(new Date());
+            dataJobReport.setCompleteTime(new Date());
+            dataJobReport.setStatus("成功");
+            dataJobReport.setMessage("文件成功上传至服务器");
+            dataJobReportRepository.save(dataJobReport);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
