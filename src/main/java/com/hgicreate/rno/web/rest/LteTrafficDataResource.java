@@ -112,8 +112,8 @@ public class LteTrafficDataResource {
             if(filename.toUpperCase().endsWith("XML")){
                 filename = UUID.randomUUID().toString() +".xml";
                 originFile.setFileType("XML");
-            }else if(filename.toUpperCase().endsWith("GZ")){
-                filename = UUID.randomUUID().toString() +".gz";
+            }else if(filename.toUpperCase().endsWith(".XML.GZ")){
+                filename = UUID.randomUUID().toString() +".xml.gz";
                 originFile.setFileType("GZ");
             }else if(filename.toUpperCase().endsWith("ZIP")){
                 filename = UUID.randomUUID().toString() +".zip";
