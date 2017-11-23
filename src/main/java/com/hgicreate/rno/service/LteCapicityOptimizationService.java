@@ -98,11 +98,11 @@ public class LteCapicityOptimizationService {
                     randomUpRate = 100;
                     randomDownRate = random.nextInt(80);
                     randomUpFlow = random.nextInt(2) + 4;
-                    randomDownFlow = random.nextInt(3);
+                    randomDownFlow = random.nextInt(2)+1;
                 } else {
                     randomUpRate = random.nextInt(80);
                     randomDownRate = 100;
-                    randomUpFlow = random.nextInt(3);
+                    randomUpFlow = random.nextInt(2)+1;
                     randomDownFlow = random.nextInt(2) + 4;
                 }
                 for (int i = 0; i < randomOperation.length; i++) {
@@ -114,8 +114,8 @@ public class LteCapicityOptimizationService {
                 randomAdvice = 0;
                 randomUpRate = random.nextInt(70);
                 randomDownRate = random.nextInt(70);
-                randomUpFlow = random.nextInt(3);
-                randomDownFlow = random.nextInt(3);
+                randomUpFlow = random.nextInt(2)+1;
+                randomDownFlow = random.nextInt(2)+1;
                 for (int i = 0; i < randomOperation.length; i++) {
                     randomOperation[i] = 0;
                 }
@@ -136,8 +136,6 @@ public class LteCapicityOptimizationService {
                     "2017-11-17", "100", "是", "roof",
                     randomOperation[0] + "", randomOperation[1] + "", randomOperation[2] + "", randomOperation[3] + "",
                     randomOperation[4] + "", randomOperation[5] + "", randomOperation[6] + "", randomOperation[7] + ""));
-
-
             }
         }
         return list;
