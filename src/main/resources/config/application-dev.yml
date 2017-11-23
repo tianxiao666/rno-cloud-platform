@@ -38,3 +38,7 @@ rno:
 mybatis:
     configuration:
         map-underscore-to-camel-case: true
+
+management:
+  security:
+    enabled: false
