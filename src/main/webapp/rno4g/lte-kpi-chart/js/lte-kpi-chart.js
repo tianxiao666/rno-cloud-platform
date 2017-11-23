@@ -9,6 +9,31 @@ $(function () {
     var dateEnd = new Date();
     dateEnd.setFullYear(2015,8,30);
 
+    //默认右侧栏打开
+    var switchHidden =$(".switch_hidden");
+    $(".resource_list300_box").css("display", "block");
+    switchHidden.hide();
+    $(".resource_list_icon").css("right", "300px;");
+    $(".switch").click(function () {
+        $(this).hide();
+        $(".switch_hidden").show();
+        $(".resource_list_icon").animate({
+            right: '0px'
+        }, 'fast');
+        $(".resource_list300_box").hide("fast");
+    });
+    switchHidden.click(function () {
+        $(this).hide();
+        $(".switch").show();
+        $(".resource_list_icon").animate({
+            right: '300px'
+        }, 'fast');
+        $(".resource_list300_box").show("fast");
+    });
+    $(".zy_show").click(function () {
+        $(".search_box_alert").slideToggle("fast");
+    });
+
     laydate.render({elem: '#mrMeaBegDate', value: dateBeg});
     laydate.render({elem: '#mrMeaEndDate', value: dateEnd});
     //tab切换
@@ -49,7 +74,10 @@ $(function () {
         yAxis: {
             name : 'Y轴',
             type : 'category',
-            splitArea : {show : true},
+            splitArea : {
+                show : true,
+                areaStyle: {color: '#FFFFFF'}
+            },
             data: ['0.0','0.2','0.4','0.6', '0.8','1.0','1.2']
         },
         series: [{

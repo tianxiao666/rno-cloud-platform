@@ -248,7 +248,7 @@ function showQueryList(data) {
         }
         ],
         // "lengthChange": false,
-        // "ordering": false,
+         "ordering": true,
         // "searching": false,
         "destroy": true,
         "language": {
@@ -607,7 +607,7 @@ function showImportRecord(data) {
                     "data": "completeTime"
                 }],
             "lengthChange": false,
-            "ordering": false,
+            "ordering": true,
             "searching": false,
             "destroy": true,
             "language": {
@@ -628,7 +628,7 @@ function showRecord(data) {
                 {"data": "createdDate"}
             ],
             "lengthChange": true,
-            "ordering": false,
+            "ordering": true,
             "searching": true,
             "destroy": true,
             "language": {
@@ -677,7 +677,7 @@ function showImportDatailResult(data) {
                 {"data": "message"}
             ],
             "lengthChange": false,
-            "ordering": false,
+            "ordering": true,
             "searching": false,
             "destroy": true,
             "language": {
