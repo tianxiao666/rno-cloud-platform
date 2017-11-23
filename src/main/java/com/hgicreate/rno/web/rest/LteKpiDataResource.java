@@ -2,6 +2,7 @@ package com.hgicreate.rno.web.rest;
 
 import com.hgicreate.rno.domain.Area;
 import com.hgicreate.rno.domain.DataJob;
+import com.hgicreate.rno.domain.DataJobReport;
 import com.hgicreate.rno.domain.OriginFile;
 import com.hgicreate.rno.repository.DataJobReportRepository;
 import com.hgicreate.rno.repository.DataJobRepository;
@@ -63,6 +64,7 @@ public class LteKpiDataResource {
     public ResponseEntity<?> uploadLteCellFile(FileUploadVM vm) {
         log.debug("模块名：" + vm.getModuleName());
         try {
+            Date uploadBeginTime = new Date();
             String filename = vm.getFile().getOriginalFilename();
             log.debug("上传的文件名：{}", filename);
             OriginFile originFile = new OriginFile();
@@ -119,6 +121,16 @@ public class LteKpiDataResource {
             dataJob.setDataStoreType("FTP");
             dataJob.setDataStorePath(ftpFullPath);
             dataJobRepository.save(dataJob);
+
+            //建立任务报告
+            DataJobReport dataJobReport = new DataJobReport();
+            dataJobReport.setDataJob(dataJob);
+            dataJobReport.setStage("文件上传");
+            dataJobReport.setStartTime(uploadBeginTime);
+            dataJobReport.setCompleteTime(new Date());
+            dataJobReport.setStatus("成功");
+            dataJobReport.setMessage("文件成功上传至服务器");
+            dataJobReportRepository.save(dataJobReport);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
