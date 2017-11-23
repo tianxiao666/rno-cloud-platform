@@ -19,7 +19,7 @@ $(function () {
 
     //初始化图表
     var myChart=echarts.init(document.getElementById('main'));
-    myChart.setOption({
+    var option ={
         color: ['#3398DB'],
         tooltip : {
             trigger: 'axis',
@@ -41,26 +41,37 @@ $(function () {
         xAxis: {
             name: 'X轴',
             type : 'category',
-            data: ['00:00','05:00','12:00','18:00','00:00'],
+            data: ['00:00','06:00','12:00','18:00','00:00'],
             axisTick: {
                 alignWithLabel: true
             }
         },
         yAxis: {
             name : 'Y轴',
-            type : 'value',
+            type : 'category',
+            splitArea : {show : true},
             data: ['0.0','0.2','0.4','0.6', '0.8','1.0','1.2']
         },
         series: [{
             name: '',
             type: 'bar',
-            data: ['0']
+            data: []
         }]
+    };
+    myChart.setOption(option);
+
+    $("#searchButton").click(function () {
+        var inputCell=$("#inputCell");
+        if(inputCell.val().trim() === '' || inputCell.val() === null){
+            showInfoInAndOut("info","请先输入小区ID再进行查询！");
+            return false;
+        }
     });
     //查询小区信息
     $("#queryKpiForm").ajaxForm({
         url: "/api/lte-kpi-chart/chart-query",
         success:function (data) {
+            myChart.setOption(option);
             showChart(data, myChart);
         },
         error: function (err) {
