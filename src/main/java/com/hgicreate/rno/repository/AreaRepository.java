@@ -11,4 +11,6 @@ public interface AreaRepository extends JpaRepository<Area, Long> {
 
     public List<Area> findAllByParentId(Long parentId);
 
+    Area findById(Long id);
+
 }

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>4G区域网格呈现</title>
 
+    <link rel="stylesheet" href="../../lib/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/lte-grid-gis.css">
     <link rel="stylesheet" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
     <link rel="stylesheet" href="../../lib/openlayers/4.4.2/ol.css">
@@ -15,14 +16,65 @@
     <script src="js/lte-grid-gis.js"></script>
 </head>
 <body>
+<div id="loading" class="loading-style" style="display: none">加载中···，请稍候</div>
+<div id="error" class="error-style" style="display: none"></div>
+<div id="warn" class="warn-style" style="display: none"></div>
+<div id="success" class="success-style" style="display: none"></div>
 <div id="map" class="map"></div>
 <div class="dialog">
-    省：<select name="provinceId" class="required" id="provinceId" title=""></select>
-    市：<select name="cityId" class="required" id="cityId" title=""></select>
-    区：<select name="districtId" class="required" id="districtId" title=""></select>
-    <input id="loadGisCell" value="加载小区" type="button">
-    <input id="loadGrid" value="加载网格" type="button">
-    <input id="ExportGridCellData" value="导出网格小区数据" type="button">
+    <!--省：-->
+    <select class="form-control custom-select" id="provinceId"></select>
+    <!--市：-->
+    <select class="form-control custom-select" id="cityId"></select>
+    <!--区：-->
+    <select class="form-control custom-select" id="districtId" style="display: none"></select>
+    <button style="outline: none" id="loadGisCell" class="btn btn-info custom-btn">加载小区</button>
+    <button style="outline: none" id="loadGisCellName" class="btn btn-info custom-btn">显示小区名字</button>
+</div>
+<div class="resource_list_icon">
+    <a href="#" class="switch"></a>
+    <a href="#" class="switch_hidden"></a>
+    <div class="shad_v"></div>
+</div>
+<div class="resource_list_box">
+    <div style="display:block;margin-bottom: 39px">
+        <div class="form-inline" style="padding-top: 20px;padding-left:15px;padding-right:15px">
+            <form id="gridForm" action="/api/lte-grid-gis/download-grid-data">
+                <h3>类型选择</h3>
+                <hr/>
+                <div class="form-group">
+                    <label style="font-weight: bold">网格类型：</label>
+                </div>
+                <div class="form-group col-sm-offset-1">
+                    <input type="checkbox" name="gridType" class="checkbox" value="A">
+                    <span style="margin-right: 10px">A类</span>
+                    <input type="checkbox" name="gridType" class="checkbox" value="B">
+                    <span style="margin-right: 10px">B类</span>
+                    <input type="checkbox" name="gridType" class="checkbox" value="C">
+                    <span>C类</span>
+                </div>
+
+                <h3>功能操作</h3>
+                <hr/>
+                <button id="loadGrid" class="btn btn-primary"
+                        style="width: 100%;margin-bottom: 3px; outline: none" disabled>加载网格
+                </button>
+                <button id="exportGrid" class="btn btn-primary"
+                        style="width: 100%;outline: none" disabled>导出网格小区数据
+                </button>
+
+                <div id="spanDiv">
+                    <h3>图例参考</h3>
+                    <hr/>
+                    <span id="aGrid" class="col-sm-2 label custom-red-span">A类网格</span><br/>
+                    <span id="bGrid" class="col-sm-2 label custom-green-span">B类网格</span><br/>
+                    <span id="cGrid" class="col-sm-2 label custom-blue-span">C类网格</span>
+                </div>
+                <input type="hidden" id="areaId" name="areaId"/>
+                <input type="hidden" id="type" name="type"/>
+            </form>
+        </div>
+    </div>
 </div>
 </body>
 </html>
