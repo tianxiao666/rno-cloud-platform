@@ -154,7 +154,7 @@ function showQueryImportResult(data) {
                 },
             ],
             "lengthChange": false,
-            "ordering": false,
+            "ordering": true,
             "searching": false,
             "destroy": true,
             "language": {
@@ -204,7 +204,7 @@ function showImportDtDatailResult(data) {
                 {"data": "message"}
             ],
             "lengthChange": false,
-            "ordering": false,
+            "ordering": true,
             "searching": false,
             "destroy": true,
             "language": {
@@ -230,7 +230,7 @@ function showDtRecord(data) {
                 {"data": "createdDate"}
             ],
             "lengthChange": false,
-            "ordering": false,
+            "ordering": true,
             "searching": false,
             "destroy": true,
             "language": {

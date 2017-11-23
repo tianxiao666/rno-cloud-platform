@@ -155,7 +155,7 @@ function showQueryImportResult(data) {
                 },
             ],
             "lengthChange": false,
-            "ordering": false,
+            "ordering": true,
             "searching": false,
             "destroy": true,
             "language": {
@@ -184,7 +184,7 @@ function showImportDetail(id) {
                     {"data": "message"}
                 ],
                 "lengthChange": false,
-                "ordering": false,
+                "ordering": true,
                 "searching": false,
                 "destroy": true,
                 "language": {
@@ -222,7 +222,7 @@ function showRecord(data) {
                 {"data": "createdDate"}
             ],
             "lengthChange": false,
-            "ordering": false,
+            "ordering": true,
             "searching": false,
             "destroy": true,
             "language": {
