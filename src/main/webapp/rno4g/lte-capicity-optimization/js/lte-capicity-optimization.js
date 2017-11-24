@@ -109,32 +109,46 @@ var CellAdviceCode = [{
 
 $(function () {
     $("#tabs").tabs();
-
+    $("#lteCellAdviceDiv").draggable();
+    $("#lteCellDetailDiv").draggable();
     initAreaSelectors({selectors: ["province", "city", "district"]});
     initAreaSelectors({selectors: ["provincemenu2", "citymenu2", "districtmenu2"]});
 
     //AJAX 查询导入记录
-    $("#import-query-form").ajaxForm({
+    $("#capicity-query-form").ajaxForm({
         url: "/api/lte-capicity-optimization/query-info",
         success: function (data) {
-            showImportRecord(data,0);
+            showImportRecord(data, 0);
+        }
+    });
+    $("#capicityOptimizationAdviceDialog").bind("click", function (e) {
+        var target = $(e.target);
+        if (target.closest($("#lteCellAdviceDiv")).length == 0) {
+            adviceDialogClose();
+        }
+    });
+    $("#capicityOptimizationDetailDialog").bind("click", function (e) {
+        var target = $(e.target);
+        if (target.closest($("#lteCellDetailDiv")).length == 0) {
+            detailDialogClose();
         }
     });
 });
-var lastFormContent =[];
+var lastFormContent = [];
+
 function beforeSubmitForm() {
-    if(lastFormContent.length != 0 ){
-        if($("#province").val() == lastFormContent[0] && $("#city").val() == lastFormContent[1] && $("#district").val() == lastFormContent[2] ){
-            if($("#onlyShowHighPressCells").is(':checked')){
+    if (lastFormContent.length != 0) {
+        if ($("#province").val() == lastFormContent[0] && $("#city").val() == lastFormContent[1] && $("#district").val() == lastFormContent[2]) {
+            if ($("#onlyShowHighPressCells").is(':checked')) {
                 showImportRecord(dataOfHighStressList, 1);
-            }else{
+            } else {
                 showImportRecord(dataFullFromServer, 1);
             }
-        }else{
-            if($("#onlyShowHighPressCells").is(':checked')){
+        } else {
+            if ($("#onlyShowHighPressCells").is(':checked')) {
                 $.ajax({
                     type: "POST",
-                    data: $("#import-query-form").formSerialize(),
+                    data: $("#capicity-query-form").formSerialize(),
                     url: "/api/lte-capicity-optimization/query-info",
                     success: function (data) {
                         dataOfHighStressList = [];
@@ -149,16 +163,16 @@ function beforeSubmitForm() {
                         console.log("error")
                     }
                 });
-            }else{
+            } else {
                 dataOfHighStressList = [];
                 dataFullFromServer = null;
                 lastFormContent[0] = $("#province").val();
                 lastFormContent[1] = $("#city").val();
                 lastFormContent[2] = $("#district").val();
-                // $("#import-query-form").submit();
+                // $("#capicity-query-form").submit();
                 $.ajax({
                     type: "POST",
-                    data: $("#import-query-form").formSerialize(),
+                    data: $("#capicity-query-form").formSerialize(),
                     url: "/api/lte-capicity-optimization/query-info",
                     success: function (data) {
                         dataOfHighStressList = [];
@@ -175,8 +189,8 @@ function beforeSubmitForm() {
                 });
             }
         }
-    }else {
-        if(!$("#onlyShowHighPressCells").is(':checked')){
+    } else {
+        if (!$("#onlyShowHighPressCells").is(':checked')) {
             dataOfHighStressList = [];
             dataFullFromServer = null;
             lastFormContent[0] = $("#province").val();
@@ -184,7 +198,7 @@ function beforeSubmitForm() {
             lastFormContent[2] = $("#district").val();
             $.ajax({
                 type: "POST",
-                data: $("#import-query-form").formSerialize(),
+                data: $("#capicity-query-form").formSerialize(),
                 url: "/api/lte-capicity-optimization/query-info",
                 success: function (data) {
                     dataOfHighStressList = [];
@@ -199,10 +213,10 @@ function beforeSubmitForm() {
                     console.log("error")
                 }
             });
-        }else{
+        } else {
             $.ajax({
                 type: "POST",
-                data: $("#import-query-form").formSerialize(),
+                data: $("#capicity-query-form").formSerialize(),
                 url: "/api/lte-capicity-optimization/query-info",
                 success: function (data) {
                     dataOfHighStressList = [];
@@ -224,10 +238,9 @@ function beforeSubmitForm() {
 var dataFullFromServer;
 var dataOfHighStressList = [];
 
-function  selectHighStressData(dataFromServer, fromCache) {
-
+function selectHighStressData(dataFromServer, fromCache) {
     for (var i = 0; i < dataFromServer.length; i++) {
-        if(dataFromServer[i]["advice"] == 1 && fromCache ==0){
+        if (dataFromServer[i]["advice"] == 1 && fromCache == 0) {
             dataOfHighStressList.push(dataFromServer[i]);
         }
     }
@@ -236,12 +249,6 @@ function  selectHighStressData(dataFromServer, fromCache) {
 }
 
 function showImportRecord(dataList, fromCache) {
-    console.log(dataList);
-    if(fromCache == 1){
-        console.log("来自缓存");
-    }else{
-        console.log("来自网络");
-    }
     $('#queryImportTab')
         .css("line-height", "12px")
         .DataTable({
@@ -269,7 +276,7 @@ function showImportRecord(dataList, fromCache) {
                 "data": null
             }],
             "lengthChange": false,
-            "ordering": false,
+            "ordering": true,
             "searching": false,
             "destroy": true,
             "language": {
@@ -356,7 +363,7 @@ function showAdvice(cId, data) {
         if (cell[onekey['code']] == "1") {
             html += "<tr>" +
                 "<td class='menuTd' style =" + "width: 238px;height: 31px;" + ">" + onekey['name'] + "</td>" +
-                "<td class='menuTd' style =" + "width: 49px;height: 31px;" + "><button name=\""+CellAdviceCode[i].code+"\" onclick='setAlreadyHandle(this, "+cId+")'>操作</button></td>" +
+                "<td class='menuTd' style =" + "width: 49px;height: 31px;" + "><button name=\"" + CellAdviceCode[i].code + "\" onclick='setAlreadyHandle(this, " + cId + ")'>操作</button></td>" +
                 "</tr>";
         }
     }
@@ -373,24 +380,25 @@ function adviceDialogClose() {
         });
     });
 }
-function setAlreadyHandle(dis,cId) {
+
+function setAlreadyHandle(dis, cId) {
     dis.innerText = "已操作";
     for (var ind = 0; ind < dataFullFromServer.length; ind++) {
         if (dataFullFromServer[ind].cellId == cId) {
 
-            dataFullFromServer[ind].downRate = Math.floor(dataFullFromServer[ind].downRate*0.95)<10?10:Math.floor(dataFullFromServer[ind].downRate*0.95);
-            dataFullFromServer[ind].upRate = Math.floor(dataFullFromServer[ind].upRate*0.95)<10?10:Math.floor(dataFullFromServer[ind].upRate*0.95);
-            dataFullFromServer[ind].downFlow = Math.floor(dataFullFromServer[ind].downFlow*0.95)<1?1:Math.floor(dataFullFromServer[ind].downFlow*0.95);
-            dataFullFromServer[ind].upFlow = Math.floor(dataFullFromServer[ind].upFlow*0.95)<1?1:Math.floor(dataFullFromServer[ind].upFlow*0.95);
-            
+            dataFullFromServer[ind].downRate = Math.floor(dataFullFromServer[ind].downRate * 0.95) < 10 ? 10 : Math.floor(dataFullFromServer[ind].downRate * 0.95);
+            dataFullFromServer[ind].upRate = Math.floor(dataFullFromServer[ind].upRate * 0.95) < 10 ? 10 : Math.floor(dataFullFromServer[ind].upRate * 0.95);
+            dataFullFromServer[ind].downFlow = Math.floor(dataFullFromServer[ind].downFlow * 0.95) < 1 ? 1 : Math.floor(dataFullFromServer[ind].downFlow * 0.95);
+            dataFullFromServer[ind].upFlow = Math.floor(dataFullFromServer[ind].upFlow * 0.95) < 1 ? 1 : Math.floor(dataFullFromServer[ind].upFlow * 0.95);
+
             dataFullFromServer[ind][dis.name] = "0";
-            var advices =0;
-            for(var i=0;i<CellAdviceCode.length;i++){
-                if(dataFullFromServer[ind][CellAdviceCode[i].code]>0){
+            var advices = 0;
+            for (var i = 0; i < CellAdviceCode.length; i++) {
+                if (dataFullFromServer[ind][CellAdviceCode[i].code] > 0) {
                     advices++;
                 }
             }
-            if(advices <= 0){
+            if (advices <= 0) {
                 dataFullFromServer[ind].advice = "0";
                 dataFullFromServer[ind].onHighStress = "0";
             }
@@ -398,29 +406,29 @@ function setAlreadyHandle(dis,cId) {
     }
     for (var inde = 0; inde < dataOfHighStressList.length; inde++) {
         if (dataOfHighStressList[inde].cellId == cId) {
-            dataOfHighStressList[inde].downRate = Math.floor(dataOfHighStressList[inde].downRate*0.95)<10?10:Math.floor(dataOfHighStressList[inde].downRate*0.95);
-            dataOfHighStressList[inde].upRate = Math.floor(dataOfHighStressList[inde].upRate*0.95)<10?10:Math.floor(dataOfHighStressList[inde].upRate*0.95);
-            dataOfHighStressList[inde].downFlow = Math.round(dataOfHighStressList[inde].downFlow*0.95) < 1?1:Math.round(dataOfHighStressList[inde].downFlow*0.95);
-            dataOfHighStressList[inde].upFlow = Math.round(dataOfHighStressList[inde].upFlow*0.95)<1?1:Math.round(dataOfHighStressList[inde].upFlow*0.95);
-            
+            dataOfHighStressList[inde].downRate = Math.floor(dataOfHighStressList[inde].downRate * 0.95) < 10 ? 10 : Math.floor(dataOfHighStressList[inde].downRate * 0.95);
+            dataOfHighStressList[inde].upRate = Math.floor(dataOfHighStressList[inde].upRate * 0.95) < 10 ? 10 : Math.floor(dataOfHighStressList[inde].upRate * 0.95);
+            dataOfHighStressList[inde].downFlow = Math.round(dataOfHighStressList[inde].downFlow * 0.95) < 1 ? 1 : Math.round(dataOfHighStressList[inde].downFlow * 0.95);
+            dataOfHighStressList[inde].upFlow = Math.round(dataOfHighStressList[inde].upFlow * 0.95) < 1 ? 1 : Math.round(dataOfHighStressList[inde].upFlow * 0.95);
+
             dataOfHighStressList[inde][dis.name] = "0";
-            $(dis).attr("disabled",true);
-            var advices =0;
-            for(var i=0;i<CellAdviceCode.length;i++){
-                if(dataOfHighStressList[inde][CellAdviceCode[i].code]>0){
+            $(dis).attr("disabled", true);
+            var advices = 0;
+            for (var i = 0; i < CellAdviceCode.length; i++) {
+                if (dataOfHighStressList[inde][CellAdviceCode[i].code] > 0) {
                     advices++;
                 }
             }
-            if(advices <= 0){
+            if (advices <= 0) {
                 dataOfHighStressList[inde].advice = "0";
                 dataOfHighStressList[inde].onHighStress = "0";
-                dataOfHighStressList.splice(inde,1);
+                dataOfHighStressList.splice(inde, 1);
             }
         }
     }
-    if($("#onlyShowHighPressCells").is(':checked')){
+    if ($("#onlyShowHighPressCells").is(':checked')) {
         showImportRecord(dataOfHighStressList, 1);
-    }else{
+    } else {
         showImportRecord(dataFullFromServer, 1);
     }
 }

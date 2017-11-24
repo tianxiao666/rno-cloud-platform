@@ -51,7 +51,6 @@ public class LteCapicityOptimizationDTO {
     private String interFrequencyFrequencyOffset;
     private String loadBalanceAdjustment;
 
-
     public LteCapicityOptimizationDTO(String cellId, String cellName, String onHighStress, String RRC, String upRate,
                                       String downRate, String upFlow, String downFlow, String advice, String cellType,
                                       String PCI, String longitude, String latitude, String antennaHeight, String azimuth,
@@ -60,7 +59,7 @@ public class LteCapicityOptimizationDTO {
                                       String TAC, String rrcCount, String TAL, String PDCCH, String PUSCH,
                                       String cellCoverRadii, String antennaModel, String startServiceDate, String bandwidth, String isAntennaClosured,
                                       String buildType, String referenceSignalAdjustment, String antennaaCoverRangeAdjustment,
-                                      String cellRechoosePiorityAdjustment,String switchParanoidAndDelayAdjustment,
+                                      String cellRechoosePiorityAdjustment, String switchParanoidAndDelayAdjustment,
                                       String switchStrategyThresholdAdjustment, String cellRechooseDelay,
                                       String interFrequencyFrequencyOffset, String loadBalanceAdjustment) {
         setCellId(cellId);
@@ -108,7 +107,6 @@ public class LteCapicityOptimizationDTO {
         setInterFrequencyFrequencyOffset(interFrequencyFrequencyOffset);
         setLoadBalanceAdjustment(loadBalanceAdjustment);
     }
-
 
 
 }
