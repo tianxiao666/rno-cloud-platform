@@ -259,7 +259,7 @@ function showQueryList(data) {
 
 function showDetail(cellId) {
     $.ajax({
-        url: '/api/lte-cell-data/cell-detail-Id',
+        url: '/api/lte-cell-data/cell-detail-id',
         dataType: 'text',
         data: {cellId: cellId},
         async: true,

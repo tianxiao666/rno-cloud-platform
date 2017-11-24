@@ -67,7 +67,7 @@ public class LteCellDataResource {
         return lteCellDataService.queryLteCell(lteCellDataVM);
     }
 
-    @GetMapping("/cell-detail-Id")
+    @GetMapping("/cell-detail-id")
     public List<Cell> findCellDetailById(@RequestParam String cellId) {
         String enodebId = lteCellDataRepository.findOne(cellId).getEnodebId();
         return lteCellDataRepository.findByEnodebId(enodebId);
