@@ -28,6 +28,7 @@
         <thymeleaf.version>3.0.2.RELEASE</thymeleaf.version>
         <thymeleaf-layout-dialect.version>2.1.1</thymeleaf-layout-dialect.version>
         <commons.io.version>2.6</commons.io.version>
+        <poi.ooxml.version>3.17</poi.ooxml.version>
     </properties>
 
     <dependencies>
@@ -127,6 +128,11 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>${commons.io.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${poi.ooxml.version}</version>
         </dependency>
 
         <dependency>

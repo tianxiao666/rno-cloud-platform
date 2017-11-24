@@ -11,4 +11,5 @@ public interface LteCellGisRepository extends JpaRepository<Cell, Long> {
 
     List<Cell> findOneByCellId(String cellId);
 
+    List<Cell> findAllByAreaId(Long areaId);
 }

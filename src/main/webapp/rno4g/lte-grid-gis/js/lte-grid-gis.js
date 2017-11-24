@@ -189,7 +189,7 @@ $(function () {
                         feature.setStyle(new ol.style.Style({
                             text: new ol.style.Text({
                                 font: '10px sans-serif',
-                                stroke: new ol.style.Stroke({ color: '#fff', width: 2 }),
+                                stroke: new ol.style.Stroke({ color: '#fff', width: 10 }),
                                 text: value.gridCode,
                                 //offsetY: -50,
                                 fill: new ol.style.Fill({ color: '#3367D6' }),
