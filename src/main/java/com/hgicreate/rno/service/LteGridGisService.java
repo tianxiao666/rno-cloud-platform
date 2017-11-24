@@ -73,7 +73,7 @@ public class LteGridGisService {
         Sheet sheet = workbook.createSheet();
         Row row;
         Cell cell;
-        row = sheet.createRow((short) 0);
+        row = sheet.createRow(0);
         cell = row.createCell(0);
         cell.setCellValue("网格类型");
         cell = row.createCell(1);
@@ -177,7 +177,7 @@ public class LteGridGisService {
                 }
                 //过滤不相交以及交点个数为偶数的网格
                 if (intersectnum != 0 && intersectnum % 2 != 0) {
-                    row = sheet.createRow((short) num + 1);
+                    row = sheet.createRow(num + 1);
                     cell = row.createCell(0);
                     cell.setCellValue(grid.getGridType() == null ? "" : grid.getGridType());
                     cell = row.createCell(1);
