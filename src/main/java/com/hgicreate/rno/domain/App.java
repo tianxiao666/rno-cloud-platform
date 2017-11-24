@@ -4,6 +4,9 @@ import lombok.Data;
 
 import javax.persistence.*;
 
+/**
+ * @author ke_weixu
+ */
 @Data
 @Entity
 @Table(name = "RNO_SYS_APP")
