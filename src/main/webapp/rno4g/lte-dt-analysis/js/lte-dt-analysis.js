@@ -36,6 +36,7 @@ $(function () {
     });
 
     $("#districtId").change(function () {
+        $("#listDtRes tbody").html("");
         var lon = parseFloat($(this).find("option:checked").attr("data-lon"));
         var lat = parseFloat($(this).find("option:checked").attr("data-lat"));
         console.log(lon + ","+ lat);

@@ -1524,3 +1524,13 @@ html, body {
     -webkit-border-radius: 10px;
     border-radius: 10px;
 }
+
+.custom-select {
+    display: inline-block;
+    width: 100px;
+}
+
+.custom-btn {
+    height: 34px;
+    margin-bottom: 5px;
+}
