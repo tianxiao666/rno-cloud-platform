@@ -11,9 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author ke_weixu
+ */
 @Slf4j
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class LteTimeSceneService {
     private final TimeSceneRepository timeSceneRepository;
 
@@ -26,15 +29,7 @@ public class LteTimeSceneService {
     }
 
     public List<TimeSceneNameDTO> getAllName(){
-       /* List<String> result = new ArrayList<>();*/
-        //List<TimeScene> result = sceneRepository.findAll();TimeSceneNameMapper.INSTANCE::sceneToTimeSceneNameDTO
-        List<TimeSceneNameDTO> result = timeSceneRepository.findAll().stream().map(TimeSceneNameMapper.INSTANCE::sceneToTimeSceneNameDTO).collect(Collectors.toList());
-        /*for (TimeScene scene: list) {
-            result.add(scene.getName());
-
-        }*/
-
-        return result;
+        return timeSceneRepository.findAll().stream().map(TimeSceneNameMapper.INSTANCE::sceneToTimeSceneNameDTO).collect(Collectors.toList());
     }
 
     public String deleteSceneById(Long sceneId){

@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * @author ke_weixu
+ */
 @Slf4j
 @RestController
 @RequestMapping("/api/lte-geo-scene")
@@ -26,8 +29,7 @@ public class LteGeoSceneResource {
 
     @PostMapping("/get-all-name")
     public List<GeoSceneNameDTO> getAllName(){
-        List<GeoSceneNameDTO> result = lteGeoSceneService.getAllName();
-        return result;
+        return lteGeoSceneService.getAllName();
     }
 
     @PostMapping("/delete-scene-by-id")

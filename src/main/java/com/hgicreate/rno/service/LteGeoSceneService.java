@@ -11,9 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author ke_weixu
+ */
 @Slf4j
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class LteGeoSceneService {
     private final GeoSceneRepository geoSceneRepository;
 
@@ -26,15 +29,7 @@ public class LteGeoSceneService {
     }
 
     public List<GeoSceneNameDTO> getAllName(){
-       /* List<String> result = new ArrayList<>();*/
-        //List<GeoScene> result = sceneRepository.findAll();
-        List<GeoSceneNameDTO> result = geoSceneRepository.findAll().stream().map(GeoSceneNameMapper.INSTANCE::sceneToGeoSceneNameDTO).collect(Collectors.toList());
-        /*for (GeoScene scene: list) {
-            result.add(scene.getName());
-
-        }*/
-
-        return result;
+        return geoSceneRepository.findAll().stream().map(GeoSceneNameMapper.INSTANCE::sceneToGeoSceneNameDTO).collect(Collectors.toList());
     }
 
     public String deleteSceneById(Long sceneId){

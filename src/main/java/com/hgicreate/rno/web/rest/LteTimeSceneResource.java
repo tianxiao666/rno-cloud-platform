@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * @author ke_weixu
+ */
 @Slf4j
 @RestController
 @RequestMapping("/api/lte-time-scene")
@@ -28,8 +31,7 @@ public class LteTimeSceneResource {
 
     @PostMapping("/get-all-name")
     public List<TimeSceneNameDTO> getAllName(){
-        List<TimeSceneNameDTO> result = lteTimeSceneService.getAllName();
-        return result;
+        return lteTimeSceneService.getAllName();
     }
 
     @PostMapping("/delete-scene-by-id")

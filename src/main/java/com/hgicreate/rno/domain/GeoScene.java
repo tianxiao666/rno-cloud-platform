@@ -5,6 +5,9 @@ import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/**
+ * @author ke_weixu
+ */
 @Data
 @Entity
 @Table(name = "RNO_LTE_SCENE_GEO")
