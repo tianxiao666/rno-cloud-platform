@@ -46,10 +46,10 @@ public class LteGridGisService {
 
         String areaName = areaRepository.findById(areaId).getName();
         File file = new File(LocalDate.now().toString() + "-" + areaName + "-"
-                + type.replace(",", "-") + "-grid.xlsx");
+                + type.replace(",", "-") + "类网格小区数据.xlsx");
         String fileName = "";
         try {
-           fileName = new String(file.getName().getBytes(),"iso-8859-1");
+            fileName = new String(file.getName().getBytes(), "iso-8859-1");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -62,8 +62,6 @@ public class LteGridGisService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        List<com.hgicreate.rno.domain.Cell> cells = lteCellGisRepository.findAllByAreaId(areaId);
 
         Workbook workbook = new SXSSFWorkbook();
         Sheet sheet = workbook.createSheet();
@@ -124,6 +122,7 @@ public class LteGridGisService {
         cell.setCellValue("是否关联状态库资源");
         cell = row.createCell(26);
         cell.setCellValue("站间距");
+
         int num = 0;
         int intersectnum;
         List<Point> plist;
@@ -132,8 +131,10 @@ public class LteGridGisService {
         Line line;
         List<GridData> gridData;
         List<GridCoord> gridCoords;
-        String[] gridType = type.split(",");
-        for (String gt : gridType) {
+
+        log.debug("开始匹配网格小区数据");
+        List<com.hgicreate.rno.domain.Cell> cells = lteCellGisRepository.findAllByAreaId(areaId);
+        for (String gt : type.split(",")) {
             gridData = gridDataRepository.findByGridTypeAndAreaIdOrderByIdAsc
                     (gt, areaId);
             gridCoords = gridCoordRepository.findByGridIdInOrderByGridIdAsc(
@@ -142,15 +143,12 @@ public class LteGridGisService {
             for (com.hgicreate.rno.domain.Cell c : cells) {
                 for (GridData grid : gridData) {
                     final long currentGridId = grid.getId();
-                    //log.debug("当前gridId={}", grid.getId());
                     //网格经纬度点集
                     coords = gridCoords.stream().filter(coord -> coord.getGridId() == currentGridId)
                             .collect(Collectors.toList());
-                    //log.debug("coords.id={}", coords.size());
 
                     plist = coords.stream().map(coord -> new Point(coord.getLongitude(),
                             coord.getLatitude())).collect(Collectors.toList());
-                    //log.debug("点集={}", plist);
 
                     //网格经纬度边集
                     llist = new ArrayList<>();
@@ -158,7 +156,6 @@ public class LteGridGisService {
                         line = new Line(plist.get(l - 1), plist.get(l));
                         llist.add(line);
                     }
-                    //log.debug("边集={}", llist);
 
                     intersectnum = 0;//射线与网格边交点个数
                     for (Line aLlist : llist) {
@@ -238,11 +235,15 @@ public class LteGridGisService {
                         cell = row.createCell(26);
                         cell.setCellValue(c.getStationSpace() == null ? "" : c.getStationSpace());
                         num++;
+                        if (num % 1000 == 0) {
+                            log.debug("已经匹配到{}条小区数据", num);
+                        }
                         break;
                     }
                 }
             }
         }
+        log.debug("匹配完成！");
         //最终写入文件
         try {
             workbook.write(os);
