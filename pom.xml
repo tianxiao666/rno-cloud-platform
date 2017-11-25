@@ -29,6 +29,7 @@
         <thymeleaf-layout-dialect.version>2.1.1</thymeleaf-layout-dialect.version>
         <commons.io.version>2.6</commons.io.version>
         <poi.ooxml.version>3.17</poi.ooxml.version>
+        <argLine>-Djava.security.egd=file:/dev/./urandom -Xmx256m</argLine>
     </properties>
 
     <dependencies>
