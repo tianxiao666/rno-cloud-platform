@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Data
 @Entity
-public class LteTrafficData {
+public class LteTrafficDataDetail {
 
     @Id
     private Long id;

@@ -4,7 +4,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hgicreate.rno.mapper.LteTrafficDataQueryMapper">
     <select id="queryTop1000TrafficData"
-            resultType="com.hgicreate.rno.domain.LteTrafficData">
+            resultType="com.hgicreate.rno.domain.LteTrafficDataDetail">
         select
                 trafficdes0_.begin_time,
                 trafficdes0_.created_date,

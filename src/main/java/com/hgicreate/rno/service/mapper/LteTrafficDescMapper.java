@@ -1,6 +1,6 @@
 package com.hgicreate.rno.service.mapper;
 
-import com.hgicreate.rno.domain.LteTrafficData;
+import com.hgicreate.rno.domain.LteTrafficDataDetail;
 import com.hgicreate.rno.service.dto.LteTrafficDescDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -19,5 +19,5 @@ public interface LteTrafficDescMapper {
             @Mapping(source = "endTime", target = "endTime", dateFormat = "yyyy-MM-dd HH:mm:ss"),
             @Mapping(source = "createdDate", target = "createdDate", dateFormat = "yyyy-MM-dd HH:mm:ss")
     })
-    LteTrafficDescDTO lteTrafficDescToLteTrafficDescDTO(LteTrafficData lteTrafficData);
+    LteTrafficDescDTO lteTrafficDescToLteTrafficDescDTO(LteTrafficDataDetail lteTrafficDataDetail);
 }
