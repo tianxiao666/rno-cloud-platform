@@ -155,7 +155,7 @@ function showLteGridImportResult(data) {
             }
             ],
             "lengthChange": false,
-            "ordering": false,
+            "ordering": true,
             "searching": false,
             "destroy": true,
             "language": {
@@ -183,7 +183,7 @@ function showLteGridDataResult(data) {
                 {data: "createdDate"}
             ],
             "lengthChange": false,
-            "ordering": false,
+            "ordering": true,
             "searching": false,
             "destroy": true,
             "language": {
@@ -219,7 +219,7 @@ function showImportDetail(id) {
                         {"data": "message"}
                     ],
                     "lengthChange": false,
-                    "ordering": false,
+                    "ordering": true,
                     "searching": false,
                     "destroy": true,
                     "language": {

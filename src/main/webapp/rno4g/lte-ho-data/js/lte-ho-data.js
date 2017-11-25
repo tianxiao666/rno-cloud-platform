@@ -152,7 +152,7 @@ function showNcellImportResult(data) {
             }
             ],
             "lengthChange": false,
-            "ordering": false,
+            "ordering": true,
             "searching": false,
             "destroy": true,
             "language": {
@@ -181,7 +181,7 @@ function showNcellImportDtResult(data) {
                 {"data": "createdDate"}
             ],
             "lengthChange": false,
-            "ordering": false,
+            "ordering": true,
             "searching": false,
             "destroy": true,
             "language": {
@@ -210,7 +210,7 @@ function showImportDetail(id) {
                         {"data": "message"}
                     ],
                     "lengthChange": false,
-                    "ordering": false,
+                    "ordering": true,
                     "searching": false,
                     "destroy": true,
                     "language": {

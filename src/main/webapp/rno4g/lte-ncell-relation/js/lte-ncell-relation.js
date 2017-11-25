@@ -150,7 +150,7 @@ function showNcellRelationResult(data) {
         }
         ],
         "lengthChange": false,
-        "ordering": false,
+        "ordering": true,
         "searching": false,
         "destroy": true,
         "language": {
@@ -226,7 +226,7 @@ function showNcellImportResult(data) {
         }
         ],
         "lengthChange": false,
-        "ordering": false,
+        "ordering": true,
         "searching": false,
         "destroy": true,
         "language": {
@@ -254,7 +254,7 @@ function showNcellImportDtResult(data) {
             {"data": "createdDate"}
         ],
         "lengthChange": false,
-        "ordering": false,
+        "ordering": true,
         "searching": false,
         "destroy": true,
         "language": {
@@ -278,6 +278,7 @@ function deleteCell(id) {
         $.ajax({
             url: '/api/lte-ncell-relation/delete-by-id',
             dataType: 'text',
+            type:'delete',
             data: {id: id},
             success: function () {
                 showInfoInAndOut("info", "删除邻区关系成功！");
@@ -311,7 +312,7 @@ function showImportDetail(id) {
                         {"data": "message"}
                     ],
                     "lengthChange": false,
-                    "ordering": false,
+                    "ordering": true,
                     "searching": false,
                     "destroy": true,
                     "language": {
