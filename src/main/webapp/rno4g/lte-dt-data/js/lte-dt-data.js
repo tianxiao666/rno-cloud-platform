@@ -19,9 +19,11 @@ $(function () {
     });
 
     // 执行 laydate 实例 
+    var dateBeg = new Date();
+    dateBeg.setFullYear(2017,8,1);
     laydate.render({elem: '#begUploadDate', value: new Date(new Date().getTime() - 7 * 86400000)});
     laydate.render({elem: '#endUploadDate', value: new Date()});
-    laydate.render({elem: '#beginTestDate', value: new Date(new Date().getTime() - 7 * 86400000)});
+    laydate.render({elem: '#beginTestDate', value: dateBeg});
     laydate.render({elem: '#endTestDate', value: new Date()});
 
     // AJAX 提交查询条件表单

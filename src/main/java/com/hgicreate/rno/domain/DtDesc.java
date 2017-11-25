@@ -30,7 +30,7 @@ public class DtDesc implements Serializable {
     private Long jobId;
     private Long originFileId;
     private String createdUser;
-    private String importFlag;
+    private Integer importFlag;
 
     @OneToOne
     @JoinColumn(name = "area_id", referencedColumnName = "id")
