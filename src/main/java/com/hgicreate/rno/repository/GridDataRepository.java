@@ -11,4 +11,6 @@ public interface GridDataRepository extends JpaRepository<GridData, Long> {
 
     List<GridData> findByGridTypeInAndAreaIdOrderByIdAsc(String[] gridType, Long areaId);
 
+    List<GridData> findByGridTypeAndAreaIdOrderByIdAsc(String gridType, Long areaId);
+
 }

@@ -63,10 +63,6 @@ public class LteGridGisService {
             e.printStackTrace();
         }
 
-        List<GridData> gridData = gridDataRepository.findByGridTypeInAndAreaIdOrderByIdAsc
-                (type.split(","), areaId);
-        List<GridCoord> gridCoords = gridCoordRepository.findByGridIdInOrderByGridIdAsc(
-                gridData.stream().map(GridData::getId).collect(Collectors.toList()));
         List<com.hgicreate.rno.domain.Cell> cells = lteCellGisRepository.findAllByAreaId(areaId);
 
         Workbook workbook = new SXSSFWorkbook();
@@ -134,106 +130,116 @@ public class LteGridGisService {
         List<GridCoord> coords;
         List<Line> llist;
         Line line;
-        for (com.hgicreate.rno.domain.Cell c : cells) {
-            for (GridData grid : gridData) {
-                final long currentGridId = grid.getId();
-                //log.debug("当前gridId={}", grid.getId());
-                //网格经纬度点集
-                coords = gridCoords.stream().filter(coord -> coord.getGridId() == currentGridId)
-                        .collect(Collectors.toList());
-                //log.debug("coords.id={}", coords.size());
+        List<GridData> gridData;
+        List<GridCoord> gridCoords;
+        String[] gridType = type.split(",");
+        for (String gt : gridType) {
+            gridData = gridDataRepository.findByGridTypeAndAreaIdOrderByIdAsc
+                    (gt, areaId);
+            gridCoords = gridCoordRepository.findByGridIdInOrderByGridIdAsc(
+                    gridData.stream().map(GridData::getId).collect(Collectors.toList()));
 
-                plist = coords.stream().map(coord -> new Point(coord.getLongitude(), coord.getLatitude()))
-                        .collect(Collectors.toList());
-                //log.debug("点集={}", plist);
+            for (com.hgicreate.rno.domain.Cell c : cells) {
+                for (GridData grid : gridData) {
+                    final long currentGridId = grid.getId();
+                    //log.debug("当前gridId={}", grid.getId());
+                    //网格经纬度点集
+                    coords = gridCoords.stream().filter(coord -> coord.getGridId() == currentGridId)
+                            .collect(Collectors.toList());
+                    //log.debug("coords.id={}", coords.size());
 
-                //网格经纬度边集
-                llist = new ArrayList<>();
-                for (int l = 1; l < plist.size(); l++) {
-                    line = new Line(plist.get(l - 1), plist.get(l));
-                    llist.add(line);
-                }
-                //log.debug("边集={}", llist);
+                    plist = coords.stream().map(coord -> new Point(coord.getLongitude(),
+                            coord.getLatitude())).collect(Collectors.toList());
+                    //log.debug("点集={}", plist);
 
-                intersectnum = 0;//射线与网格边交点个数
-                for (Line aLlist : llist) {
-                    //在当前网格边集中找出与过当前小区位置的水平线相交的网格边
-                    if ((aLlist.getPoint1().getLat() <= Double.parseDouble(c.getLatitude())
-                            && Double.parseDouble(c.getLatitude()) <= aLlist.getPoint2().getLat())
-                            || (aLlist.getPoint2().getLat() <= Double.parseDouble(c.getLatitude())
-                            && Double.parseDouble(c.getLatitude()) <= aLlist.getPoint1().getLat())) {
+                    //网格经纬度边集
+                    llist = new ArrayList<>();
+                    for (int l = 1; l < plist.size(); l++) {
+                        line = new Line(plist.get(l - 1), plist.get(l));
+                        llist.add(line);
+                    }
+                    //log.debug("边集={}", llist);
 
-                        //斜率
-                        Double slope = (aLlist.getPoint1().getLng() - aLlist.getPoint2().getLng()) /
-                                (aLlist.getPoint1().getLat() - aLlist.getPoint2().getLat());
-                        //水平线与网格边交点的经度
-                        Double intersectlng = slope * (Double.parseDouble(c.getLatitude()) -
-                                aLlist.getPoint1().getLat()) + aLlist.getPoint1().getLng();
-                        //选取右射线
-                        if (Double.parseDouble(c.getLongitude()) < intersectlng) {
-                            intersectnum++;
+                    intersectnum = 0;//射线与网格边交点个数
+                    for (Line aLlist : llist) {
+                        //在当前网格边集中找出与过当前小区位置的水平线相交的网格边
+                        if ((aLlist.getPoint1().getLat() <= Double.parseDouble(c.getLatitude())
+                                && Double.parseDouble(c.getLatitude()) <= aLlist.getPoint2().getLat())
+                                || (aLlist.getPoint2().getLat() <= Double.parseDouble(c.getLatitude())
+                                && Double.parseDouble(c.getLatitude()) <= aLlist.getPoint1().getLat())) {
+
+                            //斜率
+                            Double slope = (aLlist.getPoint1().getLng() - aLlist.getPoint2().getLng()) /
+                                    (aLlist.getPoint1().getLat() - aLlist.getPoint2().getLat());
+                            //水平线与网格边交点的经度
+                            Double intersectlng = slope * (Double.parseDouble(c.getLatitude()) -
+                                    aLlist.getPoint1().getLat()) + aLlist.getPoint1().getLng();
+                            //选取右射线
+                            if (Double.parseDouble(c.getLongitude()) < intersectlng) {
+                                intersectnum++;
+                            }
                         }
                     }
-                }
-                //过滤不相交以及交点个数为偶数的网格
-                if (intersectnum != 0 && intersectnum % 2 != 0) {
-                    row = sheet.createRow(num + 1);
-                    cell = row.createCell(0);
-                    cell.setCellValue(grid.getGridType() == null ? "" : grid.getGridType());
-                    cell = row.createCell(1);
-                    cell.setCellValue(grid.getGridCode() == null ? "" : grid.getGridCode());
-                    cell = row.createCell(2);
-                    cell.setCellValue(c.getCellId() == null ? "" : c.getCellId());
-                    cell = row.createCell(3);
-                    cell.setCellValue(c.getCellName() == null ? "" : c.getCellName());
-                    cell = row.createCell(4);
-                    cell.setCellValue(c.getEnodebId() == null ? "" : c.getEnodebId());
-                    cell = row.createCell(5);
-                    cell.setCellValue(c.getEci() == null ? "" : c.getEci());
-                    cell = row.createCell(6);
-                    cell.setCellValue(c.getManufacturer() == null ? "" : c.getManufacturer());
-                    cell = row.createCell(7);
-                    cell.setCellValue(c.getTac() == null ? "" : c.getTac());
-                    cell = row.createCell(8);
-                    cell.setCellValue(c.getBandType() == null ? "" : c.getBandType());
-                    cell = row.createCell(9);
-                    cell.setCellValue(c.getBandWidth() == null ? "" : c.getBandWidth());
-                    cell = row.createCell(10);
-                    cell.setCellValue(c.getBandIndicator() == null ? "" : c.getBandIndicator());
-                    cell = row.createCell(11);
-                    cell.setCellValue(c.getBandAmount() == null ? "" : c.getBandAmount());
-                    cell = row.createCell(12);
-                    cell.setCellValue(c.getEarfcn() == null ? "" : c.getEarfcn());
-                    cell = row.createCell(13);
-                    cell.setCellValue(c.getPci() == null ? "" : c.getPci());
-                    cell = row.createCell(14);
-                    cell.setCellValue(c.getCoverType() == null ? "" : c.getCoverType());
-                    cell = row.createCell(15);
-                    cell.setCellValue(c.getCoverScene() == null ? "" : c.getCoverScene());
-                    cell = row.createCell(16);
-                    cell.setCellValue(c.getLongitude() == null ? "" : c.getLongitude());
-                    cell = row.createCell(17);
-                    cell.setCellValue(c.getLatitude() == null ? "" : c.getLatitude());
-                    cell = row.createCell(18);
-                    cell.setCellValue(c.getAzimuth() == null ? "" : c.getAzimuth());
-                    cell = row.createCell(19);
-                    cell.setCellValue(c.getEDowntilt() == null ? "" : c.getEDowntilt());
-                    cell = row.createCell(20);
-                    cell.setCellValue(c.getMDowntilt() == null ? "" : c.getMDowntilt());
-                    cell = row.createCell(21);
-                    cell.setCellValue(c.getTotalDowntilt() == null ? "" : c.getTotalDowntilt());
-                    cell = row.createCell(22);
-                    cell.setCellValue(c.getAntennaHeight() == null ? "" : c.getAntennaHeight());
-                    cell = row.createCell(23);
-                    cell.setCellValue(c.getRemoteCell() == null ? "" : c.getRemoteCell());
-                    cell = row.createCell(24);
-                    cell.setCellValue(c.getRelatedParam() == null ? "" : c.getRelatedParam());
-                    cell = row.createCell(25);
-                    cell.setCellValue(c.getRelatedResouce() == null ? "" : c.getRelatedResouce());
-                    cell = row.createCell(26);
-                    cell.setCellValue(c.getStationSpace() == null ? "" : c.getStationSpace());
-                    num++;
-                    break;
+                    //过滤不相交以及交点个数为偶数的网格
+                    if (intersectnum != 0 && intersectnum % 2 != 0) {
+                        row = sheet.createRow(num + 1);
+                        cell = row.createCell(0);
+                        cell.setCellValue(grid.getGridType() == null ? "" : grid.getGridType());
+                        cell = row.createCell(1);
+                        cell.setCellValue(grid.getGridCode() == null ? "" : grid.getGridCode());
+                        cell = row.createCell(2);
+                        cell.setCellValue(c.getCellId() == null ? "" : c.getCellId());
+                        cell = row.createCell(3);
+                        cell.setCellValue(c.getCellName() == null ? "" : c.getCellName());
+                        cell = row.createCell(4);
+                        cell.setCellValue(c.getEnodebId() == null ? "" : c.getEnodebId());
+                        cell = row.createCell(5);
+                        cell.setCellValue(c.getEci() == null ? "" : c.getEci());
+                        cell = row.createCell(6);
+                        cell.setCellValue(c.getManufacturer() == null ? "" : c.getManufacturer());
+                        cell = row.createCell(7);
+                        cell.setCellValue(c.getTac() == null ? "" : c.getTac());
+                        cell = row.createCell(8);
+                        cell.setCellValue(c.getBandType() == null ? "" : c.getBandType());
+                        cell = row.createCell(9);
+                        cell.setCellValue(c.getBandWidth() == null ? "" : c.getBandWidth());
+                        cell = row.createCell(10);
+                        cell.setCellValue(c.getBandIndicator() == null ? "" : c.getBandIndicator());
+                        cell = row.createCell(11);
+                        cell.setCellValue(c.getBandAmount() == null ? "" : c.getBandAmount());
+                        cell = row.createCell(12);
+                        cell.setCellValue(c.getEarfcn() == null ? "" : c.getEarfcn());
+                        cell = row.createCell(13);
+                        cell.setCellValue(c.getPci() == null ? "" : c.getPci());
+                        cell = row.createCell(14);
+                        cell.setCellValue(c.getCoverType() == null ? "" : c.getCoverType());
+                        cell = row.createCell(15);
+                        cell.setCellValue(c.getCoverScene() == null ? "" : c.getCoverScene());
+                        cell = row.createCell(16);
+                        cell.setCellValue(c.getLongitude() == null ? "" : c.getLongitude());
+                        cell = row.createCell(17);
+                        cell.setCellValue(c.getLatitude() == null ? "" : c.getLatitude());
+                        cell = row.createCell(18);
+                        cell.setCellValue(c.getAzimuth() == null ? "" : c.getAzimuth());
+                        cell = row.createCell(19);
+                        cell.setCellValue(c.getEDowntilt() == null ? "" : c.getEDowntilt());
+                        cell = row.createCell(20);
+                        cell.setCellValue(c.getMDowntilt() == null ? "" : c.getMDowntilt());
+                        cell = row.createCell(21);
+                        cell.setCellValue(c.getTotalDowntilt() == null ? "" : c.getTotalDowntilt());
+                        cell = row.createCell(22);
+                        cell.setCellValue(c.getAntennaHeight() == null ? "" : c.getAntennaHeight());
+                        cell = row.createCell(23);
+                        cell.setCellValue(c.getRemoteCell() == null ? "" : c.getRemoteCell());
+                        cell = row.createCell(24);
+                        cell.setCellValue(c.getRelatedParam() == null ? "" : c.getRelatedParam());
+                        cell = row.createCell(25);
+                        cell.setCellValue(c.getRelatedResouce() == null ? "" : c.getRelatedResouce());
+                        cell = row.createCell(26);
+                        cell.setCellValue(c.getStationSpace() == null ? "" : c.getStationSpace());
+                        num++;
+                        break;
+                    }
                 }
             }
         }
