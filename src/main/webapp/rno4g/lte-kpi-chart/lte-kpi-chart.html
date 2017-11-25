@@ -5,8 +5,8 @@
     <title>覆盖类KPI指标</title>
 
     <link rel="stylesheet" href="../../lib/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/lte-kpi-chart.css">
     <link rel="stylesheet" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
+    <link rel="stylesheet" href="css/lte-kpi-chart.css">
 
     <script src="../../lib/jquery/1.8.2/jquery.js"></script>
     <script src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
@@ -23,7 +23,7 @@
 <body bgcolor="#E2ECF7" style="overflow-x: hidden">
 <div id="loading" class="loading" style="display: none">加载中...</div>
 <div id="info" class="info-style" style="display: none"></div>
-<table style="width: 100%;height: 100%" >
+<table style="width: 100%;height: 725px" >
     <tbody>
     <tr>
         <td style="vertical-align: top;height: 100%;" bgcolor="#E2ECF7">
@@ -35,7 +35,7 @@
                 <a href="#" class="switch_hidden"></a>
                 <div class="shad_v"></div>
             </div>
-            <div class="resource_list300_box" style="height:100%;width: 300px">
+            <div class="resource_list300_box" style="height:100%;width: 300px;">
                 <div class="resource_list300">
                     <div id="div_tab" class="div_tab divtab_menu">
                         <ul>
@@ -88,6 +88,7 @@
                                 <div class="col-sm-8">
                                     <select id="mrDisMode" name="mrDisMode" class="form-control">
                                         <option selected="selected">柱状图</option>
+                                        <option>饼图</option>
                                     </select>
                                 </div>
                             </div>

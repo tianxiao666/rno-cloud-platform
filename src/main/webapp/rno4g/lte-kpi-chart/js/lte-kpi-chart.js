@@ -46,6 +46,7 @@ $(function () {
     var myChart=echarts.init(document.getElementById('main'));
     var option ={
         color: ['#E2ECF7'],
+        tooltip : 'none',
         title: {
             text:  '标题',
             left: 'center',
@@ -82,6 +83,7 @@ $(function () {
         }]
     };
     myChart.setOption(option);
+
 
     $("#searchButton").click(function () {
         var inputCell=$("#inputCell");
@@ -120,9 +122,17 @@ function showChart(data,myChart) {
 
     var xAxisVal =[];
     var yAxisVal =[];
+    var pieVal =[];
     if(chartTitle==='RSRP'){
         xAxisVal =['X < -110','-110 <= X < -95','-95 <= X < -80','X >= -80'];
         yAxisVal =[data['xbelowNegative110'],data['xbetweenNegative110And95'],data['xbetweenNegative95And80'],data['xonNegative80']];
+        pieVal =[
+            {value: data['xbelowNegative110'],name: 'X < -110'},
+            {value: data['xbetweenNegative110And95'],name: '-110 <= X < -95'},
+            {value: data['xbetweenNegative95And80'], name: '-95 <= X < -80'},
+            {value: data['xonNegative80'],name: 'X >= -80'}
+        ];
+
         mrrInfoTab.append("<tbody><tr><td colspan='2' style='text-align: center'>"+chartTitle+"测量信息"+"</td></tr>"
             +"<tr><td class='menuTd'>CELL NAME</td><td>"+cellName+"</td></tr>"
             +"<tr><td class='menuTd'>X < -110</td><td>"+data['xbelowNegative110']+"</td></tr>"
@@ -134,6 +144,11 @@ function showChart(data,myChart) {
     }else if(chartTitle ==='RSRQ'){
         xAxisVal =['X < 8','8 <= X <15','X >= 15'];
         yAxisVal =[data['xbelow8'],data['xbetween8And15'],data['xon15']];
+        pieVal =[
+            {value: data['xbelow8'],name: 'X < 8'},
+            {value: data['xbetween8And15'], name: '8 <= X <15'},
+            {value: data['xon15'],name: 'X >= 15'}
+        ];
         mrrInfoTab.append("<tbody><tr><td colspan='2' style='text-align: center;'>"+chartTitle+"测量信息"+"</td></tr>"
             +"<tr><td class='menuTd'>CELL NAME</td><td>"+cellName+"</td></tr>"
             +"<tr><td class='menuTd'>X < 8</td><td>"+data['xbelow8']+"</td></tr>"
@@ -143,6 +158,13 @@ function showChart(data,myChart) {
     }else{
         xAxisVal = ['X < -110','-110 <= X < -95','-95 <= X <-85','X >= -85'];
         yAxisVal =[data['xbelowNegative110'],data['xbetweenNegative110And95'],data['xbetweenNegative95And85'],data['xonNegative85']];
+        pieVal =[
+            {value: data['xbelowNegative110'],name:'X < -110'},
+            {value: data['xbetweenNegative110And95'],name:'-110 <= X < -95'},
+            {value: data['xbetweenNegative95And85'],name: '-95 <= X < -85'},
+            {value:data['xonNegative85'], name: 'X >= -85'}
+        ];
+
         mrrInfoTab.append("<tbody><tr><td colspan='2' style='text-align: center'>"+chartTitle+"测量信息"+"</td></tr>"
             +"<tr><td class='menuTd'>CELL NAME</td><td>"+cellName+"</td></tr>"
             +"<tr><td class='menuTd'>X < -110</td><td>"+data['xbelowNegative110']+"</td></tr>"
@@ -215,8 +237,50 @@ function showChart(data,myChart) {
         }]
     };
 
+    var pieOption={
+        title : {
+            text:chartTitle + '指标',
+            x: 'center',
+            subtext:cellId+'('+  cellName+')信号接收功能'+ chartTitle+'分布图',
+            subtextStyle:{
+                color: '#6C6FFD'
+            }
+        },
+        tooltip : {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left',
+            data: xAxisVal
+        },
+        series : [{
+            name: chartTitle +'指标',
+            type: 'pie',
+            radius : '55%',
+            center: ['50%', '60%'],
+            data: pieVal,
+            itemStyle: {
+                emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        }]
+    };
     // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
+    if($("#mrDisMode").val()==='柱状图'){
+        myChart.clear();
+        myChart.setOption(option);
+    }else{
+        myChart.clear();
+        myChart.setOption(pieOption);
+    }
+
+
+
 }
 
 function showInfoInAndOut(div, info) {
