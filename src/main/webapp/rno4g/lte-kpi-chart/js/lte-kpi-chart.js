@@ -82,8 +82,6 @@ $(function () {
             data: []
         }]
     };
-    myChart.setOption(option);
-
 
     $("#searchButton").click(function () {
         var inputCell=$("#inputCell");
@@ -104,6 +102,15 @@ $(function () {
         }
     });
 
+    myChart.setOption(option);
+    var disMode=$("#mrDisMode");
+    disMode.on("change",function () {
+        var inputCell=$("#inputCell");
+        if(inputCell.val().trim() !== '' && inputCell.val() !== null){
+            //查询小区信息
+            $("#queryKpiForm").submit();
+        }
+    })
 });
 
 function showChart(data,myChart) {
