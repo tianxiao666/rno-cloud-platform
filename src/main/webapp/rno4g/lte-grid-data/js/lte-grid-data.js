@@ -204,6 +204,7 @@ function showImportDetail(id) {
     $.ajax({
         url: '/api/lte-grid-data/query-report',
         dataType: 'text',
+        type:'post',
         data: {id: id},
         success: function (data) {
             $("#reportDiv").css("display", "block");

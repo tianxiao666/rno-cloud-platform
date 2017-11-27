@@ -195,6 +195,7 @@ function showImportDetail(id) {
     $.ajax({
         url: '/api/lte-ho-data/query-report',
         dataType: 'text',
+        type:'post',
         data: {id: id},
         success:function(data){
             $("#reportDiv").css("display", "block");

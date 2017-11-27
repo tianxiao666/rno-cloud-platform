@@ -297,6 +297,7 @@ function showImportDetail(id) {
     $.ajax({
         url: '/api/lte-ncell-relation/query-report',
         dataType: 'text',
+        type:'post',
         data: {id: id},
         success:function(data){
             $("#reportDiv").css("display", "block");

@@ -36,11 +36,10 @@ public class LteNcellRelationService {
     }
 
     public List<LteNcellRelationDTO> queryNcellRelationDTOs(LteNcellRelationQueryVM vm) {
-        List<LteNcellRelationDTO> dtoList = lteNcellRelationQueryMapper.queryNcellRelation(vm)
-                                               .stream()
-                                               .map(LteNcellRelationMapper.INSTANCE::ncellRelationToNcellRelationDTO)
-                                               .collect(Collectors.toList());
-        return dtoList;
+        return lteNcellRelationQueryMapper.queryNcellRelation(vm)
+                                          .stream()
+                                          .map(LteNcellRelationMapper.INSTANCE::ncellRelationToNcellRelationDTO)
+                                          .collect(Collectors.toList());
     }
 
     public  List<LteNcellImportFileDTO> queryImport(LteNcellImportQueryVM vm) throws ParseException {
@@ -72,7 +71,7 @@ public class LteNcellRelationService {
                                             .map(LteNcellDescMapper.INSTANCE::ncellDescToNcellDescDTO)
                                             .collect(Collectors.toList());
         }else{
-            dtoList = lteNcellDescRepository.findTop1000ByAreaAndAndDataTypeOrderByCreatedDateDesc(area,vm.getDataType())
+            dtoList = lteNcellDescRepository.findTop1000ByAreaAndDataTypeOrderByCreatedDateDesc(area,vm.getDataType())
                                             .stream()
                                             .map(LteNcellDescMapper.INSTANCE::ncellDescToNcellDescDTO)
                                             .collect(Collectors.toList());

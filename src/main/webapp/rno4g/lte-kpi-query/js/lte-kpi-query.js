@@ -120,7 +120,7 @@ function getRno4GStsIndex() {
     $.ajax({
         url: '/api/lte-kpi-query/load-index',
         dataType: 'text',
-        type: 'post',
+        type: 'get',
         success: function (data) {
             try {
                 var data1 = JSON.parse(data);

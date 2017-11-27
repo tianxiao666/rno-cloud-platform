@@ -66,7 +66,7 @@ public class LteHoDataResource {
         return lteHoDataService.queryImport(vm);
     }
 
-    @GetMapping("/query-report")
+    @PostMapping("/query-report")
     public List<DataJobReportDTO> queryReport(String id){
         log.debug("查询任务报告的任务id：{}",id);
         return dataJobReportRepository.findByDataJob_Id(Long.parseLong(id))

@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface LteNcellDescRepository extends JpaRepository<NcellDesc, Long> {
-    List<NcellDesc> findTop1000ByAreaAndAndDataTypeOrderByCreatedDateDesc(Area area,String dataType);
+    List<NcellDesc> findTop1000ByAreaAndDataTypeOrderByCreatedDateDesc(Area area,String dataType);
 
     List<NcellDesc> findTop1000ByAreaOrderByCreatedDateDesc(Area area);
 }

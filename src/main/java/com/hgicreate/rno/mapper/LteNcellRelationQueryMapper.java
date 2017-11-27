@@ -12,5 +12,5 @@ public interface LteNcellRelationQueryMapper {
      * 查询邻区关系
      * @return 邻区关系列表
      */
-    public List<NcellRelation> queryNcellRelation(LteNcellRelationQueryVM vm);
+    List<NcellRelation> queryNcellRelation(LteNcellRelationQueryVM vm);
 }

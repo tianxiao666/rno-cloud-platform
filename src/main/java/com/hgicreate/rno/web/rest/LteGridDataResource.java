@@ -74,7 +74,7 @@ public class LteGridDataResource {
         return lteGridDataService.dataQuery(vm);
     }
 
-    @GetMapping("/query-report")
+    @PostMapping("/query-report")
     public List<DataJobReportDTO> queryReport(String id){
         log.debug("查询任务报告的任务id：{}",id);
         return dataJobReportRepository.findByDataJob_Id(Long.parseLong(id))
@@ -100,7 +100,7 @@ public class LteGridDataResource {
 
             //获取文件类型
             String fileExtension = filename.substring(filename.lastIndexOf("."),filename.length()).toLowerCase();
-            String fileType = new String();
+            String fileType = "";
             if((".zip").equals(fileExtension)){
                 fileType = "ZIP";
             }

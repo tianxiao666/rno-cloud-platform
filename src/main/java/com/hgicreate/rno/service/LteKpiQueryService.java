@@ -51,7 +51,7 @@ public class LteKpiQueryService {
         return list;
     }
 
-    public List<Map<String, Object>> queryResultForDownload(LteKpiQueryVM vm) throws ParseException {
+    private List<Map<String, Object>> queryResultForDownload(LteKpiQueryVM vm) throws ParseException {
         Long areaId = Long.parseLong(vm.getCityId());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date beginDate = sdf.parse(vm.getBegTime());
@@ -75,7 +75,7 @@ public class LteKpiQueryService {
 
     public void downloadData(LteKpiQueryVM vm, HttpServletResponse response) throws ParseException {
         List<Map<String, Object>> map = queryResultForDownload(vm);
-        ListOrderedMap columnTitles = getColumnTitles(vm.getIndexColumnStr(), vm.getIndexColumnNameStr());
+        ListOrderedMap<String, String> columnTitles = getColumnTitles(vm.getIndexColumnStr(), vm.getIndexColumnNameStr());
 
         String areaName = areaRepository.findById(Long.parseLong(vm.getCityId())).getName();
         Date today = new Date();
@@ -99,10 +99,10 @@ public class LteKpiQueryService {
         }
 
         List<String> columns = new ArrayList<>();
-        List<String> columnNames = new ArrayList<String>();
+        List<String> columnNames = new ArrayList<>();
         for (Object column : columnTitles.keySet()) {
             columns.add((String) column);
-            columnNames.add((String) columnTitles.get(column));
+            columnNames.add(columnTitles.get(column));
         }
         Workbook workbook = new SXSSFWorkbook();
         Sheet sheet = workbook.createSheet();
@@ -145,10 +145,10 @@ public class LteKpiQueryService {
 
     }
 
-    public ListOrderedMap getColumnTitles(String columnList, String columnNameList) {
+    private ListOrderedMap<String, String> getColumnTitles(String columnList, String columnNameList) {
         String[] columnArr = columnList.split(",");
         String[] columnNameArr = columnNameList.split(",");
-        ListOrderedMap columnMap = new ListOrderedMap();
+        ListOrderedMap<String, String> columnMap = new ListOrderedMap<>();
         columnMap.put("meabegTime", "起始时间");
         columnMap.put("meaendTime", "结束时间");
         columnMap.put("cellName", "小区名称");
@@ -163,21 +163,20 @@ public class LteKpiQueryService {
     /**
      * 计算指标
      */
-    public Map<String, Object> getLteStsIndex(LteTrafficData trafficData, String columnList) {
-        Map<String, Object> resMap = calLteStsIndex(trafficData, columnList);
-        return resMap;
+    private Map<String, Object> getLteStsIndex(LteTrafficData trafficData, String columnList) {
+        return calLteStsIndex(trafficData, columnList);
     }
 
     private Map<String, Object> calLteStsIndex(LteTrafficData trafficData, String columnList) {
 
         String[] columnArr = {};
-        if (columnList != null || columnList.length() > 0) {
+        if (columnList != null && columnList.length() > 0) {
             columnArr = columnList.split(",");
         }
         Map<String, Object> resMap = new HashMap<>();
         for (String colunmName : columnArr) {
             if (colunmName.trim().equalsIgnoreCase("rrc_ConnEstabSucc")) {
-                float rrc_ConnEstabSucc = 0;
+                float rrc_ConnEstabSucc;
                 if (Float.valueOf(trafficData.getRrcAttconnestab()) == 0) {
                     rrc_ConnEstabSucc = 100;
                 } else {
@@ -186,7 +185,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(rrc_ConnEstabSucc));
             }
             if (colunmName.trim().equalsIgnoreCase("erab_EstabSucc")) {
-                float erab_EstabSucc = 0;
+                float erab_EstabSucc;
                 if (Float.valueOf(trafficData.getErabNbrattestab()) == 0) {
                     erab_EstabSucc = 100;
                 } else {
@@ -195,7 +194,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(erab_EstabSucc));
             }
             if (colunmName.trim().equalsIgnoreCase("wireConn")) {
-                float wireConn = 0;
+                float wireConn;
                 if (getF(trafficData.getErabNbrattestab()) * getF(trafficData.getRrcAttconnestab()) == 0 || getF(trafficData.getRrcAttconnestab()) == 0) {
                     wireConn = 100;
                 } else {
@@ -205,7 +204,7 @@ public class LteKpiQueryService {
             }
             if (colunmName.trim().equalsIgnoreCase("erab_Drop_CellLevel")) {
 
-                float erab_Drop_CellLevel = 0;
+                float erab_Drop_CellLevel;
                 if (getF(trafficData.getErabNbrsuccestab()) == 0) {
                     erab_Drop_CellLevel = 0;
                 } else {
@@ -215,7 +214,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(erab_Drop_CellLevel));
             }
             if (colunmName.trim().equalsIgnoreCase("rrc_ConnRebuild")) {
-                float rrc_ConnRebuild = 0;
+                float rrc_ConnRebuild;
                 if ((getF(trafficData.getRrcAttconnreestab()) + getF(trafficData.getRrcAttconnestab())) == 0) {
                     rrc_ConnRebuild = 0;
                 } else {
@@ -224,7 +223,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(rrc_ConnRebuild));
             }
             if (colunmName.trim().equalsIgnoreCase("switchSucc")) {
-                float switchSucc = 0;
+                float switchSucc;
                 if ((getF(trafficData.getHoAttoutinterenbs1()) + getF(trafficData.getHoAttoutinterenbx2()) + getF(trafficData.getHoAttoutintraenb())) == 0) {
                     switchSucc = 100;
                 } else {
@@ -234,17 +233,17 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(switchSucc));
             }
             if (colunmName.trim().equalsIgnoreCase("emUplinkSerBytes")) {
-                float emUplinkSerBytes = 0;
+                float emUplinkSerBytes;
                 emUplinkSerBytes = getF(trafficData.getPdcpUpoctul());
                 resMap.put(colunmName, emUplinkSerBytes);
             }
             if (colunmName.trim().equalsIgnoreCase("emDownlinkSerBytes")) {
-                float emDownlinkSerBytes = 0;
+                float emDownlinkSerBytes;
                 emDownlinkSerBytes = getF(trafficData.getPdcpUpoctdl());
                 resMap.put(colunmName, emDownlinkSerBytes);
             }
             if (colunmName.trim().equalsIgnoreCase("erab_ConnSuccQCI1")) {
-                float erab_ConnSuccQCI1 = 0;
+                float erab_ConnSuccQCI1;
                 if (getF(trafficData.getErabNbrattestab_1()) == 0) {
                     erab_ConnSuccQCI1 = 100;
                 } else {
@@ -254,7 +253,7 @@ public class LteKpiQueryService {
             }
             if (colunmName.trim().equalsIgnoreCase("erab_ConnSuccQCI2")) {
 
-                float erab_ConnSuccQCI2 = 0;
+                float erab_ConnSuccQCI2;
                 if (getF(trafficData.getErabNbrattestab_2()) == 0) {
                     erab_ConnSuccQCI2 = 100;
                 } else {
@@ -263,7 +262,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(erab_ConnSuccQCI2));
             }
             if (colunmName.trim().equalsIgnoreCase("erab_ConnSuccQCI3")) {
-                float erab_ConnSuccQCI3 = 0;
+                float erab_ConnSuccQCI3;
                 if (getF(trafficData.getErabNbrattestab_3()) == 0) {
                     erab_ConnSuccQCI3 = 100;
                 } else {
@@ -272,7 +271,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(erab_ConnSuccQCI3));
             }
             if (colunmName.trim().equalsIgnoreCase("erab_ConnSuccQCI4")) {
-                float erab_ConnSuccQCI4 = 0;
+                float erab_ConnSuccQCI4;
                 if (getF(trafficData.getErabNbrattestab_4()) == 0) {
                     erab_ConnSuccQCI4 = 100;
                 } else {
@@ -281,7 +280,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(erab_ConnSuccQCI4));
             }
             if (colunmName.trim().equalsIgnoreCase("erab_ConnSuccQCI5")) {
-                float erab_ConnSuccQCI5 = 0;
+                float erab_ConnSuccQCI5;
                 if (getF(trafficData.getErabNbrattestab_5()) == 0) {
                     erab_ConnSuccQCI5 = 100;
                 } else {
@@ -290,7 +289,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(erab_ConnSuccQCI5));
             }
             if (colunmName.trim().equalsIgnoreCase("erab_ConnSuccQCI6")) {
-                float erab_ConnSuccQCI6 = 0;
+                float erab_ConnSuccQCI6;
                 if (getF(trafficData.getErabNbrattestab_6()) == 0) {
                     erab_ConnSuccQCI6 = 100;
                 } else {
@@ -299,7 +298,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(erab_ConnSuccQCI6));
             }
             if (colunmName.trim().equalsIgnoreCase("erab_ConnSuccQCI7")) {
-                float erab_ConnSuccQCI7 = 0;
+                float erab_ConnSuccQCI7;
                 if (getF(trafficData.getErabNbrattestab_7()) == 0) {
                     erab_ConnSuccQCI7 = 100;
                 } else {
@@ -308,7 +307,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(erab_ConnSuccQCI7));
             }
             if (colunmName.trim().equalsIgnoreCase("erab_ConnSuccQCI8")) {
-                float erab_ConnSuccQCI8 = 0;
+                float erab_ConnSuccQCI8;
                 if (getF(trafficData.getErabNbrattestab_8()) == 0) {
                     erab_ConnSuccQCI8 = 100;
                 } else {
@@ -318,7 +317,7 @@ public class LteKpiQueryService {
             }
             if (colunmName.trim().equalsIgnoreCase("erab_ConnSuccQCI9")) {
 
-                float erab_ConnSuccQCI9 = 0;
+                float erab_ConnSuccQCI9;
                 if (getF(trafficData.getErabNbrattestab_9()) == 0) {
                     erab_ConnSuccQCI9 = 100;
                 } else {
@@ -327,7 +326,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(erab_ConnSuccQCI9));
             }
             if (colunmName.trim().equalsIgnoreCase("wireConnQCI1")) {
-                float wireConnQCI1 = 0;
+                float wireConnQCI1;
                 if (getF(trafficData.getErabNbrattestab_1()) == 0
                         || getF(trafficData.getRrcAttconnestab()) == 0) {
                     wireConnQCI1 = 100;
@@ -337,7 +336,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(wireConnQCI1));
             }
             if (colunmName.trim().equalsIgnoreCase("wireConnQCI2")) {
-                float wireConnQCI2 = 0;
+                float wireConnQCI2;
                 if (getF(trafficData.getErabNbrattestab_2()) == 0 || getF(trafficData.getRrcAttconnestab()) == 0) {
                     wireConnQCI2 = 100;
                 } else {
@@ -346,7 +345,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(wireConnQCI2));
             }
             if (colunmName.trim().equalsIgnoreCase("wireConnQCI3")) {
-                float wireConnQCI3 = 0;
+                float wireConnQCI3;
                 if (getF(trafficData.getErabNbrattestab_3()) == 0 || getF(trafficData.getRrcAttconnestab()) == 0) {
                     wireConnQCI3 = 100;
                 } else {
@@ -355,7 +354,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(wireConnQCI3));
             }
             if (colunmName.trim().equalsIgnoreCase("wireConnQCI4")) {
-                float wireConnQCI4 = 0;
+                float wireConnQCI4;
                 if (getF(trafficData.getErabNbrattestab_4()) == 0 || getF(trafficData.getRrcAttconnestab()) == 0) {
                     wireConnQCI4 = 100;
                 } else {
@@ -365,7 +364,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(wireConnQCI4));
             }
             if (colunmName.trim().equalsIgnoreCase("wireConnQCI5")) {
-                float wireConnQCI5 = 0;
+                float wireConnQCI5;
                 if (getF(trafficData.getErabNbrattestab_5()) == 0 || getF(trafficData.getRrcAttconnestab()) == 0) {
                     wireConnQCI5 = 100;
                 } else {
@@ -375,7 +374,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(wireConnQCI5));
             }
             if (colunmName.trim().equalsIgnoreCase("wireConnQCI6")) {
-                float wireConnQCI6 = 0;
+                float wireConnQCI6;
                 if (getF(trafficData.getErabNbrattestab_6()) == 0 || getF(trafficData.getRrcAttconnestab()) == 0) {
                     wireConnQCI6 = 100;
                 } else {
@@ -385,7 +384,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(wireConnQCI6));
             }
             if (colunmName.trim().equalsIgnoreCase("wireConnQCI7")) {
-                float wireConnQCI7 = 0;
+                float wireConnQCI7;
                 if (getF(trafficData.getErabNbrattestab_7()) == 0 || getF(trafficData.getRrcAttconnestab()) == 0) {
                     wireConnQCI7 = 100;
                 } else {
@@ -395,7 +394,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(wireConnQCI7));
             }
             if (colunmName.trim().equalsIgnoreCase("wireConnQCI8")) {
-                float wireConnQCI8 = 0;
+                float wireConnQCI8;
                 if (getF(trafficData.getErabNbrattestab_8()) == 0 || getF(trafficData.getRrcAttconnestab()) == 0) {
                     wireConnQCI8 = 100;
                 } else {
@@ -405,7 +404,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(wireConnQCI8));
             }
             if (colunmName.trim().equalsIgnoreCase("wireConnQCI9")) {
-                float wireConnQCI9 = 0;
+                float wireConnQCI9;
                 if (getF(trafficData.getErabNbrattestab_9()) == 0 || getF(trafficData.getRrcAttconnestab()) == 0) {
                     wireConnQCI9 = 100;
                 } else {
@@ -415,7 +414,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(wireConnQCI9));
             }
             if (colunmName.trim().equalsIgnoreCase("erab_DropQCI1_CellLevel")) {
-                float erab_DropQCI1_CellLevel = 0;
+                float erab_DropQCI1_CellLevel;
                 if ((getF(trafficData.getErabNbrleft_1()) + getF(trafficData.getErabNbrsuccestab_1()) + getF(trafficData.getErabNbrhoinc_1())) == 0) {
                     erab_DropQCI1_CellLevel = 100;
                 } else {
@@ -425,7 +424,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(erab_DropQCI1_CellLevel));
             }
             if (colunmName.trim().equalsIgnoreCase("erab_DropQCI2_CellLevel")) {
-                float erab_DropQCI2_CellLevel = 0;
+                float erab_DropQCI2_CellLevel;
                 if ((getF(trafficData.getErabNbrleft_2()) + getF(trafficData.getErabNbrsuccestab_2()) + getF(trafficData.getErabNbrhoinc_2())) == 0) {
                     erab_DropQCI2_CellLevel = 100;
                 } else {
@@ -435,7 +434,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(erab_DropQCI2_CellLevel));
             }
             if (colunmName.trim().equalsIgnoreCase("erab_DropQCI3_CellLevel")) {
-                float erab_DropQCI3_CellLevel = 0;
+                float erab_DropQCI3_CellLevel;
                 if ((getF(trafficData.getErabNbrleft_3()) + getF(trafficData.getErabNbrsuccestab_3()) + getF(trafficData.getErabNbrhoinc_3())) == 0) {
                     erab_DropQCI3_CellLevel = 100;
                 } else {
@@ -445,7 +444,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(erab_DropQCI3_CellLevel));
             }
             if (colunmName.trim().equalsIgnoreCase("erab_DropQCI4_CellLevel")) {
-                float erab_DropQCI4_CellLevel = 0;
+                float erab_DropQCI4_CellLevel;
                 if ((getF(trafficData.getErabNbrleft_4()) + getF(trafficData.getErabNbrsuccestab_4()) + getF(trafficData.getErabNbrhoinc_4())) == 0) {
                     erab_DropQCI4_CellLevel = 100;
                 } else {
@@ -455,7 +454,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(erab_DropQCI4_CellLevel));
             }
             if (colunmName.trim().equalsIgnoreCase("erab_DropQCI5_CellLevel")) {
-                float erab_DropQCI5_CellLevel = 0;
+                float erab_DropQCI5_CellLevel;
                 if ((getF(trafficData.getErabNbrleft_5()) + getF(trafficData.getErabNbrsuccestab_5()) + getF(trafficData.getErabNbrhoinc_5())) == 0) {
                     erab_DropQCI5_CellLevel = 100;
                 } else {
@@ -465,7 +464,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(erab_DropQCI5_CellLevel));
             }
             if (colunmName.trim().equalsIgnoreCase("erab_DropQCI6_CellLevel")) {
-                float erab_DropQCI6_CellLevel = 0;
+                float erab_DropQCI6_CellLevel;
                 if ((getF(trafficData.getErabNbrleft_6()) + getF(trafficData.getErabNbrsuccestab_6()) + getF(trafficData.getErabNbrhoinc_6())) == 0) {
                     erab_DropQCI6_CellLevel = 100;
                 } else {
@@ -475,7 +474,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(erab_DropQCI6_CellLevel));
             }
             if (colunmName.trim().equalsIgnoreCase("erab_DropQCI7_CellLevel")) {
-                float erab_DropQCI7_CellLevel = 0;
+                float erab_DropQCI7_CellLevel;
                 if ((getF(trafficData.getErabNbrleft_7()) + getF(trafficData.getErabNbrsuccestab_7()) + getF(trafficData.getErabNbrhoinc_7())) == 0) {
                     erab_DropQCI7_CellLevel = 100;
                 } else {
@@ -485,7 +484,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(erab_DropQCI7_CellLevel));
             }
             if (colunmName.trim().equalsIgnoreCase("erab_DropQCI8_CellLevel")) {
-                float erab_DropQCI8_CellLevel = 0;
+                float erab_DropQCI8_CellLevel;
                 if ((getF(trafficData.getErabNbrleft_8()) + getF(trafficData.getErabNbrsuccestab_8()) + getF(trafficData.getErabNbrhoinc_8())) == 0) {
                     erab_DropQCI8_CellLevel = 100;
                 } else {
@@ -495,7 +494,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(erab_DropQCI8_CellLevel));
             }
             if (colunmName.trim().equalsIgnoreCase("erab_DropQCI9_CellLevel")) {
-                float erab_DropQCI9_CellLevel = 0;
+                float erab_DropQCI9_CellLevel;
                 if ((getF(trafficData.getErabNbrleft_9()) + getF(trafficData.getErabNbrsuccestab_9()) + getF(trafficData.getErabNbrhoinc_9())) == 0) {
                     erab_DropQCI9_CellLevel = 100;
                 } else {
@@ -505,7 +504,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(erab_DropQCI9_CellLevel));
             }
             if (colunmName.trim().equalsIgnoreCase("erab_DropQCI1")) {
-                float erab_DropQCI1 = 0;
+                float erab_DropQCI1;
                 if (getF(trafficData.getErabNbrsuccestab_1()) == 0) {
                     erab_DropQCI1 = 100;
                 } else {
@@ -514,7 +513,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(erab_DropQCI1));
             }
             if (colunmName.trim().equalsIgnoreCase("erab_DropQCI2")) {
-                float erab_DropQCI2 = 0;
+                float erab_DropQCI2;
                 if (getF(trafficData.getErabNbrsuccestab_2()) == 0) {
                     erab_DropQCI2 = 100;
                 } else {
@@ -523,7 +522,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(erab_DropQCI2));
             }
             if (colunmName.trim().equalsIgnoreCase("erab_DropQCI3")) {
-                float erab_DropQCI3 = 0;
+                float erab_DropQCI3;
                 if (getF(trafficData.getErabNbrsuccestab_3()) == 0) {
                     erab_DropQCI3 = 100;
                 } else {
@@ -532,7 +531,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(erab_DropQCI3));
             }
             if (colunmName.trim().equalsIgnoreCase("erab_DropQCI4")) {
-                float erab_DropQCI4 = 0;
+                float erab_DropQCI4;
                 if (getF(trafficData.getErabNbrsuccestab_4()) == 0) {
                     erab_DropQCI4 = 100;
                 } else {
@@ -541,7 +540,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(erab_DropQCI4));
             }
             if (colunmName.trim().equalsIgnoreCase("erab_DropQCI5")) {
-                float erab_DropQCI5 = 0;
+                float erab_DropQCI5;
                 if (getF(trafficData.getErabNbrsuccestab_5()) == 0) {
                     erab_DropQCI5 = 100;
                 } else {
@@ -550,7 +549,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(erab_DropQCI5));
             }
             if (colunmName.trim().equalsIgnoreCase("erab_DropQCI6")) {
-                float erab_DropQCI6 = 0;
+                float erab_DropQCI6;
                 if (getF(trafficData.getErabNbrsuccestab_6()) == 0) {
                     erab_DropQCI6 = 100;
                 } else {
@@ -559,7 +558,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(erab_DropQCI6));
             }
             if (colunmName.trim().equalsIgnoreCase("erab_DropQCI7")) {
-                float erab_DropQCI7 = 0;
+                float erab_DropQCI7;
                 if (getF(trafficData.getErabNbrsuccestab_7()) == 0) {
                     erab_DropQCI7 = 100;
                 } else {
@@ -568,7 +567,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(erab_DropQCI7));
             }
             if (colunmName.trim().equalsIgnoreCase("erab_DropQCI8")) {
-                float erab_DropQCI8 = 0;
+                float erab_DropQCI8;
                 if (getF(trafficData.getErabNbrsuccestab_8()) == 0) {
                     erab_DropQCI8 = 100;
                 } else {
@@ -577,7 +576,7 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(erab_DropQCI8));
             }
             if (colunmName.trim().equalsIgnoreCase("erab_DropQCI9")) {
-                float erab_DropQCI9 = 0;
+                float erab_DropQCI9;
                 if (getF(trafficData.getErabNbrsuccestab_9()) == 0) {
                     erab_DropQCI9 = 100;
                 } else {
@@ -586,97 +585,97 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(erab_DropQCI9));
             }
             if (colunmName.trim().equalsIgnoreCase("emUplinkSerBytesQCI1")) {
-                float emUplinkSerBytesQCI1 = 0;
+                float emUplinkSerBytesQCI1;
                 emUplinkSerBytesQCI1 = getF(trafficData.getPdcpUpoctul_1());
                 resMap.put(colunmName, emUplinkSerBytesQCI1);
             }
             if (colunmName.trim().equalsIgnoreCase("emUplinkSerBytesQCI2")) {
-                float emUplinkSerBytesQCI2 = 0;
+                float emUplinkSerBytesQCI2;
                 emUplinkSerBytesQCI2 = getF(trafficData.getPdcpUpoctul_2());
                 resMap.put(colunmName, emUplinkSerBytesQCI2);
             }
             if (colunmName.trim().equalsIgnoreCase("emUplinkSerBytesQCI3")) {
-                float emUplinkSerBytesQCI3 = 0;
+                float emUplinkSerBytesQCI3;
                 emUplinkSerBytesQCI3 = getF(trafficData.getPdcpUpoctul_3());
                 resMap.put(colunmName, emUplinkSerBytesQCI3);
             }
             if (colunmName.trim().equalsIgnoreCase("emUplinkSerBytesQCI4")) {
-                float emUplinkSerBytesQCI4 = 0;
+                float emUplinkSerBytesQCI4;
                 emUplinkSerBytesQCI4 = getF(trafficData.getPdcpUpoctul_4());
                 resMap.put(colunmName, emUplinkSerBytesQCI4);
             }
             if (colunmName.trim().equalsIgnoreCase("emUplinkSerBytesQCI5")) {
-                float emUplinkSerBytesQCI5 = 0;
+                float emUplinkSerBytesQCI5;
                 emUplinkSerBytesQCI5 = getF(trafficData.getPdcpUpoctul_5());
                 resMap.put(colunmName, emUplinkSerBytesQCI5);
             }
             if (colunmName.trim().equalsIgnoreCase("emUplinkSerBytesQCI6")) {
-                float emUplinkSerBytesQCI6 = 0;
+                float emUplinkSerBytesQCI6;
                 emUplinkSerBytesQCI6 = getF(trafficData.getPdcpUpoctul_6());
                 resMap.put(colunmName, emUplinkSerBytesQCI6);
             }
             if (colunmName.trim().equalsIgnoreCase("emUplinkSerBytesQCI7")) {
-                float emUplinkSerBytesQCI7 = 0;
+                float emUplinkSerBytesQCI7;
                 emUplinkSerBytesQCI7 = getF(trafficData.getPdcpUpoctul_7());
                 resMap.put(colunmName, emUplinkSerBytesQCI7);
             }
             if (colunmName.trim().equalsIgnoreCase("emUplinkSerBytesQCI8")) {
-                float emUplinkSerBytesQCI8 = 0;
+                float emUplinkSerBytesQCI8;
                 emUplinkSerBytesQCI8 = getF(trafficData.getPdcpUpoctul_8());
                 resMap.put(colunmName, emUplinkSerBytesQCI8);
             }
             if (colunmName.trim().equalsIgnoreCase("emUplinkSerBytesQCI9")) {
-                float emUplinkSerBytesQCI9 = 0;
+                float emUplinkSerBytesQCI9;
                 emUplinkSerBytesQCI9 = getF(trafficData.getPdcpUpoctul_9());
                 resMap.put(colunmName, emUplinkSerBytesQCI9);
             }
             if (colunmName.trim().equalsIgnoreCase("emDownlinkSerBytesQCI1")) {
-                float emDownlinkSerBytesQCI1 = 0;
+                float emDownlinkSerBytesQCI1;
                 emDownlinkSerBytesQCI1 = getF(trafficData.getPdcpUpoctdl_1());
                 resMap.put(colunmName, emDownlinkSerBytesQCI1);
             }
             if (colunmName.trim().equalsIgnoreCase("emDownlinkSerBytesQCI2")) {
-                float emDownlinkSerBytesQCI2 = 0;
+                float emDownlinkSerBytesQCI2;
                 emDownlinkSerBytesQCI2 = getF(trafficData.getPdcpUpoctdl_2());
                 resMap.put(colunmName, emDownlinkSerBytesQCI2);
             }
             if (colunmName.trim().equalsIgnoreCase("emDownlinkSerBytesQCI3")) {
-                float emDownlinkSerBytesQCI3 = 0;
+                float emDownlinkSerBytesQCI3;
                 emDownlinkSerBytesQCI3 = getF(trafficData.getPdcpUpoctdl_3());
                 resMap.put(colunmName, emDownlinkSerBytesQCI3);
             }
             if (colunmName.trim().equalsIgnoreCase("emDownlinkSerBytesQCI4")) {
-                float emDownlinkSerBytesQCI4 = 0;
+                float emDownlinkSerBytesQCI4;
                 emDownlinkSerBytesQCI4 = getF(trafficData.getPdcpUpoctdl_4());
                 resMap.put(colunmName, emDownlinkSerBytesQCI4);
             }
             if (colunmName.trim().equalsIgnoreCase("emDownlinkSerBytesQCI5")) {
-                float emDownlinkSerBytesQCI5 = 0;
+                float emDownlinkSerBytesQCI5;
                 emDownlinkSerBytesQCI5 = getF(trafficData.getPdcpUpoctdl_5());
                 resMap.put(colunmName, emDownlinkSerBytesQCI5);
             }
             if (colunmName.trim().equalsIgnoreCase("emDownlinkSerBytesQCI6")) {
-                float emDownlinkSerBytesQCI6 = 0;
+                float emDownlinkSerBytesQCI6;
                 emDownlinkSerBytesQCI6 = getF(trafficData.getPdcpUpoctdl_6());
                 resMap.put(colunmName, emDownlinkSerBytesQCI6);
             }
             if (colunmName.trim().equalsIgnoreCase("emDownlinkSerBytesQCI7")) {
-                float emDownlinkSerBytesQCI7 = 0;
+                float emDownlinkSerBytesQCI7;
                 emDownlinkSerBytesQCI7 = getF(trafficData.getPdcpUpoctdl_7());
                 resMap.put(colunmName, emDownlinkSerBytesQCI7);
             }
             if (colunmName.trim().equalsIgnoreCase("emDownlinkSerBytesQCI8")) {
-                float emDownlinkSerBytesQCI8 = 0;
+                float emDownlinkSerBytesQCI8;
                 emDownlinkSerBytesQCI8 = getF(trafficData.getPdcpUpoctdl_8());
                 resMap.put(colunmName, emDownlinkSerBytesQCI8);
             }
             if (colunmName.trim().equalsIgnoreCase("emDownlinkSerBytesQCI9")) {
-                float emDownlinkSerBytesQCI9 = 0;
+                float emDownlinkSerBytesQCI9;
                 emDownlinkSerBytesQCI9 = getF(trafficData.getPdcpUpoctdl_9());
                 resMap.put(colunmName, emDownlinkSerBytesQCI9);
             }
             if (colunmName.trim().equalsIgnoreCase("wireDrop_CellLevel")) {
-                float wireDrop_CellLevel = 0;
+                float wireDrop_CellLevel;
                 if (getF(trafficData.getContextSuccinitalsetup()) == 0) {
                     wireDrop_CellLevel = 0;
                 } else {
@@ -685,62 +684,62 @@ public class LteKpiQueryService {
                 resMap.put(colunmName, formatData(wireDrop_CellLevel));
             }
             if (colunmName.trim().equalsIgnoreCase("erab_EstabSucc_SuccTimes")) {
-                float erab_EstabSucc_SuccTimes = 0;
+                float erab_EstabSucc_SuccTimes;
                 erab_EstabSucc_SuccTimes = getF(trafficData.getErabNbrsuccestab());
                 resMap.put(colunmName, erab_EstabSucc_SuccTimes);
             }
             if (colunmName.trim().equalsIgnoreCase("erab_EstabSucc_ReqTimes")) {
-                float erab_EstabSucc_ReqTimes = 0;
+                float erab_EstabSucc_ReqTimes;
                 erab_EstabSucc_ReqTimes = getF(trafficData.getErabNbrattestab());
                 resMap.put(colunmName, erab_EstabSucc_ReqTimes);
             }
             if (colunmName.trim().equalsIgnoreCase("erab_Drop_ReqTimes_CellLevel")) {
-                float erab_Drop_ReqTimes_CellLevel = 0;
+                float erab_Drop_ReqTimes_CellLevel;
                 erab_Drop_ReqTimes_CellLevel = getF(trafficData.getErabNbrsuccestab()) + getF(trafficData.getHoSuccoutinterenbs1()) + getF(trafficData.getHoSuccoutinterenbx2()) + getF(trafficData.getHoAttoutintraenb());
                 resMap.put(colunmName, erab_Drop_ReqTimes_CellLevel);
             }
             if (colunmName.trim().equalsIgnoreCase("switchSucc_SuccTimes")) {
-                float switchSucc_SuccTimes = 0;
+                float switchSucc_SuccTimes;
                 switchSucc_SuccTimes = getF(trafficData.getHoSuccoutinterenbs1()) + getF(trafficData.getHoSuccoutinterenbx2()) + getF(trafficData.getHoSuccoutintraenb());
                 resMap.put(colunmName, switchSucc_SuccTimes);
             }
             if (colunmName.trim().equalsIgnoreCase("switchSucc_ReqTimes")) {
-                float switchSucc_ReqTimes = 0;
+                float switchSucc_ReqTimes;
                 switchSucc_ReqTimes = getF(trafficData.getHoAttoutinterenbs1()) + getF(trafficData.getHoAttoutinterenbx2()) + getF(trafficData.getHoAttoutintraenb());
                 resMap.put(colunmName, switchSucc_ReqTimes);
             }
             if (colunmName.trim().equalsIgnoreCase("wireDrop_ReqTimes_CellLevel")) {
-                float wireDrop_ReqTimes_CellLevel = 0;
+                float wireDrop_ReqTimes_CellLevel;
                 wireDrop_ReqTimes_CellLevel = getF(trafficData.getContextSuccinitalsetup());
                 resMap.put(colunmName, wireDrop_ReqTimes_CellLevel);
             }
             if (colunmName.trim().equalsIgnoreCase("wireConn_ReqTimes")) {
-                float wireConn_ReqTimes = 0;
+                float wireConn_ReqTimes;
                 wireConn_ReqTimes = getF(trafficData.getErabNbrattestab()) * getF(trafficData.getRrcAttconnestab());
                 resMap.put(colunmName, wireConn_ReqTimes);
             }
             if (colunmName.trim().equalsIgnoreCase("erab_Drop_DropTimes_CellLevel")) {
-                float erab_Drop_DropTimes_CellLevel = 0;
+                float erab_Drop_DropTimes_CellLevel;
                 erab_Drop_DropTimes_CellLevel = getF(trafficData.getErabNbrreqrelenb()) - getF(trafficData.getErabNbrreqrelenbNormal()) + getF(trafficData.getErabHofail());
                 resMap.put(colunmName, erab_Drop_DropTimes_CellLevel);
             }
             if (colunmName.trim().equalsIgnoreCase("wireConn_SuccTimes")) {
-                float wireConn_SuccTimes = 0;
+                float wireConn_SuccTimes;
                 wireConn_SuccTimes = getF(trafficData.getErabNbrsuccestab()) * getF(trafficData.getRrcSuccconnestab());
                 resMap.put(colunmName, wireConn_SuccTimes);
             }
             if (colunmName.trim().equalsIgnoreCase("rrc_ConnEstabSucc_SuccTimes")) {
-                float rrc_ConnEstabSucc_SuccTimes = 0;
+                float rrc_ConnEstabSucc_SuccTimes;
                 rrc_ConnEstabSucc_SuccTimes = getF(trafficData.getRrcSuccconnestab());
                 resMap.put(colunmName, rrc_ConnEstabSucc_SuccTimes);
             }
             if (colunmName.trim().equalsIgnoreCase("rrc_ConnEstabSucc_ReqTimes")) {
-                float rrc_ConnEstabSucc_ReqTimes = 0;
+                float rrc_ConnEstabSucc_ReqTimes;
                 rrc_ConnEstabSucc_ReqTimes = getF(trafficData.getRrcAttconnestab());
                 resMap.put(colunmName, rrc_ConnEstabSucc_ReqTimes);
             }
             if (colunmName.trim().equalsIgnoreCase("wireDrop_DropTimes_CellLevel")) {
-                float wireDrop_DropTimes_CellLevel = 0;
+                float wireDrop_DropTimes_CellLevel;
                 wireDrop_DropTimes_CellLevel = getF(trafficData.getContextAttrelenb()) - getF(trafficData.getContextAttrelenbNormal());
                 resMap.put(colunmName, wireDrop_DropTimes_CellLevel);
             }
@@ -751,8 +750,8 @@ public class LteKpiQueryService {
     /**
      * 格式化数字
      *
-     * @param data
-     * @return
+     * @param data float
+     * @return String
      */
     private String formatData(float data) {
         DecimalFormat df = new DecimalFormat("0.##%");

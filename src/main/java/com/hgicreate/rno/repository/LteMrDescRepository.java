@@ -12,5 +12,6 @@ import java.util.List;
 public interface LteMrDescRepository extends JpaRepository<LteMrDesc,Long> {
     List<LteMrDesc> findTop1000ByAreaAndRecordDateBetweenOrderByCreatedDateDesc(Area area, Date beginDate,Date endDate);
 
-    List<LteMrDesc> findTop1000ByAreaAndVendorAndRecordDateBetweenOrderByCreatedDateDesc(Area area,String vendor, Date beginDate,Date endDate);
+    List<LteMrDesc> findTop1000ByAreaAndVendorAndRecordDateBetweenOrderByCreatedDateDesc(
+            Area area,String vendor, Date beginDate,Date endDate);
 }

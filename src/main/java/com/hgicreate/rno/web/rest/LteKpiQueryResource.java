@@ -38,7 +38,7 @@ public class LteKpiQueryResource {
         this.areaRepository = areaRepository;
     }
 
-    @PostMapping("/load-index")
+    @GetMapping("/load-index")
     public List<LteTrafficIndexDTO> getRno4GIndex() {
         log.debug("获取话统指标");
         List<LteTrafficIndex> list = lteTrafficIndexRepository.findAll();
