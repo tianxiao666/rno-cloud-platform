@@ -1,44 +1,41 @@
-keycloak:
-    auth-server-url: http://localhost:9080/auth
-    realm: jhipster
-    public-client: true
-    resource: web_app
-
-logging:
-    level:
-        com.hgicreate.rno: debug
-
-spring:
-    datasource:
-        url: jdbc:oracle:thin:@192.168.50.20:1521:rnodb
-        username: rno4dev
-        password: 123456
-    jpa:
-        database-platform: org.hibernate.dialect.Oracle10gDialect
-        database: ORACLE
-        show-sql: true
-        properties:
-            hibernate.format_sql: true
-    http:
-        multipart:
-            max-file-size: 300MB
-            max-request-size: 300MB
-
-rno:
-    ftp:
-        host: 192.168.9.78
-        port: 21
-        username: rnoftp
-        password: rnodev
-        remote-path: /var/rno/data
-    app-code: rno4g
-    path:
-        upload-files: d:/tmp/rno-cloud-platform/uploads
-
-mybatis:
-    configuration:
-        map-underscore-to-camel-case: true
+server:
+  port: 8380
 
 management:
   security:
     enabled: false
+
+logging:
+  level:
+    com.hgicreate.rno: debug
+
+spring:
+  datasource:
+    url: jdbc:oracle:thin:@192.168.50.20:1521:rnodb
+    username: rno4dev
+    password: 123456
+  jpa:
+    database-platform: org.hibernate.dialect.Oracle10gDialect
+    database: ORACLE
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+  http:
+    multipart:
+      max-file-size: 300MB
+      max-request-size: 300MB
+
+rno:
+  app-code: rno4g
+  path:
+    upload-files: d:/tmp/rno-cloud-platform/uploads
+  ftp:
+    host: 192.168.9.78
+    port: 21
+    username: rnoftp
+    password: rnodev
+    remote-path: /var/rno/data
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true

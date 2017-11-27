@@ -5,3 +5,4 @@ spring:
     basename: i18n/messages
   profiles:
     active: dev
+    include: keycloak

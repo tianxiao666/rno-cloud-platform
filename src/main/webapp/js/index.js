@@ -10,9 +10,11 @@ $(function () {
         dataType: "json",
         async: false,
         success: function (data) {
-            document.title = data.name;
-            $(".logo").html("<img src='images/" + data.logo + "'>");
-            $("#software-version").html(data.name + " " + data.version);
+            var app = data.app;
+            document.title = app.name;
+            $(".logo").html("<img src='images/" + app.logo + "'>");
+            $("#software-version").html(app.name + " " + app.version);
+            $("#greeting").html(data.fullName + "，欢迎您！");
         }
     });
 
@@ -320,3 +322,9 @@ var openModulePage = function (obj) {
 
     $("#iframe").attr("src", href);
 };
+
+function logout() {
+    $.get("/api/logout").then(function () {
+        window.location.href = "/";
+    });
+}

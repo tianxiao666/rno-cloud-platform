@@ -2,15 +2,20 @@ package com.hgicreate.rno.web.rest;
 
 import com.hgicreate.rno.domain.App;
 import com.hgicreate.rno.repository.AppRepository;
+import com.hgicreate.rno.security.SecurityUtils;
 import com.hgicreate.rno.service.AppService;
 import com.hgicreate.rno.service.dto.AppDTO;
 import com.hgicreate.rno.service.dto.AppNameDTO;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author ke_weixu
@@ -18,22 +23,23 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/api")
+@AllArgsConstructor
 public class AppResource {
 
-    @Value("${rno.app-code:rno}")
-    private String code;
-
+    private final Environment env;
     private final AppRepository appRepository;
-
     private final AppService appService;
 
-    public AppResource(AppRepository appRepository, AppService appService) {
-        this.appRepository = appRepository;
-        this.appService = appService;
-    }
-
     @GetMapping("/app-info")
-    public App getAppInfo(HttpServletRequest request) {
+    public Map<String, Object> getAppInfo(HttpServletRequest request) {
+        Map<String, Object> map = new HashMap<>();
+
+        String code = env.getProperty("rno.app-code", "rno");
+
+        // 获取登录名
+        map.put("username", SecurityUtils.getCurrentUserLogin());
+        map.put("fullName", SecurityUtils.getAccessToken().getName());
+
         String url = request.getServerName();
         log.debug("URL : {}", url);
         String[] array = url.split("\\.");
@@ -43,15 +49,24 @@ public class AppResource {
 
         // 如果有则以返回url前缀的应用
         if (list.size() > 0) {
-            return list.get(0);
+            map.put("app", list.get(0));
         } else {
-            return appRepository.findAllByCode(code).get(0);
+            map.put("app", appRepository.findAllByCode(code).get(0));
         }
+
+        return map;
+    }
+
+    /**
+     * 退出登录
+     */
+    @GetMapping("/logout")
+    public void logout(HttpServletRequest request) throws ServletException {
+        request.logout();
     }
 
     @GetMapping("/list-app-names")
     public List<AppNameDTO> listAppNames(){
-
         return appService.getAllName();
     }
 
