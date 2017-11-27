@@ -1,7 +1,6 @@
 package com.hgicreate.rno.web.rest;
 
 import com.hgicreate.rno.domain.LteTrafficIndex;
-import com.hgicreate.rno.repository.AreaRepository;
 import com.hgicreate.rno.repository.LteTrafficIndexRepository;
 import com.hgicreate.rno.service.LteKpiQueryService;
 import com.hgicreate.rno.service.dto.LteTrafficIndexDTO;
@@ -15,8 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
@@ -30,12 +29,10 @@ public class LteKpiQueryResource {
     private final LteTrafficIndexRepository lteTrafficIndexRepository;
 
     private final LteKpiQueryService lteKpiQueryService;
-    private final AreaRepository areaRepository;
 
-    public LteKpiQueryResource(LteTrafficIndexRepository lteTrafficIndexRepository, LteKpiQueryService lteKpiQueryService, AreaRepository areaRepository) {
+    public LteKpiQueryResource(LteTrafficIndexRepository lteTrafficIndexRepository, LteKpiQueryService lteKpiQueryService) {
         this.lteTrafficIndexRepository = lteTrafficIndexRepository;
         this.lteKpiQueryService = lteKpiQueryService;
-        this.areaRepository = areaRepository;
     }
 
     @GetMapping("/load-index")
@@ -50,14 +47,30 @@ public class LteKpiQueryResource {
     @PostMapping("/query-result")
     public List<Map<String, Object>> queryResult(LteKpiQueryVM vm) throws ParseException {
         log.debug("视图模型：" + vm);
-        List<Map<String, Object>> list = lteKpiQueryService.queryResult(vm);
-        return list;
+        return lteKpiQueryService.queryResult(vm);
     }
 
     @PostMapping("/download-data")
     @ResponseBody
-    public void downloadData(LteKpiQueryVM vm, HttpServletResponse response) throws ParseException {
+    public ResponseEntity<byte[]> downloadData(LteKpiQueryVM vm) throws ParseException {
         log.debug("视图模型：" + vm);
-        lteKpiQueryService.downloadData(vm, response);
+        File file = lteKpiQueryService.downloadData(vm);
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            String fileName = new String(file.getName().getBytes("UTF-8"),
+                    "iso-8859-1");
+            headers.setContentDispositionFormData("attachment", fileName);
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            return new ResponseEntity<>(FileUtils.readFileToByteArray(file), headers, HttpStatus.CREATED);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        } finally {
+            if (file.delete()) {
+                log.debug("临时文件删除成功。");
+            } else {
+                log.debug("临时文件删除失败。");
+            }
+        }
     }
 }

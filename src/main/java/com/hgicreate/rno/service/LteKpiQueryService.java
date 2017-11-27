@@ -5,14 +5,7 @@ import com.hgicreate.rno.repository.AreaRepository;
 import com.hgicreate.rno.repository.LteTrafficDataRepository;
 import com.hgicreate.rno.web.rest.vm.LteKpiQueryVM;
 import org.apache.commons.collections4.map.ListOrderedMap;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.stereotype.Service;
-
-import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -73,30 +66,14 @@ public class LteKpiQueryService {
         return list;
     }
 
-    public void downloadData(LteKpiQueryVM vm, HttpServletResponse response) throws ParseException {
+    public File downloadData(LteKpiQueryVM vm) throws ParseException {
         List<Map<String, Object>> map = queryResultForDownload(vm);
         ListOrderedMap<String, String> columnTitles = getColumnTitles(vm.getIndexColumnStr(), vm.getIndexColumnNameStr());
 
         String areaName = areaRepository.findById(Long.parseLong(vm.getCityId())).getName();
         Date today = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        File file = new File(areaName + sdf.format(today) + "-话务性能指标.xlsx");
-
-        String fileName = "";
-        try {
-            fileName = new String(file.getName().getBytes(), "iso-8859-1");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        response.setContentType("application/x.ms-excel");
-        response.setHeader("Content-disposition", "attachment;filename=" + fileName);
-
-        OutputStream os = null;
-        try {
-            os = response.getOutputStream();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        File file = new File(areaName + sdf.format(today) + "-话务性能指标.csv");
 
         List<String> columns = new ArrayList<>();
         List<String> columnNames = new ArrayList<>();
@@ -104,45 +81,52 @@ public class LteKpiQueryService {
             columns.add((String) column);
             columnNames.add(columnTitles.get(column));
         }
-        Workbook workbook = new SXSSFWorkbook();
-        Sheet sheet = workbook.createSheet();
-        Row row;
-        Cell cell;
-        row = sheet.createRow((short) 0);
-        for (int i = 0; i < columnNames.size(); i++) {
-            cell = row.createCell(i);
-            cell.setCellValue(columnNames.get(i));
-        }
+        //获取UTF-8编码文本文件开头的BOM签名
+        byte b[] = {(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
+        String s = new String(b);
 
-        for (int i = 0; i < map.size(); i++) {
-            row = sheet.createRow( i + 1);
-            for (int j = 0; j < columns.size(); j++) {
-                if (map.get(i).get(columns.get(j)) instanceof String) {
-                    cell = row.createCell(j);
-                    cell.setCellValue(map.get(i).get(columns.get(j)).toString());
-                } else if (map.get(i).get(columns.get(j)) instanceof Float) {
-                    cell = row.createCell(j);
-                    cell.setCellValue(Float.parseFloat(map.get(i).get(columns.get(j)).toString()));
-                } else {
-                    cell = row.createCell(j);
-                    SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    System.out.println(map.get(i).get(columns.get(j)));
-                    cell.setCellValue(sdf1.format((Date) map.get(i).get(columns.get(j))));
-                }
-            }
-        }
-        //最终写入文件
+        BufferedWriter bw = null;
+        FileWriter fw = null;
+        StringBuilder str = new StringBuilder();
         try {
-            workbook.write(os);
-
-            if (os != null) {
-                os.flush();
-                os.close();
+            fw = new FileWriter(file.getAbsoluteFile());
+            bw = new BufferedWriter(fw);
+            str.append(columnNames.get(0));
+            for (int i = 1; i < columnNames.size(); i++) {
+                str.append(",").append(columnNames.get(i));
+            }
+            bw.write(s + str.toString());
+            bw.newLine();
+            for (Map<String, Object> data : map) {
+                str = new StringBuilder();
+                for (String column : columns) {
+                    str.append(s).append(data.get(column).toString()).append(",");
+                }
+                str.deleteCharAt(str.length() - 1);
+                bw.write(str.toString());
+                bw.newLine();
             }
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (bw != null) {
+                    bw.flush();
+                }
+                if (fw != null) {
+                    fw.flush();
+                }
+                if (bw != null) {
+                    bw.close();
+                }
+                if (fw != null) {
+                    fw.close();
+                }
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
         }
-
+        return file;
     }
 
     private ListOrderedMap<String, String> getColumnTitles(String columnList, String columnNameList) {
@@ -177,16 +161,16 @@ public class LteKpiQueryService {
         for (String colunmName : columnArr) {
             if (colunmName.trim().equalsIgnoreCase("rrc_ConnEstabSucc")) {
                 float rrc_ConnEstabSucc;
-                if (Float.valueOf(trafficData.getRrcAttconnestab()) == 0) {
+                if (trafficData.getRrcAttconnestab() == 0) {
                     rrc_ConnEstabSucc = 100;
                 } else {
-                    rrc_ConnEstabSucc = 100 * Float.valueOf(trafficData.getRrcSuccconnestab()) / Float.valueOf(trafficData.getRrcAttconnestab());
+                    rrc_ConnEstabSucc = 100 * trafficData.getRrcSuccconnestab() / trafficData.getRrcAttconnestab();
                 }
                 resMap.put(colunmName, formatData(rrc_ConnEstabSucc));
             }
             if (colunmName.trim().equalsIgnoreCase("erab_EstabSucc")) {
                 float erab_EstabSucc;
-                if (Float.valueOf(trafficData.getErabNbrattestab()) == 0) {
+                if (trafficData.getErabNbrattestab() == 0) {
                     erab_EstabSucc = 100;
                 } else {
                     erab_EstabSucc = 100 * (trafficData.getErabNbrsuccestab()) / (trafficData.getErabNbrattestab());
@@ -757,5 +741,5 @@ public class LteKpiQueryService {
         DecimalFormat df = new DecimalFormat("0.##%");
         return df.format(data / 100);
     }
-    
+
 }
