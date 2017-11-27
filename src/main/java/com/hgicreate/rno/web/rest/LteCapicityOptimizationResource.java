@@ -6,7 +6,6 @@ import com.hgicreate.rno.web.rest.vm.LteCapicityOptimizationVM;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.text.ParseException;
@@ -15,11 +14,11 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/api/lte-capicity-optimization")
-public class LteCapicityOptimization {
+public class LteCapicityOptimizationResource {
 
     private final LteCapicityOptimizationService lteCapicityOptimizationService;
 
-    public LteCapicityOptimization(LteCapicityOptimizationService lteCapicityOptimizationService) {
+    public LteCapicityOptimizationResource(LteCapicityOptimizationService lteCapicityOptimizationService) {
         this.lteCapicityOptimizationService = lteCapicityOptimizationService;
     }
 
