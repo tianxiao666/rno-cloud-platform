@@ -110,7 +110,15 @@ $(function () {
             //查询小区信息
             $("#queryKpiForm").submit();
         }
-    })
+    });
+
+    $("#mrDataType").on("change",function () {
+        var inputCell=$("#inputCell");
+        if(inputCell.val().trim() !== '' && inputCell.val() !== null){
+            //查询小区信息
+            $("#queryKpiForm").submit();
+        }
+    });
 });
 
 function showChart(data,myChart) {
@@ -260,7 +268,7 @@ function showChart(data,myChart) {
         },
         tooltip : {
             trigger: 'item',
-            formatter: '{a} ({d}%)<br/>{b} : {c} '
+            formatter: '{a} <br/> {b} : <br/>{c}'
         },
         legend: {
             orient: 'vertical',
@@ -274,10 +282,17 @@ function showChart(data,myChart) {
             center: ['50%', '60%'],
             data: pieVal,
             itemStyle: {
-                emphasis: {
+                normal: {
                     shadowBlur: 10,
                     shadowOffsetX: 0,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    shadowColor: 'rgba(0, 0, 0, 0.5)',
+                    label: {
+                        show: true,
+                        position: 'outer',
+                        formatter:function(params){
+                                return params.name +" ("+parseFloat(params.value/data['sampleNum']*100).toFixed(2) +"%)";
+                        }
+                    }
                 }
             }
         }]
