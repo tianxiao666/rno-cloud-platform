@@ -1,13 +1,15 @@
 package com.hgicreate.rno.security;
 
 import com.hgicreate.rno.config.Constants;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.representations.AccessToken;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
- * Utility class for Spring Security.
+ * 安全工具类
  */
 public final class SecurityUtils {
 
@@ -15,56 +17,24 @@ public final class SecurityUtils {
     }
 
     /**
-     * Get the login of the current user.
+     * 获取当前登录用户
      *
-     * @return the login of the current user
+     * @return 当前登录用户
      */
     public static String getCurrentUserLogin() {
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        Authentication authentication = securityContext.getAuthentication();
-        // 缺省用户为匿名用户
-        String userName = Constants.ANONYMOUS_USER;
-        if (authentication != null) {
-            if (authentication.getPrincipal() instanceof UserDetails) {
-                UserDetails springSecurityUser = (UserDetails) authentication.getPrincipal();
-                userName = springSecurityUser.getUsername();
-            } else if (authentication.getPrincipal() instanceof String) {
-                userName = (String) authentication.getPrincipal();
-            }
-        }
-        return userName;
+        return getAccessToken().getPreferredUsername();
     }
 
-    /**
-     * Check if a user is authenticated.
-     *
-     * @return true if the user is authenticated, false otherwise
-     */
-    public static boolean isAuthenticated() {
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        Authentication authentication = securityContext.getAuthentication();
-        if (authentication != null) {
-            return authentication.getAuthorities().stream()
-                .noneMatch(grantedAuthority -> grantedAuthority.getAuthority().equals(AuthoritiesConstants.ANONYMOUS));
+    public static AccessToken getAccessToken() {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+        KeycloakPrincipal keycloakPrincipal = (KeycloakPrincipal) request.getUserPrincipal();
+        if (keycloakPrincipal == null) {
+            AccessToken token = new AccessToken();
+            token.setPreferredUsername(Constants.ANONYMOUS_USER);
+            token.setName(Constants.ANONYMOUS_NAME);
+            return token;
+        } else {
+            return keycloakPrincipal.getKeycloakSecurityContext().getToken();
         }
-        return false;
-    }
-
-    /**
-     * If the current user has a specific authority (security role).
-     * <p>
-     * The name of this method comes from the isUserInRole() method in the Servlet API
-     *
-     * @param authority the authority to check
-     * @return true if the current user has the authority, false otherwise
-     */
-    public static boolean isCurrentUserInRole(String authority) {
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        Authentication authentication = securityContext.getAuthentication();
-        if (authentication != null) {
-            return authentication.getAuthorities().stream()
-                .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals(authority));
-        }
-        return false;
     }
 }
