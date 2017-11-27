@@ -129,15 +129,17 @@ function showChart(data,myChart) {
 
     var xAxisVal =[];
     var yAxisVal =[];
+    var pieLegendVal=[];
     var pieVal =[];
     if(chartTitle==='RSRP'){
-        xAxisVal =['X < -110','-110 <= X < -95','-95 <= X < -80','X >= -80'];
+        xAxisVal =['小于-110','小于-95大于等于-110','小于-80大于等于-95','大于等于-80'];
+        pieLegendVal=['RSRP小于-110','RSRP小于-95大于等于-110','RSRP小于-80大于等于-95','RSRP大于等于-80'];
         yAxisVal =[data['xbelowNegative110'],data['xbetweenNegative110And95'],data['xbetweenNegative95And80'],data['xonNegative80']];
         pieVal =[
-            {value: data['xbelowNegative110'],name: 'X < -110'},
-            {value: data['xbetweenNegative110And95'],name: '-110 <= X < -95'},
-            {value: data['xbetweenNegative95And80'], name: '-95 <= X < -80'},
-            {value: data['xonNegative80'],name: 'X >= -80'}
+            {value: data['xbelowNegative110'],name: 'RSRP小于-110'},
+            {value: data['xbetweenNegative110And95'],name: 'RSRP小于-95大于等于-110'},
+            {value: data['xbetweenNegative95And80'], name: 'RSRP小于-80大于等于-95'},
+            {value: data['xonNegative80'],name: 'RSRP大于等于-80'}
         ];
 
         mrrInfoTab.append("<tbody><tr><td colspan='2' style='text-align: center'>"+chartTitle+"测量信息"+"</td></tr>"
@@ -149,12 +151,13 @@ function showChart(data,myChart) {
 
         );
     }else if(chartTitle ==='RSRQ'){
-        xAxisVal =['X < 8','8 <= X <15','X >= 15'];
+        xAxisVal =['小于8','小于15大于等于8','大于等于15'];
+        pieLegendVal=['RSRQ小于8','RSRQ小于15大于等于8','RSRQ大于等于15'];
         yAxisVal =[data['xbelow8'],data['xbetween8And15'],data['xon15']];
         pieVal =[
-            {value: data['xbelow8'],name: 'X < 8'},
-            {value: data['xbetween8And15'], name: '8 <= X <15'},
-            {value: data['xon15'],name: 'X >= 15'}
+            {value: data['xbelow8'],name: 'RSRQ小于8'},
+            {value: data['xbetween8And15'], name: 'RSRQ小于15大于等于8'},
+            {value: data['xon15'],name: 'RSRQ大于等于15'}
         ];
         mrrInfoTab.append("<tbody><tr><td colspan='2' style='text-align: center;'>"+chartTitle+"测量信息"+"</td></tr>"
             +"<tr><td class='menuTd'>CELL NAME</td><td>"+cellName+"</td></tr>"
@@ -163,13 +166,14 @@ function showChart(data,myChart) {
             +"<tr><td class='menuTd'>X >= 15</td><td>"+data['xon15']+"</td></tr></tbody>"
         );
     }else{
-        xAxisVal = ['X < -110','-110 <= X < -95','-95 <= X <-85','X >= -85'];
+        xAxisVal = ['小于-110','小于-95大于等于-110','小于-85大于等于-95','大于等于-85'];
+        pieLegendVal=['覆盖率小于-110','覆盖率小于-95大于等于-110','覆盖率小于-85大于等于-95','覆盖率大于等于-85'];
         yAxisVal =[data['xbelowNegative110'],data['xbetweenNegative110And95'],data['xbetweenNegative95And85'],data['xonNegative85']];
         pieVal =[
-            {value: data['xbelowNegative110'],name:'X < -110'},
-            {value: data['xbetweenNegative110And95'],name:'-110 <= X < -95'},
-            {value: data['xbetweenNegative95And85'],name: '-95 <= X < -85'},
-            {value:data['xonNegative85'], name: 'X >= -85'}
+            {value: data['xbelowNegative110'],name:'覆盖率小于-110'},
+            {value: data['xbetweenNegative110And95'],name:'覆盖率小于-95大于等于-110'},
+            {value: data['xbetweenNegative95And85'],name: '覆盖率小于-85大于等于-95'},
+            {value:data['xonNegative85'], name: '覆盖率大于等于-85'}
         ];
 
         mrrInfoTab.append("<tbody><tr><td colspan='2' style='text-align: center'>"+chartTitle+"测量信息"+"</td></tr>"
@@ -192,7 +196,7 @@ function showChart(data,myChart) {
         title: {
             text: chartTitle + '指标',
             left: 'center',
-            subtext:cellId+'('+  cellName+')信号接收功能'+ chartTitle+'分布图',
+            subtext:cellId+'('+  cellName+')信号接收功能'+ chartTitle+'分布图 采样点个数('+ data['sampleNum']+')个',
             subtextStyle:{
                 color: '#6C6FFD'
             }
@@ -201,6 +205,7 @@ function showChart(data,myChart) {
             data:[]
         },
         xAxis: {
+            name: chartTitle,
             type : 'category',
             data: xAxisVal,
             axisTick: {
@@ -208,7 +213,7 @@ function showChart(data,myChart) {
             }
         },
         yAxis: {
-            name : '采样点个数('+ data['sampleNum']+")个",
+            name : '采样点个数',
             type : 'value'
         },
         series: [{
@@ -248,19 +253,19 @@ function showChart(data,myChart) {
         title : {
             text:chartTitle + '指标',
             x: 'center',
-            subtext:cellId+'('+  cellName+')信号接收功能'+ chartTitle+'分布图',
+            subtext:cellId+'('+  cellName+')信号接收功能'+ chartTitle+'分布图 采样点个数('+ data['sampleNum']+')个',
             subtextStyle:{
                 color: '#6C6FFD'
             }
         },
         tooltip : {
             trigger: 'item',
-            formatter: '{a} <br/>{b} : {c} ({d}%)'
+            formatter: '{a} ({d}%)<br/>{b} : {c} '
         },
         legend: {
             orient: 'vertical',
             left: 'left',
-            data: xAxisVal
+            data: pieLegendVal
         },
         series : [{
             name: chartTitle +'指标',
@@ -285,9 +290,6 @@ function showChart(data,myChart) {
         myChart.clear();
         myChart.setOption(pieOption);
     }
-
-
-
 }
 
 function showInfoInAndOut(div, info) {
