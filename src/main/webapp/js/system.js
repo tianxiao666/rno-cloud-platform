@@ -3,6 +3,8 @@ var submitStatus=true;
 var appId;
 var appCode;
 var appNames;
+var defaultStyle = "缺省样式";
+var secondStyle = "SB Admin 2";
 function editThis(obtn){
     if ($(obtn).text() === "rno") {
         alert("禁止修改rno！");
@@ -14,15 +16,25 @@ function editThis(obtn){
     $(obtn).html(editHTML); // 改变单元格内容为编辑状态
     $(obtn).removeAttr("onclick"); // 删除单元格单击事件，避免多次单击
     $("#editTd").focus();
-
 }
+function changeStyle() {
+    var appStyle = $("#appStyle");
+    if (appStyle.text() === secondStyle){
+        appStyle.html(defaultStyle);
+        appStyle.val(0);
+    }else{
+        appStyle.html(secondStyle);
+        appStyle.val(1);
+    }
+}
+
 
 //点击td转换可编辑
 function setEditHTML(value, obtn) {
     if ($(obtn).attr("id") === "appDescription"){
         editHTML = '<textarea id="editTd" type="text" style="width: 100%; height: 240px;" onBlur="ok(this)" value="'
             + value + '" >' + value + '</textarea>';
-    }else {
+    } else {
         editHTML = '<input id="editTd" type="text" onBlur="ok(this)" value="'
             + value + '" />';
     }
@@ -49,6 +61,8 @@ function ok(obtn) {
 }
 
 $(document).ready(function() {
+
+
     // 设置jquery ui
     //获取场景名列表
     //绑定事件
@@ -136,6 +150,7 @@ function initAppTable(){
     $("#nameInfo").html(" ");
     submitStatus=false;
     $("#addApp").unbind("click");
+    $("#statusCheck").attr("checked","checked");
 }
 
 
@@ -196,7 +211,11 @@ function getAppNameList(){
     });
 }
 //系统名称选择事件
-$("#appNameList").live("change",function(){
+/*$("#appNameList").on("change",function(){
+    appId=$("#appNameList").val();
+    getAppById(appId);
+});*/
+$(document).on("change","#appNameList",function(){
     appId=$("#appNameList").val();
     getAppById(appId);
 });
@@ -246,6 +265,16 @@ function showAppInfo(raw){
         $("#appVersion").html(getValidValue(one['appVersion']));
         $("#appLogo").html(getValidValue(one['appLogo']));
         $("#appDescription").html(getValidValue(one['appDescription']));
+        if (one['appStyle'] === 0){
+            $("#appStyle").val(0);
+        }else if (one['appStyle'] === 1){
+            $("#appStyle").val(1);
+        }
+        if (one['appStatus'] === 0){
+            $("#statusCheck").removeAttr("checked");
+        }else if (one['appStatus'] === 1){
+            $("#statusCheck").attr("checked","checked");
+        }
     }
 }
 
@@ -287,23 +316,21 @@ function submitUpdataData(){
         return
     }*/
     var appDataMap;
+    appDataMap={
+        'name':$("#appName").html().trim(),
+        'code':$("#appCode").html().trim(),
+        'version':$("#appVersion").html().trim(),
+        'logo':$("#appLogo").html().trim(),
+        'description':$("#appDescription").html().trim(),
+        'style':$("#appStyle").val()
+    };
     if (submitStatus){
-        appDataMap={
-            'id' : appId,
-            'name':$("#appName").html().trim(),
-            'code':$("#appCode").html().trim(),
-            'version':$("#appVersion").html().trim(),
-            'logo':$("#appLogo").html().trim(),
-            'description':$("#appDescription").html().trim()
-        };
-    }else{
-        appDataMap={
-            'name':$("#appName").html().trim(),
-            'code':$("#appCode").html().trim(),
-            'version':$("#appVersion").html().trim(),
-            'logo':$("#appLogo").html().trim(),
-            'description':$("#appDescription").html().trim()
-        };
+        appDataMap.id = appId;
+    }
+    if ($("#statusCheck").is(':checked')){
+        appDataMap.status = 1;
+    }else {
+        appDataMap.status = 0;
     }
     updateAppInfo(appDataMap);
 }

@@ -43,6 +43,14 @@ var setting = {
 var zNodes;
 
 function onClick(event, treeId, treeNode) {
+    $("#iconType").val(zTree.getSelectedNodes()[0].iconType);
+    $("#iconName").val(zTree.getSelectedNodes()[0].iconName);
+    $("#iconType").change(function () {
+        zTree.getSelectedNodes()[0].iconType = $("#iconType").val();
+    });
+    $("#iconName").blur(function () {
+        zTree.getSelectedNodes()[0].iconName = $("#iconName").val();
+    })
     if(treeNode["children"]){
         if( treeNode["children"].length>0){
             $("#UrlTable").css({"visibility": "hidden"});
@@ -53,6 +61,8 @@ function onClick(event, treeId, treeNode) {
         $("#UrlTable").css({"visibility": "visible"});
     }
     $("#selectedItemURL").val(treeNode.url);
+    $("#iconName").val(treeNode.iconName);
+    $("#iconType").val(treeNode.iconType);
 }
 var curDragNodes;
 function beforeDrag(treeId, treeNodes) {
@@ -362,7 +372,9 @@ function renameURL() {
         $("#selectedItemURL").val(" ")
     }
     selectedNode.url = $("#selectedItemURL").val();
+
 }
+
 
 function transformJSONtoeachJSON() {
     var submitData = JSON.parse(JSON.stringify(getExtractzTreeJSON()));

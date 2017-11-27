@@ -18,6 +18,8 @@ public interface AppMapper {
     @Mapping(source = "version", target = "appVersion")
     @Mapping(source = "logo", target = "appLogo")
     @Mapping(source = "description", target = "appDescription")
+    @Mapping(source = "style", target = "appStyle")
+    @Mapping(source = "status", target = "appStatus")
     AppDTO appToAppDTO(App app);
 
     @Mapping(source = "id", target = "appId")

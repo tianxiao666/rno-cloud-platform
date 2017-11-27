@@ -28,4 +28,6 @@ public class Menu implements Serializable {
     @JoinColumn(name = "parentId")
     @OrderBy("indexOfBrother")
     private List<Menu> children;
+    private Integer iconType;
+    private String iconName;
 }

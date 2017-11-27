@@ -1,6 +1,8 @@
 package com.hgicreate.rno.service.dto;
 
+
 import lombok.Data;
+
 
 /**
  * @author ke_weixu
@@ -13,4 +15,7 @@ public class AppDTO {
     private String appVersion;
     private String appLogo;
     private String appDescription;
+    private Integer appStyle;
+    private Integer appStatus;
+
 }

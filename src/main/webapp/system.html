@@ -7,8 +7,10 @@
     <link rel="stylesheet" href="lib/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/system.css">
 
-    <script src="lib/jquery/1.8.2/jquery.js"></script>
+    <script src="lib/jquery/3.2.1/jquery.js"></script>
+    <script src="lib/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="js/system.js"></script>
+
 </head>
 <body>
 <div class="container">
@@ -103,6 +105,23 @@
                                 <td id="appLogo_td">
                                     <div id="appLogo" class="editbox" style="width: 100%;" onclick="editThis(this)">
                                         -92
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>激活</td>
+                                <td>
+                                    <input type="checkbox" checked="checked" id="statusCheck">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>样式</td>
+                                <td id="appStyle_td">
+                                    <div>
+                                        <select  style="width: 100%;margin:auto;padding: 0 40%;" id="appStyle">
+                                            <option value="0" id="defaultSelect">缺省样式</option>
+                                            <option value="1" id="secondSelect">SB Admin 2</option>
+                                        </select>
                                     </div>
                                 </td>
                             </tr>

@@ -22,5 +22,8 @@ public class App {
   private String version;
   private String logo;
   private String description;
+  private Integer style;
+  private Integer status;
 
 }
+
