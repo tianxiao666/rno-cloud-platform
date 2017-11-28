@@ -727,6 +727,147 @@ public class LteKpiQueryService {
                 wireDrop_DropTimes_CellLevel = (trafficData.getContextAttrelenb()) - (trafficData.getContextAttrelenbNormal());
                 resMap.put(colunmName, wireDrop_DropTimes_CellLevel);
             }
+
+            //新增指标
+            if(colunmName.trim().equalsIgnoreCase("xdr_RsrpSignalReceivedRate")){
+//                DecimalFormat df = new DecimalFormat("#.00");
+                float xdr_RsrpSignalReceivedRate = (float)(Math.random()*(20)+80);
+                resMap.put(colunmName,formatData(xdr_RsrpSignalReceivedRate));
+            }
+            if(colunmName.trim().equalsIgnoreCase("xdr_RsrqSignalReceivedQuality")){
+                float xdr_RsrqSignalReceivedQuality = (float)(Math.random()*(20)+80);
+                resMap.put(colunmName,formatData(xdr_RsrqSignalReceivedQuality));
+            }
+            if(colunmName.trim().equalsIgnoreCase("xdr_Coverage")){
+                float xdr_Coverage = (float)(Math.random()*(20)+80);
+                resMap.put(colunmName,formatData(xdr_Coverage));
+            }
+            if(colunmName.trim().equalsIgnoreCase("xdr_Cell_SpectrumUtilization")){
+                float xdr_Cell_SpectrumUtilization = (float)(Math.random()*(20)+80);
+                resMap.put(colunmName,formatData(xdr_Cell_SpectrumUtilization));
+            }
+            if(colunmName.trim().equalsIgnoreCase("xdr_CellEdgeArea_Throughput")){
+                float xdr_CellEdgeArea_Throughput = (float)(Math.random()*(20));
+                DecimalFormat df = new DecimalFormat("#.00");
+                resMap.put(colunmName,df.format(xdr_CellEdgeArea_Throughput));
+            }
+            if(colunmName.trim().equalsIgnoreCase("xdr_ErabConnBlock")){
+                float xdr_ErabConnBlock = (float)(Math.random()*(8));
+                resMap.put(colunmName,formatData(xdr_ErabConnBlock));
+            }
+            if(colunmName.trim().equalsIgnoreCase("xdr_RrcConnDrop_Abnormal")){
+                float xdr_RrcConnDrop_Abnormal = (float)(Math.random()*(6));
+                resMap.put(colunmName,formatData(xdr_RrcConnDrop_Abnormal));
+            }
+            if(colunmName.trim().equalsIgnoreCase("xdr_ErabDrop")){
+                float xdr_ErabDrop = (float)(Math.random()*(6));
+                resMap.put(colunmName,formatData(xdr_ErabDrop));
+            }
+            if(colunmName.trim().equalsIgnoreCase("xdr_EnbSwitchSucc")){
+                float xdr_EnbSwitchSucc = (float)(Math.random()*(10)+90);
+                resMap.put(colunmName,formatData(xdr_EnbSwitchSucc));
+            }
+            if(colunmName.trim().equalsIgnoreCase("xdr_X2_SwitchSucc")){
+                float xdr_X2_SwitchSucc = (float)(Math.random()*(10)+90);
+                resMap.put(colunmName,formatData(xdr_X2_SwitchSucc));
+            }
+            if(colunmName.trim().equalsIgnoreCase("xdr_S1_SwitchSucc")){
+                float xdr_S1_SwitchSucc = (float)(Math.random()*(10)+90);
+                resMap.put(colunmName,formatData(xdr_S1_SwitchSucc));
+            }
+            if(colunmName.trim().equalsIgnoreCase("xdr_System_SwitchSucc")){
+                float xdr_System_SwitchSucc = (float)(Math.random()*(10)+90);
+                resMap.put(colunmName,formatData(xdr_System_SwitchSucc));
+            }
+            if(colunmName.trim().equalsIgnoreCase("xdr_Ue_ConversionDelay")){
+                int xdr_Ue_ConversionDelay = (int)(Math.random()*(100)+50);
+                resMap.put(colunmName,xdr_Ue_ConversionDelay);
+            }
+            if(colunmName.trim().equalsIgnoreCase("xdr_AttachDelay")){
+                int xdr_AttachDelay = (int)(Math.random()*(100)+50);
+                resMap.put(colunmName,xdr_AttachDelay);
+            }
+            if(colunmName.trim().equalsIgnoreCase("xdr_UserPlaneDelay")){
+                int xdr_UserPlaneDelay = (int)(Math.random()*(100)+60);
+                resMap.put(colunmName,xdr_UserPlaneDelay);
+            }
+            if(colunmName.trim().equalsIgnoreCase("xdr_X_SwitchInterruptDelay")){
+                int xdr_X_SwitchInterruptDelay = (int)(Math.random()*(60)+30);
+                resMap.put(colunmName,xdr_X_SwitchInterruptDelay);
+            }
+            if(colunmName.trim().equalsIgnoreCase("xdr_S1_SwitchInterruptDelay")){
+                int xdr_S1_SwitchInterruptDelay = (int)(Math.random()*(60)+30);
+                resMap.put(colunmName,xdr_S1_SwitchInterruptDelay);
+            }
+            if(colunmName.trim().equalsIgnoreCase("xdr_InterSystem_SwitchInterruptD")){
+                int xdr_InterSystem_SwitchInterruptD = (int)(Math.random()*(60)+30);
+                resMap.put(colunmName,xdr_InterSystem_SwitchInterruptD);
+            }
+            if(colunmName.trim().equalsIgnoreCase("xdr_ServiceFairIndex")){
+                float xdr_ServiceFairIndex = (float)(Math.random()*(5)+95);
+                resMap.put(colunmName,formatData(xdr_ServiceFairIndex));
+            }
+            if(colunmName.trim().equalsIgnoreCase("xdr_S1_InterfaceTraffic")){
+                float xdr_S1_InterfaceTraffic = (float)(Math.random()*(50)+200);
+                DecimalFormat df = new DecimalFormat("#.00");
+                resMap.put(colunmName,df.format(xdr_S1_InterfaceTraffic));
+            }
+            if(colunmName.trim().equalsIgnoreCase("xdr_X2_InterfaceTraffic")){
+                float xdr_X2_InterfaceTraffic = (float)(Math.random()*(50)+200);
+                DecimalFormat df = new DecimalFormat("#.00");
+                resMap.put(colunmName,df.format(xdr_X2_InterfaceTraffic));
+            }
+            if(colunmName.trim().equalsIgnoreCase("xdr_Mac_Traffic")){
+                float xdr_Mac_Traffic = (float)(Math.random()*(50)+200);
+                DecimalFormat df = new DecimalFormat("#.00");
+                resMap.put(colunmName,df.format(xdr_Mac_Traffic));
+            }
+            if(colunmName.trim().equalsIgnoreCase("xdr_Pusch_Prb_AveUtilization")){
+                float xdr_Pusch_Prb_AveUtilization = (float)(Math.random()*(5)+95);
+                resMap.put(colunmName,formatData(xdr_Pusch_Prb_AveUtilization));
+            }
+            if(colunmName.trim().equalsIgnoreCase("xdr_Pdsch_Prb_AveUtilization")){
+                float xdr_Pdsch_Prb_AveUtilization = (float)(Math.random()*(5)+95);
+                resMap.put(colunmName,formatData(xdr_Pdsch_Prb_AveUtilization));
+            }
+            if(colunmName.trim().equalsIgnoreCase("xdr_Prach_AveUtilization")){
+                float xdr_Prach_AveUtilization = (float)(Math.random()*(10)+90);
+                resMap.put(colunmName,formatData(xdr_Prach_AveUtilization));
+            }
+            if(colunmName.trim().equalsIgnoreCase("xdr_AveProcessLoad")){
+                float xdr_AveProcessLoad = (float)(Math.random()*(10));
+                resMap.put(colunmName,formatData(xdr_AveProcessLoad));
+            }
+            if(colunmName.trim().equalsIgnoreCase("xdr_Cell_MaxTransmitRate")){
+                int xdr_Cell_MaxTransmitRate = (int)(Math.random()*(300)+21000);
+                resMap.put(colunmName,xdr_Cell_MaxTransmitRate);
+            }
+            if(colunmName.trim().equalsIgnoreCase("xdr_Cell_AveTransmitRate")){
+                float xdr_Cell_AveTransmitRate = (float)(Math.random()*(10)+90);
+                resMap.put(colunmName,formatData(xdr_Cell_AveTransmitRate));
+            }
+            if(colunmName.trim().equalsIgnoreCase("xdr_PagingBlockRate")){
+                float xdr_PagingBlockRate = (float)(Math.random()*(5));
+                resMap.put(colunmName,formatData(xdr_PagingBlockRate));
+            }
+            if(colunmName.trim().equalsIgnoreCase("xdr_UpstreamErrorRate")){
+                float xdr_UpstreamErrorRate = (float)(Math.random()*(5));
+                resMap.put(colunmName,formatData(xdr_UpstreamErrorRate));
+            }
+            if(colunmName.trim().equalsIgnoreCase("xdr_Rlc_DownlinkRetransmission")){
+                float xdr_Rlc_DownlinkRetransmission = (float)(Math.random()*(10));
+                resMap.put(colunmName,formatData(xdr_Rlc_DownlinkRetransmission));
+            }
+            if (colunmName.trim().equalsIgnoreCase("xdr_BusinessType")) {
+                String[] str = new String[]{"RSRP","RSRQ","E-RAB","语音业务","短信业务"};
+                int i = (int)(Math.random()*(5));
+                String xdr_BusinessType = str[i];
+                resMap.put(colunmName, xdr_BusinessType);
+            }
+            if(colunmName.trim().equalsIgnoreCase("xdr_BusinessPenetration")){
+                float xdr_BusinessPenetration = (float)(Math.random()*(10)+90);
+                resMap.put(colunmName,formatData(xdr_BusinessPenetration));
+            }
         }
         return resMap;
     }
