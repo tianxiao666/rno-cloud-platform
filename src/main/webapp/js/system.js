@@ -150,7 +150,7 @@ function initAppTable(){
     $("#nameInfo").html(" ");
     submitStatus=false;
     $("#addApp").unbind("click");
-    $("#statusCheck").attr("checked","checked");
+    $("#statusCheck").attr("checked",true);
 }
 
 
@@ -184,6 +184,8 @@ function clearAll(){
     $(".oldDataTip").html("");
     $(".errTip").html("");
     $(".editbox").html("");
+    $("#check_td").html("");
+    $("#check_td").html('<input type="checkbox" checked id="statusCheck">');
 }
 
 
@@ -271,9 +273,14 @@ function showAppInfo(raw){
             $("#appStyle").val(1);
         }
         if (one['appStatus'] === 0){
-            $("#statusCheck").removeAttr("checked");
+            $("#statusCheck").attr('checked',false);
         }else if (one['appStatus'] === 1){
-            $("#statusCheck").attr("checked","checked");
+            $("#statusCheck").attr("checked",true);
+        }
+        if ($("#appCode").text() === 'rno'){
+            $("#statusCheck").attr("disabled",true);
+        }else{
+            $("#statusCheck").attr("disabled",false);
         }
     }
 }
