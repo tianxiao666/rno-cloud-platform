@@ -132,6 +132,7 @@ function showChart(data,myChart) {
     var chartTitle =$("#mrDataType").val();
     var cellId = $("#inputCell").val();
     var cellName = data['cellName']===null? '':data['cellName'];
+    var cellNameTitle = data['cellName']===null? '':"("+data['cellName']+")";
     $("#tab1Title").html(chartTitle+ '测量信息');
     $("#tab1CellName").html(cellName);
 
@@ -204,7 +205,7 @@ function showChart(data,myChart) {
         title: {
             text: chartTitle + '指标',
             left: 'center',
-            subtext:cellId+'('+  cellName+')信号接收功能'+ chartTitle+'分布图 采样点个数('+ data['sampleNum']+')个',
+            subtext:cellId+  cellNameTitle+'信号接收功能'+ chartTitle+'分布图 采样点个数('+ data['sampleNum']+')个',
             subtextStyle:{
                 color: '#6C6FFD'
             }
@@ -261,7 +262,7 @@ function showChart(data,myChart) {
         title : {
             text:chartTitle + '指标',
             x: 'center',
-            subtext:cellId+'('+  cellName+')信号接收功能'+ chartTitle+'分布图 采样点个数('+ data['sampleNum']+')个',
+            subtext:cellId+  cellNameTitle+'信号接收功能'+ chartTitle+'分布图 采样点个数('+ data['sampleNum']+')个',
             subtextStyle:{
                 color: '#6C6FFD'
             }
