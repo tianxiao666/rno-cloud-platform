@@ -20,22 +20,23 @@
             <span id="appId" style="visibility: hidden"></span>
             <ul id="treeDemo" class="ztree" style="width: 300px;"></ul>
             <table id="UrlTable" border="1" style="visibility: hidden">
-                <tr>
+                <tr id="icon_tr">
                     <td>
-                        <select  style="width: 100%;" id="iconType">
+                        <label for="iconType"></label>
+                        <select style="width: 100%;" id="iconType">
                             <option value="0" id="defaultSelect">Font Awesome</option>
                             <option value="1" id="secondSelect">Ico Font</option>
                         </select>
                     </td>
                     <td>
+                        <label for="iconName"></label>
                         <input type="text" id="iconName">
                     </td>
                 </tr>
-                <tr>
-                    <td>URL:</td>
-                    <td><input id="selectedItemURL" placeholder="url" onblur="renameURL()"/></td>
-                </tr>
             </table>
+            <div id="url_tr"  style="visibility: hidden">
+            URL:<input id="selectedItemURL" placeholder="url" onblur="renameURL()" style="width: 252px"/><br>
+            </div>
             <button onclick="submitMenu()">保存菜单到服务器</button>
         </div>
 	</div>

@@ -140,7 +140,7 @@ function chooseTask(){
  */
 function initAppTable(){
     $(".editbox").html("");
-    $("#appInfoTable caption font").html("");
+    $("#appInfoTable").find("caption font").html("");
 
     var select=$("#appNameTd");
     select.empty();

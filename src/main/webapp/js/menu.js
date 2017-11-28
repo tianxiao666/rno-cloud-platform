@@ -53,9 +53,11 @@ function onClick(event, treeId, treeNode) {
     })
     if(treeNode["children"]){
         if( treeNode["children"].length>0){
-            $("#UrlTable").css({"visibility": "hidden"});
+            $("#url_tr").css({"visibility": "hidden"});
+            $("#icon_tr").css({"visibility": "visible"});
         }else{
-            $("#UrlTable").css({"visibility": "visible"});
+            $("#url_tr").css({"visibility": "visible"});
+            $("#icon_tr").css({"visibility": "visible"});
         }
     }else{
         $("#UrlTable").css({"visibility": "visible"});
