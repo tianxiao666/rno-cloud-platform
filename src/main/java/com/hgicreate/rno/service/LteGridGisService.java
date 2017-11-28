@@ -2,6 +2,7 @@ package com.hgicreate.rno.service;
 
 import com.hgicreate.rno.domain.GridCoord;
 import com.hgicreate.rno.domain.GridData;
+import com.hgicreate.rno.domain.LteCell;
 import com.hgicreate.rno.repository.AreaRepository;
 import com.hgicreate.rno.repository.GridCoordRepository;
 import com.hgicreate.rno.repository.GridDataRepository;
@@ -133,14 +134,14 @@ public class LteGridGisService {
         List<GridCoord> gridCoords;
 
         log.debug("开始匹配网格小区数据");
-        List<com.hgicreate.rno.domain.Cell> cells = lteCellGisRepository.findAllByAreaId(areaId);
+        List<LteCell> lteCells = lteCellGisRepository.findAllByAreaId(areaId);
         for (String gt : type.split(",")) {
             gridData = gridDataRepository.findByGridTypeAndAreaIdOrderByIdAsc
                     (gt, areaId);
             gridCoords = gridCoordRepository.findByGridIdInOrderByGridIdAsc(
                     gridData.stream().map(GridData::getId).collect(Collectors.toList()));
 
-            for (com.hgicreate.rno.domain.Cell c : cells) {
+            for (LteCell c : lteCells) {
                 for (GridData grid : gridData) {
                     final long currentGridId = grid.getId();
                     //网格经纬度点集

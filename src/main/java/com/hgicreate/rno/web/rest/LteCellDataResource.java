@@ -12,7 +12,6 @@ import com.hgicreate.rno.web.rest.vm.LteCellDataVM;
 import com.hgicreate.rno.web.rest.vm.FileUploadVM;
 import com.hgicreate.rno.web.rest.vm.LteCellDescVM;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,13 +67,13 @@ public class LteCellDataResource {
     }
 
     @GetMapping("/cell-detail-id")
-    public List<Cell> findCellDetailById(@RequestParam String cellId) {
+    public List<LteCell> findCellDetailById(@RequestParam String cellId) {
         String enodebId = lteCellDataRepository.findOne(cellId).getEnodebId();
         return lteCellDataRepository.findByEnodebId(enodebId);
     }
 
     @GetMapping("/cell-detail-edit")
-    public Cell findCellDetailForEdit(@RequestParam String cellId) {
+    public LteCell findCellDetailForEdit(@RequestParam String cellId) {
         return lteCellDataRepository.findOne(cellId);
     }
 
@@ -85,18 +84,18 @@ public class LteCellDataResource {
     }
 
     @PostMapping("/cell-detail-update")
-    public boolean updateLteCellDetail(Cell cellVM) {
+    public boolean updateLteCellDetail(LteCell lteCellVM) {
         try {
-            log.debug("要更新的小区={}", cellVM.getLatitude());
-            Cell cell1=lteCellDataRepository.findOne(cellVM.getCellId());
-            cellVM.setCellName(cell1.getCellName());
-            cellVM.setEnodebId(cell1.getEnodebId());
-            cellVM.setArea(cell1.getArea());
-            cellVM.setBandIndicator(cell1.getBandIndicator());
-            cellVM.setBandAmount(cell1.getBandAmount());
-            cellVM.setLastModifiedUser(SecurityUtils.getCurrentUserLogin());
-            cellVM.setLastModifiedDate(new Date());
-            lteCellDataRepository.save(cellVM);
+            log.debug("要更新的小区={}", lteCellVM.getLatitude());
+            LteCell lteCell1 =lteCellDataRepository.findOne(lteCellVM.getCellId());
+            lteCellVM.setCellName(lteCell1.getCellName());
+            lteCellVM.setEnodebId(lteCell1.getEnodebId());
+            lteCellVM.setArea(lteCell1.getArea());
+            lteCellVM.setBandIndicator(lteCell1.getBandIndicator());
+            lteCellVM.setBandAmount(lteCell1.getBandAmount());
+            lteCellVM.setLastModifiedUser(SecurityUtils.getCurrentUserLogin());
+            lteCellVM.setLastModifiedDate(new Date());
+            lteCellDataRepository.save(lteCellVM);
             return true;
         } catch (Exception e) {
             System.out.println(e.getMessage());

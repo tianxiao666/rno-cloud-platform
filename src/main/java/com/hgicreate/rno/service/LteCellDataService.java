@@ -1,13 +1,12 @@
 package com.hgicreate.rno.service;
 
 import com.hgicreate.rno.domain.Area;
-import com.hgicreate.rno.domain.Cell;
+import com.hgicreate.rno.domain.LteCell;
 import com.hgicreate.rno.domain.DataJob;
 import com.hgicreate.rno.domain.LteCellDesc;
 import com.hgicreate.rno.repository.DataJobRepository;
 import com.hgicreate.rno.repository.LteCellDataRepository;
 import com.hgicreate.rno.repository.LteCellDescRepository;
-import com.hgicreate.rno.repository.OriginFileRepository;
 import com.hgicreate.rno.service.dto.LteCellDataDTO;
 import com.hgicreate.rno.service.dto.LteCellDataFileDTO;
 import com.hgicreate.rno.service.dto.LteCellDescDTO;
@@ -52,24 +51,24 @@ public class LteCellDataService {
 
 
     public List<LteCellDataDTO> queryLteCell(LteCellDataVM lteCellDataVM){
-        Cell cell = new Cell();
+        LteCell lteCell = new LteCell();
         Area area = new Area();
         area.setId(Long.parseLong(lteCellDataVM.getCityId()));
-        cell.setArea(area);
+        lteCell.setArea(area);
 
         if(!lteCellDataVM.getCellId().trim().equals("")){
-            cell.setCellId(lteCellDataVM.getCellId().trim());
+            lteCell.setCellId(lteCellDataVM.getCellId().trim());
         }
-        cell.setCellName(lteCellDataVM.getCellName().trim());
+        lteCell.setCellName(lteCellDataVM.getCellName().trim());
         ExampleMatcher matcher =  ExampleMatcher.matching()
                     .withMatcher("cellName", ExampleMatcher.GenericPropertyMatcher::contains)
                     .withIgnoreNullValues();
         if(!lteCellDataVM.getPci().trim().equals("")){
-            cell.setPci(lteCellDataVM.getPci().trim());
+            lteCell.setPci(lteCellDataVM.getPci().trim());
         }
-        Example<Cell> example = Example.of(cell, matcher);
-        List<Cell> cells =lteCellDataRepository.findAll(example, new PageRequest(0,1000)).getContent();
-        return cells.stream().map(LteCellDataMapper.INSTANCE::lteCellDataToLteCellDto).collect(Collectors.toList());
+        Example<LteCell> example = Example.of(lteCell, matcher);
+        List<LteCell> lteCells =lteCellDataRepository.findAll(example, new PageRequest(0,1000)).getContent();
+        return lteCells.stream().map(LteCellDataMapper.INSTANCE::lteCellDataToLteCellDto).collect(Collectors.toList());
     }
 
     public List<LteCellDataFileDTO> queryFileUploadRecord(LteCellDataImportVM vm) throws ParseException {

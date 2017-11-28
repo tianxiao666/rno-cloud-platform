@@ -11,10 +11,10 @@
         count(CASE when kpi.LTE_SC_RSRP &gt;=-95 and kpi.LTE_SC_RSRP &lt; -80 then 1 END) as xBetweenNegative95And80,
         count(CASE when kpi.LTE_SC_RSRP &gt;= -80 then 1 END) as xOnNegative80
         from RNO_LTE_KPI_DATA kpi
-       left outer join rno_lte_cell cell on kpi.CELL_ID = cell.CELL_ID
+       left outer join rno_lte_cell lteCell on kpi.CELL_ID = lteCell.CELL_ID
        where kpi.CELL_ID= #{param2}
        and TIME_STAMP BETWEEN #{param3} and #{param4}
-       and cell.AREA_ID= #{param1}
+       and lteCell.AREA_ID= #{param1}
        group by kpi.CELL_NAME
     </select>
     <select id="queryChartRsrq"
@@ -24,10 +24,10 @@
         count(CASE when kpi.LTE_SC_RSRQ &gt;= 8 and kpi.LTE_SC_RSRQ &lt; 15 then 1 END) as xBetween8And15,
         count(CASE when kpi.LTE_SC_RSRQ &gt;=15  then 1 END) as xOn15
         from RNO_LTE_KPI_DATA kpi
-        left outer join rno_lte_cell cell on kpi.CELL_ID = cell.CELL_ID
+        left outer join rno_lte_cell lteCell on kpi.CELL_ID = lteCell.CELL_ID
         where kpi.CELL_ID= #{param2}
         and TIME_STAMP BETWEEN #{param3} and #{param4}
-        and cell.AREA_ID= #{param1}
+        and lteCell.AREA_ID= #{param1}
         group by kpi.CELL_NAME
     </select>
     <select id="queryChartCoverRate"
@@ -38,10 +38,10 @@
                count(CASE when kpi.LTE_SC_RSRP &gt;=-95 and kpi.LTE_SC_RSRP &lt; -85 then 1 END) as xBetweenNegative95And85,
                count(CASE when kpi.LTE_SC_RSRP &gt;= -85 then 1 END) as xOnNegative85
         from RNO_LTE_KPI_DATA kpi
-            left outer join rno_lte_cell cell on kpi.CELL_ID = cell.CELL_ID
+            left outer join rno_lte_cell lteCell on kpi.CELL_ID = lteCell.CELL_ID
         where kpi.CELL_ID= #{param2}
               and TIME_STAMP BETWEEN #{param3} and #{param4}
-              and cell.AREA_ID= #{param1}
+              and lteCell.AREA_ID= #{param1}
         group by kpi.CELL_NAME
     </select>
 </mapper>

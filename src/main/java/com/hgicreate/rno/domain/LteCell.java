@@ -8,7 +8,7 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "RNO_LTE_CELL")
-public class Cell {
+public class LteCell {
 	private static final long serialVersionUID = 1L;
 
 	@Id
