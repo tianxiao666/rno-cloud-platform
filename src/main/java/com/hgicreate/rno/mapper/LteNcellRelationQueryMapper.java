@@ -1,6 +1,6 @@
 package com.hgicreate.rno.mapper;
 
-import com.hgicreate.rno.domain.NcellRelation;
+import com.hgicreate.rno.domain.LteNcellRelation;
 import com.hgicreate.rno.web.rest.vm.LteNcellRelationQueryVM;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -12,5 +12,5 @@ public interface LteNcellRelationQueryMapper {
      * 查询邻区关系
      * @return 邻区关系列表
      */
-    List<NcellRelation> queryNcellRelation(LteNcellRelationQueryVM vm);
+    List<LteNcellRelation> queryNcellRelation(LteNcellRelationQueryVM vm);
 }

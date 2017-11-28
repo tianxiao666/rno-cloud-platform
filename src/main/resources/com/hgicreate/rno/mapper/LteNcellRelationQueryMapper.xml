@@ -4,7 +4,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hgicreate.rno.mapper.LteNcellRelationQueryMapper">
     <select id="queryNcellRelation" parameterType="com.hgicreate.rno.web.rest.vm.LteNcellRelationQueryVM"
-            resultType="com.hgicreate.rno.domain.NcellRelation">
+            resultType="com.hgicreate.rno.domain.LteNcellRelation">
         <bind name="pattern" value="'%' + _parameter.cellName + '%'" />
         <bind name="pattern2" value="'%' + _parameter.ncellName + '%'" />
         select c.id,a.cell_id as cell_id, a.cell_name as cell_name,a.enodeb_id as cell_Enodeb_Id,a.pci as cell_Pci,

@@ -12,7 +12,7 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "RNO_LTE_NCELL_DESC")
-public class NcellDesc {
+public class LteNcellDesc {
     @Id
     private Long id;
 

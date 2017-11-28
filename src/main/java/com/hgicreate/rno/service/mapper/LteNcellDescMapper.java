@@ -1,6 +1,6 @@
 package com.hgicreate.rno.service.mapper;
 
-import com.hgicreate.rno.domain.NcellDesc;
+import com.hgicreate.rno.domain.LteNcellDesc;
 import com.hgicreate.rno.service.dto.LteNcellDescDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -15,5 +15,5 @@ public interface LteNcellDescMapper {
             @Mapping(source = "area.name",target = "areaName"),
             @Mapping(source = "createdDate",target = "createdDate", dateFormat = "yyyy-MM-dd HH:mm:ss")
     })
-    LteNcellDescDTO ncellDescToNcellDescDTO(NcellDesc ncellDesc);
+    LteNcellDescDTO ncellDescToNcellDescDTO(LteNcellDesc lteNcellDesc);
 }

@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Data
 @Entity
 @Table(name = "RNO_LTE_NCELL_RELATION")
-public class Ncell implements Serializable {
+public class LteNcell implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

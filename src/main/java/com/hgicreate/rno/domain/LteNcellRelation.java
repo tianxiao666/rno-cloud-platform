@@ -7,7 +7,7 @@ import javax.persistence.Id;
 
 @Data
 @Entity
-public class NcellRelation {
+public class LteNcellRelation {
     @Id
     private Long id;
 

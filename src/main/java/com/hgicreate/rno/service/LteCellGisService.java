@@ -1,6 +1,6 @@
 package com.hgicreate.rno.service;
 
-import com.hgicreate.rno.domain.Ncell;
+import com.hgicreate.rno.domain.LteNcell;
 import com.hgicreate.rno.repository.LteCellGisRepository;
 import com.hgicreate.rno.repository.NcellRepository;
 import com.hgicreate.rno.service.dto.LteCellGisDTO;
@@ -9,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +32,7 @@ public class LteCellGisService {
 
     @Transactional(readOnly = true)
     public List<String> getNcellByCellId(String cellId) {
-       return ncellRepository.findAllByCellId(cellId).stream().map(Ncell::getNcellId).
+       return ncellRepository.findAllByCellId(cellId).stream().map(LteNcell::getNcellId).
                 collect(Collectors.toList());
     }
 
