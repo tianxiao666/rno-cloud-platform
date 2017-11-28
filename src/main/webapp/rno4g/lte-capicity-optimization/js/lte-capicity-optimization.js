@@ -122,7 +122,7 @@ $(function () {
     $("#capicity-query-form").ajaxForm({
         url: "/api/lte-capicity-optimization/query-info",
         success: function (data) {
-            showImportRecord(data, 0);
+            showCellRecord(data, 0);
         }
     });
     $("#capicityOptimizationAdviceDialog").bind("click", function (e) {
@@ -160,9 +160,9 @@ function beforeSubmitForm() {
     if (lastFormContent.length != 0) {
         if ($("#province").val() == lastFormContent[0] && $("#city").val() == lastFormContent[1] && $("#district").val() == lastFormContent[2]) {
             if ($("#onlyShowHighPressCells").is(':checked')) {
-                showImportRecord(dataOfHighStressList, 1);
+                showCellRecord(dataOfHighStressList, 0);
             } else {
-                showImportRecord(dataFullFromServer, 1);
+                showCellRecord(dataFullFromServer, 0);
             }
         } else {
             if ($("#onlyShowHighPressCells").is(':checked')) {
@@ -177,7 +177,7 @@ function beforeSubmitForm() {
                         lastFormContent[0] = $("#province").val();
                         lastFormContent[1] = $("#city").val();
                         lastFormContent[2] = $("#district").val();
-                        showImportRecord(dataOfHighStressList, 0);
+                        showCellRecord(dataOfHighStressList, 0);
                     },
                     error: function (err) {
                         console.log("error")
@@ -201,7 +201,7 @@ function beforeSubmitForm() {
                         lastFormContent[0] = $("#province").val();
                         lastFormContent[1] = $("#city").val();
                         lastFormContent[2] = $("#district").val();
-                        showImportRecord(dataFullFromServer, 0);
+                        showCellRecord(dataFullFromServer, 0);
                     },
                     error: function (err) {
                         console.log("error")
@@ -227,7 +227,7 @@ function beforeSubmitForm() {
                     lastFormContent[0] = $("#province").val();
                     lastFormContent[1] = $("#city").val();
                     lastFormContent[2] = $("#district").val();
-                    showImportRecord(dataFullFromServer, 0);
+                    showCellRecord(dataFullFromServer, 0);
                 },
                 error: function (err) {
                     console.log("error")
@@ -245,7 +245,7 @@ function beforeSubmitForm() {
                     lastFormContent[0] = $("#province").val();
                     lastFormContent[1] = $("#city").val();
                     lastFormContent[2] = $("#district").val();
-                    showImportRecord(dataOfHighStressList, 0);
+                    showCellRecord(dataOfHighStressList, 0);
                 },
                 error: function (err) {
                     console.log("error")
@@ -264,12 +264,12 @@ function selectHighStressData(dataFromServer, fromCache) {
             dataOfHighStressList.push(dataFromServer[i]);
         }
     }
-    fromCache = 0;
+    // fromCache = 0;
     dataFullFromServer = dataFromServer;
 }
 
-function showImportRecord(dataList, fromCache) {
-    $('#queryImportTab')
+function showCellRecord(dataList, firstRowIndex) {
+    myDataTable = $('#showResultTable')
         .css("line-height", "12px")
         .DataTable({
             "data": dataList,
@@ -301,11 +301,13 @@ function showImportRecord(dataList, fromCache) {
             "destroy": true,
             "language": {
                 url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
-            }
+            },
+            "iDisplayStart": firstRowIndex
         });
 }
 
-function showCellDetail(cId, data) {
+
+function showCellDetail(cId) {
     var cell = null;
     for (var ind = 0; ind < dataFullFromServer.length; ind++) {
         if (dataFullFromServer[ind].cellId === cId) {
@@ -446,9 +448,11 @@ function setAlreadyHandle(dis, cId) {
             }
         }
     }
+    var nowPageIndex = myDataTable.page.info().page;
+    var pageLength = myDataTable.page.info().length;
     if ($("#onlyShowHighPressCells").is(':checked')) {
-        showImportRecord(dataOfHighStressList, 1);
+        showCellRecord(dataOfHighStressList, nowPageIndex*pageLength);
     } else {
-        showImportRecord(dataFullFromServer, 1);
+        showCellRecord(dataFullFromServer, nowPageIndex*pageLength);
     }
 }
