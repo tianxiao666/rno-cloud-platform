@@ -3,12 +3,15 @@ package com.hgicreate.rno.domain;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
 @Entity
 @Table(name = "RNO_DATA_JOB")
-public class DataJob {
+public class DataJob implements Serializable{
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(generator = "DataJobSeq")

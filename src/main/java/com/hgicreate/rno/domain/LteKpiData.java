@@ -4,12 +4,15 @@ package com.hgicreate.rno.domain;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
 @Entity
 @Table(name = "RNO_LTE_KPI_DATA")
-public class LteKpiData {
+public class LteKpiData implements Serializable{
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     private Long id;
