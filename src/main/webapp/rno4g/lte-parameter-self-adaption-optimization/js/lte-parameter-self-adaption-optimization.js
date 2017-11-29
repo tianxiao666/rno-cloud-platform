@@ -25,7 +25,7 @@ $(function () {
     $("#parameterSelfAdaptionOptimizationDialog").bind("click", function (e) {
         var target = $(e.target);
         if (target.closest($("#lteCellDetailDiv")).length == 0) {
-            detailDialogClose();
+            operationDialogClose();
         }
     });
 });
