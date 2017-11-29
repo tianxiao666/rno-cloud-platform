@@ -8,8 +8,11 @@ import com.hgicreate.rno.service.dto.AppDTO;
 import com.hgicreate.rno.service.dto.AppNameDTO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.core.env.Environment;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,9 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * @author ke_weixu
- */
 @Slf4j
 @RestController
 @RequestMapping("/api")
@@ -38,7 +38,7 @@ public class AppResource {
 
         // 获取登录名
         map.put("username", SecurityUtils.getCurrentUserLogin());
-        map.put("fullName", SecurityUtils.getAccessToken().getName());
+        map.put("fullName", SecurityUtils.getAccessToken().getGivenName());
 
         String url = request.getServerName();
         log.debug("URL : {}", url);
@@ -66,22 +66,22 @@ public class AppResource {
     }
 
     @GetMapping("/list-app-names")
-    public List<AppNameDTO> listAppNames(){
+    public List<AppNameDTO> listAppNames() {
         return appService.getAllName();
     }
 
     @GetMapping("/get-app-by-id")
-    public AppDTO getAppById(Long appId){
+    public AppDTO getAppById(Long appId) {
         return appService.getAppById(appId);
     }
 
     @PostMapping("/update-app")
-    public Long updateApp(App app){
+    public Long updateApp(App app) {
         return appService.updateApp(app);
     }
 
     @DeleteMapping("/delete-app-by-id")
-    public String deleteAppById(Long appId){
+    public String deleteAppById(Long appId) {
         return appService.deleteAppById(appId);
     }
 }
