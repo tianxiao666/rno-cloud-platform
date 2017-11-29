@@ -3,7 +3,6 @@ package com.hgicreate.rno.service;
 import com.hgicreate.rno.config.Constants;
 import com.hgicreate.rno.domain.User;
 import com.hgicreate.rno.security.SecurityUtils;
-import org.apache.catalina.security.SecurityUtil;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
 import org.keycloak.admin.client.resource.UserResource;
@@ -57,7 +56,7 @@ public class KeycloakAdminCliService {
     /**
      * 重置密码
      */
-    void resetPassword(String newPassword) {
+    public void resetPassword(String newPassword) {
         // 设置新密码
         CredentialRepresentation newCredential = new CredentialRepresentation();
         UserResource userResource = getInstance().realm(REALM).users().get(SecurityUtils.getAccessToken().getId());

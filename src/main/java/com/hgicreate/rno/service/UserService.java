@@ -1,5 +1,6 @@
 package com.hgicreate.rno.service;
 
+import com.hgicreate.rno.config.Constants;
 import com.hgicreate.rno.domain.User;
 import com.hgicreate.rno.repository.UserRepository;
 import com.hgicreate.rno.security.SecurityUtils;
@@ -8,6 +9,7 @@ import org.keycloak.representations.AccessToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,7 +37,12 @@ public class UserService {
     public boolean saveUser(User user){
         boolean info = keycloakAdminCliService.updateAccount(user);
         if (info){
+            user.setLastModifiedDate(new Date());
+            user.setLastModifiedUser(user.getUsername());
             userRepository.save(user);
+            AccessToken token = SecurityUtils.getAccessToken();
+            token.setEmail(user.getEmail());
+            token.setGivenName(user.getFullName());
             return true;
         }
         return false;
@@ -51,11 +58,11 @@ public class UserService {
             //判断fullName和email是否相同，如果不同，则更新，更新人为system
             if (token.getGivenName() == null || !token.getGivenName().equals(user.getFullName())){
                 user.setFullName(token.getGivenName());
-                user.setLastModifiedUser("system");
+                user.setLastModifiedUser(Constants.SYSTEM_ACCOUNT);
                 message = message + "fullName.";
             } if (token.getEmail() == null || !token.getEmail().equals(user.getEmail())){
                 user.setEmail(token.getEmail());
-                user.setLastModifiedUser("system");
+                user.setLastModifiedUser(Constants.SYSTEM_ACCOUNT);
                 message = message + "email";
             }
             return message;
@@ -65,6 +72,12 @@ public class UserService {
             newUser.setEmail(token.getEmail());
             newUser.setFullName(token.getGivenName());
             newUser.setUsername(token.getPreferredUsername());
+            newUser.setCreatedUser(Constants.SYSTEM_ACCOUNT);
+            Date date = new Date();
+            newUser.setCreatedDate(date);
+            newUser.setLastModifiedUser(Constants.SYSTEM_ACCOUNT);
+            newUser.setLastModifiedDate(date);
+            newUser.setDefaultArea(Constants.DEFAULT_AREA);
             userRepository.save(newUser);
             return "新建了" + token.getPreferredUsername();
         }

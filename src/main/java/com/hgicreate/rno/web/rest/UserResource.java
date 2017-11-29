@@ -1,6 +1,7 @@
 package com.hgicreate.rno.web.rest;
 
 import com.hgicreate.rno.domain.User;
+import com.hgicreate.rno.service.KeycloakAdminCliService;
 import com.hgicreate.rno.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class UserResource {
     private final UserService userService;
+    private final KeycloakAdminCliService keycloakAdminCliService;
     @GetMapping("/get-current-user")
     public User getUserById(){
         return userService.getCurrentUser();
@@ -37,4 +39,10 @@ public class UserResource {
     public AccessToken getCurrentUserTest(){
         return SecurityUtils.getAccessToken();
     }*/
+
+    @PostMapping("/reset-password")
+    public void resetPassword(String newPassword){
+        keycloakAdminCliService.resetPassword(newPassword);
+    }
+
 }

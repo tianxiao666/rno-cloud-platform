@@ -10,11 +10,10 @@
     <link href="css/account.css" rel="stylesheet" />
 
     <script src="../../lib/jquery/3.2.1/jquery.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
     <script src="../../js/common.js"></script>
     <script src="js/sys-user-config.js"></script>
-
-
-
 </head>
 <body class="admin-console user user">
 <div class="container">
@@ -51,7 +50,7 @@
 
             <div class="form-group ">
                 <div class="col-sm-2 col-md-2">
-                    <label for="fullName" class="control-label">用户全称</label> <span class="required">*</span>
+                    <label for="fullName" class="control-label">用户全称</label>
                 </div>
 
                 <div class="col-sm-10 col-md-10">
@@ -61,7 +60,7 @@
 
             <div class="form-group ">
                 <div class="col-sm-2 col-md-2">
-                    <label for="email" class="control-label">邮件地址</label> <span class="required">*</span>
+                    <label for="email" class="control-label">邮件地址</label>
                 </div>
                 <div class="col-sm-10 col-md-10">
                     <input type="text" class="form-control" id="email" name="email" autofocus value="ke.wx@hgicreate.com"/>
@@ -71,7 +70,7 @@
 
             <div class="form-group ">
                 <div class="col-sm-2 col-md-2">
-                    <label for="phoneNumber" class="control-label">电话号码</label> <span class="required">*</span>
+                    <label for="phoneNumber" class="control-label">电话号码</label>
                 </div>
                 <div class="col-sm-10 col-md-10">
                     <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" value=""/>
@@ -84,7 +83,7 @@
                 </div>
 
                 <div class="col-sm-10 col-md-10">
-                    <input type="text" class="form-control" id="createdUser" name="createdUser" disabled="disabled" value="ke.wx"/>
+                    <input type="text" class="form-control" id="createdUser" name="createdUser" disabled="disabled" value="ke.wx" title=""/>
                 </div>
             </div>
 
@@ -94,7 +93,7 @@
                 </div>
 
                 <div class="col-sm-10 col-md-10">
-                    <input type="text" class="form-control" id="createdDate" name="createdDate" disabled="disabled" value="ke.wx"/>
+                    <input type="text" class="form-control" id="createdDate" name="createdDate" disabled="disabled" value="ke.wx" title=""/>
                 </div>
             </div>
 
@@ -104,7 +103,7 @@
                 </div>
 
                 <div class="col-sm-10 col-md-10">
-                    <input type="text" class="form-control" id="lastModifiedUser" name="lastModifiedUser" disabled="disabled" value="ke.wx"/>
+                    <input type="text" class="form-control" id="lastModifiedUser" name="lastModifiedUser" disabled="disabled" value="ke.wx" title=""/>
                 </div>
             </div>
 
@@ -114,7 +113,7 @@
                 </div>
 
                 <div class="col-sm-10 col-md-10">
-                    <input type="text" class="form-control" id="lastModifiedDate" name="lastModifiedDate" disabled="disabled" value="ke.wx"/>
+                    <input type="text" class="form-control" id="lastModifiedDate" name="lastModifiedDate" disabled="disabled" value="ke.wx" title=""/>
                 </div>
             </div>
 
@@ -136,37 +135,34 @@
         </div>
 
 
-        <form id="passwordPage" hidden action="" class="form-horizontal" method="post">
-
-            <input type="hidden" name="stateChecker" value="mcyEAkCwy9t1Tb0rX3yErLpqMieaO8PoDOnrG6p1gvk">
-
-            <div class="form-group ">
+        <form id="passwordPage" hidden action="/api/reset-password" method="post" class="form-horizontal">
+            <!--<div class="form-group ">
                 <div class="col-sm-2 col-md-2">
                     <label for="email" class="control-label">输入原密码</label> <span class="required">*</span>
                 </div>
 
                 <div class="col-sm-10 col-md-10">
-                    <input type="password" class="form-control" name="email" autofocus value="ke.wx@hgicreate.com"/>
+                    <input type="password" class="form-control" name="oldPassword" id="oldPassword" autofocus title=""/>
+                </div>
+            </div>-->
+
+            <div class="form-group ">
+                <div class="col-sm-2 col-md-2">
+                    <label class="control-label">输入新密码</label> <span class="required">*</span>
+                </div>
+
+                <div class="col-sm-10 col-md-10">
+                    <input type="password" class="form-control"  name="newPassword" id="newPassword"  title=""/>
                 </div>
             </div>
 
             <div class="form-group ">
                 <div class="col-sm-2 col-md-2">
-                    <label for="firstName" class="control-label">输入新密码</label> <span class="required">*</span>
+                    <label class="control-label">重新输入密码</label> <span class="required">*</span>
                 </div>
 
                 <div class="col-sm-10 col-md-10">
-                    <input type="password" class="form-control"  name="firstName" value="柯伟旭"/>
-                </div>
-            </div>
-
-            <div class="form-group ">
-                <div class="col-sm-2 col-md-2">
-                    <label for="lastName" class="control-label">重新输入密码</label> <span class="required">*</span>
-                </div>
-
-                <div class="col-sm-10 col-md-10">
-                    <input type="password" class="form-control" name="lastName" value=""/>
+                    <input type="password" class="form-control" name="againPassword" id="againPassword" title=""/>
                 </div>
             </div>
 
@@ -174,7 +170,7 @@
                 <div class="col-md-offset-2 col-md-10 submit">
                     <div class="" align="right">
                         <button type="submit" class="btn btn-default btn-lg" name="submitAction" value="Cancel">取消</button>
-                        <button type="submit" class="btn btn-primary btn-lg" name="submitAction" value="Save">保存</button>
+                        <button class="btn btn-primary btn-lg" onclick="savePassword()">保存</button>
                     </div>
                 </div>
             </div>

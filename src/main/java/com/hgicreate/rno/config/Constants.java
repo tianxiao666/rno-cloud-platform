@@ -17,6 +17,11 @@ public final class Constants {
     public static final String ADMIN_CONSOLE_CLIENT_ID = "security-admin-console";
     public static final String ADMIN_CLI_CLIENT_ID = "admin-cli";
 
+    /**
+     * 缺省城市：广州
+     */
+    public static final Long DEFAULT_AREA = 440100L;
+
     private Constants() {
     }
 }

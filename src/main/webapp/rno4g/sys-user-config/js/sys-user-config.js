@@ -23,7 +23,44 @@ $(document).ready(function () {
     initAreaSelectors({selectors: ["province", "city"]});
     //展示用户信息
     getCurrentUserInfo();
+
+
+    $("#passwordPage").validate({
+        rules: {
+            oldPassword: "required",
+            newPassword: "required",
+            againPassword: {
+                required: true,
+                equalTo: '#newPassword'
+            }
+        },
+        messages: {
+            oldPassword: '<em style=\"color:red\">请输入原密码</em>',
+            newPassword: '<em style=\"color:red\">请输入新密码</em>',
+            againPassword: {
+                required: '<em style=\"color:red\">请再次输入密码</em>',
+                equalTo: '<em style=\"color:red\">两次密码不一致</em>'
+            }
+        }
+    });
+
+    $(form).ajaxSubmit({
+        success:function(d){
+            var data=eval("("+d+")");
+            form.reset();
+            if(data['flag']===true){
+                alert("修改成功");
+            }else{
+                alert("修改失败！原因："+data['msg']);
+            }
+        }
+    });
+
 });
+
+function savePassword() {
+    $("#passwordPage").validate();
+}
 
 function saveUser(){
     var userDataMap;
