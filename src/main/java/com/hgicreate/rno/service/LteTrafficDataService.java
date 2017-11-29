@@ -54,10 +54,9 @@ public class LteTrafficDataService {
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date beginDate = sdf.parse(vm.getBeginTestDate());
         Date endDate = sdf2.parse(vm.getEndTestDate() + " 23:59:59");
-        List<LteTrafficDescDTO> list = lteTrafficDataQueryMapper.queryTop1000TrafficData(Long.parseLong(vm.getCity()), beginDate, endDate)
+        return lteTrafficDataQueryMapper.queryTop1000TrafficData(Long.parseLong(vm.getCity()), beginDate, endDate)
                 .stream().map(LteTrafficDescMapper.INSTANCE::lteTrafficDescToLteTrafficDescDTO)
                 .collect(Collectors.toList());
-        return list;
     }
 
 }
