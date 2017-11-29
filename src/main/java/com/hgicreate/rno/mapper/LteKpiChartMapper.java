@@ -11,12 +11,12 @@ import java.util.Date;
 @Mapper
 public interface LteKpiChartMapper {
 
-    LteKpiChartRsrpDTO queryChartRsrp(String areaId, String cellId,
+    LteKpiChartRsrpDTO countChartRsrp(String areaId, String cellId,
                                       Date beginDate, Date endDate);
 
-    LteKpiChartRsrqDTO queryChartRsrq(String areaId, String cellId,
+    LteKpiChartRsrqDTO countChartRsrq(String areaId, String cellId,
                                       Date beginDate, Date endDate);
 
-    LteKpiChartCoverRateDTO queryChartCoverRate(String areaId, String cellId,
+    LteKpiChartCoverRateDTO countChartCoverRate(String areaId, String cellId,
                                                 Date beginDate, Date endDate);
 }

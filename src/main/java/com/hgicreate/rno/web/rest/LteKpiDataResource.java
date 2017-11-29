@@ -18,7 +18,6 @@ import com.hgicreate.rno.web.rest.vm.FileUploadVM;
 import com.hgicreate.rno.web.rest.vm.LteKpiDataFileVM;
 import com.hgicreate.rno.web.rest.vm.LteKpiDescVM;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

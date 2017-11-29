@@ -33,15 +33,15 @@ public class LteKpiChartService {
         Date endDate = sdf2.parse(vm.getMrMeaEndDate()+" 23:59:59");
         switch (vm.getMrDataType()) {
             case "RSRP": {
-                LteKpiChartRsrpDTO dto = lteKpiChartMapper.queryChartRsrp(cityId, cellId, beginDate, endDate);
+                LteKpiChartRsrpDTO dto = lteKpiChartMapper.countChartRsrp(cityId, cellId, beginDate, endDate);
                 return new ResponseEntity<>(dto, HttpStatus.OK);
             }
             case "RSRQ": {
-                LteKpiChartRsrqDTO dto = lteKpiChartMapper.queryChartRsrq(cityId, cellId, beginDate, endDate);
+                LteKpiChartRsrqDTO dto = lteKpiChartMapper.countChartRsrq(cityId, cellId, beginDate, endDate);
                 return new ResponseEntity<>(dto, HttpStatus.OK);
             }
             default: {
-                LteKpiChartCoverRateDTO dto = lteKpiChartMapper.queryChartCoverRate(cityId, cellId, beginDate, endDate);
+                LteKpiChartCoverRateDTO dto = lteKpiChartMapper.countChartCoverRate(cityId, cellId, beginDate, endDate);
                 return new ResponseEntity<Object>(dto, HttpStatus.OK);
             }
         }

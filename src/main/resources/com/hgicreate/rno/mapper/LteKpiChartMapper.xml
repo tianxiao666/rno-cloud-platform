@@ -3,7 +3,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hgicreate.rno.mapper.LteKpiChartMapper">
-    <select id="queryChartRsrp"
+    <select id="countChartRsrp"
             resultType="com.hgicreate.rno.service.dto.LteKpiChartRsrpDTO">
       select kpi.CELL_NAME as cellName, count(kpi.LTE_SC_RSRP) as sampleNum,
         count( CASE when kpi.LTE_SC_RSRP &lt; -110 then 1 END) as xBelowNegative110,
@@ -17,7 +17,7 @@
        and lteCell.AREA_ID= #{param1}
        group by kpi.CELL_NAME
     </select>
-    <select id="queryChartRsrq"
+    <select id="countChartRsrq"
             resultType="com.hgicreate.rno.service.dto.LteKpiChartRsrqDTO">
         select kpi.CELL_NAME as cellName, count(kpi.LTE_SC_RSRQ) as sampleNum,
         count( CASE when kpi.LTE_SC_RSRQ &lt; 8 then 1 END) as xBelow8,
@@ -30,7 +30,7 @@
         and lteCell.AREA_ID= #{param1}
         group by kpi.CELL_NAME
     </select>
-    <select id="queryChartCoverRate"
+    <select id="countChartCoverRate"
             resultType="com.hgicreate.rno.service.dto.LteKpiChartCoverRateDTO">
         select kpi.CELL_NAME as cellName, count(kpi.LTE_SC_RSRP) as sampleNum,
                count( CASE when kpi.LTE_SC_RSRP &lt; -110 then 1 END) as xBelowNegative110,

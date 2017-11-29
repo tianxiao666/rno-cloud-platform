@@ -176,7 +176,7 @@ public class LteCellDataResource {
             dataJobReport.setMessage("文件成功上传至服务器");
             dataJobReportRepository.save(dataJobReport);
         } catch (Exception e) {
-            log.debug(e.getMessage());
+            log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(HttpStatus.OK);
