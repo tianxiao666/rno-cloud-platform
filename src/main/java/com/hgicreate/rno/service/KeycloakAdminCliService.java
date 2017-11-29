@@ -40,7 +40,7 @@ public class KeycloakAdminCliService {
      * @param user 用户对象
      * @return 成功返回true，失败返回false
      */
-    boolean updateAccount(final User user) {
+    public boolean updateAccount(final User user) {
         UsersResource usersResource = getInstance().realm(REALM).users();
         List<UserRepresentation> userRepresentationList = usersResource.search(user.getUsername());
         if (userRepresentationList.size() > 0) {
@@ -59,7 +59,7 @@ public class KeycloakAdminCliService {
      * @param newPassword 新密码
      * @return 成功返回true，失败返回false
      */
-    boolean resetPassword(String newPassword) {
+    public boolean resetPassword(String newPassword) {
         UsersResource usersResource = getInstance().realm(REALM).users();
         List<UserRepresentation> userRepresentationList = usersResource.search(SecurityUtils.getCurrentUserLogin());
         if (userRepresentationList.size() > 0) {
