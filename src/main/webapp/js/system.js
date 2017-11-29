@@ -3,8 +3,6 @@ var submitStatus=true;
 var appId;
 var appCode;
 var appNames;
-var defaultStyle = "缺省样式";
-var secondStyle = "SB Admin 2";
 function editThis(obtn){
     if ($(obtn).text() === "rno") {
         alert("禁止修改rno！");
@@ -16,16 +14,6 @@ function editThis(obtn){
     $(obtn).html(editHTML); // 改变单元格内容为编辑状态
     $(obtn).removeAttr("onclick"); // 删除单元格单击事件，避免多次单击
     $("#editTd").focus();
-}
-function changeStyle() {
-    var appStyle = $("#appStyle");
-    if (appStyle.text() === secondStyle){
-        appStyle.html(defaultStyle);
-        appStyle.val(0);
-    }else{
-        appStyle.html(secondStyle);
-        appStyle.val(1);
-    }
 }
 
 
@@ -110,9 +98,10 @@ function bindEvent(){
             return false;
         }
         if(submitStatus){
-            var flag=confirm("确定要删除《"+$("#appNameList").find("option:selected").text()+"》的场景信息吗？");
+            var appNameListDiv = $("#appNameList");
+            var flag=confirm("确定要删除《"+appNameListDiv.find("option:selected").text()+"》的场景信息吗？");
             if(flag===false) return false;
-            appId=$("#appNameList").val();
+            appId=appNameListDiv.val();
             deleteAppInfo(appId);
         }
     });
@@ -139,14 +128,15 @@ function chooseTask(){
  * 初始化新增界面
  */
 function initAppTable(){
-    $(".editbox").html("");
+    var editboxDiv = $(".editbox");
+    editboxDiv.html("");
     $("#appInfoTable").find("caption font").html("");
 
     var select=$("#appNameTd");
     select.empty();
-    $(".editbox").removeAttr("onclick");
-    $(".editbox").attr("onclick","editThis(this)");
-    $(".editbox").html(" ");
+    editboxDiv.removeAttr("onclick");
+    editboxDiv.attr("onclick","editThis(this)");
+    editboxDiv.html(" ");
     $("#nameInfo").html(" ");
     submitStatus=false;
     $("#addApp").unbind("click");
@@ -184,8 +174,9 @@ function clearAll(){
     $(".oldDataTip").html("");
     $(".errTip").html("");
     $(".editbox").html("");
-    $("#check_td").html("");
-    $("#check_td").html('<input type="checkbox" checked id="statusCheck">');
+    var check_tdDiv = $("#check_td");
+    check_tdDiv.html("");
+    check_tdDiv.html('<input type="checkbox" checked id="statusCheck">');
 }
 
 
@@ -263,7 +254,8 @@ function showAppInfo(raw){
         $(".editbox").css({"width": "100%"});
         var one = data;
         $("#appName").html(getValidValue(one['appName']));
-        $("#appCode").html(getValidValue(one['appCode']));
+        var appCodeDiv = $("#appCode");
+        appCodeDiv.html(getValidValue(one['appCode']));
         $("#appVersion").html(getValidValue(one['appVersion']));
         $("#appLogo").html(getValidValue(one['appLogo']));
         $("#appDescription").html(getValidValue(one['appDescription']));
@@ -277,7 +269,7 @@ function showAppInfo(raw){
         }else if (one['appStatus'] === 1){
             $("#statusCheck").attr("checked",true);
         }
-        if ($("#appCode").text() === 'rno'){
+        if (appCodeDiv.text() === 'rno'){
             $("#statusCheck").attr("disabled",true);
         }else{
             $("#statusCheck").attr("disabled",false);
@@ -313,7 +305,7 @@ function fillSelectList(selectParentId,selectId,raw){
             str="<option value='"+getValidValue(one['appId'], '')+"'>"+getValidValue(one['appName'], '')+"</option>";
             select.append(str);
         }
-        $("#"+selectId).val(appId);
+        select.val(appId);
     }
 }
 
@@ -374,8 +366,9 @@ function updateAppInfo(appDataMap){
 
 function showOperTips(outerId, tipId, tips) {
     try {
-        $("#" + outerId).css("display", "");
-        $("#" + outerId).find("#" + tipId).html(tips);
+        var outerIdDiv = $("#" + outerId);
+        outerIdDiv.css("display", "");
+        outerIdDiv.find("#" + tipId).html(tips);
     } catch (err) {
     }
 }

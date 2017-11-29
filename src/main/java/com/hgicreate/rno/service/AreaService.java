@@ -1,5 +1,6 @@
 package com.hgicreate.rno.service;
 
+import com.hgicreate.rno.domain.Area;
 import com.hgicreate.rno.repository.AreaRepository;
 import com.hgicreate.rno.service.dto.AreaDTO;
 import com.hgicreate.rno.service.mapper.AreaMapper;
@@ -43,5 +44,9 @@ public class AreaService {
         }
 
         return list;
+    }
+
+    public Area findById(Long id){
+        return areaRepository.findById(id);
     }
 }

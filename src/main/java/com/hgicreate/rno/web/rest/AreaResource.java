@@ -1,5 +1,6 @@
 package com.hgicreate.rno.web.rest;
 
+import com.hgicreate.rno.domain.Area;
 import com.hgicreate.rno.service.AreaService;
 import com.hgicreate.rno.service.dto.AreaDTO;
 import lombok.extern.slf4j.Slf4j;
@@ -23,5 +24,10 @@ public class AreaResource {
     @GetMapping("/areas")
     public List<AreaDTO> getAllAreas(Long parentId) {
         return areaService.getAreasByParentId(parentId);
+    }
+
+    @GetMapping("/get-area-by-id")
+    public Area getAreaById(Long id){
+        return areaService.findById(id);
     }
 }
