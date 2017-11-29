@@ -14,4 +14,13 @@ public interface LteTrafficDataRepository extends JpaRepository<LteTrafficData,L
 
      List<LteTrafficData> findByLteTrafficDesc_AreaIdAndLteTrafficDesc_BeginTimeAfterAndLteTrafficDesc_EndTimeBeforeAndPmUserLabelIn(
             Long areaId, Date beginTime,Date endTime,String[] cellName) ;
+
+     List<LteTrafficData> findByCellIdInOrderByLteTrafficDesc_BeginTimeDesc(String[] cellId);
+
+     List<LteTrafficData> findByLteTrafficDesc_BeginTimeAndCellId(
+             Date beginTime, String cellId);
+
+     List<LteTrafficData> findByLteTrafficDesc_AreaId(Long areaId);
+
+     List<LteTrafficData> findByCellIdAndLteTrafficDesc_BeginTime(String cellId, Date beginTime);
 }

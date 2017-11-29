@@ -4,66 +4,40 @@
     <meta charset="UTF-8">
     <title>业务热点覆盖分析优化</title>
 
+    <link rel="stylesheet" href="../../lib/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/lte-traffic-analysis.css">
     <link rel="stylesheet" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
     <link rel="stylesheet" href="../../lib/openlayers/4.4.2/ol.css">
 
-    <script src="../../lib/jquery/1.8.2/jquery.js"></script>
+    <script src="../../lib/jquery/3.2.1/jquery.js"></script>
+    <script src="../../lib/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
     <script src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
     <script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
     <script src="../../lib/validate.js"></script>
-    <script src="../../lib/tab.js"></script>
+    <script src="../../js/common.js"></script>
     <script src="../../lib/openlayers/4.4.2/ol.js"></script>
-    <!--<script src="js/lte-traffic-analysis-origin.js"></script>-->
+
     <script src="js/lte-traffic-analysis.js"></script>
 </head>
 <body>
-<!--<div style="margin: 5px;padding: 0;">
-<div class="loading_cover" style="display: none;position:absolute;z-index:999">
-    <div class="cover"></div>
-    <h4 class="loading">
-        正在加载 <em class="loading_fb">小区</em>资源,请稍侯...
-    </h4>
-</div>-->
+<div id="loading" class="loading-style" style="display: none">加载中···，请稍候</div>
+<div id="error" class="error-style" style="display: none"></div>
+<div id="warn" class="warn-style" style="display: none"></div>
+<div id="success" class="success-style" style="display: none"></div>
 <div class="map" id="map"></div>
-<div class="dialog draggable ui-draggable">
-    <div style="padding: 5px">
-
-        <form id="conditionForm" method="post">
-            省：<select name="provinceId" class="required" id="provinceId">
-
-        </select> 市：<select name="cityId" class="required" id="cityId">
-
-        </select> 区：<select name="areaId" class="required" id="queryCellAreaId">
-        </select>
-            <input id="showCellName" class="showCellNameButton" value="显示小区名字" type="button">
-            <input id="loadGisCell" value="加载小区" type="button">
-            <span id="loadingCellTip"></span><input id="showpbcList" value="显示问题小区表" type="button">
-            <span id="loadingProbCellTip"></span>
-            <input id="trigger" name="trigger" value="切换谷歌" style="display: none;" type="button">
-            <input id="hiddenZoom" name="zoom" value="14" type="hidden">
-            <input id="hiddenLng" value="114.719238" type="hidden">
-            <input id="hiddenLat" value="22.987474" type="hidden">
-            <input id="hiddenPageSize" value="100" type="hidden">
-            <input id="hiddenCurrentPage" value="1" type="hidden">
-            <input id="hiddenTotalPageCnt" value="0" type="hidden">
-            <input id="hiddenTotalCnt" value="0" type="hidden">
-        </form>
-        <div id="hiddenAreaLngLatDiv" style="display:none">
-
-            <input id="areaid_262" value="114.719238,22.987474" type="hidden">
-
-            <input id="areaid_263" value="114.255066,23.728783" type="hidden">
-
-            <input id="areaid_260" value="114.382782,23.084785" type="hidden">
-
-            <input id="areaid_261" value="114.45694,22.791375" type="hidden">
-
-        </div>
-
-
-    </div>
+<div style="display: none"> 
+    <div id="popup"></div>
+</div>
+<div class="dialog">
+    <!--省：-->
+    <select class="form-control custom-select" id="provinceId"></select>
+    <!--市：-->
+    <select class="form-control custom-select" id="cityId"></select>
+    <!--区：-->
+    <select class="form-control custom-select" id="districtId" style="display: none"></select>
+    <button style="outline: none" id="loadGisCell" class="btn btn-info custom-btn">加载小区</button>
+    <button style="outline: none" id="loadGisCellName" class="btn btn-info custom-btn">显示小区名字</button>
 </div>
 
 <div class="resource_list_icon" style="right: 400px;">
@@ -71,52 +45,64 @@
     <a href="#" class="switch_hidden" style="display: none;"></a>
     <div class="shad_v"></div>
 </div>
-<div class="resource-list">
-    <div class="resource_list_icon" style="height: 650px; right: 0;">
-        <a href="#" class="switch"></a> <a href="#" class="switch_hidden" style="display: inline;"></a>
-        <div class="shad_v"></div>
-    </div>
-    <div class="resource_list_box" style="height: 100%; overflow: auto; display: none;">
-        <div id="frame" style="border: 1px solid #ddd">
-        <div id="div_tab" class="div_tab divtab_menu" style="margin-top: 5px">
-            <ul>
-                <li>小区指标详情</li>
-                <li class="selected">监控阈值详情</li>
-                <li>问题小区表</li>
+<div class="resource_list_box">
+    <div style="margin-bottom: 39px">
+        <div class="panel-body">
+            <ul class="nav nav-tabs" role="tablist" id="myTab">
+                <li role="presentation" class="active">
+                    <a href="#problemCellList" role="tab" data-toggle="tab">问题小区表</a>
+                </li>
+                <li role="presentation">
+                    <a href="#cellIndexDetail" role="tab" data-toggle="tab">小区指标详情</a>
+                </li>
+                <li role="presentation">
+                    <a href="#monitorThresholdDetail" role="tab" data-toggle="tab">监控阈值详情</a>
+                </li>
             </ul>
-        </div>
-        <div class="divtab_content">
-            <div id="div_tab_0">
-                <div class="resource_list">
-                    <table id="lteStsCellIndex" class="main-table1 half-width">
-                    </table>
-                </div>
-            </div>
-            <div id="div_tab_1">
-                <div class="resource_list">
-                    <div class="div_title_24px_blue">
-                        <span class="sp_title">说明</span>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="problemCellList">
+                    <div style="height: 10px"></div>
+                    <div>
+                        <button id="displayProbCellBtn" class="btn btn-primary">显示问题小区</button>
+                        <span style="color:red" id="probCount"></span>
                     </div>
-                    <a onclick="$('#thresholdInstructionDiv').show()">监控阈值说明</a><br>
-                    <div class="div_title_24px_blue">
-                        <span class="sp_title">监控阈值</span>
+                    <div style="height: 10px"></div>
+                    <table id="probCellList" class="table">
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="cellIndexDetail">
+                    <div class="resource_list">
+                        <table id="lteStsCellIndex" class="table">
+                            <tbody>
+                            </tbody>
+                        </table>
                     </div>
-                    <table id="lteStsCellThreshold" class="main-table1 half-width">
-                    </table>
+                </div>
+
+                <div role="tabpanel" class="tab-pane" id="monitorThresholdDetail">
+                    <div class="resource_list">
+                        <span style="font-size: 16px;font-weight: bold">
+                            监控阈值
+                        </span>
+                        <span><a onclick="$('#thresholdInstructionDiv').show()">（计算说明）</a><br></span>
+                        <div style="height: 10px"></div>
+                        <table id="lteStsCellThreshold" class="table">
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-            <div id="div_tab_2" style="display:none">
-                <div class="resource_list">
-                    <table id="probCellList" class="main-table1 half-width">
-                    </table>
-                </div>
-            </div>
-        </div>
+
         </div>
     </div>
-
-
 </div>
+</div>
+
 <div id="operInfo"
      style="display:none; top:40px;left:600px;z-index:999;width:400px; height:40px; background-color:#7dff3f; filter:alpha(Opacity=80);-moz-opacity:0.5;opacity: 0.5;z-index:9999;position: fixed;">
     <table style="text-align:center; height:100%;width:100%">

@@ -75,31 +75,12 @@ $(function () {
 
             var feature;
             map.on('singleclick', function (evt) {
-                //还原上一次点击的采样点为绿色
-                /*if(feature) {
-                    feature.setStyle(new ol.style.Style({
-                        image: new ol.style.Circle({
-                            radius: 4,
-                            fill: new ol.style.Fill({ color: 'rgba(0, 255, 0, 1.0)' }),
-                            stroke: new ol.style.Stroke({ color: 'blue', width: 1 }),
-                        })
-                    }));
-                }*/
-
                 //获取新点击采样点，渲染为红色
                 feature = map.forEachFeatureAtPixel(evt.pixel, function (feature) {
                     return feature;
                 });
 
                 if(feature) {
-                    /*feature.setStyle(new ol.style.Style({
-                        image: new ol.style.Circle({
-                            radius: 4,
-                            fill: new ol.style.Fill({ color: 'rgba(255, 0, 0, 1.0)' }),
-                            stroke: new ol.style.Stroke({ color: 'blue', width: 1 }),
-                        })
-                    }));*/
-
                     $.ajax({
                         url: "/api/lte-dt-analysis/dt-data-detail",
                         type: "GET",
@@ -145,13 +126,6 @@ $(function () {
 
     //初始区域
     initAreaSelectors({selectors: ["provinceId", "cityId", "districtId"], coord: true, relate: true});
-
-    $("#provincemenu").change(function () {
-        var provinceId = parseInt($(this).find("option:checked").val());
-        $.getJSON("../../data/area.json", function (data) {
-            renderArea(data, provinceId, "citymenu");
-        })
-    });
 
     $("#loadGisCell").click(function () {
         var cityId = parseInt($("#cityId").find("option:checked").val());
