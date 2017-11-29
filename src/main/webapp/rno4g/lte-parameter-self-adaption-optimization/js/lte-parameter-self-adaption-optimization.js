@@ -58,6 +58,7 @@ function setNavTitle(navTitleId) {
 dataFullFromServer = null;
 
 function showCellRecord(dataList) {
+    console.log(dataList)
     dataFullFromServer = dataList;
     $('#queryImportTab')
         .css("line-height", "12px")
@@ -111,9 +112,9 @@ function showCellOperation(cId) {
     var size = CellOperationCode.length;
     var onekey;
     var lengthOfContent = 0;
-    lengthOfContent += 1;
+    // lengthOfContent += 1;
     html += "<tr>" +
-        "<td class='menuTd' id=" + 'leftSlide' + lengthOfContent + " style =" + "\"background: url(images/panel_title.png) 0 0 repeat scroll transparent;left :100%;width: 238px;height: 0px;display: none;position: relative;\"" + ">参数自调整正在启动</td>" +
+        "<td class='menuTd'  style =" + "\"background: url(images/panel_title.png) 0 0 repeat scroll transparent;width:100%;height: 31px;display: block;position: relative;\"" + ">参数自调整正在启动:</td>" +
         "</tr>";
     for (var i = 0; i < size; i++) {
         onekey = CellOperationCode[i];
@@ -129,7 +130,7 @@ function showCellOperation(cId) {
     }
     lengthOfContent += 1;
     html += "<tr>" +
-        "<td class='menuTd' id=" + 'leftSlide' + lengthOfContent + " style =" + "\"background: url(images/panel_title.png) 0 0 repeat scroll transparent;left :100%;width: 238px;height: 0px;display: none;position: relative;\"" + ">完成</td>" +
+        "<td class='menuTd' id=" + 'leftSlide' + lengthOfContent + " style =" + "\"background: url(images/panel_title.png) 0 0 repeat scroll transparent;left :100%;width: 238px;height: 0px;display: none;position: relative;\"" + "><input value='完成' type='button' onclick='operationDialogClose()'></td>" +
         "</tr>";
 
     $("#viewCellDetailTable").html(html);

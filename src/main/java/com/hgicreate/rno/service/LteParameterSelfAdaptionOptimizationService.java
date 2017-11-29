@@ -71,23 +71,41 @@ public class LteParameterSelfAdaptionOptimizationService {
                     subNameCell.append(baseNumber.charAt(new Random().nextInt(baseNumber.length())));
                     subNameCell.append(baseNumber.charAt(new Random().nextInt(baseNumber.length())));
 
-                    int randomRadioDropCount = random.nextInt(40) + 40;
-                    int randomSwitchRequestCount = random.nextInt(10) + 90;
+                    float anotherHalf = (float) Math.random()-0.5f;
+                    if(anotherHalf < 0){
+                        anotherHalf = 0f;
+                    }
+                    float radioAccessRate = (float) (98 + Math.random()+anotherHalf);
+                    float erabSetUpSuccessRate = (float) (98 + Math.random()+anotherHalf);
+                    float rrcConnectionSetUpSuccessRate = (float) (98 + Math.random()+anotherHalf);
 
-                    float randomSwitchSuccessRate = Float.parseFloat((random.nextInt(4) + 96 + Math.random()) + "");
+                    float radioDropRate = (float) (0.5f+Math.random()+anotherHalf);
+                    if((radioAccessRate+radioDropRate)<100){
+                        float gap = 100-radioAccessRate-radioDropRate;
+                        radioAccessRate += gap*0.5f;
+                        radioDropRate += gap*0.5f;
+                    }
+
+                    int randomRadioDropCount = (int) ((random.nextInt(15000) + 70000) * radioDropRate/100);
+
+                    float erabDropRate = (float) (0.5f+Math.random()+anotherHalf);
+                    int randomSwitchRequestCount = random.nextInt(2000) + 3000;
+
+                    float randomSwitchSuccessRate = (float) (98 + Math.random()+anotherHalf);
                     int randomSwitchSuccessCount = (int) (randomSwitchRequestCount * randomSwitchSuccessRate / 100);
                     randomSwitchSuccessRate = (new BigDecimal(100f * randomSwitchSuccessCount / randomSwitchRequestCount).setScale(2, BigDecimal.ROUND_HALF_UP)).floatValue();
 
-                    int preCondition = random.nextInt(2) + 6;
-                    String randomCellPriority = random.nextInt(2) == 1 ? "小区重选优先级已从" + preCondition + "调整为" + (preCondition - random.nextInt(3)) : "";
-                    preCondition = random.nextInt(2);
-                    String randomCellChangeSwitchDifficulty = random.nextInt(2) == 1 ? "小区切换难易度已从" + preCondition + "级调整到" + (preCondition + random.nextInt(2) + 1) + "级" : "";
-                    String randomDecreaseHighStressCellRechooseDelay = random.nextInt(2) == 1 ? "降低高负荷小区的重选迟滞" : "升高低负荷小区重选迟滞";
+                    String randomCellPriority = random.nextInt(2) == 1 ? "小区重选优先级已从7级调整为" + (random.nextInt(4)+3)+"级" : "";
+                    String randomCellChangeSwitchDifficulty = random.nextInt(2) == 1 ? "小区切换难易度已从1级调整到" + (random.nextInt(2) + 2) + "级" : "";
+                    String randomDecreaseHighStressCellRechooseDelay = random.nextInt(2) == 1 ? (random.nextInt(2) == 1 ? "降低高负荷小区的重选迟滞" : "升高低负荷小区重选迟滞") : "";
                     String randomDecreaseHighStressCellFrequencyGapFrequencyOffset = random.nextInt(2) == 1 ? "降低高负荷小区频间频率偏移" : "";
+                    if(randomCellPriority.length() ==0 && randomCellChangeSwitchDifficulty.length() ==0 &&randomDecreaseHighStressCellRechooseDelay.length()==0 && randomDecreaseHighStressCellFrequencyGapFrequencyOffset.length()==0){
+                        randomDecreaseHighStressCellFrequencyGapFrequencyOffset = "降低高负荷小区频间频率偏移";
+                    }
                     list.add(new LteParameterSelfAdaptionOptimizationDTO(randomID + "", districtName + subName + relPosition + subNameCell,
-                            String.format("%.2f", random.nextInt(2) + 98 + Math.random()) + "", String.format("%.2f", random.nextInt(2) + 98 + Math.random()) + "",
-                            String.format("%.2f", random.nextInt(2) + 98 + Math.random()) + "", String.format("%.2f", random.nextInt(3) + Math.random()) + "",
-                            randomRadioDropCount + "", String.format("%.2f", random.nextInt(3) + Math.random()) + "", randomSwitchRequestCount + "",
+                            String.format("%.2f", radioAccessRate) + "", String.format("%.2f", erabSetUpSuccessRate) + "",
+                            String.format("%.2f", rrcConnectionSetUpSuccessRate) + "", String.format("%.2f", radioDropRate) + "",
+                            randomRadioDropCount + "", String.format("%.2f", erabDropRate) + "", randomSwitchRequestCount + "",
                             randomSwitchSuccessCount + "", randomSwitchSuccessRate + "", "1", randomCellPriority + "",
                             randomCellChangeSwitchDifficulty + "", randomDecreaseHighStressCellRechooseDelay + "",
                             randomDecreaseHighStressCellFrequencyGapFrequencyOffset + ""));
@@ -196,52 +214,52 @@ public class LteParameterSelfAdaptionOptimizationService {
         if ("广州荔湾区".equals(districtName)) {
             if (cellName.length() == 0) {
                 list.add(new LteParameterSelfAdaptionOptimizationDTO(31001 + "", districtName + "翠圆小区A-NKI-112",
-                        "97.77", "95.73",
-                        "98.65", "1.03",
-                        "76", "0.85", "95",
-                        "93", "97.89", "1", "小区重选优先级已从7级调整为5级",
+                        "98.77", "98.73",
+                        "98.65", "1.33",
+                        "1064", "0.85", "4305",
+                        "4214", "97.89", "1", "小区重选优先级已从7级调整为5级",
                         "小区切换难易度已从1级调整到3级", "降低高负荷小区的重选迟滞",
                         "降低高负荷小区频间频率偏移"));
                 list.add(new LteParameterSelfAdaptionOptimizationDTO(31002 + "", districtName + "金宇B-SMS-122",
-                        "96.77", "96.73",
-                        "96.65", "1.63",
-                        "66", "0.86", "96",
-                        "93", "97.69", "1", "小区重选优先级已从7级调整为6级",
+                        "99.27", "98.73",
+                        "98.65", "1.63",
+                        "1386", "0.86", "3886",
+                        "3835", "98.69", "1", "小区重选优先级已从7级调整为6级",
                         "小区切换难易度已从1级调整到2级", "降低高负荷小区的重选迟滞",
                         "降低高负荷小区频间频率偏移"));
                 list.add(new LteParameterSelfAdaptionOptimizationDTO(31003 + "", districtName + "新东小学Z-ERS-212",
-                        "99.77", "95.93",
-                        "98.95", "1.09",
-                        "79", "0.89", "95",
-                        "93", "97.99", "1", "小区重选优先级已从7级调整为6级",
-                        "小区切换难易度已从1级调整到3级", "降低高负荷小区的重选迟滞",
+                        "99.47", "98.93",
+                        "98.95", "0.79",
+                        "656", "0.89", "4414",
+                        "4369", "98.99", "1", "小区重选优先级已从7级调整为4级",
+                        "小区切换难易度已从1级调整到3级", "",
                         "降低高负荷小区频间频率偏移"));
             } else {
                 if (cellName.endsWith("A-NKI-112")) {
                     list.add(new LteParameterSelfAdaptionOptimizationDTO(31001 + "", districtName + "翠圆小区A-NKI-112",
-                            "97.77", "95.73",
-                            "98.65", "1.03",
-                            "76", "0.85", "95",
-                            "93", "97.89", "1", "小区重选优先级已从7级调整为5级",
+                            "98.77", "98.73",
+                            "98.65", "1.33",
+                            "1064", "0.85", "4305",
+                            "4214", "97.89", "1", "小区重选优先级已从7级调整为5级",
                             "小区切换难易度已从1级调整到3级", "降低高负荷小区的重选迟滞",
                             "降低高负荷小区频间频率偏移"));
                 }
                 if (cellName.endsWith("B-SMS-122")) {
                     list.add(new LteParameterSelfAdaptionOptimizationDTO(31002 + "", districtName + "金宇B-SMS-122",
-                            "96.77", "96.73",
-                            "96.65", "1.63",
-                            "66", "0.86", "96",
-                            "93", "97.69", "1", "小区重选优先级已从7级调整为6级",
+                            "99.27", "98.73",
+                            "98.65", "1.63",
+                            "1386", "0.86", "3886",
+                            "3835", "98.69", "1", "小区重选优先级已从7级调整为6级",
                             "小区切换难易度已从1级调整到2级", "降低高负荷小区的重选迟滞",
                             "降低高负荷小区频间频率偏移"));
                 }
                 if (cellName.endsWith("Z-ERS-212")) {
                     list.add(new LteParameterSelfAdaptionOptimizationDTO(31003 + "", districtName + "新东小学Z-ERS-212",
-                            "99.77", "95.93",
-                            "98.95", "1.09",
-                            "79", "0.89", "95",
-                            "93", "97.99", "1", "小区重选优先级已从7级调整为6级",
-                            "小区切换难易度已从1级调整到3级", "降低高负荷小区的重选迟滞",
+                            "99.47", "98.93",
+                            "98.95", "0.79",
+                            "656", "0.89", "4414",
+                            "4369", "98.99", "1", "小区重选优先级已从7级调整为4级",
+                            "小区切换难易度已从1级调整到3级", "",
                             "降低高负荷小区频间频率偏移"));
                 }
             }
@@ -249,51 +267,51 @@ public class LteParameterSelfAdaptionOptimizationService {
         } else if ("广州越秀区".equals(districtName)) {
             if (cellName.length() == 0) {
                 list.add(new LteParameterSelfAdaptionOptimizationDTO(31004 + "", districtName + "淘金北小区T-AJM-412",
-                        "97.74", "95.74",
-                        "98.64", "1.04",
-                        "76", "0.85", "95",
-                        "94", "98.95", "1", "小区重选优先级已从7级调整为6级",
-                        "小区切换难易度已从1级调整到2级", "升高高负荷小区的重选迟滞",
+                        "98.74", "98.94",
+                        "98.64", "1.44",
+                        "1224", "1.45", "4631",
+                        "4582", "98.95", "1", "小区重选优先级已从7级调整为4级",
+                        "小区切换难易度已从1级调整到2级", "",
                         "升高高负荷小区频间频率偏移"));
                 list.add(new LteParameterSelfAdaptionOptimizationDTO(31005 + "", districtName + "如意大楼R-SSR-243",
-                        "96.75", "96.55",
-                        "97.93", "1.65",
-                        "66", "0.85", "96",
-                        "95", "98.96", "1", "",
+                        "98.75", "99.35",
+                        "98.93", "1.65",
+                        "1435", "1.15", "3956",
+                        "3917", "99.01", "1", "",
                         "", "降低高负荷小区的重选迟滞",
                         "降低高负荷小区频间频率偏移"));
                 list.add(new LteParameterSelfAdaptionOptimizationDTO(31006 + "", districtName + "花旗银行H-SBC-721",
-                        "99.69", "95.66",
-                        "98.63", "1.09",
-                        "79", "0.89", "95",
-                        "93", "97.99", "1", "小区重选优先级已从7级调整为6级",
+                        "99.49", "98.66",
+                        "98.63", "0.69",
+                        "590", "1.23", "4730",
+                        "4682", "98.99", "1", "小区重选优先级已从7级调整为4级",
                         "", "",
                         "降低高负荷小区频间频率偏移"));
             } else {
                 if (cellName.endsWith("T-AJM-412")) {
                     list.add(new LteParameterSelfAdaptionOptimizationDTO(31004 + "", districtName + "淘金北小区T-AJM-412",
-                            "97.74", "95.74",
-                            "98.64", "1.04",
-                            "76", "0.85", "95",
-                            "94", "98.95", "1", "小区重选优先级已从7级调整为6级",
-                            "小区切换难易度已从1级调整到2级", "升高高负荷小区的重选迟滞",
+                            "98.74", "98.94",
+                            "98.64", "1.44",
+                            "1224", "1.45", "4631",
+                            "4582", "98.95", "1", "小区重选优先级已从7级调整为4级",
+                            "小区切换难易度已从1级调整到2级", "",
                             "升高高负荷小区频间频率偏移"));
                 }
                 if (cellName.endsWith("R-SSR-243")) {
                     list.add(new LteParameterSelfAdaptionOptimizationDTO(31005 + "", districtName + "如意大楼R-SSR-243",
-                            "96.75", "96.55",
-                            "97.93", "1.65",
-                            "66", "0.85", "96",
-                            "95", "98.96", "1", "",
+                            "98.75", "99.35",
+                            "98.93", "1.65",
+                            "1435", "1.15", "3956",
+                            "3917", "99.01", "1", "",
                             "", "降低高负荷小区的重选迟滞",
                             "降低高负荷小区频间频率偏移"));
                 }
                 if (cellName.endsWith("H-SBC-721")) {
                     list.add(new LteParameterSelfAdaptionOptimizationDTO(31006 + "", districtName + "花旗银行H-SBC-721",
-                            "99.69", "95.66",
-                            "98.63", "1.09",
-                            "79", "0.89", "95",
-                            "93", "97.99", "1", "小区重选优先级已从7级调整为6级",
+                            "99.49", "98.66",
+                            "98.63", "0.69",
+                            "590", "1.23", "4730",
+                            "4682", "98.99", "1", "小区重选优先级已从7级调整为4级",
                             "", "",
                             "降低高负荷小区频间频率偏移"));
                 }
@@ -302,51 +320,51 @@ public class LteParameterSelfAdaptionOptimizationService {
         } else if ("广州天河区".equals(districtName)) {
             if (cellName.length() == 0) {
                 list.add(new LteParameterSelfAdaptionOptimizationDTO(31007 + "", districtName + "江景豪庭北J-BCS-412",
-                        "97.44", "95.44",
-                        "99.64", "1.04",
-                        "76", "0.84", "95",
-                        "94", "98.95", "1", "",
+                        "98.44", "98.66",
+                        "99.24", "1.74",
+                        "1504", "1.33", "4221",
+                        "4177", "98.95", "1", "",
                         "小区切换难易度已从1级调整到2级", "升高高负荷小区的重选迟滞",
                         ""));
                 list.add(new LteParameterSelfAdaptionOptimizationDTO(31008 + "", districtName + "程介坑C-KMS-852",
-                        "96.75", "96.55",
-                        "97.93", "1.65",
-                        "66", "0.85", "96",
-                        "95", "98.96", "1", "",
+                        "98.75", "98.95",
+                        "98.93", "1.65",
+                        "1478", "1.85", "3652",
+                        "3616", "99.03", "1", "",
                         "", "降低高负荷小区的重选迟滞",
                         "降低高负荷小区频间频率偏移"));
                 list.add(new LteParameterSelfAdaptionOptimizationDTO(31009 + "", districtName + "鸿发大楼南H-FBC-474",
-                        "97.69", "95.46",
-                        "97.64", "1.31",
-                        "89", "1.39", "98",
-                        "94", "95.92", "1", "小区重选优先级已从5级调整为6级",
+                        "98.69", "98.46",
+                        "98.64", "1.61",
+                        "1440", "1.39", "4813",
+                        "4761", "98.92", "1", "小区重选优先级已从5级调整为6级",
                         "小区切换难易度已从2级调整到1级", "",
                         "降低高负荷小区频间频率偏移"));
             } else {
                 if (cellName.endsWith("J-BCS-412")) {
                     list.add(new LteParameterSelfAdaptionOptimizationDTO(31007 + "", districtName + "江景豪庭北J-BCS-412",
-                            "97.44", "95.44",
-                            "99.64", "1.04",
-                            "76", "0.84", "95",
-                            "94", "98.95", "1", "",
+                            "98.44", "98.66",
+                            "99.24", "1.74",
+                            "1504", "1.33", "4221",
+                            "4177", "98.95", "1", "",
                             "小区切换难易度已从1级调整到2级", "升高高负荷小区的重选迟滞",
                             ""));
                 }
                 if (cellName.endsWith("C-KMS-852")) {
                     list.add(new LteParameterSelfAdaptionOptimizationDTO(31008 + "", districtName + "程介坑C-KMS-852",
-                            "96.75", "96.55",
-                            "97.93", "1.65",
-                            "66", "0.85", "96",
-                            "95", "98.96", "1", "",
+                            "98.75", "98.95",
+                            "98.93", "1.65",
+                            "1478", "1.85", "3652",
+                            "3616", "99.03", "1", "",
                             "", "降低高负荷小区的重选迟滞",
                             "降低高负荷小区频间频率偏移"));
                 }
                 if (cellName.endsWith("H-FBC-474")) {
                     list.add(new LteParameterSelfAdaptionOptimizationDTO(31009 + "", districtName + "鸿发大楼南H-FBC-474",
-                            "97.69", "95.46",
-                            "97.64", "1.31",
-                            "89", "1.39", "98",
-                            "94", "95.92", "1", "小区重选优先级已从5级调整为6级",
+                            "98.69", "98.46",
+                            "98.64", "1.61",
+                            "1440", "1.39", "4813",
+                            "4761", "98.92", "1", "小区重选优先级已从5级调整为6级",
                             "小区切换难易度已从2级调整到1级", "",
                             "降低高负荷小区频间频率偏移"));
                 }
