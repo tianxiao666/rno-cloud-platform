@@ -1,7 +1,5 @@
 package com.hgicreate.rno.web.rest;
 
-import com.hgicreate.rno.domain.LteTrafficData;
-import com.hgicreate.rno.repository.LteTrafficDataRepository;
 import com.hgicreate.rno.service.LteTrafficAnalysisService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,27 +9,21 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.stream.Collectors.groupingBy;
-
 @Slf4j
 @RestController
 @RequestMapping("/api/lte-traffic-analysis")
 public class LteTrafficAnalysisResource {
 
     private final LteTrafficAnalysisService lteTrafficAnalysisService;
-    private final LteTrafficDataRepository lteTrafficDataRepository;
 
-    public LteTrafficAnalysisResource(LteTrafficAnalysisService lteTrafficAnalysisService,
-                                      LteTrafficDataRepository lteTrafficDataRepository) {
+    public LteTrafficAnalysisResource(LteTrafficAnalysisService lteTrafficAnalysisService) {
         this.lteTrafficAnalysisService = lteTrafficAnalysisService;
-        this.lteTrafficDataRepository = lteTrafficDataRepository;
     }
 
     @GetMapping("/cell-record")
-    public Map<String, List<LteTrafficData>> getCellRecord(String cellIds) {
+    public Map<String, Object> getCellRecord(String cellIds) {
         log.debug("cellIds={}", cellIds);
-        Map<String, List<LteTrafficData>> res = lteTrafficDataRepository.findByCellIdInOrderByLteTrafficDesc_BeginTimeDesc(
-                cellIds.split(",")).stream().collect(groupingBy(LteTrafficData::getPmUserLabel));
+        Map<String, Object> res = lteTrafficAnalysisService.getCellRecord(cellIds);
         log.debug("res={}",res);
         return res;
     }

@@ -147,15 +147,22 @@ $(function () {
                                     if(data != "") {
                                         //console.log(data);
                                         var date = new Date();
-                                        $.each(data, function (key, value) {
+                                        var col="blue";
+                                        $.each(data["res"], function (key, value) {
                                             //console.log(key);
                                             content += '<tr class="custom-title"><td>' + key + '</td></tr>';
                                             $.each(value, function (i, v) {
                                                 date.setTime(v.lteTrafficDesc.beginTime);
+                                                $.each(data['problem'], function (c,d) {
+                                                    if((date.format("yyyy-MM-dd hh:mm:ss")+".0"+ v.pmUserLabel)===data['problem'][c]){
+                                                        col = "red";
+                                                    }
+                                                })
                                                 content += '<tr class="custom-content" onclick="addColor(this, true)">';
-                                                content += '<td style="color: blue">' + date.format("yyyy-MM-dd hh:mm:ss")+ '</td>';
+                                                content += '<td style="color:'+ col +'">' + date.format("yyyy-MM-dd hh:mm:ss")+ '</td>';
                                                 content += '<td style="display: none">' + v.cellId + '</td>';
                                                 content += '</tr>';
+                                                col = "blue";
                                             })
                                         })
 
@@ -316,16 +323,22 @@ $(function () {
                             },
                             async: false,
                             success: function (data) {
-                                //console.log(data);
-                                if(data != "") {
+                                //console.log(data['problem'][0]);
+                                if(data['res'] != "") {
                                     var date = new Date();
-                                    $.each(data, function (key, value) {
+                                    var color;
+                                    $.each(data['res'], function (key, value) {
                                         //console.log(key);
                                         content += '<tr class="custom-title"><td>' + key + '</td></tr>';
                                         $.each(value, function (i, v) {
                                             date.setTime(v.lteTrafficDesc.beginTime);
+                                            if((date.format("yyyy-MM-dd hh:mm:ss")+".0"+ v.pmUserLabel)===data['problem'][0]){
+                                                color = "red";
+                                            }else {
+                                                color = "blue";
+                                            }
                                             content += '<tr class="custom-content" onclick="addColor(this, true)">';
-                                            content += '<td style="color: blue">' + date.format("yyyy-MM-dd hh:mm:ss")+ '</td>';
+                                            content += '<td style="color:'+ color +'">' + date.format("yyyy-MM-dd hh:mm:ss")+ '</td>';
                                             content += '<td style="display: none">' + v.cellId + '</td>';
                                             content += '</tr>';
                                         })

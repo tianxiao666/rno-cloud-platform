@@ -12,6 +12,8 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import static java.util.stream.Collectors.groupingBy;
+
 @Slf4j
 @Service
 public class LteTrafficAnalysisService {
@@ -451,6 +453,125 @@ public class LteTrafficAnalysisService {
         resMap.put("无线掉线次数(小区级)", wireDrop_DropTimes_CellLevel);
         log.debug("res={}", resMap);
         return resMap;
+    }
+
+    public Map<String, Object> getCellRecord(String cellIds) {
+        Map<String, Object> res = new HashMap<>();
+        List<String> list = new ArrayList<>();
+        List<LteTrafficData> data = lteTrafficDataRepository.findByCellIdInOrderByLteTrafficDesc_BeginTimeDesc(
+                cellIds.split(","));
+
+        int count;
+        float erab_Drop_CellLevel;
+        float erab_EstabSucc;
+        float rrc_ConnEstabSucc;
+        float wireConn;
+        float wireDrop_CellLevel;
+        float switchSucc;
+        for (LteTrafficData trafficData : data) {
+            count = 0;
+
+            if ((trafficData.getErabNbrsuccestab()) == 0) {
+                erab_Drop_CellLevel = 0;
+            } else {
+                erab_Drop_CellLevel = 100 * ((trafficData.getErabNbrreqrelenb()) - (trafficData.getErabNbrreqrelenbNormal()) + (trafficData.getErabHofail()))
+                        / ((trafficData.getErabNbrsuccestab()) + (trafficData.getHoSuccoutinterenbs1()) + (trafficData.getHoSuccoutinterenbx2()) + (trafficData.getHoAttoutintraenb()));
+            }
+
+            if (trafficData.getErabNbrattestab() == 0) {
+                erab_EstabSucc = 100;
+            } else {
+                erab_EstabSucc = 100 * (trafficData.getErabNbrsuccestab()) / (trafficData.getErabNbrattestab());
+            }
+
+            if (trafficData.getRrcAttconnestab() == 0) {
+                rrc_ConnEstabSucc = 100;
+            } else {
+                rrc_ConnEstabSucc = 100 * trafficData.getRrcSuccconnestab() / trafficData.getRrcAttconnestab();
+            }
+
+            if ((trafficData.getErabNbrattestab()) * (trafficData.getRrcAttconnestab()) == 0 || (trafficData.getRrcAttconnestab()) == 0) {
+                wireConn = 100;
+            } else {
+                wireConn = 100 * (trafficData.getErabNbrsuccestab()) / (trafficData.getErabNbrattestab()) * (trafficData.getRrcSuccconnestab()) / (trafficData.getRrcAttconnestab());
+            }
+
+            if ((trafficData.getContextSuccinitalsetup()) == 0) {
+                wireDrop_CellLevel = 0;
+            } else {
+                wireDrop_CellLevel = ((trafficData.getContextAttrelenb()) - (trafficData.getContextAttrelenbNormal())) / (trafficData.getContextSuccinitalsetup()) * 100;
+            }
+
+            if (((trafficData.getHoAttoutinterenbs1()) + (trafficData.getHoAttoutinterenbx2()) + (trafficData.getHoAttoutintraenb())) == 0) {
+                switchSucc = 100;
+            } else {
+                switchSucc = 100 * ((trafficData.getHoSuccoutinterenbs1()) + (trafficData.getHoSuccoutinterenbx2()) + (trafficData.getHoSuccoutintraenb()))
+                        / ((trafficData.getHoAttoutinterenbs1()) + (trafficData.getHoAttoutinterenbx2()) + (trafficData.getHoAttoutintraenb()));
+            }
+
+            if (erab_Drop_CellLevel >= 10 && trafficData.getErabNbrsuccestab() > 20) {
+                count++;
+            }
+
+            if (erab_EstabSucc <= 85 && trafficData.getErabNbrattestab() > 20) {
+                count++;
+            }
+
+            if (rrc_ConnEstabSucc <= 85 && trafficData.getRrcAttconnestab() > 20) {
+                count++;
+            }
+
+            if (trafficData.getRrcAttconnestab() > 3 && (trafficData.getPdcpUpoctul() + trafficData.getPdcpUpoctdl() == 0)) {
+                count++;
+            }
+
+            if (trafficData.getRrcAttconnestab() > 100 && wireConn <= 70) {
+                count++;
+            }
+
+            if (rrc_ConnEstabSucc < 70 && trafficData.getRrcAttconnestab() - trafficData.getRrcSuccconnestab() > 200) {
+                count++;
+            }
+
+            if (wireDrop_CellLevel > 50 && (trafficData.getContextAttrelenb() - trafficData.getContextAttrelenbNormal() > 200)) {
+                count++;
+            }
+
+            if (trafficData.getRrcAttconnestab() - trafficData.getRrcSuccconnestab() > 100) {
+                count++;
+            }
+
+            if (trafficData.getContextAttrelenb() - trafficData.getContextAttrelenbNormal() > 150) {
+                count++;
+            }
+
+            if (trafficData.getRrcAttconnestab() - trafficData.getRrcSuccconnestab() +
+                    trafficData.getErabNbrattestab() - trafficData.getErabNbrsuccestab() > 200) {
+                count++;
+            }
+
+            if (switchSucc <= 60 && trafficData.getHoAttoutinterenbs1() + trafficData.getHoAttoutinterenbx2() + trafficData.getHoAttoutintraenb() > 100) {
+                count++;
+            }
+
+            if ((trafficData.getHoAttoutinterenbs1() + trafficData.getHoAttoutinterenbx2() + trafficData.getHoAttoutintraenb()) -
+                    (trafficData.getHoSuccoutinterenbs1() + trafficData.getHoSuccoutinterenbx2() + trafficData.getHoSuccoutintraenb()) >= 150) {
+                count++;
+            }
+
+            if (wireDrop_CellLevel >= 20 && trafficData.getRrcAttconnestab() + trafficData.getErabNbrattestab() > 100) {
+                count++;
+            }
+
+            if (count > 0) {
+                list.add(trafficData.getLteTrafficDesc().getBeginTime()+ trafficData.getPmUserLabel());
+            }
+
+        }
+        res.put("res", lteTrafficDataRepository.findByCellIdInOrderByLteTrafficDesc_BeginTimeDesc(
+                cellIds.split(",")).stream().collect(groupingBy(LteTrafficData::getPmUserLabel)));
+        res.put("problem", list);
+        return res;
     }
 
     public List<Map<String, Object>> getProblemCell(long areaId) {
