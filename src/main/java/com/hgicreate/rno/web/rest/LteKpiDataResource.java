@@ -22,10 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -132,26 +129,26 @@ public class LteKpiDataResource {
             dataJobReport.setMessage("文件成功上传至服务器");
             dataJobReportRepository.save(dataJobReport);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/query-import")
+    @GetMapping("/query-import")
     public List<LteKpiDataFileDTO> queryImport(LteKpiDataFileVM vm) throws ParseException {
         log.debug("视图模型: " + vm);
         return lteKpiDataService.queryFileUploadRecord(vm);
     }
 
-    @PostMapping("/query-import-detail-id")
+    @GetMapping("/query-import-detail-id")
     public List<DataJobReportDTO> queryImportDetailById(@RequestParam String id){
         return dataJobReportRepository.findByDataJob_Id(Long.parseLong(id))
                 .stream().map(DataJobReportMapper.INSTANCE::dataJobReportToDataJobReportDTO)
                 .collect(Collectors.toList());
     }
 
-    @PostMapping("/query-record")
+    @GetMapping("/query-record")
     public List<LteKpiDescDTO> queryRecord(LteKpiDescVM vm) throws ParseException{
         log.debug("视图模型vm={}",vm);
         return lteKpiDataService.queryRecord(vm);

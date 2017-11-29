@@ -55,7 +55,7 @@ public class LteCellDataResource {
         this.env = env;
     }
 
-    @PostMapping("/cell-query")
+    @GetMapping("/cell-query")
     public List<LteCellDataDTO> cellQuery(LteCellDataVM lteCellDataVM) {
         log.debug("查询条件：省={}，市={}，cellId={}, cell名称={},pci={}",
                 lteCellDataVM.getProvinceId() ,
@@ -77,7 +77,7 @@ public class LteCellDataResource {
         return lteCellDataRepository.findOne(cellId);
     }
 
-    @GetMapping("/cell-delete")
+    @PostMapping("/cell-delete")
     public void deleteByCellId(@RequestParam String cellId) {
         log.debug("待删除小区id为={}", cellId);
         lteCellDataRepository.delete(cellId);
@@ -87,18 +87,18 @@ public class LteCellDataResource {
     public boolean updateLteCellDetail(LteCell lteCellVM) {
         try {
             log.debug("要更新的小区={}", lteCellVM.getLatitude());
-            LteCell lteCell1 =lteCellDataRepository.findOne(lteCellVM.getCellId());
-            lteCellVM.setCellName(lteCell1.getCellName());
-            lteCellVM.setEnodebId(lteCell1.getEnodebId());
-            lteCellVM.setArea(lteCell1.getArea());
-            lteCellVM.setBandIndicator(lteCell1.getBandIndicator());
-            lteCellVM.setBandAmount(lteCell1.getBandAmount());
+            LteCell lteCell =lteCellDataRepository.findOne(lteCellVM.getCellId());
+            lteCellVM.setCellName(lteCell.getCellName());
+            lteCellVM.setEnodebId(lteCell.getEnodebId());
+            lteCellVM.setArea(lteCell.getArea());
+            lteCellVM.setBandIndicator(lteCell.getBandIndicator());
+            lteCellVM.setBandAmount(lteCell.getBandAmount());
             lteCellVM.setLastModifiedUser(SecurityUtils.getCurrentUserLogin());
             lteCellVM.setLastModifiedDate(new Date());
             lteCellDataRepository.save(lteCellVM);
             return true;
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
             return false;
         }
     }
@@ -176,28 +176,27 @@ public class LteCellDataResource {
             dataJobReport.setMessage("文件成功上传至服务器");
             dataJobReportRepository.save(dataJobReport);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.debug(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/query-import")
+    @GetMapping("/query-import")
     public List<LteCellDataFileDTO> queryImport(LteCellDataImportVM vm) throws ParseException {
         log.debug("视图模型: " + vm);
         return lteCellDataService.queryFileUploadRecord(vm);
     }
 
-    @PostMapping("/query-import-detail-id")
+    @GetMapping("/query-import-detail-id")
     public List<DataJobReportDTO> queryImportDetailById(@RequestParam String id){
         return dataJobReportRepository.findByDataJob_Id(Long.parseLong(id))
                 .stream().map(DataJobReportMapper.INSTANCE::dataJobReportToDataJobReportDTO)
                 .collect(Collectors.toList());
     }
 
-    @PostMapping("/query-record")
+    @GetMapping("/query-record")
     public List<LteCellDescDTO> queryRecord(LteCellDescVM vm) throws ParseException{
-
         log.debug("视图模型vm ={}", vm);
         return lteCellDataService.queryRecord(vm);
     }

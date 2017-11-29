@@ -183,7 +183,7 @@ function showImportDetail(id) {
        url: "/api/lte-kpi-data/query-import-detail-id",
         data:{id:id},
         dataType: 'text',
-        type:'post',
+        type:'get',
         success:showImportDetailRecord,
         error: function (err) {
             console.log(err)

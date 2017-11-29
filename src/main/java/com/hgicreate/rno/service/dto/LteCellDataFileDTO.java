@@ -1,5 +1,6 @@
 package com.hgicreate.rno.service.dto;
 
+import com.hgicreate.rno.util.FileSizeUtil;
 import lombok.Data;
 
 @Data
@@ -16,7 +17,7 @@ public class LteCellDataFileDTO {
     private String status;
 
     public void setFileSize(String fileSize){
-        this.fileSize = LteDtDataFileDTO.getPrintSize(Long.parseLong(fileSize));
+        this.fileSize = FileSizeUtil.getPrintSize(Long.parseLong(fileSize));
     }
 
 }

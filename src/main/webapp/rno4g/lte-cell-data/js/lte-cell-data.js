@@ -426,6 +426,7 @@ function deleteCell(cellId) {
         $.ajax({
             url: '/api/lte-cell-data/cell-delete',
             dataType: 'text',
+            type: 'post',
             data: {cellId: cellId},
             success: function () {
                 showInfoInAndOut("info", "删除小区成功！");
@@ -648,7 +649,7 @@ function showImportDetail(id) {
         url: '/api/lte-cell-data/query-import-detail-id',
         data:{id:id},
         dataType: 'text',
-        type:'post',
+        type:'get',
         success: showImportDatailResult,
         error: function (err) {
             console.log(err);

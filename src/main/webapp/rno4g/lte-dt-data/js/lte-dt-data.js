@@ -185,7 +185,7 @@ function showImportDtDetail(id) {
         url: '/api/lte-dt-data/query-import-detail-id',
         data:{id:id},
         dataType: 'text',
-        type:'post',
+        type:'get',
         success: showImportDtDatailResult,
         error: function (err) {
             console.log(err);
