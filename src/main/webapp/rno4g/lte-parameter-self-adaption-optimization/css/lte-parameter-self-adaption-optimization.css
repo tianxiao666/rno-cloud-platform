@@ -1,5 +1,5 @@
 
-html, body, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header,  menu, nav, section, summary, time, mark, audio, video {
+html, body, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, menu, nav, section, summary, time, mark, audio, video {
     margin: 0;
     padding: 0;
     border: 0;
@@ -1640,11 +1640,9 @@ select {
     margin-top: 10px;
 }
 
-
 .main-table1 .menuTd {
     text-align: right;
 }
-
 
 .greystyle-standard-noborder tr td {
     padding: 0
@@ -1662,7 +1660,6 @@ select {
 .sectionDivCls {
     margin-top: 10px;
 }
-
 
 /*新定义*/
 .rnoHeader {
@@ -1781,10 +1778,7 @@ select {
     padding-right: 3px;
 }
 
-
-
 /*以下来自lte-cell-data*/
-
 
 html, body, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, menu, nav, section, summary, time, mark, audio, video {
     margin: 0;
@@ -2455,17 +2449,7 @@ body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, input, button, textar
     padding: 0;
 }
 
-div#lteCellDetailDiv {
-    width: 500px;
-    position: absolute;
-    top: 30%;
-    left: 60%;
-    margin-left: -100px;
-    margin-top: -100px;
-    padding: 10px;
-}
-
-div#lteCellAdviceDiv {
+div#lteOperationDiv {
     width: 500px;
     position: absolute;
     top: 30%;
@@ -2492,7 +2476,7 @@ div#lteCellAdviceDiv {
     font-weight: bold;
 }
 
-#lteCellDetailDiv {
+#lteOperationDiv {
     width: 500px;
     position: absolute;
     /*background: none repeat scroll 0 0 #70e1ff;*/

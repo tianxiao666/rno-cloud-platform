@@ -15,10 +15,18 @@ public class LteParameterSelfAdaptionOptimizationDTO {
     private String erabDropRate;
     private String switchRequestCount;
     private String switchSuccessCount;
+    private String switchSuccessRate;
+    private String operation;
+    private String cellPriority;
+    private String cellChangeSwitchDifficulty;
+    private String decreaseOrIncreaseHighStressCellRechooseDelay;
+    private String decreaseHighStressCellFrequencyFrequencyOffset;
 
     public LteParameterSelfAdaptionOptimizationDTO(String cellId, String cellName, String radioAccessRate, String erabSetUpSuccessRate,
                                                    String rrcConnectionSetUpSuccessRate, String radioDropRate, String radioDropCount,
-                                                   String erabDropRate, String switchRequestCount, String switchSuccessCount) {
+                                                   String erabDropRate, String switchRequestCount, String switchSuccessCount,
+                                                   String switchSuccessRate, String operation, String cellPriority, String cellChangeSwitchDifficulty,
+                                                   String decreaseOrIncreaseHighStressCellRechooseDelay, String decreaseHighStressCellFrequencyFrequencyOffset) {
         setCellId(cellId);
         setCellName(cellName);
         setRadioAccessRate(radioAccessRate);
@@ -29,5 +37,11 @@ public class LteParameterSelfAdaptionOptimizationDTO {
         setErabDropRate(erabDropRate);
         setSwitchRequestCount(switchRequestCount);
         setSwitchSuccessCount(switchSuccessCount);
+        setSwitchSuccessRate(switchSuccessRate);
+        setOperation(operation);
+        setCellPriority(cellPriority);
+        setCellChangeSwitchDifficulty(cellChangeSwitchDifficulty);
+        setDecreaseOrIncreaseHighStressCellRechooseDelay(decreaseOrIncreaseHighStressCellRechooseDelay);
+        setDecreaseHighStressCellFrequencyFrequencyOffset(decreaseHighStressCellFrequencyFrequencyOffset);
     }
 }

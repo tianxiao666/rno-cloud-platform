@@ -40,14 +40,14 @@
                             <div style="padding: 5px;"><select id="district" name="district" title=""></select></div>
                         </td>
                         <td>
-                            <div style="padding: 5px;">小区名：<input type="text" id="cellName"></div>
-                            <!--<div style="padding: 5px;"><input type="checkbox" id="onlyShowHighPressCells"-->
-                                                              <!--name="onlyShowHighPressCells"><label-->
-                                    <!--for="onlyShowHighPressCells">高负荷小区</label></div>-->
+                            <div style="padding: 5px;">
+                                <label for="cellName">小区名：</label>
+                                <input type="text" id="cellName" value="">
+                            </div>
                         </td>
                         <td>
-                            <div style="padding: 5px;"><input value="查询" type="submit">
-                            </div>
+                            <div style="padding: 5px;"><input value="查询" type="button"
+                                                              onclick="queryCellsNeedsToBeHandle()"></div>
                         </td>
                     </tr>
                 </table>
@@ -58,64 +58,35 @@
                     <thead>
                     <tr>
                         <th>小区名</th>
-                        <th>是否为高负荷小区</th>
-                        <th>RRC数量</th>
-                        <th>上行利用率(%)</th>
-                        <th>下行利用率(%)</th>
-                        <th>上行流量(GB)</th>
-                        <th>下行流量(GB)</th>
+                        <th>无线接通率(%)</th>
+                        <th>E-RAB建立成功率(%)</th>
+                        <th>RRC连接建立成功率(%)</th>
+                        <th>无线掉线率(%)</th>
+                        <th>无线掉线次数(次)</th>
+                        <th>E-RAB掉线率(%)</th>
+                        <th>切换请求次数(次)</th>
+                        <th>切换成功次数(次)</th>
+                        <th>切换成功率(%)</th>
                         <th>操作</th>
                     </tr>
                     </thead>
                 </table>
             </div>
         </div>
-        <div id="capicityOptimizationDetailDialog" style="position: fixed;opacity: 1;z-index: 1000;display:none;">
-            <div style="position: fixed;width: 100%;height: 100%;top:0;left:0;background: rgba(0,0,0,0.3);">
-                <div id="lteCellDetailDiv" class="dialog2" style="position: relative;right: 10px;opacity: 0;">
+        <div id="parameterSelfAdaptionOptimizationDialog" style="position: fixed;opacity: 1;z-index: 1000;display:none;">
+            <div name="shelter" style="position: fixed;width: 100%;height: 100%;top:0;left:0;background: rgba(0,0,0,0.3);">
+                <div id="lteOperationDiv" class="dialog2" style="position: relative;right: 10px;opacity: 0;">
                     <div class="dialog_header">
                         <div class="dialog_title">
-                            LTE小区详情查看
+                            参数自调整
                         </div>
                         <div class="dialog_tool">
                             <div class="dialog_tool_close dialog_closeBtn"
-                                 onclick="detailDialogClose()"></div>
+                                 onclick="operationDialogClose()"></div>
                         </div>
                     </div>
                     <div class="dialog_content">
-                        <div style="font-weight: bold;margin-bottom:5px">
-                            小区ID：<span id="detailCellId"></span>
-                            -&gt;小区名称：<span id="detailCellName"></span>
-                        </div>
-                        <div>
-                        </div>
-                        <table class="greystyle-standard" id="viewCellDetailTable">
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="capicityOptimizationAdviceDialog" style="position: fixed;opacity: 1;z-index: 1000;display:none;">
-            <div style="position: fixed;width: 100%;height: 100%;top:0;left:0;background: rgba(0,0,0,0.3);">
-                <div id="lteCellAdviceDiv" class="dialog2"
-                     style="position: relative;right: 10px;width: 400px;opacity: 0;">
-                    <div class="dialog_header">
-                        <div class="dialog_title">
-                            LTE小区建议显示
-                        </div>
-                        <div class="dialog_tool">
-                            <div class="dialog_tool_close dialog_closeBtn"
-                                 onclick="adviceDialogClose()"></div>
-                        </div>
-                    </div>
-                    <div class="dialog_content">
-                        <div style="font-weight: bold;margin-bottom:5px">
-                            小区ID：<span id="adviceCellId"></span>
-                            -&gt;小区名称：<span id="adviceCellName"></span>
-                        </div>
-                        <div>
-                        </div>
-                        <table class="greystyle-standard" id="viewCellAdviceTable">
+                        <table class="greystyle-standard" style="overflow: hidden;" id="viewCellDetailTable">
                         </table>
                     </div>
                 </div>
