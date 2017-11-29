@@ -1,8 +1,8 @@
 var optionsLength;//获取指标列的总长度
-var columnArr = new Array(); //指标列数组
+var columnArr = []; //指标列数组
 var firstTime = true;
 var defIndexLabelStr = "rrc_ConnEstabSucc,erab_EstabSucc,wireConn,erab_Drop_CellLevel,switchSucc";
-var defIndexNameStr="RRC连接建立成功率,E-RAB建立成功率,无线接通率,E-RAB掉线率(小区级),切换成功率";
+var defIndexNameStr = "RRC连接建立成功率,E-RAB建立成功率,无线接通率,E-RAB掉线率(小区级),切换成功率";
 var columnStr = "meabegTime,meaendTime,cellName";
 var columnList = [];
 
@@ -23,20 +23,20 @@ $(function () {
 
     $("#queryDataBtn").click(function () {
         var cells = $("#cellStr").val();
-        if (cells == null || cells.length == 0||cells == "") {
+        if (cells === null || cells.length === 0 || cells === "") {
             alert("请输入要查看的小区");
             return false;
         }
         var indexStr = $("#indexHiddenStr").val();
-        if (indexStr.length == 0) {
+        if (indexStr.length === 0) {
             $("#indexHiddenNameStr").val(defIndexNameStr);
             $("#indexHiddenStr").val(defIndexLabelStr);
         }
 
         // 如果未选择指标，则显示默认指标
-        if(columnArr.length===0){
+        if (columnArr.length === 0) {
             columnStr = "meabegTime,meaendTime,cellName";
-            columnStr = columnStr + ',' +defIndexLabelStr;
+            columnStr = columnStr + ',' + defIndexLabelStr;
             var indexLabelList = defIndexLabelStr.split(",");
             var indexNameList = defIndexNameStr.split(",");
             var tableStr = "";
@@ -58,7 +58,7 @@ $(function () {
 
     $("#importBtn").click(function () {
         var indexStr = $("#indexHiddenStr").val();
-        if (indexStr.length == 0) {
+        if (indexStr.length === 0) {
             $("#indexHiddenNameStr").val(defIndexNameStr);
             $("#indexHiddenStr").val(defIndexLabelStr);
         }
@@ -73,9 +73,8 @@ $(function () {
 //显示查询结果
 function showQueryResult(data) {
     $(".loading").css("display", "none");
-    if (data == null || data == undefined) {
-        showInfoInAndOut('info', '没有符合条件的邻区数据记录');
-        return;
+    if (data === null || data === undefined || data == "") {
+        showInfoInAndOut('info', '没有符合条件的记录');
     }
     // alert(data.length);
     columnList = [];
@@ -96,7 +95,7 @@ function showQueryResult(data) {
 }
 
 //初始化导出数据时上传参数
-function initDownloadAttachParams(){
+function initDownloadAttachParams() {
     //清空并保存
     $("#cellNameStrForDownload").val("");
     $("#cellNameStrForDownload").val($("#cellStr").val());
@@ -144,13 +143,13 @@ function initIndexDiv() {
     var defaultDomId = "defaultIndex";
     var selectId = "selectedIndex";
     var arrT = defIndexLabelStr.split(",");
-    if (document.getElementById(selectId).options.length == 0) {
+    if (document.getElementById(selectId).options.length === 0) {
         for (var j = 0; j < arrT.length; j++) {
             for (var i = 0; i < document.getElementById(defaultDomId).options.length; i++) {
-                if (document.getElementById(defaultDomId).options[i].value.trim() == arrT[j].trim()) {
+                if (document.getElementById(defaultDomId).options[i].value.trim() === arrT[j].trim()) {
                     var varitem = new Option(document.getElementById(defaultDomId).options[i].text, document.getElementById(defaultDomId).options[i].value);
                     var domId = document.getElementById(defaultDomId).options[i].id;
-                    if (domId != null) {
+                    if (domId !== null) {
                         varitem.setAttribute("id", domId);
                     }
                     var index = 0;
@@ -173,15 +172,18 @@ function initIndexDiv() {
 }
 
 //BSC选择器
+/**
+ * @return {boolean}
+ */
 function PutRightOneClk(defaultDomId, selectId) {
-    if (document.getElementById(defaultDomId).options.selectedIndex == -1) {
+    if (document.getElementById(defaultDomId).options.selectedIndex === -1) {
         return false;
     }
     while (document.getElementById(defaultDomId).options.selectedIndex > -1) {
-        var id = document.getElementById(defaultDomId).options.selectedIndex
+        var id = document.getElementById(defaultDomId).options.selectedIndex;
         var varitem = new Option(document.getElementById(defaultDomId).options[id].text, document.getElementById(defaultDomId).options[id].value);
         var domId = document.getElementById(defaultDomId).options[id].id;
-        if (domId != null) {
+        if (domId !== null) {
             varitem.setAttribute("id", domId);
         }
         var index = 0;
@@ -199,14 +201,17 @@ function PutRightOneClk(defaultDomId, selectId) {
     }
 }
 
+/**
+ * @return {boolean}
+ */
 function PutRightAllClk(defaultDomId, selectId) {
-    if (document.getElementById(defaultDomId).options.length == 0) {
+    if (document.getElementById(defaultDomId).options.length === 0) {
         return false;
     }
     for (var i = 0; i < document.getElementById(defaultDomId).options.length; i++) {
         var varitem = new Option(document.getElementById(defaultDomId).options[i].text, document.getElementById(defaultDomId).options[i].value);
         var domId = document.getElementById(defaultDomId).options[i].id;
-        if (domId != null) {
+        if (domId !== null) {
             varitem.setAttribute("id", domId);
         }
         var index = 0;
@@ -224,15 +229,18 @@ function PutRightAllClk(defaultDomId, selectId) {
     document.getElementById(defaultDomId).options.length = 0;
 }
 
+/**
+ * @return {boolean}
+ */
 function PutLeftOneClk(defaultDomId, selectId) {
-    if (document.getElementById(selectId).options.selectedIndex == -1) {
+    if (document.getElementById(selectId).options.selectedIndex === -1) {
         return false;
     }
     while (document.getElementById(selectId).options.selectedIndex > -1) {
-        var id = document.getElementById(selectId).options.selectedIndex
+        var id = document.getElementById(selectId).options.selectedIndex;
         var varitem = new Option(document.getElementById(selectId).options[id].text, document.getElementById(selectId).options[id].value);
         var domId = document.getElementById(selectId).options[id].id;
-        if (domId != null) {
+        if (domId !== null) {
             varitem.setAttribute("id", domId);
         }
         var index = 0;
@@ -250,14 +258,17 @@ function PutLeftOneClk(defaultDomId, selectId) {
     }
 }
 
+/**
+ * @return {boolean}
+ */
 function PutLeftAllClk(defaultDomId, selectId) {
-    if (document.getElementById(selectId).options.length == 0) {
+    if (document.getElementById(selectId).options.length === 0) {
         return false;
     }
     for (var i = 0; i < document.getElementById(selectId).options.length; i++) {
         var varitem = new Option(document.getElementById(selectId).options[i].text, document.getElementById(selectId).options[i].value);
         var domId = document.getElementById(selectId).options[i].id;
-        if (domId != null) {
+        if (domId !== null) {
             varitem.setAttribute("id", domId);
         }
         var index = 0;
@@ -310,7 +321,7 @@ function sumIndex() {
     $("#indexHiddenNameStr").val(indexNameStr);
     $("#selectIndexDiv").hide();
 
-    if (indexLabelStr != "") {
+    if (indexLabelStr !== "") {
         columnStr = columnStr + ',' + indexLabelStr;
     }
 }

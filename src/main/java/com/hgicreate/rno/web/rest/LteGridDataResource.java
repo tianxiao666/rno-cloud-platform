@@ -178,7 +178,7 @@ public class LteGridDataResource {
             dataJobReport.setMessage("文件成功上传到服务器");
             dataJobReportRepository.save(dataJobReport);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(HttpStatus.OK);
