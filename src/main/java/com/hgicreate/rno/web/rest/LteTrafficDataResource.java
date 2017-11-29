@@ -63,7 +63,7 @@ public class LteTrafficDataResource {
         this.env = env;
     }
 
-    @PostMapping("/query-import")
+    @GetMapping("/query-import")
     public List<LteTrafficDataDTO> queryImport(LteTrafficImportQueryVM vm) throws ParseException {
         log.debug("查询 DT 文件导入记录。");
         log.debug("视图模型: " + vm);
@@ -78,8 +78,8 @@ public class LteTrafficDataResource {
                 .collect(Collectors.toList());
     }
 
-    @PostMapping("/query-record")
-    public List<LteTrafficDescDTO>  queryRecord(LteTrafficDataDescVM vm) throws ParseException{
+    @GetMapping("/query-record")
+    public List<LteTrafficDescDTO> queryRecord(LteTrafficDataDescVM vm) throws ParseException{
         log.debug("视图模型vm ={}", vm);
         return lteTrafficDataService.queryRecord(vm);
     }
@@ -100,8 +100,10 @@ public class LteTrafficDataResource {
             // 获取文件名，并构建为本地文件路径
             String filename = vm.getFile().getOriginalFilename();
             log.debug("上传的文件名：{}", filename);
+
             //创建更新对象
             OriginFile originFile = new OriginFile();
+            OriginFileAttr originFileAttr = new OriginFileAttr();
 
             // 如果目录不存在则创建目录
             File fileDirectory = new File(directory + "/" + vm.getModuleName());
@@ -133,8 +135,6 @@ public class LteTrafficDataResource {
             originFile.setCreatedDate(new Date());
             originFileRepository.save(originFile);
 
-            //更新文件记录RNO_ORIGIN_FILE_Attr
-            OriginFileAttr originFileAttr = new OriginFileAttr();
             //更新文件记录RNO_ORIGIN_FILE_ATTR
             originFileAttr.setOriginFile(originFile);
             originFileAttr.setName("business_type");
@@ -166,6 +166,7 @@ public class LteTrafficDataResource {
             dataJob.setDataStoreType("FTP");
             dataJob.setDataStorePath(ftpFullPath);
             dataJobRepository.save(dataJob);
+
             //建立任务报告
             DataJobReport dataJobReport = new DataJobReport();
             dataJobReport.setDataJob(dataJob);
@@ -177,7 +178,7 @@ public class LteTrafficDataResource {
             dataJobReportRepository.save(dataJobReport);
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 

@@ -13,9 +13,9 @@ public interface DataJobReportMapper {
     DataJobReportMapper INSTANCE = Mappers.getMapper(DataJobReportMapper.class);
 
     @Mappings({
-            @Mapping(source = "startTime", target = "startTime",dateFormat = "yyyy-MM-dd HH:mm:ss"),
-            @Mapping(source = "completeTime", target = "completeTime",dateFormat = "yyyy-MM-dd HH:mm:ss")
-
+            @Mapping(source = "startTime", target = "startTime", dateFormat = "yyyy-MM-dd HH:mm:ss"),
+            @Mapping(source = "completeTime", target = "completeTime", dateFormat = "yyyy-MM-dd HH:mm:ss")
     })
+
     DataJobReportDTO dataJobReportToDataJobReportDTO(DataJobReport dataJobReport);
 }

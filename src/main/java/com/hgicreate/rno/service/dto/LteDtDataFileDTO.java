@@ -21,6 +21,4 @@ public class LteDtDataFileDTO {
         this.fileSize = FileSizeUtil.getPrintSize(Long.parseLong(fileSize));
     }
 
-
-
 }

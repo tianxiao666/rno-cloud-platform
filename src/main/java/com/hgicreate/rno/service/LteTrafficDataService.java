@@ -25,7 +25,7 @@ public class LteTrafficDataService {
     private final DataJobRepository dataJobRepository;
     private final LteTrafficDataQueryMapper lteTrafficDataQueryMapper;
 
-    public LteTrafficDataService(DataJobRepository dataJobRepository,LteTrafficDataQueryMapper lteTrafficDataQueryMapper) {
+    public LteTrafficDataService(DataJobRepository dataJobRepository, LteTrafficDataQueryMapper lteTrafficDataQueryMapper) {
         this.dataJobRepository = dataJobRepository;
         this.lteTrafficDataQueryMapper = lteTrafficDataQueryMapper;
     }
@@ -33,30 +33,30 @@ public class LteTrafficDataService {
     public List<LteTrafficDataDTO> queryTrafficData(LteTrafficImportQueryVM vm) throws ParseException {
         Area area = new Area();
         area.setId(Long.parseLong(vm.getCity()));
-        SimpleDateFormat sdf =   new SimpleDateFormat( "yyyy-MM-dd" );
-        Date beginDate=sdf.parse(vm.getBegUploadDate());
-        SimpleDateFormat sdf2 =   new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
-        Date endDate =sdf2.parse(vm.getEndUploadDate() +" 23:59:59");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date beginDate = sdf.parse(vm.getBegUploadDate());
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date endDate = sdf2.parse(vm.getEndUploadDate() + " 23:59:59");
         List<DataJob> list = new ArrayList<>();
-        if(vm.getStatus().equals("全部")){
+        if (vm.getStatus().equals("全部")) {
             list = dataJobRepository.findTop1000ByAreaAndOriginFile_CreatedDateBetweenAndOriginFile_DataTypeOrderByOriginFile_CreatedDateDesc(
-                    area, beginDate, endDate,"LTE-TRAFFIC-DATA");
-        }else{
-            list= dataJobRepository.findTop1000ByAreaAndStatusAndOriginFile_CreatedDateBetweenAndOriginFile_DataTypeOrderByOriginFile_CreatedDateDesc(
-                    area, vm.getStatus(), beginDate, endDate,"LTE-TRAFFIC-DATA");
+                    area, beginDate, endDate, "LTE-TRAFFIC-DATA");
+        } else {
+            list = dataJobRepository.findTop1000ByAreaAndStatusAndOriginFile_CreatedDateBetweenAndOriginFile_DataTypeOrderByOriginFile_CreatedDateDesc(
+                    area, vm.getStatus(), beginDate, endDate, "LTE-TRAFFIC-DATA");
         }
         return list.stream().map(LteTrafficDataFileMapper.INSTANCE::lteTrafficDataFileToLteTrafficDataDTO)
                 .collect(Collectors.toList());
     }
 
-    public List<LteTrafficDescDTO> queryRecord(LteTrafficDataDescVM vm) throws ParseException{
-        SimpleDateFormat sdf =   new SimpleDateFormat( "yyyy-MM-dd" );
-        SimpleDateFormat sdf2 =   new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
+    public List<LteTrafficDescDTO> queryRecord(LteTrafficDataDescVM vm) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date beginDate = sdf.parse(vm.getBeginTestDate());
-        Date endDate =sdf2.parse(vm.getEndTestDate() + " 23:59:59");
-        List<LteTrafficDescDTO> list = lteTrafficDataQueryMapper.queryTop1000TrafficData(Long.parseLong(vm.getCity()),beginDate,endDate)
-                                    .stream().map(LteTrafficDescMapper.INSTANCE::lteTrafficDescToLteTrafficDescDTO)
-                                    .collect(Collectors.toList());
+        Date endDate = sdf2.parse(vm.getEndTestDate() + " 23:59:59");
+        List<LteTrafficDescDTO> list = lteTrafficDataQueryMapper.queryTop1000TrafficData(Long.parseLong(vm.getCity()), beginDate, endDate)
+                .stream().map(LteTrafficDescMapper.INSTANCE::lteTrafficDescToLteTrafficDescDTO)
+                .collect(Collectors.toList());
         return list;
     }
 
