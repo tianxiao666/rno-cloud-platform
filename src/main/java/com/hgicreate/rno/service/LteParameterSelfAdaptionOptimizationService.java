@@ -85,8 +85,8 @@ public class LteParameterSelfAdaptionOptimizationService {
                     String randomDecreaseHighStressCellRechooseDelay = random.nextInt(2) == 1 ? "降低高负荷小区的重选迟滞" : "升高低负荷小区重选迟滞";
                     String randomDecreaseHighStressCellFrequencyGapFrequencyOffset = random.nextInt(2) == 1 ? "降低高负荷小区频间频率偏移" : "";
                     list.add(new LteParameterSelfAdaptionOptimizationDTO(randomID + "", districtName + subName + relPosition + subNameCell,
-                            String.format("%.2f", random.nextInt(5) + 95 + Math.random()) + "", String.format("%.2f", random.nextInt(5) + 95 + Math.random()) + "",
-                            String.format("%.2f", random.nextInt(5) + 95 + Math.random()) + "", String.format("%.2f", random.nextInt(3) + Math.random()) + "",
+                            String.format("%.2f", random.nextInt(2) + 98 + Math.random()) + "", String.format("%.2f", random.nextInt(2) + 98 + Math.random()) + "",
+                            String.format("%.2f", random.nextInt(2) + 98 + Math.random()) + "", String.format("%.2f", random.nextInt(3) + Math.random()) + "",
                             randomRadioDropCount + "", String.format("%.2f", random.nextInt(3) + Math.random()) + "", randomSwitchRequestCount + "",
                             randomSwitchSuccessCount + "", randomSwitchSuccessRate + "", "1", randomCellPriority + "",
                             randomCellChangeSwitchDifficulty + "", randomDecreaseHighStressCellRechooseDelay + "",
