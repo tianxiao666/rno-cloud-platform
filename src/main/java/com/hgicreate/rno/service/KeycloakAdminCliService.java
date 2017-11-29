@@ -3,9 +3,9 @@ package com.hgicreate.rno.service;
 import com.hgicreate.rno.config.Constants;
 import com.hgicreate.rno.domain.User;
 import com.hgicreate.rno.security.SecurityUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
-import org.keycloak.admin.client.resource.UserResource;
 import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 public class KeycloakAdminCliService {
 
@@ -56,13 +57,19 @@ public class KeycloakAdminCliService {
     /**
      * 重置密码
      */
-    public void resetPassword(String newPassword) {
-        // 设置新密码
-        CredentialRepresentation newCredential = new CredentialRepresentation();
-        UserResource userResource = getInstance().realm(REALM).users().get(SecurityUtils.getAccessToken().getId());
-        newCredential.setType(CredentialRepresentation.PASSWORD);
-        newCredential.setValue(newPassword);
-        newCredential.setTemporary(false);
-        userResource.resetPassword(newCredential);
+    boolean resetPassword(String newPassword) {
+        UsersResource usersResource = getInstance().realm(REALM).users();
+        List<UserRepresentation> userRepresentationList = usersResource.search(SecurityUtils.getCurrentUserLogin());
+        if (userRepresentationList.size() > 0) {
+            String id = userRepresentationList.get(0).getId();
+            CredentialRepresentation newCredential = new CredentialRepresentation();
+            newCredential.setType(CredentialRepresentation.PASSWORD);
+            newCredential.setValue(newPassword);
+            newCredential.setTemporary(false);
+            usersResource.get(id).resetPassword(newCredential);
+            return true;
+        } else {
+            return false;
+        }
     }
 }
