@@ -12,6 +12,9 @@ public final class Constants {
     public static final Integer WEAK_COVERAGE_RSRP_THRESHOLD = -110;
     public static final Integer WEAK_COVERAGE_RS_SINR_THRESHOLD = -3;
 
+    public static final String ADMIN_CONSOLE_CLIENT_ID = "security-admin-console";
+    public static final String ADMIN_CLI_CLIENT_ID = "admin-cli";
+
     private Constants() {
     }
 }
