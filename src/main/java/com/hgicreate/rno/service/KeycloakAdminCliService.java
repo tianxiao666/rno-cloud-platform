@@ -31,6 +31,11 @@ public class KeycloakAdminCliService {
                 .build();
     }
 
+    /**
+     * 更新 Keycloak 认证中心的用户信息
+     * @param user 用户对象
+     * @return 成功返回true，失败返回false
+     */
     public boolean updateAccount(final User user) {
         UsersResource usersResource = getInstance().realm(REALM).users();
         List<UserRepresentation> userRepresentationList = usersResource.search(user.getUsername());
