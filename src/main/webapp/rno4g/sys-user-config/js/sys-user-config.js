@@ -23,7 +23,6 @@ $(document).ready(function () {
     initAreaSelectors({selectors: ["province", "city"]});
     //展示用户信息
     getUserInfoById(1);
-
 });
 
 function saveUser(){
@@ -89,7 +88,7 @@ function showUserInfo(raw) {
        $("#createdDate").val((new Date(one['createdDate'])).Format("yyyy-MM-dd hh:mm"));
        $("#lastModifiedUser").val(one['lastModifiedUser']);
        $("#lastModifiedDate").val((new Date(one['lastModifiedDate'])).Format("yyyy-MM-dd hh:mm"));
-       var cityInfo = eval("(" + getAreaById(one['defaultAre']) + ")");
+       var cityInfo = eval("(" + getAreaById(one['defaultArea']) + ")");
        var provinceDiv = $("#province");
         provinceDiv.val(cityInfo['parentId']);
         renderArea(provinceDiv.val(),"city",false);
