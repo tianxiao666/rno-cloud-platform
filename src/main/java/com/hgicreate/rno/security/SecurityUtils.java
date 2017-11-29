@@ -2,6 +2,7 @@ package com.hgicreate.rno.security;
 
 import com.hgicreate.rno.config.Constants;
 import org.keycloak.KeycloakPrincipal;
+import org.keycloak.KeycloakSecurityContext;
 import org.keycloak.representations.AccessToken;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -26,15 +27,27 @@ public final class SecurityUtils {
     }
 
     public static AccessToken getAccessToken() {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-        KeycloakPrincipal keycloakPrincipal = (KeycloakPrincipal) request.getUserPrincipal();
-        if (keycloakPrincipal == null) {
+        if (getKeycloakSecurityContext() == null) {
             AccessToken token = new AccessToken();
             token.setPreferredUsername(Constants.ANONYMOUS_USER);
             token.setName(Constants.ANONYMOUS_NAME);
             return token;
         } else {
-            return keycloakPrincipal.getKeycloakSecurityContext().getToken();
+            return getKeycloakSecurityContext().getToken();
         }
+    }
+
+    public static KeycloakSecurityContext getKeycloakSecurityContext() {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+        KeycloakPrincipal keycloakPrincipal = (KeycloakPrincipal) request.getUserPrincipal();
+        if (keycloakPrincipal == null) {
+            return null;
+        } else {
+            return keycloakPrincipal.getKeycloakSecurityContext();
+        }
+    }
+
+    public static String getTokenString() {
+        return getKeycloakSecurityContext() != null ? getKeycloakSecurityContext().getTokenString() : "";
     }
 }
