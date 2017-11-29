@@ -18,13 +18,23 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class UserResource {
     private final UserService userService;
-    @GetMapping("/get-user-by-id")
-    public User getUserById(Long userId){
-        return userService.getUserById(userId);
+    @GetMapping("/get-current-user")
+    public User getUserById(){
+        return userService.getCurrentUser();
     }
 
     @PostMapping("/update-user")
-    public String updateUser(User user){
+    public boolean updateUser(User user){
         return userService.saveUser(user);
     }
+
+    @GetMapping("/check-user-info")
+    public String checkUserInfo(){
+        return userService.checkUser();
+    }
+
+    /*@GetMapping("/getCurrentUserTest")
+    public AccessToken getCurrentUserTest(){
+        return SecurityUtils.getAccessToken();
+    }*/
 }

@@ -4,6 +4,15 @@ var secondLevelMenuSelected = "";
 var thirdLevelMenuSelected = "";
 
 $(function () {
+    //检验用户信息
+    $.ajax({
+        url: "api/check-user-info",
+        dataType: "text",
+        async: false,
+        success: function (data) {
+
+        }
+    });
     // 初始化系统标题、Logo与软件版本
     $.ajax({
         url: "api/app-info",

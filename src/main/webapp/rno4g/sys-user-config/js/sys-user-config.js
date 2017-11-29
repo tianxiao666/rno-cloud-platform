@@ -22,7 +22,7 @@ $(document).ready(function () {
     //初始化区域联动
     initAreaSelectors({selectors: ["province", "city"]});
     //展示用户信息
-    getUserInfoById(1);
+    getCurrentUserInfo();
 });
 
 function saveUser(){
@@ -50,18 +50,21 @@ function updateUserInfo(user){
         data:user,
         dataType : 'text',
         success : function(raw) {
-            if (raw === "success"){
+            if (!raw) {
+                alert("保存失败！");
+                getCurrentUserInfo();
+            } else {
                 alert("保存成功！");
-                getUserInfoById(userId);
+                getCurrentUserInfo();
             }
         }
     });
 }
 
-function getUserInfoById(userId){
+function getCurrentUserInfo(){
     $.ajax({
         type:'get',
-        url : '/api/get-user-by-id?userId=' + userId,
+        url : '/api/get-current-user',
         dataType : 'text',
         success : function(raw) {
             showUserInfo(raw);
@@ -120,7 +123,7 @@ Date.prototype.Format = function(fmt){
     return fmt;
 };
 function reload() {
-    getUserInfoById(1);
+    getCurrentUserInfo();
 }
 
 function getAreaById(id) {

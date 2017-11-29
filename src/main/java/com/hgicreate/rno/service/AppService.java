@@ -35,9 +35,7 @@ public class AppService {
 
     public Long updateApp(App app){
         appRepository.save(app);
-        Long id = appRepository.findAllByCode(app.getCode()).get(0).getId();
-        System.out.println("id = " + id);
-        return id;
+        return appRepository.findAllByCode(app.getCode()).get(0).getId();
     }
 
     public String deleteAppById(Long id){
