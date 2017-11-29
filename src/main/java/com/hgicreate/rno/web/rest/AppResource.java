@@ -8,11 +8,8 @@ import com.hgicreate.rno.service.dto.AppDTO;
 import com.hgicreate.rno.service.dto.AppNameDTO;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.core.env.Environment;
-import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
