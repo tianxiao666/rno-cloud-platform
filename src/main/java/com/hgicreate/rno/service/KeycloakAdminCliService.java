@@ -56,6 +56,8 @@ public class KeycloakAdminCliService {
 
     /**
      * 重置密码
+     * @param newPassword 新密码
+     * @return 成功返回true，失败返回false
      */
     boolean resetPassword(String newPassword) {
         UsersResource usersResource = getInstance().realm(REALM).users();
