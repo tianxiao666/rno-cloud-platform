@@ -11,14 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.Base64;
-import java.util.stream.Collectors;
-
 /**
  * @author ke_weixu
  */
@@ -52,33 +44,11 @@ public class UserResource {
     }
 
     /**
-     * 检验当前用户下，被校验的密码是否匹配。系统需要允许基础认证，如果基础认证关闭，则无法进行密码校验。
-     * @param password 被校验的密码
-     * @return 密码匹配返回 true，密码不匹配返回 false
+     * 检验当前用户下，被校验的密码是否匹配
      */
     @GetMapping("/verify-password")
-    Boolean verifyPassword(HttpServletRequest request, String password) {
-        boolean passwordMatching;
-        try {
-            String stringUrl = request.getRequestURL() + "-stub";
-            URLConnection urlConnection = new URL(stringUrl).openConnection();
-            urlConnection.setRequestProperty("X-Requested-With", "Curl");
-
-            String userAndPass = SecurityUtils.getCurrentUserLogin() + ":" + password;
-            String basicAuth = "Basic " + Base64.getEncoder().encodeToString(userAndPass.getBytes());
-            urlConnection.setRequestProperty("Authorization", basicAuth);
-
-            String result = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()))
-                    .lines().collect(Collectors.joining("\n"));
-
-            // 判断密码是否匹配
-            passwordMatching = "true".equals(result);
-
-        } catch (Exception e) {
-            // 错误不匹配，返回 HTTP 错误 401 - 未经授权，会抛出 IOException
-            passwordMatching = false;
-        }
-        return passwordMatching;
+    Boolean verifyPassword(String password) {
+        return SecurityUtils.verifyPassword(password);
     }
 
     /**
