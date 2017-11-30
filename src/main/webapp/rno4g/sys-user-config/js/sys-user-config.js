@@ -41,26 +41,30 @@ $(document).ready(function () {
                 required: '<em style=\"color:red\">请再次输入密码</em>',
                 equalTo: '<em style=\"color:red\">两次密码不一致</em>'
             }
+        },
+        submitHandler : function(form) {
+            $(form).ajaxSubmit({
+                success:function(message){
+                    if (message === true){
+                        alert("修改成功");
+                        location.reload();
+                    }else {
+                        alert("密码错误！请重新输入！");
+                        $("#oldPassword").focus();
+                    }
+
+
+                }
+            });
         }
     });
 
-    $(form).ajaxSubmit({
-        success:function(d){
-            var data=eval("("+d+")");
-            form.reset();
-            if(data['flag']===true){
-                alert("修改成功");
-            }else{
-                alert("修改失败！原因："+data['msg']);
-            }
-        }
+    $("passwordPage").submit(function(){
+        alert("Submitted");
     });
 
 });
 
-function savePassword() {
-    $("#passwordPage").validate();
-}
 
 function saveUser(){
     var userDataMap;

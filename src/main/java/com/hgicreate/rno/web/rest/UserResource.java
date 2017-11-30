@@ -39,8 +39,15 @@ public class UserResource {
     }
 
     @PostMapping("/reset-password")
-    public void resetPassword(String newPassword){
-        keycloakAdminCliService.resetPassword(newPassword);
+    public boolean resetPassword(String newPassword, String oldPassword){
+        boolean verifyPassword = SecurityUtils.verifyPassword(oldPassword);
+        if (verifyPassword){
+            keycloakAdminCliService.resetPassword(newPassword);
+            return true;
+        }else {
+            return false;
+        }
+
     }
 
     /**
