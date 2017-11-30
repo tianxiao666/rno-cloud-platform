@@ -38,11 +38,13 @@ public class LteGridDataService {
         Date endDate =sdf.parse(vm.getEndUploadDate()+" 23:59:59");
         List<DataJob> list;
         if(vm.getStatus().equals("全部")){
-            list = dataJobRepository.findTop1000ByAreaAndOriginFile_CreatedDateBetweenAndOriginFile_DataTypeOrderByOriginFile_CreatedDateDesc(area,
-                    beginDate,endDate,"LTE-GRID-DATA");
+            list = dataJobRepository
+                    .findTop1000ByAreaAndOriginFile_CreatedDateBetweenAndOriginFile_DataTypeOrderByOriginFile_CreatedDateDesc(
+                            area, beginDate,endDate,"LTE-GRID-DATA");
         }else{
-            list = dataJobRepository.findTop1000ByAreaAndStatusAndOriginFile_CreatedDateBetweenAndOriginFile_DataTypeOrderByOriginFile_CreatedDateDesc(area,
-                    vm.getStatus(),beginDate,endDate,"LTE-GRID-DATA");
+            list = dataJobRepository
+                    .findTop1000ByAreaAndStatusAndOriginFile_CreatedDateBetweenAndOriginFile_DataTypeOrderByOriginFile_CreatedDateDesc(
+                            area, vm.getStatus(),beginDate,endDate,"LTE-GRID-DATA");
         }
         return list.stream()
                    .map(LteGridDataImportMapper.INSTANCE::gridDataImportFileToGridDataImportFileDTO)
@@ -64,7 +66,6 @@ public class LteGridDataService {
                                            .map(LteGridDescMapper.INSTANCE::gridDescToGridDescDTO)
                                            .collect(Collectors.toList());
         }
-
         return dtoList;
     }
 }

@@ -30,7 +30,8 @@ public class LteKpiQueryResource {
 
     private final LteKpiQueryService lteKpiQueryService;
 
-    public LteKpiQueryResource(LteTrafficIndexRepository lteTrafficIndexRepository, LteKpiQueryService lteKpiQueryService) {
+    public LteKpiQueryResource(LteTrafficIndexRepository lteTrafficIndexRepository,
+                               LteKpiQueryService lteKpiQueryService) {
         this.lteTrafficIndexRepository = lteTrafficIndexRepository;
         this.lteKpiQueryService = lteKpiQueryService;
     }
@@ -47,7 +48,7 @@ public class LteKpiQueryResource {
     @PostMapping("/query-result")
     public List<Map<String, Object>> queryResult(LteKpiQueryVM vm) throws ParseException {
         log.debug("视图模型：" + vm);
-        return lteKpiQueryService.queryResult(vm);
+        return lteKpiQueryService.queryResult(vm,false);
     }
 
     @PostMapping("/download-data")

@@ -48,8 +48,9 @@ public class LteHoDataResource {
 
     private final Environment env;
 
-    public LteHoDataResource(LteHoDataService lteHoDataService, OriginFileRepository originFileRepository, OriginFileAttrRepository originFileAttrRepository,
-                             DataJobRepository dataJobRepository, DataJobReportRepository dataJobReportRepository, Environment env) {
+    public LteHoDataResource(LteHoDataService lteHoDataService, OriginFileRepository originFileRepository,
+                             OriginFileAttrRepository originFileAttrRepository, DataJobRepository dataJobRepository,
+                             DataJobReportRepository dataJobReportRepository, Environment env) {
         this.lteHoDataService = lteHoDataService;
         this.originFileRepository = originFileRepository;
         this.originFileAttrRepository = originFileAttrRepository;

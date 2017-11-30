@@ -48,8 +48,9 @@ public class LteMrDataResource {
 
     private final Environment env;
 
-    public LteMrDataResource(LteMrDataService lteMrDataService, OriginFileRepository originFileRepository, OriginFileAttrRepository originFileAttrRepository,
-                             DataJobRepository dataJobRepository, DataJobReportRepository dataJobReportRepository, Environment env) {
+    public LteMrDataResource(LteMrDataService lteMrDataService, OriginFileRepository originFileRepository,
+                             OriginFileAttrRepository originFileAttrRepository, DataJobRepository dataJobRepository,
+                             DataJobReportRepository dataJobReportRepository, Environment env) {
         this.lteMrDataService = lteMrDataService;
         this.originFileRepository = originFileRepository;
         this.originFileAttrRepository = originFileAttrRepository;

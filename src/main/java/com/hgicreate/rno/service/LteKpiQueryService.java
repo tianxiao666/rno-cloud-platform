@@ -22,15 +22,22 @@ public class LteKpiQueryService {
         this.areaRepository = areaRepository;
     }
 
-    public List<Map<String, Object>> queryResult(LteKpiQueryVM vm) throws ParseException {
+    public List<Map<String, Object>> queryResult(LteKpiQueryVM vm,boolean isDownload) throws ParseException {
         Long areaId = Long.parseLong(vm.getCityId());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date beginDate = sdf.parse(vm.getBegTime());
         Date endDate = sdf.parse(vm.getEndTime());
         String[] cellNameArr = vm.getCellNameStr().split(",");
-        List<LteTrafficData> rows = lteTrafficDataRepository
-                .findTop1000ByLteTrafficDesc_AreaIdAndLteTrafficDesc_BeginTimeAfterAndLteTrafficDesc_EndTimeBeforeAndPmUserLabelIn(
-                        areaId, beginDate, endDate, cellNameArr);
+        List<LteTrafficData> rows;
+        if(!isDownload){
+             rows = lteTrafficDataRepository
+                    .findTop1000ByLteTrafficDesc_AreaIdAndLteTrafficDesc_BeginTimeAfterAndLteTrafficDesc_EndTimeBeforeAndPmUserLabelIn(
+                            areaId, beginDate, endDate, cellNameArr);
+        }else{
+             rows = lteTrafficDataRepository
+                    .findByLteTrafficDesc_AreaIdAndLteTrafficDesc_BeginTimeAfterAndLteTrafficDesc_EndTimeBeforeAndPmUserLabelIn(
+                            areaId, beginDate, endDate, cellNameArr);
+        }
         List<Map<String, Object>> list = new ArrayList<>();
         if (rows != null && rows.size() > 0) {
             for (LteTrafficData m : rows) {
@@ -44,30 +51,8 @@ public class LteKpiQueryService {
         return list;
     }
 
-    private List<Map<String, Object>> queryResultForDownload(LteKpiQueryVM vm) throws ParseException {
-        Long areaId = Long.parseLong(vm.getCityId());
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date beginDate = sdf.parse(vm.getBegTime());
-        Date endDate = sdf.parse(vm.getEndTime());
-        String[] cellNameArr = vm.getCellNameStr().split(",");
-        List<LteTrafficData> rows = lteTrafficDataRepository
-                .findByLteTrafficDesc_AreaIdAndLteTrafficDesc_BeginTimeAfterAndLteTrafficDesc_EndTimeBeforeAndPmUserLabelIn(
-                        areaId, beginDate, endDate, cellNameArr);
-        List<Map<String, Object>> list = new ArrayList<>();
-        if (rows != null && rows.size() > 0) {
-            for (LteTrafficData trafficData : rows) {
-                Map<String, Object> map = getLteStsIndex(trafficData, vm.getIndexColumnStr());
-                map.put("meabegTime", sdf.format(trafficData.getLteTrafficDesc().getBeginTime()));
-                map.put("meaendTime", sdf.format(trafficData.getLteTrafficDesc().getEndTime()));
-                map.put("cellName", trafficData.getPmUserLabel());
-                list.add(map);
-            }
-        }
-        return list;
-    }
-
     public File downloadData(LteKpiQueryVM vm) throws ParseException {
-        List<Map<String, Object>> map = queryResultForDownload(vm);
+        List<Map<String, Object>> map = queryResult(vm,true);
         ListOrderedMap<String, String> columnTitles = getColumnTitles(vm.getIndexColumnStr(), vm.getIndexColumnNameStr());
 
         String areaName = areaRepository.findById(Long.parseLong(vm.getCityId())).getName();

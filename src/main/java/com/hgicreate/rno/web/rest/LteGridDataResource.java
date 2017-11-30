@@ -48,8 +48,9 @@ public class LteGridDataResource {
 
     private final Environment env;
 
-    public LteGridDataResource(OriginFileRepository originFileRepository, OriginFileAttrRepository originFileAttrRepository,
-                               DataJobRepository dataJobRepository, DataJobReportRepository dataJobReportRepository,
+    public LteGridDataResource(OriginFileRepository originFileRepository,
+                               OriginFileAttrRepository originFileAttrRepository, DataJobRepository dataJobRepository,
+                               DataJobReportRepository dataJobReportRepository,
                                LteGridDataService lteGridDataService, Environment env) {
         this.originFileRepository = originFileRepository;
         this.originFileAttrRepository = originFileAttrRepository;

@@ -276,10 +276,9 @@ function deleteCell(id) {
     var r = confirm("删除该邻区关系？");
     if (r === true) {
         $.ajax({
-            url: '/api/lte-ncell-relation/delete-by-id',
+            url: '/api/lte-ncell-relation/delete-by-id?id=' + id,
             dataType: 'text',
             type:'delete',
-            data: {id: id},
             success: function () {
                 showInfoInAndOut("info", "删除邻区关系成功！");
                 $("#conditionForm").submit();

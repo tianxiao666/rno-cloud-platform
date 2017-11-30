@@ -49,7 +49,9 @@ public class LteNcellRelationResource {
 
     private final Environment env;
 
-    public LteNcellRelationResource(NcellRepository ncellRepository, LteNcellRelationService lteNcellRelationService, OriginFileRepository originFileRepository, DataJobRepository dataJobRepository, DataJobReportRepository dataJobReportRepository, Environment env) {
+    public LteNcellRelationResource(NcellRepository ncellRepository, LteNcellRelationService lteNcellRelationService,
+                                    OriginFileRepository originFileRepository, DataJobRepository dataJobRepository,
+                                    DataJobReportRepository dataJobReportRepository, Environment env) {
         this.ncellRepository = ncellRepository;
         this.lteNcellRelationService = lteNcellRelationService;
         this.originFileRepository = originFileRepository;
