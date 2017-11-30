@@ -22,7 +22,6 @@ public class LteCapicityOptimizationResource {
         this.lteCapicityOptimizationService = lteCapicityOptimizationService;
     }
 
-
     @PostMapping("/query-info")
     public List<LteCapicityOptimizationDTO> queryImport(LteCapicityOptimizationVM vm) throws ParseException {
 

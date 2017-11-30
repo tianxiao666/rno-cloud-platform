@@ -28,7 +28,7 @@ public class LteCapicityOptimizationService {
                 int randomPreId = 0;
                 boolean checkID = true;
                 while (checkID) {
-                    //循环检查ID是否重复
+                    // 循环检查ID是否重复
                     randomPreId = random.nextInt(2000) + cellIdLowerLimit;
                     if (list.size() == 0) {
                         checkID = false;
@@ -66,11 +66,11 @@ public class LteCapicityOptimizationService {
                 int randomDownRate = 0;
                 int randomUpFlow = 0;
                 int randomDownFlow = 0;
-                //小区有问题概率
+                // 小区有问题概率
                 double randomUpProblemRate = 0.5;
                 int[] randomOperation = new int[8];
                 if (randomAdviceRate < problemCellRate) {
-                    //有问题
+                    // 有问题
                     randomAdvice = 1;
                     double randomProblemOnUpOrDown = Math.random();
                     if (randomProblemOnUpOrDown < randomUpProblemRate) {
@@ -98,7 +98,7 @@ public class LteCapicityOptimizationService {
                     }
 
                 } else if (randomAdviceRate > problemCellRate) {
-                    //无问题
+                    // 无问题
                     randomAdvice = 0;
                     randomUpRate = random.nextInt(70);
                     randomDownRate = random.nextInt(70);
