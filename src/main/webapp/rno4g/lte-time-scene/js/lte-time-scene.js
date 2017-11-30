@@ -232,9 +232,6 @@ function ok(obtn) {
     var $obj = $(obtn).parent(); //div
     var spanvalue = $(obtn).parent().parent().find("span").html();
     var value = $obj.find("input:text")[0].value; // 取得文本框的值，即新数据
-    if (value === "") {
-        value = "   ";
-    }
     if (value === spanvalue) {
         $(obtn).parent().parent().find("span.oldDataTip").css({"display": "none"});
         $(obtn).parent().css({"width": "100%"});
@@ -322,14 +319,9 @@ function updateSceneInfo(sceneDataMap) {
         url: '/api/lte-time-scene/update-scene-by-id',
         data: sceneDataMap,
         dataType: 'text',
-        success: function (raw) {
-            if (raw) {
-                if (raw === "success") {
-                    //var sceneType=$("#sceneTypeList").val();
-                    var sceneId = $("#sceneNameList").val();
-                    getSceneInfoTask(sceneId);
-                }
-            }
+        success: function () {
+            var sceneId = $("#sceneNameList").val();
+            getSceneInfoTask(sceneId);
         },
         error: function (XMLResponse) {
             alert(XMLResponse.responseText);
@@ -356,12 +348,8 @@ function deleteSceneInfo(sceneId) {
             'sceneId': sceneId
         },
         dataType: 'text',
-        success: function (raw) {
-            if (raw) {
-                if (raw === "success") {
-                    getSceneNameListTask();
-                }
-            }
+        success: function () {
+            getSceneNameListTask();
         },
         complete: function () {
             hideOperTips("loadingDataDiv");
@@ -387,7 +375,7 @@ function initSceneTable() {
     select.append(input);
     $(".editbox").parent().find("span.oldDataTip").css({"display": "none"});
     $(".editbox").removeAttr("onclick");
-    $(".editbox").attr("onclick", "insertEdit(this)");
+    $(".editbox").attr("onclick", "editThis(this)");
     $(".editbox").html(" ");
     submitStatus = false;
     $("#addScene").unbind("click");
@@ -449,18 +437,10 @@ function insertSceneInfo(sceneDataMap) {
         url: '/api/lte-time-scene/insert-scene',
         data: sceneDataMap,
         dataType: 'text',
-        success: function (raw) {
-            if (raw) {
-                var status = raw;
-                if (status === "success") {
-                    getSceneNameListTask();
-                } else if (status === "success") {
-
-                }
-            }
+        success: function () {
+            getSceneNameListTask();
         },
         complete: function () {
-            /*			doTableLock();*/
             hideOperTips("loadingDataDiv");
         }
     });

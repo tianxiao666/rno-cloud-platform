@@ -32,18 +32,15 @@ public class LteTimeSceneService {
         return timeSceneRepository.findAll().stream().map(TimeSceneNameMapper.INSTANCE::sceneToTimeSceneNameDTO).collect(Collectors.toList());
     }
 
-    public String deleteSceneById(Long sceneId){
+    public void deleteSceneById(Long sceneId){
         timeSceneRepository.deleteById(sceneId);
-        return "success";
     }
 
-    public String insertScene(TimeScene timeScene){
+    public void insertScene(TimeScene timeScene){
         timeSceneRepository.save(timeScene);
-        return "success";
     }
 
-    public String updateScene(TimeScene timeScene){
+    public void updateScene(TimeScene timeScene){
         timeSceneRepository.save(timeScene);
-        return "success";
     }
 }

@@ -32,18 +32,15 @@ public class LteGeoSceneService {
         return geoSceneRepository.findAll().stream().map(GeoSceneNameMapper.INSTANCE::sceneToGeoSceneNameDTO).collect(Collectors.toList());
     }
 
-    public String deleteSceneById(Long sceneId){
+    public void deleteSceneById(Long sceneId){
         geoSceneRepository.deleteById(sceneId);
-        return "success";
     }
 
-    public String insertScene(GeoScene geoScene){
+    public void insertScene(GeoScene geoScene){
         geoSceneRepository.save(geoScene);
-        return "success";
     }
 
-    public String updateScene(GeoScene geoScene){
+    public void updateScene(GeoScene geoScene){
         geoSceneRepository.save(geoScene);
-        return "success";
     }
 }

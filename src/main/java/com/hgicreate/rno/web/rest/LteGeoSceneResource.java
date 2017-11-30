@@ -33,17 +33,17 @@ public class LteGeoSceneResource {
     }
 
     @PostMapping("/delete-scene-by-id")
-    public String deleteSceneById(Long sceneId){
-        return lteGeoSceneService.deleteSceneById(sceneId);
+    public void deleteSceneById(Long sceneId){
+        lteGeoSceneService.deleteSceneById(sceneId);
     }
 
     @PostMapping("/insert-scene")
-    public String insertScene(GeoScene sceneDataMap){
-        return lteGeoSceneService.insertScene(sceneDataMap);
+    public void insertScene(GeoScene sceneDataMap){
+        lteGeoSceneService.insertScene(sceneDataMap);
     }
 
     @PostMapping("/update-scene-by-id")
-    public String updateScene(GeoScene geoScene){
-        return lteGeoSceneService.updateScene(geoScene);
+    public void updateScene(GeoScene geoScene){
+        lteGeoSceneService.updateScene(geoScene);
     }
 }

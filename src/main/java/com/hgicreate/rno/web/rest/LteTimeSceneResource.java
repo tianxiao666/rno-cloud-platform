@@ -35,17 +35,17 @@ public class LteTimeSceneResource {
     }
 
     @PostMapping("/delete-scene-by-id")
-    public String deleteSceneById(Long sceneId){
-        return lteTimeSceneService.deleteSceneById(sceneId);
+    public void deleteSceneById(Long sceneId){
+        lteTimeSceneService.deleteSceneById(sceneId);
     }
 
     @PostMapping("/insert-scene")
-    public String insertScene(TimeScene sceneDataMap){
-        return lteTimeSceneService.insertScene(sceneDataMap);
+    public void insertScene(TimeScene sceneDataMap){
+        lteTimeSceneService.insertScene(sceneDataMap);
     }
 
     @PostMapping("/update-scene-by-id")
-    public String updateScene(TimeScene timeScene){
-        return lteTimeSceneService.updateScene(timeScene);
+    public void updateScene(TimeScene timeScene){
+        lteTimeSceneService.updateScene(timeScene);
     }
 }

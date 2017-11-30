@@ -78,7 +78,7 @@ public class AppResource {
     }
 
     @DeleteMapping("/delete-app-by-id")
-    public String deleteAppById(Long appId) {
-        return appService.deleteAppById(appId);
+    public void deleteAppById(Long appId) {
+        appService.deleteAppById(appId);
     }
 }

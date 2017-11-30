@@ -153,20 +153,17 @@ function deleteAppInfo(appId){
         type:'delete',
         url : '/api/delete-app-by-id?appId=' + appId,
         dataType : 'text',
-        success : function(raw) {
-            if(raw){
-                if(raw==="success"){
-                    alert("成功删除数据！");
-                    getAppNameList();
-                    //返回第一个系统选项，id为1
-                    getAppById(1);
-                }
-            }
+        success : function() {
+            alert("成功删除数据！");
+            getAppNameList();
+            //返回第一个系统选项，id为1
+            getAppById(1);
         },
         complete : function() {
             hideOperTips("loadingDataDiv");
         }
     });
+
 }
 
 function clearAll(){
@@ -184,10 +181,6 @@ function clearAll(){
  * 初始化系统名称
  */
 function getAppNameList(){
-    /*$("#addSys").bind("click",function(){
-        initSysTable();
-    });*/
-    //showOperTips("loadingDataDiv", "loadContentId", "正在查询");
     $.ajax({
         type:'get',
         url : '/api/list-app-names',
@@ -199,15 +192,9 @@ function getAppNameList(){
         },
         complete : function() {
             appId=$("#appNameList").val();
-            //hideOperTips("loadingDataDiv");
         }
     });
 }
-//系统名称选择事件
-/*$("#appNameList").on("change",function(){
-    appId=$("#appNameList").val();
-    getAppById(appId);
-});*/
 $(document).on("change","#appNameList",function(){
     appId=$("#appNameList").val();
     getAppById(appId);
@@ -228,13 +215,8 @@ function getAppById(appId){
         data:data,
         dataType : 'text',
         success : function(raw) {
-            //	console.log(raw);
             showAppInfo(raw);
 
-        },
-        complete : function() {
-            //addEdit();
-            //hideOperTips("loadingDataDiv");
         }
     });
 }

@@ -38,8 +38,7 @@ public class AppService {
         return appRepository.findAllByCode(app.getCode()).get(0).getId();
     }
 
-    public String deleteAppById(Long id){
+    public void deleteAppById(Long id){
         appRepository.delete(id);
-        return "success";
     }
 }
