@@ -564,7 +564,7 @@ public class LteTrafficAnalysisService {
             }
 
             if (count > 0) {
-                list.add(trafficData.getLteTrafficDesc().getBeginTime()+ trafficData.getPmUserLabel());
+                list.add(trafficData.getLteTrafficDesc().getBeginTime() + trafficData.getPmUserLabel());
             }
 
         }
@@ -627,7 +627,7 @@ public class LteTrafficAnalysisService {
                         / ((trafficData.getHoAttoutinterenbs1()) + (trafficData.getHoAttoutinterenbx2()) + (trafficData.getHoAttoutintraenb()));
             }
 
-            resMap.put("小区名", trafficData.getPmUserLabel()!=null?trafficData.getPmUserLabel():"未知小区名字");
+            resMap.put("小区名", trafficData.getPmUserLabel() != null ? trafficData.getPmUserLabel() : "未知小区名字");
             resMap.put("小区ID", trafficData.getCellId());
             resMap.put("测量开始时间", trafficData.getLteTrafficDesc().getBeginTime());
             resMap.put("测量结束时间", trafficData.getLteTrafficDesc().getEndTime());

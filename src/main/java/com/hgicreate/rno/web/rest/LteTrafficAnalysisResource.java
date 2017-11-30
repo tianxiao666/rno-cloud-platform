@@ -23,9 +23,7 @@ public class LteTrafficAnalysisResource {
     @GetMapping("/cell-record")
     public Map<String, Object> getCellRecord(String cellIds) {
         log.debug("cellIds={}", cellIds);
-        Map<String, Object> res = lteTrafficAnalysisService.getCellRecord(cellIds);
-        log.debug("res={}",res);
-        return res;
+        return lteTrafficAnalysisService.getCellRecord(cellIds);
     }
 
     @GetMapping("/cell-index")
