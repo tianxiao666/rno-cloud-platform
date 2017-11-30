@@ -35,7 +35,10 @@ $(document).ready(function () {
             }
         },
         messages: {
-            oldPassword: '<em style=\"color:red\">请输入原密码</em>',
+            oldPassword: {
+                required: '<em style=\"color:red\">请输入原密码</em>',
+                equalTo: '<em style=\"color:red\">两次密码不一致</em>'
+            },
             newPassword: '<em style=\"color:red\">请输入新密码</em>',
             againPassword: {
                 required: '<em style=\"color:red\">请再次输入密码</em>',
@@ -46,10 +49,9 @@ $(document).ready(function () {
             $(form).ajaxSubmit({
                 success:function(message){
                     if (message === true){
-                        alert("修改成功");
-                        location.reload();
+                        $("#successChangeMsg").show();
                     }else {
-                        alert("密码错误！请重新输入！");
+                        $("#oldPasswordMessage").show();
                         $("#oldPassword").focus();
                     }
 
@@ -65,7 +67,9 @@ $(document).ready(function () {
 
 });
 
-
+function hideErrorPasswordMsg() {
+    $("#oldPasswordMessage").hide();
+}
 function saveUser(){
     var userDataMap;
     userDataMap={
@@ -82,6 +86,12 @@ function saveUser(){
     };
     updateUserInfo(userDataMap);
 
+}
+
+function cancelChangePassword() {
+    $("#oldPassword").val('');
+    $("#newPassword").val('');
+    $("#againPassword").val('');
 }
 
 function updateUserInfo(user){

@@ -142,8 +142,10 @@
                 </div>
 
                 <div class="col-sm-10 col-md-10">
-                    <input type="password" class="form-control" name="oldPassword" id="oldPassword" autofocus title=""/>
+                    <input type="password" class="form-control" name="oldPassword" id="oldPassword" autofocus title="" onclick="hideErrorPasswordMsg();"/>
+                    <div id="oldPasswordMessage" class="error" hidden><em style="color:red;font-weight:bold">原密码错误！请重新输入！</em></div>
                 </div>
+
             </div>
 
             <div class="form-group ">
@@ -164,16 +166,20 @@
                 <div class="col-sm-10 col-md-10">
                     <input type="password" class="form-control" name="againPassword" id="againPassword" title=""/>
                 </div>
+
             </div>
 
             <div class="form-group">
+
                 <div class="col-md-offset-2 col-md-10 submit">
+                    <div id="successChangeMsg" hidden><em style="color:green;font-weight:bold">密码修改成功！</em></div>
                     <div class="" align="right">
-                        <button type="submit" class="btn btn-default btn-lg" name="submitAction" value="Cancel">取消</button>
+                        <a class="btn btn-default btn-lg" onclick="cancelChangePassword()">取消</a>
                         <button type="submit"  class="btn btn-primary btn-lg">保存</button>
                     </div>
                 </div>
             </div>
+
         </form>
 
     </div>
