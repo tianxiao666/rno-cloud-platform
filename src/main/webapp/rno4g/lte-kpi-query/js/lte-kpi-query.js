@@ -24,7 +24,7 @@ $(function () {
     $("#queryDataBtn").click(function () {
         var cells = $("#cellStr").val();
         if (cells === null || cells.length === 0 || cells === "") {
-            alert("请输入要查看的小区");
+            showInfoInAndOut('info', '请输入要查看的小区');
             return false;
         }
         var indexStr = $("#indexHiddenStr").val();
@@ -63,6 +63,11 @@ $(function () {
             $("#indexHiddenStr").val(defIndexLabelStr);
         }
 
+        var cells = $("#cellStr").val();
+        if (cells === null || cells.length === 0 || cells === "") {
+            showInfoInAndOut('info', '请先输入小区查询');
+            return false;
+        }
         initDownloadAttachParams();
 
         // 导出数据
@@ -75,6 +80,8 @@ function showQueryResult(data) {
     $(".loading").css("display", "none");
     if (data === null || data === undefined || data == "") {
         showInfoInAndOut('info', '没有符合条件的记录');
+    }else {
+        firstTime = false;
     }
     // alert(data.length);
     columnList = [];
@@ -345,7 +352,7 @@ function sumCell() {
     var cellArr = cellNameStr.split(",");
     var len = cellArr.length;
     if (len > 1000) {
-        alert("选择的小区不能超过1000个！");
+        showInfoInAndOut('info', '输入的小区不能超过1000个！');
         return;
     }
     $("#cellStr").val("");
