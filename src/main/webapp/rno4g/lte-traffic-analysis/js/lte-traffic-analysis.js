@@ -24,21 +24,21 @@ $(function () {
 
     var baseLayer = new ol.layer.Tile({
         source: new ol.source.XYZ({
-            url: 'http://rno-omt.hgicreate.com/styles/rno-omt/{z}/{x}/{y}.png'
-        }),
-        zIndex: 2
+            url: 'http://rno-omt.hgicreate.com/styles/rno-omt/{z}/{x}/{y}.png',
+            zIndex: 1
+        })
     });
 
     //点击小区图层
     clickedCellLayer = new ol.layer.Vector({
         source: new ol.source.Vector(),
-        zIndex: 4
+        zIndex: 3
     });
 
     //问题小区图层
     problemCellLayer = new ol.layer.Vector({
         source: new ol.source.Vector(),
-        zIndex: 5
+        zIndex: 4
     });
 
     // 小区名图层
@@ -86,7 +86,6 @@ $(function () {
         var lon = parseFloat($(this).find("option:checked").attr("data-lon"));
         var lat = parseFloat($(this).find("option:checked").attr("data-lat"));
         if (map === undefined) {
-
             map = new ol.Map({
                 target: 'map',
                 layers: [baseLayer, clickedCellLayer, problemCellLayer],
@@ -203,8 +202,8 @@ $(function () {
                                                 date.setTime(value);
                                                 value = date.format("yyyy-MM-dd hh:mm:ss");
                                             }
-                                            $("#lteStsCellIndex").append("<tr><td style='font-weight: bold'>" + key +
-                                                "</td><td>" + value + "</td></tr>");
+                                            $("#lteStsCellIndex").append("<tr><td style='width:40%;font-weight: bold;text-align: right'>" + key +
+                                                "</td><td style='text-align: left'>" + value + "</td></tr>");
                                         });
 
                                         $("#lteStsCellThreshold tbody").html("");
@@ -227,8 +226,8 @@ $(function () {
                                                     if(value==='异常'){
                                                         color = 'red';
                                                     }else {color='black';}
-                                                    $("#lteStsCellThreshold").append("<tr><td style='font-weight: bold'>" + key +
-                                                        "</td><td style='color: "+ color+"'>" + value + "</td></tr>");
+                                                    $("#lteStsCellThreshold").append("<tr><td style='width:40%;font-weight: bold;text-align: right'>" + key +
+                                                        "</td><td style='text-align:left;color: "+ color+"'>" + value + "</td></tr>");
                                                 });
                                             }
                                         })
@@ -253,7 +252,7 @@ $(function () {
         var cityId = parseInt($("#cityId").find("option:checked").val());
         map.removeLayer(tiled);
         tiled = new ol.layer.Tile({
-            zIndex : 3,
+            zIndex : 2,
             source : new ol.source.TileWMS({
                 url : 'http://rno-gis.hgicreate.com/geoserver/rnoprod/wms',
                 params : {
@@ -268,16 +267,6 @@ $(function () {
             opacity : 0.5
         });
         map.addLayer(tiled);
-    });
-
-    $("#loadGisCellName").click(function () {
-        if ($(this).text() === "显示小区名字") {
-            $(this).text("关闭小区名字");
-            map.addLayer(textImageTile);
-        } else {
-            $(this).text("显示小区名字");
-            map.removeLayer(textImageTile);
-        }
     });
 
     $("#displayProbCellBtn").click(function () {
@@ -400,8 +389,8 @@ $(function () {
                                             date.setTime(value);
                                             value = date.format("yyyy-MM-dd hh:mm:ss");
                                         }
-                                        $("#lteStsCellIndex").append("<tr><td style='font-weight: bold'>" + key +
-                                            "</td><td>" + value + "</td></tr>");
+                                        $("#lteStsCellIndex").append("<tr><td style='width:40%;font-weight: bold;text-align: right'>" + key +
+                                            "</td><td style='text-align: left'>" + value + "</td></tr>");
                                     });
                                     //console.log($(this).find('td:eq(1)').text());
                                     var color;
@@ -422,8 +411,8 @@ $(function () {
                                                 if(value==='异常'){
                                                     color = 'red';
                                                 }else {color='black';}
-                                                $("#lteStsCellThreshold").append("<tr><td style='font-weight: bold'>" + key +
-                                                    "</td><td style='color: "+ color+"'>" + value + "</td></tr>");
+                                                $("#lteStsCellThreshold").append("<tr><td style='width:40%;font-weight: bold;text-align: right'>" + key +
+                                                    "</td><td style='text-align:left;color: "+ color+"'>" + value + "</td></tr>");
                                             });
                                         }
                                     })
@@ -441,6 +430,16 @@ $(function () {
 
     //初始区域
     initAreaSelectors({selectors: ["provinceId", "cityId", "districtId"], coord: true});
+
+    $("#showCellName").click(function () {
+        if ($(this).text() === "显示小区名字") {
+            $(this).text("关闭小区名字");
+            map.addLayer(textImageTile);
+        } else {
+            $(this).text("显示小区名字");
+            map.removeLayer(textImageTile);
+        }
+    });
 });
 
 function getCell(cellIds) {
