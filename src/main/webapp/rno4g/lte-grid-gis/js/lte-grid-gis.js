@@ -121,6 +121,7 @@ $(function () {
         });
         $("#type").val(gridType.substring(0, gridType.length -1));
         $("#areaId").val($("#cityId").find("option:checked").val());
+        $('#gridForm').attr("action", "/api/lte-grid-gis/download-cell-data");
         $("#gridForm").submit();
     });
 

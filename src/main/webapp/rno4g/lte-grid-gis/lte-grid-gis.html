@@ -23,11 +23,11 @@
 <div id="map" class="map"></div>
 <div class="dialog">
     <!--省：-->
-    <select class="form-control custom-select" id="provinceId"></select>
+    <select title="" class="form-control custom-select" id="provinceId"></select>
     <!--市：-->
-    <select class="form-control custom-select" id="cityId"></select>
+    <select title="" class="form-control custom-select" id="cityId"></select>
     <!--区：-->
-    <select class="form-control custom-select" id="districtId" style="display: none"></select>
+    <select title="" class="form-control custom-select" id="districtId" style="display: none"></select>
     <button style="outline: none" id="loadGisCell" class="btn btn-info custom-btn">加载小区</button>
     <button style="outline: none" id="loadGisCellName" class="btn btn-info custom-btn">显示小区名字</button>
 </div>
@@ -39,18 +39,18 @@
 <div class="resource_list_box">
     <div style="display:block;margin-bottom: 39px">
         <div class="form-inline" style="padding-top: 20px;padding-left:15px;padding-right:15px">
-            <form id="gridForm" action="/api/lte-grid-gis/download-cell-data">
+            <form id="gridForm">
                 <h3>类型选择</h3>
                 <hr/>
                 <div class="form-group">
                     <label style="font-weight: bold">网格类型：</label>
                 </div>
                 <div class="form-group col-sm-offset-1">
-                    <input type="checkbox" name="gridType" class="checkbox" value="A">
+                    <input title="" type="checkbox" name="gridType" class="checkbox" value="A">
                     <span style="margin-right: 10px">A类</span>
-                    <input type="checkbox" name="gridType" class="checkbox" value="B">
+                    <input title="" type="checkbox" name="gridType" class="checkbox" value="B">
                     <span style="margin-right: 10px">B类</span>
-                    <input type="checkbox" name="gridType" class="checkbox" value="C">
+                    <input title="" type="checkbox" name="gridType" class="checkbox" value="C">
                     <span>C类</span>
                 </div>
 
