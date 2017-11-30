@@ -45,7 +45,6 @@ public class MenuResource {
 
     @PostMapping("/submit-menu")
     public String submitMenu(@RequestBody List<Menu> menus, Long appId){
-        System.out.println(menus.toString());
         menuService.deleteAllByAppId(appId);
         for(Menu menuNode: menus){
             menuService.saveMenu(menuNode);
