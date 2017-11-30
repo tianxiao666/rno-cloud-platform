@@ -326,6 +326,7 @@ function showDatatables(data) {
             "lengthChange": false,
             "ordering": true,
             "searching": false,
+            "info": false,
             "scrollY":310,
             "scrollX":310,
             "destroy": true,
