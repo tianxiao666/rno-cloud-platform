@@ -1,5 +1,5 @@
 
-html, body, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary, time, mark, audio, video {
+html, body, span, object, iframe, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary, time, mark, audio, video {
     margin: 0;
     padding: 0;
     border: 0;
@@ -76,10 +76,6 @@ ul, li, ol {
 
 ol {
     list-style-type: decimal;
-}
-
-h1, h2, h3, h4, h5, h6 {
-    font-weight: bold;
 }
 
 .clearfix::before, .clearfix::after {
@@ -667,6 +663,7 @@ body {
     width: 100%;
 }
 
+
 .resource_list_icon {
     position: absolute;
     right: 286px;
@@ -703,6 +700,21 @@ body {
     width: 18px;
     z-index: 10;
     display: none;
+}
+
+.resource_list_box {
+    background: url("../images/shadh.png") 0 0 repeat-x rgb(255, 255, 255);
+    position: fixed;
+    right: 0;
+    top: 0;
+    width: 400px;
+    z-index: 5;
+    box-shadow: rgb(153, 153, 153) -2px -2px 5px;
+    display: block;
+    font-size: 12px;
+    height: 100%;
+    overflow-x: auto;
+    margin-bottom: 39px;
 }
 
 .dialog_content h4 {
@@ -1358,7 +1370,7 @@ body {
     font-size: 14px;
 }
 
-body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, input, button, textarea, p, blockquote, th, td, form {
+body, div, dl, dt, dd, ul, ol, li, input, button, textarea, p, blockquote, th, td, form {
     margin: 0;
     padding: 0;
 }
@@ -1413,7 +1425,7 @@ html,body {
     cursor: move;
 }
 
-body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, input, button, textarea, p, blockquote, th, td, form {
+body, div, dl, dt, dd, ul, ol, li, input, button, textarea, p, blockquote, th, td, form {
     margin: 0;
     padding: 0;
 }
@@ -1533,4 +1545,10 @@ html, body {
 .custom-btn {
     height: 34px;
     margin-bottom: 5px;
+}
+
+#sampleDetailTable td{
+    height: 34px;
+    line-height: 34px;
+    padding-right: 13px;
 }

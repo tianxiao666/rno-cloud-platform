@@ -4,7 +4,7 @@ $(function () {
 
     laydate.render({elem: '#endDate', value: new Date(2017, 8, 15)});
 
-    tab("div_tab", "li", "onclick");
+    //tab("div_tab", "li", "onclick");
     $(".draggable").draggable();
     $("#trigger").css("display", "none");
 
@@ -14,18 +14,15 @@ $(function () {
         $(".resource_list_icon").animate({
             right: '0px'
         }, 'fast');
-        $(".resource_list300_box").hide("fast");
+        $(".resource_list_box").hide("fast");
     });
     $(".switch_hidden").click(function () {
         $(this).hide();
         $(".switch").show();
         $(".resource_list_icon").animate({
-            right: '381px'
+            right: '400px'
         }, 'fast');
-        $(".resource_list300_box").show("fast");
-    });
-    $(".zy_show").click(function () {
-        $(".search_box_alert").slideToggle("fast");
+        $(".resource_list_box").show("fast");
     });
 
     var baseLayer = new ol.layer.Tile({
@@ -33,6 +30,21 @@ $(function () {
             url: 'http://rno-omt.hgicreate.com/styles/rno-omt/{z}/{x}/{y}.png',
             zIndex: 1
         })
+    });
+
+    // 小区名图层
+    var textImageTile = new ol.layer.Tile({
+        source: new ol.source.TileWMS({
+            url: 'http://rno-gis.hgicreate.com/geoserver/wms',
+            params: {
+                'FORMAT': 'image/png',
+                'SRS': 'EPSG:4326',
+                'tiled': true,
+                'LAYERS': 'rnoprod:RNO_LTE_CELL_CENTROID'
+            },
+            serverType: 'geoserver'
+        }),
+        opacity: 0.8
     });
 
     $("#districtId").change(function () {
@@ -106,14 +118,17 @@ $(function () {
                                 }
 
                                 $.each(data['ncell'], function (index, value) {
-                                    html += "<tr name='ncell'><td class='menuTd'>邻区"+ (index+1)
+                                    html += "<tr name='ncell'><td style='width:40%;text-align: right;font-weight: bold'>邻区"+ (index+1)
                                         +"</td><td>"+ value.ncellName +"</td></tr>";
-                                    html += "<tr name='ncell'><td class='menuTd'>邻区"+ (index+1)
+                                    html += "<tr name='ncell'><td style='width:40%;text-align: right;font-weight: bold'>邻区"+ (index+1)
                                         +" RSRP</td><td>"+ value.ncellRsrp +"</td></tr>";
                                 })
 
                                 $("#sampleDetailTable").append(html);
-                                $('#sampleDetailLi').trigger("click");
+                                $("#myTab li:eq(1)").addClass("active");
+                                $("#myTab li:eq(1)").siblings().removeClass("active");
+                                $("#sampleDetail").addClass("active");
+                                $("#sampleDetail").siblings().removeClass("active");
                             }
                         }
                     });
@@ -274,6 +289,16 @@ $(function () {
         })
     });
 
+    $("#showCellName").click(function () {
+        if ($(this).text() === "显示小区名字") {
+            $(this).text("关闭小区名字");
+            map.addLayer(textImageTile);
+        } else {
+            $(this).text("显示小区名字");
+            map.removeLayer(textImageTile);
+        }
+    });
+
 });
 
 function showDatatables(data) {
@@ -299,7 +324,7 @@ function showDatatables(data) {
                 }
             ],
             "lengthChange": false,
-            "ordering": false,
+            "ordering": true,
             "searching": false,
             "scrollY":310,
             "scrollX":310,
