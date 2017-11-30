@@ -306,6 +306,9 @@ function showDatatables(data) {
     if(data === "") {
         showInfoInAndOut('warn', '没有找到数据！');
     }else {
+        $('#listDtRes').html("");
+        $('#listDtRes').append("<thead><tr><th></th><th>文件名</th>" +
+            "<th>数据类型</th><th>区域类型</th></tr></thead>");
         $('#listDtRes').css("line-height", "12px").DataTable({
             "data": data,
             "columns": [
@@ -327,8 +330,8 @@ function showDatatables(data) {
             "ordering": true,
             "searching": false,
             "info": false,
-            "scrollY":310,
-            "scrollX":310,
+            //"scrollY":310,
+            //"scrollX":310,
             "destroy": true,
             "language": {
                 url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
