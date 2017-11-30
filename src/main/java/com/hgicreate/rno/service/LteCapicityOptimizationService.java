@@ -117,8 +117,8 @@ public class LteCapicityOptimizationService {
                 int randomRRC = random.nextInt(40) + 40;
                 list.add(new LteCapicityOptimizationDTO(randomID + "", districtName + subName + relPosition + subNameCell, randomAdvice + "", randomRRC + "",
                         randomUpRate + "", randomDownRate + "", randomUpFlow + "", randomDownFlow + "", randomAdvice + "",
-                        "ABC", random.nextInt(100000) + "", String.format("%.4f",random.nextInt(2)+112+Math.random())+"",
-                        String.format("%.4f",random.nextInt(2)+22+Math.random())+ "",
+                        "ABC", random.nextInt(100000) + "", String.format("%.4f", random.nextInt(2) + 112 + Math.random()) + "",
+                        String.format("%.4f", random.nextInt(2) + 22 + Math.random()) + "",
                         "40", "90", "5", "4G", "20", "10", "indoor",
                         "10", "5", "400", "3", isVipStation + "", "123",
                         randomRRC + "", "20", randomUpRate + "", randomDownRate + "", "10", "ABC-C1",
