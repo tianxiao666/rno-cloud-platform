@@ -124,7 +124,6 @@ function showCellOperation(cId) {
                 html += "<tr>" +
                     "<td class='menuTd' id=" + 'leftSlide' + lengthOfContent + " style =" + "\"background: url(images/panel_title.png) 0 0 repeat scroll transparent;left :100%;width: 238px;height: 0px;display: none;position: relative;\"" + ">" + cell[onekey['code']] + "</td>" +
                     "</tr>";
-
             }
         }
     }

@@ -14,10 +14,9 @@ import java.util.Random;
 public class LteParameterSelfAdaptionOptimizationService {
 
     /**
-     *
-     * @param districtName 小区名
+     * @param districtName     小区名
      * @param cellIdLowerLimit 小区Id 的开始值
-     * @param cellName 查询指定的小区名
+     * @param cellName         查询指定的小区名
      * @return
      */
     public List<LteParameterSelfAdaptionOptimizationDTO> queryAllTargetCells(String districtName, int cellIdLowerLimit, String cellName) {
@@ -29,12 +28,12 @@ public class LteParameterSelfAdaptionOptimizationService {
             list.addAll(staticList);
             Random random = new Random();
             String[] baseChinese = getDistrictRoadName(districtName);
-            String[] relativePosition = {"东", "南", "西", "北", "中"};
+            String[] relativeDirection = {"东", "南", "西", "北", "中"};
             String baseUperAlphabet = "QWERTYUIOPASDFGHJKLZXCVBNM";
             String baseNumber = "1234567890";
             for (String roadName : baseChinese) {
-                for (String relPosition : relativePosition) {
-                    int randomID = 0;
+                for (String relPosition : relativeDirection) {
+                    int randomId = 0;
                     int randomPreId = 0;
                     boolean checkID = true;
                     while (checkID) {
@@ -42,7 +41,7 @@ public class LteParameterSelfAdaptionOptimizationService {
                         randomPreId = random.nextInt(2000) + cellIdLowerLimit;
                         if (list.size() == 0) {
                             checkID = false;
-                            randomID = randomPreId;
+                            randomId = randomPreId;
                         } else if (list.size() > 0) {
                             int eqCount = 0;
                             for (LteParameterSelfAdaptionOptimizationDTO aList : list) {
@@ -51,64 +50,61 @@ public class LteParameterSelfAdaptionOptimizationService {
                                 }
                             }
                             if (eqCount == 0) {
-                                checkID = false;
-                                randomID = randomPreId;
+                                randomId = randomPreId;
                                 break;
                             }
                         }
                     }
-                    StringBuilder subName = new StringBuilder();
-                    subName.append(roadName);
                     // 拼凑小区后面的英文数字串
-                    StringBuilder subNameCell = new StringBuilder();
-                    subNameCell.append(baseUperAlphabet.charAt(new Random().nextInt(baseUperAlphabet.length())));
-                    subNameCell.append("-");
-                    subNameCell.append(baseUperAlphabet.charAt(new Random().nextInt(baseUperAlphabet.length())));
-                    subNameCell.append(baseUperAlphabet.charAt(new Random().nextInt(baseUperAlphabet.length())));
-                    subNameCell.append(baseUperAlphabet.charAt(new Random().nextInt(baseUperAlphabet.length())));
-                    subNameCell.append("-");
-                    subNameCell.append(baseNumber.charAt(new Random().nextInt(baseNumber.length())));
-                    subNameCell.append(baseNumber.charAt(new Random().nextInt(baseNumber.length())));
-                    subNameCell.append(baseNumber.charAt(new Random().nextInt(baseNumber.length())));
+                    StringBuilder englishName = new StringBuilder();
+                    englishName.append(baseUperAlphabet.charAt(new Random().nextInt(baseUperAlphabet.length())));
+                    englishName.append("-");
+                    englishName.append(baseUperAlphabet.charAt(new Random().nextInt(baseUperAlphabet.length())));
+                    englishName.append(baseUperAlphabet.charAt(new Random().nextInt(baseUperAlphabet.length())));
+                    englishName.append(baseUperAlphabet.charAt(new Random().nextInt(baseUperAlphabet.length())));
+                    englishName.append("-");
+                    englishName.append(baseNumber.charAt(new Random().nextInt(baseNumber.length())));
+                    englishName.append(baseNumber.charAt(new Random().nextInt(baseNumber.length())));
+                    englishName.append(baseNumber.charAt(new Random().nextInt(baseNumber.length())));
 
-                    float anotherHalf = (float) Math.random()-0.5f;
-                    if(anotherHalf < 0){
+                    float anotherHalf = (float) Math.random() - 0.5f;
+                    if (anotherHalf < 0) {
                         anotherHalf = 0f;
                     }
-                    float radioAccessRate = (float) (98 + Math.random()+anotherHalf);
-                    float erabSetUpSuccessRate = (float) (98 + Math.random()+anotherHalf);
-                    float rrcConnectionSetUpSuccessRate = (float) (98 + Math.random()+anotherHalf);
+                    float radioAccessRate = (float) (98 + Math.random() + anotherHalf);
+                    float erabSetUpSuccessRate = (float) (98 + Math.random() + anotherHalf);
+                    float rrcConnectionSetUpSuccessRate = (float) (98 + Math.random() + anotherHalf);
 
-                    float radioDropRate = (float) (0.5f+Math.random()+anotherHalf);
-                    if((radioAccessRate+radioDropRate)<100){
-                        float gap = 100-radioAccessRate-radioDropRate;
-                        radioAccessRate += gap*0.5f;
-                        radioDropRate += gap*0.5f;
+                    float radioDropRate = (float) (0.5f + Math.random() + anotherHalf);
+                    if ((radioAccessRate + radioDropRate) < 100) {
+                        float gap = 100 - radioAccessRate - radioDropRate;
+                        radioAccessRate += gap * 0.5f;
+                        radioDropRate += gap * 0.5f;
                     }
 
-                    int randomRadioDropCount = (int) ((random.nextInt(15000) + 70000) * radioDropRate/100);
+                    int radioDropCount = (int) ((random.nextInt(15000) + 70000) * radioDropRate / 100);
 
-                    float erabDropRate = (float) (0.5f+Math.random()+anotherHalf);
-                    int randomSwitchRequestCount = random.nextInt(2000) + 3000;
+                    float erabDropRate = (float) (0.5f + Math.random() + anotherHalf);
+                    int switchRequestCount = random.nextInt(2000) + 3000;
 
-                    float randomSwitchSuccessRate = (float) (98 + Math.random()+anotherHalf);
-                    int randomSwitchSuccessCount = (int) (randomSwitchRequestCount * randomSwitchSuccessRate / 100);
-                    randomSwitchSuccessRate = (new BigDecimal(100f * randomSwitchSuccessCount / randomSwitchRequestCount).setScale(2, BigDecimal.ROUND_HALF_UP)).floatValue();
+                    float switchSuccessRate = (float) (98 + Math.random() + anotherHalf);
+                    int switchSuccessCount = (int) (switchRequestCount * switchSuccessRate / 100);
+                    switchSuccessRate = (new BigDecimal(100f * switchSuccessCount / switchRequestCount).setScale(2, BigDecimal.ROUND_HALF_UP)).floatValue();
 
-                    String randomCellPriority = random.nextInt(2) == 1 ? "小区重选优先级已从7级调整为" + (random.nextInt(4)+3)+"级" : "";
-                    String randomCellChangeSwitchDifficulty = random.nextInt(2) == 1 ? "小区切换难易度已从1级调整到" + (random.nextInt(2) + 2) + "级" : "";
-                    String randomDecreaseHighStressCellRechooseDelay = random.nextInt(2) == 1 ? (random.nextInt(2) == 1 ? "降低高负荷小区的重选迟滞" : "升高低负荷小区重选迟滞") : "";
-                    String randomDecreaseHighStressCellFrequencyGapFrequencyOffset = random.nextInt(2) == 1 ? "降低高负荷小区频间频率偏移" : "";
-                    if(randomCellPriority.length() ==0 && randomCellChangeSwitchDifficulty.length() ==0 &&randomDecreaseHighStressCellRechooseDelay.length()==0 && randomDecreaseHighStressCellFrequencyGapFrequencyOffset.length()==0){
-                        randomDecreaseHighStressCellFrequencyGapFrequencyOffset = "降低高负荷小区频间频率偏移";
+                    String cellPriority = random.nextInt(2) == 1 ? "小区重选优先级已从7级调整为" + (random.nextInt(4) + 3) + "级" : "";
+                    String cellChangeSwitchDifficulty = random.nextInt(2) == 1 ? "小区切换难易度已从1级调整到" + (random.nextInt(2) + 2) + "级" : "";
+                    String decreaseHighStressCellRechooseDelay = random.nextInt(2) == 1 ? (random.nextInt(2) == 1 ? "降低高负荷小区的重选迟滞" : "升高低负荷小区重选迟滞") : "";
+                    String decreaseHighStressCellFrequencyGapFrequencyOffset = random.nextInt(2) == 1 ? "降低高负荷小区频间频率偏移" : "";
+                    if (cellPriority.length() == 0 && cellChangeSwitchDifficulty.length() == 0 && decreaseHighStressCellRechooseDelay.length() == 0 && decreaseHighStressCellFrequencyGapFrequencyOffset.length() == 0) {
+                        decreaseHighStressCellFrequencyGapFrequencyOffset = "降低高负荷小区频间频率偏移";
                     }
-                    list.add(new LteParameterSelfAdaptionOptimizationDTO(randomID + "", districtName + subName + relPosition + subNameCell,
+                    list.add(new LteParameterSelfAdaptionOptimizationDTO(randomId + "", districtName + roadName + relPosition + englishName,
                             String.format("%.2f", radioAccessRate) + "", String.format("%.2f", erabSetUpSuccessRate) + "",
                             String.format("%.2f", rrcConnectionSetUpSuccessRate) + "", String.format("%.2f", radioDropRate) + "",
-                            randomRadioDropCount + "", String.format("%.2f", erabDropRate) + "", randomSwitchRequestCount + "",
-                            randomSwitchSuccessCount + "", randomSwitchSuccessRate + "", "1", randomCellPriority + "",
-                            randomCellChangeSwitchDifficulty + "", randomDecreaseHighStressCellRechooseDelay + "",
-                            randomDecreaseHighStressCellFrequencyGapFrequencyOffset + ""));
+                            radioDropCount + "", String.format("%.2f", erabDropRate) + "", switchRequestCount + "",
+                            switchSuccessCount + "", switchSuccessRate + "", "1", cellPriority + "",
+                            cellChangeSwitchDifficulty + "", decreaseHighStressCellRechooseDelay + "",
+                            decreaseHighStressCellFrequencyGapFrequencyOffset + ""));
                 }
             }
         }
@@ -116,7 +112,6 @@ public class LteParameterSelfAdaptionOptimizationService {
     }
 
     /**
-     *
      * @param districtName
      * @return
      */
