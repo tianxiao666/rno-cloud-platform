@@ -112,24 +112,25 @@ function showCellOperation(cId) {
     var size = CellOperationCode.length;
     var onekey;
     var lengthOfContent = 0;
-    // lengthOfContent += 1;
     html += "<tr>" +
-        "<td class='menuTd'  style =" + "\"background: url(images/panel_title.png) 0 0 repeat scroll transparent;width:100%;height: 31px;display: block;position: relative;\"" + ">参数自调整正在启动:</td>" +
+        "<td class='menuTd'  style =" + "\"width:100%;height: 31px;display: block;position: relative;\"" + ">参数自调整正在启动:</td>" +
         "</tr>";
+    var orderNumber = 0;
     for (var i = 0; i < size; i++) {
         onekey = CellOperationCode[i];
         if (cell[onekey['code']]) {
             if (cell[onekey['code']].length > 0) {
                 lengthOfContent += 1;
+                orderNumber += 1;
                 html += "<tr>" +
-                    "<td class='menuTd' id=" + 'leftSlide' + lengthOfContent + " style =" + "\"background: url(images/panel_title.png) 0 0 repeat scroll transparent;left :100%;width: 238px;height: 0px;display: none;position: relative;\"" + ">" + cell[onekey['code']] + "</td>" +
+                    "<td class='menuTd' id=" + 'leftSlide' + lengthOfContent + " style =" + "\"background: url(images/panel_title.png) 0 0 repeat scroll transparent;left :100%;width: 238px;height: 0px;display: none;position: relative;\"" + ">" + orderNumber + "，" + cell[onekey['code']] + "</td>" +
                     "</tr>";
             }
         }
     }
     lengthOfContent += 1;
     html += "<tr>" +
-        "<td class='menuTd' id=" + 'leftSlide' + lengthOfContent + " style =" + "\"background: url(images/panel_title.png) 0 0 repeat scroll transparent;left :100%;width: 238px;height: 0px;display: none;position: relative;\"" + "><input value='完成' type='button' onclick='operationDialogClose()'></td>" +
+        "<td class='menuTd' id=" + 'leftSlide' + lengthOfContent + " style =" + "\"left :100%;width: 100%; height: 0px;display: none;position: relative;\"" + "><input value='完成' type='button' style='width: 100%;' onclick='operationDialogClose()'></td>" +
         "</tr>";
 
     $("#viewCellDetailTable").html(html);
