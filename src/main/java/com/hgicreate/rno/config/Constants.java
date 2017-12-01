@@ -20,7 +20,7 @@ public final class Constants {
     /**
      * 缺省城市：广州
      */
-    public static final Long DEFAULT_AREA = 440100L;
+    public static final Long DEFAULT_AREA = 440106L;
 
     private Constants() {
     }
