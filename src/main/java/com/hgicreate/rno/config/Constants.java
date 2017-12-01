@@ -18,7 +18,7 @@ public final class Constants {
     public static final String ADMIN_CLI_CLIENT_ID = "admin-cli";
 
     /**
-     * 缺省城市：广州
+     * 缺省地区：天河区
      */
     public static final Long DEFAULT_AREA = 440106L;
 
