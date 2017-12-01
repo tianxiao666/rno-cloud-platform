@@ -974,6 +974,7 @@ html, body {
 #probCellList tr:hover{
     background: rgba(94, 94, 94, 0.32);
 }
+
 #probCellList th:hover{
     cursor: text;
     background: white;
