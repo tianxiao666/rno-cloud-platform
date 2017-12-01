@@ -21,7 +21,6 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -33,7 +32,6 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-@Transactional
 public class LteCellDataService {
 
 

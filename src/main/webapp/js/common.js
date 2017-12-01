@@ -2,8 +2,22 @@
 function initAreaSelectors(options) {
     var $provinceId = $("#" + options.selectors[0]);
 
+
     // 缺省地市，如广东省广州市天河区 440106
     var defaultAreaId = 440106;
+
+    //获取当前用户缺省区域
+    $.ajax({
+        url: "/api/get-user-default-area",
+        dataType: "json",
+        async: false,
+        success: function (data) {
+            console.log(data);
+            if(data !==null ){
+                defaultAreaId = parseInt(data);
+            }
+        }
+    });
 
     if (options.defaultAreaId !== undefined) {
         defaultAreaId = options.defaultAreaId;
