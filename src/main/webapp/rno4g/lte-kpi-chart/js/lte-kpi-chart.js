@@ -34,8 +34,33 @@ $(function () {
         $(".search_box_alert").slideToggle("fast");
     });
 
-    laydate.render({elem: '#mrMeaBegDate', value: dateBeg});
-    laydate.render({elem: '#mrMeaEndDate', value: dateEnd});
+    var start = {
+        elem: '#mrMeaBegDate',
+        type: 'date',
+        value: dateBeg,
+        done: function (value) {
+            var mrMeaEndDate =$("#mrMeaEndDate");
+            if(Date.parse(value)  > Date.parse(mrMeaEndDate.val())){
+                mrMeaEndDate.val(value);
+            }
+        }
+    };
+    var end = {
+        elem: '#mrMeaEndDate',
+        type: 'date',
+        value: dateEnd,
+        done: function (value) {
+            console.log(Date.parse(value)- start.value.getTime());
+            var mrMeaBegDate =$("#mrMeaBegDate");
+            if(Date.parse(value)  < Date.parse(mrMeaBegDate.val())){
+                mrMeaBegDate.val(value);
+            }
+        }
+    };
+    laydate.render(start);
+    laydate.render(end);
+
+
     //tab切换
     tab("div_tab", "li", "onclick");
 
