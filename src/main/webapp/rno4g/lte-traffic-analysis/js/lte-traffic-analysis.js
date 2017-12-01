@@ -350,11 +350,10 @@ $(function () {
                             jsonpCallback : 'parseResponse'
                         }).then(function(response) {
                             var feature = parser.readFeatures(response)[0];
-                            if (feature) {
-                                var cellCoor = [feature.get('LONGITUDE'), feature.get('LATITUDE')];
-                                map.getView().setCenter(cellCoor);
-                                popup.setPosition(cellCoor);
-                            }
+                            var cellCoor = [feature.get('LONGITUDE'), feature.get('LATITUDE')];
+
+                            popup.setPosition(cellCoor);
+                            map.getView().setCenter(cellCoor);
                         });
 
                         $(element).popover({
