@@ -64,9 +64,8 @@
                                                       type="text" title="">
                                         </td>
                                         <td style="text-align:center" width="auto">
-                                            <input id="cellStr" name="cellNameStr"
-                                                   style="width:200px;text-overflow: ellipsis" type="text" title="">
-                                            <input onclick="$('#selectCellDiv').show()" value="多小区输入" type="button">
+                                            <input id="cellStr" name="cellNameStr" style="width:200px;text-overflow: ellipsis" type="text" title="">
+                                            <input onclick="showSelectCell()" value="多小区输入" type="button">
                                         </td>
                                     </tr>
                                     <tr>
@@ -135,7 +134,7 @@
         </tbody>
     </table>
 </div>
-<div id="selectIndexDiv" class="dialog2 draggable ui-draggable" style="display:none; left:15%; top: 20%;width: 680px;">
+<div id="selectIndexDiv" class="dialog2 draggable ui-draggable" style="display:none; left:15%; top: 20%;width: 700px;">
     <div class="dialog_header">
         <div class="dialog_title">指标设置</div>
         <div class="dialog_tool">

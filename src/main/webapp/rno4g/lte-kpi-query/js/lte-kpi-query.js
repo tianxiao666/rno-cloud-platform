@@ -13,10 +13,39 @@ $(function () {
 
     getRno4GStsIndex();
 
-    // getAllCellByAreaId
     //执行 laydate 实例 
-    laydate.render({elem: '#beginTime', value: new Date("2015-09-01 00:00:00"), type: "datetime"});
-    laydate.render({elem: '#endTime', value: new Date("2015-09-30 23:59:59"), type: "datetime"});
+    var startDate = laydate.render({//渲染开始时间选择
+        elem: '#beginTime', //通过id绑定html中插入的start
+        type: 'datetime',
+        value: new Date("2015-09-01 00:00:00"),
+         max: "2015-09-30 23:59:59",//设置一个默认最大值
+        done: function (value, dates) {
+            endDate.config.min = {
+                year: dates.year,
+                month: dates.month - 1, //关键
+                date: dates.date,
+                hours: dates.hours,
+                minutes: dates.minutes,
+                seconds: dates.seconds
+            };
+        }
+    });
+    var endDate = laydate.render({//渲染结束时间选择
+        elem: '#endTime',
+        value: new Date("2015-09-30 23:59:59"),
+        type: "datetime",
+        min: "2015-09-01 00:00:00",//设置min默认最小值
+        done: function (value, dates) {
+            startDate.config.max = {
+                year: dates.year,
+                month: dates.month - 1,//关键
+                date: dates.date,
+                hours: dates.hours,
+                minutes: dates.minutes,
+                seconds: dates.seconds
+            }
+        }
+    });
 
     // 初始化区域联动
     initAreaSelectors({selectors: ["provinceId", "cityId"]});
@@ -80,7 +109,7 @@ function showQueryResult(data) {
     $(".loading").css("display", "none");
     if (data === null || data === undefined || data == "") {
         showInfoInAndOut('info', '没有符合条件的记录');
-    }else {
+    } else {
         firstTime = false;
     }
     // alert(data.length);
@@ -368,4 +397,9 @@ function showInfoInAndOut(div, info) {
     divSet.html(info);
     divSet.fadeIn(2000);
     setTimeout("$('#" + div + "').fadeOut(2000)", 1000);
+}
+
+function showSelectCell() {
+    $('#selectCellDiv').show();
+    document.getElementById("cellNameStr").value = $("#cellStr").val();
 }
