@@ -6,8 +6,39 @@ $(function () {
     setNavTitle("navTitle");
 
     // 执行 laydate 实例 
-    laydate.render({elem: '#begUploadDate', value: new Date(new Date().getTime() - 7 * 86400000)});
-    laydate.render({elem: '#endUploadDate', value: new Date()});
+    var begUploadDate = laydate.render({//渲染开始时间选择
+        elem: '#begUploadDate', //通过id绑定html中插入的start
+        type: 'datetime',
+        value: new Date(new Date().getTime() - 7 * 86400000),
+        max: new Date(),//设置一个默认最大值
+        done: function (value, dates) {
+            endUploadDate.config.min = {
+                year: dates.year,
+                month: dates.month - 1, //关键
+                date: dates.date,
+                hours: dates.hours,
+                minutes: dates.minutes,
+                seconds: dates.seconds
+            };
+        }
+    });
+    var endUploadDate = laydate.render({//渲染结束时间选择
+        elem: '#endUploadDate',
+        value: new Date(),
+        min: new Date(new Date().getTime() - 7 * 86400000),//设置min默认最小值
+        done: function (value, dates) {
+            begUploadDate.config.max = {
+                year: dates.year,
+                month: dates.month - 1,//关键
+                date: dates.date,
+                hours: dates.hours,
+                minutes: dates.minutes,
+                seconds: dates.seconds
+            }
+        }
+    });
+    // laydate.render({elem: '#begUploadDate', value: new Date(new Date().getTime() - 7 * 86400000)});
+    // laydate.render({elem: '#endUploadDate', value: new Date()});
 
     // 初始化区域联动
     initAreaSelectors({selectors: ["provinceId", "cityId"]});
@@ -52,7 +83,7 @@ $(function () {
         $(".loading").show();
     });
 
-    //AJAX 提交邻区关系查询条件表单
+    // //AJAX 提交邻区关系查询条件表单
     $("#conditionForm").ajaxForm({
         url: "/api/lte-ncell-relation/ncell-query",
         success: showNcellRelationResult
@@ -118,13 +149,14 @@ $(function () {
     });
 });
 
-//显示邻区关系查询结果
+// //显示邻区关系查询结果
 function showNcellRelationResult(data) {
     $(".loading").css("display", "none");
     if (data == '') {
         $("#info").css("background", "red");
         showInfoInAndOut('info', '没有符合条件的邻区关系');
     }
+    $('#queryResultTab').DataTable().clear();
 
     $('#queryResultTab').css("line-height", "12px")
     .DataTable({
@@ -166,7 +198,7 @@ function showNcellImportResult(data) {
         $("#info").css("background", "red");
         showInfoInAndOut('info', '没有符合条件的邻区关系导入记录');
     }
-
+    $('#queryRecordResTab').DataTable().clear();
     $('#queryRecordResTab').css("line-height", "12px")
     .DataTable({
         "data": data,
@@ -242,7 +274,7 @@ function showNcellImportDtResult(data) {
         $("#info").css("background", "red");
         showInfoInAndOut('info', '没有符合条件的邻区数据记录');
     }
-
+    $('#queryDataResultDT').DataTable().clear();
     $('#queryDataResultDT').css("line-height", "12px")
     .DataTable({
         "data": data,
