@@ -167,6 +167,7 @@ $(function () {
 
                                         content += '</tbody></table>';
 
+                                        console.log(evt.coordinate);
                                         popup.setPosition(evt.coordinate);
                                         $(element).popover({
                                             'placement': 'auto',
@@ -356,6 +357,8 @@ $(function () {
                             map.getView().setCenter(cellCoor);
                         });
 
+                        //popup.setPosition([113.36325993652345, 23.128390719604493]);
+                        //map.getView().setCenter([113.36325993652345, 23.128390719604493]);
                         $(element).popover({
                             'placement': 'auto',
                             'animation': false,
