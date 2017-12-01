@@ -34,7 +34,7 @@ function initAreaSelectors(options) {
 
     // 缺省省份
     if (defaultAreaId > 0) {
-        $provinceId.find("option[value='" + (Math.round(defaultAreaId / 10000) * 10000) + "']").attr("selected", true);
+        $provinceId.find("option[value='" + (Math.floor(defaultAreaId / 10000) * 10000) + "']").attr("selected", true);
     }
 
     if (options.selectors.length > 1) {
@@ -64,7 +64,7 @@ function initAreaSelectors(options) {
 
             // 缺省城市
             if ((defaultAreaId % 10000) > 99) {
-                $cityId.find("option[value='" + (Math.round(defaultAreaId / 100) * 100) + "']").attr("selected", true);
+                $cityId.find("option[value='" + (Math.floor(defaultAreaId / 100) * 100) + "']").attr("selected", true);
             }
 
             if(options.relate !== undefined) {
