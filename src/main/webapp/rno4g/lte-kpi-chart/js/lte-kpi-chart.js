@@ -274,6 +274,7 @@ function showChart(data,myChart) {
         legend: {
             orient: 'vertical',
             left: 'left',
+            top: '10%',
             data: pieLegendVal
         },
         series : [{
