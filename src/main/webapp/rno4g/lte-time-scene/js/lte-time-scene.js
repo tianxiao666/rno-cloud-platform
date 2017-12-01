@@ -145,11 +145,9 @@ function getSceneInfoTask(sceneId) {
         data: data,
         dataType: 'text',
         success: function (raw) {
-            //	console.log(raw);
             showSceneInfo(raw);
         },
         complete: function () {
-            /*			doTableLock();*/
             addEdit();
             hideOperTips("loadingDataDiv");
         }
@@ -161,14 +159,11 @@ function getSceneInfoTask(sceneId) {
  * @param raw
  */
 function showSceneInfo(raw) {
-    //console.log(raw);
     if (raw) {
         var data = eval("(" + raw + ")");
-        //	console.log(data);
         if (data === null || data === undefined) {
             return;
         }
-        //oldData=data;
         displaySceneinfo(data);
     }
 }
@@ -239,7 +234,6 @@ function ok(obtn) {
         $(obtn).parent().parent().find("span.oldDataTip").css({"display": "inline-block", "width": "49%"});
         $(obtn).parent().css({"width": "49%"});
     }
-    // alert("success");
     $obj.data("oldtxt", value); // 设置此单元格缓存为新数据
     $obj.html($obj.data("oldtxt"));
 
@@ -260,12 +254,10 @@ function addEdit() {
 }
 
 function submitUpdataData() {
-
 //检查参数是否可以上传
     if (!checkSceneParam()) {
         return
     }
-
     var interrathoa2thdrsrp = $("#interrathoa2thdrsrp").html().trim();
     var interrathoa1thdrsrp = $("#interrathoa1thdrsrp").html().trim();
     var interrathoutranb1hyst = $("#interrathoutranb1hyst").html().trim();
@@ -283,7 +275,6 @@ function submitUpdataData() {
     var thrshservlow = $("#thrshservlow").html().trim();
     var treseleutran = $("#treseleutran").html().trim();
     var cellreselpriority = $("#cellreselpriority").html().trim();
-
     var sceneDataMap = {
         'id': $("#sceneNameList").val(),
         'name': $("#sceneNameList").find("option:selected").text(),

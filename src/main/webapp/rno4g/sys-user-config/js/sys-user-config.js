@@ -20,7 +20,7 @@ $(document).ready(function () {
         $("#userInfoPage").attr("hidden",true);
     });
     //初始化区域联动
-    initAreaSelectors({selectors: ["province", "city"]});
+    initAreaSelectors({selectors: ["province", "city","district"]});
     //展示用户信息
     getCurrentUserInfo();
 
@@ -82,7 +82,7 @@ function saveUser(){
         'createdDate':new Date(createDate),
         'lastModifiedUser':$("#lastModifiedUser").val(),
         'lastModifiedDate':new Date(updateDate),
-        'defaultArea':$("#city").val()
+        'defaultArea':$("#district").val()
     };
     updateUserInfo(userDataMap);
 
@@ -134,19 +134,35 @@ function showUserInfo(raw) {
         userId = one['id'];
         createDate = one['createdDate'];
         updateDate = one['lastModifiedDate'];
-       $("#username").val(one['username']);
-       $("#fullName").val(one['fullName']);
-       $("#email").val(one['email']);
-       $("#phoneNumber").val(one['phoneNumber']);
-       $("#createdUser").val(one['createdUser']);
-       $("#createdDate").val((new Date(one['createdDate'])).Format("yyyy-MM-dd hh:mm"));
-       $("#lastModifiedUser").val(one['lastModifiedUser']);
-       $("#lastModifiedDate").val((new Date(one['lastModifiedDate'])).Format("yyyy-MM-dd hh:mm"));
-       var cityInfo = eval("(" + getAreaById(one['defaultArea']) + ")");
+        $("#username").val(one['username']);
+        $("#fullName").val(one['fullName']);
+        $("#email").val(one['email']);
+        $("#phoneNumber").val(one['phoneNumber']);
+        $("#createdUser").val(one['createdUser']);
+        $("#createdDate").val((new Date(one['createdDate'])).Format("yyyy-MM-dd hh:mm"));
+        $("#lastModifiedUser").val(one['lastModifiedUser']);
+        $("#lastModifiedDate").val((new Date(one['lastModifiedDate'])).Format("yyyy-MM-dd hh:mm"));
+        var districtInfo = eval("(" + getAreaById(one['defaultArea']) + ")");
+        var cityInfo = eval("(" + getAreaById(districtInfo['parentId']) + ")");
+        var provinceDiv = $("#province");
+        provinceDiv.val(cityInfo['parentId']);
+        renderArea(provinceDiv.val(),"city",false);
+        var cityDiv = $("#city");
+        cityDiv.val(cityInfo['id']);
+        renderArea(cityDiv.val(),"district",false);
+        $("#district").val(one['defaultArea']);
+
+        /*var cityDiv = $("#city");
+        cityDiv.val(districtInfo['parentId']);
+        renderArea(cityDiv.val(),"district",false);
+        $("#district").val(one['defaultArea']);*/
+
+
+      /* var cityInfo = eval("(" + getAreaById(one['defaultArea']) + ")");
        var provinceDiv = $("#province");
         provinceDiv.val(cityInfo['parentId']);
         renderArea(provinceDiv.val(),"city",false);
-       $("#city").val(one['defaultArea']);
+       $("#city").val(one['defaultArea']);*/
     }
 
 

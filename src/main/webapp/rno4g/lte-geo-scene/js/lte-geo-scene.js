@@ -256,13 +256,6 @@ function addEdit() {
     $("#scenceInfoTable div.editbox").attr("onclick", "editThis(this)");
 }
 
-/*function doTableLock(){
-	  $(function(){
-	      $.fn.TableLock({table:'scenceInfoTable',lockRow:1,lockColumn:1,width:'100%',height:'300px'});
-	  });
-}
-*/
-
 function submitUpdataData() {
 //检查参数是否可以上传
     if (!checkSceneParam()) {

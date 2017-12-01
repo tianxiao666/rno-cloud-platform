@@ -63,10 +63,9 @@
                     <label for="email" class="control-label">邮件地址</label>
                 </div>
                 <div class="col-sm-10 col-md-10">
-                    <input type="text" class="form-control" id="email" name="email" autofocus value="ke.wx@hgicreate.com"/>
+                    <input type="text" class="form-control" id="email" name="email" value="ke.wx@hgicreate.com"/>
                 </div>
             </div>
-
 
             <div class="form-group ">
                 <div class="col-sm-2 col-md-2">
@@ -77,7 +76,7 @@
                 </div>
             </div>
 
-            <div class="form-group ">
+            <div class="form-group" hidden>
                 <div class="col-sm-2 col-md-2">
                     <label for="username" class="control-label">创建人</label>
                 </div>
@@ -87,7 +86,7 @@
                 </div>
             </div>
 
-            <div class="form-group ">
+            <div class="form-group" hidden>
                 <div class="col-sm-2 col-md-2">
                     <label for="username" class="control-label">创建时间</label>
                 </div>
@@ -97,7 +96,7 @@
                 </div>
             </div>
 
-            <div class="form-group ">
+            <div class="form-group" hidden>
                 <div class="col-sm-2 col-md-2">
                     <label for="username" class="control-label">最后修改人</label>
                 </div>
@@ -107,7 +106,7 @@
                 </div>
             </div>
 
-            <div class="form-group ">
+            <div class="form-group" hidden>
                 <div class="col-sm-2 col-md-2">
                     <label for="username" class="control-label">最后修改时间</label>
                 </div>
@@ -117,12 +116,15 @@
                 </div>
             </div>
 
-            <div class="user-default">
+            <div class="user-default" >
                 <div class="col-sm-2 ">
                     <label for="province" class="control-label" style="right: 15%">默认区域</label>
                 </div>
-                &nbsp;&nbsp;<select id="province"></select>
-                <select id="city" title="" form="userInfoPage" name="defaultArea"></select>
+                <div>
+                    &nbsp;&nbsp;<select id="province" style="height: 25px"></select>
+                    <select style="height: 25px" id="city" title=""></select>
+                    <select style="height: 25px" id="district" title=""></select>
+                </div>
             </div>
             <div class="form-group"  style="left:70%;">
                 <div class="col-md-offset-2 col-md-10 submit">
@@ -134,25 +136,21 @@
             </div>
         </div>
 
-
         <form id="passwordPage" hidden action="/api/reset-password" method="post" class="form-horizontal">
             <div class="form-group ">
                 <div class="col-sm-2 col-md-2">
                     <label for="email" class="control-label">输入原密码</label> <span class="required">*</span>
                 </div>
-
                 <div class="col-sm-10 col-md-10">
                     <input type="password" class="form-control" name="oldPassword" id="oldPassword" autofocus title="" onclick="hideErrorPasswordMsg();"/>
                     <div id="oldPasswordMessage" class="error" hidden><em style="color:red;font-weight:bold">原密码错误！请重新输入！</em></div>
                 </div>
-
             </div>
 
             <div class="form-group ">
                 <div class="col-sm-2 col-md-2">
                     <label class="control-label">输入新密码</label> <span class="required">*</span>
                 </div>
-
                 <div class="col-sm-10 col-md-10">
                     <input type="password" class="form-control"  name="newPassword" id="newPassword"  title=""/>
                 </div>
@@ -162,7 +160,6 @@
                 <div class="col-sm-2 col-md-2">
                     <label class="control-label">重新输入密码</label> <span class="required">*</span>
                 </div>
-
                 <div class="col-sm-10 col-md-10">
                     <input type="password" class="form-control" name="againPassword" id="againPassword" title=""/>
                 </div>
@@ -170,7 +167,6 @@
             </div>
 
             <div class="form-group">
-
                 <div class="col-md-offset-2 col-md-10 submit">
                     <div id="successChangeMsg" hidden><em style="color:green;font-weight:bold">密码修改成功！</em></div>
                     <div class="" align="right">
@@ -179,11 +175,8 @@
                     </div>
                 </div>
             </div>
-
         </form>
-
     </div>
 </div>
-
 </body>
 </html>
