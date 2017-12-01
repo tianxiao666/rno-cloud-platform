@@ -3,7 +3,6 @@ package com.hgicreate.rno.web.rest;
 import com.hgicreate.rno.domain.GridData;
 import com.hgicreate.rno.repository.GridCoordRepository;
 import com.hgicreate.rno.repository.GridDataRepository;
-import com.hgicreate.rno.repository.LteCellGisRepository;
 import com.hgicreate.rno.service.LteGridGisService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,16 +24,13 @@ public class LteGridGisResource {
     private final GridDataRepository gridDataRepository;
     private final GridCoordRepository gridCoordRepository;
     private final LteGridGisService lteGridGisService;
-    private final LteCellGisRepository lteCellGisRepository;
 
     public LteGridGisResource(GridDataRepository gridDataRepository,
                               GridCoordRepository gridCoordRepository,
-                              LteGridGisService lteGridGisService,
-                              LteCellGisRepository lteCellGisRepository) {
+                              LteGridGisService lteGridGisService) {
         this.gridDataRepository = gridDataRepository;
         this.gridCoordRepository = gridCoordRepository;
         this.lteGridGisService = lteGridGisService;
-        this.lteCellGisRepository = lteCellGisRepository;
     }
 
     @GetMapping("/grid-data")
