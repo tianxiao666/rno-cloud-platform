@@ -20,9 +20,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -42,6 +46,36 @@ public class LteGridGisService {
         this.areaRepository = areaRepository;
         this.lteCellGisRepository = lteCellGisRepository;
     }
+
+    private final Map<String, String> TITLE = new LinkedHashMap<String, String>() {{
+        put("gridType", "网格类型");
+        put("gridCode", "网格编码");
+        put("cellId", "小区ID");
+        put("cellName", "小区中文名");
+        put("enodebId", "基站ID");
+        put("eci", "ECI");
+        put("manufacturer", "厂家名称");
+        put("tac", "跟踪区码");
+        put("bandType", "工作频段");
+        put("bandWidth", "小区带宽");
+        put("bandIndicator", "频段指示");
+        put("bandAmount", "载频数量");
+        put("earfcn", "中心载频的信道号");
+        put("pci", "物理小区识别码");
+        put("coverType", "覆盖类型");
+        put("coverScene", "覆盖场景");
+        put("longitude", "经度");
+        put("latitude", "纬度");
+        put("azimuth", "方位角");
+        put("eDowntilt", "电子下倾角");
+        put("mDowntilt", "物理下倾角");
+        put("totalDowntilt", "总下倾角");
+        put("antennaHeight", "天线挂高");
+        put("remoteCell", "是否拉远小区");
+        put("relatedParam", "是否关联状态库工参");
+        put("relatedResouce", "是否关联状态库资源");
+        put("stationSpace", "站间距");
+    }};
 
     public void getCellDataByGrid(String type, Long areaId, HttpServletResponse response) {
 
@@ -69,60 +103,12 @@ public class LteGridGisService {
         Row row;
         Cell cell;
         row = sheet.createRow(0);
-        cell = row.createCell(0);
-        cell.setCellValue("网格类型");
-        cell = row.createCell(1);
-        cell.setCellValue("网格编码");
-        cell = row.createCell(2);
-        cell.setCellValue("小区ID");
-        cell = row.createCell(3);
-        cell.setCellValue("小区中文名");
-        cell = row.createCell(4);
-        cell.setCellValue("基站ID");
-        cell = row.createCell(5);
-        cell.setCellValue("ECI");
-        cell = row.createCell(6);
-        cell.setCellValue("厂家名称");
-        cell = row.createCell(7);
-        cell.setCellValue("跟踪区码");
-        cell = row.createCell(8);
-        cell.setCellValue("工作频段");
-        cell = row.createCell(9);
-        cell.setCellValue("小区带宽");
-        cell = row.createCell(10);
-        cell.setCellValue("频段指示");
-        cell = row.createCell(11);
-        cell.setCellValue("载频数量");
-        cell = row.createCell(12);
-        cell.setCellValue("中心载频的信道号");
-        cell = row.createCell(13);
-        cell.setCellValue("物理小区识别码");
-        cell = row.createCell(14);
-        cell.setCellValue("覆盖类型");
-        cell = row.createCell(15);
-        cell.setCellValue("覆盖场景");
-        cell = row.createCell(16);
-        cell.setCellValue("经度");
-        cell = row.createCell(17);
-        cell.setCellValue("纬度");
-        cell = row.createCell(18);
-        cell.setCellValue("方位角");
-        cell = row.createCell(19);
-        cell.setCellValue("电子下倾角");
-        cell = row.createCell(20);
-        cell.setCellValue("物理下倾角");
-        cell = row.createCell(21);
-        cell.setCellValue("总下倾角");
-        cell = row.createCell(22);
-        cell.setCellValue("天线挂高");
-        cell = row.createCell(23);
-        cell.setCellValue("是否拉远小区");
-        cell = row.createCell(24);
-        cell.setCellValue("是否关联状态库工参");
-        cell = row.createCell(25);
-        cell.setCellValue("是否关联状态库资源");
-        cell = row.createCell(26);
-        cell.setCellValue("站间距");
+        int x = 0;
+        for (String title : TITLE.values()) {
+            cell = row.createCell(x);
+            cell.setCellValue(title);
+            x++;
+        }
 
         int num = 0;
         int intersectnum;
@@ -132,6 +118,8 @@ public class LteGridGisService {
         Line line;
         List<GridData> gridData;
         List<GridCoord> gridCoords;
+        Method m;
+        Object value;
 
         log.debug("开始匹配网格小区数据");
         List<LteCell> lteCells = lteCellGisRepository.findAllByAreaId(areaId);
@@ -181,60 +169,28 @@ public class LteGridGisService {
                     //过滤不相交以及交点个数为偶数的网格
                     if (intersectnum != 0 && intersectnum % 2 != 0) {
                         row = sheet.createRow(num + 1);
-                        cell = row.createCell(0);
-                        cell.setCellValue(grid.getGridType() == null ? "" : grid.getGridType());
-                        cell = row.createCell(1);
-                        cell.setCellValue(grid.getGridCode() == null ? "" : grid.getGridCode());
-                        cell = row.createCell(2);
-                        cell.setCellValue(c.getCellId() == null ? "" : c.getCellId());
-                        cell = row.createCell(3);
-                        cell.setCellValue(c.getCellName() == null ? "" : c.getCellName());
-                        cell = row.createCell(4);
-                        cell.setCellValue(c.getEnodebId() == null ? "" : c.getEnodebId());
-                        cell = row.createCell(5);
-                        cell.setCellValue(c.getEci() == null ? "" : c.getEci());
-                        cell = row.createCell(6);
-                        cell.setCellValue(c.getManufacturer() == null ? "" : c.getManufacturer());
-                        cell = row.createCell(7);
-                        cell.setCellValue(c.getTac() == null ? "" : c.getTac());
-                        cell = row.createCell(8);
-                        cell.setCellValue(c.getBandType() == null ? "" : c.getBandType());
-                        cell = row.createCell(9);
-                        cell.setCellValue(c.getBandWidth() == null ? "" : c.getBandWidth());
-                        cell = row.createCell(10);
-                        cell.setCellValue(c.getBandIndicator() == null ? "" : c.getBandIndicator());
-                        cell = row.createCell(11);
-                        cell.setCellValue(c.getBandAmount() == null ? "" : c.getBandAmount());
-                        cell = row.createCell(12);
-                        cell.setCellValue(c.getEarfcn() == null ? "" : c.getEarfcn());
-                        cell = row.createCell(13);
-                        cell.setCellValue(c.getPci() == null ? "" : c.getPci());
-                        cell = row.createCell(14);
-                        cell.setCellValue(c.getCoverType() == null ? "" : c.getCoverType());
-                        cell = row.createCell(15);
-                        cell.setCellValue(c.getCoverScene() == null ? "" : c.getCoverScene());
-                        cell = row.createCell(16);
-                        cell.setCellValue(c.getLongitude() == null ? "" : c.getLongitude());
-                        cell = row.createCell(17);
-                        cell.setCellValue(c.getLatitude() == null ? "" : c.getLatitude());
-                        cell = row.createCell(18);
-                        cell.setCellValue(c.getAzimuth() == null ? "" : c.getAzimuth());
-                        cell = row.createCell(19);
-                        cell.setCellValue(c.getEDowntilt() == null ? "" : c.getEDowntilt());
-                        cell = row.createCell(20);
-                        cell.setCellValue(c.getMDowntilt() == null ? "" : c.getMDowntilt());
-                        cell = row.createCell(21);
-                        cell.setCellValue(c.getTotalDowntilt() == null ? "" : c.getTotalDowntilt());
-                        cell = row.createCell(22);
-                        cell.setCellValue(c.getAntennaHeight() == null ? "" : c.getAntennaHeight());
-                        cell = row.createCell(23);
-                        cell.setCellValue(c.getRemoteCell() == null ? "" : c.getRemoteCell());
-                        cell = row.createCell(24);
-                        cell.setCellValue(c.getRelatedParam() == null ? "" : c.getRelatedParam());
-                        cell = row.createCell(25);
-                        cell.setCellValue(c.getRelatedResouce() == null ? "" : c.getRelatedResouce());
-                        cell = row.createCell(26);
-                        cell.setCellValue(c.getStationSpace() == null ? "" : c.getStationSpace());
+                        int n = 0;
+                        for (String name : TITLE.keySet()) {
+                            cell = row.createCell(n);
+                            try {
+                                if (n == 0) {
+                                    cell.setCellValue(format(grid.getGridType()));
+                                } else if (n == 1) {
+                                    cell.setCellValue(format(grid.getGridCode()));
+                                } else {
+                                    name = name.substring(0, 1).toUpperCase() + name.substring(1);
+                                    m = c.getClass().getMethod("get" + name);
+                                    value = m.invoke(c);
+                                    cell.setCellValue(format(value));
+                                }
+                            } catch (NoSuchMethodException |
+                                    InvocationTargetException |
+                                    IllegalAccessException e) {
+                                log.error("生成文件过程出错！");
+                                e.printStackTrace();
+                            }
+                            n++;
+                        }
                         num++;
                         if (num % 1000 == 0) {
                             log.debug("已经匹配到{}条小区数据", num);
@@ -291,9 +247,9 @@ public class LteGridGisService {
         private Point point1;
         private Point point2;
 
-        Line(Point point, Point point3) {
-            this.point1 = point;
-            this.point2 = point3;
+        Line(Point point1, Point point2) {
+            this.point1 = point1;
+            this.point2 = point2;
         }
 
         Point getPoint1() {
@@ -304,6 +260,10 @@ public class LteGridGisService {
             return point2;
         }
 
+    }
+
+    private String format(Object o) {
+        return o == null ? "" : o.toString();
     }
 
 }
