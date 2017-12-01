@@ -22,8 +22,8 @@ spring:
       hibernate.format_sql: true
   http:
     multipart:
-      max-file-size: 300MB
-      max-request-size: 300MB
+      max-file-size: 800MB
+      max-request-size: 800MB
 
 rno:
   app-code: rno4g
