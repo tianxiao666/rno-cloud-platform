@@ -23,8 +23,6 @@ $(document).ready(function () {
     initAreaSelectors({selectors: ["province", "city","district"]});
     //展示用户信息
     getCurrentUserInfo();
-
-
     $("#passwordPage").validate({
         rules: {
             oldPassword: "required",
@@ -54,8 +52,6 @@ $(document).ready(function () {
                         $("#oldPasswordMessage").show();
                         $("#oldPassword").focus();
                     }
-
-
                 }
             });
         }
@@ -85,7 +81,6 @@ function saveUser(){
         'defaultArea':$("#district").val()
     };
     updateUserInfo(userDataMap);
-
 }
 
 function cancelChangePassword() {
@@ -151,22 +146,9 @@ function showUserInfo(raw) {
         cityDiv.val(cityInfo['id']);
         renderArea(cityDiv.val(),"district",false);
         $("#district").val(one['defaultArea']);
-
-        /*var cityDiv = $("#city");
-        cityDiv.val(districtInfo['parentId']);
-        renderArea(cityDiv.val(),"district",false);
-        $("#district").val(one['defaultArea']);*/
-
-
-      /* var cityInfo = eval("(" + getAreaById(one['defaultArea']) + ")");
-       var provinceDiv = $("#province");
-        provinceDiv.val(cityInfo['parentId']);
-        renderArea(provinceDiv.val(),"city",false);
-       $("#city").val(one['defaultArea']);*/
     }
-
-
 }
+
 Date.prototype.Format = function(fmt){
     //author: Shf
     var o = {

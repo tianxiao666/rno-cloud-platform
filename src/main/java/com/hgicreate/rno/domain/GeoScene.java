@@ -36,29 +36,4 @@ public class GeoScene implements Serializable {
     private double thrshservlow;
     private double treseleutran;
     private double cellreselpriority;
-
-    @Override
-    public String toString() {
-        return "GeoScene{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", interrathoa2thdrsrp=" + interrathoa2thdrsrp +
-                ", interrathoa1thdrsrp=" + interrathoa1thdrsrp +
-                ", interrathoutranb1hyst=" + interrathoutranb1hyst +
-                ", interrathoutranb1thdrscp=" + interrathoutranb1thdrscp +
-                ", interrathoa1a2timetotrig=" + interrathoa1a2timetotrig +
-                ", interrathoa1a2hyst=" + interrathoa1a2hyst +
-                ", blindhoa1a2thdrsrp=" + blindhoa1a2thdrsrp +
-                ", interfreqhoa1a2timetotrig=" + interfreqhoa1a2timetotrig +
-                ", a3interfreqhoa1thdrsrp=" + a3interfreqhoa1thdrsrp +
-                ", a3interfreqhoa2thdrsrp=" + a3interfreqhoa2thdrsrp +
-                ", interfreqhoa3offset=" + interfreqhoa3offset +
-                ", interfreqhoa1a2hyst=" + interfreqhoa1a2hyst +
-                ", qrxlevmin=" + qrxlevmin +
-                ", snonintrasearch=" + snonintrasearch +
-                ", thrshservlow=" + thrshservlow +
-                ", treseleutran=" + treseleutran +
-                ", cellreselpriority=" + cellreselpriority +
-                '}';
-    }
 }

@@ -25,7 +25,7 @@ public class LteGeoSceneService {
     }
 
     public GeoScene getSceneById(Long sceneId){
-        return geoSceneRepository.findSceneById(sceneId);
+        return geoSceneRepository.findOne(sceneId);
     }
 
     public List<GeoSceneNameDTO> getAllName(){
@@ -33,7 +33,7 @@ public class LteGeoSceneService {
     }
 
     public void deleteSceneById(Long sceneId){
-        geoSceneRepository.deleteById(sceneId);
+        geoSceneRepository.delete(sceneId);
     }
 
     public void insertScene(GeoScene geoScene){

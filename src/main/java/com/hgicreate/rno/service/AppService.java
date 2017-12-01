@@ -30,7 +30,7 @@ public class AppService {
     }
 
     public AppDTO getAppById(Long id){
-        return AppMapper.INSTANCE.appToAppDTO(appRepository.findById(id));
+        return AppMapper.INSTANCE.appToAppDTO(appRepository.findOne(id));
     }
 
     public Long updateApp(App app){

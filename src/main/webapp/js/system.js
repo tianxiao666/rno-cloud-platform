@@ -16,7 +16,6 @@ function editThis(obtn){
     $("#editTd").focus();
 }
 
-
 //点击td转换可编辑
 function setEditHTML(value, obtn) {
     if ($(obtn).attr("id") === "appDescription"){
@@ -32,42 +31,27 @@ function setEditHTML(value, obtn) {
 function ok(obtn) {
     var value;
     var $obj = $(obtn).parent(); //div
-    var spanvalue=$(obtn).parent().parent().find("span").html();
     value = $(obtn).val();
     if (value === "") {
         value = "   ";
     }
-    if(value!==spanvalue){
-
-    }else{
-
-    }
-    // alert("success");
     $obj.data("oldtxt", value); // 设置此单元格缓存为新数据
     $obj.html($obj.data("oldtxt"));
     $obj.attr("onclick","editThis(this)");
 }
 
 $(document).ready(function() {
-
-
     // 设置jquery ui
     //获取场景名列表
     //绑定事件
     bindEvent();
-    //clearAll();
     getAppNameList();
     appId=$("#appNameList").val();
     getAppById(appId);
-
 });
 
 function bindEvent(){
     $("#flashtable").click(function() {
-        /*var flag = confirm("确定刷新页面？你将放弃所有未提交的修改。");
-        if (flag === false){
-            return false;
-        }*/
         //添加记录
        $("#addApp").bind("click",function(){
             initAppTable();
@@ -77,7 +61,6 @@ function bindEvent(){
         getAppNameList();
         getAppById(appId);
     });
-
     //提交记录
     $("#submitalter").bind("click",function(){
         //console.log(submitStatus);
@@ -85,12 +68,8 @@ function bindEvent(){
         if (flag === false){
             return false;
         }
-        chooseTask();
+        submitUpdataData();
     });
-
-
-
-
     //删除记录
     $("#deleteApp").click(function(){
         if (appCode === "rno"){
@@ -105,24 +84,11 @@ function bindEvent(){
             deleteAppInfo(appId);
         }
     });
-
     //添加记录
     $("#addApp").bind("click",function(){
         initAppTable();
     });
-
 }
-
-function chooseTask(){
-    //console.log(submitStatus);
-    //if(submitStatus){
-        submitUpdataData();
-    /*}else{
-        //	console.log(submitStatus);
-        submitInsertData();
-    }*/
-}
-
 
 /**
  * 初始化新增界面
@@ -131,7 +97,6 @@ function initAppTable(){
     var editboxDiv = $(".editbox");
     editboxDiv.html("");
     $("#appInfoTable").find("caption font").html("");
-
     var select=$("#appNameTd");
     select.empty();
     editboxDiv.removeAttr("onclick");
@@ -142,7 +107,6 @@ function initAppTable(){
     $("#addApp").unbind("click");
     $("#statusCheck").attr("checked",true);
 }
-
 
 /**
  * 删除系统记录
@@ -163,7 +127,6 @@ function deleteAppInfo(appId){
             hideOperTips("loadingDataDiv");
         }
     });
-
 }
 
 function clearAll(){
@@ -175,7 +138,6 @@ function clearAll(){
     check_tdDiv.html("");
     check_tdDiv.html('<input type="checkbox" checked id="statusCheck">');
 }
-
 
 /**
  * 初始化系统名称
@@ -200,7 +162,7 @@ $(document).on("change","#appNameList",function(){
     getAppById(appId);
 });
 
-/*
+/**
 *   根据系统名称查找系统信息
 * */
 function getAppById(appId){
@@ -216,7 +178,6 @@ function getAppById(appId){
         dataType : 'text',
         success : function(raw) {
             showAppInfo(raw);
-
         }
     });
 }
@@ -292,10 +253,6 @@ function fillSelectList(selectParentId,selectId,raw){
 }
 
 function submitUpdataData(){
-//检查参数是否可以上传
-    /*if(!checkSceneParam()){
-        return
-    }*/
     var appDataMap;
     appDataMap={
         'name':$("#appName").html().trim(),
@@ -344,7 +301,6 @@ function updateAppInfo(appDataMap){
         }
     });
 }
-
 
 function showOperTips(outerId, tipId, tips) {
     try {

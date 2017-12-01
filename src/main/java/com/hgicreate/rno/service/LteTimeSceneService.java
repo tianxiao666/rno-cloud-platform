@@ -25,7 +25,7 @@ public class LteTimeSceneService {
     }
 
     public TimeScene getSceneById(Long sceneId){
-        return timeSceneRepository.findSceneById(sceneId);
+        return timeSceneRepository.findOne(sceneId);
     }
 
     public List<TimeSceneNameDTO> getAllName(){
@@ -33,7 +33,7 @@ public class LteTimeSceneService {
     }
 
     public void deleteSceneById(Long sceneId){
-        timeSceneRepository.deleteById(sceneId);
+        timeSceneRepository.delete(sceneId);
     }
 
     public void insertScene(TimeScene timeScene){
