@@ -821,42 +821,6 @@ html, body {
     width: 400px;
 }
 
-
-.pano_close {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    width: 40px;
-    cursor: pointer;
-    height: 40px;
-    line-height: 40px;
-    border-radius: 3px;
-    background: rgba(37, 37, 37, 0.9) url("http://api0.map.bdimg.com/images/panorama/close.png") no-repeat center;
-    background-size: 90%;
-}
-
-.pano_close:hover {
-    background-image: url("http://api0.map.bdimg.com/images/panorama/close_hover.png");
-}
-
-.pano_pc_indoor_exit {
-    position: absolute;
-    right: 60px;
-    top: 10px;
-    width: 89px;
-    cursor: pointer;
-    height: 40px;
-    line-height: 40px;
-    color: rgb(235, 237, 240);
-    border-radius: 3px;
-    background: rgba(37, 37, 37, 0.9) url("http://api0.map.bdimg.com/images/panorama/indoor_exit.png") no-repeat 15px 12px;
-}
-
-.pano_pc_indoor_exit:hover {
-    background-image: url("http://api0.map.bdimg.com/images/panorama/indoor_exit_hover.png");
-    color: rgb(36, 149, 255);
-}
-
 .main-table1{
     text-align:right;
 }
@@ -864,7 +828,7 @@ html, body {
 html,body {
     width: 100%;
     height: 100%;
-    margin: 0px;
+    margin: 0;
     background: #EEEEEE;
 }
 
@@ -1009,6 +973,10 @@ html, body {
 
 #probCellList tr:hover{
     background: rgba(94, 94, 94, 0.32);
+}
+#probCellList th:hover{
+    cursor: text;
+    background: white;
 }
 
 #probCellList tr{
