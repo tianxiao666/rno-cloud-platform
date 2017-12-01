@@ -8,9 +8,8 @@ $(function () {
     // 执行 laydate 实例 
     var begUploadDate = laydate.render({//渲染开始时间选择
         elem: '#begUploadDate', //通过id绑定html中插入的start
-        type: 'datetime',
         value: new Date(new Date().getTime() - 7 * 86400000),
-        max: new Date(),//设置一个默认最大值
+        // max: new Date(),//设置一个默认最大值
         done: function (value, dates) {
             endUploadDate.config.min = {
                 year: dates.year,
@@ -25,7 +24,7 @@ $(function () {
     var endUploadDate = laydate.render({//渲染结束时间选择
         elem: '#endUploadDate',
         value: new Date(),
-        min: new Date(new Date().getTime() - 7 * 86400000),//设置min默认最小值
+        // min: new Date(new Date().getTime() - 7 * 86400000),//设置min默认最小值
         done: function (value, dates) {
             begUploadDate.config.max = {
                 year: dates.year,
