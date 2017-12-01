@@ -245,9 +245,12 @@ $(function () {
             });
 
         } else {
-            map.getView().setCenter(ol.proj.transform([lon, lat], 'EPSG:4326', 'EPSG:3857'));
+            map.getView().setCenter([lon, lat]);
         }
     });
+
+    //初始区域
+    initAreaSelectors({selectors: ["provinceId", "cityId", "districtId"], coord: true});
 
     $("#loadGisCell").click(function () {
         var cityId = parseInt($("#cityId").find("option:checked").val());
@@ -429,9 +432,6 @@ $(function () {
             });
         }
     });
-
-    //初始区域
-    initAreaSelectors({selectors: ["provinceId", "cityId", "districtId"], coord: true});
 
     $("#showCellName").click(function () {
         if ($(this).text() === "显示小区名字") {
