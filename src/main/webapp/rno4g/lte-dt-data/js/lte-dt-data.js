@@ -21,12 +21,67 @@ $(function () {
     // 执行 laydate 实例 
     var dateBeg = new Date();
     dateBeg.setFullYear(2017,8,1);
-    laydate.render({elem: '#begUploadDate', value: new Date(new Date().getTime() - 7 * 86400000)});
-    laydate.render({elem: '#endUploadDate', value: new Date()});
-    laydate.render({elem: '#beginTestDate', value: dateBeg});
-    laydate.render({elem: '#endTestDate', value: new Date()});
+    var start = laydate.render({
+        elem: '#begUploadDate',
+        value: new Date(new Date().getTime() - 7 * 86400000),
+        done: function(value, date) {
+            end.config.min = {
+                year: date.year,
+                month: date.month - 1,
+                date: date.date,
+            };
+        }
+    });
+
+    var end = laydate.render({
+        elem: '#endUploadDate',
+        value: new Date(),
+        done: function(value, date) {
+            start.config.max = {
+                year: date.year,
+                month: date.month - 1,
+                date: date.date,
+            };
+        }
+    });
+
+    var beginTest = laydate.render({
+        elem: '#beginTestDate',
+        value: dateBeg,
+        done: function(value, date) {
+            endTest.config.min = {
+                year: date.year,
+                month: date.month - 1,
+                date: date.date,
+            };
+        }
+    });
+
+    var endTest = laydate.render({
+        elem: '#endTestDate',
+        value: new Date(),
+        done: function(value, date) {
+            beginTest.config.max = {
+                year: date.year,
+                month: date.month - 1,
+                date: date.date,
+            };
+        }
+    });
 
     // AJAX 提交查询条件表单
+    $("#searchRecord").on('click', function() {
+        //获取area_id上传
+        $("#area").val($("#cityId").val());
+        var startTime = begUploadDate.value;
+        var endTime = endUploadDate.value;
+        if(startTime>endTime) {
+            showInfoInAndOut("info", "开始时间不能大于结束时间");
+            return false;
+        }else {
+            return true;
+        }
+    });
     $("#import-query-form").ajaxForm({
         url: "/api/lte-dt-data/query-import",
         success: showQueryImportResult
@@ -81,6 +136,19 @@ $(function () {
         progress.css("display", "none");
     });
 
+    //数据记录查询
+    $("#searchDtBtnDT").on('click', function() {
+        //获取area_id上传
+        $("#area").val($("#cityId").val());
+        var startTime = beginTestDate.value;
+        var endTime = endTestDate.value;
+        if(startTime>endTime) {
+            showInfoInAndOut("info", "开始时间不能大于结束时间");
+            return false;
+        }else {
+            return true;
+        }
+    });
     $("#searchDtRecordForm").ajaxForm({
        url: "/api/lte-dt-data/query-record",
         success: showDtRecord

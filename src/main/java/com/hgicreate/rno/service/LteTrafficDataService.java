@@ -39,7 +39,8 @@ public class LteTrafficDataService {
         Date endDate = sdf2.parse(vm.getEndUploadDate() + " 23:59:59");
         List<DataJob> list = new ArrayList<>();
         if (vm.getStatus().equals("全部")) {
-            list = dataJobRepository.findTop1000ByAreaAndOriginFile_CreatedDateBetweenAndOriginFile_DataTypeOrderByOriginFile_CreatedDateDesc(
+            list = dataJobRepository
+                    .findTop1000ByAreaAndOriginFile_CreatedDateBetweenAndOriginFile_DataTypeOrderByOriginFile_CreatedDateDesc(
                     area, beginDate, endDate, "LTE-TRAFFIC-DATA");
         } else {
             list = dataJobRepository.findTop1000ByAreaAndStatusAndOriginFile_CreatedDateBetweenAndOriginFile_DataTypeOrderByOriginFile_CreatedDateDesc(
@@ -54,7 +55,8 @@ public class LteTrafficDataService {
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date beginDate = sdf.parse(vm.getBeginTestDate());
         Date endDate = sdf2.parse(vm.getEndTestDate() + " 23:59:59");
-        return lteTrafficDataQueryMapper.queryTop1000TrafficData(Long.parseLong(vm.getCity()), beginDate, endDate)
+        return lteTrafficDataQueryMapper
+                .queryTop1000TrafficData(Long.parseLong(vm.getCity()), beginDate, endDate)
                 .stream().map(LteTrafficDescMapper.INSTANCE::lteTrafficDescToLteTrafficDescDTO)
                 .collect(Collectors.toList());
     }
