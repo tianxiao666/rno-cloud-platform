@@ -272,10 +272,25 @@ $(function () {
         }
     });
 
+
+    $("#importRecordBtn").click(function () {
+        if($("#begUploadDate").val().trim() === '' || $("#endUploadDate").val().trim() === ''){
+            showInfoInAndOut('info','开始时间和结束时间不能为空！');
+            return false;
+        }
+    });
+
     // AJAX 查询导入记录
     $("#import-query-form").ajaxForm({
         url: "/api/lte-cell-data/query-import",
         success: showImportRecord
+    });
+
+    $("#searchJob").click(function () {
+        if($("#beginTestDate").val().trim() === '' || $("#endTestDate").val().trim() === ''){
+            showInfoInAndOut('info','开始时间和结束时间不能为空！');
+            return false;
+        }
     });
 
     //查询数据记录

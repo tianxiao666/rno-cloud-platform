@@ -84,15 +84,16 @@ $(function () {
     initAreaSelectors({selectors: ["province", "city"]});
     initAreaSelectors({selectors: ["province2", "city2"]});
 
-
+    $("#searchDataBtn").click(function () {
+        if($("#kpiMeaBegDate").val().trim() === '' || $("#kpiMeaEndDate").val().trim() === ''){
+            showInfoInAndOut('info','开始时间和结束时间不能为空！');
+            return false;
+        }
+    });
     //查询数据记录
     $("#searchRecordForm").ajaxForm({
         url: "/api/lte-kpi-data/query-record",
         success: showRecord
-    });
-
-    $("#searchDataBtn").click(function () {
-
     });
 
     // AJAX 上传文件
@@ -138,6 +139,14 @@ $(function () {
             $("#info").css("background","green");
             showInfoInAndOut("info","文件导入成功！");
             $("#import-query-form").submit();
+        }
+    });
+
+    // 时间为空校验
+    $("#importrRecordBtn").click(function () {
+        if($("#begUploadDate").val().trim() === '' || $("#endUploadDate").val().trim() === ''){
+            showInfoInAndOut('info','开始时间和结束时间不能为空！');
+            return false;
         }
     });
 

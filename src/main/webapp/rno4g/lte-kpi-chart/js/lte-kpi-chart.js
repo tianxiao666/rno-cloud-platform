@@ -130,6 +130,11 @@ $(function () {
             showInfoInAndOut("info","请先输入小区ID再进行查询！");
             return false;
         }
+
+        if($("#mrMeaBegDate").val().trim() === ''|| $("#mrMeaEndDate").val().trim() === ''){
+            showInfoInAndOut('info', '开始时间和结束时间不能为空！');
+            return false;
+        }
     });
     //查询小区信息
     $("#queryKpiForm").ajaxForm({
