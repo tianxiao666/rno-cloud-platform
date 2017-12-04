@@ -130,7 +130,7 @@ function showLteGridImportResult(data) {
         $("#info").css("background", "red");
         showInfoInAndOut('info', '没有符合条件的网格数据导入记录');
     }
-
+    $('#queryResultTab').DataTable().clear();
     $('#queryResultTab').css("line-height", "12px")
         .DataTable({
             "data": data,
@@ -199,7 +199,7 @@ function showLteGridDataResult(data) {
         $("#info").css("background", "red");
         showInfoInAndOut('info', '没有符合条件的网格数据记录');
     }
-
+    $('#queryResultTab1').DataTable().clear();
     $('#queryResultTab1').css("line-height", "12px")
         .DataTable({
             "data": data,
@@ -237,6 +237,7 @@ function showImportDetail(id) {
         success: function (data) {
             $("#reportDiv").css("display", "block");
             $("#listInfoDiv").css("display", "none");
+            $('#reportListTab').DataTable().clear();
             $("#reportListTab").css("line-height", "12px")
                 .DataTable({
                     "data": JSON.parse(data),

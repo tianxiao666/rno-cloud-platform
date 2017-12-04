@@ -153,7 +153,7 @@ $(function () {
     });
 });
 
-// //显示邻区关系查询结果
+// 显示邻区关系查询结果
 function showNcellRelationResult(data) {
     $(".loading").css("display", "none");
     if (data == '') {

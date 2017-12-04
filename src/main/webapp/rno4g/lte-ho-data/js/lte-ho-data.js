@@ -163,7 +163,7 @@ function showNcellImportResult(data) {
         $("#info").css("background", "red");
         showInfoInAndOut('info', '没有符合条件的切换数据导入记录');
     }
-
+    $('#queryRecordResTab').DataTable().clear();
     $('#queryRecordResTab').css("line-height", "12px")
         .DataTable({
             "data": data,
@@ -233,7 +233,7 @@ function showNcellImportDtResult(data) {
         $("#info").css("background", "red");
         showInfoInAndOut('info', '没有符合条件的切换数据记录');
     }
-
+    $('#queryDataResultDT').DataTable().clear();
     $('#queryDataResultDT').css("line-height", "12px")
         .DataTable({
             "data": data,
@@ -265,6 +265,7 @@ function showImportDetail(id) {
         success:function(data){
             $("#reportDiv").css("display", "block");
             $("#listInfoDiv").css("display", "none");
+            $('#reportListTab').DataTable().clear();
             $("#reportListTab").css("line-height", "12px")
                 .DataTable({
                     "data": JSON.parse(data),

@@ -122,7 +122,7 @@ function showQueryResult(data) {
     // alert(data.length);
     columnList = [];
     initColumnList();
-
+    $('#queryResultDT').DataTable().clear();
     $('#queryResultDT').css("line-height", "12px")
         .DataTable({
             "data": data,
