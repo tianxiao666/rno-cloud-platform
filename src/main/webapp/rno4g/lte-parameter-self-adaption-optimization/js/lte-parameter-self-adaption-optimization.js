@@ -58,8 +58,8 @@ function setNavTitle(navTitleId) {
 dataFullFromServer = null;
 
 function showCellRecord(dataList) {
-    console.log(dataList)
     dataFullFromServer = dataList;
+    $('#queryImportTab').DataTable().clear();
     $('#queryImportTab')
         .css("line-height", "12px")
         .DataTable({
