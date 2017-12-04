@@ -158,7 +158,9 @@ $(function () {
 });
 
 function showRecord(data) {
-    $('#queryDataTab').css("line-height", "12px")
+    var queryDataTab = $('#queryDataTab');
+    queryDataTab.DataTable().clear();
+    queryDataTab.css("line-height", "12px")
         .DataTable( {
             "data": data,
             "columns": [
@@ -179,7 +181,9 @@ function showRecord(data) {
 }
 
 function  showImportRecord(data) {
-    $('#queryImportTab')
+    var queryImportTab = $('#queryImportTab');
+    queryImportTab.DataTable().clear();
+    queryImportTab
         .css("line-height", "12px")
         .DataTable({
             "data": data,
@@ -271,7 +275,9 @@ function showImportDetail(id) {
 }
 
 function showImportDetailRecord(data) {
-    $("#reportListTab").css("line-height", "12px")
+    var reportListTab =$("#reportListTab");
+    reportListTab.DataTable().clear();
+    reportListTab.css("line-height", "12px")
         .dataTable({
             "data": JSON.parse(data),
             "columns": [

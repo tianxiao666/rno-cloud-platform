@@ -308,7 +308,9 @@ function showQueryList(data) {
         return false;
     }
     console.log(data);
-    $('#queryResultTab').css("line-height", "12px").DataTable({
+    var queryResultTab =$('#queryResultTab');
+    queryResultTab.DataTable().clear();
+    queryResultTab.css("line-height", "12px").DataTable({
         "data": data,
         // /api/lte-cell-data/cell-query
         "columns": [
@@ -638,8 +640,9 @@ function updateLteCellDetail(submitOK) {
 }
 
 function showImportRecord(data) {
-
-    $('#queryRecordResTab').css("line-height", "12px")
+    var queryRecordResTab =$('#queryRecordResTab');
+    queryRecordResTab.DataTable().clear();
+    queryRecordResTab.css("line-height", "12px")
         .DataTable({
             "data": data,
             "columns": [
@@ -703,7 +706,9 @@ function showImportRecord(data) {
 }
 
 function showRecord(data) {
-    $('#recordResult').css("line-height", "12px")
+    var recordResult =  $('#recordResult');
+    recordResult.DataTable().clear();
+    recordResult.css("line-height", "12px")
         .DataTable({
             "data": data,
             "columns": [
@@ -752,7 +757,9 @@ function returnToImportList(){
 }
 
 function showImportDatailResult(data) {
-    $("#reportListTable").css("line-height", "12px")
+    var reportListTable = $("#reportListTable");
+    reportListTable.DataTable().clear();
+    reportListTable.css("line-height", "12px")
         .dataTable({
             "data": JSON.parse(data),
             "columns": [
