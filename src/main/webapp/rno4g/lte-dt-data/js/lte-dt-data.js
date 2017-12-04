@@ -167,7 +167,7 @@ function showQueryImportResult(data) {
     if (data === '') {
         showInfoInAndOut('info', '没有符合条件的路测数据');
     }
-
+    $('#queryRecordResTab').DataTable().clear();
     $('#queryRecordResTab').css("line-height", "12px")
         .DataTable({
             "data": data,
@@ -263,6 +263,7 @@ function showImportDtDetail(id) {
 }
 
 function showImportDtDatailResult(data) {
+    $("#reportDtListTable").DataTable().clear();
     $("#reportDtListTable").css("line-height", "12px")
         .dataTable({
             "data": JSON.parse(data),

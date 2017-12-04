@@ -167,7 +167,7 @@ function showQueryImportResult(data) {
     if (data == '') {
         showInfoInAndOut('info', '没有符合条件的网络统计数据');
     }
-
+    $('#queryRecordResTab').DataTable().clear();
     $('#queryRecordResTab').css("line-height", "12px")
         .DataTable({
             "data": data,
@@ -276,6 +276,7 @@ function returnToImportList(){
 }
 
 function showRecord(data) {
+    $('#recordResult').DataTable().clear();
     $('#recordResult').css("line-height", "12px")
         .DataTable({
             "data": data,
