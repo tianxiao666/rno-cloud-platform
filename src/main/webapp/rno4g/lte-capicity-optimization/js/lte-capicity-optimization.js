@@ -264,11 +264,11 @@ function selectHighStressData(dataFromServer, fromCache) {
             dataOfHighStressList.push(dataFromServer[i]);
         }
     }
-    // fromCache = 0;
     dataFullFromServer = dataFromServer;
 }
 
 function showCellRecord(dataList, firstRowIndex) {
+    $('#showResultTable').DataTable().clear();
     myDataTable = $('#showResultTable')
         .css("line-height", "12px")
         .DataTable({
