@@ -6,10 +6,13 @@ $(function () {
     setNavTitle("navTitle");
 
     // 执行 laydate 实例 
+    var begDate = new Date(new Date().getTime() - 7 * 86400000);
+    var endDate = new Date();
     var begUploadDate = laydate.render({//渲染开始时间选择
         elem: '#begUploadDate', //通过id绑定html中插入的start
-        value: new Date(new Date().getTime() - 7 * 86400000),
-        // max: new Date(),//设置一个默认最大值
+        value: begDate,
+        max: endDate.toString(),//设置一个默认最大值
+        btns: ['clear', 'confirm'],
         done: function (value, dates) {
             endUploadDate.config.min = {
                 year: dates.year,
@@ -23,8 +26,9 @@ $(function () {
     });
     var endUploadDate = laydate.render({//渲染结束时间选择
         elem: '#endUploadDate',
-        value: new Date(),
-        // min: new Date(new Date().getTime() - 7 * 86400000),//设置min默认最小值
+        value: endDate,
+        min: begDate.getFullYear()+"-"+(begDate.getMonth()+1)+"-"+begDate.getDate(),//设置min默认最小值
+        btns: ['clear', 'confirm'],
         done: function (value, dates) {
             begUploadDate.config.max = {
                 year: dates.year,
@@ -36,8 +40,6 @@ $(function () {
             }
         }
     });
-    // laydate.render({elem: '#begUploadDate', value: new Date(new Date().getTime() - 7 * 86400000)});
-    // laydate.render({elem: '#endUploadDate', value: new Date()});
 
     // 初始化区域联动
     initAreaSelectors({selectors: ["provinceId", "cityId"]});
@@ -54,6 +56,15 @@ $(function () {
     });
 
     $("#queryImportDT").click(function () {
+        if($("#begUploadDate").val()===""||$("#endUploadDate").val()===""){
+            $("#info").css("background", "red");
+            showInfoInAndOut("info", "请选择正确的上传时间段");
+            return false;
+        }
+        $(".loading").show();
+    });
+
+    $("#queryDataTab").click(function () {
         $(".loading").show();
     });
 

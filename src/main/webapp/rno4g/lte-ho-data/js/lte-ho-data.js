@@ -6,10 +6,73 @@ $(function () {
     setNavTitle("navTitle");
 
     // 执行 laydate 实例 
-    laydate.render({elem: '#begUploadDate', value: new Date(new Date().getTime() - 7 * 86400000)});
-    laydate.render({elem: '#endUploadDate', value: new Date()});
-    laydate.render({elem: '#beginRecordDate', value: new Date(new Date().getTime() - 7 * 86400000)});
-    laydate.render({elem: '#endRecordDate', value: new Date()});
+    var begDate = new Date(new Date().getTime() - 7 * 86400000);
+    var endDate = new Date();
+    var begUploadDate = laydate.render({//渲染开始时间选择
+        elem: '#begUploadDate', //通过id绑定html中插入的start
+        value: begDate,
+        max: endDate.toString(),//设置一个默认最大值
+        btns: ['clear', 'confirm'],
+        done: function (value, dates) {
+            endUploadDate.config.min = {
+                year: dates.year,
+                month: dates.month - 1, //关键
+                date: dates.date,
+                hours: dates.hours,
+                minutes: dates.minutes,
+                seconds: dates.seconds
+            };
+        }
+    });
+    var endUploadDate = laydate.render({//渲染结束时间选择
+        elem: '#endUploadDate',
+        value: endDate,
+        min: begDate.getFullYear()+"-"+(begDate.getMonth()+1)+"-"+begDate.getDate(),//设置min默认最小值
+        btns: ['clear', 'confirm'],
+        done: function (value, dates) {
+            begUploadDate.config.max = {
+                year: dates.year,
+                month: dates.month - 1,//关键
+                date: dates.date,
+                hours: dates.hours,
+                minutes: dates.minutes,
+                seconds: dates.seconds
+            }
+        }
+    });
+
+    var beginRecordDate = laydate.render({//渲染开始时间选择
+        elem: '#beginRecordDate', //通过id绑定html中插入的start
+        value: begDate,
+        max: endDate.toString(),//设置一个默认最大值
+        btns: ['clear', 'confirm'],
+        done: function (value, dates) {
+            endRecordDate.config.min = {
+                year: dates.year,
+                month: dates.month - 1, //关键
+                date: dates.date,
+                hours: dates.hours,
+                minutes: dates.minutes,
+                seconds: dates.seconds
+            };
+        }
+    });
+    var endRecordDate = laydate.render({//渲染结束时间选择
+        elem: '#endRecordDate',
+        value: endDate,
+        min: begDate.getFullYear()+"-"+(begDate.getMonth()+1)+"-"+begDate.getDate(),//设置min默认最小值
+        btns: ['clear', 'confirm'],
+        done: function (value, dates) {
+            beginRecordDate.config.max = {
+                year: dates.year,
+                month: dates.month - 1,//关键
+                date: dates.date,
+                hours: dates.hours,
+                minutes: dates.minutes,
+                seconds: dates.seconds
+            }
+        }
+    });
 
     laydate.render({elem: '#recordDate', value: new Date()});
 
@@ -28,6 +91,20 @@ $(function () {
     });
 
     $("#queryImportDT").click(function () {
+        if($("#begUploadDate").val()===""||$("#endUploadDate").val()===""){
+            $("#info").css("background", "red");
+            showInfoInAndOut("info", "请选择正确的上传时间段");
+            return false;
+        }
+        $(".loading").show();
+    });
+
+    $("#queryDataTab").click(function () {
+        if($("#beginRecordDate").val()===""||$("#endRecordDate").val()===""){
+            $("#info").css("background", "red");
+            showInfoInAndOut("info", "请选择正确的测量时间段");
+            return false;
+        }
         $(".loading").show();
     });
 
