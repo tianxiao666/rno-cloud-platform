@@ -17,10 +17,7 @@ $(function () {
             endUploadDate.config.min = {
                 year: dates.year,
                 month: dates.month - 1, //关键
-                date: dates.date,
-                hours: dates.hours,
-                minutes: dates.minutes,
-                seconds: dates.seconds
+                date: dates.date
             };
         }
     });
@@ -33,10 +30,7 @@ $(function () {
             begUploadDate.config.max = {
                 year: dates.year,
                 month: dates.month - 1,//关键
-                date: dates.date,
-                hours: dates.hours,
-                minutes: dates.minutes,
-                seconds: dates.seconds
+                date: dates.date
             }
         }
     });

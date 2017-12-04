@@ -18,7 +18,8 @@ $(function () {
         elem: '#beginTime', //通过id绑定html中插入的start
         type: 'datetime',
         value: new Date("2015-09-01 00:00:00"),
-         max: "2015-09-30 23:59:59",//设置一个默认最大值
+        max: "2015-09-30 23:59:59",//设置一个默认最大值
+        btns: ['clear', 'confirm'],
         done: function (value, dates) {
             endDate.config.min = {
                 year: dates.year,
@@ -35,6 +36,7 @@ $(function () {
         value: new Date("2015-09-30 23:59:59"),
         type: "datetime",
         min: "2015-09-01 00:00:00",//设置min默认最小值
+        btns: ['clear', 'confirm'],
         done: function (value, dates) {
             startDate.config.max = {
                 year: dates.year,
@@ -54,6 +56,11 @@ $(function () {
         var cells = $("#cellStr").val();
         if (cells === null || cells.length === 0 || cells === "") {
             showInfoInAndOut('info', '请输入要查看的小区');
+            return false;
+        }
+        if($("#beginTime").val()===""||$("#endTime").val()===""){
+            $("#info").css("background", "red");
+            showInfoInAndOut("info", "请选择正确的时间段");
             return false;
         }
         var indexStr = $("#indexHiddenStr").val();
