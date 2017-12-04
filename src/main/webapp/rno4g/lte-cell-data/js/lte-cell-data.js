@@ -107,10 +107,80 @@ $(function () {
     initAreaSelectors({selectors: ["provinceId3", "cityId3"]});
 
     // 执行 laydate 实例 
-    laydate.render({elem: '#begUploadDate', value: new Date(new Date().getTime() - 7 * 86400000)});
-    laydate.render({elem: '#endUploadDate', value: new Date()});
-    laydate.render({elem: '#beginJobDate', value: new Date(new Date().getTime() - 7 * 86400000)});
-    laydate.render({elem: '#endJobDate', value: new Date()});
+    var beginUploadRender = laydate.render({
+        elem: '#begUploadDate',
+        value: new Date(new Date().getTime() - 7 * 86400000),
+        done: function (value,dates) {
+            endUploadRender.config.min = {
+                year: dates.year,
+                month: dates.month - 1,
+                date: dates.date,
+                hours: dates.hours,
+                minutes: dates.minutes,
+                seconds: dates.seconds
+            };
+            var endUploadDate =$("#endUploadDate");
+            if(Date.parse(value)  > Date.parse(endUploadDate.val())){
+                endUploadDate.val(value);
+            }
+        }
+    });
+    var endUploadRender = laydate.render({
+        elem: '#endUploadDate',
+        value: new Date(),
+        done: function (value,dates) {
+            beginUploadRender.config.max = {
+                year: dates.year,
+                month: dates.month - 1,
+                date: dates.date,
+                hours: dates.hours,
+                minutes: dates.minutes,
+                seconds: dates.seconds
+            };
+            // console.log(Date.parse(value)- start.value.getTime());
+            var begUploadDate =$("#begUploadDate");
+            if(Date.parse(value)  < Date.parse(begUploadDate.val())){
+                begUploadDate.val(value);
+            }
+        }
+    });
+    var beginJobRender = laydate.render({
+        elem: '#beginJobDate',
+        value: new Date(new Date().getTime() - 7 * 86400000),
+        done: function (value,dates) {
+            endJobRender.config.min = {
+                year: dates.year,
+                month: dates.month - 1,
+                date: dates.date,
+                hours: dates.hours,
+                minutes: dates.minutes,
+                seconds: dates.seconds
+            };
+            var endJobDate =$("#endJobDate");
+            if(Date.parse(value)  > Date.parse(endJobDate.val())){
+                endJobDate.val(value);
+            }
+        }
+    });
+    var endJobRender = laydate.render({
+        elem: '#endJobDate',
+        value: new Date(),
+        done: function (value,dates) {
+            beginJobRender.config.max = {
+                year: dates.year,
+                month: dates.month - 1,
+                date: dates.date,
+                hours: dates.hours,
+                minutes: dates.minutes,
+                seconds: dates.seconds
+            };
+            // console.log(Date.parse(value)- start.value.getTime());
+            var begJobDate =$("#begJobDate");
+            if(Date.parse(value)  < Date.parse(begJobDate.val())){
+                begJobDate.val(value);
+            }
+        }
+    });
 
     //显示隐藏导入窗口
     $("#importTitleDiv").click(function () {

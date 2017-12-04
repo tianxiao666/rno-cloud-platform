@@ -5,11 +5,81 @@ $(function () {
     setNavTitle("navTitle");
 
     //执行 laydate 实例 
-    laydate.render({elem: '#begUploadDate', value: new Date(new Date().getTime() - 7 * 86400000)});
-    laydate.render({elem: '#endUploadDate', value: new Date()});
+    var begUploadRender = laydate.render({
+        elem: '#begUploadDate',
+        value: new Date(new Date().getTime() - 7 * 86400000),
+        done: function (value,dates) {
+            endUploadRender.config.min = {
+                year: dates.year,
+                month: dates.month - 1,
+                date: dates.date,
+                hours: dates.hours,
+                minutes: dates.minutes,
+                seconds: dates.seconds
+            };
+            var endUploadDate =$("#endUploadDate");
+            if(Date.parse(value)  > Date.parse(endUploadDate.val())){
+                endUploadDate.val(value);
+            }
+        }
+    });
+    var endUploadRender = laydate.render({
+        elem: '#endUploadDate',
+        value: new Date(),
+        done: function (value,dates) {
+            beginUploadRender.config.max = {
+                year: dates.year,
+                month: dates.month - 1,
+                date: dates.date,
+                hours: dates.hours,
+                minutes: dates.minutes,
+                seconds: dates.seconds
+            };
+            // console.log(Date.parse(value)- start.value.getTime());
+            var begUploadDate =$("#begUploadDate");
+            if(Date.parse(value)  < Date.parse(begUploadDate.val())){
+                begUploadDate.val(value);
+            }
+        }
+    });
 
-    laydate.render({elem: '#kpiMeaBegDate', value: new Date(new Date().getTime() - 7 * 86400000)});
-    laydate.render({elem: '#kpiMeaEndDate', value: new Date()});
+    var kpiMeaBegRender = laydate.render({
+        elem: '#kpiMeaBegDate',
+        value: new Date(new Date().getTime() - 7 * 86400000),
+        done: function (value,dates) {
+            kpiMeaEndRender.config.min = {
+                year: dates.year,
+                month: dates.month - 1,
+                date: dates.date,
+                hours: dates.hours,
+                minutes: dates.minutes,
+                seconds: dates.seconds
+            };
+            var kpiMeaEndDate =$("#kpiMeaEndDate");
+            if(Date.parse(value)  > Date.parse(kpiMeaEndDate.val())){
+                kpiMeaEndDate.val(value);
+            }
+        }
+    });
+    var kpiMeaEndRender = laydate.render({
+        elem: '#kpiMeaEndDate',
+        value: new Date(),
+        done: function (value,dates) {
+            kpiMeaBegRender.config.max = {
+                year: dates.year,
+                month: dates.month - 1,
+                date: dates.date,
+                hours: dates.hours,
+                minutes: dates.minutes,
+                seconds: dates.seconds
+            };
+            // console.log(Date.parse(value)- start.value.getTime());
+            var kpiMeaBegDate =$("#kpiMeaBegDate");
+            if(Date.parse(value)  < Date.parse(kpiMeaBegDate.val())){
+                kpiMeaBegDate.val(value);
+            }
+        }
+    });
 
     initAreaSelectors({selectors: ["province", "city"]});
     initAreaSelectors({selectors: ["province2", "city2"]});

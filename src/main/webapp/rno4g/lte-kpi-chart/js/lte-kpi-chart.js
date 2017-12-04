@@ -38,7 +38,15 @@ $(function () {
         elem: '#mrMeaBegDate',
         type: 'date',
         value: dateBeg,
-        done: function (value) {
+        done: function (value,dates) {
+            endRenderDate.config.min = {
+                year: dates.year,
+                month: dates.month - 1,
+                date: dates.date,
+                hours: dates.hours,
+                minutes: dates.minutes,
+                seconds: dates.seconds
+            };
             var mrMeaEndDate =$("#mrMeaEndDate");
             if(Date.parse(value)  > Date.parse(mrMeaEndDate.val())){
                 mrMeaEndDate.val(value);
@@ -49,16 +57,24 @@ $(function () {
         elem: '#mrMeaEndDate',
         type: 'date',
         value: dateEnd,
-        done: function (value) {
-            console.log(Date.parse(value)- start.value.getTime());
+        done: function (value,dates) {
+            startRenderDate.config.max = {
+                year: dates.year,
+                month: dates.month - 1,
+                date: dates.date,
+                hours: dates.hours,
+                minutes: dates.minutes,
+                seconds: dates.seconds
+            };
+           // console.log(Date.parse(value)- start.value.getTime());
             var mrMeaBegDate =$("#mrMeaBegDate");
             if(Date.parse(value)  < Date.parse(mrMeaBegDate.val())){
                 mrMeaBegDate.val(value);
             }
         }
     };
-    laydate.render(start);
-    laydate.render(end);
+    var startRenderDate = laydate.render(start);
+    var endRenderDate = laydate.render(end);
 
 
     //tab切换
