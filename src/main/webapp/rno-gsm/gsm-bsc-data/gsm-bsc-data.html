@@ -4,167 +4,236 @@
     <meta charset="UTF-8">
     <title>BSC信息管理</title>
 
-    <link rel="stylesheet" href="css/gsm-bsc-data.css">
+    <link rel="stylesheet" href="../../lib/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
     <link rel="stylesheet" href="../../lib/datatables/1.10.16/datatables.min.css">
+    <link rel="stylesheet" href="css/gsm-bsc-data.css">
 
-    <script src="../../lib/jquery/1.8.2/jquery.js"></script>
-    <script src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
-    <script src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
-    <script src="../../lib/jquery-plugins/jquery.metadata.js"></script>
+    <script src="../../lib/jquery/3.2.1/jquery.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.form.min-4.2.2.js"></script>
+    <script src="../../lib/laydate/5.0.7/laydate.js"></script>
     <script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
-    <script src="../../lib/validate.js"></script>
-    <script src="../../lib/tab.js"></script>
     <script src="../../lib/datatables/1.10.16/datatables.min.js"></script>
+    <script src="../../js/common.js"></script>
     <script src="js/gsm-bsc-data.js"></script>
 </head>
 <body>
-<div class="div_left_main">
-    <div class="div_left_content">
-        <div id="frame" style="border: 1px solid #ddd">
-            <div id="div_tab" class="div_tab divtab_menu">
-                <ul>
-                    <li class="selected">BSC信息查询</li>
-                    <li>BSC信息导入</li>
-                </ul>
+<nav id="navTitle"></nav>
+<div id="info" class="info-style" style="display: none"></div>
+<div id="tabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
+    <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+        <li class="ui-state-default ui-corner-top ui-tabs-active ui-state-active">
+            <a href="#tabs-2" class="ui-tabs-anchor" tabindex="0" id="ui-id-1">BSC信息查询</a>
+        </li>
+        <li class="ui-state-default ui-corner-top" role="tab" tabindex="1">
+            <a href="#tabs-1" class="ui-tabs-anchor" tabindex="1" id="ui-id-2">BSC信息导入</a>
+        </li>
+    </ul>
+    <div id="tabs-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom">
+        <div id="listInfoDiv">
+            <form id="import-query-form" method="get">
+                <select id="provinceId" name="province" title=""></select>
+                <select id="cityId" name="city" title=""></select>
+                <div style="margin: 9px"></div>
+                <div id="searchImportDiv">
+                    <div style="margin: 9px"></div>
+                    <table>
+                        <tbody>
+                        <tr>
+                            <td style="padding-left:30px"><label>上传时间 从:</label>
+                                <input id="begUploadDate" name="begUploadDate" type="text" title=""> 至：
+                                <input id="endUploadDate" name="endUploadDate" type="text" title="">
+                            </td>
+                            <td style="padding-left:30px"><label>状态:</label></td>
+                            <td>
+                                <select id="import-status-menu" name="status" title="">
+                                    <option value="全部" selected="selected">全部</option>
+                                    <option value="全部成功">全部成功</option>
+                                    <option value="部分成功">部分成功</option>
+                                    <option value="全部失败">全部失败</option>
+                                    <option value="正在处理">正在处理</option>
+                                    <option value="等待处理">等待处理</option>
+                                </select>
+                            </td>
+                            <td style="padding-left:30px">
+                                <input value="查询导入记录" type="submit" id="search-bsc-record" class="btn btn-default">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+            <div style="margin: 9px"></div>
+            <div id="importTitleDiv" class="importTitle">
+                <div style="margin: 9px"></div>
+                导入
             </div>
-            <div class="divtab_content">
-                <div id="div_tab_0">
-                    <form id="conditionForm" method="post">
-                        <table class="main-table1 half-width" style="width: 100%; padding-top: 10px">
-                            <tbody>
-                            <tr>
-                                <td class="menuTd" style="text-align:center">区域</td>
-                                <td class="menuTd" style="text-align:center">BSC</td>
-                                <td class="menuTd" style="text-align:center">厂家</td>
-                            </tr>
-                            <tr>
-                                <td style="text-align:left">
-                                    省：<select class="areaCls" id="provinceId" title=""></select>
-                                    市：<select class="areaCls" id="cityId" title=""></select>
-                                </td>
-                                <td><input id="bscEnName" type="text" title=""></td>
-                                <td><input id="manufacturer" type="text" title=""></td>
-                            </tr>
-                            <tr>
-                                <td style="width: 10%; text-align: center" colspan="3">
-                                    <input value="查  询" id="queryBtn" type="button">
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </form>
-
-                    <div style="padding-top: 10px">
-                        <b>BSC信息表：</b>
-                        <input id="openAddWin" value="新增" onclick="$('#addSingleBscDiv').show()" type="button">
+            <div id="importDiv" class="importContent">
+                <form id="file-upload-form" method="post" enctype="multipart/form-data">
+                    <table class="table-bordered" width="700">
+                        <tbody>
+                        <tr>
+                            <td class="td-label">
+                                导入模式<span class="required">*</span>
+                            </td>
+                            <td style="padding-left: 5px">
+                                <label><input name="importModel" checked="ture" type="radio" value="insert"/>增量</label>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;增量导入：对于系统中有，而导入文件没有的BSC，系统不作处理。
+                                <br>
+                                <label><input name="importModel" type="radio" value="overwrite"/>全覆盖</label>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;全覆盖导入：对于系统中有，而导入文件没有的BSC，将删除系统中已有的BSC
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-label">
+                                BSC信息文件<span class="required">*</span>
+                            </td>
+                            <td style="padding-left: 5px">
+                                <input type="file" name="file" id="fileid" accept="*">
+                                <input type="hidden" name="moduleName" value="gsm-bsc-data">
+                                <input type="hidden" name="sourceType" value="上传">
+                                <input type="hidden" id="area" name="areaId" value="">
+                            </td>
+                            <td><span style="color:red;width:100px;font-family:华文中宋;text-align:center"
+                                      id="fileDiv"></span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div align="center" style="margin: 6px; width: 700px;">
+                        <input value=" 导 入 " id="bsc-import" type="submit" class="btn btn-default"
+                               style="width: 120px">
                     </div>
-                    <div style="padding-top: 10px">
-                        <table id="queryResultTab" class="display rnoHeader" cellspacing="0" width="100%">
-                            <thead>
-                            <tr>
-                                <th>区域</th>
-                                <th>BSC</th>
-                                <th>厂家</th>
-                                <th>操作</th>
-                            </tr>
-                            </thead>
-                        </table>
+                    <div class="upload-progress">
+                        <div class="bar"></div>
+                        <div class="percent">0%</div>
                     </div>
-                </div>
-
-                <div id="div_tab_1" style="display: none;">
-                    <form id="formImportBsc" enctype="multipart/form-data" method="post">
-                        <input name="needPersist" value="true" type="hidden">
-                        <input name="systemConfig" value="true" type="hidden">
-                        <div>
-                            <table class="main-table1 half-width">
-                                <tbody>
-                                <tr>
-                                    <td class="menuTd">所属地市<span class="txt-impt">*</span>
-                                    </td>
-                                    <td style="width: 50%; font-weight: normal;" colspan="0">
-                                        省：<select name="provinceId2" class="required" id="provinceId2">
-                                    </select> 市：<select name="areaId" class="required" id="cityId2">
-                                    </select>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="menuTd">BSC信息文件（EXCEL）<span class="txt-impt">*</span>
-                                        <br>
-                                    </td>
-                                    <td style="width: 50%; font-weight: bold" colspan="0">
-                                        <input style="width: 44%;" name="file" id="file" class="canclear  required"
-                                               type="file"> &nbsp; <span
-                                            style="color:red;width:100px;font-family:华文中宋;text-align:center"
-                                            id="bscinfofileDiv"></span> <a href="javascript:void(0);" title="点击下载模板"
-                                                                           id="downloadHref">&nbsp;</a><br>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="menuTd">导入模式 <span class="txt-impt">*</span>
-                                        <br>
-                                    </td>
-                                    <td><input name="attachParams['mode']" id="3" value="delete"
-                                               class="canclear  required" checked="checked" type="radio"> <label
-                                            for="3"> 全覆盖 </label>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <input name="attachParams['mode']" id="32" value="overwrite"
-                                               class="canclear  required" type="radio"> <label for="32"> 增量 </label>
-                                        <br>
-                                        全量覆盖：对于系统中有，而导入文件没有的BSC，将删除系统中已有的BSC。<br>
-                                        增量导入：对于系统中有，而导入文件没有的BSC，系统不作处理。
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="container-bottom" style="padding-top: 10px">
-                            <table style="width: 60%; margin: auto" align="center">
-                                <tbody>
-                                <tr>
-                                    <td><input value="导    入" style="width: 90px;" id="importBtn" name="import"
-                                               type="button"> <br>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <div id="importResultDiv" class="container-bottom" style="padding-top: 10px"></div>
-                        </div>
-                    </form>
-                </div>
+                </form>
+            </div>
+            <div id="importListDiv" class="sectionDivCls">
+                <b>网络统计上传记录列表</b>
+                <table id="queryRecordResTab" class="display rnoHeader" cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th>地市</th>
+                        <th>上传日期</th>
+                        <th>文件名称</th>
+                        <th>文件大小</th>
+                        <th>开始时间</th>
+                        <th>完成时间</th>
+                        <th>上传账号</th>
+                        <th>状态</th>
+                    </tr>
+                    </thead>
+                </table>
             </div>
         </div>
-    </div>
-</div>
-<div id="addSingleBscDiv" class="dialog">
-    <div class="dialog_header">
-        <div class="dialog_title">新增</div>
-        <div class="dialog_tool">
-            <div class="dialog_tool_close dialog_closeBtn"
-                 onclick="$('#addSingleBscDiv').hide();"></div>
-        </div>
-    </div>
-    <div class="dialog_content" style="background:#f9f9f9;padding:10px">
-        <form id="addSingleBscForm" method="post">
-            <table class="main-table1">
-                <tbody>
+        <div id="reportDiv" style="display:none">
+            <ul id="icons" class="ui-widget ui-helper-clearfix" style="width:100px;cursor:pointer">
+                <li class="ui-state-default ui-corner-all" title="返回列表" style="width:100px"
+                    onclick="returnToImportList();">
+                    <span class="ui-icon ui-icon-arrowreturnthick-1-w" style="width:20px"></span>返回列表
+                </li>
+            </ul>
+            <table id="reportListTab" class="display rnoHeader" cellspacing="0" style="width:100%;">
+                <thead>
                 <tr>
-                    <td>BSC：</td><td><input id="bscEngName" name="bscAdd.bscEngName" type="text"></td>
+                    <th>阶段</th>
+                    <th>开始时间</th>
+                    <th>结束时间</th>
+                    <th>结果</th>
+                    <th>详细信息</th>
                 </tr>
-                <tr>
-                    <td>厂家： </td><td><select id="manufacturers2" name="bscAdd.manufacturers">
-                        <option value="1" selected="selected">爱立信</option>
-                        <option value="2">华为</option>
-                    </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td align="right" colspan="2"><input id="addBscBtn" value="确定" type="button"></td>
-                </tr>
-                </tbody>
+                </thead>
             </table>
-        </form>
+        </div>
+    </div>
+    <div id="tabs-2" class="ui-tabs-panel ui-widget-content ui-corner-bottom" style="display: none;">
+        <div>
+            <form id="conditionForm" method="get">
+                <table class="main-table1 half-width" style="width: 100%; padding-top: 10px">
+                    <tbody>
+                    <tr>
+                        <td class="menuTd" style="text-align:center">区域</td>
+                        <td class="menuTd" style="text-align:center">BSC</td>
+                        <td class="menuTd" style="text-align:center">厂家</td>
+                    </tr>
+                    <tr>
+                        <td style=" text-align:center"><label for="provinceIds">省：</label>
+                            <select name="provinceIds" id="provinceIds" style="width: 100px">
+                            </select><br>
+                            <label for="cityIds">市：</label>&nbsp;<select name="cityIds" id="cityIds"
+                                                                         style="width: 100px">
+                            </select>
+                        </td>
+                        <td style=" text-align:center">
+                            <label for="bsc"></label><input id="bsc" name="bsc" type="text">
+                        </td>
+                        <td style="text-align: center">
+                            <label for="vendor"></label><input name="vendor" id="vendor" type="text">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 10%; text-align: center" colspan="4">
+                                            <span style="color:red;width:100px;font-family:华文中宋,serif;text-align:center"
+                                                  id="nameErrorText1"></span>
+                            <span style="color:red;width:100px;font-family:华文中宋,serif;text-align:center"
+                                  id="nameErrorText2"></span>
+                            <input value="查  询" id="queryBtn" type="submit"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+        </div>
+
+        <div style="padding-top: 10px">
+            <b>BSC信息表：</b>
+            <input id="openAddWin" value="新增" onclick="$('#addSingleBscDiv').show()" type="button">
+        </div>
+        <div style="padding-top: 10px">
+            <table id="queryResultTab" class="display rnoHeader" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                    <th>区域</th>
+                    <th>BSC</th>
+                    <th>厂家</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+        <div id="addSingleBscDiv" class="dialog2" style="display:none;width: 280px;right: 480px; top: 30%; left: 30%; z-index: 30">
+            <div class="dialog_header">
+                <div class="dialog_title">新增</div>
+                <div class="dialog_tool">
+                    <div class="dialog_tool_close dialog_closeBtn"
+                         onclick="$('#addSingleBscDiv').hide();"></div>
+                </div>
+            </div>
+            <div class="dialog_content" style="width:259px; background:#f9f9f9">
+                <form id="addSingleBscForm" method="get">
+                    <table class="main-table1">
+                        <tbody>
+                        <tr>
+                            <td>BSC：</td>
+                            <td><input id="bscName" name="bsc" type="text"></td>
+                        </tr>
+                        <tr>
+                            <td>厂家：</td>
+                            <td><select id="manufacturers2" name="vendor">
+                                <option value="爱立信" selected="selected">爱立信</option>
+                                <option value="华为">华为</option>
+                                <input type="hidden" id="areas" name="cityIds" value="">
+                            </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center" colspan="2"><input id="addBscBtn" value="确定" type="submit"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 </body>

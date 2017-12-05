@@ -1,0 +1,211 @@
+package com.hgicreate.rno.web.rest.gsm;
+
+import com.hgicreate.rno.domain.*;
+import com.hgicreate.rno.domain.gsm.BscData;
+import com.hgicreate.rno.repository.DataJobReportRepository;
+import com.hgicreate.rno.repository.DataJobRepository;
+import com.hgicreate.rno.repository.OriginFileAttrRepository;
+import com.hgicreate.rno.repository.OriginFileRepository;
+import com.hgicreate.rno.repository.gsm.BscDataRepository;
+import com.hgicreate.rno.security.SecurityUtils;
+import com.hgicreate.rno.service.dto.DataJobReportDTO;
+import com.hgicreate.rno.service.gsm.BscDataService;
+import com.hgicreate.rno.service.gsm.dto.BscDataDTO;
+import com.hgicreate.rno.service.gsm.dto.BscReportDTO;
+import com.hgicreate.rno.service.mapper.DataJobReportMapper;
+import com.hgicreate.rno.web.rest.gsm.vm.BscDataQueryVM;
+import com.hgicreate.rno.web.rest.gsm.vm.BscFileUploadVM;
+import com.hgicreate.rno.web.rest.gsm.vm.BscImportQueryVM;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.file.Paths;
+import java.text.ParseException;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+@Slf4j
+@RestController
+@RequestMapping("/api/gsm-bsc-data")
+public class BscDataResource {
+    @Value("${rno.path.upload-files}")
+    private String directory;
+
+    private final BscDataService bscDataService;
+    private final DataJobRepository dataJobRepository;
+    private  final OriginFileRepository originFileRepository;
+    private  final OriginFileAttrRepository originFileAttrRepository;
+    private final DataJobReportRepository dataJobReportRepository;
+    private final BscDataRepository bscDataRepository;
+
+    private final Environment env;
+
+    public BscDataResource(BscDataService bscDataService,
+                           DataJobRepository dataJobRepository,
+                           BscDataRepository bscDataRepository,
+                           DataJobReportRepository dataJobReportRepository,
+                           OriginFileRepository originFileRepository,
+                           OriginFileAttrRepository originFileAttrRepository,
+                           Environment env) {
+        this.bscDataService = bscDataService;
+        this.dataJobRepository = dataJobRepository;
+        this.originFileRepository = originFileRepository;
+        this.originFileAttrRepository = originFileAttrRepository;
+        this.dataJobReportRepository = dataJobReportRepository;
+        this.bscDataRepository = bscDataRepository;
+        this.env = env;
+    }
+
+    @GetMapping("/query-import")
+    public List<BscReportDTO> queryImport(BscImportQueryVM vm) throws ParseException {
+        log.debug("查询 bsc 文件导入记录。");
+        log.debug("视图模型: " + vm);
+        return bscDataService.queryTrafficData(vm);
+    }
+
+    @GetMapping("/query-report")
+    public List<DataJobReportDTO> queryReport(String id){
+        log.debug("查询任务报告的任务id：{}",id);
+        return dataJobReportRepository.findByDataJob_Id(Long.parseLong(id))
+                .stream().map(DataJobReportMapper.INSTANCE::dataJobReportToDataJobReportDTO)
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/query-record")
+    public List<BscDataDTO> queryRecord(BscDataQueryVM vm) throws ParseException{
+        log.debug("查询 bsc 信息。");
+        log.debug("视图模型vm ={}", vm);
+        return bscDataService.queryRecord(vm);
+    }
+
+    @GetMapping("delete-by-bscId")
+    public void deleteByBscId(@RequestParam Long bscId) {
+        log.debug("待删除BSC信息id为={}", bscId);
+        bscDataRepository.delete(bscId);
+    }
+
+    @GetMapping("/bsc-data-update")
+    public boolean updateBscData(BscDataQueryVM vm) {
+        try {
+            log.debug("要更新的bsc信息为{}", vm);
+            BscData bscData = new BscData();
+            Area area = new Area();
+            area.setId(Long.parseLong(vm.getCityIds()));
+            bscData.setArea(area);
+            bscData.setVendor(vm.getVendor().trim());
+            bscData.setBsc(vm.getBsc().trim());
+            bscDataRepository.save(bscData);
+            return true;
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * 接收上传文件并存储为本地文件
+     *
+     * @return 成功情况下返回 HTTP OK 状态，错误情况下返回 HTTP 4xx 状态。
+     */
+    @PostMapping("/upload-file")
+    public ResponseEntity<?> uploadFile(BscFileUploadVM vm) {
+
+        log.debug("模块名：" + vm.getModuleName());
+        log.debug("视图模型: " + vm);
+
+        try {
+            Date uploadBeginTime = new Date();
+            // 获取文件名，并构建为本地文件路径
+            String filename = vm.getFile().getOriginalFilename();
+            log.debug("上传的文件名：{}", filename);
+
+            //创建更新对象
+            OriginFile originFile = new OriginFile();
+            OriginFileAttr originFileAttr = new OriginFileAttr();
+
+            // 如果目录不存在则创建目录
+            File fileDirectory = new File(directory + "/" + vm.getModuleName());
+            if (!fileDirectory.exists() && !fileDirectory.mkdirs()) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            // 以随机的 UUID 为文件名存储在本地
+            if(filename.toUpperCase().endsWith("CSV")){
+                filename = UUID.randomUUID().toString() +".csv";
+                originFile.setFileType("CSV");
+            }else if(filename.toUpperCase().endsWith("ZIP")){
+                filename = UUID.randomUUID().toString() +".zip";
+                originFile.setFileType("ZIP");
+            }
+            String filepath = Paths.get(directory + "/" + vm.getModuleName(), filename).toString();
+
+            log.debug("存储的文件名：{}", filename);
+
+            //更新文件记录RNO_ORIGIN_FILE
+            originFile.setFilename(vm.getFile().getOriginalFilename());
+            originFile.setDataType(vm.getModuleName().toUpperCase());
+            originFile.setFullPath(filepath);
+            originFile.setFileSize((int)vm.getFile().getSize());
+            originFile.setSourceType(vm.getSourceType());
+            originFile.setCreatedUser(SecurityUtils.getCurrentUserLogin());
+            originFile.setCreatedDate(new Date());
+            originFileRepository.save(originFile);
+
+            //更新文件记录RNO_ORIGIN_FILE_ATTR
+            originFileAttr.setOriginFile(originFile);
+            originFileAttr.setName("importModel");
+            originFileAttr.setValue(vm.getImportModel());
+            originFileAttrRepository.save(originFileAttr);
+
+            // 保存文件到本地
+            BufferedOutputStream stream =
+                    new BufferedOutputStream(new FileOutputStream(new File(filepath)));
+            stream.write(vm.getFile().getBytes());
+            stream.close();
+
+           /* // 保存文件到FTP
+            String ftpFullPath = FtpUtils.sendToFtp(vm.getModuleName(), filepath, true, env);
+            log.debug("获取FTP文件的全路径：{}", ftpFullPath);*/
+
+            //建立任务
+            DataJob dataJob = new DataJob();
+            dataJob.setName("BSC数据导入");
+            dataJob.setType(vm.getModuleName().toUpperCase());
+            dataJob.setOriginFile(originFile);
+            Area area = new Area();
+            area.setId(Long.parseLong(vm.getAreaId()));
+            dataJob.setArea(area);
+            dataJob.setCreatedDate(new Date());
+            dataJob.setPriority(1);
+            dataJob.setCreatedUser(SecurityUtils.getCurrentUserLogin());
+            dataJob.setStatus("全部成功");
+            dataJob.setDataStoreType("FTP");
+            // dataJob.setDataStorePath(ftpFullPath);
+            dataJobRepository.save(dataJob);
+
+            //建立任务报告
+            DataJobReport dataJobReport = new DataJobReport();
+            dataJobReport.setDataJob(dataJob);
+            dataJobReport.setStage("文件上传");
+            dataJobReport.setStartTime(uploadBeginTime);
+            dataJobReport.setCompleteTime(new Date());
+            dataJobReport.setStatus("成功");
+            dataJobReport.setMessage("文件成功上传至服务器");
+            dataJobReportRepository.save(dataJobReport);
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+}
