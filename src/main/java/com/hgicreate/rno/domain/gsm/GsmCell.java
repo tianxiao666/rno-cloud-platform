@@ -16,34 +16,32 @@ public class GsmCell implements Serializable {
     @Id
     private String cellId;
     private String cellName;
-    private String enodebId;
-    private String eci;
-    private String manufacturer;
-    private String tac;
-    private String bandType;
-    private String bandWidth;
-    private String bandIndicator;
-    private String bandAmount;
-    private String earfcn;
-    private String pci;
+    private String enName;
+    private String coverArea;
+    private String bsc;
+    private Integer lac;
+    private String bts;
+    private String btsType;
+    private Integer ci;
+    private Float longitude;
+    private Float latitude;
+    private Integer azimuth;
+    private Integer bcch;
+    private Integer bsic;
+    private Integer mDowntilt;
+    private Integer eDowntilt;
+    private Integer totalDowntilt;
+    private Integer antennaHeight;
     private String coverType;
-    private String coverScene;
-    private String longitude;
-    private String latitude;
-    private String azimuth;
-    private String eDowntilt;
-    private String mDowntilt;
-    private String totalDowntilt;
-    private String antennaHeight;
-    private String remoteCell;
-    private String relatedParam;
-    private String relatedResouce;
-    private String stationSpace;
+    private Integer carrierFreq;
+    private String freqHoppingType;
+    private String tch;
+    private Integer tchTotal;
     private String createdUser;
     private String lastModifiedUser;
     private Date createdDate;
     private Date lastModifiedDate;
-
+    private Long descId;
 
     @OneToOne
     @JoinColumn(name = "area_id", referencedColumnName = "id")
