@@ -702,3 +702,45 @@ html, body {
     height: 100%;
     width: 100%;
 }
+
+.custom tbody tr{
+    cursor: pointer;
+}
+
+.custom tbody tr:hover{
+    background: rgba(94, 94, 94, 0.32);
+}
+
+.custom-select {
+    display: inline-block;
+    width: 100px;
+}
+
+.custom-btn {
+    height: 34px;
+    margin-bottom: 5px;
+}
+
+.custom-bg{
+    background: rgba(94, 94, 94, 0.32);
+}
+
+.info-style {
+    width: 200px;
+    height: 56px;
+    position: fixed;
+    top: 35%;
+    left: 45%;
+    line-height: 56px;
+    color: #fff;
+    text-align: center;
+    font-size: 15px;
+    background: #ff0000;
+    filter: alpha(opacity=100);
+    -moz-opacity: 1.0;
+    opacity: 1.0;
+    z-index: 9999;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}

@@ -10,7 +10,7 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "RNO_Gsm_NCELL_RELATION")
+@Table(name = "RNO_GSM_NCELL_RELATION")
 public class GsmNcellRelation implements Serializable {
 
     private static final long serialVersionUID = 1L;

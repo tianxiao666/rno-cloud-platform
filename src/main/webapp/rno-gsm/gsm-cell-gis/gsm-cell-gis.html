@@ -6,24 +6,30 @@
 
     <link rel="stylesheet" href="../../lib/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../lib/openlayers/4.4.2/ol.css">
+    <link rel="stylesheet" href="../../lib/openlayers/ol3-contextmenu/ol3-contextmenu.min.css">
     <link rel="stylesheet" href="css/gsm-cell-gis.css">
 
     <script src="../../lib/jquery/3.2.1/jquery.js"></script>
     <script src="../../lib/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
     <script src="../../lib/openlayers/4.4.2/ol.js"></script>
+    <script src="../../lib/openlayers/ol3-contextmenu/ol3-contextmenu.js"></script>
+    <script src="../../js/common.js"></script>
     <script src="js/gsm-cell-gis.js"></script>
 </head>
 <body>
+<div id="loading" class="loading" style="display: none">加载中...</div>
+<div id="info" class="info-style" style="display: none"></div>
 <div id="map" class="map"></div>
 <div style="display: none"> 
     <div id="popup"></div>
 </div>
-<div class="dialog draggable ui-draggable">
-    省：<select name="provinceId" class="required" id="provinceId" title=""></select>
-    市：<select name="cityId" class="required" id="cityId" title=""></select>
-    区：<select name="districtId" class="required" id="districtId" title=""></select>
-    <input id="loadGisCell" value="加载小区" type="button">
+<div class="dialog">
+    <select name="provinceId" class="form-control custom-select" id="provinceId" title=""></select>
+    <select name="cityId" class="form-control custom-select" id="cityId" title=""></select>
+    <select name="districtId" class="form-control custom-select" id="districtId" title=""></select>
+    <button id="showCellName" class="btn btn-info custom-btn" type="button">显示小区名字</button>
+    <button id="loadGisCell" class="btn btn-info custom-btn" type="button">加载小区</button>
 </div>
 <div class="resource_list_icon">
     <a href="#" class="switch"></a>
