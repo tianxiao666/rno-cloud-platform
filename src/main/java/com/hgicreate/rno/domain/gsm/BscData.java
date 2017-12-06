@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Data
 @Entity
-@Table(name = "RNO_GSM_BSC")
+@Table(name = "RNO_GSM_BSC_DATA")
 public class BscData implements Serializable{
 
     private static final long serialVersionUID = 1L;
@@ -20,6 +20,8 @@ public class BscData implements Serializable{
 
     private String bsc;
     private String vendor;
+    private Long descId;
+    private String status;
 
     @OneToOne
     @JoinColumn(name = "area_id", referencedColumnName = "id")
