@@ -1,7 +1,8 @@
-package com.hgicreate.rno.web.rest;
+package com.hgicreate.rno.web.rest.gsm;
 
-import com.hgicreate.rno.domain.MrrDesc;
-import com.hgicreate.rno.service.MrrDescService;
+import com.hgicreate.rno.domain.gsm.MrrDesc;
+import com.hgicreate.rno.service.gsm.MrrDescService;
+import com.hgicreate.rno.web.rest.gsm.vm.MrrDescQueryVM;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +24,7 @@ public class MrrDescResource {
     }
 
     @PostMapping("/gsm-mrr-data-query")
-    public List<MrrDesc> gsmMrrDateQuery(String cityName, String factory, String bsc, Date beginTestDate, Date endTestDate) {
-        return mrrDescService.mrrDataQuery(cityName, factory, bsc, beginTestDate, endTestDate);
+    public List<MrrDesc> gsmMrrDateQuery(MrrDescQueryVM vm) {
+        return mrrDescService.mrrDataQuery(vm);
     }
 }

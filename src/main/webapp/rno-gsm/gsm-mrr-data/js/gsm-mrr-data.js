@@ -64,7 +64,7 @@ $(function () {
 
     $("#queryMrrBtn").click(function () {
         var dataMap = {
-            'cityName':$("#city-id").find("option:checked").text(),
+            'areaId':$("#city-id").val(),
             'factory':$("#SearchFactory").val(),
             'bsc':$("#bsc").val(),
             'beginTestDate':new Date($("#beginTestDate").val()),
@@ -80,7 +80,7 @@ $(function () {
                 $("#queryMrrResultTab").DataTable({
                     "data": data,
                     "columns": [
-                        {"data": "cityName"},
+                        {"data": "area.name"},
                         { "data": "meaDate", "render": function (data) {
                             return (new Date(data)).Format("yyyy-mm-dd");
                         }},

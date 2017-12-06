@@ -1,5 +1,6 @@
-package com.hgicreate.rno.domain;
+package com.hgicreate.rno.domain.gsm;
 
+import com.hgicreate.rno.domain.Area;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -20,7 +21,10 @@ public class MrrDesc {
     private Date meaDate;
     private String fileName;
     private String bsc;
-    private String cityName;
     private String factory;
+
+    @OneToOne
+    @JoinColumn(name = "area_id", referencedColumnName = "id")
+    private Area area;
 
 }
