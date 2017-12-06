@@ -63,29 +63,75 @@ $(function () {
     });
 
     $("#queryMrrBtn").click(function () {
-        var a = 2781;
+        var dataMap = {
+            'cityName':$("#city-id").find("option:checked").text(),
+            'factory':$("#SearchFactory").val(),
+            'bsc':$("#bsc").val(),
+            'beginTestDate':new Date($("#beginTestDate").val()),
+            'endTestDate':new Date($("#endTestDate").val())
+        };
         $('#queryMrrResultTab').css("line-height", "12px");
-        $('#queryMrrResultTab').DataTable( {
-            "ajax": "data/gsm-mrr-data-query.json",
-            "columns": [
-                { "data": "CITY_NAME" },
-                { "data": "MEA_TIME" },
-                { "data": "BSC" },
-                { "data": "FILE_NAME", "render": function (data, type, row) {
-                    return '<a onclick="showDetail('+row["ERI_MRR_DESC_ID"]+')">' + data + '</a>';
-                }}
-            ],
-            // "lengthChange": false,
-            // "ordering": false,
-            // "searching": false,
-            "language": {
-                url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
+        $.ajax({
+            url: '/api/gsm-mrr-data-query',
+            dataType: 'json',
+            data: dataMap,
+            type: 'post',
+            success:function(data){
+                $("#queryMrrResultTab").DataTable({
+                    "data": data,
+                    "columns": [
+                        {"data": "cityName"},
+                        { "data": "meaDate", "render": function (data) {
+                            return (new Date(data)).Format("yyyy-mm-dd");
+                        }},
+                        { "data": "bsc" },
+                        { "data": "fileName", "render": function (data, type, row) {
+                            return '<a onclick="showDetail('+row["id"]+')">' + data + '</a>';
+                        }}
+                    ],
+                    searching:false, //去掉搜索框
+                    bLengthChange:false,//去掉每页多少条框体
+                    destroy:true, //Cannot reinitialise DataTable,解决重新加载表格内容问题
+                    "language": {
+                        url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
+                    }
+                });
+            }, error: function (err) {
+                console.log(err);
+                $("#info").css("background", "red");
+                showInfoInAndOut("info", "后台程序错误！");
             }
-        } );
+        });
     })
 
 
 });
+Date.prototype.Format = function(fmt) { //author: meizz
+    var o = {
+        "M+": this.getMonth() + 1,
+        //月份
+        "d+": this.getDate(),
+        //日
+        "h+": this.getHours(),
+        //小时
+        "m+": this.getMinutes(),
+        //分
+        "s+": this.getSeconds(),
+        //秒
+        "q+": Math.floor((this.getMonth() + 3) / 3),
+        //季度
+        "S": this.getMilliseconds() //毫秒
+    };
+    if (/(y+)/.test(fmt)) {
+        fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+    }
+    for (var k in o) {
+        if (new RegExp("(" + k + ")").test(fmt)) {
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+        }
+    }
+    return fmt;
+}
 
 function showDetail(jobId) {
     alert("jobId为："+jobId)

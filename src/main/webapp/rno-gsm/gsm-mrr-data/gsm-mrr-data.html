@@ -130,9 +130,9 @@
                                 <td class="menuTd">厂家<span class="txt-impt">*</span>
                                 </td>
                                 <td style="width: 50%; font-weight: bold" colspan="0">
-                                    <select id="factory" name="">
-                                        <option value="ERICSSONMRRFILE" selected="selected">爱立信</option>
-                                        <option value="2GHWMRRFILE">华为</option>
+                                    <select id="importFactory" name="">
+                                        <option value="ERI" selected="selected">爱立信</option>
+                                        <option value="HW">华为</option>
                                     </select>
                                 </td>
                             </tr>
@@ -234,7 +234,7 @@
     <div id="tabs-2" aria-labelledby="ui-id-2" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel"
          style="display: none;" aria-hidden="true">
         <form id="searchMrrForm">
-            <input name="fileCode" id="fileCode" value="2GHWMRRFILE" type="hidden"> <input id="hiddenPageSize"
+            <input name="fileCode" id="fileCode" value="HW" type="hidden"> <input id="hiddenPageSize"
                                                                                            name="page.pageSize"
                                                                                            value="25" type="hidden">
             <input id="hiddenCurrentPage" name="page.currentPage" value="1" type="hidden"> <input
@@ -249,9 +249,9 @@
                         <select id="city-id" name="attachParams['cityId']">
                         </select></td>
                     <td style="padding-left:10px">厂家：</td>
-                    <td><select id="factory" name="attachParams['factory']">
+                    <td><select id="SearchFactory" name="attachParams['factory']">
 
-                        <option value="ERI" selected="selected">爱立信</option>
+                        <option value="ERI">爱立信</option>
                         <option value="HW">华为</option>
                     </select></td>
                     <td style="padding-left:10px">BSC：</td>
