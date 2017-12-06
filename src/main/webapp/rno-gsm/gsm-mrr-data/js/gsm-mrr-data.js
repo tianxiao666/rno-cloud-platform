@@ -37,30 +37,53 @@ $(function () {
     });
 
     $("#queryBtn").click(function () {
-        var a = 2781;
+        var dataMap = {
+            'status':$("#importStatus").val(),
+            'areaId':$("#city-menu").val(),
+            'beginDate':new Date($("#begUploadDate").val()),
+            'endDate':new Date($("#endUploadDate").val())
+        };
         $('#queryResultTab').css("line-height", "12px");
-        $('#queryResultTab').DataTable( {
-            "ajax": "data/gsm-mrr-data-import.json",
-            "columns": [
-                { "data": "area_name" },
-                { "data": "uploadTime" },
-                { "data": "fileName" },
-                { "data": "fileSize" },
-                { "data": "launchTime" },
-                { "data": "completeTime" },
-                { "data": "account" },
-                { "data": "fileStatus" , "render": function (data, type, row) {
-                    return '<a onclick="showDetail('+a+')">' + data + '</a>';
-                }}
-            ],
-            // "lengthChange": false,
-            // "ordering": false,
-            // "searching": false,
-            "language": {
-                url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
+        $.ajax({
+            url: '/api/gsm-mrr-data/mrr-import-query',
+            dataType: 'json',
+            data: dataMap,
+            type: 'post',
+            success:function(data){
+                $("#queryResultTab").DataTable({
+                    "data": data,
+                    "columns": [
+                        {"data": "area.name"},
+                        { "data": "createdDate", "render": function (data) {
+                            return (new Date(data)).Format("yyyy-mm-dd");
+                        }},
+                        { "data": "originFile.filename" },
+                        { "data": "originFile.fileSize" },
+                        { "data": "startTime", "render": function (data) {
+                            return (new Date(data)).Format("yyyy-mm-dd");
+                        }},
+                        { "data": "completeTime", "render": function (data) {
+                            return (new Date(data)).Format("yyyy-mm-dd");
+                        }},
+                        { "data": "createdUser" },
+                        { "data": "status" }
+                    ],
+                    searching:false, //去掉搜索框
+                    bLengthChange:false,//去掉每页多少条框体
+                    destroy:true, //Cannot reinitialise DataTable,解决重新加载表格内容问题
+                    "language": {
+                        url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
+                    }
+                });
+            }, error: function (err) {
+                console.log(err);
+                $("#info").css("background", "red");
+                showInfoInAndOut("info", "后台程序错误！");
             }
-        } );
+        });
     });
+
+
 
     $("#queryMrrBtn").click(function () {
         var dataMap = {
@@ -72,7 +95,7 @@ $(function () {
         };
         $('#queryMrrResultTab').css("line-height", "12px");
         $.ajax({
-            url: '/api/gsm-mrr-data-query',
+            url: '/api/gsm-mrr-data/gsm-mrr-data-query',
             dataType: 'json',
             data: dataMap,
             type: 'post',

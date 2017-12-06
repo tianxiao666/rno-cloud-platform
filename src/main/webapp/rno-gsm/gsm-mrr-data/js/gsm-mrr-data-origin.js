@@ -20,24 +20,19 @@ $(document).ready(function() {
 //绑定事件
 function bindEvent(){
 	$("#importMrrBtn").click(function() {
-		
+
 		var filename = fileid.value; 
 		if(!(filename.toUpperCase().endsWith(".ZIP")||filename.toUpperCase().endsWith(".CSV"))){
 			$("#fileDiv").html("不支持该类型文件！");
 			return false;
 		}
-		
 		var flag = confirm("是否导入文件？");
-		if (flag == false){
+		if (flag === false){
 		  return false;
 		}
 		$("#err").remove();
-		if ($("#fileid").val() == "") {
-			$("#fileid").parent().append("<font id='err' color='red'>请选择mrr文件</font>");
-			return;
-		}
-		if ($.trim($("#meatime").val()) == "") {
-			$("#meatime").parent().append("<font id='err' color='red'>请选择测试日期</font>");
+		if ($("#fileid").val() === "") {
+			$("#fileid").parent().append('<span id="err" style="color: red; ">请选择mrr文件</span>');
 			return;
 		}
 		$("#uploadMsgDiv").css("display","none");
@@ -57,9 +52,9 @@ function bindEvent(){
 	//搜索导入记录
 	$("#searchImportBtn").click(function(){
 		initFormPage("searchImportForm");
-		var factory=$("#formImportMrr #factory").find("option:selected").val();
+		var factory=$("#formImportMrr").find("#factory").find("option:selected").val();
 		console.log(factory);
-		$("#searchImportDiv #fileCode").val(factory);
+		$("#searchImportDiv").find("#fileCode").val(factory);
 		queryImportDataRec();
 	});
 	
@@ -233,11 +228,11 @@ function queryImportDataRec(){
  * @param data
  */
 function displayImportRec(data){
-	if(data==null||data==undefined){
+	if(data===null||data===undefined){
 		return;
 	}
 	//
-	$("#importListTab tr:not(:first)").each(function(i, ele) {
+	$("#importListTab").find("tr:not(:first)").each(function(i, ele) {
 		$(ele).remove();
 	});
 	var html="";
@@ -252,7 +247,7 @@ function displayImportRec(data){
 		html+="<td>"+getValidValue(one['launchTime'],'')+"</td>";
 		html+="<td>"+getValidValue(one['completeTime'],'')+"</td>";
 		html+="<td>"+getValidValue(one['account'],'')+"</td>";
-		if(one['fileStatus'].indexOf("失败") == -1) {
+		if(one['fileStatus'].indexOf("失败") === -1) {
 			html+="<td><a style='text-decoration:underline;' onclick='viewDataUploadReport("+one['jobId']+")'>"+one['fileStatus']+"</a></td>";
 		} else {
 			html+="<td><a style='text-decoration:underline;color:red;' onclick='viewDataUploadReport("+one['jobId']+")'>"+one['fileStatus']+"</a></td>";
@@ -271,8 +266,8 @@ function displayImportRec(data){
 //设置formid下的page信息
 //其中，当前页会加一
 function setFormPageInfo(formId, page) {
-	if (formId == null || formId == undefined || page == null
-			|| page == undefined) {
+	if (formId === null || formId === undefined || page === null
+			|| page === undefined) {
 		return;
 	}
 
@@ -284,7 +279,7 @@ function setFormPageInfo(formId, page) {
 	// console.log("setFormPageInfo .
 	// pageSize="+page.pageSize+",currentPage="+page.currentPage+",totalPageCnt="+page.totalPageCnt+",totalCnt="+page.totalCnt);
 	form.find("#hiddenPageSize").val(page.pageSize);
-	form.find("#hiddenCurrentPage").val(new Number(page.currentPage));// /
+	form.find("#hiddenCurrentPage").val(Number(page.currentPage));// /
 	form.find("#hiddenTotalPageCnt").val(page.totalPageCnt);
 	form.find("#hiddenTotalCnt").val(page.totalCnt);
 
@@ -299,7 +294,7 @@ function setFormPageInfo(formId, page) {
  *            分页面板id
  */
 function setPageView(page, divId) {
-	if (page == null || page == undefined) {
+	if (page === null || page === undefined) {
 		return;
 	}
 
@@ -363,7 +358,6 @@ function toggleImport() {
 // 上传
 function doUpload() {
 	console.log("进入doUpload");
-	var cityId=$("#formImportMrr #cityId2").find("option:selected").val();
 	var factory=$("#formImportMrr #factory").find("option:selected").val();
 	$("#formImportMrr #fileCode").val(factory);
 	$("#progressNum").text('0%');
@@ -371,14 +365,43 @@ function doUpload() {
 		value : 0
 	});
 	$("#progressInfoDiv").fadeIn();
-
 	fileSize = 1;
-	var fileCode = $("#formImportMrr #fileCode").val();
-	var attachParams = {};
-	attachParams['cityId'] = $("#cityId1").val();
+	$("#cityId").val($("#city-menu").val());
+	$("#fileDate").val(new Date($("#fileDate").val()));
+    // AJAX 上传文件
+    var progress = $('.upload-progress');
+    var bar = $('.bar');
+    var percent = $('.percent');
+    $("#formImportMrr").ajaxForm({
+        url: "/api/gsm-mrr-data/upload-file",
+        beforeSend: function () {
+            progress.css("display", "block");
+            var percentVal = '0%';
+            bar.width(percentVal);
+            percent.html(percentVal);
+            alert("before");
+        },
+        uploadProgress: function (event, position, total, percentComplete) {
+            alert("progress");
+            var percentVal = percentComplete + '%';
+            bar.width(percentVal);
+            percent.html(percentVal);
+        },
+        success: function () {
+            alert("success");
+            var percentVal = '100%';
+            bar.width(percentVal);
+            percent.html(percentVal);
+            $("#info").css("background","green");
+            showInfoInAndOut("info","文件导入成功！");
+            $("#formImportMrr").submit();
+        }
+	})
+
+
 
 	// 询问是否可以上传
-	$.ajax({
+	/*$.ajax({
 		url : 'ifFileAcceptableAjaxAction',
 		data : {
 			'fileSize' : fileSize,
@@ -394,7 +417,7 @@ function doUpload() {
 			} catch (err) {
 
 			}
-			if (accp['flag'] == true) {
+			if (accp['flag'] === true) {
 				// 可以上传，获取token
 				var token = accp['token'];
 
@@ -418,7 +441,7 @@ function doUpload() {
 						if(raw){
 							try{
 								var data=eval("("+raw+")");
-								if(data['flag']==true){
+								if(data['flag']===true){
 									$("#progressNum").text('100%');
 									$("#progressbar").progressbar({
 										value : 100
@@ -444,7 +467,7 @@ function doUpload() {
 				});
 			}
 		}
-	});
+	});*/
 
 }
 
@@ -458,7 +481,7 @@ function queryProgress(token) {
 		},
 		success : function(raw) {
 			// console.log("progress data:" + raw)
-			if (raw == null) {
+			if (raw === null) {
 				clearInterval(i);
 				// location.reload(true);
 				return;
@@ -520,7 +543,7 @@ function queryMrrDescData(){
  * @param data
  */
 function displayMrrDescData(data){
-	if(data==null||data==undefined){
+	if(data===null||data===undefined){
 		return;
 	}
 	//
@@ -537,7 +560,7 @@ function displayMrrDescData(data){
 		one = data[i];
 		ENfactory=getValidValue(one['FACTORY'],'');
 		/*console.log(ENfactory);*/
-		if(ENfactory=="ERI"){		
+		if(ENfactory==="ERI"){
 			$("#tcount").html("文件名");
 			$("#tenter").hide();
 			$("#tspeed").hide();
@@ -548,7 +571,7 @@ function displayMrrDescData(data){
 			html+="<td>"+getValidValue(one['BSC'],'')+"</td>";
 			html+="<td><a style='text-decoration:underline;' onclick='viewEriMrrDataDetails("+one['ERI_MRR_DESC_ID']+")'>"+getValidValue(one['FILE_NAME'],'')+"</a></td>";
 			html+="</tr>";
-		 }else if(ENfactory=="HW"){
+		 }else if(ENfactory==="HW"){
 			$("#mrrDetailDiv").hide();
 		    $("#tcount").html("小区数据量");
 			$("#tenter").show();
@@ -560,7 +583,7 @@ function displayMrrDescData(data){
 			html+="<td>"+getValidValue(one['BSC'],'')+"</td>";
 			html+="<td>"+getValidValue(one['CELL_NUM'],'')+"</td>";
 			html+="<td>"+getValidValue(one['CREATE_TIME'],'')+"</td>";
-			html+="<td>"+(getValidValue(one['RATE_TYPE'],'')=='FULL'?"全速率":"半速率")+"</td>";
+			html+="<td>"+(getValidValue(one['RATE_TYPE'],'')==='FULL'?"全速率":"半速率")+"</td>";
 			html+="</tr>";
 		}		
 	}
@@ -568,9 +591,9 @@ function displayMrrDescData(data){
 }
 
 /**
-* 点击查看mrr文件详情事件
-* @param descId
-*/
+ * 点击查看mrr文件详情事件
+ * @param mrrId
+ */
 function viewEriMrrDataDetails(mrrId) {
 	$("#mrrDetailDiv").css("display","block");
 	$("#mrrDescListDiv").css("display","none");
@@ -581,7 +604,6 @@ function viewEriMrrDataDetails(mrrId) {
 
 /**
 * 查看mrr文件详情
-* @param descId
 */
 function queryMrrDetailData() {
 	showOperTips("loadingDataDiv", "loadContentId", "正在加载详情");
@@ -611,10 +633,10 @@ function queryMrrDetailData() {
  * @param data
  */
 function displayMrrDetailData(data){
-	if(data==null||data==undefined){
+	if(data===null||data===undefined){
 		return;
 	}
-	$("#mrrDetailListTab tr:not(:first)").each(function(i, ele) {
+	$("#mrrDetailListTab").find("tr:not(:first)").each(function(i, ele) {
 		$(ele).remove();
 	});
 	var html="";
@@ -623,32 +645,32 @@ function displayMrrDetailData(data){
 		html += "<tr>";
 		html+="<td>"+getValidValue(one['CELL_NAME'],'')+"</td>";
 		html+="<td>"+getValidValue(one['BSC'],'')+"</td>";
-		if(one['UL_QUA6T7_RATE'] == "--") {
+		if(one['UL_QUA6T7_RATE'] === "--") {
 			html+="<td>"+ getValidValue(one['UL_QUA6T7_RATE'], '', 5) +"</td>";
 		} else {
 			html+="<td>"+ parseFloat(getValidValue(one['UL_QUA6T7_RATE'], '', 5)) +"</td>";
 		}
-		if(one['DL_QUA6T7_RATE'] == "--") {
+		if(one['DL_QUA6T7_RATE'] === "--") {
 			html+="<td>"+ getValidValue(one['DL_QUA6T7_RATE'], '', 5) +"</td>";
 		} else {
 			html+="<td>"+ parseFloat(getValidValue(one['DL_QUA6T7_RATE'], '', 5)) +"</td>";
 		}
-		if(one['UL_STREN_RATE'] == "--") {
+		if(one['UL_STREN_RATE'] === "--") {
 			html+="<td>"+ getValidValue(one['UL_STREN_RATE'], '', 5) +"</td>";
 		} else {
 			html+="<td>"+ parseFloat(getValidValue(one['UL_STREN_RATE'], '', 5)) +"</td>";
 		}
-		if(one['DL_STREN_RATE'] == "--") {
+		if(one['DL_STREN_RATE'] === "--") {
 			html+="<td>"+ getValidValue(one['DL_STREN_RATE'], '', 5) +"</td>";
 		} else {
 			html+="<td>"+ parseFloat(getValidValue(one['DL_STREN_RATE'], '', 5)) +"</td>";
 		}
-		if(one['DL_WEEK_SIGNAL'] == "--") {
+		if(one['DL_WEEK_SIGNAL'] === "--") {
 			html+="<td>"+ getValidValue(one['DL_WEEK_SIGNAL'], '', 5) +"</td>";
 		} else {
 			html+="<td>"+ parseFloat(getValidValue(one['DL_WEEK_SIGNAL'], '', 5)) +"</td>";
 		}
-		if(one['AVER_TA'] == "--") {
+		if(one['AVER_TA'] === "--") {
 			html+="<td>"+ getValidValue(one['AVER_TA'], '', 5) +"</td>";
 		} else {
 			html+="<td>"+ parseFloat(getValidValue(one['AVER_TA'], '', 5)) +"</td>";
@@ -658,12 +680,12 @@ function displayMrrDetailData(data){
 		} else {
 			html+="<td>"+ parseFloat(getValidValue(one['MAX_TA'], '', 5)) +"</td>";
 		}
-		if(one['UL_QUA0T5_RATE'] == "--") {
+		if(one['UL_QUA0T5_RATE'] === "--") {
 			html+="<td>"+ getValidValue(one['UL_QUA0T5_RATE'], '', 5) +"</td>";
 		} else {
 			html+="<td>"+ parseFloat(getValidValue(one['UL_QUA0T5_RATE'], '', 5)) +"</td>";
 		}
-		if(one['DL_QUA0T5_RATE'] == "--") {
+		if(one['DL_QUA0T5_RATE'] === "--") {
 			html+="<td>"+ getValidValue(one['DL_QUA0T5_RATE'], '', 5) +"</td>";
 		} else {
 			html+="<td>"+ parseFloat(getValidValue(one['DL_QUA0T5_RATE'], '', 5)) +"</td>";
@@ -689,10 +711,10 @@ function showListViewByPage(dir,action,formId,divId) {
 	var form=$("#"+formId);
 	var div=$("#"+divId);
 	//alert(form.find("#hiddenPageSize").val());
-	var pageSize =new Number(form.find("#hiddenPageSize").val());
-	var currentPage = new Number(form.find("#hiddenCurrentPage").val());
-	var totalPageCnt =new Number(form.find("#hiddenTotalPageCnt").val());
-	var totalCnt = new Number(form.find("#hiddenTotalCnt").val());
+	var pageSize =Number(form.find("#hiddenPageSize").val());
+	var currentPage = Number(form.find("#hiddenCurrentPage").val());
+	var totalPageCnt =Number(form.find("#hiddenTotalPageCnt").val());
+	var totalCnt = Number(form.find("#hiddenTotalCnt").val());
 
 	//console.log("pagesize="+pageSize+",currentPage="+currentPage+",totalPageCnt="+totalPageCnt+",totalCnt="+totalCnt);
 	if (dir === "first") {
@@ -722,7 +744,7 @@ function showListViewByPage(dir,action,formId,divId) {
 	} else if (dir === "num") {
 		var userinput = $(div).find("#showCurrentPage").val();
 		if (isNaN(userinput)) {
-			alert("请输入数字！")
+			alert("请输入数字！");
 			return;
 		}
 		if (userinput > totalPageCnt || userinput < 1) {
@@ -734,7 +756,7 @@ function showListViewByPage(dir,action,formId,divId) {
 		return;
 	}
 	//获取资源
-	if(typeof action =="function"){
+	if(typeof action ==="function"){
 		action();
 	}
 }
@@ -777,11 +799,11 @@ function queryReportData(){
  * 显示报告
  */
 function displayReportRec(data){
-	if(data==null||data==undefined){
+	if(data===null||data===undefined){
 		return;
 	}
 	//
-	$("#reportListTab tr:not(:first)").each(function(i, ele) {
+	$("#reportListTab").find("tr:not(:first)").each(function(i, ele) {
 		$(ele).remove();
 	});
 	var html="";
@@ -792,7 +814,7 @@ function displayReportRec(data){
 		html+="<td>"+getValidValue(one['STAGE'],'')+"</td>";
 		html+="<td>"+getValidValue(one['BEG_TIME'],'')+"</td>";
 		html+="<td>"+getValidValue(one['END_TIME'],'')+"</td>";
-		if(one['STATE'].indexOf("失败") == -1) {
+		if(one['STATE'].indexOf("失败") === -1) {
 			html+="<td>"+getValidValue(one['STATE'],'')+"</td>";
 		} else {
 			html+="<td style='color: red;'>"+getValidValue(one['STATE'],'')+"</td>";

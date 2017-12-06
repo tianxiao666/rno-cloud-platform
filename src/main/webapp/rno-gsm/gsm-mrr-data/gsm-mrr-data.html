@@ -59,9 +59,9 @@
                 <div id="searchImportDiv"
                      style="height: 46px; background: rgb(255, 255, 255) url(&quot;images/ui-bg_glass_65_ffffff_1x400.png&quot;) repeat-x scroll 50% 50%; border: 1px solid rgb(251, 216, 80);">
                     <div style="margin: 9px"></div>
-                    <input name="fileCode" id="fileCode" value="" type="hidden"> <input id="hiddenPageSize"
-                                                                                        name="page.pageSize" value="25"
-                                                                                        type="hidden"> <input
+                    <input id="hiddenPageSize"
+                           name="page.pageSize" value="25"
+                           type="hidden"> <input
                         id="hiddenCurrentPage" name="page.currentPage" value="1" type="hidden"> <input
                         id="hiddenTotalPageCnt" value="0" type="hidden"> <input id="hiddenTotalCnt" value="0"
                                                                                 name="page.totalCnt" type="hidden">
@@ -75,7 +75,7 @@
                                                           name="attachParams['endUploadDate']"
                                                           class="hasDatepicker" type="text"></td>
                             <td style="padding-left:30px"><label>状态:</label></td>
-                            <td><select id="importstatusmenu-c" name="attachParams['fileStatus']">
+                            <td><select id="importStatus" name="attachParams['fileStatus']">
                                 <option value="全部" selected="selected">全部</option>
                                 <option value="全部成功">全部成功</option>
                                 <option value="部分失败">部分失败</option>
@@ -98,10 +98,8 @@
             </div>
             <div id="importDiv" class="importContent" style="height: 290px;">
                 <form id="formImportMrr" enctype="multipart/form-data" method="post">
-                    <input name="fileCode" id="fileCode" value="" type="hidden"> <input name="token" id="token" value=""
-                                                                                        type="hidden">
-                    <input id="uploadCityId" name="cityId" value="88" type="hidden">
-                    <input id="isToHbase" name="isToHbase" value="" type="hidden">
+                    <input id="cityId" name="cityId" type="hidden">
+                    <input type="hidden" name="moduleName" value="lte-cell-data">
                     <div>
                         <table class="main-table1 half-width" style="margin-left:0;width:50%">
                             <tbody>
@@ -111,7 +109,7 @@
                                 <td>
                                     <input
                                             value="" id="fileDate"
-                                            name="attachParams['fileDate']" class="hasDatepicker"
+                                            name="fileDate" class="hasDatepicker"
                                             type="text">
                                 </td>
                             </tr>
@@ -130,8 +128,8 @@
                                 <td class="menuTd">厂家<span class="txt-impt">*</span>
                                 </td>
                                 <td style="width: 50%; font-weight: bold" colspan="0">
-                                    <select id="importFactory" name="">
-                                        <option value="ERI" selected="selected">爱立信</option>
+                                    <select id="importFactory" name="importFactory">
+                                        <option value="ERI">爱立信</option>
                                         <option value="HW">华为</option>
                                     </select>
                                 </td>
@@ -145,22 +143,16 @@
                             <tbody>
                             <tr>
                                 <td><input value="导    入" style="width: 90px;" id="importMrrBtn" name="import"
-                                           type="button"> <br>
+                                           type="submit"> <br>
                                     <div id="uploadMsgDiv" style="display:none"></div>
-                                    <span style="color:red;width:100px;font-family:华文中宋;text-align:center"
-                                          id="fileDiv"></span>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
                         <div id="importResultDiv" class="container-bottom" style="padding-top: 10px">
-                            <div id="progressInfoDiv" style="width:50%;display:none">
-                                <h2 id="progressNum">0%</h2>
-                                <div id="progressbar" class="ui-progressbar ui-widget ui-widget-content ui-corner-all"
-                                     role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                                    <div class="ui-progressbar-value ui-widget-header ui-corner-left"
-                                         style="display: none; width: 0%;"></div>
-                                </div>
+                            <div class="upload-progress">
+                                <div class="bar"></div>
+                                <div class="percent">0%</div>
                             </div>
                         </div>
                     </div>
@@ -234,9 +226,9 @@
     <div id="tabs-2" aria-labelledby="ui-id-2" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel"
          style="display: none;" aria-hidden="true">
         <form id="searchMrrForm">
-            <input name="fileCode" id="fileCode" value="HW" type="hidden"> <input id="hiddenPageSize"
-                                                                                           name="page.pageSize"
-                                                                                           value="25" type="hidden">
+            <input id="hiddenPageSize"
+                   name="page.pageSize"
+                   value="25" type="hidden">
             <input id="hiddenCurrentPage" name="page.currentPage" value="1" type="hidden"> <input
                 id="hiddenTotalPageCnt" type="hidden"> <input id="hiddenTotalCnt" value="-1" name="page.totalCnt"
                                                               type="hidden">
