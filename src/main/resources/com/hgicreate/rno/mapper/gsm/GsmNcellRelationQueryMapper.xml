@@ -20,10 +20,10 @@
             and b.cell_name like #{pattern2}
         </if>
         <if test="cellBsc != null and cellBsc != ''">
-            and a.pci = #{cellBsc}
+            and a.bsc = #{cellBsc}
         </if>
         <if test="ncellBsc != null and ncellBsc != ''">
-            and b.pci = #{ncellBsc}
+            and b.bsc = #{ncellBsc}
         </if>
     </select>
 </mapper>
