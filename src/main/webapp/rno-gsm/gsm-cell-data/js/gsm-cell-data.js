@@ -288,7 +288,6 @@ function showQueryList(data) {
     $(".loading").css("display", "none");
     if (data.length === 0) {
         showInfoInAndOut('info', '没有符合条件的小区数据');
-        return false;
     }
     // console.log(data);
     var queryResultTab =$('#queryResultTab');
@@ -351,12 +350,6 @@ function showEditor(cellId) {	//加载gsm小区id保存到隐藏域
     $("#gsmCellIdForEdit").val(cellId);
     //显示编辑框
     var editGsmCellMessage = $("#editGsmCellMessage");
-    editGsmCellMessage.css({
-        "top": (32) + "%",
-        "left": (25) + "%",
-        "width": (800) + "px",
-        "z-index": (30)
-    });
     editGsmCellMessage.show();
     //加载需要编辑的gsm小区数据到页面
     $(".loading").css("display", "block");
@@ -584,13 +577,7 @@ function updateGsmCellDetail(submitOK) {
                     // console.log(flag);
                     if (flag === "true") {
                         showInfoInAndOut("info", "更新成功！");
-                        $("#conditionForm").ajaxForm({
-                            url: "/api/gsm-cell-data/cell-query",
-                            success: showQueryList,
-                            error: function (err) {
-                                console.log(err);
-                            }
-                        });
+                        $("#conditionForm").submit();
                         $("#editGsmCellMessage").hide();
                     } else {
                         showInfoInAndOut("info", "更新失败！");

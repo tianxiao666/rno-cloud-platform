@@ -64,26 +64,6 @@ $(function () {
 
     //验证邻区关系查询条件
     $("#queryBtn").click(function () {
-        var reg = /^[0-9]+.?[0-9]*$/;
-        var cellBsc = $("#cellBsc").val();
-        var ncellBsc = $("#ncellBsc").val();
-        $("#info").css("background", "red");
-        if (!reg.test(cellBsc) && cellBsc.trim() !== '') {
-            showInfoInAndOut("info", "主小区BSC值必须为数字");
-            return false;
-        }
-        if (cellBsc.length > 10 && cellBsc.trim() !== '') {
-            showInfoInAndOut("info", "主小区BSC值输入过长");
-            return false;
-        }
-        if (!reg.test(ncellBsc) && ncellBsc.trim() !== '') {
-            showInfoInAndOut("info", "邻小区BSC值必须为数字");
-            return false;
-        }
-        if (ncellBsc.length > 10 && ncellBsc.trim() !== '') {
-            showInfoInAndOut("info", "邻小区BSC值输入过长");
-            return false;
-        }
         $(".loading").show();
     });
 
