@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hgicreate.rno.mapper.gsm.ParamCheckMapper">
+    <select id="getEriCellPowerCheckResult"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.ParamCheckVM"
+            resultType="java.util.Map">
+        select d.bsc as bsc,t.cell,t.bspwrb,t.bspwrt,
+        'RLCPC:CELL='||t.cell||',BSPWRB='||t.bspwrb||',BSPWRT='||t.bspwrb||';' as command
+        from rno_gsm_eri_cell t
+        left join RNO_GSM_BSC_DATA d
+        on d.id = t.bsc
+        <![CDATA[
+            where t.bspwrb = t.bspwrt
+        ]]>
+        <if test="cityId != null and cityId != ''">
+            and t.city_id = ${cityId}
+        </if>
+        <if test="bscStr!=null and bscStr != ''">
+            and t.bsc in (${bscStr})
+        </if>
+        order by d.bsc
+    </select>
+    <select id="getEriCellFreqHopCheckResultTrue"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.ParamCheckVM"
+            resultType="java.util.Map">
+        select * from(
+        select d.BSC,cell,ch_group,hop,
+        RNO_GET_FREQ_CNT(dchno_32) as dchno,
+        dchno_32 as dch,
+        'RLCHC:CELL='||cell||',HOP=ON,CHGR='||ch_group||';' as command
+        from rno_gsm_eri_cell_ch_group t
+        left join RNO_GSM_BSC_DATA d on (d.ID = t.bsc)
+        where t.hop = 'OFF'
+        <if test="date1 != null and date1 != ''">
+            and t.mea_date = to_date('${date1}', 'yyyy-MM-dd')
+        </if>
+        <if test="cityId != null and cityId != ''">
+            and t.city_id = ${cityId}
+        </if>
+        <if test="bscStr!=null and bscStr != ''">
+            and t.bsc in (${bscStr}))
+        </if>
+        where dchno > 2
+    </select>
+    <select id="getEriCellFreqHopCheckResult"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.ParamCheckVM"
+            resultType="java.util.Map">
+        select bsc, cell, ch_group, hop, dchno, dch, command 
+        from (select d.bsc,cell,ch_group,rank() over(partition by cell order by ch_group desc) as chgr_rn,hop,
+                      RNO_GET_FREQ_CNT(dchno_32) as dchno,dchno_32 as dch,
+                      'RLCHC:CELL=' || cell || ',HOP=ON,CHGR=' || ch_group || ';' as command
+            from rno_gsm_eri_cell_ch_group t
+            left join RNO_GSM_BSC_DATA d on (d.ID = t.bsc)
+            where t.hop = 'OFF'
+            <if test="date1 != null and date1 != ''">
+                and t.mea_date = to_date('${date1}', 'yyyy-MM-dd')
+            </if>
+            <if test="cityId != null and cityId != ''">
+                and t.city_id = ${cityId}
+            </if>
+            <if test="bscStr!=null and bscStr != ''">
+                and t.bsc in (${bscStr}))
+            </if>
+        where dchno > 2 and chgr_rn > 1
+    </select>
+    <select id="getEriCellNccpermResult"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.ParamCheckVM"
+            resultType="java.util.Map">
+        select t1.bsc, t1.cell, t1.nccperm, t2.ncell_ncc 
+        from (select cell.cell, d.bsc, cell.nccperm_8 as nccperm
+                     from rno_gsm_eri_cell cell
+                    left join RNO_GSM_BSC_DATA d on (d.ID = cell.bsc)
+                    where
+                    <if test="date1 != null and date1 != ''">
+                       cell.mea_date = to_date('${date1}', 'yyyy-MM-dd')
+                    </if>
+                    <if test="cityId != null and cityId != ''">
+                        and cell.city_id = ${cityId}
+                    </if>
+                    <if test="bscStr!=null and bscStr != ''">
+                        and cell.bsc in (${bscStr})
+                    </if>
+        	   ) t1 																		
+         left join (select cell, wm_concat(distinct(ncc)) as ncell_ncc 						
+                  from (select ncell.cell, ncell.n_cell, cell.ncc 							
+                          from (select cell, n_cell 											
+                                  from rno_gsm_eri_ncell_param
+                                 where
+                                <if test="date1 != null and date1 != ''">
+                                   mea_date = to_date('${date1}', 'yyyy-MM-dd')
+                                </if>
+                                <if test="cityId != null and cityId != ''">
+                                    and city_id = ${cityId}
+                                </if>
+                                <if test="bscStr!=null and bscStr != ''">
+                                    and bsc in (${bscStr})
+                                </if>
+                                ) ncell
+                          left join (select cell as ncell, ncc 								 
+                                      from rno_gsm_eri_cell
+                                     where
+                                        <if test="date1 != null and date1 != ''">
+                                           mea_date = to_date('${date1}', 'yyyy-MM-dd')
+                                        </if>
+                                        <if test="cityId != null and cityId != ''">
+                                            and city_id = ${cityId}
+                                        </if>
+                                        <if test="bscStr!=null and bscStr != ''">
+                                            and bsc in (${bscStr})
+                                        </if>
+                                     ) cell
+                         on (ncell.n_cell = cell.ncell)
+                         order by cell.ncc)
+        		group by cell
+                 ) t2  									                                     
+           on t1.cell = t2.cell
+        <![CDATA[
+          where nccperm <> ncell_ncc
+        ]]>
+    </select>
+    <select id="getEriCellMeaFreqResult"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.ParamCheckVM"
+            resultType="java.util.Map">
+        select t1.bsc, t1.cell, t1.active,t1.idle,t2.ncell_bcch 
+          from (select d.bsc, cell, active_32 as active, idle_32 as idle
+                  from rno_gsm_eri_cell cell
+                    left join RNO_GSM_BSC_DATA d on (d.ID = cell.bsc)
+                    where
+                    <if test="date1 != null and date1 != ''">
+                        cell.mea_date = to_date('${date1}', 'yyyy-MM-dd')
+                    </if>
+                    <if test="cityId != null and cityId != ''">
+                        and cell.city_id = ${cityId}
+                    </if>
+                    <if test="bscStr!=null and bscStr != ''">
+                        and cell.bsc in (${bscStr})
+                    </if>
+                ) t1 
+          left join (select cell, wm_concat(distinct(bcch)) as ncell_bcch 
+                       from (select ncell.cell, ncell.n_cell, cell.bcchno as bcch 
+                               from (select cell, n_cell 
+                                       from rno_gsm_eri_ncell_param
+                                        where
+                                        <if test="date1 != null and date1 != ''">
+                                            mea_date = to_date('${date1}', 'yyyy-MM-dd')
+                                        </if>
+                                        <if test="cityId != null and cityId != ''">
+                                            and city_id = ${cityId}
+                                        </if>
+                                        <if test="bscStr!=null and bscStr != ''">
+                                            and bsc in (${bscStr})
+                                        </if>
+                                       ) ncell
+                               left join (select cell as ncell, bcchno 
+                                           from rno_gsm_eri_cell
+                                            where
+                                            <if test="date1 != null and date1 != ''">
+                                                mea_date = to_date('${date1}', 'yyyy-MM-dd')
+                                            </if>
+                                            <if test="cityId != null and cityId != ''">
+                                                and city_id = ${cityId}
+                                            </if>
+                                            <if test="bscStr!=null and bscStr != ''">
+                                                and bsc in (${bscStr})
+                                            </if>
+                                          ) cell
+                              on ncell.n_cell = cell.ncell
+                        )
+                      group by cell
+                  ) t2  
+            on t1.cell = t2.cell
+    </select>
+    <select id="getEriCellBaNumCheckResult"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.ParamCheckVM"
+            resultType="java.util.Map">
+            select d.bsc,
+                   cell.cell,
+                   length(cell.active_32 || ',')
+                   nvl(length(REPLACE(cell.active_32, ',')), 0) AS active
+                   length(cell.idle_32 || ',') -
+                   nvl(length(REPLACE(cell.idle_32, ',')), 0) AS idle
+              from rno_gsm_eri_cell cell
+                left join RNO_GSM_BSC_DATA d on (d.ID = cell.bsc)
+                where
+                <if test="date1 != null and date1 != ''">
+                    cell.mea_date = to_date('${date1}', 'yyyy-MM-dd')
+                </if>
+                <if test="cityId != null and cityId != ''">
+                    and cell.city_id = ${cityId}
+                </if>
+                <if test="bscStr!=null and bscStr != ''">
+                    and cell.bsc in (${bscStr})
+                </if>
+    </select>
+    <select id="getEriCellTalimAndMaxtaCheckResult"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.ParamCheckVM"
+            resultType="java.util.Map">
+            select cell.mea_date create_time,
+                    bsc.engname   as bsc,
+                    cell.cell,
+                    cell.maxta,
+                    cell.talim
+            left join RNO_GSM_BSC_DATA d on (d.ID = cell.bsc)
+            <![CDATA[
+                where cell.maxta < cell.talim
+            ]]>
+            <if test="date1 != null and date1 != ''">
+                cell.mea_date = to_date('${date1}', 'yyyy-MM-dd')
+            </if>
+            <if test="cityId != null and cityId != ''">
+                and cell.city_id = ${cityId}
+            </if>
+            <if test="bscStr!=null and bscStr != ''">
+                and cell.bsc in (${bscStr})
+            </if>
+    </select>
+    <select id="getEriCellCoBsicCheckResult"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.ParamCheckVM"
+            resultType="java.util.Map">
+            select incell.bsc || '-' || incell.cell || '-' || decode(c.name,null,'空',c.name)|| '-' || decode(c.LONGITUDE,null,'空',c.LONGITUDE)|| ',' || decode(c.latitude,null,'空',c.latitude) cell,			
+                    incell.bsic,                                                   
+                    incell.bcch                                                    
+               from (SELECT bsc.engname bsc, cell, BSIC, BCCH                      
+                       FROM (select distinct c1.bsc,                               
+                                             c1.cell,                              
+                                             c1.ncc || c1.bcc BSIC,                
+                                             C1.bcchno BCCH                        
+                               from rno_gsm_eri_cell c1, rno_gsm_eri_cell c2
+                            <![CDATA[
+                                where C1.cell <> C2.cell
+                            ]]>
+                                and c1.bcchno = c2.bcchno                          
+                                and c1.ncc || c1.bcc = c2.ncc || c2.bcc
+                                <if test="date1 != null and date1 != ''">
+                                    and c1.mea_date = to_date('${date1}', 'yyyy-MM-dd')
+                                    and c2.mea_date = to_date('${date1}', 'yyyy-MM-dd')
+                                </if>
+                                <if test="cityId != null and cityId != ''">
+                                    and C1.CITY_ID = = ${cityId}
+                                    and C2.CITY_ID = = ${cityId}
+                                </if>
+                                <if test="bscStr!=null and bscStr != ''">
+                                    and c1.bsc in (${bscStr})
+                                    and c2.bsc in (${bscStr})
+                                </if>
+                              ORDER BY c1.bcchno, c1.ncc || c1.bcc) t
+                      left join RNO_GSM_BSC_DATA d on (d.ID = t.bsc)
+                    ) incell
+                left join RNO_CELL c
+             on c.label = incell.cell
+    </select>
+   <select id="getEriCellNcellNumCheckResult"
+           parameterType="com.hgicreate.rno.web.rest.gsm.vm.ParamCheckVM"
+           resultType="java.util.Map">
+            select *
+              from (select d.bsc,
+                       cell.cell,                                                         
+                       count(cell.cell) n_cell_num,                                       
+                       wm_concat(cell.n_cell) n_cells                                     
+                  from rno_gsm_eri_ncell_param cell
+                  left join RNO_GSM_BSC_DATA d on (d.ID = cell.bsc)                                             
+                 where
+                   <if test="date1 != null and date1 != ''">
+                       cell.mea_date = to_date('${date1}', 'yyyy-MM-dd')
+                   </if>
+                   <if test="cityId != null and cityId != ''">
+                       and cell.city_id = ${cityId}
+                   </if>
+                   <if test="bscStr!=null and bscStr != ''">
+                       and cell.bsc in (${bscStr})
+                   </if>
+                 group by d.bsc, cell.cell)
+            <![CDATA[
+                 where n_cell_num < ${ncellMinNum} or n_cell_num > ${ncellMaxNum}
+                ]]>
+   </select>
+    <select id="getEriCellNcellMomitCheckResult"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.ParamCheckVM"
+            resultType="java.util.Map">
+            select bsc,																		
+                     cell,                                                                      
+                     cellr,                                                                     
+                     cellr_bsc,                                                                 
+                     cs,                                                                        
+                     'RLNRC:CELL=' || cell || ',CELLR=' || cellr || ',CS=YES;' mml              
+                from (select substr(cell.cell, 0, 6) site,                  
+                             d.bsc,
+                             cell.n_cell cell,                                                  
+                             cell.cell cellr,                                                   
+                             cell.n_bsc cellr_bsc,                                              
+                             cell.cs                                                            
+                        from rno_gsm_eri_ncell_param cell
+                        left join RNO_GSM_BSC_DATA d on (d.ID = cell.bsc)
+                        where
+                        <if test="date1 != null and date1 != ''">
+                            cell.mea_date = to_date('${date1}', 'yyyy-MM-dd')
+                        </if>
+                        <if test="cityId != null and cityId != ''">
+                            and cell.city_id = ${cityId}
+                        </if>
+                        <if test="bscStr!=null and bscStr != ''">
+                            and cell.bsc in (${bscStr})
+                        </if>
+                         and substr(cell.cell, 0, 6) = substr(cell.n_cell, 0, 6)                
+                       order by substr(cell.cell, 0, 6), cell.n_cell) A                         
+               where not exists                                                                
+               (select *                                                                        
+                        from (select substr(cell.cell, 0, 6) site,          
+                                     d.bsc,
+                                     cell.cell,                                                 
+                                     cell.n_cell cellr,                                         
+                                     cell.n_bsc cellr_bsc,                                      
+                                     cell.cs                                                    
+                                from rno_gsm_eri_ncell_param cell
+                                left join RNO_GSM_BSC_DATA d on (d.ID = cell.bsc)
+                                where
+                                <if test="date1 != null and date1 != ''">
+                                    cell.mea_date = to_date('${date1}', 'yyyy-MM-dd')
+                                </if>
+                                <if test="cityId != null and cityId != ''">
+                                    and cell.city_id = ${cityId}
+                                </if>
+                                <if test="bscStr!=null and bscStr != ''">
+                                    and cell.bsc in (${bscStr})
+                                </if>
+                                and substr(cell.cell, 0, 6) = substr(cell.n_cell, 0, 6)
+                               order by substr(cell.cell, 0, 6), cell.cell) B                   
+                       where A.site = B.site                                                    
+                         and A.bsc = B.bsc                                                      
+                         and A.cell = B.cell                                                    
+                         and A.cellr = B.cellr                                                  
+                         and A.cellr_bsc = B.cellr_bsc                                          
+                         and A.cs = B.cs)
+    </select>
+    <select id="getEriCellUnidirNcellResult"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.ParamCheckVM"
+            resultType="java.util.Map">
+            select bsc, 
+                    cell,
+                    n_cell as CELLR,
+                    cast('SINGLE'as varchar2(6)) as DIR,
+                    n_bsc as CELLR_BSC,
+                	 case when bsc=n_bsc then '是' else '否' end as IS_SAME_BSC,  
+                	'RLNRC:CELLR='||n_cell||',CELL='||cell||',SINGLE;' as COMMAND  
+             from ( select t1.bsc,
+                         t1.cell,
+                         t2.n_bsc,
+                         t2.n_cell
+                         from( select d.bsc,cell.cell
+                                from rno_gsm_eri_cell cell
+                                 left join RNO_GSM_BSC_DATA d on (d.ID = cell.bsc)
+                               where
+                                <if test="date1 != null and date1 != ''">
+                                    cell.mea_date = to_date('${date1}', 'yyyy-MM-dd')
+                                </if>
+                                <if test="cityId != null and cityId != ''">
+                                    and cell.city_id = ${cityId}
+                                </if>
+                                <if test="bscStr!=null and bscStr != ''">
+                                    and cell.bsc in (${bscStr})
+                                </if>
+                               ) t1
+                      left join (
+                                select d.bsc,param.cell,param.n_bsc,param.n_cell
+                                  from rno_gsm_eri_ncell_param param
+                                  left join RNO_GSM_BSC_DATA d on (d.ID = param.bsc)
+                                 where
+                                <if test="date1 != null and date1 != ''">
+                                    param.mea_date = to_date('${date1}', 'yyyy-MM-dd')
+                                </if>
+                                <if test="cityId != null and cityId != ''">
+                                    and param.city_id = ${cityId}
+                                </if>
+                                <if test="bscStr!=null and bscStr != ''">
+                                    and param.bsc in (${bscStr})
+                                </if>) t2
+                      on (t1.cell=t2.cell and t1.bsc = t2.bsc)
+                  minus
+                  select t2.n_bsc as bsc,
+                         t2.n_cell as cell,
+                         t1.bsc as n_bsc,
+                         t1.cell as ncell
+                         from( select d.bsc,cell.cell
+                                from rno_gsm_eri_cell cell
+                                left join RNO_GSM_BSC_DATA d on (d.ID = cell.bsc)
+                               where <if test="date1 != null and date1 != ''">
+                                            cell.mea_date = to_date('${date1}', 'yyyy-MM-dd')
+                                        </if>
+                                        <if test="cityId != null and cityId != ''">
+                                            and cell.city_id = ${cityId}
+                                        </if>
+                                        <if test="bscStr!=null and bscStr != ''">
+                                            and cell.bsc in (${bscStr})
+                                        </if>) t1
+                      left join (
+                                select d.bsc,param.cell,param.n_bsc,param.n_cell
+                                  from rno_gsm_eri_ncell_param param
+                                    left join RNO_GSM_BSC_DATA d on (d.ID = param.bsc)
+                                    where
+                                    <if test="date1 != null and date1 != ''">
+                                        param.mea_date = to_date('${date1}', 'yyyy-MM-dd')
+                                    </if>
+                                    <if test="cityId != null and cityId != ''">
+                                        and param.city_id = ${cityId}
+                                    </if>
+                                    <if test="bscStr!=null and bscStr != ''">
+                                        and param.bsc in (${bscStr})
+                                    </if>) t2
+                  on (t1.cell=t2.cell and t1.bsc = t2.bsc)
+            )
+            where n_bsc is not null
+              and n_cell is not null
+    </select>
+    <!--<select id="getEriCellBaNumCheckResult"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.ParamCheckVM"
+            resultType="java.util.Map">
+ 
+    </select>
+    <select id="getEriCellBaNumCheckResult"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.ParamCheckVM"
+            resultType="java.util.Map">
+ 
+    </select>-->
+</mapper>

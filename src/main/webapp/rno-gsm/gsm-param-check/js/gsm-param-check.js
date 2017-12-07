@@ -62,7 +62,9 @@ var ncellDataCheckResult = new Array();
 $(function () {
 
     // 执行 laydate 实例 
-    laydate.render({elem: '#uploadDate', value: new Date()});
+    var dateBeg = new Date();
+    dateBeg.setFullYear(2014,11,5);
+    laydate.render({elem: '#uploadDate', value: dateBeg});
     // 初始化区域联动
     initAreaSelectors({selectors: ["province-menu", "city-menu"]});
 
@@ -131,7 +133,7 @@ function getAllBsc() {
     $("#selectedBsc").html("");
     var cityId = $("#city-menu").val()
     $.ajax({
-        url : '/api/gsm-param-query/query-bsc-by-cityId',
+        url : '/api/gsm-param-check/check-bsc-by-cityId',
         data : {
             'cityId' : cityId
         },
@@ -217,8 +219,6 @@ function showTabs() {
     //console.log(items);
     if(items.length == 0) {
         alert("请选择要查询的项目！");
-        $("#paramCheckTab").html("");
-        $("#paramCheckContent").html("");
         return;
     }
     //组建tab的html脚本
@@ -319,7 +319,7 @@ function loadResultForTab(checkType) {
         }
     }
     $.ajax({
-        url : '/api/gsm-param-query/query-param',
+        url : '/api/gsm-param-check/check-param',
         data : {
             'bscStr' : bscStr,
             'date1' : date1,
@@ -339,26 +339,33 @@ function loadResultForTab(checkType) {
         dataType : 'text',
         success : function(raw) {
             var data = eval("("+raw+")");
-            /*var flag = data['flag'];
-            var result = data['result'];
-            var thHtml = "";
-            var trHtml = "";
-            if(flag) {
+            if(data.length>0) {
+                var data = eval("("+raw+")");
+                var thHtml = "";
                 //标题
                 thHtml = buildTh(checkType);
                 $("#"+checkType+"Table").append(thHtml);
                 //缓存数据
-                saveCache(checkType,result);
+                saveCache(checkType,data);
                 //tr，初始加载200条信息
-                if(result.length > 0) {
-                    appendTr(checkType,0,200);
-                }
+                appendTr(checkType,0,200);
             } else {
+                $("#info").css("background", "red");
+                showInfoInAndOut('info', '没有符合条件的数据');
                 $("#"+checkType+"Table").html("");
-            }*/
+            }
         },
     });
 }
+
+//提示信息
+function showInfoInAndOut(div, info) {
+    var divSet = $("#" + div);
+    divSet.html(info);
+    divSet.fadeIn(2000);
+    setTimeout("$('#" + div + "').fadeOut(2000)", 1000);
+}
+
 function buildTh(checkType) {
     var th = "";
     //功率检查
@@ -371,7 +378,7 @@ function buildTh(checkType) {
     }
     //NCCPERM检查
     else if(checkType == 'nccperm') {
-        th += "<tr><th></th><th>BSC</th><th>CELL</th><th>NCCPERM</th><th>缺失的NCC</th><th>指令</th></tr>";
+        th += "<tr><th></th><th>BSC</th><th>CELL</th><th>NCCPERM</th><th>缺失的NCC</th></tr>";
     }
     //测量频点多定义
     else if(checkType == 'meaFreqMultidefined') {
@@ -531,7 +538,7 @@ function appendTr(checkType,start,end) {
     if(checkType == "powerCheck") {
         if(end >= powerCheckResult.length) {
             for(var i=start; i<powerCheckResult.length; i++) {
-                tr += "<tr><td>"+(i+1)+"</td><td>"+getValidValue(powerCheckResult[i]['ENGNAME'],'')+"</td><td>"
+                tr += "<tr><td>"+(i+1)+"</td><td>"+getValidValue(powerCheckResult[i]['BSC'],'')+"</td><td>"
                     +getValidValue(powerCheckResult[i]['CELL'],'')+"</td><td>"
                     +getValidValue(powerCheckResult[i]['BSPWRB'],'')+"</td><td>"
                     +getValidValue(powerCheckResult[i]['BSPWRT'],'')+"</td><td>"
@@ -539,7 +546,7 @@ function appendTr(checkType,start,end) {
             }
         } else {
             for(var i=start; i<end; i++) {
-                tr += "<tr><td>"+(i+1)+"</td><td>"+getValidValue(powerCheckResult[i]['ENGNAME'],'')+"</td><td>"
+                tr += "<tr><td>"+(i+1)+"</td><td>"+getValidValue(powerCheckResult[i]['BSC'],'')+"</td><td>"
                     +getValidValue(powerCheckResult[i]['CELL'],'')+"</td><td>"
                     +getValidValue(powerCheckResult[i]['BSPWRB'],'')+"</td><td>"
                     +getValidValue(powerCheckResult[i]['BSPWRT'],'')+"</td><td>"
@@ -588,16 +595,14 @@ function appendTr(checkType,start,end) {
                 tr += "<tr><td>"+(i+1)+"</td><td>"+getValidValue(nccpermResult[i]['BSC'],'')+"</td><td>"
                     +getValidValue(nccpermResult[i]['CELL'],'')+"</td><td>"
                     +getValidValue(nccpermResult[i]['NCCPERM'],'')+"</td><td>"
-                    +getValidValue(nccpermResult[i]['LEAK_NCC'],'')+"</td><td>"
-                    +getValidValue(nccpermResult[i]['COMMAND'],'')+"</td></tr>";
+                    +getValidValue(nccpermResult[i]['NCELL_NCC'],'')+"</td></tr>"
             }
         } else {
             for(var i=start; i<end; i++) {
                 tr += "<tr><td>"+(i+1)+"</td><td>"+getValidValue(nccpermResult[i]['BSC'],'')+"</td><td>"
                     +getValidValue(nccpermResult[i]['CELL'],'')+"</td><td>"
                     +getValidValue(nccpermResult[i]['NCCPERM'],'')+"</td><td>"
-                    +getValidValue(nccpermResult[i]['LEAK_NCC'],'')+"</td><td>"
-                    +getValidValue(nccpermResult[i]['COMMAND'],'')+"</td></tr>";
+                    +getValidValue(nccpermResult[i]['NCELL_NCC'],'')+"</td></tr>"
             }
             tr += "<tr id='"+checkType+"LoadMore'>" +
                 "<td colspan='3' style='text-align: center;cursor:pointer;background: #bdd3ef;border:2px solid #eee ' " +

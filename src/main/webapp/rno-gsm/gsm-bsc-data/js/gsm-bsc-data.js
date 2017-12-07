@@ -171,6 +171,7 @@ function showInfoInAndOut(div, info) {
 //显示导入记录
 function showQueryImportResult(data) {
     if (data == '') {
+        $("#info").css("background", "red");
         showInfoInAndOut('info', '没有符合条件的BSC信息记录');
     }
     $('#queryRecordResTab').DataTable().clear();
@@ -284,6 +285,7 @@ function returnToImportList() {
 //查询信息
 function showRecord(data) {
     if (data == '') {
+        $("#info").css("background", "red");
         showInfoInAndOut('info', '没有符合条件的BSC信息数据');
     }
     $('#queryResultTab').DataTable().clear();
@@ -323,6 +325,8 @@ function deleteBsc(id) {
         data: {bscId: id},
         type: "Get",
         success: function (data) {
+            $("#info").css("background", "green");
+            showInfoInAndOut("info", "删除完成！");
             $("#queryBtn").click();
         },
         error: function (err) {
@@ -335,6 +339,8 @@ function deleteBsc(id) {
 //反馈更新状态
 function showResult(data) {
     if(data === true) {
+        $("#info").css("background", "green");
+        showInfoInAndOut("info", "增加成功！");
         $("#queryBtn").click();
     } else {
         $("#info").css("background", "red");
