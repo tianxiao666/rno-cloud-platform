@@ -1,5 +1,6 @@
 package com.hgicreate.rno.service.gsm;
 
+import com.hgicreate.rno.config.Constants;
 import com.hgicreate.rno.domain.Area;
 import com.hgicreate.rno.domain.DataJob;
 import com.hgicreate.rno.domain.gsm.MrrDesc;
@@ -11,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -42,9 +45,13 @@ public class MrrService {
     public List<DataJob> mrrImportQuery(MrrImportQueryVM vm){
         Area area = new Area();
         area.setId(vm.getAreaId());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(vm.getEndDate());
+        calendar.add(Calendar.DATE, 1);
+        Date endDate = calendar.getTime();
         if ("全部".equals(vm.getStatus())){
-            return dataJobRepository.findByAreaAndCreatedDateBetween(area, vm.getBeginDate(), vm.getEndDate());
+            return dataJobRepository.findTop1000ByAreaAndOriginFile_CreatedDateBetweenAndOriginFile_DataTypeOrderByOriginFile_CreatedDateDesc(area, vm.getBeginDate(), endDate, Constants.MRR_DATA_TYPE);
         }
-        return dataJobRepository.findByAreaAndStatusAndCreatedDateBetween(area, vm.getStatus(), vm.getBeginDate(), vm.getEndDate());
+        return dataJobRepository.findTop1000ByAreaAndStatusAndOriginFile_CreatedDateBetweenAndOriginFile_DataTypeOrderByOriginFile_CreatedDateDesc(area, vm.getStatus(), vm.getBeginDate(), endDate,Constants.MRR_DATA_TYPE);
     }
 }

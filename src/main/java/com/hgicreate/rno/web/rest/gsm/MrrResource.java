@@ -1,5 +1,6 @@
 package com.hgicreate.rno.web.rest.gsm;
 
+import com.hgicreate.rno.config.Constants;
 import com.hgicreate.rno.domain.*;
 import com.hgicreate.rno.domain.gsm.MrrDesc;
 import com.hgicreate.rno.repository.DataJobReportRepository;
@@ -24,6 +25,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -67,6 +69,7 @@ public class MrrResource {
             //创建更新对象
             OriginFile originFile = new OriginFile();
             OriginFileAttr originFileAttr1 = new OriginFileAttr();
+            OriginFileAttr originFileAttr2 = new OriginFileAttr();
             // 如果目录不存在则创建目录
             String directory = env.getProperty("rno.path.upload-files");
             File fileDirectory = new File(directory + "/" + vm.getModuleName());
@@ -93,14 +96,20 @@ public class MrrResource {
             originFile.setSourceType("上传");
             originFile.setCreatedUser(SecurityUtils.getCurrentUserLogin());
             originFile.setCreatedDate(new Date());
+            originFile.setDataType(Constants.MRR_DATA_TYPE);
             originFileRepository.save(originFile);
 
             //更新文件记录RNO_ORIGIN_FILE_ATTR
             originFileAttr1.setOriginFile(originFile);
-            originFileAttr1.setName("area_type");
+            originFileAttr1.setName("factory");
             originFileAttr1.setValue(vm.getImportFactory());
             originFileAttrRepository.save(originFileAttr1);
 
+            originFileAttr2.setOriginFile(originFile);
+            originFileAttr2.setName("test_time");
+            SimpleDateFormat sdf =   new SimpleDateFormat( "yyyy-MM-dd" );
+            originFileAttr2.setValue(sdf.format(vm.getFileDate()));
+            originFileAttrRepository.save(originFileAttr2);
 
             // 保存文件到本地
             BufferedOutputStream stream =
@@ -126,6 +135,7 @@ public class MrrResource {
             dataJob.setStatus("等待处理");
             dataJob.setDataStoreType("FTP");
             dataJob.setDataStorePath(ftpFullPath);
+            dataJob.setType(Constants.MRR_DATA_TYPE);
             dataJobRepository.save(dataJob);
             //建立任务报告
             DataJobReport dataJobReport = new DataJobReport();

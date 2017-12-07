@@ -16,7 +16,4 @@ public interface DataJobRepository extends JpaRepository<DataJob, Long> {
     List<DataJob> findTop1000ByAreaAndOriginFile_CreatedDateBetweenAndOriginFile_DataTypeOrderByOriginFile_CreatedDateDesc(
             Area area, Date beginDate, Date endDate, String type);
 
-    List<DataJob> findByAreaAndStatusAndCreatedDateBetween(Area area, String status, Date beginDate, Date endDate);
-
-    List<DataJob> findByAreaAndCreatedDateBetween(Area area, Date beginDate, Date endDate);
 }

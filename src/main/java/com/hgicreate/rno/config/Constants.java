@@ -24,6 +24,8 @@ public final class Constants {
      */
     public static final Long DEFAULT_AREA = 440106L;
 
+    public static final String MRR_DATA_TYPE = "GSM-MRR-DATA";
+
     private Constants() {
     }
 }

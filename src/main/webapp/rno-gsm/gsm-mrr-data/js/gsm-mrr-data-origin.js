@@ -131,11 +131,11 @@ function jqueryUiSet() {
 	//$("#citymenu").selectmenu();
 	$("#importstatusmenu").selectmenu();
 	$("#datepicker").datepicker({
-		"dateFormat" : "yy-mm-dd"
+		"dateFormat" : "yy-MM-dd"
 	});
 	$("#uploadQueryBegDate").datepicker(
 			{
-				dateFormat : "yy-mm-dd",
+				dateFormat : "yy-MM-dd",
 				defaultDate : "-2",
 				changeMonth : true,
 				numberOfMonths : 1,
@@ -148,7 +148,7 @@ function jqueryUiSet() {
 
 	$("#uploadQueryEndDate").datepicker(
 			{
-				dateFormat : "yy-mm-dd",
+				dateFormat : "yy-MM-dd",
 				defaultDate : "+1w",
 				changeMonth : true,
 				numberOfMonths : 1,
@@ -171,7 +171,7 @@ function jqueryUiSet() {
 	});
 	$("#mrrMeaBegDate").datetimepicker(
 			{
-				dateFormat : "yy-mm-dd",
+				dateFormat : "yy-MM-dd",
 				timeFormat: "HH:mm:ss",
 				defaultDate : "-2",
 				changeMonth : true,
@@ -184,7 +184,7 @@ function jqueryUiSet() {
 	$("#mrrMeaBegDate").datetimepicker("setDate",addDays(new Date(),-2));// 减去2天
 	$("#mrrMeaEndDate").datetimepicker(
 			{
-				dateFormat : "yy-mm-dd",
+				dateFormat : "yy-MM-dd",
 				timeFormat: "HH:mm:ss",
 				defaultDate :"+1w",
 				changeMonth : true,
@@ -367,6 +367,7 @@ function doUpload() {
 	$("#progressInfoDiv").fadeIn();
 	fileSize = 1;
 	$("#cityId").val($("#city-menu").val());
+    var selectDate = $("#fileDate").val();
 	$("#fileDate").val(new Date($("#fileDate").val()));
     // AJAX 上传文件
     var progress = $('.upload-progress');
@@ -379,22 +380,19 @@ function doUpload() {
             var percentVal = '0%';
             bar.width(percentVal);
             percent.html(percentVal);
-            alert("before");
         },
         uploadProgress: function (event, position, total, percentComplete) {
-            alert("progress");
             var percentVal = percentComplete + '%';
             bar.width(percentVal);
             percent.html(percentVal);
         },
         success: function () {
-            alert("success");
             var percentVal = '100%';
             bar.width(percentVal);
             percent.html(percentVal);
             $("#info").css("background","green");
-            showInfoInAndOut("info","文件导入成功！");
-            $("#formImportMrr").submit();
+            $("#fileDate").val(selectDate);
+            //showInfoInAndOut("info","文件导入成功！");
         }
 	})
 
