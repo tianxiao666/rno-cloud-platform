@@ -12,7 +12,7 @@ import java.util.Date;
 @Data
 @Entity
 @Table(name = "RNO_GSM_MRR_DESC")
-public class MrrDesc {
+public class GsmMrrDesc {
 
     @Id
     @GeneratedValue(generator = "MrrDescSeq")

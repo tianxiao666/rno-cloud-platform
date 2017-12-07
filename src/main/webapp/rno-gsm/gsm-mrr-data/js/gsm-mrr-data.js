@@ -55,17 +55,17 @@ $(function () {
                     "columns": [
                         {"data": "area.name"},
                         { "data": "createdDate", "render": function (data) {
-                            return (new Date(data)).Format("yyyy-MM-dd");
+                            return (new Date(data)).Format("yyyy-MM-dd hh:mm:ss");
                         }},
                         { "data": "originFile.filename" },
                         { "data": "originFile.fileSize", "render": function (data) {
                             return conver(data);
                         }},
                         { "data": "startTime", "render": function (data) {
-                            return (new Date(data)).Format("yyyy-MM-dd");
+                            return (new Date(data)).Format("yyyy-MM-dd hh:mm:ss");
                         }},
                         { "data": "completeTime", "render": function (data) {
-                            return (new Date(data)).Format("yyyy-MM-dd");
+                            return (new Date(data)).Format("yyyy-MM-dd hh:mm:ss");
                         }},
                         { "data": "createdUser" },
                         { "data": "status" }

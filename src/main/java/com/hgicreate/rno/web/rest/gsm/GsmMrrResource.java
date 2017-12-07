@@ -2,17 +2,17 @@ package com.hgicreate.rno.web.rest.gsm;
 
 import com.hgicreate.rno.config.Constants;
 import com.hgicreate.rno.domain.*;
-import com.hgicreate.rno.domain.gsm.MrrDesc;
+import com.hgicreate.rno.domain.gsm.GsmMrrDesc;
 import com.hgicreate.rno.repository.DataJobReportRepository;
 import com.hgicreate.rno.repository.DataJobRepository;
 import com.hgicreate.rno.repository.OriginFileAttrRepository;
 import com.hgicreate.rno.repository.OriginFileRepository;
 import com.hgicreate.rno.security.SecurityUtils;
-import com.hgicreate.rno.service.gsm.MrrService;
+import com.hgicreate.rno.service.gsm.GsmMrrService;
 import com.hgicreate.rno.util.FtpUtils;
-import com.hgicreate.rno.web.rest.gsm.vm.MrrDescQueryVM;
-import com.hgicreate.rno.web.rest.gsm.vm.MrrImportQueryVM;
-import com.hgicreate.rno.web.rest.gsm.vm.MrrUploadVM;
+import com.hgicreate.rno.web.rest.gsm.vm.GsmMrrDescQueryVM;
+import com.hgicreate.rno.web.rest.gsm.vm.GsmMrrImportQueryVM;
+import com.hgicreate.rno.web.rest.gsm.vm.GsmMrrUploadVM;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -36,8 +36,8 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequestMapping("/api/gsm-mrr-data")
-public class MrrResource {
-    private final MrrService mrrService;
+public class GsmMrrResource {
+    private final GsmMrrService gsmMrrService;
     private final DataJobRepository dataJobRepository;
     private final DataJobReportRepository dataJobReportRepository;
 
@@ -45,8 +45,8 @@ public class MrrResource {
     private  final OriginFileAttrRepository originFileAttrRepository;
     private final Environment env;
 
-    public MrrResource(MrrService mrrService, DataJobRepository dataJobRepository, DataJobReportRepository dataJobReportRepository, OriginFileRepository originFileRepository, OriginFileAttrRepository originFileAttrRepository, Environment env) {
-        this.mrrService = mrrService;
+    public GsmMrrResource(GsmMrrService gsmMrrService, DataJobRepository dataJobRepository, DataJobReportRepository dataJobReportRepository, OriginFileRepository originFileRepository, OriginFileAttrRepository originFileAttrRepository, Environment env) {
+        this.gsmMrrService = gsmMrrService;
         this.dataJobRepository = dataJobRepository;
         this.dataJobReportRepository = dataJobReportRepository;
         this.originFileRepository = originFileRepository;
@@ -55,12 +55,12 @@ public class MrrResource {
     }
 
     @PostMapping("/gsm-mrr-data-query")
-    public List<MrrDesc> gsmMrrDateQuery(MrrDescQueryVM vm) {
-        return mrrService.mrrDataQuery(vm);
+    public List<GsmMrrDesc> gsmMrrDateQuery(GsmMrrDescQueryVM vm) {
+        return gsmMrrService.mrrDataQuery(vm);
     }
 
     @PostMapping("/upload-file")
-    public ResponseEntity<?> uploadFile(MrrUploadVM vm) {
+    public ResponseEntity<?> uploadFile(GsmMrrUploadVM vm) {
         try {
             Date uploadBeginTime = new Date();
             // 获取文件名，并构建为本地文件路径
@@ -156,7 +156,7 @@ public class MrrResource {
     }
 
     @PostMapping("/mrr-import-query")
-    public List<DataJob> mrrrImportQuery(MrrImportQueryVM vm){
-        return mrrService.mrrImportQuery(vm);
+    public List<DataJob> mrrrImportQuery(GsmMrrImportQueryVM vm){
+        return gsmMrrService.mrrImportQuery(vm);
     }
 }

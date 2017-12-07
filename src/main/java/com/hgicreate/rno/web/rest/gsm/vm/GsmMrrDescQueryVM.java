@@ -8,7 +8,7 @@ import java.util.Date;
  * @author ke_weixu
  */
 @Data
-public class MrrDescQueryVM {
+public class GsmMrrDescQueryVM {
     private  Long areaId;
     private String factory;
     private String bsc;
