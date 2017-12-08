@@ -206,7 +206,7 @@ function getGisCell(loadToken) {
 	$(".loading_cover").css("display", "block");
 	$("#conditionForm").ajaxSubmit(
 			{
-				url : 'getGisCellByPageForAjaxAction',
+				url : ''/*getGisCellByPageForAjaxAction*/,
 				dataType : 'json',
 				success : function(data) {
 					if (loadToken != currentloadtoken) {

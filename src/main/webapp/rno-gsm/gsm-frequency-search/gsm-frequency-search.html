@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <title>总干扰分析</title>
 
+    <link rel="stylesheet" href="../../lib/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/gsm-frequency-search.css">
     <link rel="stylesheet" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
     <link rel="stylesheet" href="../../lib/openlayers/4.4.2/ol.css">
+    <link rel="stylesheet" href="../../lib/openlayers/ol3-contextmenu/ol3-contextmenu.min.css">
 
-    <script src="../../lib/jquery/1.8.2/jquery.js"></script>
+    <script src="../../lib/jquery/3.2.1/jquery.js"></script>
+    <script src="../../lib/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
     <script src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
     <script src="../../lib/jquery-plugins/jquery.metadata.js"></script>
@@ -16,39 +19,33 @@
     <script src="../../lib/validate.js"></script>
     <script src="../../lib/tab.js"></script>
     <script src="../../lib/openlayers/4.4.2/ol.js"></script>
-    <script src="js/gsm-frequency-search-origin.js"></script>
+    <script src="../../lib/openlayers/ol3-contextmenu/ol3-contextmenu.js"></script>
+    <script src="../../js/common.js"></script>
+<!--    <script src="js/gsm-frequency-search-origin.js"></script>-->
     <script src="js/gsm-frequency-search.js"></script>
 </head>
 <body>
-<!--<div class="loading_cover" style="display: none">
-    <div class="cover"></div>
-    <h4 class="loading">
-        正在加载 <em class="loading_fb">小区</em>资源,请稍侯...
-    </h4>
+<div id="loading" class="loading" style="display: none">加载中...</div>
+<div id="info" class="info-style" style="display: none"></div>
+<div style="display: none"> 
+    <div id="popup"></div>
 </div>
-<div class="loading_cover" id="loadingDataDiv" style="display: none">
-    <div class="cover"></div>
-    <h4 class="loading">
-        <em class="loading_fb" id="loadContentId"></em>,请稍侯...
-    </h4>
-</div>-->
 <div id="map" class="map"></div>
 
-<div class="dialog draggable ui-draggable">
+<div class="dialog">
     <div style="padding: 5px">
 
         <form id="conditionForm" method="post">
-            省：<select name="provinceId" class="required" id="provinceId">
+            <select name="provinceId" class="form-control custom-select" id="provinceId" title="">
 
-        </select> 市：<select name="cityId" class="required" id="cityId">
+        </select> <select name="cityId"  class="form-control custom-select" id="cityId" title="">
 
 
-        </select> 区：<select name="areaId" class="required" id="areaId">
+        </select> <select name="areaId"  class="form-control custom-select" id="areaId" title="">
         </select>
-            <input class="queryButton" value="打开搜索面板" 　style="font-size: 12px" type="button">
-            <input id="showCellName" class="showCellNameButton" value="显示小区名字" type="button">
+            <button  id="queryButton" class="btn btn-info custom-btn" type="button">打开搜索面板</button>
+            <button id="showCellName" class="btn btn-info custom-btn" type="button">显示小区名字</button>
             <span id="loadingCellTip"></span>
-            <input id="trigger" name="trigger" value="切换谷歌" style="display: none;" type="button">
             <div id="hiddenAreaLngLatDiv" style="display:none">
 
                 <input id="areaid_187" value="113.361397,23.12489" type="hidden">
@@ -105,17 +102,18 @@
         </div>
         <div class="divtab_content" style="overflow-y:auto; overflow-x:auto; width:360px; height:600px">
             <div id="div_tab_0">
-                <input value="显示小区干扰窗口" id="showCellInterWinBtn" type="button">
+                <button class="btn btn-default custom-btn" id="showCellInterWinBtn" type="button">显示小区干扰窗口</button>
 
                 <div class="div_title_24px_blue">
                     <span class="sp_title"> 频点类型选择</span>
                 </div>
                 <div style="margin: 3px"></div>
-                请选择：<input name="freqType" id="freqType" value="GSM900" type="radio">GSM900　<input
-                    name="freqType" id="freqType" value="GSM1800" type="radio">GSM1800　<input
-                    name="freqType" id="freqType" value="-1" checked="checked" type="radio">全部
-                　　<br><br><input id="loadGsmCellToMap" value="加载小区信息" name="loadCellToMap"
-                                 style="margin-right: 0" type="button">
+                请选择：<input name="freqType"  value="GSM900" type="radio">GSM900　<input
+                    name="freqType"  value="GSM1800" type="radio">GSM1800　<input
+                    name="freqType"  value="-1" checked="checked" type="radio">全部
+                　　<br><br>
+                <button id="loadGsmCellToMap" class="btn btn-default custom-btn" name="loadCellToMap"
+                         type="button">加载小区信息</button>
                 <span id="loadingStatus"></span>
                 <div class="div_transparentstandard_nopaddming" id="analysisListDiv_cellconfig">
                     <table class="tb-transparent-standard" style="width:100%"
@@ -140,35 +138,34 @@
                     <span class="sp_title">图例参考</span>
                 </div>
                 <div style="margin: 3px"></div>
-                <table width="66%" border="0" cellspacing="0" cellpadding="0">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tbody>
                     <tr>
                         <td valign="top">
-                            <table style="border:1px solid #ccc; font-size:12px" width="100%" align="right"
-                                   cellspacing="0" cellpadding="0">
+                            <table class="table table-bordered">
                                 <tbody>
                                 <tr>
-                                    <td colspan="2" style="border:1px solid #ccc;font-weight: bold;"
+                                    <td colspan="2" style="font-weight: bold;"
                                         align="center">与选定频点的同邻频小区颜色设置
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="border:1px solid #ccc;" width="37%" align="center">同邻频情况</td>
-                                    <td style="border:1px solid #ccc;" width="40%" align="center">颜色</td>
+                                    <td style="border:1px solid #ccc;" width="35%" align="center">同邻频情况</td>
+                                    <td style="border:1px solid #ccc;" width="65%" align="center">颜色</td>
                                 </tr>
                                 <tr>
-                                    <td style="border:1px solid #ccc;" align="center">同频</td>
-                                    <td style="border:1px solid #ccc; background-color: #CE110F">
+                                    <td  align="center">同频</td>
+                                    <td style="background-color: #CE110F">
 
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td style="border:1px solid #ccc;" align="center">邻频</td>
-                                    <td style="border:1px solid #ccc;background-color:#E9D713"></td>
+                                    <td align="center">邻频</td>
+                                    <td style="background-color:#E9D713"></td>
                                 </tr>
                                 <tr>
-                                    <td style="border:1px solid #ccc;" align="center">自身</td>
-                                    <td style="border:1px solid #ccc;background-color:#10000E"></td>
+                                    <td  align="center">自身</td>
+                                    <td style="background-color:#10000E"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -187,45 +184,43 @@
                     <span class="sp_title">小区连线颜色设置</span>
                 </div>
                 <div style="margin: 3px"></div>
-                <table style=" border:1px solid #ccc;font-size:12px" width="60%" align="left"
-                       cellspacing="0" cellpadding="0">
+                <table class="table table-bordered" width="100%">
                     <tbody>
                     <tr>
-                        <td style="border:1px solid #ccc;" width="37%" align="center">干扰值范围</td>
-                        <td style="border:1px solid #ccc;" width="42%" align="center">颜色</td>
+                        <td  width="35%" align="center">干扰值范围</td>
+                        <td  width="65%" align="center">颜色</td>
                     </tr>
                     <tr>
-                        <td style="border:1px solid #ccc;" align="center">小于0.05</td>
-                        <td style="border:1px solid #ccc;background-color:#0080FF"></td>
+                        <td  align="center">小于0.05</td>
+                        <td style="background-color:#0080FF"></td>
                     </tr>
                     <tr>
-                        <td style="border:1px solid #CCC;" align="center">大于等于0.05</td>
-                        <td style="border:1px solid #ccc;background-color:#AE0000"></td>
+                        <td align="center">大于等于0.05</td>
+                        <td style="background-color:#AE0000"></td>
                     </tr>
                     </tbody>
                 </table>
-                <div style="margin: 80px"></div>
+
 
                 <div style="margin: 3px"></div>
                 <div class="div_transparent_standard_border" style="margin: 3px;" id="listdisplay">
                     <div class="div_title_24px_grey sp_title_left" style="background-color: #bdd3ef">
                         <span class="sp_title" id="interDetailTitle">小区〖〗的 干扰情况</span>
                     </div>
-                    <div style="margin: 3px"></div>
-                    <table style=" font-size:12px" id="listdistab" width="100%" border="1" cellspacing="0"
-                           cellpadding="0">
+                    <div style="margin: 10px"></div>
+                    <table class="table table-bordered" id="listdistab" width="100%" >
                         <tbody>
                         <tr>
-                            <td style="border:1px solid #ccc;height: 24px;font-weight:bold;" width="97">
+                            <td>
                                 干扰邻区
                             </td>
-                            <td style="border:1px solid #ccc;height: 24px;font-weight:bold;" width="95">
+                            <td>
                                 同频干扰系数
                             </td>
-                            <td style="border:1px solid #ccc;height: 24px;font-weight:bold;" width="100">
+                            <td>
                                 邻频干扰系数
                             </td>
-                            <td style="border:1px solid #ccc;height: 24px;font-weight:bold;" width="100">
+                            <td>
                                 是否邻区
                             </td>
                         </tr>
@@ -283,7 +278,7 @@
             </div>
         </div>
 
-        <div class="interferDialog" id="interference_dialogId" style="display:none; top:40px;z-index:30;">
+        <div class="interferDialog draggable" id="interference_dialogId" style="display:none; top:40px;z-index:30;">
             <div id="dialogHeader" class="interferDialog_header">
                 <span id="celllabel"></span>&nbsp;〖<label id="cellname"></label>〗PCI智能优化
                 <div class="dialog_tool">
@@ -294,26 +289,24 @@
 
             <div id="DialogBody">
                 <div class="interferDialog_content" style="background:#FFFFFF;padding: 0;height: auto;">
-
-
                     <div style="width: 370px; float: left; height:500px;overflow-y:auto;">
                         <div style="width:100%;height: auto;text-align: center; padding-top: 6px;">
                             <span id="cellFreq" style="font-weight: bold;">bcch:&nbsp;&nbsp;tch:</span>
                         </div>
-                        <table id="freqintersituation" class="greystyle-standard" width="100%" border="1px">
+                        <table id="freqintersituation" class="table table-bordered" width="100%">
                             <tbody>
                             <tr>
                                 <th align="center">
                                     小区频点
                                 </th>
                                 <th align="center">
-                                    干扰-in
+                                    干扰-IN
                                 </th>
                                 <th align="center">
-                                    干扰-out
+                                    干扰-OUT
                                 </th>
                                 <th align="center">
-                                    干扰-total
+                                    干扰-TOTAL
                                 </th>
                                 <th align="center">
                                     频点类型
@@ -371,7 +364,7 @@
         </div>
 
 
-        <div class="interferDialog" id="freq_dialogId" style="display:none; top:270px;z-index:30;left：500px;">
+        <div class="interferDialog draggable" id="freq_dialogId" style="display:none; top:270px;z-index:30;left：500px;">
             <div id="freq_dialogHeader" class="interferDialog_header">
                 <label>频点编辑</label>
                 <div class="dialog_tool">
@@ -382,7 +375,7 @@
             <div id="freq_DialogBody">
                 <div class="interferDialog_content" style="background:#FFFFFF;padding: 0;height: auto;">
                     <div style="width: 450px; float: left;">
-                        <input id="freqCellName" value="" type="hidden">
+                        <input id="freqCellId" value="" type="hidden">
                         <table class="greystyle-standard" width="100%" border="1px">
                             <tbody>
                             <tr>
@@ -397,8 +390,8 @@
                             </tr>
                             <tr>
                                 <td colspan="2" align="right">
-                                    <input onclick="updateCellFreq()" value="确定" type="button">
-                                    <input onclick="$('#freq_dialogId').hide();" value="取消" type="button">
+                                    <button onclick="updateCellFreq()" class="btn btn-success btn-sm" type="button">确定</button>
+                                    <button onclick="$('#freq_dialogId').hide();"  class="btn btn-default btn-sm" type="button">取消</button>
                                 </td>
                             </tr>
                             </tbody>

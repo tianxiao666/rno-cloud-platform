@@ -559,7 +559,7 @@ function bindNormalEvent() {
 		$("#interference_dialogId").toggle();
 	});
 	//打开查找小区窗口
-	$(".queryButton").click(function() {
+	$("#queryButton").click(function() {
 		//$("#searchDiv").slideToggle();
 		$("#searchDiv").toggle();
 	});
@@ -2173,7 +2173,7 @@ function updateCellFreq() {
 	}
 	
 	//判断是否为空
-	if(tch == "" || bcch == "") {
+	if(tch === "" || bcch === "") {
 		flag = false;
 		alert("tch与bcch不能为空！");
 		return;

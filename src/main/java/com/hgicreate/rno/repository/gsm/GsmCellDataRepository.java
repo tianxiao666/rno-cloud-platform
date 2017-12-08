@@ -12,4 +12,5 @@ public interface GsmCellDataRepository extends JpaRepository<GsmCell, String> {
     List<GsmCell> findByCellId(String cellId);
 
     List<GsmCell> findByArea_Id(Long areaId);
+
 }

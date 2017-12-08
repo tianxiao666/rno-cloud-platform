@@ -4,38 +4,47 @@
 	<meta charset="UTF-8">
 	<title>DT专题分析</title>
 
-	<link rel="stylesheet" href="css/gsm-dt-analysis.css">
+	<link rel="stylesheet" href="../../lib/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
-	<link rel="stylesheet" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
+	<link rel="stylesheet" href="../../lib/openlayers/ol3-contextmenu/ol3-contextmenu.min.css">
 	<link rel="stylesheet" href="../../lib/openlayers/4.4.2/ol.css">
+	<link rel="stylesheet" href="css/gsm-dt-analysis.css">
 
-	<script src="../../lib/jquery/1.8.2/jquery.js"></script>
-	<script src="../../lib/jquery/1.8.2/jquery.js"></script>
+	<script src="../../lib/jquery/3.2.1/jquery.js"></script>
+	<script src="../../lib/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
 	<script src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
 	<script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
 	<script src="../../lib/validate.js"></script>
 	<script src="../../lib/tab.js"></script>
 	<script src="../../lib/openlayers/4.4.2/ol.js"></script>
+	<script src="../../lib/openlayers/ol3-contextmenu/ol3-contextmenu.js"></script>
+	<script src="../../js/common.js"></script>
 	<script src="js/gsm-dt-analysis.js"></script>
 </head>
 <body>
+<div id="loading" class="loading" style="display: none">加载中...</div>
+<div id="info" class="info-style" style="display: none"></div>
+<div style="display: none"> 
+	<div id="popup"></div>
+</div>
 <div id="map" class="map"></div>
-<div class="dialog draggable ui-draggable">
+<div class="dialog draggable">
 	<div style="padding: 5px">
 
 		<form id="conditionForm" method="post">
-			省：
-			<select name="provinceId" class="required" id="provinceId">
+			<select name="provinceId" class="form-control custom-select"
+					title="" id="provinceId">
 			</select>
-			市：
-			<select name="cityId" class="required" id="cityId">
+			<select name="cityId" class="form-control custom-select"
+					title="" id="cityId">
 			</select>
-			区：
-			<select name="areaId" class="required" id="queryCellAreaId">
+			<select name="areaId" class="form-control custom-select"
+					title="" id="areaId">
 				<!--<option value="-1">全部</option>-->
 			</select>
-			<input id="displaycell" class="selectOneItem" data="cellConfig" value="显示小区" type="button">
+			<button id="displaycell" class="btn btn-info custom-btn"
+					data="cellConfig" type="button">加载小区</button>
 		</form>
 
 	</div>

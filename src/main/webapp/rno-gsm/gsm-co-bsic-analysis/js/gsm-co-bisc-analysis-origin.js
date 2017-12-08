@@ -69,32 +69,7 @@ $("document").ready(function() {
 		$("#conditionForm").submit();
 			// return true;
 		});
-	$("#trigger").click(function() {
-				// console.log("glomapid:"+glomapid);
-				if (glomapid == 'null' || glomapid == 'baidu') {
-					// console.log("切换前是百度");
-					$(this).val("切换百度");
-					// console.log("切换后是谷歌");
-					sessId = "google";
-				} else {
-					// console.log("切换前是谷歌");
-					$(this).val("切换谷歌");
-					// console.log("切换后是百度");
-					sessId = "baidu";
-				}
-				storageMapId(sessId);
-			});
-	/*
-	 * $(document).bind("click",function(e){ var targetobj=e.target; var
-	 * clickid=$(targetobj).attr("id"); if("div_tab_0_li"==clickid){
-	 * $("#div_tab_1_con").hide(); $("#div_tab_0_con").show();
-	 * $("#div_tab_1_li").css("background-color","#EEEEEE");
-	 * $("#div_tab_0_li").css("background-color","#FFFFFF"); }
-	 * if("div_tab_1_li"==clickid){ $("#div_tab_0_con").hide();
-	 * $("#div_tab_1_con").show();
-	 * $("#div_tab_0_li").css("background-color","#EEEEEE");
-	 * $("#div_tab_1_li").css("background-color","#FFFFFF"); } });
-	 */
+
 	$("#showCellConfigBtn").click(function() {
 		$("#reSelCellConfig_Dialog").toggle();
 		var display = $("#reSelCellConfig_Dialog").css("display");

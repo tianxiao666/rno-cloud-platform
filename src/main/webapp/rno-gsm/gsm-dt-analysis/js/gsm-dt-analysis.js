@@ -29,7 +29,7 @@ $(function () {
         })
     });
 
-    $("#queryCellAreaId").change(function () {
+    $("#areaId").change(function () {
         var lon = parseFloat($(this).find("option:checked").attr("data-lon"));
         var lat = parseFloat($(this).find("option:checked").attr("data-lat"));
         if (map === undefined) {
@@ -46,37 +46,8 @@ $(function () {
         }
     });
 
-    $("#cityId").change(function () {
-        var cityId = parseInt($(this).find("option:checked").val());
-        $.getJSON("../../data/area.json", function (data) {
-            renderArea(data, cityId, "queryCellAreaId",true);
-            $("#queryCellAreaId").trigger("change");
-        })
-    });
-
-
-    $("#provinceId").change(function () {
-        var provinceId = parseInt($(this).find("option:checked").val());
-        console.log(""+cityId);
-        $.getJSON("../../data/area.json", function (data) {
-            renderArea(data, provinceId, "cityId",false);
-            $("#cityId").trigger("change");
-        })
-    });
-
-
-    //初始化区域
-    $.ajax({
-        url: "../../data/area.json",
-        dataType: "json",
-        async: false,
-        success: function (data) {
-            renderArea(data, 0, "provinceId");
-            renderArea(data, 440000, "cityId");
-            //$("#provinceId").change();
-            $("#cityId").change();
-        }
-    });
+    //初始区域
+    initAreaSelectors({selectors: ["provinceId", "cityId", "areaId"], coord: true});
 
     $("#displaycell").click(function () {
         var cityId = parseInt($("#cityId").find("option:checked").val());
@@ -90,7 +61,7 @@ $(function () {
                     'VERSION' : '1.1.1',
                     tiled : true,
                     STYLES : '',
-                    LAYERS : 'rnoprod:RNO_LTE_CELL_GEOM',
+                    LAYERS : 'rnoprod:RNO_GSM_CELL_GEOM',
                     CQL_FILTER : "AREA_ID=" + cityId
                 }
             }),
@@ -99,28 +70,5 @@ $(function () {
         map.addLayer(tiled);
     });
 });
-
-// 渲染区域
-function renderArea(data, parentId, areaMenu, boolLonLat) {
-    var arr = data.filter(function (v) {
-        return v.parentId === parentId;
-    });
-    if (arr.length > 0) {
-        var areaHtml = [];
-        $.each(arr, function (index) {
-            var area = arr[index];
-            if (boolLonLat) {
-                areaHtml.push("<option value='"+area.id+"' data-lon='"+area.longitude+"' data-lat='"+area.latitude+"'>");
-            } else {
-                areaHtml.push("<option value='"+area.id+"'>");
-            }
-
-            areaHtml.push(area.name+"</option>");
-        });
-        $("#" + areaMenu).html(areaHtml.join(""));
-    } else {
-        console.log("父ID为" + parentId + "时未找到任何下级区域。");
-    }
-}
 
 

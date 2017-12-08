@@ -5,6 +5,11 @@ $(function () {
     $(".dialog").draggable();
     $("#trigger").css("display", "none");
 
+    //默认右侧栏关闭
+    $(".resource_list_box").css("display", "none");
+    $(".switch_hidden").show();
+    $(".resource_list_icon").css("right", "0");
+
     $(".switch").click(function () {
         $(this).hide();
         $(".switch_hidden").show();
@@ -26,7 +31,7 @@ $(function () {
     });
 
     //禁止右键菜单
-    $("#map").bind("contextmenu", function() {
+    $("#map").bind("contextmenu", function () {
         return false;
     });
 
@@ -77,6 +82,7 @@ $(function () {
         opacity: 0.8
     });
 
+    //主小区专用
     redStyle = new ol.style.Style({
         stroke: new ol.style.Stroke({
             // 设置线条颜色
@@ -112,8 +118,8 @@ $(function () {
     ];
 
     var contextmenu = new ContextMenu({
-        width : 120,
-        items : contextmenu_items
+        width: 120,
+        items: contextmenu_items
     });
 
     $("#districtId").change(function () {
@@ -132,8 +138,7 @@ $(function () {
 
             cellLayer = new ol.layer.Tile({
                 zIndex: 2,
-                source: new ol.source.TileWMS({
-                }),
+                source: new ol.source.TileWMS({}),
                 visible: false,
                 opacity: 0.5
             });
@@ -207,7 +212,7 @@ $(function () {
                                     url: "/api/gsm-cell-gis/cell-detail",
                                     dataType: "json",
                                     data: {
-                                        'cellId' : feature.get('CELL_ID')
+                                        'cellId': feature.get('CELL_ID')
                                     },
                                     async: false,
                                     success: function (data) {
@@ -240,10 +245,10 @@ $(function () {
             });
         } else {
             map.getView().animate({
-                    center: [ parseFloat(lon), parseFloat(lat) ],
-                    duration: 2000
-                });
-            }
+                center: [parseFloat(lon), parseFloat(lat)],
+                duration: 2000
+            });
+        }
     });
 
     //初始区域
@@ -289,8 +294,14 @@ $(function () {
         var view = map.getView();
         //contextmenu_items[contextmenu_items.length-1] = e.coordinate;
         var url = cellLayer.getSource().getGetFeatureInfoUrl(
-            e.coordinate, view.getResolution(), view.getProjection(),
-            {'INFO_FORMAT': 'text/javascript', 'FEATURE_COUNT': 50});
+            e.coordinate,
+            view.getResolution(),
+            view.getProjection(),
+            {
+                'INFO_FORMAT': 'text/javascript',
+                'FEATURE_COUNT': 50
+            }
+        );
         if (url) {
             var parser = new ol.format.GeoJSON();
             $.ajax({
@@ -298,7 +309,7 @@ $(function () {
                 dataType: 'jsonp',
                 jsonpCallback: 'parseResponse'
             }).then(function (response) {
-                var	features = parser.readFeatures(response);
+                var features = parser.readFeatures(response);
                 if (features.length > 0) {
                     console.log(features.length);
                     clickedCellLayer.getSource().clear();
@@ -313,13 +324,13 @@ $(function () {
                     contextmenu.disable();
                 }
             });
-        }else {
+        } else {
             contextmenu.disable();
         }
     });
 
     //打开右键菜单
-    contextmenu.on('open', function (e) {
+    contextmenu.on('open', function () {
         contextmenu.clear();
         contextmenu.extend(contextmenu_items);
     });
@@ -327,11 +338,9 @@ $(function () {
 
 //点击popup表格，添加选中行的背景色
 function addColor(t, isShowRightBox) {
-    if(isShowRightBox) {
+    if (isShowRightBox) {
         $(".switch_hidden").trigger("click");
-    }/*else {
-     $(".switch").trigger("click");
-     }*/
+    }
     $(t).siblings().removeClass('custom-bg');
     $(t).addClass('custom-bg');
 }
@@ -400,17 +409,17 @@ var showNcell = function getNcell(evt) {
                     var index = $(this).find('td:first').text();
                     var cellId = allFeatures[index].get('CELL_ID');
                     $.ajax({
-                        url: "/api/gsm-cell-gis/ncell-detail",
+                        url: "/api/gsm-cell-gis/cell-detail",
                         dataType: "json",
                         data: {
-                            'cellId' : cellId
+                            'cellId': cellId
                         },
                         async: false,
                         success: function (data) {
-                            if(data!='' && data != null) {
+                            if (data != '' && data != null) {
                                 console.log(data);
                                 paintNcell(cellId, data);
-                            }else {
+                            } else {
                                 $("#loading").css("display", "none");
                                 showInfoInAndOut('info', '没有找到邻区数据！');
                             }
@@ -423,11 +432,11 @@ var showNcell = function getNcell(evt) {
             }
         });
     }
-}
+};
 
 //提示信息淡入淡出
 function showInfoInAndOut(div, info) {
-    var divX =$("#" + div);
+    var divX = $("#" + div);
     divX.html(info);
     divX.fadeIn(2000);
     setTimeout("$('#" + div + "').fadeOut(2000)", 1000);
@@ -441,7 +450,7 @@ function paintNcell(cellId, cells) {
     });
     //console.log(ncellStr);
     var cityId = parseInt($("#cityId").find("option:checked").val());
-    var filter = encodeURIComponent("CELL_ID in (" + ncellStr.substring(0, ncellStr.length-1) + ")");
+    var filter = encodeURIComponent("CELL_ID in (" + ncellStr.substring(0, ncellStr.length - 1) + ")");
     //console.log(filter);
 
     var url = 'http://rno-gis.hgicreate.com/geoserver/rnoprod/ows?service=WFS&version=1.1.1' +
@@ -450,22 +459,22 @@ function paintNcell(cellId, cells) {
     //console.log(url);
     var parser = new ol.format.GeoJSON();
     $.ajax({
-        url : url,
-        dataType : 'jsonp',
-        jsonpCallback : 'parseResponse'
-    }).then(function(response) {
+        url: url,
+        dataType: 'jsonp',
+        jsonpCallback: 'parseResponse'
+    }).then(function (response) {
         var features = parser.readFeatures(response);
         var cellCoors = [];
         var ncellCoors = [];
         //console.log(features.length);
         if (features.length) {
-            for(var m = 0; m < features.length; m++) {
+            for (var m = 0; m < features.length; m++) {
                 var onefeature = features[m];
-                if(onefeature.get('CELL_ID')===cellId){
+                if (onefeature.get('CELL_ID') === cellId) {
                     cellCoors = [onefeature.get('LONGITUDE'), onefeature.get('LATITUDE')];
                     onefeature.setStyle(redStyle);
                     thisCellLayer.getSource().addFeature(onefeature);
-                }else{
+                } else {
                     ncellCoors.push([onefeature.get('LONGITUDE'), onefeature.get('LATITUDE')]);
                     onefeature.setStyle(orangeStyle);
                     nCellLayer.getSource().addFeature(onefeature);
@@ -478,7 +487,7 @@ function paintNcell(cellId, cells) {
 }
 
 //绘制主小区与邻区之间的连线
-function drawLine(cellCoors, ncellCoors){
+function drawLine(cellCoors, ncellCoors) {
     var line, feature;
     $.each(ncellCoors, function (index, value) {
         line = new ol.geom.LineString([cellCoors, value]);
