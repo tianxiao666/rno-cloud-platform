@@ -959,10 +959,6 @@ html, body {
     border-radius: 10px;
 }
 
-.custom {
-    width: 180px;
-}
-
 .custom tbody tr{
     border-top: none;
 }
@@ -998,4 +994,9 @@ html, body {
     cursor: pointer;
     word-break:break-all;
     font-size: 12px;
+}
+
+.popover-content {
+    max-height: 350px;
+    overflow-x: auto;
 }
