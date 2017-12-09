@@ -676,7 +676,7 @@ body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, input, button, textar
     color: #fff;
     padding-left: 60px;
     font-size: 15px;
-    background: #000 url("../images/loader.gif") no-repeat 10px 50%;
+    background: #000 url("../images/loading_img.gif") no-repeat 10px 50%;
     opacity: 0.7;
     z-index: 9999;
     -moz-border-radius: 20px;

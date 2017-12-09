@@ -74,6 +74,9 @@ $(function () {
     //加载BSC
     getAllBsc();
 
+    $("#settingsDiv").draggable();
+    $("#selectBscDiv").draggable();
+
     //查询点击事件
     $("#checkBtn").click(function(){
         //显示需要检查的tab
