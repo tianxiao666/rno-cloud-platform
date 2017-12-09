@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta  charset="UTF-8">
+    <meta charset="UTF-8">
     <title>爱立信小区参数一致性检查</title>
 
     <link rel="stylesheet" href="css/gsm-param-check.css">
@@ -11,7 +11,6 @@
     <script src="../../lib/rno/selftools.js"></script>
     <script src="../../lib/rno/libfileupload.js"></script>
     <script src="../../lib/jquery-plugins/jquery.treeview-1.5pre.js"></script>
-    <script src="js/gsm-param-check-origin.js"></script>
     <script src="../../lib/tab.js"></script>
     <script src="../../lib/datatables/1.10.16/datatables.min.js"></script>
     <script src="../../lib/laydate/5.0.7/laydate.js"></script>
@@ -20,58 +19,72 @@
 </head>
 <body>
 <div id="info" class="info-style" style="display: none"></div>
-<div class="div_left_main" width="auto">
-    <table id="contentTab" heigth="100%" class="main-table1 half-width" width="100%">
-        <tbody>
-        <tr>
-            <td style="vertical-align:top;">
-                <div style="border: 1px solid #CDCDCD; background: white; overflow-x: scroll;
+<div id="loading" class="loading" style="display: none">查询中...请稍后</div>
+<div class="div_left_main">
+    <form id="checkParamForm" method="post" action="/api/gsm-param-check/export-param-check-data">
+        <table id="contentTab" heigth="100%" class="main-table1 half-width" width="100%">
+            <tbody>
+            <tr>
+                <td style="vertical-align:top;width: 20%" >
+                    <div style="border: 1px solid #CDCDCD; background: white; overflow-x: scroll;
 								width:240px; overflow-y: scroll; height: 700px;">
-                    <ul id="paramCheckMenu" class="treeview">
-                    </ul>
-                </div>
-            </td>
-            <td style="vertical-align:top;">
-                <div style="width: 100%">
-                    BSC: <input id="bscStr" style="width:200px;" disabled="true" type="text">
-                    &nbsp;
-                    <span style="color:red;width:100px;font-family:华文中宋;text-align:center" id="bscDiv"></span>
-                    <a onclick="$('#selectBscDiv').show()">点击选择BSC</a>&nbsp;&nbsp;&nbsp;&nbsp;
-                    日期:
-                    <input
-                            value="" id="uploadDate"
-                            name="uploadTime"
-                            type="text">
-                    &nbsp;&nbsp;
-                    <input id="checkBtn" value="查询" type="button">&nbsp;&nbsp;
-                    <input id="exportBtn" value="导出" type="button">&nbsp;&nbsp;
-                    <input id="settingsBtn" value="设置" type="button">
-                    <form id="downloadEriCellAnalysisDataFileForm" action="downloadEriCellAnalysisDataFileAction"
-                          method="post">
-                        <input id="token" name="token" value="" type="hidden">
-                    </form>
-                </div>
-                <div style="margin-top: 10px;"></div>
-                <div style="width: 100%">
-                    <div style="position: relative; z-index: 4;float:left;height: 0px;">
-                        <button id="left" class="btnLeft">&lt;&lt;</button>
-                        <button id="right" class="btnRight">&gt;&gt;</button>
+                        <ul id="paramCheckMenu" class="treeview">
+                        </ul>
                     </div>
-                    <div id="frame" style="overflow: hidden; margin-left: 72px;">
-                        <div id="div_tab" class="div_tab divtab_menu" style="width: 2000px; position: relative;">
-                            <ul id="paramCheckTab">
-                            </ul>
+                </td>
+                <td style="vertical-align:top;width: 80%">
+                    <div style="width: 100%">
+                        BSC: <input id="bscStr" style="width:200px;" disabled="true" type="text">
+                        &nbsp;
+                        <span style="color:red;width:100px;font-family:华文中宋;text-align:center" id="bscDiv"></span>
+                        <a onclick="$('#selectBscDiv').show()">点击选择BSC</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                        日期:
+                        <input
+                                value="" id="uploadDate"
+                                name="uploadTime"
+                                type="text">
+                        &nbsp;&nbsp;
+                        <input id="checkBtn" value="查询" type="button">&nbsp;&nbsp;
+                        <input id="exportBtn" value="导出" type="submit">&nbsp;&nbsp;
+                        <input id="settingsBtn" value="设置" type="button">
+                        <input type="hidden" id="bsc" name="bscStr" value="">
+                        <input type="hidden" id="date1" name="date1" value="">
+                        <input type="hidden" id="checkType" name="checkType" value="">
+                        <input type="hidden" id="cityId" name="cityId" value="">
+                        <input type="hidden" id="items" name="items" value="">
+                        <input type="hidden" id="checkMaxChgr" name="checkMaxChgr" value="">
+                        <input type="hidden" id="checkBaNum" name="checkBaNum" value="">
+                        <input type="hidden" id="maxNums" name="maxNum" value="">
+                        <input type="hidden" id="minNums" name="minNum" value="">
+                        <input type="hidden" id="checkCoBsic" name="checkCoBsic" value="">
+                        <input type="hidden" id="distances" name="distance" value="">
+                        <input type="hidden" id="checkNcellNum" name="checkNcellNum" value="">
+                        <input type="hidden" id="ncellMaxNum" name="ncellMaxNum" value="">
+                        <input type="hidden" id="ncellMinNum" name="ncellMinNum" value="">
+                    </div>
+                    <div style="margin-top: 10px;"></div>
+                    <div style="width: 99%">
+                        <div style="position: relative; z-index: 4;float:left;height: 0px;">
+                            <button id="left" class="btnLeft">&lt;&lt;</button>
+                            <button id="right" class="btnRight">&gt;&gt;</button>
+                        </div>
+                        <div id="frame" style="overflow: hidden; margin-left: 80px;">
+                            <div id="div_tab" class="div_tab divtab_menu" style="width: 2500px; position: relative;">
+                                <ul id="paramCheckTab">
+                                </ul>
+                            </div>
+                        </div>
+                        <div id="paramCheckContent" class="divtab_content" style="overflow: scroll;white-space: nowrap;width: 1490px">
                         </div>
                     </div>
-                    <div id="paramCheckContent" class="divtab_content">
-                    </div>
-                </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
 
-    <div id="settingsDiv" class="dialog2 draggable ui-draggable" style="width: 400px ;display:none; left:25%; top: 40%;width: 380px;">
+    <div id="settingsDiv" class="dialog2 draggable ui-draggable"
+         style="width: 400px ;display:none; left:25%; top: 40%;width: 380px;">
         <div class="dialog_header">
             <div class="dialog_title">查询设置</div>
             <div class="dialog_tool">
@@ -106,7 +119,6 @@
             </table>
         </div>
     </div>
-
 
     <div id="selectBscDiv" class="dialog2 draggable ui-draggable"
          style="display:none; left:25%; top: 40%;width: 690px;">

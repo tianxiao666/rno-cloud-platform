@@ -77,12 +77,17 @@ $(function () {
     //查询点击事件
     $("#checkBtn").click(function(){
         //显示需要检查的tab
-        showTabs();
+        checkData('show');
     });
 
     //查询设置按钮点击事件
     $("#settingsBtn").click(function(){
         $("#settingsDiv").show();
+    });
+
+    //数据导出点击事件
+    $("#exportBtn").click(function(){
+        checkData('export');
     });
 
     //控制tab移动
@@ -140,7 +145,7 @@ function getAllBsc() {
         type : 'get',
         dataType : 'text',
         success : function(raw) {
-            if (raw == '') {
+            if (raw === '') {
                 $("#defaultBsc").html("");
             }else {
                 var data = eval("("+raw+")");
@@ -157,7 +162,7 @@ function getAllBsc() {
 function sumBsc() {
     var bscStr = "";
     for(var i=0;i<document.getElementById("selectedBsc").options.length;i++){
-        bscStr += document.getElementById("selectedBsc").options[i].value + ",";
+        bscStr += document.getElementById("selectedBsc").options[i].text + ",";
     }
     bscStr = bscStr.substring(0,bscStr.length - 1);
     //console.log(bscStr);
@@ -195,7 +200,6 @@ function PutLeftOneClk() {
 }
 function PutLeftAllClk() {
     if(document.getElementById("selectedBsc").options.length == 0){return false;}
-    document.getElementById("defaultBsc").options.length = 0;
     for(var i=0;i<document.getElementById("selectedBsc").options.length;i++){
         var varitem = new Option(document.getElementById("selectedBsc").options[i].text,document.getElementById("selectedBsc").options[i].value);
         document.getElementById("defaultBsc").options.add(varitem);
@@ -203,9 +207,8 @@ function PutLeftAllClk() {
     document.getElementById("selectedBsc").options.length = 0;
 }
 
-function showTabs() {
-    $("#paramCheckTab").html("");
-    $("#paramCheckContent").html("");
+function checkData(flag) {
+
     //获取所选择的菜单项
     var items = [];
     var one;
@@ -217,38 +220,54 @@ function showTabs() {
         items.push(one);
     });
     //console.log(items);
-    if(items.length == 0) {
+    if(items.length === 0) {
         alert("请选择要查询的项目！");
         return;
     }
-    //组建tab的html脚本
-    var tabTitle = "<li id='"+items[0]['code']+"' class='selected'>"+items[0]['name']+"</li>";
-    var tabContent = "<div id='div_tab_0' style='display:block; overflow:auto;height:600px;'>"
-        +"<table id='"+items[0]['code']+"Table' style='width: 100%'></table></div>";
-    for(var i=1; i<items.length; i++) {
-        tabTitle += "<li id='"+items[i]['code']+"' >"+items[i]['name']+"</li>";
-        tabContent += "<div id='div_tab_"+i+"' style='display:none; overflow:auto;height:600px;'>"
-            +"<table id='"+items[i]['code']+"Table' style='width: 100%'></table></div>";
-    }
-    $("#paramCheckTab").html(tabTitle);
-    $("#paramCheckContent").html(tabContent);
-    //加入点击切换tab事件
-    tab("div_tab", "li", "onclick");
-    //为所有li项加入加载数据事件
-    $("#paramCheckTab li").click(function() {
-        loadResultForTab($(this).attr("id"));
-    });
 
-    //为第一个tab的table加载数据
-    loadResultForTab(items[0]['code']);
+    if(flag==='show') {
+        $("#paramCheckTab").html("");
+        $("#paramCheckContent").html("");
+        //组建tab的html脚本
+        var tabTitle = "<li id='"+items[0]['code']+"' class='selected'>"+items[0]['name']+"</li>";
+        var tabContent = "<div id='div_tab_0' style='display:block; overflow:auto;height:600px;'>"
+            +"<table id='"+items[0]['code']+"Table' style='width:99%;'></table></div>";
+        for(var i=1; i<items.length; i++) {
+            tabTitle += "<li id='"+items[i]['code']+"' >"+items[i]['name']+"</li>";
+            tabContent += "<div id='div_tab_"+i+"' style='display:none; overflow:auto;height:600px;'>"
+                +"<table id='"+items[i]['code']+"Table' style='width:99%;'></table></div>";
+        }
+        $("#paramCheckTab").html(tabTitle);
+        $("#paramCheckContent").html(tabContent);
+        //加入点击切换tab事件
+        tab("div_tab", "li", "onclick");
+        //为所有li项加入加载数据事件
+        $("#paramCheckTab li").click(function() {
+            loadResultForTab($(this).attr("id"),'show');
+        });
+        //为第一个tab的table加载数据
+        loadResultForTab(items[0]['code'],'show');
+    }else {
+        loadResultForTab('exportData','export');
+    }
+
 }
 
-function loadResultForTab(checkType) {
-    if($("#"+checkType+"Table:has(tr)").length > 0)  {
-        return;
+function loadResultForTab(checkType,flag) {
+    if(flag==='show') {
+        if($("#"+checkType+"Table:has(tr)").length > 0)  {
+            return;
+        }
     }
     //获取bsc
-    var bscStr = $("#bscStr").val();
+    var bsc = "";
+    for(var i=0;i<document.getElementById("selectedBsc").options.length;i++){
+        bsc += document.getElementById("selectedBsc").options[i].value;
+        if(i< document.getElementById("selectedBsc").options.length-1){
+            bsc += ',';
+        }
+    }
+    var bscStr = eval("'"+bsc+"'");
     if(bscStr == "") {
         alert("请选择BSC！");
         $("#paramCheckTab").html("");
@@ -318,44 +337,81 @@ function loadResultForTab(checkType) {
             return;
         }
     }
-    $.ajax({
-        url : '/api/gsm-param-check/check-param',
-        data : {
-            'bscStr' : bscStr,
-            'date1' : date1,
-            'checkType' : checkType,
-            'cityId' : cityId,
-            'checkMaxChgr' : isCheckMaxChgr,
-            'checkBaNum' : isCheckBaNum,
-            'maxNum' : maxNum,
-            'minNum' : minNum,
-            'checkCoBsic' : isCheckCoBsic,
-            'distance' : distance,
-            'checkNcellNum' : isCheckNcellNum,
-            'ncellMaxNum' : ncell_maxNum,
-            'ncellMinNum' : ncell_minNum
-        },
-        type : 'get',
-        dataType : 'text',
-        success : function(raw) {
-            var data = eval("("+raw+")");
-            if(data.length>0) {
+    if(flag==='show'){
+        $(".loading").show();
+        $.ajax({
+            url : '/api/gsm-param-check/check-param',
+            data : {
+                'bscStr' : bscStr,
+                'date1' : date1,
+                'checkType' : checkType,
+                'cityId' : cityId,
+                'items' : 'showData',
+                'checkMaxChgr' : isCheckMaxChgr,
+                'checkBaNum' : isCheckBaNum,
+                'maxNum' : maxNum,
+                'minNum' : minNum,
+                'checkCoBsic' : isCheckCoBsic,
+                'distance' : distance,
+                'checkNcellNum' : isCheckNcellNum,
+                'ncellMaxNum' : ncell_maxNum,
+                'ncellMinNum' : ncell_minNum
+            },
+            type : 'get',
+            dataType : 'text',
+            success : function(raw) {
+                $(".loading").css("display", "none");
                 var data = eval("("+raw+")");
-                var thHtml = "";
-                //标题
-                thHtml = buildTh(checkType);
-                $("#"+checkType+"Table").append(thHtml);
-                //缓存数据
-                saveCache(checkType,data);
-                //tr，初始加载200条信息
-                appendTr(checkType,0,200);
-            } else {
+                if(data.length>0) {
+                    var data = eval("("+raw+")");
+                    var thHtml = "";
+                    //标题
+                    thHtml = buildTh(checkType);
+                    $("#"+checkType+"Table").append(thHtml);
+                    //缓存数据
+                    saveCache(checkType,data);
+                    //tr，初始加载200条信息
+                    appendTr(checkType,0,200);
+                } else {
+                    $("#info").css("background", "red");
+                    showInfoInAndOut('info', '没有符合条件的数据');
+                    $("#"+checkType+"Table").html("");
+                }
+            }, error: function (err) {
+                $(".loading").css("display", "none");
                 $("#info").css("background", "red");
-                showInfoInAndOut('info', '没有符合条件的数据');
-                $("#"+checkType+"Table").html("");
+                showInfoInAndOut("info", "后台程序错误！");
             }
-        },
-    });
+        });
+    }else {
+        $("#info").css("background", "yellow");
+        showInfoInAndOut("info", "正在导出文件，请耐心等待.....");
+        //获取所选择的菜单项
+        var item = "";
+        $('input:checkbox[name="twoChk"]:checked').each(function(){
+            item += $(this).val() + ",";
+        });
+        item = item.substr(0, item.length - 1);
+        var items = eval("'"+item+"'");
+        //给form赋值
+        $("#bsc").val(bscStr);
+        $("#date1").val(date1);
+        $("#checkType").val(checkType);
+        $("#cityId").val(cityId);
+        $("#items").val(items);
+        $("#checkMaxChgr").val(isCheckMaxChgr);
+        $("#checkBaNum").val(isCheckBaNum);
+        $("#maxNums").val(maxNum);
+        $("#minNums").val(minNum);
+        $("#checkCoBsic").val(isCheckCoBsic);
+        $("#distances").val(distance);
+        $("#checkNcellNum").val(isCheckNcellNum);
+        $("#ncellMaxNum").val(ncell_maxNum);
+        $("#ncellMinNum").val(ncell_minNum);
+        //提交导出信息
+        $("#checkParamForm").submit;
+    }
+
 }
 
 //提示信息
@@ -378,7 +434,7 @@ function buildTh(checkType) {
     }
     //NCCPERM检查
     else if(checkType == 'nccperm') {
-        th += "<tr><th></th><th>BSC</th><th>CELL</th><th>NCCPERM</th><th>缺失的NCC</th></tr>";
+        th += "<tr><th></th><th>BSC</th><th>CELL</th><th>NCCPERM</th><th>缺失的NCC</th><th>指令</th></tr>";
     }
     //测量频点多定义
     else if(checkType == 'meaFreqMultidefined') {
@@ -454,7 +510,7 @@ function saveCache(checkType,data) {
     //同频同bsic检查
     else if(checkType == 'sameFreqBsicCheck') {
         //clear
-        sameFreqBsicCheckResult.splice(0,sameFreqBsicCheckResult.length);
+        /*sameFreqBsicCheckResult.splice(0,sameFreqBsicCheckResult.length);
         var bcch;
         var bsic;
         var combinedCells;
@@ -503,8 +559,8 @@ function saveCache(checkType,data) {
                 'DISTANCE' : meaDis,'MML' : mml
             };
             sameFreqBsicCheckResult.push(one);
-        }
-        //sameFreqBsicCheckResult = data;
+        }*/
+        sameFreqBsicCheckResult = data;
     }
     //TALIM_MAXTA检查
     else if(checkType == 'talimMaxTa') {
@@ -538,7 +594,7 @@ function appendTr(checkType,start,end) {
     if(checkType == "powerCheck") {
         if(end >= powerCheckResult.length) {
             for(var i=start; i<powerCheckResult.length; i++) {
-                tr += "<tr><td>"+(i+1)+"</td><td>"+getValidValue(powerCheckResult[i]['BSC'],'')+"</td><td>"
+                tr += "<tr><td>"+(i+1)+"</td><td>"+getValidValue(powerCheckResult[i]['ENGNAME'],'')+"</td><td>"
                     +getValidValue(powerCheckResult[i]['CELL'],'')+"</td><td>"
                     +getValidValue(powerCheckResult[i]['BSPWRB'],'')+"</td><td>"
                     +getValidValue(powerCheckResult[i]['BSPWRT'],'')+"</td><td>"
@@ -546,7 +602,7 @@ function appendTr(checkType,start,end) {
             }
         } else {
             for(var i=start; i<end; i++) {
-                tr += "<tr><td>"+(i+1)+"</td><td>"+getValidValue(powerCheckResult[i]['BSC'],'')+"</td><td>"
+                tr += "<tr><td>"+(i+1)+"</td><td>"+getValidValue(powerCheckResult[i]['ENGNAME'],'')+"</td><td>"
                     +getValidValue(powerCheckResult[i]['CELL'],'')+"</td><td>"
                     +getValidValue(powerCheckResult[i]['BSPWRB'],'')+"</td><td>"
                     +getValidValue(powerCheckResult[i]['BSPWRT'],'')+"</td><td>"
@@ -595,14 +651,16 @@ function appendTr(checkType,start,end) {
                 tr += "<tr><td>"+(i+1)+"</td><td>"+getValidValue(nccpermResult[i]['BSC'],'')+"</td><td>"
                     +getValidValue(nccpermResult[i]['CELL'],'')+"</td><td>"
                     +getValidValue(nccpermResult[i]['NCCPERM'],'')+"</td><td>"
-                    +getValidValue(nccpermResult[i]['NCELL_NCC'],'')+"</td></tr>"
+                    +getValidValue(nccpermResult[i]['LEAK_NCC'],'')+"</td><td>"
+                    +getValidValue(nccpermResult[i]['COMMAND'],'')+"</td></tr>";
             }
         } else {
             for(var i=start; i<end; i++) {
                 tr += "<tr><td>"+(i+1)+"</td><td>"+getValidValue(nccpermResult[i]['BSC'],'')+"</td><td>"
                     +getValidValue(nccpermResult[i]['CELL'],'')+"</td><td>"
                     +getValidValue(nccpermResult[i]['NCCPERM'],'')+"</td><td>"
-                    +getValidValue(nccpermResult[i]['NCELL_NCC'],'')+"</td></tr>"
+                    +getValidValue(nccpermResult[i]['LEAK_NCC'],'')+"</td><td>"
+                    +getValidValue(nccpermResult[i]['COMMAND'],'')+"</td></tr>";
             }
             tr += "<tr id='"+checkType+"LoadMore'>" +
                 "<td colspan='3' style='text-align: center;cursor:pointer;background: #bdd3ef;border:2px solid #eee ' " +

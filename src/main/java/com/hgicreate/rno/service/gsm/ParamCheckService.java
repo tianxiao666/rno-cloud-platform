@@ -7,5 +7,4 @@ import java.util.Map;
 
 public interface ParamCheckService {
     List<Map<String, Object>> queryParamData(ParamCheckVM vm);
-
 }

@@ -29,4 +29,6 @@ public interface ParamCheckMapper {
     List<Map<String, Object>> getEriCellNcellMomitCheckResult(ParamCheckVM vm);
     //单向邻区检查
     List<Map<String, Object>> getEriCellUnidirNcellResult(ParamCheckVM vm);
+    //同邻频检查
+    List<Map<String, Object>> getEriCellSameNcellFreqData(ParamCheckVM vm);
 }

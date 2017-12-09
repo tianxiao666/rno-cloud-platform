@@ -7,6 +7,7 @@ public class ParamCheckVM {
     private String bscStr;
     private String date1;
     private String checkType;
+    private String items;
     private Integer cityId;
     private Boolean checkMaxChgr;
     private Boolean checkBaNum;
