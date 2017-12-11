@@ -5,7 +5,8 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class GsmMrrImportQueryVM {
+public class GsmImportQueryVM {
+    private String moduleName;
     private String status;
     private Long areaId;
     private Date beginDate;

@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="">
 <head>
     <meta charset="UTF-8">
-    <title>FAS数据管理</title>
+    <title>MRR数据管理</title>
 
     <link rel="stylesheet" href="css/gsm-fas-data.css">
     <link rel="stylesheet" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
     <link rel="stylesheet" href="../../lib/datatables/1.10.16/datatables.min.css">
 
-    <script src="../../lib/jquery/1.8.2/jquery.js"></script>
+    <script src="../../lib/jquery/3.2.1/jquery.js"></script>
     <script src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
     <script src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
     <script src="../../lib/jquery-plugins/jquery.metadata.js"></script>
@@ -16,14 +16,14 @@
     <script src="../../lib/validate.js"></script>
     <script src="../../lib/tab.js"></script>
     <script src="../../lib/laydate/5.0.7/laydate.js"></script>
-    <script src="../../lib/jquery-plugins/jquery-ui-timepicker-addon.js"></script>
     <script src="../../lib/rno/libfileupload.js"></script>
-    <script src="js/gsm-fas-data-origin.js"></script>
+    <script src="../../lib/jquery-plugins/jquery-ui-timepicker-addon.js"></script>
     <script src="../../lib/datatables/1.10.16/datatables.min.js"></script>
+    <script src="../../js/common.js"></script>
     <script src="js/gsm-fas-data.js"></script>
 </head>
 <body>
-<span class="navTitle"><h2>当前位置：数据配置管理 &gt; GSM测量数据管理 &gt; FAS数据管理</h2></span>
+<span class="navTitle"><h2>当前位置：数据配置管理 &gt; GSM测量数据管理 &gt; FAS数据管理 </h2></span>
 <div class="loading_cover" style="display: none">
     <div class="cover"></div>
     <h4 class="loading">
@@ -34,65 +34,48 @@
 
 <div id="tabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
     <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
-        <li class="ui-state-default ui-corner-top ui-tabs-active ui-state-active" role="tab" tabindex="0"
-            aria-controls="tabs-1" aria-labelledby="ui-id-1" aria-selected="true" aria-expanded="true"><a href="#tabs-1"
-                                                                                                          class="ui-tabs-anchor"
-                                                                                                          role="presentation"
-                                                                                                          tabindex="-1"
-                                                                                                          id="ui-id-1">爱立信FAS数据导入</a>
+        <li class="ui-state-default ui-corner-top ui-tabs-active ui-state-active">
+            <a href="#tabs-1" class="ui-tabs-anchor" tabindex="-1" id="ui-id-1">FAS数据导入</a>
         </li>
-        <li class="ui-state-default ui-corner-top" role="tab" tabindex="-1" aria-controls="tabs-2"
-            aria-labelledby="ui-id-2" aria-selected="false" aria-expanded="false"><a href="#tabs-2"
-                                                                                     class="ui-tabs-anchor"
-                                                                                     role="presentation" tabindex="-1"
-                                                                                     id="ui-id-2">爱立信FAS数据查询 </a></li>
+        <li class="ui-state-default ui-corner-top">
+            <a href="#tabs-2" class="ui-tabs-anchor" tabindex="-1" id="ui-id-2">FAS数据查询 </a>
+        </li>
     </ul>
-    <div id="tabs-1" aria-labelledby="ui-id-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel"
-         aria-hidden="false" style="display: block;">
-        <div id="listinfoDiv">
+    <div id="tabs-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom">
+        <div id="listInfoDiv">
             <form id="searchImportForm">
-                <select id="fas-province-menu">
+                <label for="province-menu"></label>
+                <select id="province-menu">
                 </select>
-                <select id="fas-city-menu" name="attachParams['cityId']">
+                <label for="city-menu"></label>
+                <select id="city-menu" name="attachParams['cityId']">
                 </select>
                 <div style="margin: 9px"></div>
-                <div id="searchImportDiv"
-                     style="height: 46px; background: rgb(255, 255, 255) url(&quot;images/ui-bg_glass_65_ffffff_1x400.png&quot;) repeat-x scroll 50% 50%; border: 1px solid rgb(251, 216, 80);">
+                <div id="searchImportDiv">
                     <div style="margin: 9px"></div>
-                    <input name="fileCode" id="fileCode" value="ERICSSONFASFILE" type="hidden"> <input
-                        id="hiddenPageSize" name="page.pageSize" value="25" type="hidden"> <input id="hiddenCurrentPage"
-                                                                                                  name="page.currentPage"
-                                                                                                  value="1"
-                                                                                                  type="hidden"> <input
-                        id="hiddenTotalPageCnt" value="0" type="hidden"> <input id="hiddenTotalCnt" value="0"
-                                                                                name="page.totalCnt" type="hidden">
                     <table>
                         <tbody>
                         <tr>
-
-                            <td style="padding-left:30px"><label>上传时间 从:</label>
-                                <input
-                                        value="" id="begUploadDate"
-                                        name="attachParams['begUploadDate']" class="hasDatepicker"
-                                        type="text"> 至：<input value="" id="endUploadDate"
-                                                              name="attachParams['endUploadDate']"
-                                                              class="hasDatepicker" type="text"></td>
+                            <td style="padding-left:30px">
+                                <label>上传时间 从:</label>
+                                <label for="begUploadDate"></label>
+                                <input id="begUploadDate" name="attachParams['begUploadDate']" class="hasDatepicker" type="text">至：
+                                <label for="endUploadDate"></label>
+                                <input id="endUploadDate" name="attachParams['endUploadDate']" class="hasDatepicker" type="text">
+                            </td>
                             <td style="padding-left:30px"><label>状态:</label></td>
-                            <td><select id="importstatusmenu-b" name="attachParams['fileStatus']">
-                                <option value="全部" selected="selected">全部</option>
-                                <option value="全部成功">全部成功</option>
-                                <option value="部分失败">部分失败</option>
-                                <option value="全部失败">全部失败</option>
-                                <option value="正在解析">正在解析</option>
-                                <option value="等待解析">等待解析</option>
-                            </select><span style="display:none"
-                                           class="ui-selectmenu-button ui-widget ui-state-default ui-corner-all"
-                                           tabindex="0" id="importstatusmenu-button" role="combobox"
-                                           aria-expanded="false" aria-autocomplete="list"
-                                           aria-owns="importstatusmenu-menu" aria-haspopup="true"
-                                           style="width: 98px;"><span class="ui-icon ui-icon-triangle-1-s"></span><span
-                                    class="ui-selectmenu-text">全部</span></span></td>
-                            <td style="padding-left:30px"><input id="queryBtn" value="查询导入记录" type="button"></td>
+                            <td>
+                                <label for="importStatus"></label>
+                                <select id="importStatus" name="attachParams['fileStatus']">
+                                    <option value="全部" selected="selected">全部</option>
+                                    <option value="全部成功">全部成功</option>
+                                    <option value="部分失败">部分失败</option>
+                                    <option value="全部失败">全部失败</option>
+                                    <option value="正在解析">正在解析</option>
+                                    <option value="等待解析">等待解析</option>
+                                </select>
+                            </td>
+                                <td style="padding-left:30px"><input id="queryBtn" value="查询导入记录" type="button"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -100,44 +83,31 @@
             </form>
 
             <div style="margin: 9px"></div>
-
             <div id="importTitleDiv" class="importTitle">
                 <div style="margin: 9px"></div>
                 导入
             </div>
-            <div id="importDiv" class="importContent" style="height: 250px;">
-                <form id="formImportFas" enctype="multipart/form-data" method="post">
-                    <input name="fileCode" id="fileCode" value="ERICSSONFASFILE" type="hidden"> <input name="token"
-                                                                                                       id="token"
-                                                                                                       value=""
-                                                                                                       type="hidden">
-                    <input id="uploadCityId" name="cityId" value="88" type="hidden">
+            <div id="importDiv" class="importContent" style="height: 290px;">
+                <form id="formImportMrr" enctype="multipart/form-data" method="post">
+                    <input id="cityId" name="cityId" type="hidden">
+                    <input type="hidden" name="moduleName" value="GSM-FAS-DATA">
                     <div>
                         <table class="main-table1 half-width" style="margin-left:0;width:50%">
                             <tbody>
-
-                            <tr>
-                                <td class="menuTd">测试日期<span class="txt-impt">*</span>
-                                </td>
-                                <td>
-                                    <input
-                                            value="" id="fileDate"
-                                            name="attachParams['fileDate']" class="hasDatepicker"
-                                            type="text">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="menuTd">FAS测量文件<span class="txt-impt">*</span>
-                                </td>
-                                <td style="width: 50%; font-weight: bold" colspan="0"><input style="width: 44%;"
-                                                                                             name="file" id="fileid"
-                                                                                             class="canclear required"
-                                                                                             type="file">
-                                    <span style="color:red;width:100px;font-family:华文中宋;text-align:center"
-                                          id="fileDiv"></span>
-                                </td>
-                            </tr>
-
+                                <tr>
+                                    <td class="menuTd">测试日期<span class="txt-impt">*</span></td>
+                                    <td>
+                                        <label for="fileDate"></label>
+                                        <input id="fileDate" name="fileDate" class="hasDatepicker" type="text">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="menuTd">MRR测量文件<span class="txt-impt">*</span></td>
+                                    <td style="width: 50%; font-weight: bold" colspan="0">
+                                        <input style="width: 44%;" name="file" id="fileid" class="canclear required" type="file">
+                                        <span style="color:red;width:100px;font-family:华文中宋,serif;text-align:center" id="fileDiv"></span>
+                                    </td>
+                                </tr>
                             </tbody>
 
                         </table>
@@ -146,21 +116,17 @@
                         <table style="width: 60%; margin: auto" align="center">
                             <tbody>
                             <tr>
-                                <td><input value="导    入" style="width: 90px;" id="importBtn" name="import"
-                                           type="button"> <br>
+                                <td><input value="导    入" style="width: 90px;" id="importMrrBtn" name="import"
+                                           type="submit"> <br>
                                     <div id="uploadMsgDiv" style="display:none"></div>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
                         <div id="importResultDiv" class="container-bottom" style="padding-top: 10px">
-                            <div id="progressInfoDiv" style="width:50%;display:none">
-                                <h2 id="progressNum">0%</h2>
-                                <div id="progressbar" class="ui-progressbar ui-widget ui-widget-content ui-corner-all"
-                                     role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                                    <div class="ui-progressbar-value ui-widget-header ui-corner-left"
-                                         style="display: none; width: 0%;"></div>
-                                </div>
+                            <div class="upload-progress">
+                                <div class="bar"></div>
+                                <div class="percent">0%</div>
                             </div>
                         </div>
                     </div>
@@ -168,8 +134,7 @@
             </div>
 
             <div id="importListDiv" class="sectionDivCls">
-                <bold>FAS上传记录列表</bold>
-
+                <bold>MRR上传记录列表</bold>
                 <table id="queryResultTab" class="display rnoHeader" cellspacing="0" width="100%">
                     <thead>
                     <tr>
@@ -188,22 +153,12 @@
         </div>
 
         <div id="reportDiv" style="display:none">
-            <form id="viewReportForm">
-                <input name="attachParams['jobId']" id="hiddenJobId" value="" type="hidden"> <input id="hiddenPageSize"
-                                                                                                    name="page.pageSize"
-                                                                                                    value="25"
-                                                                                                    type="hidden">
-                <input id="hiddenCurrentPage" name="page.currentPage" value="1" type="hidden"> <input
-                    id="hiddenTotalPageCnt" type="hidden"> <input id="hiddenTotalCnt" value="-1" name="page.totalCnt"
-                                                                  type="hidden">
-            </form>
-            <ul id="icons" class="ui-widget ui-helper-clearfix" style="width:100px;cursor:pointer">
+            <ul id="" class="ui-widget ui-helper-clearfix" style="width:100px;cursor:pointer">
                 <li class="ui-state-default ui-corner-all" title="返回列表" style="width:100px"
-                    onclick="javascript:returnToImportList();"><span class="ui-icon ui-icon-arrowreturnthick-1-w"
-                                                                     style="width:20px"></span>返回列表
+                    onclick="returnToImportList();"> &lt;&lt; 返回列表
                 </li>
             </ul>
-            <table id="reportListTab" class="greystyle-standard" style="width:auto;margin-left:0">
+            <table id="reportListTab" class="display rnoHeader" cellspacing="0" style="width:100%">
                 <thead>
                 <tr>
                     <th>阶段</th>
@@ -214,23 +169,9 @@
                 </tr>
                 </thead>
             </table>
-            <div class="paging_div" id="reportListPageDiv" style="border: 1px solid #ddd">
-					<span class="mr10">共 <em id="emTotalCnt" class="blue">0</em>
-						条记录
-					</span> <a class="paging_link page-first" title="首页"
-                               onclick="showListViewByPage('first',queryReportData,'viewReportForm','reportListPageDiv')"></a>
-                <a class="paging_link page-prev" title="上一页"
-                   onclick="showListViewByPage('back',queryReportData,'viewReportForm','reportListPageDiv')"></a>
-                第 <input id="showCurrentPage" class="paging_input_text" value="0" type="text"> 页/<em
-                    id="emTotalPageCnt">0</em>页 <a class="paging_link page-go" title="GO"
-                                                   onclick="showListViewByPage('num',queryReportData,'viewReportForm','reportListPageDiv')">GO</a>
-                <a class="paging_link page-next" title="下一页"
-                   onclick="showListViewByPage('next',queryReportData,'viewReportForm','reportListPageDiv')"></a>
-                <a class="paging_link page-last" title="末页"
-                   onclick="showListViewByPage('last',queryReportData,'viewReportForm','reportListPageDiv')"></a>
-            </div>
         </div>
     </div>
+
     <div id="tabs-2" aria-labelledby="ui-id-2" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel"
          style="display: none;" aria-hidden="true">
         <form id="searchFasForm">
@@ -243,22 +184,21 @@
             <table>
                 <tbody>
                 <tr>
-                    <td><select id="fas-province-id">
-
-                    </select>
-                        <select id="fas-city-id" name="attachParams['cityId']">
-                        </select></td>
+                    <td>
+                        <select id="province-id" title=""></select>
+                        <select id="city-id" name="attachParams['cityId']" title=""></select>
+                    </td>
                     <td style="padding-left:10px">BSC：</td>
-                    <td><input id="bsc" name="attachParams['bsc']" type="text">
-                        <span style="color:red;width:100px;font-family:华文中宋;text-align:center" id="bscDiv"></span>
+                    <td><input id="bsc" name="attachParams['bsc']" type="text" title="">
+                        <span style="color:red;width:100px;font-family:华文中宋,serif;text-align:center" id="bscDiv"></span>
                     </td>
                     <td style="padding-left:10px">测试时间 从:</td>
                     <td><input
                             value="" id="beginTestDate"
                             name="attachParams['begUploadDate']" class="hasDatepicker"
-                            type="text"> 至：<input value="" id="endTestDate"
+                            type="text" title=""> 至：<input value="" id="endTestDate"
                                                   name="attachParams['endUploadDate']"
-                                                  class="hasDatepicker" type="text">
+                                                  class="hasDatepicker" type="text" title="">
                     </td>
                     <td style="padding-left:10px"><input id="queryFasBtn" value="查询FAS" type="button"></td>
                 </tr>
@@ -280,6 +220,8 @@
             </table>
         </div>
     </div>
+
+
 </div>
 
 
@@ -295,7 +237,7 @@
                                                                         title="Next"><span
             class="ui-icon ui-icon-circle-triangle-e">Next</span></a>
         <div class="ui-datepicker-title"><select class="ui-datepicker-month" data-handler="selectMonth"
-                                                 data-event="change">
+                                                 data-event="change" title="">
             <option value="0">Jan</option>
             <option value="1">Feb</option>
             <option value="2">Mar</option>
@@ -378,11 +320,11 @@
                     class="ui-state-default" href="#">23</a></td>
             <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
                     class="ui-state-default" href="#">24</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">25</a></td>
             <td class="  ui-datepicker-current-day ui-datepicker-today" data-handler="selectDay" data-event="click"
-                data-month="9" data-year="2017"><a class="ui-state-default ui-state-highlight ui-state-active" href="#">26</a>
+                data-month="9" data-year="2017"><a class="ui-state-default ui-state-highlight ui-state-active" href="#">25</a>
             </td>
+            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
+                    class="ui-state-default" href="#">26</a></td>
             <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
                     class="ui-state-default" href="#">27</a></td>
             <td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="9"
@@ -407,39 +349,39 @@
     <div class="ui-timepicker-div">
         <dl>
             <dt class="ui_tpicker_time_label">Time</dt>
-            <dd class="ui_tpicker_time">10:02:23</dd>
+            <dd class="ui_tpicker_time">19:14:39</dd>
             <dt class="ui_tpicker_hour_label">Hour</dt>
             <dd class="ui_tpicker_hour">
                 <div class="ui_tpicker_hour_slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
                     <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"
-                          style="left: 43.4783%;"></span></div>
+                          style="left: 82.6087%;"></span></div>
             </dd>
             <dt class="ui_tpicker_minute_label">Minute</dt>
             <dd class="ui_tpicker_minute">
                 <div class="ui_tpicker_minute_slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
                     <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"
-                          style="left: 3.38983%;"></span></div>
+                          style="left: 23.7288%;"></span></div>
             </dd>
             <dt class="ui_tpicker_second_label">Second</dt>
             <dd class="ui_tpicker_second">
                 <div class="ui_tpicker_second_slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
                     <span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"
-                          style="left: 38.9831%;"></span></div>
+                          style="left: 66.1017%;"></span></div>
             </dd>
             <dt class="ui_tpicker_millisec_label" style="display:none;">Millisecond</dt>
             <dd class="ui_tpicker_millisec">
                 <div class="ui_tpicker_millisec_slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"
                      style="display:none;"><span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"
-                                                 style="left: 82.0821%;"></span></div>
+                                                 style="left: 19.5195%;"></span></div>
             </dd>
             <dt class="ui_tpicker_microsec_label" style="display:none;">Microsecond</dt>
             <dd class="ui_tpicker_microsec">
                 <div class="ui_tpicker_microsec_slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"
                      style="display:none;"><span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0"
-                                                 style="left: 0%;"></span></div>
+                                                 style="left: 0;"></span></div>
             </dd>
             <dt class="ui_tpicker_timezone_label" style="display:none;">Time Zone</dt>
-            <dd class="ui_tpicker_timezone" style="display:none;"><select>
+            <dd class="ui_tpicker_timezone" style="display:none;"><select title="">
                 <option value="-720">-1200</option>
                 <option value="-660">-1100</option>
                 <option value="-600">-1000</option>

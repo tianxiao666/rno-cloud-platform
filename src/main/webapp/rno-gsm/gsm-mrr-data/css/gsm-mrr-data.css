@@ -20,7 +20,11 @@ html, body, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, ab
     border-radius: 3px;
     display: none;
 }
-
+#searchImportDiv {
+    height: 46px;
+    background: rgb(255, 255, 255) url("../images/ui-bg_glass_65_ffffff_1x400.png") repeat-x scroll 50% 50%;
+    border: 1px solid rgb(251, 216, 80);
+}
 .bar {
     background-color: #B4F5B4;
     width: 0;

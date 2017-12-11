@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hgicreate.rno.mapper.gsm.GsmMrrDetailMapper">
+    <select id="queryEriMrrUlQua6t7RateByDescId" resultType="java.util.Map">
+        select * from
+          (select t.*,rownum rn from
+        (select cell_name,
+               case
+               when sum(qua.rxqualul0 + qua.rxqualul1 + qua.rxqualul2 +
+                        qua.rxqualul3 + qua.rxqualul4 + qua.rxqualul5 +
+                        qua.rxqualul6 + qua.rxqualul7) = 0 then
+                null
+               else
+                sum(qua.rxqualul6 + qua.rxqualul7) /
+               sum(qua.rxqualul0 + qua.rxqualul1 + qua.rxqualul2 + qua.rxqualul3 +
+                    qua.rxqualul4 + qua.rxqualul5 + qua.rxqualul6 + qua.rxqualul7)
+             end ul_qua6t7_rate
+       	  from RNO_GSM_MRR_QUALITY qua
+       	 where qua.eri_mrr_desc_id = #{mrrDescId}
+       	   and mea_date = #{meaTime}
+       	   and city_id = #{cityId}
+       		group by cell_name
+       		order by cell_name   ) t )
+    </select>
+    <select id="queryEriMrrDlQua6t7RateByDescId" resultType="java.util.Map">
+        select * from
+        (select t.*,rownum rn from (
+       	select cell_name,
+       	       case
+       	         when sum(qua.rxqualdl0 + qua.rxqualdl1 + qua.rxqualdl2 +
+       	                  qua.rxqualdl3 + qua.rxqualdl4 + qua.rxqualdl5 +
+       	                  qua.rxqualdl6 + qua.rxqualdl7) = 0 then
+       	          null
+       	         else
+       	          sum(qua.rxqualdl6 + qua.rxqualdl7) /
+       	          sum(qua.rxqualdl0 + qua.rxqualdl1 + qua.rxqualdl2 + qua.rxqualdl3 +
+       	              qua.rxqualdl4 + qua.rxqualdl5 + qua.rxqualdl6 + qua.rxqualdl7)
+       	       end dl_qua6t7_rate
+       	  from RNO_GSM_MRR_QUALITY qua
+       	 where qua.eri_mrr_desc_id = #{mrrDescId}
+       	   and mea_date = #{meaTime}
+       	   and city_id = #{cityId}
+       	 group by cell_name
+       	 order by cell_name   ) t ) 
+    </select>
+    <select id="queryEriMrrUlStrenRateByDescId" resultType="java.util.Map">
+        select * from (select t.*,rownum rn from (
+       	select cell_name,
+            case
+              when sum(RXLEVUL0 + RXLEVUL1 + RXLEVUL2 + RXLEVUL3 + RXLEVUL4 +
+                       RXLEVUL5 + RXLEVUL6 + RXLEVUL7 + RXLEVUL8 + RXLEVUL9 +
+                       RXLEVUL10 + RXLEVUL11 + RXLEVUL12 + RXLEVUL13 + RXLEVUL14 +
+                       RXLEVUL15 + RXLEVUL16 + RXLEVUL17 + RXLEVUL18 + RXLEVUL19 +
+                       RXLEVUL20 + RXLEVUL21 + RXLEVUL22 + RXLEVUL23 + RXLEVUL24 +
+                     RXLEVUL25 + RXLEVUL26 + RXLEVUL27 + RXLEVUL28 + RXLEVUL29 +
+                     RXLEVUL30 + RXLEVUL31 + RXLEVUL32 + RXLEVUL33 + RXLEVUL34 +
+                     RXLEVUL35 + RXLEVUL36 + RXLEVUL37 + RXLEVUL38 + RXLEVUL39 +
+                     RXLEVUL40 + RXLEVUL41 + RXLEVUL42 + RXLEVUL43 + RXLEVUL44 +
+                     RXLEVUL45 + RXLEVUL46 + RXLEVUL47 + RXLEVUL48 + RXLEVUL49 +
+                     RXLEVUL50 + RXLEVUL51 + RXLEVUL52 + RXLEVUL53 + RXLEVUL54 +
+                     RXLEVUL55 + RXLEVUL56 + RXLEVUL57 + RXLEVUL58 + RXLEVUL59 +
+                     RXLEVUL60 + RXLEVUL61 + RXLEVUL62 + RXLEVUL63) = 0 then
+             null
+            else
+             sum(RXLEVUL1 + RXLEVUL2 + RXLEVUL3 + RXLEVUL4 + RXLEVUL5 +
+                 RXLEVUL6 + RXLEVUL7 + RXLEVUL8 + RXLEVUL9 + RXLEVUL10 +
+                 RXLEVUL11 + RXLEVUL12 + RXLEVUL13 + RXLEVUL14 + RXLEVUL15 +
+                 RXLEVUL16 + RXLEVUL17 + RXLEVUL18 + RXLEVUL19 + RXLEVUL20 +
+                 RXLEVUL21 + RXLEVUL22 + RXLEVUL23 + RXLEVUL24 + RXLEVUL25 +
+                 RXLEVUL26 + RXLEVUL27 + RXLEVUL28 + RXLEVUL29 + RXLEVUL30 +
+                 RXLEVUL31 + RXLEVUL32 + RXLEVUL33 + RXLEVUL34 + RXLEVUL35 +
+                 RXLEVUL36 + RXLEVUL37 + RXLEVUL38 + RXLEVUL39 + RXLEVUL40 +
+                 RXLEVUL41 + RXLEVUL42 + RXLEVUL43 + RXLEVUL44 + RXLEVUL45 +
+                 RXLEVUL46 + RXLEVUL47 + RXLEVUL48 + RXLEVUL49 + RXLEVUL50 +
+                 RXLEVUL51 + RXLEVUL52 + RXLEVUL53 + RXLEVUL54 + RXLEVUL55 +
+                 RXLEVUL56 + RXLEVUL57 + RXLEVUL58 + RXLEVUL59 + RXLEVUL60 +
+                 RXLEVUL61 + RXLEVUL62) /
+             sum(RXLEVUL0 + RXLEVUL1 + RXLEVUL2 + RXLEVUL3 + RXLEVUL4 +
+                 RXLEVUL5 + RXLEVUL6 + RXLEVUL7 + RXLEVUL8 + RXLEVUL9 +
+                 RXLEVUL10 + RXLEVUL11 + RXLEVUL12 + RXLEVUL13 + RXLEVUL14 +
+                 RXLEVUL15 + RXLEVUL16 + RXLEVUL17 + RXLEVUL18 + RXLEVUL19 +
+                 RXLEVUL20 + RXLEVUL21 + RXLEVUL22 + RXLEVUL23 + RXLEVUL24 +
+                 RXLEVUL25 + RXLEVUL26 + RXLEVUL27 + RXLEVUL28 + RXLEVUL29 +
+                 RXLEVUL30 + RXLEVUL31 + RXLEVUL32 + RXLEVUL33 + RXLEVUL34 +
+                 RXLEVUL35 + RXLEVUL36 + RXLEVUL37 + RXLEVUL38 + RXLEVUL39 +
+                 RXLEVUL40 + RXLEVUL41 + RXLEVUL42 + RXLEVUL43 + RXLEVUL44 +
+                 RXLEVUL45 + RXLEVUL46 + RXLEVUL47 + RXLEVUL48 + RXLEVUL49 +
+                 RXLEVUL50 + RXLEVUL51 + RXLEVUL52 + RXLEVUL53 + RXLEVUL54 +
+                 RXLEVUL55 + RXLEVUL56 + RXLEVUL57 + RXLEVUL58 + RXLEVUL59 +
+                 RXLEVUL60 + RXLEVUL61 + RXLEVUL62 + RXLEVUL63)
+          end ul_stren_rate
+        from RNO_GSM_MRR_STRENGTH
+       	 where eri_mrr_desc_id = #{mrrDescId}
+       	   and mea_date = #{meaTime}
+       	   and city_id = #{cityId}
+       	 group by cell_name
+       	 order by cell_name  ) t )
+       	 
+           
+    </select>
+    <select id="queryEriMrrDlStrenRateByDescId" resultType="java.util.Map">
+        select * from (select t.*,rownum rn from (
+        	select cell_name,
+             case
+               when sum(RXLEVDL0 + RXLEVDL1 + RXLEVDL2 + RXLEVDL3 + RXLEVDL4 +
+                        RXLEVDL5 + RXLEVDL6 + RXLEVDL7 + RXLEVDL8 + RXLEVDL9 +
+                        RXLEVDL10 + RXLEVDL11 + RXLEVDL12 + RXLEVDL13 + RXLEVDL14 +
+                        RXLEVDL15 + RXLEVDL16 + RXLEVDL17 + RXLEVDL18 + RXLEVDL19 +
+                        RXLEVDL20 + RXLEVDL21 + RXLEVDL22 + RXLEVDL23 + RXLEVDL24 +
+                      RXLEVDL25 + RXLEVDL26 + RXLEVDL27 + RXLEVDL28 + RXLEVDL29 +
+                      RXLEVDL30 + RXLEVDL31 + RXLEVDL32 + RXLEVDL33 + RXLEVDL34 +
+                      RXLEVDL35 + RXLEVDL36 + RXLEVDL37 + RXLEVDL38 + RXLEVDL39 +
+                      RXLEVDL40 + RXLEVDL41 + RXLEVDL42 + RXLEVDL43 + RXLEVDL44 +
+                      RXLEVDL45 + RXLEVDL46 + RXLEVDL47 + RXLEVDL48 + RXLEVDL49 +
+                      RXLEVDL50 + RXLEVDL51 + RXLEVDL52 + RXLEVDL53 + RXLEVDL54 +
+                      RXLEVDL55 + RXLEVDL56 + RXLEVDL57 + RXLEVDL58 + RXLEVDL59 +
+                      RXLEVDL60 + RXLEVDL61 + RXLEVDL62 + RXLEVDL63) = 0 then
+              null
+             else
+              sum(RXLEVDL1 + RXLEVDL2 + RXLEVDL3 + RXLEVDL4 + RXLEVDL5 +
+                  RXLEVDL6 + RXLEVDL7 + RXLEVDL8 + RXLEVDL9 + RXLEVDL10 +
+                  RXLEVDL11 + RXLEVDL12 + RXLEVDL13 + RXLEVDL14 + RXLEVDL15 +
+                  RXLEVDL16 + RXLEVDL17 + RXLEVDL18 + RXLEVDL19 + RXLEVDL20 +
+                  RXLEVDL21 + RXLEVDL22 + RXLEVDL23 + RXLEVDL24 + RXLEVDL25 +
+                  RXLEVDL26 + RXLEVDL27 + RXLEVDL28 + RXLEVDL29 + RXLEVDL30 +
+                  RXLEVDL31 + RXLEVDL32 + RXLEVDL33 + RXLEVDL34 + RXLEVDL35 +
+                  RXLEVDL36 + RXLEVDL37 + RXLEVDL38 + RXLEVDL39 + RXLEVDL40 +
+                  RXLEVDL41 + RXLEVDL42 + RXLEVDL43 + RXLEVDL44 + RXLEVDL45 +
+                  RXLEVDL46 + RXLEVDL47 + RXLEVDL48 + RXLEVDL49 + RXLEVDL50 +
+                  RXLEVDL51 + RXLEVDL52 + RXLEVDL53 + RXLEVDL54 + RXLEVDL55 +
+                  RXLEVDL56 + RXLEVDL57 + RXLEVDL58 + RXLEVDL59 + RXLEVDL60 +
+                  RXLEVDL61 + RXLEVDL62) /
+              sum(RXLEVDL0 + RXLEVDL1 + RXLEVDL2 + RXLEVDL3 + RXLEVDL4 +
+                  RXLEVDL5 + RXLEVDL6 + RXLEVDL7 + RXLEVDL8 + RXLEVDL9 +
+                  RXLEVDL10 + RXLEVDL11 + RXLEVDL12 + RXLEVDL13 + RXLEVDL14 +
+                  RXLEVDL15 + RXLEVDL16 + RXLEVDL17 + RXLEVDL18 + RXLEVDL19 +
+                  RXLEVDL20 + RXLEVDL21 + RXLEVDL22 + RXLEVDL23 + RXLEVDL24 +
+                  RXLEVDL25 + RXLEVDL26 + RXLEVDL27 + RXLEVDL28 + RXLEVDL29 +
+                  RXLEVDL30 + RXLEVDL31 + RXLEVDL32 + RXLEVDL33 + RXLEVDL34 +
+                  RXLEVDL35 + RXLEVDL36 + RXLEVDL37 + RXLEVDL38 + RXLEVDL39 +
+                  RXLEVDL40 + RXLEVDL41 + RXLEVDL42 + RXLEVDL43 + RXLEVDL44 +
+                  RXLEVDL45 + RXLEVDL46 + RXLEVDL47 + RXLEVDL48 + RXLEVDL49 +
+                  RXLEVDL50 + RXLEVDL51 + RXLEVDL52 + RXLEVDL53 + RXLEVDL54 +
+                  RXLEVDL55 + RXLEVDL56 + RXLEVDL57 + RXLEVDL58 + RXLEVDL59 +
+                  RXLEVDL60 + RXLEVDL61 + RXLEVDL62 + RXLEVDL63)
+           end dl_stren_rate
+         from RNO_GSM_MRR_STRENGTH
+        	 where eri_mrr_desc_id = #{mrrDescId}
+        	   and mea_date = #{meaTime}
+        	   and city_id = #{cityId}
+        	 group by cell_name
+        	 order by cell_name   ) t )
+
+
+    </select>
+    <select id="queryEriMrrDlWeekSignalByDescId" resultType="java.util.Map">
+        select * from (select t.*,rownum rn from (
+        	select cell_name,
+               case
+                 when sum(RXLEVDL0 + RXLEVDL1 + RXLEVDL2 + RXLEVDL3 + RXLEVDL4 +
+                        RXLEVDL5 + RXLEVDL6 + RXLEVDL7 + RXLEVDL8 + RXLEVDL9 +
+                        RXLEVDL10 + RXLEVDL11 + RXLEVDL12 + RXLEVDL13 + RXLEVDL14 +
+                        RXLEVDL15 + RXLEVDL16 + RXLEVDL17 + RXLEVDL18 + RXLEVDL19 +
+                        RXLEVDL20 + RXLEVDL21 + RXLEVDL22 + RXLEVDL23 + RXLEVDL24 +
+                        RXLEVDL25 + RXLEVDL26 + RXLEVDL27 + RXLEVDL28 + RXLEVDL29 +
+                        RXLEVDL30 + RXLEVDL31 + RXLEVDL32 + RXLEVDL33 + RXLEVDL34 +
+                        RXLEVDL35 + RXLEVDL36 + RXLEVDL37 + RXLEVDL38 + RXLEVDL39 +
+                        RXLEVDL40 + RXLEVDL41 + RXLEVDL42 + RXLEVDL43 + RXLEVDL44 +
+                        RXLEVDL45 + RXLEVDL46 + RXLEVDL47 + RXLEVDL48 + RXLEVDL49 +
+                        RXLEVDL50 + RXLEVDL51 + RXLEVDL52 + RXLEVDL53 + RXLEVDL54 +
+                        RXLEVDL55 + RXLEVDL56 + RXLEVDL57 + RXLEVDL58 + RXLEVDL59 +
+                        RXLEVDL60 + RXLEVDL61 + RXLEVDL62 + RXLEVDL63) = 0 then
+                null
+               else
+                1 - (sum(RXLEVDL16 + RXLEVDL17 + RXLEVDL18 + RXLEVDL19 + RXLEVDL20 +
+                         RXLEVDL21 + RXLEVDL22 + RXLEVDL23 + RXLEVDL24 + RXLEVDL25 +
+                         RXLEVDL26 + RXLEVDL27 + RXLEVDL28 + RXLEVDL29 + RXLEVDL30 +
+                         RXLEVDL31 + RXLEVDL32 + RXLEVDL33 + RXLEVDL34 + RXLEVDL35 +
+                         RXLEVDL36 + RXLEVDL37 + RXLEVDL38 + RXLEVDL39 + RXLEVDL40 +
+                         RXLEVDL41 + RXLEVDL42 + RXLEVDL43 + RXLEVDL44 + RXLEVDL45 +
+                         RXLEVDL46 + RXLEVDL47 + RXLEVDL48 + RXLEVDL49 + RXLEVDL50 +
+                         RXLEVDL51 + RXLEVDL52 + RXLEVDL53 + RXLEVDL54 + RXLEVDL55 +
+                         RXLEVDL56 + RXLEVDL57 + RXLEVDL58 + RXLEVDL59 + RXLEVDL60 +
+                         RXLEVDL61 + RXLEVDL62 + RXLEVDL63) /
+                sum(RXLEVDL0 + RXLEVDL1 + RXLEVDL2 + RXLEVDL3 + RXLEVDL4 +
+                         RXLEVDL5 + RXLEVDL6 + RXLEVDL7 + RXLEVDL8 + RXLEVDL9 +
+                         RXLEVDL10 + RXLEVDL11 + RXLEVDL12 + RXLEVDL13 + RXLEVDL14 +
+                         RXLEVDL15 + RXLEVDL16 + RXLEVDL17 + RXLEVDL18 + RXLEVDL19 +
+                         RXLEVDL20 + RXLEVDL21 + RXLEVDL22 + RXLEVDL23 + RXLEVDL24 +
+                         RXLEVDL25 + RXLEVDL26 + RXLEVDL27 + RXLEVDL28 + RXLEVDL29 +
+                         RXLEVDL30 + RXLEVDL31 + RXLEVDL32 + RXLEVDL33 + RXLEVDL34 +
+                         RXLEVDL35 + RXLEVDL36 + RXLEVDL37 + RXLEVDL38 + RXLEVDL39 +
+                         RXLEVDL40 + RXLEVDL41 + RXLEVDL42 + RXLEVDL43 + RXLEVDL44 +
+                         RXLEVDL45 + RXLEVDL46 + RXLEVDL47 + RXLEVDL48 + RXLEVDL49 +
+                         RXLEVDL50 + RXLEVDL51 + RXLEVDL52 + RXLEVDL53 + RXLEVDL54 +
+                         RXLEVDL55 + RXLEVDL56 + RXLEVDL57 + RXLEVDL58 + RXLEVDL59 +
+                         RXLEVDL60 + RXLEVDL61 + RXLEVDL62 + RXLEVDL63))
+             	end dl_week_signal
+        	from RNO_GSM_MRR_STRENGTH
+        	where eri_mrr_desc_id = #{mrrDescId}
+        	   and mea_date = #{meaTime}
+        	   and city_id = #{cityId}
+        	  group by cell_name
+        	  order by cell_name    ) t )
+
+    </select>
+    <select id="queryEriMrrAverTaByDescId" resultType="java.util.Map">
+        select * from (select t.*,rownum rn from (
+           select cell_name,case when sum(TAVAL0 + TAVAL1 + TAVAL2 + TAVAL3 + TAVAL4 +
+                         TAVAL5 + TAVAL6 + TAVAL7 + TAVAL8 + TAVAL9 +
+                         TAVAL10 + TAVAL11 + TAVAL12 + TAVAL13 + TAVAL14 +
+                         TAVAL15 + TAVAL16 + TAVAL17 + TAVAL18 + TAVAL19 +
+                         TAVAL20 + TAVAL21 + TAVAL22 + TAVAL23 + TAVAL24 +
+                         TAVAL25 + TAVAL26 + TAVAL27 + TAVAL28 + TAVAL29 +
+                         TAVAL30 + TAVAL31 + TAVAL32 + TAVAL33 + TAVAL34 +
+                         TAVAL35 + TAVAL36 + TAVAL37 + TAVAL38 + TAVAL39 +
+                         TAVAL40 + TAVAL41 + TAVAL42 + TAVAL43 + TAVAL44 +
+                         TAVAL45 + TAVAL46 + TAVAL47 + TAVAL48 + TAVAL49 +
+                       TAVAL50 + TAVAL51 + TAVAL52 + TAVAL53 + TAVAL54 +
+                       TAVAL55 + TAVAL56 + TAVAL57 + TAVAL58 + TAVAL59 +
+                       TAVAL60 + TAVAL61 + TAVAL62 + TAVAL63 + TAVAL64 +
+                       TAVAL65 + TAVAL66 + TAVAL67 + TAVAL68 + TAVAL69 +
+                       TAVAL70 + TAVAL71 + TAVAL72 + TAVAL73 + TAVAL74 + TAVAL75) = 0
+                    then null
+                else (sum(TAVAL0 + TAVAL1 * 2 + TAVAL2 * 3 + TAVAL3 * 4 +
+                       TAVAL4 * 5 + TAVAL5 * 6 + TAVAL6 * 7 + TAVAL7 * 8 +
+                       TAVAL8 * 9 + TAVAL9 * 10 + TAVAL10 * 11 +
+                       TAVAL11 * 12 + TAVAL12 * 13 + TAVAL13 * 14 +
+                       TAVAL14 * 15 + TAVAL15 * 16 + TAVAL16 * 17 +
+                       TAVAL17 * 18 + TAVAL18 * 19 + TAVAL19 * 20 +
+                       TAVAL20 * 21 + TAVAL21 * 22 + TAVAL22 * 23 +
+                       TAVAL23 * 24 + TAVAL24 * 25 + TAVAL25 * 26 +
+                       TAVAL26 * 27 + TAVAL27 * 28 + TAVAL28 * 29 +
+                       TAVAL29 * 30 + TAVAL30 * 31 + TAVAL31 * 32 +
+                       TAVAL32 * 33 + TAVAL33 * 34 + TAVAL34 * 35 +
+                       TAVAL35 * 36 + TAVAL36 * 37 + TAVAL37 * 38 +
+                       TAVAL38 * 39 + TAVAL39 * 40 + TAVAL40 * 41 +
+                       TAVAL41 * 42 + TAVAL42 * 43 + TAVAL43 * 44 +
+                       TAVAL44 * 45 + TAVAL45 * 46 + TAVAL46 * 47 +
+                       TAVAL47 * 48 + TAVAL48 * 49 + TAVAL49 * 50 +
+                       TAVAL50 * 51 + TAVAL51 * 52 + TAVAL52 * 53 +
+                       TAVAL53 * 54 + TAVAL54 * 55 + TAVAL55 * 56 +
+                       TAVAL56 * 57 + TAVAL57 * 58 + TAVAL58 * 59 +
+                       TAVAL59 * 60 + TAVAL60 * 61 + TAVAL61 * 62 +
+                       TAVAL62 * 63 + TAVAL63 * 64 + TAVAL64 * 65 +
+                       TAVAL65 * 66 + TAVAL66 * 67 + TAVAL67 * 68 +
+                       TAVAL68 * 69 + TAVAL69 * 70 + TAVAL70 * 71 +
+                       TAVAL71 * 72 + TAVAL72 * 73 + TAVAL73 * 74 +
+                       TAVAL74 * 75 + TAVAL75 * 76)/ sum(TAVAL0 + TAVAL1 + TAVAL2 + TAVAL3 + TAVAL4 +
+                         TAVAL5 + TAVAL6 + TAVAL7 + TAVAL8 + TAVAL9 +
+                         TAVAL10 + TAVAL11 + TAVAL12 + TAVAL13 + TAVAL14 +
+                         TAVAL15 + TAVAL16 + TAVAL17 + TAVAL18 + TAVAL19 +
+                         TAVAL20 + TAVAL21 + TAVAL22 + TAVAL23 + TAVAL24 +
+                         TAVAL25 + TAVAL26 + TAVAL27 + TAVAL28 + TAVAL29 +
+                         TAVAL30 + TAVAL31 + TAVAL32 + TAVAL33 + TAVAL34 +
+                         TAVAL35 + TAVAL36 + TAVAL37 + TAVAL38 + TAVAL39 +
+                         TAVAL40 + TAVAL41 + TAVAL42 + TAVAL43 + TAVAL44 +
+                         TAVAL45 + TAVAL46 + TAVAL47 + TAVAL48 + TAVAL49 +
+                         TAVAL50 + TAVAL51 + TAVAL52 + TAVAL53 + TAVAL54 +
+                         TAVAL55 + TAVAL56 + TAVAL57 + TAVAL58 + TAVAL59 +
+                         TAVAL60 + TAVAL61 + TAVAL62 + TAVAL63 + TAVAL64 +
+                         TAVAL65 + TAVAL66 + TAVAL67 + TAVAL68 + TAVAL69 +
+                         TAVAL70 + TAVAL71 + TAVAL72 + TAVAL73 + TAVAL74 + TAVAL75))-1
+                    end     aver_ta
+           from RNO_GSM_MRR_TA
+            where eri_mrr_desc_id= #{mrrDescId}
+        	   and mea_date = #{meaTime}
+        	   and city_id = #{cityId}
+            group by cell_name
+            order by cell_name   ) t )
+
+    </select>
+    <select id="queryEriMrrMaxTaByDescId" resultType="java.util.Map">
+        select * from (select t.*,rownum rn from (
+        	 select cell_name,
+              max(greatest(TAVAL0, TAVAL1 , TAVAL2 , TAVAL3 , TAVAL4 ,
+                           TAVAL5 , TAVAL6 , TAVAL7 , TAVAL8 , TAVAL9 ,
+                        TAVAL10 , TAVAL11 , TAVAL12 , TAVAL13 , TAVAL14 ,
+                        TAVAL15 , TAVAL16 , TAVAL17 , TAVAL18 , TAVAL19 ,
+                        TAVAL20 , TAVAL21 , TAVAL22 , TAVAL23 , TAVAL24 ,
+                         TAVAL25 , TAVAL26 , TAVAL27 , TAVAL28 , TAVAL29 ,
+                        TAVAL30 , TAVAL31 , TAVAL32 , TAVAL33 , TAVAL34 ,
+                        TAVAL35 , TAVAL36 , TAVAL37 , TAVAL38 , TAVAL39 ,
+                        TAVAL40 , TAVAL41 , TAVAL42 , TAVAL43 , TAVAL44 ,
+                        TAVAL45 , TAVAL46 , TAVAL47 , TAVAL48 , TAVAL49 ,
+                        TAVAL50 , TAVAL51 , TAVAL52 , TAVAL53 , TAVAL54 ,
+                        TAVAL55 , TAVAL56 , TAVAL57 , TAVAL58 , TAVAL59 ,
+                        TAVAL60 , TAVAL61 , TAVAL62 , TAVAL63 , TAVAL64 ,
+                        TAVAL65 , TAVAL66 , TAVAL67 , TAVAL68 , TAVAL69 ,
+                        TAVAL70 , TAVAL71 , TAVAL72 , TAVAL73 , TAVAL74 ,
+                        TAVAL75)) max_ta
+          from RNO_GSM_MRR_TA
+         where eri_mrr_desc_id = #{mrrDescId}
+        	   and mea_date = #{meaTime}
+        	   and city_id = #{cityId}
+           group by cell_name
+           order by cell_name   ) t )
+
+    </select>
+    <select id="queryEriMrrUlQua0t5RateByDescId" resultType="java.util.Map">
+        select * from (select t.*,rownum rn from (
+        	select cell_name,
+               case
+                 when sum(rxqualul0 + rxqualul1 + rxqualul2 + rxqualul3 + rxqualul4 +
+                          rxqualul5 + rxqualul6 + rxqualul7) = 0 then
+                  null
+                 else
+                  sum((rxqualul0 + rxqualul1 + rxqualul2) +
+                      0.7 * (rxqualul3 + rxqualul4 + rxqualul5)) /
+                  sum(rxqualul0 + rxqualul1 + rxqualul2 + rxqualul3 + rxqualul4 +
+                      rxqualul5 + rxqualul6 + rxqualul7)
+               end ul_qua0t5_rate
+           from RNO_GSM_MRR_QUALITY
+         where eri_mrr_desc_id = #{mrrDescId}
+        	   and mea_date = #{meaTime}
+        	   and city_id = #{cityId}
+         	group by cell_name
+         	order by cell_name   ) t )
+
+    </select>
+    <select id="queryEriMrrDlQua0t5RateByDescId" resultType="java.util.Map">
+        select * from (select t.*,rownum rn from (
+         select cell_name,
+        	       case
+        	         when sum(rxqualdl0 + rxqualdl1 + rxqualdl2 + rxqualdl3 + rxqualdl4 +
+        	                  rxqualdl5 + rxqualdl6 + rxqualdl7) = 0 then
+        	          null
+        	         else
+        	          sum((rxqualdl0 + rxqualdl1 + rxqualdl2) +
+        	              0.7 * (rxqualdl3 + rxqualdl4 + rxqualdl5)) /
+        	          sum(rxqualdl0 + rxqualdl1 + rxqualdl2 + rxqualdl3 + rxqualdl4 +
+        	              rxqualdl5 + rxqualdl6 + rxqualdl7)
+        	       end dl_qua0t5_rate
+        	  from RNO_GSM_MRR_QUALITY
+        	 where eri_mrr_desc_id = #{mrrDescId}
+        	   and mea_date = #{meaTime}
+        	   and city_id = #{cityId}
+        	 group by cell_name
+        	 order by cell_name	 ) t )
+
+
+    </select>
+    <select id="getEriMrrCellAndBscCntByDescId" resultType="java.lang.Long">
+        select count(*) from (
+						select distinct (qua.cell_name) as cell_name, des.bsc as bsc
+						  from RNO_GSM_MRR_QUALITY qua, RNO_GSM_MRR_DESC des
+						 where qua.eri_mrr_desc_id = des.id
+						   and qua.eri_mrr_desc_id = #{mrrDescId}
+						   and qua.mea_date = #{meaTime}
+						   and qua.city_id = #{cityId}
+						 order by qua.cell_name)
+    </select>
+    <select id="queryEriMrrCellAndBscByDescId" resultType="java.util.Map">
+        select * from (select t.*,rownum rn from
+        (select distinct qua.cell_name as cell_name, des.bsc as bsc
+        	  from RNO_GSM_MRR_QUALITY qua, RNO_GSM_MRR_DESC des
+        	 where qua.eri_mrr_desc_id = des.id
+        	   and qua.eri_mrr_desc_id = #{mrrDescId}
+        	   and qua.mea_date = #{meaTime}
+        	   and qua.city_id = #{cityId}
+        	 order by qua.cell_name  ) t )
+    </select>
+
+
+</mapper>

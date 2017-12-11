@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Date;
 
 @Data
-public class GsmMrrUploadVM {
+public class GsmUploadVM {
     private MultipartFile file;
     private Long cityId;
     private Date fileDate;

@@ -12,6 +12,33 @@ html, body, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, ab
     font-style: normal;
 }
 
+.upload-progress {
+    position: relative;
+    width: 700px;
+    border: 1px solid #ddd;
+    padding: 1px;
+    border-radius: 3px;
+    display: none;
+}
+#searchImportDiv {
+    height: 46px;
+    background: rgb(255, 255, 255) url("../images/ui-bg_glass_65_ffffff_1x400.png") repeat-x scroll 50% 50%;
+    border: 1px solid rgb(251, 216, 80);
+}
+.bar {
+    background-color: #B4F5B4;
+    width: 0;
+    height: 20px;
+    border-radius: 3px;
+}
+
+.percent {
+    position: absolute;
+    display: inline-block;
+    top: 3px;
+    left: 48%;
+}
+
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
     display: block;
 }
@@ -49,7 +76,6 @@ select, input, textarea, button {
     font-size: 99%;
     line-height: normal;
     font-family: sans-serif;
-    width: 100px;
 }
 
 pre, code, kbd, samp {
@@ -291,7 +317,7 @@ input[type="button"]:active, input[type="submit"]:active, input[type="reset"]:ac
 .main-table1 .menuTd {
     width: 10%;
     background: rgb(232, 237, 255);
-    text-align: right;
+    text-align: left;
     white-space: nowrap;
 }
 
@@ -426,11 +452,6 @@ input[type="button"]:active, input[type="submit"]:active, input[type="reset"]:ac
     background: rgb(215, 242, 194);
 }
 
-.greystyle-standard-noborder tr td {
-    padding: 0
-}
-
-
 .greystyle-standard .greystyle-standard-whitetr td {
     border: 1px solid rgb(204, 204, 204);
     padding: 4px 4px 4px 6px;
@@ -482,7 +503,7 @@ input[type="button"]:active, input[type="submit"]:active, input[type="reset"]:ac
     padding-right: 5px;
     line-height: 30px;
     border-top: 1px solid rgb(204, 204, 204);
-    text-align: left;
+    text-align: right;
     background: rgb(246, 246, 246);
 }
 
@@ -546,7 +567,7 @@ a.paging_link:hover {
 }
 
 body {
-    font-family: "Microsoft yahei", Verdana, Geneva, sans-serif;margin: 50px;
+    font-family: "Microsoft yahei", Verdana, Geneva, sans-serif;
 }
 
 .loading_cover {
@@ -866,12 +887,6 @@ body {
 .ui-progressbar .ui-progressbar-value {
     margin: -1px;
     height: 100%;
-}
-
-.ui-progressbar .ui-progressbar-overlay {
-    background: url("../images/animated-overlay.gif");
-    height: 100%;
-    opacity: 0.25;
 }
 
 .ui-progressbar-indeterminate .ui-progressbar-value {
@@ -1815,10 +1830,6 @@ body {
     text-align: left;
 }
 
-select {
-    width: 100px;
-}
-
 .sectionDivCls {
     margin-top: 10px;
 }
@@ -1837,6 +1848,45 @@ select {
 .importContent {
     background: url("../images/ui-bg_highlight-soft_100_eeeeee_1x100.png") 50% top repeat-x scroll rgb(238, 238, 238);
     border: 1px solid rgb(221, 221, 221);
+    padding: 1em 2.2em;
+    border-radius: 5px;
+}
+
+.main-table1 .menuTd {
+    text-align: right;
+}
+
+body {
+    margin: 50px;
+}
+
+.greystyle-standard-noborder tr td {
+    padding: 0
+}
+
+select {
+    width: 100px;
+
+}
+
+.sectionDivCls {
+    margin-top: 10px;
+}
+
+.importTitle {
+    background: url("../images/ui-bg_glass_65_ffffff_1x400.png") repeat-x scroll 50% 50% #ffffff;
+    border: 1px solid #fbd850;
+    color: #eb8f00;
+    font-weight: bold;
+    padding-left: 2.2em;
+    height: 30px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.importContent {
+    background: url("../images/ui-bg_highlight-soft_100_eeeeee_1x100.png") repeat-x scroll 50% top #eeeeee;
+    border: 1px solid #dddddd;
     padding: 1em 2.2em;
     border-radius: 5px;
 }

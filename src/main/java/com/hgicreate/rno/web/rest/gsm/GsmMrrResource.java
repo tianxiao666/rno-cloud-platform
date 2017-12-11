@@ -1,6 +1,5 @@
 package com.hgicreate.rno.web.rest.gsm;
 
-import com.hgicreate.rno.config.Constants;
 import com.hgicreate.rno.domain.*;
 import com.hgicreate.rno.domain.gsm.GsmMrrDesc;
 import com.hgicreate.rno.repository.DataJobReportRepository;
@@ -11,8 +10,8 @@ import com.hgicreate.rno.security.SecurityUtils;
 import com.hgicreate.rno.service.gsm.GsmMrrService;
 import com.hgicreate.rno.util.FtpUtils;
 import com.hgicreate.rno.web.rest.gsm.vm.GsmMrrDescQueryVM;
-import com.hgicreate.rno.web.rest.gsm.vm.GsmMrrImportQueryVM;
-import com.hgicreate.rno.web.rest.gsm.vm.GsmMrrUploadVM;
+import com.hgicreate.rno.web.rest.gsm.vm.GsmImportQueryVM;
+import com.hgicreate.rno.web.rest.gsm.vm.GsmUploadVM;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -28,6 +27,7 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -35,12 +35,11 @@ import java.util.UUID;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/gsm-mrr-data")
+@RequestMapping("/api")
 public class GsmMrrResource {
     private final GsmMrrService gsmMrrService;
     private final DataJobRepository dataJobRepository;
     private final DataJobReportRepository dataJobReportRepository;
-
     private  final OriginFileRepository originFileRepository;
     private  final OriginFileAttrRepository originFileAttrRepository;
     private final Environment env;
@@ -54,13 +53,13 @@ public class GsmMrrResource {
         this.env = env;
     }
 
-    @PostMapping("/gsm-mrr-data-query")
+    @PostMapping("/gsm-mrr-data/gsm-mrr-data-query")
     public List<GsmMrrDesc> gsmMrrDateQuery(GsmMrrDescQueryVM vm) {
         return gsmMrrService.mrrDataQuery(vm);
     }
 
     @PostMapping("/upload-file")
-    public ResponseEntity<?> uploadFile(GsmMrrUploadVM vm) {
+    public ResponseEntity<?> uploadFile(GsmUploadVM vm) {
         try {
             Date uploadBeginTime = new Date();
             // 获取文件名，并构建为本地文件路径
@@ -96,7 +95,7 @@ public class GsmMrrResource {
             originFile.setSourceType("上传");
             originFile.setCreatedUser(SecurityUtils.getCurrentUserLogin());
             originFile.setCreatedDate(new Date());
-            originFile.setDataType(Constants.MRR_DATA_TYPE);
+            originFile.setDataType(vm.getModuleName());
             originFileRepository.save(originFile);
 
             //更新文件记录RNO_ORIGIN_FILE_ATTR
@@ -135,7 +134,7 @@ public class GsmMrrResource {
             dataJob.setStatus("等待处理");
             dataJob.setDataStoreType("FTP");
             dataJob.setDataStorePath(ftpFullPath);
-            dataJob.setType(Constants.MRR_DATA_TYPE);
+            dataJob.setType(vm.getModuleName());
             dataJobRepository.save(dataJob);
             //建立任务报告
             DataJobReport dataJobReport = new DataJobReport();
@@ -155,8 +154,19 @@ public class GsmMrrResource {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping("/mrr-import-query")
-    public List<DataJob> mrrrImportQuery(GsmMrrImportQueryVM vm){
-        return gsmMrrService.mrrImportQuery(vm);
+    @PostMapping("/gsm-import-query")
+    public List<DataJob> gsmImportQuery(GsmImportQueryVM vm){
+        return gsmMrrService.gsmImportQuery(vm);
+    }
+
+    @PostMapping("/gsm-mrr-data/query-mrr-detail")
+    public List<Map<String, Object>> queryMrrDetail(Long mrrDescId){
+        //Page newPage = page.copy();
+        List<Map<String, Object>> dataRecs = gsmMrrService.queryEriMrrDetailByPage(mrrDescId);
+        /*log.info("计算以后，page=" + newPage);
+        int totalCnt = newPage.getTotalCnt();
+        newPage.setTotalPageCnt(totalCnt / newPage.getPageSize() + (totalCnt % newPage.getPageSize() == 0 ? 0 : 1));
+        newPage.setForcedStartIndex(-1);*/
+        return dataRecs;
     }
 }
