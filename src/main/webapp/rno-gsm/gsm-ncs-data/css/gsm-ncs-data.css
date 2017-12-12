@@ -12,6 +12,33 @@ html, body, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, ab
     font-style: normal;
 }
 
+.upload-progress {
+    position: relative;
+    width: 700px;
+    border: 1px solid #ddd;
+    padding: 1px;
+    border-radius: 3px;
+    display: none;
+}
+#searchImportDiv {
+    height: 46px;
+    background: rgb(255, 255, 255) url("../images/ui-bg_glass_65_ffffff_1x400.png") repeat-x scroll 50% 50%;
+    border: 1px solid rgb(251, 216, 80);
+}
+.bar {
+    background-color: #B4F5B4;
+    width: 0;
+    height: 20px;
+    border-radius: 3px;
+}
+
+.percent {
+    position: absolute;
+    display: inline-block;
+    top: 3px;
+    left: 48%;
+}
+
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
     display: block;
 }
@@ -1803,10 +1830,6 @@ body {
     text-align: left;
 }
 
-select {
-    width: 100px;
-}
-
 .sectionDivCls {
     margin-top: 10px;
 }
@@ -1833,13 +1856,17 @@ select {
     text-align: right;
 }
 
-/* 覆盖分页面板的对齐样式 */
-.paging_div {
-    text-align: left;
+body {
+    margin: 50px;
+}
+
+.greystyle-standard-noborder tr td {
+    padding: 0
 }
 
 select {
     width: 100px;
+
 }
 
 .sectionDivCls {
@@ -1856,16 +1883,6 @@ select {
     cursor: pointer;
     border-radius: 5px;
 }
-
-body {
-    margin: 50px;
-}
-
-.greystyle-standard-noborder tr td {
-    padding: 0
-}
-
-
 
 .importContent {
     background: url("../images/ui-bg_highlight-soft_100_eeeeee_1x100.png") repeat-x scroll 50% top #eeeeee;
