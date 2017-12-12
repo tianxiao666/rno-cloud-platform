@@ -156,7 +156,8 @@ $(function () {
                 $(element).popover('destroy');
 
                 var view = map.getView();
-                var url = cellLayer.getSource().getGetFeatureInfoUrl(evt.coordinate, view.getResolution(), view.getProjection(), {
+                var url = cellLayer.getSource().getGetFeatureInfoUrl(
+                    evt.coordinate, view.getResolution(), view.getProjection(), {
                     'INFO_FORMAT': 'text/javascript',
                     'FEATURE_COUNT': 50
                 });
@@ -225,14 +226,14 @@ $(function () {
                                         $("#showCellTchId").text(cell.tch);
                                         $("#showCellBsicId").text(cell.bsic);
                                         $("#showCellAzimuthId").text(cell.azimuth);
-                                        $("#showCellDownId").text(cell.mDowntilt);
+                                        $("#showCellDownId").text(cell.mDowntilt ? cell.mDowntilt : 0);
                                         $("#showCellBtsTypeId").text(cell.btsType);
                                         $("#showCellAntHeightId").text(cell.antennaHeight);
-                                        $("#showCellAntTypeId").text("");
+                                        $("#showCellCoverTypeId").text(cell.coverType);
                                         $("#showCellLngId").text(cell.longitude);
                                         $("#showCellLatId").text(cell.latitude);
                                         $("#showCellCoverareaId").text(cell.coverArea);
-                                        $("#showCellFreqSectionId").text("");
+                                        $("#showCellEnNameId").text(cell.enName);
                                     }
                                 });
 
@@ -409,7 +410,7 @@ var showNcell = function getNcell(evt) {
                     var index = $(this).find('td:first').text();
                     var cellId = allFeatures[index].get('CELL_ID');
                     $.ajax({
-                        url: "/api/gsm-cell-gis/cell-detail",
+                        url: "/api/gsm-cell-gis/ncell-detail",
                         dataType: "json",
                         data: {
                             'cellId': cellId

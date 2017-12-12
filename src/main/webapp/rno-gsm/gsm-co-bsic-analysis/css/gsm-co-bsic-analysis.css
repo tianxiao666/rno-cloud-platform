@@ -108,14 +108,14 @@ input, select, textarea {
     outline: none;
 }
 
-input[type="text"] {
+/*input[type="text"] {
     padding: 4px;
     background: url("../images/input.png") 0 -75px no-repeat;
     border-width: 1px;
     border-style: solid;
     border-image: initial;
     border-color: rgb(154, 154, 154) rgb(205, 205, 205) rgb(205, 205, 205) rgb(154, 154, 154);
-}
+}*/
 
 input[type="button"], input[type="submit"] {
     cursor: pointer;
@@ -184,7 +184,7 @@ input[type="checkbox"], input[type="radio"] {
     cursor: pointer;
 }
 
-input[type="text"], input[type="password"] {
+/*input[type="text"], input[type="password"] {
     width: 110px;
     padding: 4px;
     background: url("../images/input.png") 0 -75px repeat-x;
@@ -193,7 +193,7 @@ input[type="text"], input[type="password"] {
     border-image: initial;
     border-color: rgb(154, 154, 154) rgb(205, 205, 205) rgb(205, 205, 205) rgb(154, 154, 154);
     color: rgb(85, 85, 85);
-}
+}*/
 
 textarea {
     width: 400px;
@@ -207,10 +207,10 @@ textarea {
     overflow-y: auto;
     resize: none;
 }
-
+/*
 input[type="text"]:hover, input[type="password"]:hover, textarea:hover {
     border: 1px solid rgb(153, 187, 232);
-}
+}*/
 
 select {
     width: auto;

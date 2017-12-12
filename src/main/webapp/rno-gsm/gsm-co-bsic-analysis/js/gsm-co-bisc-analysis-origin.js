@@ -293,25 +293,8 @@ function getcobsiccellwholenet(reSelected, areaIdStr, cellConfigIdStr) {
 						alert(mes_obj['fail']);
 						hideDetailDiv();
 					} else {
-						// console.log("接下来是createwholenetinterfertable");
 						createwholenetinterfertable(mes_obj);
-						/*
-						 * for(var key in mes_obj){ //
-						 * console.log(mes_obj[key]); var cobsic=key; var
-						 * isncell=mes_obj[key].whetherNcell; var
-						 * cellLists=mes_obj[key].cells; for(var i=0;i<cellLists.length;i++){
-						 * var cellstring = cellLists[i]; var cells = new
-						 * Array(); //createwholenetinterfertable(cobsic,
-						 * cellstring); //
-						 * console.log("cellstring="+cellstring); cells =
-						 * cellstring.split(","); // for(var
-						 * j=0;cells.length;j++){
-						 * gisCellDisplayLib.changeCellPolygonOptions( cells[0], {
-						 * 'fillColor' : '#660033' }, true);
-						 * gisCellDisplayLib.changeCellPolygonOptions( cells[1], {
-						 * 'fillColor' : '#660033' }, true); // }
-						 * gisCellDisplayLib.panToCell(cells[0]); } }
-						 */
+
 						showDetailDiv(2);
 					}
 				},
@@ -518,7 +501,7 @@ function createwholenetinterfertable(wholenetcellsobj) {
 					}
 					var str = "";
 					for (var k = 0; k < cs.length; k++) {
-						if (!cs[k] || cs[k] == "") {
+						if (!cs[k] || cs[k] === "") {
 							continue;
 						}
 						gisCellDisplayLib.changeCellPolygonOptions(cs[k], {
@@ -530,11 +513,11 @@ function createwholenetinterfertable(wholenetcellsobj) {
 								+ cs[k] + "</a>";
 					}
 					var strcomm = "<a title='点击移动到该小区' href='javascript:moveToCell(\""
-							+ (typeof(commonNcell) == "undefined"
+							+ (typeof commonNcell === undefined
 									? ""
 									: commonNcell)
 							+ "\")' style='margin-right:2px'>"
-							+ (typeof(commonNcell) == "undefined"
+							+ (typeof commonNcell === undefined
 									? ""
 									: commonNcell) + "</a>";
 					var str2 = "<tr>"
@@ -542,8 +525,7 @@ function createwholenetinterfertable(wholenetcellsobj) {
 							+ str
 							+ " "
 							+ getNcellDesc(whetherNcell, whetherComNcell,
-									strcomm) + "</td>"
-					"</tr>";
+									strcomm) + "</td></tr>";
 					str3 += str2;
 				}
 				$("#interfertable").append(str1 + str3);
@@ -787,7 +769,9 @@ function clearCellConfigFromCcsList() {
 }
 function animateOperTips(tip) {
 	$("#operInfo").find("#operTip").html(tip);
+/*
 	animateInAndOut("operInfo", 500, 500, 2000);
+*/
 }
 /**
  * 获取重新选择小区配置描述ID
