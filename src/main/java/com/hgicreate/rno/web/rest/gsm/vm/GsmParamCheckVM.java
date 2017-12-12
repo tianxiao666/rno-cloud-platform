@@ -3,7 +3,7 @@ package com.hgicreate.rno.web.rest.gsm.vm;
 import lombok.Data;
 
 @Data
-public class ParamCheckVM {
+public class GsmParamCheckVM {
     private String bscStr;
     private String date1;
     private String checkType;

@@ -1,21 +1,21 @@
 package com.hgicreate.rno.web.rest.gsm;
 
 import com.hgicreate.rno.domain.*;
-import com.hgicreate.rno.domain.gsm.BscData;
+import com.hgicreate.rno.domain.gsm.GsmBscData;
 import com.hgicreate.rno.repository.DataJobReportRepository;
 import com.hgicreate.rno.repository.DataJobRepository;
 import com.hgicreate.rno.repository.OriginFileAttrRepository;
 import com.hgicreate.rno.repository.OriginFileRepository;
-import com.hgicreate.rno.repository.gsm.BscDataRepository;
+import com.hgicreate.rno.repository.gsm.GsmBscDataRepository;
 import com.hgicreate.rno.security.SecurityUtils;
 import com.hgicreate.rno.service.dto.DataJobReportDTO;
-import com.hgicreate.rno.service.gsm.BscDataService;
-import com.hgicreate.rno.service.gsm.dto.BscDataDTO;
-import com.hgicreate.rno.service.gsm.dto.BscReportDTO;
+import com.hgicreate.rno.service.gsm.GsmBscDataService;
+import com.hgicreate.rno.service.gsm.dto.GsmBscDataDTO;
+import com.hgicreate.rno.service.gsm.dto.GsmBscReportDTO;
 import com.hgicreate.rno.service.mapper.DataJobReportMapper;
-import com.hgicreate.rno.web.rest.gsm.vm.BscDataQueryVM;
-import com.hgicreate.rno.web.rest.gsm.vm.BscFileUploadVM;
-import com.hgicreate.rno.web.rest.gsm.vm.BscImportQueryVM;
+import com.hgicreate.rno.web.rest.gsm.vm.GsmBscDataQueryVM;
+import com.hgicreate.rno.web.rest.gsm.vm.GsmBscFileUploadVM;
+import com.hgicreate.rno.web.rest.gsm.vm.GsmBscImportQueryVM;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -36,40 +36,40 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @RequestMapping("/api/gsm-bsc-data")
-public class BscDataResource {
+public class GsmBscDataResource {
     @Value("${rno.path.upload-files}")
     private String directory;
 
-    private final BscDataService bscDataService;
+    private final GsmBscDataService gsmBscDataService;
     private final DataJobRepository dataJobRepository;
     private  final OriginFileRepository originFileRepository;
     private  final OriginFileAttrRepository originFileAttrRepository;
     private final DataJobReportRepository dataJobReportRepository;
-    private final BscDataRepository bscDataRepository;
+    private final GsmBscDataRepository gsmBscDataRepository;
 
     private final Environment env;
 
-    public BscDataResource(BscDataService bscDataService,
-                           DataJobRepository dataJobRepository,
-                           BscDataRepository bscDataRepository,
-                           DataJobReportRepository dataJobReportRepository,
-                           OriginFileRepository originFileRepository,
-                           OriginFileAttrRepository originFileAttrRepository,
-                           Environment env) {
-        this.bscDataService = bscDataService;
+    public GsmBscDataResource(GsmBscDataService gsmBscDataService,
+                              DataJobRepository dataJobRepository,
+                              GsmBscDataRepository gsmBscDataRepository,
+                              DataJobReportRepository dataJobReportRepository,
+                              OriginFileRepository originFileRepository,
+                              OriginFileAttrRepository originFileAttrRepository,
+                              Environment env) {
+        this.gsmBscDataService = gsmBscDataService;
         this.dataJobRepository = dataJobRepository;
         this.originFileRepository = originFileRepository;
         this.originFileAttrRepository = originFileAttrRepository;
         this.dataJobReportRepository = dataJobReportRepository;
-        this.bscDataRepository = bscDataRepository;
+        this.gsmBscDataRepository = gsmBscDataRepository;
         this.env = env;
     }
 
     @GetMapping("/query-import")
-    public List<BscReportDTO> queryImport(BscImportQueryVM vm) throws ParseException {
+    public List<GsmBscReportDTO> queryImport(GsmBscImportQueryVM vm) throws ParseException {
         log.debug("查询 bsc 文件导入记录。");
         log.debug("视图模型: " + vm);
-        return bscDataService.queryTrafficData(vm);
+        return gsmBscDataService.queryTrafficData(vm);
     }
 
     @GetMapping("/query-report")
@@ -81,29 +81,29 @@ public class BscDataResource {
     }
 
     @GetMapping("/query-record")
-    public List<BscDataDTO> queryRecord(BscDataQueryVM vm) throws ParseException{
+    public List<GsmBscDataDTO> queryRecord(GsmBscDataQueryVM vm) throws ParseException{
         log.debug("查询 bsc 信息。");
         log.debug("视图模型vm ={}", vm);
-        return bscDataService.queryRecord(vm);
+        return gsmBscDataService.queryRecord(vm);
     }
 
     @GetMapping("delete-by-bscId")
     public void deleteByBscId(@RequestParam Long bscId) {
         log.debug("待删除BSC信息id为={}", bscId);
-        bscDataRepository.delete(bscId);
+        gsmBscDataRepository.delete(bscId);
     }
 
     @GetMapping("/bsc-data-update")
-    public boolean updateBscData(BscDataQueryVM vm) {
+    public boolean updateBscData(GsmBscDataQueryVM vm) {
         try {
             log.debug("要更新的bsc信息为{}", vm);
-            BscData bscData = new BscData();
+            GsmBscData gsmBscData = new GsmBscData();
             Area area = new Area();
             area.setId(Long.parseLong(vm.getCityIds()));
-            bscData.setArea(area);
-            bscData.setVendor(vm.getVendor().trim());
-            bscData.setBsc(vm.getBsc().trim());
-            bscDataRepository.save(bscData);
+            gsmBscData.setArea(area);
+            gsmBscData.setVendor(vm.getVendor().trim());
+            gsmBscData.setBsc(vm.getBsc().trim());
+            gsmBscDataRepository.save(gsmBscData);
             return true;
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -117,7 +117,7 @@ public class BscDataResource {
      * @return 成功情况下返回 HTTP OK 状态，错误情况下返回 HTTP 4xx 状态。
      */
     @PostMapping("/upload-file")
-    public ResponseEntity<?> uploadFile(BscFileUploadVM vm) {
+    public ResponseEntity<?> uploadFile(GsmBscFileUploadVM vm) {
 
         log.debug("模块名：" + vm.getModuleName());
         log.debug("视图模型: " + vm);

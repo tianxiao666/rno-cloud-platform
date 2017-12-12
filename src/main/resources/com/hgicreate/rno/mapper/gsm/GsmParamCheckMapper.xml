@@ -2,9 +2,9 @@
 
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hgicreate.rno.mapper.gsm.ParamCheckMapper">
+<mapper namespace="com.hgicreate.rno.mapper.gsm.GsmParamCheckMapper">
     <select id="getEriCellPowerCheckResult"
-            parameterType="com.hgicreate.rno.web.rest.gsm.vm.ParamCheckVM"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmParamCheckVM"
             resultType="java.util.Map">
         select d.bsc as bsc,t.cell,t.bspwrb,t.bspwrt,
         'RLCPC:CELL='||t.cell||',BSPWRB='||t.bspwrb||',BSPWRT='||t.bspwrb||';' as command
@@ -23,7 +23,7 @@
         order by d.bsc
     </select>
     <select id="getEriCellFreqHopCheckResultTrue"
-            parameterType="com.hgicreate.rno.web.rest.gsm.vm.ParamCheckVM"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmParamCheckVM"
             resultType="java.util.Map">
         select * from(
         select d.BSC,cell,ch_group,hop,
@@ -45,7 +45,7 @@
         where dchno > 2
     </select>
     <select id="getEriCellFreqHopCheckResult"
-            parameterType="com.hgicreate.rno.web.rest.gsm.vm.ParamCheckVM"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmParamCheckVM"
             resultType="java.util.Map">
         select bsc, cell, ch_group, hop, dchno, dch, command 
         from (select d.bsc,cell,ch_group,rank() over(partition by cell order by ch_group desc) as chgr_rn,hop,
@@ -66,7 +66,7 @@
         where dchno > 2 and chgr_rn > 1
     </select>
     <select id="getEriCellNccpermResult"
-            parameterType="com.hgicreate.rno.web.rest.gsm.vm.ParamCheckVM"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmParamCheckVM"
             resultType="java.util.Map">
         select t1.bsc, t1.cell, t1.nccperm, t2.ncell_ncc 
         from (select cell.cell, d.bsc, cell.nccperm_8 as nccperm
@@ -121,7 +121,7 @@
         ]]>
     </select>
     <select id="getEriCellMeaFreqResult"
-            parameterType="com.hgicreate.rno.web.rest.gsm.vm.ParamCheckVM"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmParamCheckVM"
             resultType="java.util.Map">
         select t1.bsc, t1.cell, t1.active,t1.idle,t2.ncell_bcch 
           from (select d.bsc, cell, active_32 as active, idle_32 as idle
@@ -173,7 +173,7 @@
             on t1.cell = t2.cell
     </select>
     <select id="getEriCellBaNumCheckResult"
-            parameterType="com.hgicreate.rno.web.rest.gsm.vm.ParamCheckVM"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmParamCheckVM"
             resultType="java.util.Map">
             select d.bsc,
                    cell.cell,
@@ -193,7 +193,7 @@
                 </if>
     </select>
     <select id="getEriCellTalimAndMaxtaCheckResult"
-            parameterType="com.hgicreate.rno.web.rest.gsm.vm.ParamCheckVM"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmParamCheckVM"
             resultType="java.util.Map">
             select cell.mea_date create_time,
                     d.bsc,
@@ -216,7 +216,7 @@
             </if>
     </select>
     <select id="getEriCellCoBsicCheckResult"
-            parameterType="com.hgicreate.rno.web.rest.gsm.vm.ParamCheckVM"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmParamCheckVM"
             resultType="java.util.Map">
             select incell.bsc || '-' || incell.cell || '-' || decode(c.name,null,'空',c.name)|| '-' || decode(c.LONGITUDE,null,'空',c.LONGITUDE)|| ',' || decode(c.latitude,null,'空',c.latitude) cell,
                     incell.bsic,                                                   
@@ -251,7 +251,7 @@
              on c.label = incell.cell
     </select>
    <select id="getEriCellNcellNumCheckResult"
-           parameterType="com.hgicreate.rno.web.rest.gsm.vm.ParamCheckVM"
+           parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmParamCheckVM"
            resultType="java.util.Map">
             select *
               from (select d.bsc,
@@ -276,7 +276,7 @@
                 ]]>
    </select>
     <select id="getEriCellNcellMomitCheckResult"
-            parameterType="com.hgicreate.rno.web.rest.gsm.vm.ParamCheckVM"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmParamCheckVM"
             resultType="java.util.Map">
             select bsc,																		
                      cell,                                                                      
@@ -334,7 +334,7 @@
                          and A.cs = B.cs)
     </select>
     <select id="getEriCellUnidirNcellResult"
-            parameterType="com.hgicreate.rno.web.rest.gsm.vm.ParamCheckVM"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmParamCheckVM"
             resultType="java.util.Map">
             select bsc, 
                     cell,
@@ -413,7 +413,7 @@
               and n_cell is not null
     </select>
     <select id="getEriCellSameNcellFreqData"
-            parameterType="com.hgicreate.rno.web.rest.gsm.vm.ParamCheckVM"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmParamCheckVM"
             resultType="java.util.Map">
         select tt.bsc, tt.cell, tt.bcchno, tt.tch,
         				 tt2.n_cell, tt2.n_bcchno, tt2.n_tch,

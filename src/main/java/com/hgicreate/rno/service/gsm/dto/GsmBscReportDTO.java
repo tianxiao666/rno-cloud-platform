@@ -4,7 +4,7 @@ import com.hgicreate.rno.util.FileSizeUtil;
 import lombok.Data;
 
 @Data
-public class BscReportDTO {
+public class GsmBscReportDTO {
     private Long id;
     private String uploadTime;
     private String areaName;

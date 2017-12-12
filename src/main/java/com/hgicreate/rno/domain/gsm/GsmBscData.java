@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Data
 @Entity
 @Table(name = "RNO_GSM_BSC_DATA")
-public class BscData implements Serializable{
+public class GsmBscData implements Serializable{
 
     private static final long serialVersionUID = 1L;
 

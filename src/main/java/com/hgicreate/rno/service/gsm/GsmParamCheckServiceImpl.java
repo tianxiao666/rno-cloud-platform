@@ -1,60 +1,60 @@
 package com.hgicreate.rno.service.gsm;
 
-import com.hgicreate.rno.mapper.gsm.ParamCheckMapper;
+import com.hgicreate.rno.mapper.gsm.GsmParamCheckMapper;
 import com.hgicreate.rno.service.gsm.dto.CobsicCellsDTO;
 import com.hgicreate.rno.service.gsm.dto.CobsicCellsExpandDTO;
 import com.hgicreate.rno.util.LatLngHelperUtils;
-import com.hgicreate.rno.web.rest.gsm.vm.ParamCheckVM;
+import com.hgicreate.rno.web.rest.gsm.vm.GsmParamCheckVM;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
-public class ParamCheckServiceImpl implements ParamCheckService {
+public class GsmParamCheckServiceImpl implements GsmParamCheckService {
 
-    private final ParamCheckMapper paramCheckMapper;
+    private final GsmParamCheckMapper gsmParamCheckMapper;
 
-    public ParamCheckServiceImpl(ParamCheckMapper paramCheckMapper) {
-        this.paramCheckMapper = paramCheckMapper;
+    public GsmParamCheckServiceImpl(GsmParamCheckMapper gsmParamCheckMapper) {
+        this.gsmParamCheckMapper = gsmParamCheckMapper;
     }
 
-    public List<Map<String, Object>> queryParamData(ParamCheckVM vm) {
+    public List<Map<String, Object>> checkParamData(GsmParamCheckVM vm) {
         List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
         //功率检查
         if (("powerCheck").equals(vm.getCheckType())) {
-            result = paramCheckMapper.getEriCellPowerCheckResult(vm);
+            result = gsmParamCheckMapper.getEriCellPowerCheckResult(vm);
         }
         //跳频检查
         if (("freqHopCheck").equals(vm.getCheckType())) {
             if (vm.getCheckMaxChgr() == true) {
-                result = paramCheckMapper.getEriCellFreqHopCheckResultTrue(vm);
+                result = gsmParamCheckMapper.getEriCellFreqHopCheckResultTrue(vm);
             } else {
-                result = paramCheckMapper.getEriCellFreqHopCheckResult(vm);
+                result = gsmParamCheckMapper.getEriCellFreqHopCheckResult(vm);
             }
         }
         //NCCPERM检查
         if (("nccperm").equals(vm.getCheckType())) {
-            List<Map<String, Object>> res = paramCheckMapper.getEriCellNccpermResult(vm);
+            List<Map<String, Object>> res = gsmParamCheckMapper.getEriCellNccpermResult(vm);
             result = getEriCellNccpermFinalResult(res);
         }
         //测量频点多定义
         if (("meaFreqMultidefined").equals(vm.getCheckType())) {
-            List<Map<String, Object>> res = paramCheckMapper.getEriCellMeaFreqResult(vm);
+            List<Map<String, Object>> res = gsmParamCheckMapper.getEriCellMeaFreqResult(vm);
             result = getEriCellMeaFreqMultidefineResult(res);
         }
         //测量频点漏定义
         if (("meaFreqMomit").equals(vm.getCheckType())) {
-            List<Map<String, Object>> res = paramCheckMapper.getEriCellMeaFreqResult(vm);
+            List<Map<String, Object>> res = gsmParamCheckMapper.getEriCellMeaFreqResult(vm);
             result = getEriCellMeaFreqMomitResult(res);
         }
         //BA表个数检查
         if (("baNumCheck").equals(vm.getCheckType())) {
-            List<Map<String, Object>> res = paramCheckMapper.getEriCellBaNumCheckResult(vm);
+            List<Map<String, Object>> res = gsmParamCheckMapper.getEriCellBaNumCheckResult(vm);
             result = getEriCellBaNumCheckFinalResult(res, vm);
         }
         //TALIM_MAXTA检查
         if (("talimMaxTa").equals(vm.getCheckType())) {
-            result = paramCheckMapper.getEriCellTalimAndMaxtaCheckResult(vm);
+            result = gsmParamCheckMapper.getEriCellTalimAndMaxtaCheckResult(vm);
         }
         //同频同bsic检查
         if (("sameFreqBsicCheck").equals(vm.getCheckType())) {
@@ -66,19 +66,19 @@ public class ParamCheckServiceImpl implements ParamCheckService {
                 vm.setNcellMaxNum(32);
                 vm.setNcellMinNum(2);
             }
-            result = paramCheckMapper.getEriCellNcellNumCheckResult(vm);
+            result = gsmParamCheckMapper.getEriCellNcellNumCheckResult(vm);
         }
         //本站邻区漏定义
         if (("ncellMomit").equals(vm.getCheckType())) {
-            result = paramCheckMapper.getEriCellNcellMomitCheckResult(vm);
+            result = gsmParamCheckMapper.getEriCellNcellMomitCheckResult(vm);
         }
         //单向邻区检查
         if (("unidirNcell").equals(vm.getCheckType())) {
-            result = paramCheckMapper.getEriCellUnidirNcellResult(vm);
+            result = gsmParamCheckMapper.getEriCellUnidirNcellResult(vm);
         }
         //同邻频检查
         if (("sameNcellFreqCheck").equals(vm.getCheckType())) {
-            List<Map<String, Object>> res = paramCheckMapper.getEriCellSameNcellFreqData(vm);
+            List<Map<String, Object>> res = gsmParamCheckMapper.getEriCellSameNcellFreqData(vm);
             result = getEriCellSameNcellFreqCheckResult(res);
         }
         //邻区数据检查
@@ -91,7 +91,7 @@ public class ParamCheckServiceImpl implements ParamCheckService {
     /**
      * 获取BA表个数检查结果
      */
-    private List<Map<String, Object>> getEriCellBaNumCheckFinalResult(List<Map<String, Object>> res, ParamCheckVM vm) {
+    private List<Map<String, Object>> getEriCellBaNumCheckFinalResult(List<Map<String, Object>> res, GsmParamCheckVM vm) {
         List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
         Map<String, Object> baMap;
 
@@ -134,7 +134,7 @@ public class ParamCheckServiceImpl implements ParamCheckService {
     /**
      * 获取爱立信小区同频同bsic检查结果集
      */
-    public List<Map<String, Object>> getEriCellCoBsicCheckFinalResult(ParamCheckVM vm) {
+    public List<Map<String, Object>> getEriCellCoBsicCheckFinalResult(GsmParamCheckVM vm) {
         double meaDis;
         if (vm.getCheckCoBsic() == false) {
             vm.setDistance(15000);
@@ -238,8 +238,8 @@ public class ParamCheckServiceImpl implements ParamCheckService {
     /**
      * 通过相同bcchbsic的组合cobsic下有两个或多个label,从而保存CobsicCells对象集合数据
      */
-    public List<CobsicCellsDTO> saveCobsicCellsByCoBsicKeys(ParamCheckVM vm) {
-        List<Map<String, Object>> res = paramCheckMapper.getEriCellCoBsicCheckResult(vm);
+    public List<CobsicCellsDTO> saveCobsicCellsByCoBsicKeys(GsmParamCheckVM vm) {
+        List<Map<String, Object>> res = gsmParamCheckMapper.getEriCellCoBsicCheckResult(vm);
         List<CobsicCellsDTO> coblists = new ArrayList<CobsicCellsDTO>();
         boolean flag = false;
         String listbcch = "", listbsic = "", label = "";

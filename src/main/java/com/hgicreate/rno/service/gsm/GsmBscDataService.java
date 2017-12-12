@@ -2,15 +2,15 @@ package com.hgicreate.rno.service.gsm;
 
 import com.hgicreate.rno.domain.Area;
 import com.hgicreate.rno.domain.DataJob;
-import com.hgicreate.rno.domain.gsm.BscData;
+import com.hgicreate.rno.domain.gsm.GsmBscData;
 import com.hgicreate.rno.repository.DataJobRepository;
-import com.hgicreate.rno.repository.gsm.BscDataRepository;
-import com.hgicreate.rno.service.gsm.dto.BscDataDTO;
-import com.hgicreate.rno.service.gsm.dto.BscReportDTO;
-import com.hgicreate.rno.service.gsm.mapper.BscDataFileMapper;
-import com.hgicreate.rno.service.gsm.mapper.BscDataMessageMapper;
-import com.hgicreate.rno.web.rest.gsm.vm.BscDataQueryVM;
-import com.hgicreate.rno.web.rest.gsm.vm.BscImportQueryVM;
+import com.hgicreate.rno.repository.gsm.GsmBscDataRepository;
+import com.hgicreate.rno.service.gsm.dto.GsmBscDataDTO;
+import com.hgicreate.rno.service.gsm.dto.GsmBscReportDTO;
+import com.hgicreate.rno.service.gsm.mapper.GsmBscDataFileMapper;
+import com.hgicreate.rno.service.gsm.mapper.GsmBscDataMessageMapper;
+import com.hgicreate.rno.web.rest.gsm.vm.GsmBscDataQueryVM;
+import com.hgicreate.rno.web.rest.gsm.vm.GsmBscImportQueryVM;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.PageRequest;
@@ -23,17 +23,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class BscDataService {
+public class GsmBscDataService {
 
     private final DataJobRepository dataJobRepository;
-    private final BscDataRepository bscDataRepository;
+    private final GsmBscDataRepository gsmBscDataRepository;
 
-    public BscDataService(DataJobRepository dataJobRepository, BscDataRepository bscDataRepository) {
+    public GsmBscDataService(DataJobRepository dataJobRepository, GsmBscDataRepository gsmBscDataRepository) {
         this.dataJobRepository = dataJobRepository;
-        this.bscDataRepository = bscDataRepository;
+        this.gsmBscDataRepository = gsmBscDataRepository;
     }
 
-    public List<BscReportDTO> queryTrafficData(BscImportQueryVM vm) throws ParseException {
+    public List<GsmBscReportDTO> queryTrafficData(GsmBscImportQueryVM vm) throws ParseException {
         Area area = new Area();
         area.setId(Long.parseLong(vm.getCity()));
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -49,29 +49,29 @@ public class BscDataService {
             list = dataJobRepository.findTop1000ByAreaAndStatusAndOriginFile_CreatedDateBetweenAndOriginFile_DataTypeOrderByOriginFile_CreatedDateDesc(
                     area, vm.getStatus(), beginDate, endDate, "GSM-BSC-DATA");
         }
-        return list.stream().map(BscDataFileMapper.INSTANCE::bscDataFileToBscDataDTO)
+        return list.stream().map(GsmBscDataFileMapper.INSTANCE::bscDataFileToBscDataDTO)
                 .collect(Collectors.toList());
     }
 
-    public List<BscDataDTO> queryRecord(BscDataQueryVM vm) throws ParseException {
-        BscData bscData = new BscData();
+    public List<GsmBscDataDTO> queryRecord(GsmBscDataQueryVM vm) throws ParseException {
+        GsmBscData gsmBscData = new GsmBscData();
         Area area = new Area();
         area.setId(Long.parseLong(vm.getCityIds()));
-        bscData.setArea(area);
+        gsmBscData.setArea(area);
         if(!("".equals(vm.getBsc().trim()))){
-          bscData.setBsc(vm.getBsc().trim());
+          gsmBscData.setBsc(vm.getBsc().trim());
         }
         if(!("".equals(vm.getVendor().trim()))){
-            bscData.setVendor(vm.getVendor().trim());
+            gsmBscData.setVendor(vm.getVendor().trim());
         }
         ExampleMatcher matcher =  ExampleMatcher.matching()
                 .withMatcher("bsc", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withMatcher("vendor", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withIgnoreNullValues();
-        Example<BscData> example = Example.of(bscData, matcher);
-        return bscDataRepository
+        Example<GsmBscData> example = Example.of(gsmBscData, matcher);
+        return gsmBscDataRepository
                 .findAll(example, new PageRequest(0,1000)).getContent()
-                .stream().map(BscDataMessageMapper.INSTANCE::bscDataToBscDataDto)
+                .stream().map(GsmBscDataMessageMapper.INSTANCE::bscDataToBscDataDto)
                 .collect(Collectors.toList());
     }
 

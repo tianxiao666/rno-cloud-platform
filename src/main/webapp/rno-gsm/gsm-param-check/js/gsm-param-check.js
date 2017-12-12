@@ -149,7 +149,8 @@ function getAllBsc() {
         dataType : 'text',
         success : function(raw) {
             if (raw === '') {
-                $("#defaultBsc").html("");
+                $("#info").css("background", "yellow");
+                showInfoInAndOut("info", "该城市匹配不到BSC");
             }else {
                 var data = eval("("+raw+")");
                 var html = "";
@@ -158,6 +159,9 @@ function getAllBsc() {
                 }
                 $("#defaultBsc").html(html);
             }
+        }, error: function (err) {
+            $("#info").css("background", "red");
+            showInfoInAndOut("info", "后台程序错误！");
         }
     });
 }
@@ -512,57 +516,6 @@ function saveCache(checkType,data) {
     }
     //同频同bsic检查
     else if(checkType == 'sameFreqBsicCheck') {
-        //clear
-        /*sameFreqBsicCheckResult.splice(0,sameFreqBsicCheckResult.length);
-        var bcch;
-        var bsic;
-        var combinedCells;
-        var combinedCell;
-        var cc;
-        var meaDis;
-        var mml;
-        var pos1;
-        var pos2;
-        var bsc1,cell1,cell1Name,bsc2,cell2,cell2Name;
-        var obj;
-
-        for(var key in data[0]) {
-            obj = data[0][key];
-            //console.log(data[0]);
-
-            bcch = obj["bcch"];
-            bsic = obj["bsic"];
-            //console.log(bcch);
-            combinedCells = obj["combinedCells"][0];
-            //console.log(combinedCells);
-            combinedCell = combinedCells["combinedCell"];
-            meaDis = combinedCells["meaDis"];
-            //console.log(meaDis);
-            mml = combinedCells["mml"];
-            //console.log(combinedCell);
-            cc = combinedCell.split(",");
-
-            pos1 = cc[0].indexOf("-");
-            pos2 = cc[0].indexOf("-",pos1+1);
-            bsc1 = cc[0].substr(0,pos1);
-            //console.log(pos2-pos1);
-            cell1 = cc[0].substr(pos1+1,pos2-pos1-1);
-            cell1Name = cc[0].substr(pos2+1,cc[0].length);
-            //console.log(bsc1+"   "+cell1+"   "+cell1Name);
-            pos1 = cc[1].indexOf("-");
-            pos2 = cc[1].indexOf("-",pos1+1);
-            bsc2 = cc[1].substr(0,pos1);
-            cell2 = cc[1].substr(pos1+1,pos2-pos1-1);
-            cell2Name = cc[1].substr(pos2+1,cc[1].length);
-
-            var one = {
-                'BSIC' : bsic,'BCCH' : bcch,
-                'BSC1' : bsc1,'CELL1' : cell1,'CELL1_NAME':cell1Name,
-                'BSC2' : bsc2,'CELL2' : cell2,'CELL2_NAME':cell2Name,
-                'DISTANCE' : meaDis,'MML' : mml
-            };
-            sameFreqBsicCheckResult.push(one);
-        }*/
         sameFreqBsicCheckResult = data;
     }
     //TALIM_MAXTA检查

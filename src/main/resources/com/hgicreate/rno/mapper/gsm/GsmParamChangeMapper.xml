@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hgicreate.rno.mapper.gsm.GsmParamChangeMapper">
+    <select id="eriCellParamsCompare"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmParamChangeVM"
+            resultType="java.util.Map">
+        select BSC, ${sumSql}  from (
+          select t1.BSC, ${caseSql}  from (
+            select cell.BSC,cell.CELL, ${paramsSql}
+            from rno_gsm_eri_cell cell,
+                  rno_gsm_eri_cell_extra_info extra
+            where cell.cell = extra.cell
+            and cell.mea_date = extra.mea_date
+            and cell.city_id = extra.city_id
+            and cell.bsc = extra.bsc
+        <if test="date1 != null and date1 != ''">
+            and cell.mea_date = to_date('${date1}', 'yyyy-MM-dd')
+        </if>
+        <if test="cityId != null and cityId != ''">
+            and cell.city_id = ${cityId}
+        </if>
+        <if test="bscStr!=null and bscStr != ''">
+            and cell.bsc in (${bscStr})
+        </if>
+            ) t1
+          left join (
+              select cell.BSC,cell.CELL, ${paramsSql}
+                from rno_gsm_eri_cell cell,
+                      rno_gsm_eri_cell_extra_info extra
+                where cell.cell = extra.cell
+                        and cell.mea_date = extra.mea_date
+                        and cell.city_id = extra.city_id
+                        and cell.bsc = extra.bsc
+                    <if test="date2 != null and date2 != ''">
+                        and cell.mea_date = to_date('${date2}', 'yyyy-MM-dd')
+                    </if>
+                    <if test="cityId != null and cityId != ''">
+                        and cell.city_id = ${cityId}
+                    </if>
+                    <if test="bscStr!=null and bscStr != ''">
+                        and cell.bsc in (${bscStr})
+                    </if>
+           ) t2
+          on (t1.cell = t2.cell and t1.bsc = t2.bsc)
+        )
+        group by BSC
+    </select>
+    <select id="eriChannelParamsCompare"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmParamChangeVM"
+            resultType="java.util.Map">
+        select BSC, ${sumSql}  from (
+            select t1.BSC, ${caseSql}  from (
+                select BSC,CELL,CH_GROUP, ${paramsSql}
+                from rno_gsm_eri_cell_ch_group
+                where
+            <if test="date1 != null and date1 != ''">
+                mea_date = to_date('${date1}', 'yyyy-MM-dd')
+            </if>
+            <if test="cityId != null and cityId != ''">
+                and city_id = ${cityId}
+            </if>
+            <if test="bscStr!=null and bscStr != ''">
+                and bsc in (${bscStr})
+            </if>
+            ) t1
+            left join (select BSC,CELL,CH_GROUP, ${paramsSql}
+                        from rno_gsm_eri_cell_ch_group
+                      where
+                    <if test="date2 != null and date2 != ''">
+                        mea_date = to_date('${date2}', 'yyyy-MM-dd')
+                    </if>
+                    <if test="cityId != null and cityId != ''">
+                        and city_id = ${cityId}
+                    </if>
+                    <if test="bscStr!=null and bscStr != ''">
+                        and bsc in (${bscStr})
+                    </if>
+                       ) t2
+            on (t1.cell = t2.cell and t1.bsc = t2.bsc and t1.ch_group = t2.ch_group)
+            )
+        group by BSC
+    </select>
+    <select id="eriNeighbourParamsCompare"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmParamChangeVM"
+            resultType="java.util.Map">
+        select BSC,  ${sumSql}
+        from (
+                select t1.BSC, ${caseSql} from (
+                    select BSC,CELL,N_CELL,${paramsSql}
+                     from rno_gsm_eri_ncell_param
+                    where
+                <if test="date1 != null and date1 != ''">
+                    mea_date = to_date('${date1}', 'yyyy-MM-dd')
+                </if>
+                <if test="cityId != null and cityId != ''">
+                    and city_id = ${cityId}
+                </if>
+                <if test="bscStr!=null and bscStr != ''">
+                    and bsc in (${bscStr})
+                </if>
+                ) t1
+                left join
+                (select BSC,CELL,N_CELL,${paramsSql}
+                    from rno_gsm_eri_ncell_param
+                   where
+                <if test="date2 != null and date2 != ''">
+                    mea_date = to_date('${date2}', 'yyyy-MM-dd')
+                </if>
+                <if test="cityId != null and cityId != ''">
+                    and city_id = ${cityId}
+                </if>
+                <if test="bscStr!=null and bscStr != ''">
+                    and bsc in (${bscStr})
+                </if>
+                ) t2
+                on (t1.cell = t2.cell and t1.n_cell = t2.n_cell)
+            )
+        group by BSC
+    </select>
+    <select id="typeCellDataNumberOnTheDate"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmParamChangeVM"
+            resultType="java.lang.Integer">
+          select count(1)
+          from rno_gsm_eri_cell cell, rno_gsm_eri_cell_extra_info extra
+          where cell.cell = extra.cell
+              and cell.mea_date = extra.mea_date
+              and cell.city_id = extra.city_id
+              and cell.bsc = extra.bsc
+        <if test="date != null and date != ''">
+            and cell.mea_date = to_date('${date}', 'yyyy-MM-dd')
+        </if>
+        <if test="cityId != null and cityId != ''">
+            and cell.city_id = ${cityId}
+        </if>
+        <if test="bscStr!=null and bscStr != ''">
+            and cell.bsc in (${bscStr})
+        </if>
+    </select>
+    <select id="typeChannelDataNumberOnTheDate"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmParamChangeVM"
+            resultType="java.lang.Integer">
+          select count(1)
+          from rno_gsm_eri_cell_ch_group
+          where
+        <if test="date != null and date != ''">
+           mea_date = to_date('${date}', 'yyyy-MM-dd')
+        </if>
+        <if test="cityId != null and cityId != ''">
+            and city_id = ${cityId}
+        </if>
+        <if test="bscStr!=null and bscStr != ''">
+            and bsc in (${bscStr})
+        </if>
+    </select>
+    <select id="typeNeighbourDataNumberOnTheDate"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmParamChangeVM"
+            resultType="java.lang.Integer">
+        select count(1)
+        from rno_gsm_eri_ncell_param
+        where
+        <if test="date != null and date != ''">
+            mea_date = to_date('${date}', 'yyyy-MM-dd')
+        </if>
+        <if test="cityId != null and cityId != ''">
+            and city_id = ${cityId}
+        </if>
+        <if test="bscStr!=null and bscStr != ''">
+            and bsc in (${bscStr})
+        </if>
+    </select>
+    <select id="getBscById"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmParamChangeVM"
+            resultType="java.util.LinkedHashMap">
+        select id,bsc from RNO_GSM_BSC_DATA
+        where id in (${bscStr})
+        order by bsc
+    </select>
+    <select id="eriCellParamsDetail"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmParamChangeVM"
+            resultType="java.util.Map">
+        select t1.cell,t1.param1,t2.param2
+          from  (select cell.cell,cell.bsc, ${param} as param1
+                  from rno_gsm_eri_cell cell,
+                        rno_gsm_eri_cell_extra_info extra
+                  where cell.cell = extra.cell
+                        and cell.mea_date = extra.mea_date
+                        and cell.city_id = extra.city_id
+                        and cell.bsc = extra.bsc
+                    <if test="date1 != null and date1 != ''">
+                        and cell.mea_date = to_date('${date1}', 'yyyy-MM-dd')
+                    </if>
+                    <if test="cityId != null and cityId != ''">
+                        and cell.city_id = ${cityId}
+                    </if>
+                    <if test="bscStr!=null and bscStr != ''">
+                        and cell.bsc = (select id from RNO_GSM_BSC_DATA where bsc=${bsc})
+                    </if>
+                ) t1
+        left join (select cell.cell,cell.bsc,${param} as param2
+                    from rno_gsm_eri_cell cell,
+                          rno_gsm_eri_cell_extra_info extra
+                    where cell.cell = extra.cell
+                            and cell.mea_date = extra.mea_date
+                            and cell.city_id = extra.city_id
+                            and cell.bsc = extra.bsc
+                        <if test="date2 != null and date2 != ''">
+                            and cell.mea_date = to_date('${date2}', 'yyyy-MM-dd')
+                        </if>
+                        <if test="cityId != null and cityId != ''">
+                            and cell.city_id = ${cityId}
+                        </if>
+                        <if test="bscStr!=null and bscStr != ''">
+                            and cell.bsc = (select id from RNO_GSM_BSC_DATA where bsc=${bsc})
+                        </if>
+                    ) t2
+        on (t1.cell = t2.cell and t1.bsc = t2.bsc)
+    <![CDATA[
+        where param1 <> param2
+    ]]>
+    </select>
+    <select id="eriChannelParamsDetail"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmParamChangeVM"
+            resultType="java.util.Map">
+        select t1.cell,t1.ch_group,param1,param2
+        from  (select cell,bsc,ch_group, ${param} as param1
+                from rno_gsm_eri_cell_ch_group
+                where
+            <if test="date1 != null and date1 != ''">
+               mea_date = to_date('${date1}', 'yyyy-MM-dd')
+            </if>
+            <if test="cityId != null and cityId != ''">
+                and city_id = ${cityId}
+            </if>
+            <if test="bscStr!=null and bscStr != ''">
+                and bsc = (select id from RNO_GSM_BSC_DATA where bsc=${bsc})
+            </if>
+              ) t1
+        left join (select cell,bsc,ch_group,${param} as param2
+                      from rno_gsm_eri_cell_ch_group
+                    where
+                <if test="date2 != null and date2 != ''">
+                    mea_date = to_date('${date2}', 'yyyy-MM-dd')
+                </if>
+                <if test="cityId != null and cityId != ''">
+                    and city_id = ${cityId}
+                </if>
+                <if test="bscStr!=null and bscStr != ''">
+                    and bsc = (select id from RNO_GSM_BSC_DATA where bsc=${bsc})
+                </if>
+              ) t2
+        on (t1.cell = t2.cell and t1.bsc = t2.bsc and t1.ch_group = t2.ch_group)
+        <![CDATA[
+        where param1 <> param2
+        ]]>
+    </select>
+    <select id="eriNeighbourParamsDetail"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmParamChangeVM"
+            resultType="java.util.Map">
+        select t1.cell,t1.n_cell,param1,param2
+        from  (select cell,n_cell, ${param} as param1
+                from rno_gsm_eri_ncell_param
+                where
+                <if test="date1 != null and date1 != ''">
+                    mea_date = to_date('${date1}', 'yyyy-MM-dd')
+                </if>
+                <if test="cityId != null and cityId != ''">
+                    and city_id = ${cityId}
+                </if>
+                <if test="bscStr!=null and bscStr != ''">
+                    and bsc = (select id from RNO_GSM_BSC_DATA where bsc=${bsc})
+                </if>
+              ) t1
+        left join
+        (select cell,n_cell,${param} as param2
+          from rno_gsm_eri_ncell_param
+          where
+        <if test="date2 != null and date2 != ''">
+            mea_date = to_date('${date2}', 'yyyy-MM-dd')
+        </if>
+        <if test="cityId != null and cityId != ''">
+            and city_id = ${cityId}
+        </if>
+        <if test="bscStr!=null and bscStr != ''">
+            and bsc = (select id from RNO_GSM_BSC_DATA where bsc=${bsc})
+        </if>
+        ) t2
+        on (t1.cell = t2.cell and t1.n_cell = t2.n_cell)
+         <![CDATA[
+        where param1 <> param2
+        ]]>
+    </select>
+    <select id="eriCellParamsCompareResult"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmParamChangeVM"
+            resultType="java.util.Map">
+          select d.bsc,t.cell, ${paramsTot}
+           from (select t1.bsc,t1.cell, ${paramsTot}
+                   from (select cell.bsc, cell.cell, ${params1}
+                           from rno_gsm_eri_cell cell,
+                                rno_gsm_eri_cell_extra_info extra
+                          where cell.cell = extra.cell
+                               and cell.mea_date = extra.mea_date
+                               and cell.city_id = extra.city_id
+                               and cell.bsc = extra.bsc
+                            <if test="date1 != null and date1 != ''">
+                                and cell.mea_date = to_date('${date1}', 'yyyy-MM-dd')
+                            </if>
+                            <if test="cityId != null and cityId != ''">
+                                and cell.city_id = ${cityId}
+                            </if>
+                            <if test="bscStr!=null and bscStr != ''">
+                                and cell.bsc in (${bscStr})
+                            </if>
+                        ) t1
+                    left join (
+                         select cell.bsc, cell.cell, ${params2}
+                          from rno_gsm_eri_cell cell,
+                                rno_gsm_eri_cell_extra_info extra
+                         where cell.cell = extra.cell
+                               and cell.mea_date = extra.mea_date
+                               and cell.city_id = extra.city_id
+                               and cell.bsc = extra.bsc
+                            <if test="date2 != null and date2 != ''">
+                                and cell.mea_date = to_date('${date2}', 'yyyy-MM-dd')
+                            </if>
+                            <if test="cityId != null and cityId != ''">
+                                and cell.city_id = ${cityId}
+                            </if>
+                            <if test="bscStr!=null and bscStr != ''">
+                                and cell.bsc in (${bscStr})
+                            </if>
+                        ) t2
+                    on (t1.bsc = t2.bsc and t1.cell = t2.cell )
+                   where  (${whereSql})
+              ) t
+         left join RNO_GSM_BSC_DATA d on d.id = t.bsc
+    </select>
+    <select id="eriChannelParamsCompareResult"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmParamChangeVM"
+            resultType="java.util.Map">
+          select d.bsc,t.cell,t.ch_group, ${paramsTot}
+           from (select t1.bsc,t1.cell,t1.ch_group, ${paramsTot}
+                   from (select chg.bsc, chg.cell, chg.ch_group, ${params1}
+                           from rno_gsm_eri_cell_ch_group chg
+                            where
+                        <if test="date1 != null and date1 != ''">
+                            chg.mea_date = to_date('${date1}', 'yyyy-MM-dd')
+                        </if>
+                        <if test="cityId != null and cityId != ''">
+                            and chg.city_id = ${cityId}
+                        </if>
+                        <if test="bscStr!=null and bscStr != ''">
+                            and chg.bsc in (${bscStr})
+                        </if>
+                          ) t1
+                  left join (select chg.bsc, chg.cell, chg.ch_group, ${params2}
+                              from  rno_gsm_eri_cell_ch_group chg
+                             where
+                        <if test="date2 != null and date2 != ''">
+                            chg.mea_date = to_date('${date2}', 'yyyy-MM-dd')
+                        </if>
+                        <if test="cityId != null and cityId != ''">
+                            and chg.city_id = ${cityId}
+                        </if>
+                        <if test="bscStr!=null and bscStr != ''">
+                            and chg.bsc in (${bscStr})
+                        </if>
+                          ) t2
+                  on (t1.bsc = t2.bsc and t1.cell = t2.cell and t1.ch_group = t2.ch_group)
+                  where  (${whereSql})
+              ) t
+         left join RNO_GSM_BSC_DATA d on d.id = t.bsc
+    </select>
+    <select id="eriNeighbourParamsCompareResult"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmParamChangeVM"
+            resultType="java.util.Map">
+          select d.bsc,t.cell,t.n_cell, ${paramsTot}
+           from (select t1.bsc,t1.cell,t1.n_cell, ${paramsTot}
+                   from (select nc.bsc, nc.cell, nc.n_cell, ${params1}
+                           from rno_gsm_eri_ncell_param nc
+                         where
+                        <if test="date1 != null and date1 != ''">
+                            nc.mea_date = to_date('${date1}', 'yyyy-MM-dd')
+                        </if>
+                        <if test="cityId != null and cityId != ''">
+                            and nc.city_id = ${cityId}
+                        </if>
+                        <if test="bscStr!=null and bscStr != ''">
+                            and nc.bsc in (${bscStr})
+                        </if>
+                           ) t1
+                 left join (select nc.bsc, nc.cell, nc.n_cell, ${params2}
+                               from  rno_gsm_eri_ncell_param nc
+                             where
+                            <if test="date2 != null and date2 != ''">
+                                nc.mea_date = to_date('${date2}', 'yyyy-MM-dd')
+                            </if>
+                            <if test="cityId != null and cityId != ''">
+                                and nc.city_id = ${cityId}
+                            </if>
+                            <if test="bscStr!=null and bscStr != ''">
+                                and nc.bsc in (${bscStr})
+                            </if>
+                            ) t2
+                  on (t1.cell = t2.cell and t1.n_cell = t2.n_cell )
+               where  (${whereSql})
+               ) t
+         left join RNO_GSM_BSC_DATA d on d.id = t.bsc
+    </select>
+</mapper>

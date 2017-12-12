@@ -1,12 +1,12 @@
 package com.hgicreate.rno.web.rest.gsm;
 
 import com.hgicreate.rno.domain.Area;
-import com.hgicreate.rno.repository.gsm.BscDataRepository;
-import com.hgicreate.rno.service.gsm.ParamCheckService;
-import com.hgicreate.rno.service.gsm.dto.BscDataDTO;
-import com.hgicreate.rno.service.gsm.mapper.BscDataMessageMapper;
+import com.hgicreate.rno.repository.gsm.GsmBscDataRepository;
+import com.hgicreate.rno.service.gsm.GsmParamCheckService;
+import com.hgicreate.rno.service.gsm.dto.GsmBscDataDTO;
+import com.hgicreate.rno.service.gsm.mapper.GsmBscDataMessageMapper;
 import com.hgicreate.rno.util.ExcelFileTool;
-import com.hgicreate.rno.web.rest.gsm.vm.ParamCheckVM;
+import com.hgicreate.rno.web.rest.gsm.vm.GsmParamCheckVM;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,28 +21,26 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @RequestMapping("/api/gsm-param-check")
-public class ParamCheckResource {
+public class GsmParamCheckResource {
 
-    private final ParamCheckService paramCheckService;
-    private final BscDataRepository bscDataRepository;
+    private final GsmParamCheckService gsmParamCheckService;
+    private final GsmBscDataRepository gsmBscDataRepository;
 
-    public ParamCheckResource(ParamCheckService paramCheckService,
-                              BscDataRepository bscDataRepository) {
-        this.paramCheckService = paramCheckService;
-        this.bscDataRepository = bscDataRepository;
+    public GsmParamCheckResource(GsmParamCheckService gsmParamCheckService,
+                                 GsmBscDataRepository gsmBscDataRepository) {
+        this.gsmParamCheckService = gsmParamCheckService;
+        this.gsmBscDataRepository = gsmBscDataRepository;
     }
 
     @GetMapping("/check-param")
-    public List<Map<String, Object>> queryParam(ParamCheckVM vm) {
-        log.debug("进入一致性数据检查方法。");
-        log.debug("视图模型: " + vm);
-        return paramCheckService.queryParamData(vm);
+    public List<Map<String, Object>> queryParam(GsmParamCheckVM vm) {
+        log.debug("进入GSM一致性数据检查方法,视图模型={}",vm);
+        return gsmParamCheckService.checkParamData(vm);
     }
 
     @PostMapping("/export-param-check-data")
-    public void exportParamData(ParamCheckVM vm, HttpServletResponse resp) {
-        log.debug("进入一致性数据导出方法。");
-        log.debug("视图模型: " + vm);
+    public void exportParamData(GsmParamCheckVM vm, HttpServletResponse resp) {
+        log.debug("进入一致性数据导出方法,视图模型={}",vm);
         //设置标题
         String fileName = "GSM一致性检查.xlsx";
         try {
@@ -82,19 +80,19 @@ public class ParamCheckResource {
             } else if (("sameNcellFreqCheck").equals(vm.getCheckType())) {
                 sheetName = "同邻频检查";
             }
-            map.put(sheetName, paramCheckService.queryParamData(vm));
+            map.put(sheetName, gsmParamCheckService.checkParamData(vm));
         }
         //把map放进工具导出
         ExcelFileTool.createExcel(resp, map);
     }
 
     @GetMapping("/check-bsc-by-cityId")
-    public List<BscDataDTO> queryReport(String cityId) {
+    public List<GsmBscDataDTO> queryReport(String cityId) {
         log.debug("查询bsc的区域id为：{}", cityId);
         Area area = new Area();
         area.setId(Long.parseLong(cityId));
-        return bscDataRepository.findByAreaAndStatus(area, "N")
-                .stream().map(BscDataMessageMapper.INSTANCE::bscDataToBscDataDto)
+        return gsmBscDataRepository.findByAreaAndStatus(area, "N")
+                .stream().map(GsmBscDataMessageMapper.INSTANCE::bscDataToBscDataDto)
                 .collect(Collectors.toList());
     }
 

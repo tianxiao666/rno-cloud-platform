@@ -1,16 +1,16 @@
 package com.hgicreate.rno.service.gsm.mapper;
 
 import com.hgicreate.rno.domain.DataJob;
-import com.hgicreate.rno.service.gsm.dto.BscReportDTO;
+import com.hgicreate.rno.service.gsm.dto.GsmBscReportDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 @Mapper
-public interface BscDataFileMapper {
+public interface GsmBscDataFileMapper {
 
-    BscDataFileMapper INSTANCE = Mappers.getMapper(BscDataFileMapper.class);
+    GsmBscDataFileMapper INSTANCE = Mappers.getMapper(GsmBscDataFileMapper.class);
 
     @Mappings({
             @Mapping(source = "originFile.createdDate", target = "uploadTime",dateFormat = "yyyy-MM-dd HH:mm:ss"),
@@ -23,5 +23,5 @@ public interface BscDataFileMapper {
             @Mapping(source = "status", target = "status"),
             @Mapping(source = "id", target = "id")
     })
-    BscReportDTO bscDataFileToBscDataDTO(DataJob dataJob);
+    GsmBscReportDTO bscDataFileToBscDataDTO(DataJob dataJob);
 }
