@@ -4,9 +4,21 @@
     <meta charset="UTF-8">
     <title>结构分析任务ncs信息</title>
 
+    <link rel="stylesheet" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
+    <link rel="stylesheet" href="../../lib/datatables/1.10.16/datatables.min.css">
     <link rel="stylesheet" href="css/gsm-struct-analysis.css">
 
-    <script src="js/gsm-struct-analysis-origin.js"></script>
+    <script src="../../lib/jquery/1.8.2/jquery.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.metadata.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
+    <script src="../../lib/validate.js"></script>
+    <script src="../../lib/tab.js"></script>
+    <script src="../../lib/laydate/5.0.7/laydate.js"></script>
+
+    <script src="../../js/common.js"></script>
+    <script src="js/gsm-struct-analysis.js"></script>
 </head>
 <body>
 
@@ -16,21 +28,28 @@
         <em class="loading_fb" id="loadContentId"></em>,请稍侯...
     </h4>
 </div>
-<font style="font-weight: bold;">当前位置： 专项优化 &gt; 结构分析 &gt; 新建结构分析任务</font>
+<div id="info" class="info-style" style="display: none"></div>
+<span style="font-weight: bold;">当前位置：专项优化 &gt; 结构分析 &gt; 新建结构分析任务</span>
 <br>
-<center>
+<div style="text-align: center;">
     <a href="gsm-struct-analysis.html" style="text-decoration: underline;font-weight: bold;">&lt;&lt;返回任务列表</a><br>
-    <font style="font-weight: bold;">任务信息&gt;&gt;<font style="color: #31FF81;">参数配置</font>&gt;&gt;提交任务</font>
+    <span style="font-weight: bold;">任务信息&gt;&gt;<span style="color: #31FF81;">参数配置</span>&gt;&gt;提交任务</span>
     <br>
-</center>
-
-
+</div>
 <div style="width: 50%;margin-top: 20px;padding-left: 24%;">
     <table style="width:500px;margin: 5px auto;">
         <tbody>
         <tr>
-            <td><a class="btn btn-default" href="gsm-struct-analysis-add.html"><input type="button" value="上一步"></a></td>
-            <td><a class="btn btn-default" href="gsm-sruct-analysis-job-submit.html"><input type="button" value="下一步"</a></td>
+            <td>
+                <a class="btn btn-default" href="gsm-struct-analysis-info.html">
+                    <input type="button" value="<上一步">
+                </a>
+            </td>
+            <td>
+                <a class="btn btn-default" onclick="paramsSubmit()">
+                    <input type="button" value="下一步>">
+                </a>
+            </td>
         </tr>
         </tbody>
     </table>
@@ -48,602 +67,289 @@
                 含义
             </th>
         </tr>
-
         <tr>
             <td>
-
-
                 强相关的同频干扰度门限
-
-
             </td>
             <td>
-
-
-                <div id="SAMEFREQINTERTHRESHOLD" class="editbox" style="height: 23px;">
+                <div id="SAMEFREQINTERTHRESHOLD" class="editbox" style="height: 23px;" onclick="editThis(this)">
                     0.02
                 </div>
-                <span id="SAMEFREQINTERTHRESHOLD" class="errorTip"></span>
-
-
+                <span id="SAMEFREQINTERTHRESHOLD1" class="errorTip"></span>
             </td>
             <td>
-
-
                 大于等于该值认为强相关，须大于0
-
-
             </td>
         </tr>
-
         <tr>
             <td>
-
-
                 计算过覆盖系数时考虑小区理想覆盖距离的倍数
-
-
             </td>
             <td>
-
-
-                <div id="OVERSHOOTINGIDEALDISMULTIPLE" class="editbox" style="height: 23px;">
+                <div id="OVERSHOOTINGIDEALDISMULTIPLE" class="editbox" style="height: 23px;" onclick="editThis(this)">
                     1.6
                 </div>
-                <span id="OVERSHOOTINGIDEALDISMULTIPLE" class="errorTip"></span>
-
-
+                <span id="OVERSHOOTINGIDEALDISMULTIPLE1" class="errorTip"></span>
             </td>
             <td>
-
-
                 需大于等于1。
-
-
             </td>
         </tr>
-
         <tr>
             <td>
-
-
                 计算小区间覆盖系数时考虑小区理想覆盖距离的倍数
-
-
             </td>
             <td>
-
-
-                <div id="BETWEENCELLIDEALDISMULTIPLE" class="editbox" style="height: 23px;">
+                <div id="BETWEENCELLIDEALDISMULTIPLE" class="editbox" style="height: 23px;" onclick="editThis(this)">
                     1.6
                 </div>
-                <span id="BETWEENCELLIDEALDISMULTIPLE" class="errorTip"></span>
-
-
+                <span id="BETWEENCELLIDEALDISMULTIPLE1" class="errorTip"></span>
             </td>
             <td>
-
-
                 需大于等于1。
-
-
             </td>
         </tr>
-
         <tr>
             <td>
-
-
                 计算小区检测次数时考虑小区理想覆盖距离的倍数
-
-
             </td>
             <td>
-
-
-                <div id="CELLCHECKTIMESIDEALDISMULTIPLE" class="editbox" style="height: 23px;">
+                <div id="CELLCHECKTIMESIDEALDISMULTIPLE" class="editbox" style="height: 23px;" onclick="editThis(this)">
                     1.6
                 </div>
-                <span id="CELLCHECKTIMESIDEALDISMULTIPLE" class="errorTip"></span>
-
-
+                <span id="CELLCHECKTIMESIDEALDISMULTIPLE1" class="errorTip"></span>
             </td>
             <td>
-
-
                 需大于等于1。
-
-
             </td>
         </tr>
-
         <tr>
             <td>
-
-
                 小区检测次数的同频干扰门限
-
-
             </td>
             <td>
-
-
-                <div id="CELLDETECTCITHRESHOLD" class="editbox" style="height: 23px;">
+                <div id="CELLDETECTCITHRESHOLD" class="editbox" style="height: 23px;" onclick="editThis(this)">
                     0.02
                 </div>
-                <span id="CELLDETECTCITHRESHOLD" class="errorTip"></span>
-
-
+                <span id="CELLDETECTCITHRESHOLD1" class="errorTip"></span>
             </td>
             <td>
-
-
                 大于等于(0.02)该值
-
-
             </td>
         </tr>
-
         <tr>
             <td>
-
-
                 计算小区理想覆盖距离的时候参考强相关小区数
-
-
             </td>
             <td>
-
-
-                <div id="CELLIDEALDISREFERENCECELLNUM" class="editbox" style="height: 23px;">
+                <div id="CELLIDEALDISREFERENCECELLNUM" class="editbox" style="height: 23px;" onclick="editThis(this)">
                     3
                 </div>
-                <span id="CELLIDEALDISREFERENCECELLNUM" class="errorTip"></span>
-
-
+                <span id="CELLIDEALDISREFERENCECELLNUM1" class="errorTip"></span>
             </td>
             <td>
-
-
                 取3个强相关的不同站的小区作为考虑，需为正整数，且小于10
-
-
             </td>
         </tr>
-
         <tr>
             <td>
-
-
                 900小区频点数量
-
-
             </td>
             <td>
-
-
-                <div id="GSM900CELLFREQNUM" class="editbox" style="height: 23px;">
+                <div id="GSM900CELLFREQNUM" class="editbox" style="height: 23px;" onclick="editThis(this)">
                     95
                 </div>
-                <span id="GSM900CELLFREQNUM" class="errorTip"></span>
-
-
+                <span id="GSM900CELLFREQNUM1" class="errorTip"></span>
             </td>
             <td>
-
-
                 有效取值范围为大于0
-
-
             </td>
         </tr>
-
         <tr>
             <td>
-
-
                 1800小区频点数量
-
-
             </td>
             <td>
-
-
-                <div id="GSM1800CELLFREQNUM" class="editbox" style="height: 23px;">
+                <div id="GSM1800CELLFREQNUM" class="editbox" style="height: 23px;" onclick="editThis(this)">
                     125
                 </div>
-                <span id="GSM1800CELLFREQNUM" class="errorTip"></span>
-
-
+                <span id="GSM1800CELLFREQNUM1" class="errorTip"></span>
             </td>
             <td>
-
-
                 有效取值范围为大于0
-
-
             </td>
         </tr>
-
         <tr>
             <td>
-
-
                 900小区理想容量
-
-
             </td>
             <td>
-
-
-                <div id="GSM900CELLIDEALCAPACITY" class="editbox" style="height: 23px;">
+                <div id="GSM900CELLIDEALCAPACITY" class="editbox" style="height: 23px;" onclick="editThis(this)">
                     6
                 </div>
-                <span id="GSM900CELLIDEALCAPACITY" class="errorTip"></span>
-
-
+                <span id="GSM900CELLIDEALCAPACITY1" class="errorTip"></span>
             </td>
             <td>
-
-
                 900M小区理想容量＝TCH容量+BCCH容量＝67/12+1=6.58约等于6。需大于0
-
-
             </td>
         </tr>
-
         <tr>
             <td>
-
-
                 1800小区理想容量
-
-
             </td>
             <td>
-
-
-                <div id="GSM1800CELLIDEALCAPACITY" class="editbox" style="height: 23px;">
+                <div id="GSM1800CELLIDEALCAPACITY" class="editbox" style="height: 23px;" onclick="editThis(this)">
                     9
                 </div>
-                <span id="GSM1800CELLIDEALCAPACITY" class="errorTip"></span>
-
-
+                <span id="GSM1800CELLIDEALCAPACITY1" class="errorTip"></span>
             </td>
             <td>
-
-
                 1800M小区理想容量＝TCH容量+BCCH容量＝96/12+1=9。需大于0
-
-
             </td>
         </tr>
-
         <tr>
             <td>
-
-
                 计算下行覆盖率的最低信号强度门限
-
-
             </td>
             <td>
-
-
-                <div id="DLCOVERMINIMUMSIGNALSTRENGTHTHRESHOLD" class="editbox" style="height: 23px;">
+                <div id="DLCOVERMINIMUMSIGNALSTRENGTHTHRESHOLD" class="editbox" style="height: 23px;" onclick="editThis(this)">
                     -94
                 </div>
-                <span id="DLCOVERMINIMUMSIGNALSTRENGTHTHRESHOLD" class="errorTip"></span>
-
-
+                <span id="DLCOVERMINIMUMSIGNALSTRENGTHTHRESHOLD1" class="errorTip"></span>
             </td>
             <td>
-
-
                 大于等于该值(-94)。
-
-
             </td>
         </tr>
-
         <tr>
             <td>
-
-
                 计算上行覆盖率的最低信号强度门限
-
-
             </td>
             <td>
-
-
-                <div id="ULCOVERMINIMUMSIGNALSTRENGTHTHRESHOLD" class="editbox" style="height: 23px;">
+                <div id="ULCOVERMINIMUMSIGNALSTRENGTHTHRESHOLD" class="editbox" style="height: 23px;" onclick="editThis(this)">
                     -100
                 </div>
-                <span id="ULCOVERMINIMUMSIGNALSTRENGTHTHRESHOLD" class="errorTip"></span>
-
-
+                <span id="ULCOVERMINIMUMSIGNALSTRENGTHTHRESHOLD1" class="errorTip"></span>
             </td>
             <td>
-
-
                 大于等于(-100)该值。
-
-
             </td>
         </tr>
-
         <tr>
             <td>
-
-
                 计算干扰系数时考虑的最远(优)距离
-
-
             </td>
             <td>
-
-
-                <div id="INTERFACTORMOSTDISTANT" class="editbox" style="height: 23px;">
+                <div id="INTERFACTORMOSTDISTANT" class="editbox" style="height: 23px;" onclick="editThis(this)">
                     8
                 </div>
-                <span id="INTERFACTORMOSTDISTANT" class="errorTip"></span>
-
-
+                <span id="INTERFACTORMOSTDISTANT1" class="errorTip"></span>
             </td>
             <td>
-
-
                 小于(15)该值，公里为单位。需大于0。
-
-
             </td>
         </tr>
-
         <tr>
             <td>
-
-
                 计算干扰系数时，同频和邻频干扰系数的最低门限
-
-
             </td>
             <td>
-
-
-                <div id="INTERFACTORSAMEANDADJFREQMINIMUMTHRESHOLD" class="editbox" style="height: 23px;">
+                <div id="INTERFACTORSAMEANDADJFREQMINIMUMTHRESHOLD" class="editbox" style="height: 23px;"
+                     onclick="editThis(this)">
                     0.02
                 </div>
-                <span id="INTERFACTORSAMEANDADJFREQMINIMUMTHRESHOLD" class="errorTip"></span>
-
-
+                <span id="INTERFACTORSAMEANDADJFREQMINIMUMTHRESHOLD1" class="errorTip"></span>
             </td>
             <td>
-
-
                 大于(0.02)该值。
-
-
             </td>
         </tr>
-
         <tr>
             <td>
-
-
                 总采样点过小
-
-
             </td>
             <td>
-
-
-                <div id="TOTALSAMPLECNTTOOSMALL" class="editbox" style="height: 23px;">
+                <div id="TOTALSAMPLECNTTOOSMALL" class="editbox" style="height: 23px;" onclick="editThis(this)">
                     1000
                 </div>
-                <span id="TOTALSAMPLECNTTOOSMALL" class="errorTip"></span>
-
-
+                <span id="TOTALSAMPLECNTTOOSMALL1" class="errorTip"></span>
             </td>
             <td>
-
-
                 总采样点小于(1000)该值
-
-
             </td>
         </tr>
-
         <tr>
             <td>
-
-
                 总采样点小<br>且<br>
-
-
                 同频干扰系数大
-
-
             </td>
             <td>
-
-
-                <div id="TOTALSAMPLECNTSMALL" class="editbox" style="height: 23px;">
+                <div id="TOTALSAMPLECNTSMALL" class="editbox" style="height: 23px;" onclick="editThis(this)">
                     5000
                 </div>
-                <span id="TOTALSAMPLECNTSMALL" class="errorTip"></span>
+                <span id="TOTALSAMPLECNTSMALL1" class="errorTip"></span>
                 <br>
-
-
-                <div id="SAMEFREQINTERCOEFBIG" class="editbox" style="height: 23px;">
+                <div id="SAMEFREQINTERCOEFBIG" class="editbox" style="height: 23px;" onclick="editThis(this)">
                     0.5
                 </div>
-                <span id="SAMEFREQINTERCOEFBIG" class="errorTip"></span>
-
-
+                <span id="SAMEFREQINTERCOEFBIG1" class="errorTip"></span>
             </td>
             <td>
-
-
                 总采样点小于(5000)该值<br>&gt;且<br>
-
-
                 同频干扰系数大于(0.5)该值
-
-
             </td>
         </tr>
-
         <tr>
             <td>
-
-
                 同频干扰系数小
-
-
             </td>
             <td>
-
-
-                <div id="SAMEFREQINTERCOEFSMALL" class="editbox" style="height: 23px;">
+                <div id="SAMEFREQINTERCOEFSMALL" class="editbox" style="height: 23px;" onclick="editThis(this)">
                     0.00105
                 </div>
-                <span id="SAMEFREQINTERCOEFSMALL" class="errorTip"></span>
-
-
+                <span id="SAMEFREQINTERCOEFSMALL1" class="errorTip"></span>
             </td>
             <td>
-
-
                 同频干扰系数小于(0.00105)该值
-
-
             </td>
         </tr>
-
         <tr>
             <td>
-
-
                 过覆盖系数参考距离<br>且<br>
-
-
                 非邻区同频干扰系数
-
-
             </td>
             <td>
-
-
-                <div id="OVERSHOOTINGCOEFRFFERDISTANT" class="editbox" style="height: 23px;">
+                <div id="OVERSHOOTINGCOEFRFFERDISTANT" class="editbox" style="height: 23px;" onclick="editThis(this)">
                     3
                 </div>
-                <span id="OVERSHOOTINGCOEFRFFERDISTANT" class="errorTip"></span>
+                <span id="OVERSHOOTINGCOEFRFFERDISTANT1" class="errorTip"></span>
                 <br>
-
-
-                <div id="NONNCELLSAMEFREQINTERCOEF" class="editbox" style="height: 23px;">
+                <div id="NONNCELLSAMEFREQINTERCOEF" class="editbox" style="height: 23px;" onclick="editThis(this)">
                     0.2
                 </div>
-                <span id="NONNCELLSAMEFREQINTERCOEF" class="errorTip"></span>
-
-
+                <span id="NONNCELLSAMEFREQINTERCOEF1" class="errorTip"></span>
             </td>
             <td>
-
-
                 距离大于(3)该值，千米为单位<br>&gt;且<br>
-
-
                 非邻区同频干扰系数大于(0.2)该值
-
-
             </td>
         </tr>
-
         <tr>
             <td>
-
-
                 计算关联邻小区时考虑的同频干扰度门限
-
-
             </td>
             <td>
-
-
-                <div id="RELATIONNCELLCITHRESHOLD" class="editbox" style="height: 23px;">
+                <div id="RELATIONNCELLCITHRESHOLD" class="editbox" style="height: 23px;" onclick="editThis(this)">
                     0.03
                 </div>
-                <span id="RELATIONNCELLCITHRESHOLD" class="errorTip"></span>
-
-
+                <span id="RELATIONNCELLCITHRESHOLD1" class="errorTip"></span>
             </td>
             <td>
-
-
                 大于等于(0.03)该值
-
-
             </td>
         </tr>
-
-
         </tbody>
     </table>
 </div>
-
-<script type="text/javascript">
-    /*	var sameFreqInterThresholdSession = $("#sameFreqInterThresholdSession").val();
-     var overShootingIdealDisMultipleSession = $("#overShootingIdealDisMultipleSession").val();
-     var betweenCellIdealDisMultipleSession = $("#betweenCellIdealDisMultipleSession").val();
-     var cellCheckTimesIdealDisMultipleSession = $("#cellCheckTimesIdealDisMultipleSession").val();
-     var cellCheckTimesSameFreqInterThresholdSession = $("#cellCheckTimesSameFreqInterThresholdSession").val();
-     var cellIdealDisReferenceCellNumSession = $("#cellIdealDisReferenceCellNumSession").val();
-     var gsm900CellFreqNumSession = $("#gsm900CellFreqNumSession").val();
-     var gsm1800CellFreqNumSession = $("#gsm1800CellFreqNumSession").val();
-     var gsm900CellIdealCapacitySession = $("#gsm900CellIdealCapacitySession").val();
-     var gsm1800CellIdealCapacitySession = $("#gsm1800CellIdealCapacitySession").val();
-     var dlCoverMinimumSignalStrengthThresholdSession = $("#dlCoverMinimumSignalStrengthThresholdSession").val();
-     var ulCoverMinimumSignalStrengthThresholdSession = $("#ulCoverMinimumSignalStrengthThresholdSession").val();
-     var interFactorMostDistantSession = $("#interFactorMostDistantSession").val();
-     var interFactorSameAndAdjFreqMinimumThresholdSession = $("#interFactorSameAndAdjFreqMinimumThresholdSession").val();
-     */
-    //console.log(sameFreqInterThresholdSession+"  "+overShootingIdealDisMultipleSession );
-
-    //优先读取session的值，session值不存在读取初始值
-    /* if(sameFreqInterThresholdSession != ""
-     && overShootingIdealDisMultipleSession != ""
-     && betweenCellIdealDisMultipleSession != ""
-     && cellCheckTimesIdealDisMultipleSession != ""
-     && cellCheckTimesSameFreqInterThresholdSession != ""
-     && cellIdealDisReferenceCellNumSession != ""
-     && gsm900CellFreqNumSession != ""
-     && gsm1800CellFreqNumSession != ""
-     && gsm900CellIdealCapacitySession != ""
-     && gsm1800CellIdealCapacitySession != ""
-     && dlCoverMinimumSignalStrengthThresholdSession != ""
-     && ulCoverMinimumSignalStrengthThresholdSession != ""
-     && interFactorMostDistantSession != ""
-     && interFactorSameAndAdjFreqMinimumThresholdSession != "") {
-
-     $("#sameFreqInterThreshold").html(sameFreqInterThresholdSession);
-     $("#overShootingIdealDisMultiple").html(overShootingIdealDisMultipleSession);
-     $("#betweenCellIdealDisMultiple").html(betweenCellIdealDisMultipleSession);
-     $("#cellCheckTimesIdealDisMultiple").html(cellCheckTimesIdealDisMultipleSession);
-     $("#cellCheckTimesSameFreqInterThreshold").html(cellCheckTimesSameFreqInterThresholdSession);
-     $("#cellIdealDisReferenceCellNum").html(cellIdealDisReferenceCellNumSession);
-     $("#gsm900CellFreqNum").html(gsm900CellFreqNumSession);
-     $("#gsm1800CellFreqNum").html(gsm1800CellFreqNumSession);
-     $("#gsm900CellIdealCapacity").html(gsm900CellIdealCapacitySession);
-     $("#gsm1800CellIdealCapacity").html(gsm1800CellIdealCapacitySession);
-     $("#dlCoverMinimumSignalStrengthThreshold").html(dlCoverMinimumSignalStrengthThresholdSession);
-     $("#ulCoverMinimumSignalStrengthThreshold").html(ulCoverMinimumSignalStrengthThresholdSession);
-     $("#interFactorMostDistant").html(interFactorMostDistantSession);
-     $("#interFactorSameAndAdjFreqMinimumThreshold").html(interFactorSameAndAdjFreqMinimumThresholdSession);
-     } */
-
-</script>
-
 </body>
 </html>

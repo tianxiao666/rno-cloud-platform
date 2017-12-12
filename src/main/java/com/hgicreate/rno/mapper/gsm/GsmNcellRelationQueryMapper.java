@@ -1,7 +1,6 @@
 package com.hgicreate.rno.mapper.gsm;
 
 import com.hgicreate.rno.domain.gsm.GsmNcell;
-import com.hgicreate.rno.domain.gsm.GsmNcellRelation;
 import com.hgicreate.rno.web.rest.gsm.vm.GsmNcellRelationQueryVM;
 import org.apache.ibatis.annotations.Mapper;
 import java.util.List;

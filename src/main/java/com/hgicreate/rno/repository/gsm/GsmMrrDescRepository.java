@@ -14,4 +14,6 @@ public interface GsmMrrDescRepository extends JpaRepository<GsmMrrDesc, Long>{
     List<GsmMrrDesc> findTop1000ByAreaAndFactoryAndBscAndMeaDateBetween(Area area, String factory, String bsc, Date beginTestDate, Date endTestDate);
 
     List<GsmMrrDesc> findTop1000ByAreaAndFactoryAndMeaDateBetween(Area area, String factory, Date beginTestDate, Date endTestDate);
+
+    List<GsmMrrDesc> findTop1000ByAreaAndMeaDateBetween(Area area,Date begMeaDate,Date endMeaDate);
 }

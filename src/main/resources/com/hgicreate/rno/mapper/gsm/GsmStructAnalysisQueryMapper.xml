@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hgicreate.rno.mapper.gsm.GsmStructAnalysisQueryMapper">
+    <select id="taskQuery" parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmStructAnalysisQueryVM"
+            resultType="com.hgicreate.rno.service.gsm.dto.GsmStructAnalysisJobDTO">
+        <bind name="jobName" value="'%' + _parameter.taskName + '%'"/>
+        select job.id,job.name as job_name,job.status,area.name as city_name,job.start_time,job.complete_time,
+        job.beg_mea_time,job.end_mea_time,job.result_store_path,job.file_number
+        from rno_gsm_strucana_job job
+        left outer join rno_sys_area area on area.ID = job.AREA_ID
+        <![CDATA[
+            where rownum <= 1000 and beg_mea_time <= to_date(#{measureDate},'yyyy-MM-dd')
+            and end_mea_time >= to_date(#{measureDate},'yyyy-MM-dd')
+            and created_date between to_date(#{begDate},'yyyy-MM-dd HH24:mi:ss')
+            and to_date(#{endDate},'yyyy-MM-dd HH24:mi:ss')
+            and job.AREA_ID = #{cityId}
+        ]]>
+        <if test="taskName != null and taskName != ''">
+            and job.name like #{jobName}
+        </if>
+        <if test="taskStatus != 'ALL'">
+            and job.status = #{taskStatus}
+        </if>
+        <if test="isMine == true">
+            and job.created_user = #{createdUser}
+        </if>
+    </select>
+</mapper>
