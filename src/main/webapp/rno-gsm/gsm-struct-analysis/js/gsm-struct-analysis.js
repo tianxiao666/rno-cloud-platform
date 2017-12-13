@@ -510,7 +510,7 @@ function showStructTaskResult(data) {
         "data": data,
         "columns": [
             {"data": "jobName"},
-            {"data": "status"},
+            {"data": null},
             {"data": "cityName"},
             {"data": "fileNumber"},
             {"data": null},
@@ -519,6 +519,17 @@ function showStructTaskResult(data) {
             {"data": null}
         ],
         "columnDefs": [{
+            "render": function (data, type, row) {
+                switch (row['status']) {
+                    case "正常完成":
+                        return "<span>"+ row['status'] + "</span>";
+                    case "异常终止":
+                        return "<span style='color: red'>"+ row['status'] + "</span>";
+                }
+            },
+            "targets": 2,
+            "data": null
+        }, {
             "render": function (data, type, row) {
                 return new Date(row['begMeaTime']).Format("yyyy-MM-dd hh:mm:ss") + " <br>至<br> "
                     + new Date(row['endMeaTime']).Format("yyyy-MM-dd hh:mm:ss");
@@ -539,9 +550,16 @@ function showStructTaskResult(data) {
             "data": null
         }, {
             "render": function (data, type, row) {
-                return " <input type='button' value='下载结果文件'>" +
-                    "<input type='button' value='查看运行报告' onclick=\"checkStructureTaskReport('" + row['id'] + "')\">" +
-                    "<br><input type='button' value='查看渲染图' onclick='viewRenderImg(\"4729\")'>";
+                switch (row['status']) {
+                    case "正常完成":
+                        return " <input type='button' value='下载结果文件'>" +
+                            "<input type='button' value='查看运行报告' onclick=\"checkStructureTaskReport('" + row['id'] + "')\">" +
+                            "<br><input type='button' value='查看渲染图' onclick='viewRenderImg(\"4729\")'>";
+                    case "异常终止":
+                        return "<input type='button' value='查看运行报告'"+
+                            " onclick=\"checkStructureTaskReport('" + row['id'] + "')\">"
+                }
+
             },
             "targets": 7,
             "data": null

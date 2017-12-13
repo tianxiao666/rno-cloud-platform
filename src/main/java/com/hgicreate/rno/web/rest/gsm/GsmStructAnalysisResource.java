@@ -64,7 +64,6 @@ public class GsmStructAnalysisResource {
     public void submitTask(GsmStructTaskInfoVM vm) throws ParseException {
         log.debug("任务信息：{}",vm);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
         Date begMeaDate = sdf.parse(vm.getBegMeaDate());
         Date endMeaDate = sdf.parse(vm.getEndMeaDate());
 
@@ -122,10 +121,7 @@ public class GsmStructAnalysisResource {
         gsmStructJobParam.setParamType("STRUCTANA_THRESHOLD");
         gsmStructJobParam.setParamCode("SAMEFREQINTERTHRESHOLD");
         gsmStructJobParam.setParamVal(vm.getSAMEFREQINTERTHRESHOLD());
-        GsmStructJobParam gsmStructJobParam1 = new GsmStructJobParam();
-        gsmStructJobParam1.setGsmStructAnalysisJob(gsmStructAnalysisJob);
-        gsmStructJobParam1.setParamType("STRUCTANA_THRESHOLD");
-        gsmStructJobParamList.add(gsmStructJobParam1);
+        gsmStructJobParamList.add(gsmStructJobParam);
         GsmStructJobParam gsmStructJobParam2 = new GsmStructJobParam();
         gsmStructJobParam2.setParamCode("OVERSHOOTINGIDEALDISMULTIPLE");
         gsmStructJobParam2.setParamVal(vm.getOVERSHOOTINGIDEALDISMULTIPLE());
@@ -169,10 +165,10 @@ public class GsmStructAnalysisResource {
         gsmStructJobParam8.setParamVal(vm.getGSM1800CELLFREQNUM());
         gsmStructJobParamList.add(gsmStructJobParam8);
         GsmStructJobParam gsmStructJobParam9 = new GsmStructJobParam();
-        gsmStructJobParam8.setGsmStructAnalysisJob(gsmStructAnalysisJob);
-        gsmStructJobParam8.setParamType("STRUCTANA_THRESHOLD");
-        gsmStructJobParam8.setParamCode("GSM900CELLIDEALCAPACITY");
-        gsmStructJobParam8.setParamVal(vm.getGSM900CELLIDEALCAPACITY());
+        gsmStructJobParam9.setGsmStructAnalysisJob(gsmStructAnalysisJob);
+        gsmStructJobParam9.setParamType("STRUCTANA_THRESHOLD");
+        gsmStructJobParam9.setParamCode("GSM900CELLIDEALCAPACITY");
+        gsmStructJobParam9.setParamVal(vm.getGSM900CELLIDEALCAPACITY());
         gsmStructJobParamList.add(gsmStructJobParam9);
         GsmStructJobParam gsmStructJobParam10 = new GsmStructJobParam();
         gsmStructJobParam10.setGsmStructAnalysisJob(gsmStructAnalysisJob);
@@ -228,72 +224,94 @@ public class GsmStructAnalysisResource {
         gsmStructJobParam18.setParamCode("SAMEFREQINTERCOEFBIG");
         gsmStructJobParam18.setParamVal(vm.getSAMEFREQINTERCOEFBIG());
         gsmStructJobParamList.add(gsmStructJobParam18);
-        gsmStructJobParam.setParamCode("SAMEFREQINTERCOEFSMALL");
-        gsmStructJobParam.setParamVal(vm.getSAMEFREQINTERCOEFSMALL());
-        GsmStructJobParam gsmStructJobParam19 = gsmStructJobParam;
+        GsmStructJobParam gsmStructJobParam19 = new GsmStructJobParam();
+        gsmStructJobParam19.setGsmStructAnalysisJob(gsmStructAnalysisJob);
+        gsmStructJobParam19.setParamType("STRUCTANA_THRESHOLD");
+        gsmStructJobParam19.setParamCode("SAMEFREQINTERCOEFSMALL");
+        gsmStructJobParam19.setParamVal(vm.getSAMEFREQINTERCOEFSMALL());
         gsmStructJobParamList.add(gsmStructJobParam19);
-        gsmStructJobParam.setParamCode("OVERSHOOTINGCOEFRFFERDISTANT");
-        gsmStructJobParam.setParamVal(vm.getOVERSHOOTINGCOEFRFFERDISTANT());
-        GsmStructJobParam gsmStructJobParam20 = gsmStructJobParam;
+        GsmStructJobParam gsmStructJobParam20 = new GsmStructJobParam();
+        gsmStructJobParam20.setGsmStructAnalysisJob(gsmStructAnalysisJob);
+        gsmStructJobParam20.setParamType("STRUCTANA_THRESHOLD");
+        gsmStructJobParam20.setParamCode("OVERSHOOTINGCOEFRFFERDISTANT");
+        gsmStructJobParam20.setParamVal(vm.getOVERSHOOTINGCOEFRFFERDISTANT());
         gsmStructJobParamList.add(gsmStructJobParam20);
-        gsmStructJobParam.setParamCode("NONNCELLSAMEFREQINTERCOEF");
-        gsmStructJobParam.setParamVal(vm.getNONNCELLSAMEFREQINTERCOEF());
-        GsmStructJobParam gsmStructJobParam21 = gsmStructJobParam;
+        GsmStructJobParam gsmStructJobParam21 = new GsmStructJobParam();
+        gsmStructJobParam21.setGsmStructAnalysisJob(gsmStructAnalysisJob);
+        gsmStructJobParam21.setParamType("STRUCTANA_THRESHOLD");
+        gsmStructJobParam21.setParamCode("NONNCELLSAMEFREQINTERCOEF");
+        gsmStructJobParam21.setParamVal(vm.getNONNCELLSAMEFREQINTERCOEF());
         gsmStructJobParamList.add(gsmStructJobParam21);
-        gsmStructJobParam.setParamType("STRUCTANA_DATATYPE");
-        gsmStructJobParam.setParamCode("USEERIDATA");
+        GsmStructJobParam gsmStructJobParam22 = new GsmStructJobParam();
+        gsmStructJobParam22.setGsmStructAnalysisJob(gsmStructAnalysisJob);
+        gsmStructJobParam22.setParamType("STRUCTANA_DATATYPE");
+        gsmStructJobParam22.setParamCode("USEERIDATA");
         if(vm.getUseEriData()!=null){
-            gsmStructJobParam.setParamVal("Y");
+            gsmStructJobParam22.setParamVal("Y");
         }else {
-            gsmStructJobParam.setParamVal("N");
+            gsmStructJobParam22.setParamVal("N");
         }
-        gsmStructJobParam.setParamCode("USEHWDATA");
-        if(vm.getUseHwData()!=null){
-            gsmStructJobParam.setParamVal("Y");
-        }else {
-            gsmStructJobParam.setParamVal("N");
-        }
-        gsmStructJobParam.setParamType("STRUCTANA_CALPROCE");
-        gsmStructJobParam.setParamCode("CALCLUSTERWEIGHT");
-        if(vm.getCalClusterWeight()!=null){
-            gsmStructJobParam.setParamVal("Y");
-        }else {
-            gsmStructJobParam.setParamVal("N");
-        }
-        GsmStructJobParam gsmStructJobParam22 = gsmStructJobParam;
         gsmStructJobParamList.add(gsmStructJobParam22);
-        gsmStructJobParam.setParamCode("CALIDEALDIS");
-        if(vm.getCalIdealDis()!=null){
-            gsmStructJobParam.setParamVal("Y");
+        GsmStructJobParam gsmStructJobParam23 = new GsmStructJobParam();
+        gsmStructJobParam23.setGsmStructAnalysisJob(gsmStructAnalysisJob);
+        gsmStructJobParam23.setParamType("STRUCTANA_DATATYPE");
+        gsmStructJobParam23.setParamCode("USEHWDATA");
+        if(vm.getUseHwData()!=null){
+            gsmStructJobParam23.setParamVal("Y");
         }else {
-            gsmStructJobParam.setParamVal("N");
+            gsmStructJobParam23.setParamVal("N");
         }
-        GsmStructJobParam gsmStructJobParam23 = gsmStructJobParam;
         gsmStructJobParamList.add(gsmStructJobParam23);
-        gsmStructJobParam.setParamCode("CALCLUSTERCONSTRAIN");
-        if(vm.getCalClusterConstrain()!=null){
-            gsmStructJobParam.setParamVal("Y");
+        GsmStructJobParam gsmStructJobParam24 = new GsmStructJobParam();
+        gsmStructJobParam24.setGsmStructAnalysisJob(gsmStructAnalysisJob);
+        gsmStructJobParam24.setParamType("STRUCTANA_CALPROCE");
+        gsmStructJobParam24.setParamCode("CALCLUSTERWEIGHT");
+        if(vm.getCalClusterWeight()!=null){
+            gsmStructJobParam24.setParamVal("Y");
         }else {
-            gsmStructJobParam.setParamVal("N");
+            gsmStructJobParam24.setParamVal("N");
         }
-        GsmStructJobParam gsmStructJobParam24 = gsmStructJobParam;
         gsmStructJobParamList.add(gsmStructJobParam24);
-        gsmStructJobParam.setParamCode("CALCELLRES");
-        if(vm.getCalCellRes()!=null){
-            gsmStructJobParam.setParamVal("Y");
+        GsmStructJobParam gsmStructJobParam25 = new GsmStructJobParam();
+        gsmStructJobParam25.setGsmStructAnalysisJob(gsmStructAnalysisJob);
+        gsmStructJobParam25.setParamType("STRUCTANA_CALPROCE");
+        gsmStructJobParam25.setParamCode("CALIDEALDIS");
+        if(vm.getCalIdealDis()!=null){
+            gsmStructJobParam25.setParamVal("Y");
         }else {
-            gsmStructJobParam.setParamVal("N");
+            gsmStructJobParam25.setParamVal("N");
         }
-        GsmStructJobParam gsmStructJobParam25 = gsmStructJobParam;
         gsmStructJobParamList.add(gsmStructJobParam25);
-        gsmStructJobParam.setParamCode("CALCONCLUSTER");
-        if(vm.getCalConCluster()!=null){
-            gsmStructJobParam.setParamVal("Y");
+        GsmStructJobParam gsmStructJobParam26 = new GsmStructJobParam();
+        gsmStructJobParam26.setGsmStructAnalysisJob(gsmStructAnalysisJob);
+        gsmStructJobParam26.setParamType("STRUCTANA_CALPROCE");
+        gsmStructJobParam26.setParamCode("CALCLUSTERCONSTRAIN");
+        if(vm.getCalClusterConstrain()!=null){
+            gsmStructJobParam26.setParamVal("Y");
         }else {
-            gsmStructJobParam.setParamVal("N");
+            gsmStructJobParam26.setParamVal("N");
         }
-        GsmStructJobParam gsmStructJobParam26 = gsmStructJobParam;
         gsmStructJobParamList.add(gsmStructJobParam26);
+        GsmStructJobParam gsmStructJobParam27 = new GsmStructJobParam();
+        gsmStructJobParam27.setGsmStructAnalysisJob(gsmStructAnalysisJob);
+        gsmStructJobParam27.setParamType("STRUCTANA_CALPROCE");
+        gsmStructJobParam27.setParamCode("CALCELLRES");
+        if(vm.getCalCellRes()!=null){
+            gsmStructJobParam27.setParamVal("Y");
+        }else {
+            gsmStructJobParam27.setParamVal("N");
+        }
+        gsmStructJobParamList.add(gsmStructJobParam27);
+        GsmStructJobParam gsmStructJobParam28 = new GsmStructJobParam();
+        gsmStructJobParam28.setGsmStructAnalysisJob(gsmStructAnalysisJob);
+        gsmStructJobParam28.setParamType("STRUCTANA_CALPROCE");
+        gsmStructJobParam28.setParamCode("CALCONCLUSTER");
+        if(vm.getCalConCluster()!=null){
+            gsmStructJobParam28.setParamVal("Y");
+        }else {
+            gsmStructJobParam28.setParamVal("N");
+        }
+        gsmStructJobParamList.add(gsmStructJobParam28);
         gsmStructJobParamRepository.save(gsmStructJobParamList);
 
         // 保存任务报告
@@ -308,74 +326,100 @@ public class GsmStructAnalysisResource {
                 gsmStructJobReport.setStatus("成功");
                 gsmStructJobReportList.add(gsmStructJobReport);
 
-                gsmStructJobReport.setStage("完成爱立信MRR数据准备");
-                gsmStructJobReport.setStartTime(startTimeCal.getTime());
-                gsmStructJobReport.setCompleteTime(addSecond(gsmStructJobReport.getStartTime(),4));
-                gsmStructJobReport.setStatus("成功");
-                gsmStructJobReportList.add(gsmStructJobReport);
+                GsmStructJobReport gsmStructJobReport2 = new GsmStructJobReport();
+                gsmStructJobReport2.setGsmStructAnalysisJob(gsmStructAnalysisJob);
+                gsmStructJobReport2.setStage("完成爱立信MRR数据准备");
+                gsmStructJobReport2.setStartTime(gsmStructJobReport.getCompleteTime());
+                gsmStructJobReport2.setCompleteTime(addSecond(gsmStructJobReport2.getStartTime(),4));
+                gsmStructJobReport2.setStatus("成功");
+                gsmStructJobReportList.add(gsmStructJobReport2);
 
                 if(vm.getUseHwData()!=null){
-                    gsmStructJobReport.setStage("完成华为NCS数据准备");
-                    gsmStructJobReport.setStartTime(startTimeCal.getTime());
-                    gsmStructJobReport.setCompleteTime(addSecond(gsmStructJobReport.getStartTime(),3));
-                    gsmStructJobReport.setStatus("成功");
-                    gsmStructJobReportList.add(gsmStructJobReport);
+                    GsmStructJobReport gsmStructJobReport3 = new GsmStructJobReport();
+                    gsmStructJobReport3.setGsmStructAnalysisJob(gsmStructAnalysisJob);
+                    gsmStructJobReport3.setStage("完成华为NCS数据准备");
+                    gsmStructJobReport3.setStartTime(gsmStructJobReport2.getCompleteTime());
+                    gsmStructJobReport3.setCompleteTime(addSecond(gsmStructJobReport3.getStartTime(),3));
+                    gsmStructJobReport3.setStatus("成功");
+                    gsmStructJobReportList.add(gsmStructJobReport3);
 
-                    gsmStructJobReport.setStage("完成华为MRR数据准备");
-                    gsmStructJobReport.setStartTime(startTimeCal.getTime());
-                    gsmStructJobReport.setCompleteTime(addSecond(gsmStructJobReport.getStartTime(),5));
-                    gsmStructJobReport.setStatus("成功");
-                    gsmStructJobReportList.add(gsmStructJobReport);
+                    GsmStructJobReport gsmStructJobReport4 = new GsmStructJobReport();
+                    gsmStructJobReport4.setGsmStructAnalysisJob(gsmStructAnalysisJob);
+                    gsmStructJobReport4.setStage("完成华为MRR数据准备");
+                    gsmStructJobReport4.setStartTime(gsmStructJobReport3.getCompleteTime());
+                    gsmStructJobReport4.setCompleteTime(addSecond(gsmStructJobReport4.getStartTime(),5));
+                    gsmStructJobReport4.setStatus("成功");
+                    gsmStructJobReportList.add(gsmStructJobReport4);
                 }
 
                 if(vm.getCalConCluster()!=null){
-                    gsmStructJobReport.setStage("计算最大联通簇");
-                    gsmStructJobReport.setStartTime(gsmStructJobReport.getCompleteTime());
-                    gsmStructJobReport.setCompleteTime(addSecond(gsmStructJobReport.getStartTime(),3));
-                    gsmStructJobReport.setStatus("成功");
-                    gsmStructJobReportList.add(gsmStructJobReport);
+                    GsmStructJobReport gsmStructJobReport5 = new GsmStructJobReport();
+                    gsmStructJobReport5.setGsmStructAnalysisJob(gsmStructAnalysisJob);
+                    gsmStructJobReport5.setStage("计算最大联通簇");
+                    gsmStructJobReport5.setStartTime(gsmStructJobReportList.get(gsmStructJobReportList.size()-1)
+                            .getCompleteTime());
+                    gsmStructJobReport5.setCompleteTime(addSecond(gsmStructJobReport5.getStartTime(),3));
+                    gsmStructJobReport5.setStatus("成功");
+                    gsmStructJobReportList.add(gsmStructJobReport5);
                 }
                 if(vm.getCalClusterConstrain()!=null){
-                    gsmStructJobReport.setStage("计算簇约束因子");
-                    gsmStructJobReport.setStartTime(gsmStructJobReport.getCompleteTime());
-                    gsmStructJobReport.setCompleteTime(addSecond(gsmStructJobReport.getStartTime(),4));
-                    gsmStructJobReport.setStatus("成功");
-                    gsmStructJobReportList.add(gsmStructJobReport);
+                    GsmStructJobReport gsmStructJobReport6 = new GsmStructJobReport();
+                    gsmStructJobReport6.setGsmStructAnalysisJob(gsmStructAnalysisJob);
+                    gsmStructJobReport6.setStage("计算簇约束因子");
+                    gsmStructJobReport6.setStartTime(gsmStructJobReportList.get(gsmStructJobReportList.size()-1)
+                            .getCompleteTime());
+                    gsmStructJobReport6.setCompleteTime(addSecond(gsmStructJobReport6.getStartTime(),4));
+                    gsmStructJobReport6.setStatus("成功");
+                    gsmStructJobReportList.add(gsmStructJobReport6);
                 }
                 if(vm.getCalClusterWeight()!=null){
-                    gsmStructJobReport.setStage("计算簇权重");
-                    gsmStructJobReport.setStartTime(gsmStructJobReport.getCompleteTime());
-                    gsmStructJobReport.setCompleteTime(addSecond(gsmStructJobReport.getStartTime(),3));
-                    gsmStructJobReport.setStatus("成功");
-                    gsmStructJobReportList.add(gsmStructJobReport);
+                    GsmStructJobReport gsmStructJobReport7 = new GsmStructJobReport();
+                    gsmStructJobReport7.setGsmStructAnalysisJob(gsmStructAnalysisJob);
+                    gsmStructJobReport7.setStage("计算簇权重");
+                    gsmStructJobReport7.setStartTime(gsmStructJobReportList.get(gsmStructJobReportList.size()-1)
+                            .getCompleteTime());
+                    gsmStructJobReport7.setCompleteTime(addSecond(gsmStructJobReport7.getStartTime(),3));
+                    gsmStructJobReport7.setStatus("成功");
+                    gsmStructJobReportList.add(gsmStructJobReport7);
                 }
                 if(vm.getCalCellRes()!=null){
-                    gsmStructJobReport.setStage("计算结构指数");
-                    gsmStructJobReport.setStartTime(gsmStructJobReport.getCompleteTime());
-                    gsmStructJobReport.setCompleteTime(addSecond(gsmStructJobReport.getStartTime(),2));
-                    gsmStructJobReport.setStatus("成功");
-                    gsmStructJobReportList.add(gsmStructJobReport);
+                    GsmStructJobReport gsmStructJobReport8 = new GsmStructJobReport();
+                    gsmStructJobReport8.setGsmStructAnalysisJob(gsmStructAnalysisJob);
+                    gsmStructJobReport8.setStage("计算结构指数");
+                    gsmStructJobReport8.setStartTime(gsmStructJobReportList.get(gsmStructJobReportList.size()-1)
+                            .getCompleteTime());
+                    gsmStructJobReport8.setCompleteTime(addSecond(gsmStructJobReport.getStartTime(),2));
+                    gsmStructJobReport8.setStatus("成功");
+                    gsmStructJobReportList.add(gsmStructJobReport8);
                 }
                 if(vm.getCalIdealDis()!=null){
-                    gsmStructJobReport.setStage("计算理想距离");
-                    gsmStructJobReport.setStartTime(gsmStructJobReport.getCompleteTime());
-                    gsmStructJobReport.setCompleteTime(addSecond(gsmStructJobReport.getStartTime(),3));
-                    gsmStructJobReport.setStatus("成功");
-                    gsmStructJobReportList.add(gsmStructJobReport);
+                    GsmStructJobReport gsmStructJobReport9 = new GsmStructJobReport();
+                    gsmStructJobReport9.setGsmStructAnalysisJob(gsmStructAnalysisJob);
+                    gsmStructJobReport9.setStage("计算理想距离");
+                    gsmStructJobReport9.setStartTime(gsmStructJobReportList.get(gsmStructJobReportList.size()-1)
+                            .getCompleteTime());
+                    gsmStructJobReport9.setCompleteTime(addSecond(gsmStructJobReport.getStartTime(),3));
+                    gsmStructJobReport9.setStatus("成功");
+                    gsmStructJobReportList.add(gsmStructJobReport9);
                 }
             }
-            gsmStructJobReport.setStage("保存分析结果");
-            gsmStructJobReport.setStartTime(gsmStructJobReport.getCompleteTime());
-            gsmStructJobReport.setCompleteTime(addSecond(gsmStructJobReport.getStartTime(),1));
-            gsmStructJobReport.setStatus("成功");
-            gsmStructJobReportList.add(gsmStructJobReport);
+            GsmStructJobReport gsmStructJobReport10 = new GsmStructJobReport();
+            gsmStructJobReport10.setGsmStructAnalysisJob(gsmStructAnalysisJob);
+            gsmStructJobReport10.setStage("保存分析结果");
+            gsmStructJobReport10.setStartTime(gsmStructJobReportList.get(gsmStructJobReportList.size()-1)
+                    .getCompleteTime());
+            gsmStructJobReport10.setCompleteTime(completeTime);
+            gsmStructJobReport10.setStatus("成功");
+            gsmStructJobReportList.add(gsmStructJobReport10);
 
-            gsmStructJobReport.setStage("任务总结");
-            gsmStructJobReport.setStartTime(startTime);
-            gsmStructJobReport.setCompleteTime(completeTime);
-            gsmStructJobReport.setStatus("全部成功");
-            gsmStructJobReport.setMessage("结构分析完成！");
-            gsmStructJobReportList.add(gsmStructJobReport);
+            GsmStructJobReport gsmStructJobReport11 = new GsmStructJobReport();
+            gsmStructJobReport11.setGsmStructAnalysisJob(gsmStructAnalysisJob);
+            gsmStructJobReport11.setStage("任务总结");
+            gsmStructJobReport11.setStartTime(startTime);
+            gsmStructJobReport11.setCompleteTime(completeTime);
+            gsmStructJobReport11.setStatus("全部成功");
+            gsmStructJobReport11.setMessage("结构分析完成！");
+            gsmStructJobReportList.add(gsmStructJobReport11);
         }else{
             gsmStructJobReport.setStage("任务总结");
             gsmStructJobReport.setStartTime(gsmStructAnalysisJob.getStartTime());
@@ -387,7 +431,7 @@ public class GsmStructAnalysisResource {
         gsmStructJobReportRepository.save(gsmStructJobReportList);
     }
 
-    public Date addSecond(Date date,int second) {
+    private Date addSecond(Date date,int second) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.add(Calendar.SECOND, second);
