@@ -41,7 +41,7 @@ body {
     width: 100%;
 }
 
-select, input, textarea, button {
+select, textarea, button {
     font-style: normal;
     font-variant: normal;
     font-weight: normal;
@@ -82,7 +82,7 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: bold;
 }
 
-input, select, textarea {
+ select, textarea {
     font-style: normal;
     font-variant: normal;
     font-weight: normal;
@@ -93,14 +93,7 @@ input, select, textarea {
     outline: none;
 }
 
-input[type="text"] {
-    padding: 4px;
-    background: url("../images/input.png") 0 -75px no-repeat;
-    border-width: 1px;
-    border-style: solid;
-    border-image: initial;
-    border-color: rgb(154, 154, 154) rgb(205, 205, 205) rgb(205, 205, 205) rgb(154, 154, 154);
-}
+
 
 input[type="button"], input[type="submit"] {
     cursor: pointer;
@@ -151,7 +144,7 @@ textarea {
     resize: none;
 }
 
-input, select, textarea {
+ select, textarea {
     font-style: normal;
     font-variant: normal;
     font-weight: normal;
@@ -169,7 +162,7 @@ input[type="checkbox"], input[type="radio"] {
     cursor: pointer;
 }
 
-input[type="text"], input[type="password"] {
+ input[type="password"] {
     width: 110px;
     padding: 4px;
     background: url("../images/input.png") 0 -75px repeat-x;
@@ -1667,4 +1660,81 @@ body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, input, button, textar
 
 .bscCls {
 
+}
+
+.resource_list_icon {
+    position: absolute;
+    right: 300px;
+    top: 0;
+    z-index: 2;
+    height: 100%;
+}
+
+.resource_list_icon .shad_v {
+    background: url("../images/shadv.png") 0 0 repeat-y transparent;
+    height: 100%;
+    right: 0;
+    position: absolute;
+    top: 0;
+    width: 4px;
+}
+
+.resource_list_icon .switch {
+    background: url("../images/flexArrow.png") no-repeat #E2ECF7;
+    height: 68px;
+    right: 0;
+    position: absolute;
+    top: 6px;
+    width: 18px;
+    z-index: 10;
+}
+
+.resource_list_icon .switch_hidden {
+    background: url("../images/flexArrow.png") -22px 0 no-repeat #E2ECF7;
+    height: 68px;
+    left: -18px;
+    position: absolute;
+    top: 6px;
+    width: 18px;
+    z-index: 10;
+    display: none;
+}
+
+.info-style {
+    width: 230px;
+    height: 56px;
+    position: fixed;
+    top: 50%;
+    left: 45%;
+    line-height: 56px;
+    color: #fff;
+    text-align: center;
+    font-size: 15px;
+    background: #ff0000;
+    filter: alpha(opacity=100);
+    -moz-opacity: 1.0;
+    opacity: 1.0;
+    z-index: 9999;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+
+.loading {
+    width: 160px;
+    height: 56px;
+    position: fixed;
+    top: 50%;
+    left: 45%;
+    line-height: 56px;
+    color: #fff;
+    padding-left: 60px;
+    font-size: 15px;
+    background: #000 url("../images/loader.gif") no-repeat 10px 50%;
+    opacity: 0.7;
+    z-index: 9999;
+    -moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+    border-radius: 20px;
+    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=70);
 }

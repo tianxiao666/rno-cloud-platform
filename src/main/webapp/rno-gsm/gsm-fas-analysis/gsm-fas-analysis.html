@@ -5,48 +5,32 @@
     <title>FAS指标图表展现</title>
 
     <link rel="stylesheet" href="css/gsm-fas-analysis.css">
+    <link rel="stylesheet" href="../../lib/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
 
-    <script src="../../lib/jquery/1.8.2/jquery.js"></script>
+
+    <script src="../../lib/jquery/3.2.1/jquery.js"></script>
+    <script src="../../lib/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
     <script src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
     <script src="../../lib/jquery-plugins/jquery.metadata.js"></script>
     <script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
+    <script src="../../lib/echarts/echarts.common.min.js"></script>
     <script src="../../lib/validate.js"></script>
     <script src="../../lib/tab.js"></script>
     <script src="../../lib/laydate/5.0.7/laydate.js"></script>
+    <script src="../../js/common.js"></script>
     <script src="js/gsm-fas-analysis.js"></script>
-    <script src="js/gsm-fas-analysis-chart.js"></script>
-    <script>
-        require.config({
-            packages: [
-                {
-                    name: 'echarts',
-                    location: './jslib/echarts',
-                    main: 'echarts'
-                }
-            ]
-        });
-    </script>
 </head>
 <body>
-<div class="loading_cover" id="loadingDataDiv" style="display: none;">
-    <div class="cover"></div>
-    <h4 class="loading">
-        正在加载 <em class="loading_fb" id="tipcontentId">
-        广州市
-        小区数据</em>,请稍侯...
-    </h4>
-</div>
-<table width="100%" height="100%">
+<div id="loading" class="loading" style="display: none">加载中...</div>
+<div id="info" class="info-style" style="display: none"></div>
+<table style="width: 100%;height: 725px">
     <tbody>
     <tr>
-        <td style="vertical-align: top" width="16%" bgcolor="#E2ECF7">
-            <div style="margin:10px">
+        <!--<td style="vertical-align: top"  bgcolor="#E2ECF7">
+           &lt;!&ndash; <div style="margin:10px">
                 <div style=" width:163px">
-                    <select name="provinceId" class="required" id="provinceId1"></select>
-                    <select name="cityId" class="required" id="cityId1"></select> <br>
-                    输入小区:<input name="" id="inputCell" style="width: 194px" type="text">
                 </div>
                 <div style="border:1px solid #CDCDCD;background:white;overflow-x:scroll;overflow-y:scroll;width: 192px;height: 524px">
                     <ul id="allBscCell" class="filetree treeview">
@@ -818,45 +802,29 @@
                     </ul>
 
                 </div>
-            </div>
+            </div>&ndash;&gt;
 
 
-        </td>
-        <td style="vertical-align: top" bgcolor="#E2ECF7">
+        </td>-->
+        <td style="vertical-align: top;" bgcolor="#E2ECF7">
             <table width="100%">
                 <tbody>
                 <tr style="vertical-align: top">
                     <td></td>
                 </tr>
-
                 <tr>
-                    <td style="width:70%;vertical-align: top" align="center">
-                        <div id="chartDiv"
-                             style="width: 100%; height: 755px; background-color: rgba(0, 0, 0, 0); cursor: default;"
-                             title="双击全屏" alt="双击全屏" _echarts_instance_="1508929086161">
-                            <div style="position: relative; overflow: hidden; width: 1129px; height: 755px;">
-                                <div style="position: absolute; left: 0px; top: 0px; width: 1129px; height: 755px; -moz-user-select: none;"
-                                     width="1129" height="755" data-zr-dom-id="bg"></div>
-                                <canvas style="position: absolute; left: 0px; top: 0px; width: 1129px; height: 755px; -moz-user-select: none;"
-                                        width="1129" height="755" data-zr-dom-id="0"></canvas>
-                                <canvas style="position: absolute; left: 0px; top: 0px; width: 1129px; height: 755px; -moz-user-select: none;"
-                                        width="1129" height="755" data-zr-dom-id="1"></canvas>
-                                <canvas style="position: absolute; left: 0px; top: 0px; width: 1129px; height: 755px; -moz-user-select: none;"
-                                        width="1129" height="755" data-zr-dom-id="6"></canvas>
-                                <canvas style="position: absolute; left: 0px; top: 0px; width: 1129px; height: 755px; -moz-user-select: none;"
-                                        width="1129" height="755" data-zr-dom-id="8"></canvas>
-                                <canvas style="position: absolute; left: 0px; top: 0px; width: 1129px; height: 755px; -moz-user-select: none;"
-                                        width="1129" height="755" data-zr-dom-id="_zrender_hover_"></canvas>
-                                <div class="echarts-dataview"
-                                     style="position: absolute; display: block; overflow: hidden; transition: height 0.8s ease 0s, background-color 1s ease 0s; z-index: 1; left: 0px; top: 0px; width: 1129px; height: 0px; background-color: rgb(240, 255, 255);"></div>
-                                <div style="position: absolute; display: block; border-style: solid; white-space: nowrap; transition: left 0.4s ease 0s, top 0.4s ease 0s; background-color: rgba(0, 0, 0, 0.7); border-width: 0px; border-color: rgb(51, 51, 51); border-radius: 4px; color: rgb(255, 255, 255); text-decoration: none; font-family: Arial,Verdana,sans-serif; font-size: 12px; line-height: 18px; font-style: normal; font-weight: normal; padding: 5px; left: 1060px; top: 493px;">
-                                    00:00<br> : -<br> : -
-                                </div>
-                            </div>
+                    <td style="vertical-align: top;height: 100%;" bgcolor="#E2ECF7">
+                        <div id="main"
+                             style=" width: 1000px;height: 600px;margin-top: 50px;margin-left: 100px">
                         </div>
                     </td>
                     <td style="vertical-align: top">
-                        <div class="resource_list300_box" style="height:610px;width: 250px">
+                        <div class="resource_list_icon" style="right: 300px;">
+                            <a href="#" class="switch"></a>
+                            <a href="#" class="switch_hidden"></a>
+                            <div class="shad_v"></div>
+                        </div>
+                        <div class="resource_list300_box" style="height:100%;width: 300px">
                             <div class="resource_list300">
                                 <div id="div_tab" class="div_tab divtab_menu">
                                     <ul>
@@ -866,48 +834,51 @@
                                 </div>
                             </div>
                             <div class="divtab_content"
-                                 style="overflow-y:auto; overflow-x:auto; width:100%; height:600px;">
-                                <div id="div_tab_0" style="background-color: #F5F5F5">
-
-                                    <div class="div-m-split-10px"></div>
-                                    <div class="div_title_24px_blue title_width">
-                                        <span class="sp_title analysis_list_title">开始日期</span>&nbsp;&nbsp;&nbsp;<input
-                                            value="" id="fasMeaBegDate" name=""
-                                            style="width:100px;margin-left:8px;margin-right:8px" class="hasDatepicker"
-                                            type="text">
+                                 style="overflow-y:auto; overflow-x:auto; width:100%; height:100%;">
+                                <div id="div_tab_0" class="form-horizontal">
+                                    <form id="queryFasForm" method="get">
+                                    <div class="form-group">
+                                        <label for="provinceId" class="col-sm-4 control-label">省份</label>
+                                        <div class="col-sm-8">
+                                            <select name="provinceId" id="provinceId" class="form-control"></select>
+                                        </div>
                                     </div>
-
-                                    <div class="div-m-split-10px"></div>
-                                    <div class="div_title_24px_blue title_width">
-                                        <span class="sp_title analysis_list_title">结束日期</span>&nbsp;&nbsp;&nbsp;<input
-                                            value="" id="fasMeaEndDate" name=""
-                                            style="width:100px;margin-left:8px;margin-right:8px" class="hasDatepicker"
-                                            type="text">
+                                    <div class="form-group">
+                                        <label for="cityId" class="col-sm-4 control-label">地市</label>
+                                        <div class="col-sm-8">
+                                            <select title="" name="cityId" id="cityId"
+                                                    class="form-control"></select>
+                                        </div>
                                     </div>
-
+                                    <div class="form-group">
+                                        <label for="fasMeaBegDate" class="col-sm-4 control-label">开始日期</label>
+                                        <div class="col-sm-8">
+                                            <input id="fasMeaBegDate" name="fasMeaBegTime"  class="form-control" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="fasMeaEndDate" class="col-sm-4 control-label">结束日期</label>
+                                        <div class="col-sm-8">
+                                            <input id="fasMeaEndDate" name="fasMeaEndTime"  class="form-control" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputCell" class="col-sm-4 control-label">输入小区</label>
+                                        <div class="col-sm-8">
+                                            <input name="cell" id="inputCell" class="form-control" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-4 col-sm-8">
+                                            <button type="submit" id="searchButton"  class="btn btn-default">查 询</button>
+                                        </div>
+                                    </div>
+                                    </form>
                                 </div>
                                 <div id="div_tab_1" style="display:none">
                                     <div id="fasInfoDiv"
-                                         style="border:1px solid #CDCDCD;background:white;float: left; width:100%;overflow: scroll;height: 565px">
-                                        <table class="main-table1 half-width" id="fasInfoTab" width="100%">
-                                            <tbody>
-                                            <tr>
-                                                <td colspan="2">测量信息</td>
-                                            </tr>
-
-                                            <tr>
-                                                <td class="menuTd">CELL_NAME</td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="menuTd">AVMEDIAN_1_150</td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="menuTd">AVPERCENTILE_1_150</td>
-                                                <td></td>
-                                            </tr>
-                                            </tbody>
+                                         >
+                                        <table id="fasInfoTab" class="table table-bordered table-responsive">
                                         </table>
                                     </div>
                                 </div>
@@ -933,8 +904,6 @@
     <tr valign="top">
         <td colspan="2" bgcolor="#E2ECF7">
             <div style="margin-left: 10px">
-                <div id="fullScreenChart" style="display:none" title="双击关闭" alt="双击关闭">
-                </div>
 
                 <div class="dialog2 draggable ui-draggable" style="left: 381px; top: 119px;display: none">
                     <div style="padding: 5px">
@@ -959,203 +928,5 @@
     </tr>
     </tbody>
 </table>
-<div id="ui-datepicker-div" class="ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-    <div class="ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-all"><a
-            class="ui-datepicker-prev ui-corner-all" data-handler="prev" data-event="click" title="Prev"><span
-            class="ui-icon ui-icon-circle-triangle-w">Prev</span></a><a
-            class="ui-datepicker-next ui-corner-all ui-state-disabled" title="Next"><span
-            class="ui-icon ui-icon-circle-triangle-e">Next</span></a>
-        <div class="ui-datepicker-title"><select class="ui-datepicker-month" data-handler="selectMonth"
-                                                 data-event="change">
-            <option value="0">一月</option>
-            <option value="1">二月</option>
-            <option value="2">三月</option>
-            <option value="3">四月</option>
-            <option value="4">五月</option>
-            <option value="5">六月</option>
-            <option value="6">七月</option>
-            <option value="7">八月</option>
-            <option value="8">九月</option>
-            <option value="9" selected="selected">十月</option>
-        </select>&nbsp;<span class="ui-datepicker-year">2017</span></div>
-    </div>
-    <table class="ui-datepicker-calendar">
-        <thead>
-        <tr>
-            <th class="ui-datepicker-week-end"><span title="Sunday">日</span></th>
-            <th><span title="Monday">一</span></th>
-            <th><span title="Tuesday">二</span></th>
-            <th><span title="Wednesday">三</span></th>
-            <th><span title="Thursday">四</span></th>
-            <th><span title="Friday">五</span></th>
-            <th class="ui-datepicker-week-end"><span title="Saturday">六</span></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="9"
-                data-year="2017"><a class="ui-state-default" href="#">1</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">2</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">3</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">4</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">5</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">6</a></td>
-            <td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="9"
-                data-year="2017"><a class="ui-state-default" href="#">7</a></td>
-        </tr>
-        <tr>
-            <td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="9"
-                data-year="2017"><a class="ui-state-default" href="#">8</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">9</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">10</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">11</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">12</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">13</a></td>
-            <td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="9"
-                data-year="2017"><a class="ui-state-default" href="#">14</a></td>
-        </tr>
-        <tr>
-            <td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="9"
-                data-year="2017"><a class="ui-state-default" href="#">15</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">16</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">17</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">18</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">19</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">20</a></td>
-            <td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="9"
-                data-year="2017"><a class="ui-state-default" href="#">21</a></td>
-        </tr>
-        <tr>
-            <td class=" ui-datepicker-week-end " data-handler="selectDay" data-event="click" data-month="9"
-                data-year="2017"><a class="ui-state-default" href="#">22</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">23</a></td>
-            <td class=" " data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default" href="#">24</a></td>
-            <td class=" ui-datepicker-days-cell-over  ui-datepicker-current-day ui-datepicker-today"
-                data-handler="selectDay" data-event="click" data-month="9" data-year="2017"><a
-                    class="ui-state-default ui-state-highlight ui-state-active ui-state-hover" href="#">25</a></td>
-            <td class=" ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">26</span></td>
-            <td class=" ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">27</span></td>
-            <td class=" ui-datepicker-week-end ui-datepicker-unselectable ui-state-disabled "><span
-                    class="ui-state-default">28</span></td>
-        </tr>
-        <tr>
-            <td class=" ui-datepicker-week-end ui-datepicker-unselectable ui-state-disabled "><span
-                    class="ui-state-default">29</span></td>
-            <td class=" ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">30</span></td>
-            <td class=" ui-datepicker-unselectable ui-state-disabled "><span class="ui-state-default">31</span></td>
-            <td class=" ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td>
-            <td class=" ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td>
-            <td class=" ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">&nbsp;</td>
-            <td class=" ui-datepicker-week-end ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">
-                &nbsp;
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <div class="ui-timepicker-div">
-        <dl>
-            <dt class="ui_tpicker_time_label"></dt>
-            <dd class="ui_tpicker_time"></dd>
-            <dt class="ui_tpicker_hour_label" style="display:none;">Hour</dt>
-            <dd class="ui_tpicker_hour">
-                <div class="ui_tpicker_hour_slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"
-                     style="display:none;" aria-disabled="false"><a
-                        class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 100%;"></a></div>
-            </dd>
-            <dt class="ui_tpicker_minute_label" style="display:none;">Minute</dt>
-            <dd class="ui_tpicker_minute">
-                <div class="ui_tpicker_minute_slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"
-                     style="display:none;" aria-disabled="false"><a
-                        class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 100%;"></a></div>
-            </dd>
-            <dt class="ui_tpicker_second_label" style="display:none;">Second</dt>
-            <dd class="ui_tpicker_second">
-                <div class="ui_tpicker_second_slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"
-                     style="display:none;" aria-disabled="false"><a
-                        class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 100%;"></a></div>
-            </dd>
-            <dt class="ui_tpicker_millisec_label" style="display:none;">Millisecond</dt>
-            <dd class="ui_tpicker_millisec">
-                <div class="ui_tpicker_millisec_slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"
-                     style="display:none;" aria-disabled="false"><a
-                        class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 100%;"></a></div>
-            </dd>
-            <dt class="ui_tpicker_microsec_label" style="display:none;">Microsecond</dt>
-            <dd class="ui_tpicker_microsec">
-                <div class="ui_tpicker_microsec_slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"
-                     style="display:none;" aria-disabled="false"><a
-                        class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 0%;"></a></div>
-            </dd>
-            <dt class="ui_tpicker_timezone_label" style="display:none;">Time Zone</dt>
-            <dd class="ui_tpicker_timezone" style="display:none;"><select>
-                <option value="-720">-1200</option>
-                <option value="-660">-1100</option>
-                <option value="-600">-1000</option>
-                <option value="-570">-0930</option>
-                <option value="-540">-0900</option>
-                <option value="-480">-0800</option>
-                <option value="-420">-0700</option>
-                <option value="-360">-0600</option>
-                <option value="-300">-0500</option>
-                <option value="-270">-0430</option>
-                <option value="-240">-0400</option>
-                <option value="-210">-0330</option>
-                <option value="-180">-0300</option>
-                <option value="-120">-0200</option>
-                <option value="-60">-0100</option>
-                <option value="0">+0000</option>
-                <option value="60">+0100</option>
-                <option value="120">+0200</option>
-                <option value="180">+0300</option>
-                <option value="210">+0330</option>
-                <option value="240">+0400</option>
-                <option value="270">+0430</option>
-                <option value="300">+0500</option>
-                <option value="330">+0530</option>
-                <option value="345">+0545</option>
-                <option value="360">+0600</option>
-                <option value="390">+0630</option>
-                <option value="420">+0700</option>
-                <option value="480" selected="selected">+0800</option>
-                <option value="525">+0845</option>
-                <option value="540">+0900</option>
-                <option value="570">+0930</option>
-                <option value="600">+1000</option>
-                <option value="630">+1030</option>
-                <option value="660">+1100</option>
-                <option value="690">+1130</option>
-                <option value="720">+1200</option>
-                <option value="765">+1245</option>
-                <option value="780">+1300</option>
-                <option value="840">+1400</option>
-            </select></dd>
-        </dl>
-    </div>
-    <div class="ui-datepicker-buttonpane ui-widget-content">
-        <button type="button" class="ui-datepicker-current ui-state-default ui-priority-secondary ui-corner-all"
-                data-handler="today" data-event="click">加载数据
-        </button>
-        <button type="button" class="ui-datepicker-close ui-state-default ui-priority-primary ui-corner-all"
-                data-handler="hide" data-event="click">关闭
-        </button>
-    </div>
-</div>
 </body>
 </html>
