@@ -244,8 +244,7 @@ function showMessage() {
     var body = $(window.frames['file_download_return'].document.body);
     var data = eval('(' + body[0].textContent + ')');
     if (data.length === 1){
-        $("#info").css("background", "red");
-        showInfoInAndOut("info", data[0]['dateMessage']);
+        alert(data[0]['dateMessage']);
     }
 }
 
