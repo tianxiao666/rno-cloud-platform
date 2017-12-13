@@ -26,7 +26,7 @@
                 <input name="paramType" value="neighbour" onclick="changeParam()" type="radio"> Neighbour &nbsp;
             </td>
             <td>
-                <form id="downloadChangeParamDataForm" action="/api/gsm-param-change/export-param-change-data" method="post">
+                <form id="downloadChangeParamDataForm" target="file_download_return" action="/api/gsm-param-change/export-param-change-data" method="post">
                     日期：<input
                             value="" id="begUploadDate" name="date1" type="text">
                     日期：<input value="" id="endUploadDate" name="date2" type="text">
@@ -38,6 +38,7 @@
                     <input type="hidden" id="bscStr" name="bscStr" value="">
                     <input type="hidden" id="paramStr" name="paramStr" value="">
                 </form>
+                <iframe id="file_download_return" hidden="true" name="file_download_return" onload="showMessage()"></iframe>
             </td>
         </tr>
         <tr>

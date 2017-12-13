@@ -65,17 +65,8 @@ public class GsmParamChangeResource {
     public List<Map<String, Object>> exportParamData(GsmParamChangeVM vm, HttpServletResponse resp) {
         log.debug("进入GSM参数变动核查导出参数方法,视图模型={}",vm);
         List<Map<String,Object>> res = new ArrayList<Map<String,Object>>();
-        List<Map<String,Object>> resF = new ArrayList<Map<String,Object>>();
+        List<Map<String,Object>> resF;
         Map<String, List<Map<String, Object>>> map = new LinkedHashMap<>();
-        //设置标题
-        String fileName = "GSM参数变动核查.xlsx";
-        try {
-            fileName = new String("GSM参数变动核查.xlsx".getBytes("UTF-8"), "iso-8859-1");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        resp.setContentType("application/x.ms-excel");
-        resp.setHeader("Content-disposition", "attachment;filename=" + fileName);
         //获取文件内容
         Map<String,Object> dateMessageMap = new LinkedHashMap<>();
         //判断第一个日期是否存在小区数据
@@ -92,6 +83,15 @@ public class GsmParamChangeResource {
                     dateMessageMap.put( "dateMessage", "两个日期之间不存在差异参数");
                     res.add(dateMessageMap);
                 }else {
+                    //设置标题
+                    String fileName = "GSM参数变动核查.xlsx";
+                    try {
+                        fileName = new String("GSM参数变动核查.xlsx".getBytes("UTF-8"), "iso-8859-1");
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                    resp.setContentType("application/x.ms-excel");
+                    resp.setHeader("Content-disposition", "attachment;filename=" + fileName);
                     map.put("gsm参数核查", resF);
                     //把map放进工具导出
                     ExcelFileTool.createExcel(resp, map);

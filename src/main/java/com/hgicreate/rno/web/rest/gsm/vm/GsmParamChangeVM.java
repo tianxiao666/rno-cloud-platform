@@ -9,7 +9,7 @@ public class GsmParamChangeVM {
     private String date2;
     private String paramStr;
     private String paramType;
-    private Integer cityId;
+    private String cityId;
     private String date;
     private String sumSql;
     private String caseSql;

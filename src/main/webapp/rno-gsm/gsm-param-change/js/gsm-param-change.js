@@ -16,6 +16,9 @@ var chgParams = ["CHGR_STATE", "CHGR_TG", "BAND", "BCCD", "CBCH", "CCCH", "EACPR
 
 var neightbourParams = ["AWOFFSET", "BQOFFSET", "BQOFFSETAFR", "BQOFFSETAWB", "CAND", "CS", "GPRSVALID", "HIHYST", "KHYST", "KOFFSET",
     "LHYST", "OFFSET", "LOHYST", "PROFFSET", "TRHYST", "TROFFSET", "USERDATA"];
+
+var cityId,paramStr,bscStr,paramType;
+
 $(function () {
     // 初始化区域联动
     initAreaSelectors({selectors: ["province-id", "city-id"]});
@@ -38,8 +41,18 @@ $(function () {
     });
 
     //导出
-    $("#exportBtn").click(function () {
-        paramCompare('export');
+    $("#exportBtn").on('click', function() {
+        if(paramCompare('export')===false){
+            return false;
+        }else {
+            $("#info").css("background", "yellow");
+            showInfoInAndOut("info", "正在导出文件，请耐心等待.....");
+            $("#paramType").val(paramType);
+            $("#cityId").val(cityId);
+            $("#bscStr").val(bscStr);
+            $("#paramStr").val(paramStr);
+            return true;
+        }
     });
 
 });
@@ -112,20 +125,19 @@ function changeParam() {
         $(this).parent("li").find("input[name='params']").attr("checked", checkedValue);
     });
 }
-
 function paramCompare(flag) {
     //获取城市id
-    var cityId = $("#city-id").val();
+    cityId = $("#city-id").val();
     //获取参数类型
-    var paramType = $('input[name="paramType"]:checked').val();
+    paramType = $('input[name="paramType"]:checked').val();
     //获取所选择的参数
-    var paramStr = "";
+    paramStr = "";
     $('input:checkbox[name="params"]:checked').each(function () {
         paramStr += $(this).val() + ",";
     });
     paramStr = paramStr.substring(0, paramStr.length - 1);
     //获取所选择的BSC
-    var bscStr = "";
+    bscStr = "";
     $('input:checkbox[name="bsc"]:checked').each(function () {
         bscStr += $(this).val() + ",";
     });
@@ -138,19 +150,19 @@ function paramCompare(flag) {
     //验证
     if (paramType == undefined || paramType == "") {
         alert("请选择参数类型！");
-        return;
+        return false;
     }
     if (paramStr == undefined || paramStr == "") {
         alert("请选择需要对比的参数！");
-        return;
+        return false;
     }
     if (bscStr == undefined || bscStr == "") {
         alert("请选择需要对比的BSC！");
-        return;
+        return false;
     }
     if (date1 == date2) {
         alert("选择比较的两个日期是同一天！");
-        return;
+        return false;
     }
     if(flag==='compare') {
         //清空
@@ -224,14 +236,16 @@ function paramCompare(flag) {
             }
         });
     }else if(flag==='export'){
-        $("#info").css("background", "yellow");
-        showInfoInAndOut("info", "正在导出文件，请耐心等待.....");
-        $("#paramType").val(paramType);
-        $("#cityId").val(cityId);
-        $("#bscStr").val(bscStr);
-        $("#paramStr").val(paramStr);
-        //提交导出信息
-        $("#downloadChangeParamDataForm").submit;
+        return true;
+    }
+}
+
+function showMessage() {
+    var body = $(window.frames['file_download_return'].document.body);
+    var data = eval('(' + body[0].textContent + ')');
+    if (data.length === 1){
+        $("#info").css("background", "red");
+        showInfoInAndOut("info", data[0]['dateMessage']);
     }
 }
 
