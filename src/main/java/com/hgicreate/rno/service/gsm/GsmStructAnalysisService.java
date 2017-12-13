@@ -3,15 +3,11 @@ package com.hgicreate.rno.service.gsm;
 import com.hgicreate.rno.domain.Area;
 import com.hgicreate.rno.domain.gsm.GsmEriNcsDesc;
 import com.hgicreate.rno.domain.gsm.GsmMrrDesc;
-import com.hgicreate.rno.domain.gsm.GsmThreshold;
 import com.hgicreate.rno.mapper.gsm.GsmStructAnalysisQueryMapper;
 import com.hgicreate.rno.repository.gsm.GsmEriNcsDescRepository;
 import com.hgicreate.rno.repository.gsm.GsmMrrDescRepository;
-import com.hgicreate.rno.repository.gsm.GsmThresholdRepository;
 import com.hgicreate.rno.security.SecurityUtils;
 import com.hgicreate.rno.service.gsm.dto.GsmStructAnalysisJobDTO;
-import com.hgicreate.rno.service.gsm.dto.GsmThresholdDTO;
-import com.hgicreate.rno.service.gsm.mapper.GsmThresholdMapper;
 import com.hgicreate.rno.web.rest.gsm.vm.GsmStructAnalysisQueryVM;
 import com.hgicreate.rno.web.rest.gsm.vm.GsmStructTaskInfoVM;
 import org.springframework.stereotype.Service;
@@ -19,22 +15,18 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class GsmStructAnalysisService {
     private final GsmStructAnalysisQueryMapper gsmStructAnalysisQueryMapper;
-    private final GsmThresholdRepository gsmThresholdRepository;
 
     private final GsmMrrDescRepository gsmMrrDescRepository;
     private final GsmEriNcsDescRepository gsmEriNcsDescRepository;
 
     public GsmStructAnalysisService(GsmStructAnalysisQueryMapper gsmStructAnalysisQueryMapper,
-                                    GsmThresholdRepository gsmThresholdRepository,
                                     GsmMrrDescRepository gsmMrrDescRepository,
                                     GsmEriNcsDescRepository gsmEriNcsDescRepository) {
         this.gsmStructAnalysisQueryMapper = gsmStructAnalysisQueryMapper;
-        this.gsmThresholdRepository = gsmThresholdRepository;
         this.gsmMrrDescRepository = gsmMrrDescRepository;
         this.gsmEriNcsDescRepository = gsmEriNcsDescRepository;
     }
@@ -47,13 +39,6 @@ public class GsmStructAnalysisService {
             vm.setCreatedUser(SecurityUtils.getCurrentUserLogin());
         }
         return gsmStructAnalysisQueryMapper.taskQuery(vm);
-    }
-
-    public List<GsmThresholdDTO> getTaskParams() {
-        List<GsmThreshold> list = gsmThresholdRepository.findByModuleType("STRUCTANA");
-        return list.stream()
-                .map(GsmThresholdMapper.INSTANCE::gsmThresholdToGsmThresholdDTO)
-                .collect(Collectors.toList());
     }
 
     public List<Map<String,Object>> queryFileNumber(GsmStructTaskInfoVM vm) throws ParseException {

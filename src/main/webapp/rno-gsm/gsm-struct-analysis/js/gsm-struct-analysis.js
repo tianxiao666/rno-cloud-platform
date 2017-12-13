@@ -606,36 +606,39 @@ function loadMap() {
 }
 
 function checkStructureTaskReport(jobId) {
-    $("#viewReportForm").find("input#hiddenJobId").val(jobId);
+    $.ajax({
+        url: '/api/gsm-struct-analysis/query-report',
+        dataType: 'text',
+        type:'post',
+        data: {id: jobId},
+        success:function(data){
+            $("#viewReportForm").find("input#hiddenJobId").val(jobId);
 
-    $("#reportDiv").css("display", "block");
-    $("#structureTaskDiv").css("display", "none");
-    $("#renderImgDiv").css("display", "none");
-    $('#runResultDT').css("line-height", "12px");
-    $('#runResultDT').DataTable({
-        "ajax": "data/gsm-struct-analysis-report.json",
-        "columns": [
-            {"data": "STAGE"},
-            {"data": "BEG_TIME"},
-            {"data": "END_TIME"},
-            {"data": "STATE"},
-            {"data": null}
-        ],
-        "columnDefs": [
-            {
-                "render": function (data, type, row) {
-                    return " ";
-                },
-                "targets": -1,
-                "data": null
-
-            }
-        ],
-        "lengthChange": false,
-        "ordering": false,
-        "searching": false,
-        "language": {
-            url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
+            $("#reportDiv").css("display", "block");
+            $("#structureTaskDiv").css("display", "none");
+            $("#renderImgDiv").css("display", "none");
+            $("#runResultDT").css("line-height", "12px")
+                .DataTable({
+                    "data": JSON.parse(data),
+                    "columns": [
+                        {"data": "stage"},
+                        {"data": "startTime"},
+                        {"data": "completeTime"},
+                        {"data": "status"},
+                        {"data": "message"}
+                    ],
+                    "lengthChange": false,
+                    "ordering": true,
+                    "searching": false,
+                    "destroy": true,
+                    "language": {
+                        url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
+                    }
+                });
+        }, error: function (err) {
+            console.log(err);
+            $("#info").css("background", "red");
+            showInfoInAndOut("info", "后台程序错误！");
         }
     });
 }
