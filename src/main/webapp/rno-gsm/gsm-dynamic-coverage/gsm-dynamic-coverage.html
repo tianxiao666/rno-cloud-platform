@@ -4,31 +4,45 @@
     <meta charset=UTF-8>
     <title>小区动态覆盖展示</title>
 
-    <link rel="stylesheet" href="css/gsm-dynamic-coverage.css">
-    <link rel="stylesheet" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
-    <link rel="stylesheet" href="../../lib/openlayers/4.4.2/ol.css">
+    <!--webjars JQuery & JQuery UI -->
+    <script src="/webjars/jquery/3.1.1/jquery.js"></script>
+    <link rel="stylesheet" href="/webjars/jquery-ui/1.12.1/jquery-ui.css"/>
+    <script src="/webjars/jquery-ui/1.12.1/jquery-ui.js"></script>
+    <!--webjars Bootstrap -->
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.7/css/bootstrap.css"/>
+    <script src="/webjars/bootstrap/3.3.7/js/bootstrap.js"></script>
+    <!-- Openlayers & Plugins-->
+    <link rel="stylesheet" href="/webjars/openlayers/4.3.1/ol.css"/>
+    <script src="/webjars/openlayers/4.3.1/ol-debug.js"></script>
+    <link rel="stylesheet" href="../../lib/openlayers/ol3-contextmenu/ol3-contextmenu.css"/>
+    <script src="../../lib/openlayers/ol3-contextmenu/ol3-contextmenu-debug.js"></script>
+    <link rel="stylesheet" href="/webjars/ol3-layerswitcher/1.1.2/src/ol3-layerswitcher.css"/>
+    <script src="/webjars/ol3-layerswitcher/1.1.2/src/ol3-layerswitcher.js"></script>
 
-    <script src="../../lib/jquery/1.8.2/jquery.js"></script>
-    <script src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
-    <script src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
-    <script src="../../lib/jquery-plugins/jquery.metadata.js"></script>
-    <script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
-    <script src="../../lib/validate.js"></script>
-    <script src="../../lib/tab.js"></script>
-    <script src="../../lib/openlayers/4.4.2/ol.js"></script>
-    <script src="js/gsm-dynamic-coverage-origin.js"></script>
+
+    <link rel="stylesheet" href="css/gsm-dynamic-coverage.css">
+
+
     <script src="../../lib/laydate/5.0.7/laydate.js"></script>
-    <script src="js/gsm-dynamic-coverage.js"></script>
+    <script src="../../lib/rno/selftools.js"></script>
+    <script src="lib/libgiscelldisplay.js"></script>
+
+    <script src="js/rno_gsm_dynamic_coverage.js"></script>
 </head>
 <body>
 
-<!--<div class="loading_cover" id="loadingDataDiv" style="display: none">
+<div class="loading_cover" id="loadingDataDiv" style="display: none">
     <div class="cover"></div>
     <h4 class="loading">
         <em class="loading_fb" id="loadContentId"></em>,请稍侯...
     </h4>
-</div>-->
+</div>
 <div id="map" class="map"></div>
+<div style="display: none">
+    <div id="popup"></div>
+</div>
+<!-- 显示小区名 -->
+<div id="tooltip" style="color: red"></div>
 <div class="dialog draggable ui-draggable">
     <div style="padding: 5px">
 
@@ -88,48 +102,48 @@
     <div class="shad_v"></div>
 </div>
 <div class="resource_list300_box" style="height: 100%">
-        <div class="resource_list300">
-            <div id="div_tab" class="div_tab divtab_menu">
-                <ul>
-                    <li class="selected" id="interPlanLi">选择条件</li>
-                </ul>
-            </div>
-        </div>
-        <div class="divtab_content" style="overflow-y:auto; overflow-x:auto; width:360px; height:600px">
-            <div id="div_tab_0">
-
-                <div class="div_title_24px_blue">
-                    <span class="sp_title" >小区加载</span>
-                </div>
-                <div style="margin: 3px"></div>
-                <input id="queryCellAreaId" value="加载小区信息" name="loadCellToMap" style="margin-right: 0px"
-                       type="button">
-
-                <div class="div_title_24px_blue">
-                    <span class="sp_title">日期选择</span>
-                </div>
-                <div style="margin: 3px"></div>
-                日期 <input id="begUploadDate" name="attachParams['begUploadDate']" class="hasDatepicker"
-                          type="text">
-                -
-                <input id="endUploadDate" name="attachParams['endUploadDate']" class="hasDatepicker"
-                       type="text">
-
-                <div class="div_title_24px_blue">
-                    <span class="sp_title">图形系数</span>
-                </div>
-                <div style="margin: 3px"></div>
-                折线图形状系数&nbsp;<input id="imgCoeff" value="0.2" type="text">
-                <br>(默认值0.2，输入数字且k大于0小于0.5)
-
-                <hr>
-                <input id="clearCoverPolygon" value="清除覆盖图" name="clearCoverPolygon"
-                       style="margin-right: 0px" type="button">
-
-            </div>
-
+    <div class="resource_list300">
+        <div id="div_tab" class="div_tab divtab_menu">
+            <ul>
+                <li class="selected" id="interPlanLi">选择条件</li>
+            </ul>
         </div>
     </div>
+    <div class="divtab_content" style="overflow-y:auto; overflow-x:auto; width:360px; height:600px">
+        <div id="div_tab_0">
+
+            <div class="div_title_24px_blue">
+                <span class="sp_title">小区加载</span>
+            </div>
+            <div style="margin: 3px"></div>
+            <input id="queryCellAreaId" value="加载小区信息" name="loadCellToMap" style="margin-right: 0px"
+                   type="button">
+
+            <div class="div_title_24px_blue">
+                <span class="sp_title">日期选择</span>
+            </div>
+            <div style="margin: 3px"></div>
+            日期 <input id="begUploadDate" name="attachParams['begUploadDate']" class="hasDatepicker"
+                      type="text">
+            -
+            <input id="endUploadDate" name="attachParams['endUploadDate']" class="hasDatepicker"
+                   type="text">
+
+            <div class="div_title_24px_blue">
+                <span class="sp_title">图形系数</span>
+            </div>
+            <div style="margin: 3px"></div>
+            折线图形状系数&nbsp;<input id="imgCoeff" value="0.2" type="text">
+            <br>(默认值0.2，输入数字且k大于0小于0.5)
+            <!--<input type="hidden" id="imgSizeCoeff" value="10"/>-->
+            <hr>
+            <input id="clearCoverPolygon" value="清除覆盖图" name="clearCoverPolygon"
+                   style="margin-right: 0px" type="button">
+
+        </div>
+
+    </div>
+</div>
 <div id="searchDiv" class="dialog2 draggable ui-draggable" style="display:none; left: 55px; top: 74px;">
     <div class="dialog_header">
         <div class="dialog_title">小区查找</div>
@@ -154,6 +168,16 @@
         <input value="清除搜索结果" id="clearSearchResultBtn" type="button">
         <span style="color:red;width:100px;font-family:华文中宋;text-align:center" id="errorDiv"></span>
     </div>
+</div>
+
+<div id="operInfo"
+     style="display:none; top:40px;left:600px;z-index:999;width:400px; height:40px; background-color:#7dff3f; filter:alpha(Opacity=80);-moz-opacity:0.5;opacity: 0.5;z-index:9999;position: fixed;">
+    <table height="100%" width="100%" style="text-align:center">
+        <tr>
+            <td><span id="operTip"></span></td>
+        </tr>
+    </table>
+
 </div>
 
 </body>
