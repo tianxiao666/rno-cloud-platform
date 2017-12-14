@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>加载话务性能</title>
 
+    <link rel="stylesheet" href="../../lib/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="css/gsm-traffic-data.css">
     <link rel="stylesheet" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
     <link rel="stylesheet" href="../../lib/datatables/1.10.16/datatables.min.css">
@@ -17,21 +18,13 @@
     <script src="../../lib/tab.js"></script>
     <script src="../../lib/laydate/5.0.7/laydate.js"></script>
     <script src="../../lib/datatables/1.10.16/datatables.min.js"></script>
+    <script src="../../js/common.js"></script>
     <script src="js/gsm-traffic-data.js"></script>
     <script>
-        $(document).ready(function () {
-
-
-        });
-    </script>
-    <script>
         var $ = jQuery.noConflict();
-        $(function () {
-            //tab选项卡
-            tab("div_tab", "li", "onclick");//项目服务范围类别切换
-
-        })
         $(document).ready(function () {
+
+            tab("div_tab", "li", "onclick");
             //刷新按钮
             $("#refreshLoadedBtn").click();
             $("#radiohide").click(function () {
@@ -50,10 +43,7 @@
                 //return true;
 
             });
-            //校验
-            //$("#form_tab_2").validate({
-            //submitHandler : function(form) {
-            //ajaxSubmit,submit
+
             $("#form_tab_2").submit(function () {
                 //alert("2");
                 //重新初始化分页参数
@@ -92,25 +82,6 @@
                 var hodescLists = data.cellaudioordatadescLists;
                 var colorarr = ["#96C4EB", "#DBEBF8"];
                 //console.log("page===" + page);
-                if (page) {
-                    var pageSize = page.pageSize ? page.pageSize : 0;
-                    $("#" + tabFlag + "hiddenPageSize").val(pageSize);
-
-                    var currentPage = page.currentPage && pageSize != 0 ? page.currentPage : 1;
-                    $("#" + tabFlag + "hiddenCurrentPage").val(currentPage);
-
-                    var totalPageCnt = page.totalPageCnt ? page.totalPageCnt : 0;
-                    $("#" + tabFlag + "hiddenTotalPageCnt").val(totalPageCnt);
-
-                    var totalCnt = page['totalCnt'] ? page['totalCnt'] : 0;
-                    $("#" + tabFlag + "hiddenTotalCnt").val(totalCnt);
-
-                    // 跳转
-                    $("#" + tabFlag + "emTotalCnt").html(totalCnt);
-                    $("#" + tabFlag + "showCurrentPage").val(currentPage);
-                    $("#" + tabFlag + "emTotalPageCnt").html(totalPageCnt);
-
-                }
                 var table = $("#" + tabFlag + "queryResultTab");
                 // 只保留表头
                 //table.empty();
@@ -153,54 +124,6 @@
 
             }
 
-// 跳转
-            function showListViewByPage(dir, formId, tabFlag) {
-                var pageSize = new Number($("#" + tabFlag + "hiddenPageSize").val());
-                var currentPage = new Number($("#" + tabFlag + "hiddenCurrentPage").val());
-                var totalPageCnt = new Number($("#" + tabFlag + "hiddenTotalPageCnt").val());
-                var totalCnt = new Number($("#" + tabFlag + "hiddenTotalCnt").val());
-
-                if (dir === "first") {
-                    if (currentPage <= 1) {
-                        return;
-                    } else {
-                        $("#" + tabFlag + "hiddenCurrentPage").val("1");
-                    }
-                } else if (dir === "last") {
-                    if (currentPage >= totalPageCnt) {
-                        return;
-                    } else {
-                        $("#" + tabFlag + "hiddenCurrentPage").val(totalPageCnt);
-                    }
-                } else if (dir === "back") {
-                    if (currentPage <= 1) {
-                        return;
-                    } else {
-                        $("#" + tabFlag + "hiddenCurrentPage").val(currentPage - 1);
-                    }
-                } else if (dir === "next") {
-                    if (currentPage >= totalPageCnt) {
-                        return;
-                    } else {
-                        $("#" + tabFlag + "hiddenCurrentPage").val(currentPage + 1);
-                    }
-                } else if (dir === "num") {
-                    var userinput = $("#" + tabFlag + "showCurrentPage").val();
-                    if (isNaN(userinput)) {
-                        alert("请输入数字！")
-                        return;
-                    }
-                    if (userinput > totalPageCnt || userinput < 1) {
-                        alert("输入页面范围不在范围内！");
-                        return;
-                    }
-                    $("#" + tabFlag + "hiddenCurrentPage").val(userinput);
-                } else {
-                    return;
-                }
-                //获取资源
-                getTrafficStaticsData(formId, tabFlag);
-            }
 
             $("#appendlist").click(function () {
                 var s = '';
@@ -213,7 +136,6 @@
                         s += $(this).val() + ',';
                     }
                 });
-//console.log(s==''?'你还没有选择任何内容！':s);
                 if (s == '') {
                     alert("你还没有选择任何内容！");
                     return;
@@ -280,323 +202,352 @@
     </script>
 </head>
 <body>
-<div class="loading_cover" style="display: none">
-    <div class="cover"></div>
-    <h4 class="loading">
-        正在加载 <em class="loading_fb"></em>资源,请稍侯...
-    </h4>
-</div>
-<div class="div_left_main" style="width: 100%">
-    <div class="div_left_content">
-
-        <div style="padding: 10px">
-            <div id="frame" style="border: 1px solid #ddd;overflow: hidden;width: 61%;float: left">
-                <div id="div_tab" class="div_tab divtab_menu">
-                    <ul>
-                        <li class="selected" style="width:119px">话统指标导入及加载</li>
-                        <li style="width:119px">从系统中加载</li>
-
-                    </ul>
-                </div>
-
-                <div class="divtab_content">
-                    <div id="div_tab_0">
-                        <form id="formImportCell" enctype="multipart/form-data" method="post">
-                            <input name="needPersist" value="true" type="hidden"> <input name="systemConfig"
-                                                                                         value="true" type="hidden">
-                            <input name="autoload" id="autoload" type="hidden">
-                            <div>
-                                <table class="main-table1 half-width">
-                                    <tbody>
-                                    <tr>
-                                        <td class="menuTd">所属地市<span class="txt-impt">*</span> <br>
-                                        </td>
-                                        <td style="width: 50%; font-weight: normal;" colspan="0">
-                                            省：<select name="provinceId" class="required" id="provinceId"></select>
-                                            市：<select name="cityId" class="required" id="cityId"></select>
-                                            区：<select name="areaId" class="required" id="areaId"></select>
-                                            <br>
-                                        </td>
-
-
-                                    </tr>
-                                    <tr>
-                                        <td class="menuTd">指标类型<span class="txt-impt">*</span> <br>
-                                        </td>
-                                        <td><input name="fileCode" id="radioshow1" value="GSMAUDIOTRAFFICSTATICSFILE"
-                                                   class="canclear required" type="radio"> <label for="3">
-                                            小区语音业务指标 </label>
-                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <input name="fileCode" id="radioshow2" value="GSMDATATRAFFICSTATICSFILE"
-                                                   class="canclear  required" type="radio"> <label for="32">
-                                                小区数据业务指标 </label>
-                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <input name="fileCode" id="radiohide" value="GSMCITYNETQUALITYFILE"
-                                                   class="canclear  required" type="radio"> <label for="32">
-                                                城市网络质量指标 </label> <br></td>
-
-                                    </tr>
-                                    <tr>
-                                        <td class="menuTd">指标文件（EXCEL）<span class="txt-impt">*</span> <br>
-                                        </td>
-                                        <td style="width: 50%; font-weight: bold" colspan="0">
-                                            <input style="width:44%;" name="file" id="fileid" class="canclear  required"
-                                                   type="file"> &nbsp;
-                                            <span style="color:red;width:100px;font-family:华文中宋;text-align:center"
-                                                  id="fileDiv"></span>
-                                            <a href="javascript:void(0);" title="点击下载模板" id="downloadHref">&nbsp;</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="menuTd">重复记录处理方式<span class="txt-impt">*</span> <br>
-                                        </td>
-                                        <td><input name="update" id="3" value="true" class="canclear  required"
-                                                   type="radio"> <label for="3">
-                                            覆盖(更新信息) </label>
-                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <input name="update" id="32" value="false" class="canclear  required"
-                                                   type="radio"> <label for="32"> 忽略
-                                            </label> <br></td>
-                                    </tr>
-                                    </tbody>
-
-
-                                </table>
-                            </div>
-                            <div class="container-bottom" style="padding-top: 10px">
-                                <table style="width: 60%; margin: auto" align="center">
-                                    <tbody>
-                                    <tr>
-                                        <td><input value="导 入，并加载到分析列表" id="importAndLoadBtn" name="import"
-                                                   type="button"> <input value="仅   导    入" style="width: 90px;"
-                                                                         id="importBtn" name="import" type="button">
-                                            <br></td>
-
-
-                                    </tr>
-                                    </tbody>
-                                </table>
-                                <div id="importResultDiv" class="container-bottom" style="padding-top: 10px"></div>
-                                <div id="loadlistDiv">
-                                    <table class="tb-transparent-standard" style="width:100%" id="loadlistTable1">
-
-
-                                    </table>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div id="div_tab_1" style="display:none">
-                        <div>
-
-                            <form id="form_tab_2" method="post">
-                                <input id="tab_2_hiddenPageSize" value="25" name="page.pageSize" type="hidden">
-                                <input id="tab_2_hiddenCurrentPage" value="1" name="page.currentPage" type="hidden">
-                                <input id="tab_2_hiddenTotalPageCnt" value="0" type="hidden">
-                                <input id="tab_2_hiddenTotalCnt" value="0" type="hidden">
-                                <table class="main-table1 half-width">
-                                    <tbody>
-                                    <tr>
-                                        <td class="menuTd" style="width: 20%">所属地市： <br>
-                                        </td>
-                                        <td style="width: 50%; font-weight: normal;" colspan="0">
-                                            省：<select name="provinceId2" class="required" id="provinceId2">
-
-                                        </select> 市：<select name="cityId2" class="required" id="cityId2">
-
-                                        </select> 区：<select name="queryCondition.areaId" class="required" id="areaId2">
-
-                                        </select>
-
-                                        </td>
-
-
-                                    </tr>
-                                    <tr>
-                                        <td class="menuTd" style="width: 20%">指标类型： <br>
-                                        </td>
-                                        <td><input name="searchType" id="3" value="CELLAUDIOINDEX"
-                                                   class="canclear required" checked="checked" type="radio">
-                                            <label for="3"> 小区语音业务指标 </label>
-                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <input name="searchType" id="32" value="CELLDATAINDEX"
-                                                   class="canclear  required" type="radio">
-                                            <label for="32"> 小区数据业务指标 </label>
-                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <br></td>
-                                    </tr>
-                                    <tr>
-                                        <td class="menuTd" style="width: 20%">日期/时段：<br>
-                                        </td>
-                                        <td style="font-weight: normal;" colspan="0">
-
-
-                                            始:
-                                            <input id="beginTime" class="Wdate required input-text" value=""
-                                                   readonly="readonly"
-                                                   onfocus="var dd=$dp.$('latestAllowedTime');WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:function(){latestAllowedTime.focus();},maxDate:'#F{$dp.$D(\'latestAllowedTime\')}'})"
-                                                   name="queryCondition.beginTime" type="text">
-                                            止:
-                                            <input id="latestAllowedTime" class="Wdate required input-text"
-                                                   readonly="readonly"
-                                                   onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'beginTime\')}'})"
-                                                   name="queryCondition.latestAllowedTime" type="text">
-                                            <select name="queryCondition.stsPeriod">
-                                                <option value="" selected="selected">全部</option>
-                                                <option value="0000-0100">0000-0100</option>
-                                                <option value="0100-0200">0100-0200</option>
-                                                <option value="0200-0300">0200-0300</option>
-                                                <option value="0300-0400">0300-0400</option>
-                                                <option value="0400-0500">0400-0500</option>
-                                                <option value="0500-0600">0500-0600</option>
-                                                <option value="0600-0700">0600-0700</option>
-                                                <option value="0700-0800">0700-0800</option>
-                                                <option value="0800-0900">0800-0900</option>
-                                                <option value="0900-1000">0900-1000</option>
-                                                <option value="1000-1100">1000-1100</option>
-                                                <option value="1100-1200">1100-1200</option>
-                                                <option value="1200-1300">1200-1300</option>
-                                                <option value="1300-1400">1300-1400</option>
-                                                <option value="1400-1500">1400-1500</option>
-                                                <option value="1500-1600">1500-1600</option>
-                                                <option value="1600-1700">1600-1700</option>
-                                                <option value="1700-1800">1700-1800</option>
-                                                <option value="1800-1900">1800-1900</option>
-                                                <option value="1900-2000">1900-2000</option>
-                                                <option value="2000-2100">2000-2100</option>
-                                                <option value="2100-2200">2100-2200</option>
-                                                <option value="2200-2300">2200-2300</option>
-                                                <option value="2300-0000">2300-0000</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="menuTd" style="width: 20%">BSC： <br>
-                                        </td>
-                                        <td>
-
-                                            <select name="queryCondition.engName" style="width:90px;">
-                                                <option value="" selected="selected">全部</option>
-
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-
-
-                                </table>
-                            </form>
-                        </div>
-                        <div class="container-bottom" style="padding-top: 10px">
-                            <table style="width: 60%; margin: auto" align="center">
-                                <tbody>
-                                <tr>
-                                    <td>
-                                        <input value="查　　询" id="queryTrafficBtn" name="querybtn" type="button">
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <div style="padding-top:10px">
-                            <table width="100%">
-                                <tbody>
-                                <tr>
-                                    <td style="width:20%">
-                                        <p>
-                                            <font style="font-weight:bold">话统指标</font>
-                                        </p>
-                                        <span style="display:block;margin-top:4px"><input id="loadtoanalysisBtn"
-                                                                                          value="添加到分析列表"
-                                                                                          name="queryAndLoadBtn"
-                                                                                          type="button"></span>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <form id="form1" name="form1" method="post">
-                                <table id="telequeryResultDT" class="display rnoHeader" width="98%">
-                                    <thead>
-                                        <tr>
-                                            <th>区域</th>
-                                            <th>指标类型</th>
-                                            <th>话统日期</th>
-                                            <th>加载项</th>
-                                        </tr>
-                                    </thead>
-                                </table>
-                            </form>
-                        </div>
-                        <div style="padding-top: 10px">
-                            <table width="100%">
-                                <tbody>
-                                <tr>
-                                    <td style="width: 20%"></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div style="padding-top: 10px;text-align:center">
-                            <table class="tb-transparent-standard" style="width:100%" id="loadlistTable2">
-                            </table>
-                        </div>
-
-                    </div>
-                </div>
-
-            </div>
-            <div style="float: left;margin-left: 4px;width: 38%;border: 1px solid #ddd">
-                <div style="padding-top: 2px">
-                    <table width="100%">
+<nav id="navTitle"></nav>
+<div id="info" class="info-style" style="display: none"></div>
+<div id="tabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
+    <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+        <li class="ui-state-default ui-corner-top ui-tabs-active ui-state-active">
+            <a href="#tabs-1" class="ui-tabs-anchor" tabindex="0" id="ui-id-1">话统指标导入</a>
+        </li>
+        <li class="ui-state-default ui-corner-top" role="tab" tabindex="1">
+            <a href="#tabs-2" class="ui-tabs-anchor" tabindex="1" id="ui-id-2">话统数据记录查询</a>
+        </li>
+    </ul>
+    <div id="tabs-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom">
+        <div id="listinfoDiv">
+            <form id="import-query-form" method="get">
+                <select id="provinceId3" name="province" title="" style="width: 100px"></select>
+                <select id="cityId3" name="city" title="" style="width: 100px"></select>
+                <div style="margin: 9px"></div>
+                <div id="searchImportDiv">
+                    <div style="margin: 9px"></div>
+                    <table>
                         <tbody>
                         <tr>
-                            <td style="width: 50%">
-                                <p>
-                                    <font style="font-weight: bold">加载到分析列表的话统指标</font>
-                                </p>
-                                <span style="display: block;margin-top: 3px"><input id="refreshLoadedBtn" onclick=""
-                                                                                    value="刷新" style="width: 90px;"
-                                                                                    name="search" type="button"></span>
+                            <td style="padding-left:30px"><label>上传时间 从:</label>
+                                <input id="begUploadDate" name="begUploadDate" type="text" title=""
+                                       style="height: 23px"> 至：
+                                <input id="endUploadDate" name="endUploadDate" type="text" title=""
+                                       style="height: 23px">
                             </td>
-                            <td style="width: 50%; text-align: right"><input id="removeFromAnalysis" value="从分析列表删除"
-                                                                             style="width: 90px;" name="search"
-                                                                             type="button"></td>
+                            <td style="padding-left:30px"><label for="import-status-menu">状态:</label></td>
+                            <td>
+                                <select id="import-status-menu" name="status" title="">
+                                    <option value="全部" selected="selected">全部</option>
+                                    <option value="全部成功">全部成功</option>
+                                    <option value="部分成功">部分成功</option>
+                                    <option value="全部失败">全部失败</option>
+                                    <option value="正在处理">正在处理</option>
+                                    <option value="等待处理">等待处理</option>
+                                </select>
+                            </td>
+                            <td style="padding-left:30px">
+                                <button id="importRecordBtn"  type="submit" class="btn btn-default">查询导入记录</button>
+                            </td>
                         </tr>
-
                         </tbody>
                     </table>
-
                 </div>
-                <table id="loadRefreshlistTable3" class="greystyle-standard" width="100%">
+            </form>
+            <div id="importTitleDiv" class="importTitle">
+                <div style="margin: 9px"></div>
+                导入
+            </div>
+            <div id="importDiv" class="importContent">
+                <form id="file-upload-form" enctype="multipart/form-data" method="post">
+                    <input name="needPersist" value="true" type="hidden">
+                    <input name="systemConfig" value="true" type="hidden">
+                    <input name="autoload" id="autoload" type="hidden">
+                    <div>
+                        <table class="main-table1 half-width">
+                            <tbody>
+                            <tr>
+                                <td class="menuTd">所属地市<span class="txt-impt">*</span> <br>
+                                </td>
+                                <td style="width: 50%; font-weight: normal;" colspan="0">
+                                    省：<select name="provinceId" class="required" id="provinceId"></select>
+                                    市：<select name="cityId" class="required" id="cityId"></select>
+                                    区：<select name="areaId" class="required" id="areaId"></select>
+                                    <br>
+                                </td>
+
+
+                            </tr>
+                            <tr>
+                                <td class="menuTd">指标类型<span class="txt-impt">*</span> <br>
+                                </td>
+                                <td><input name="indicatorType" id="radioshow1" value="GSMAUDIOTRAFFICSTATICSFILE"
+                                           class="canclear required" type="radio" checked> <label for="3">
+                                    小区语音业务指标 </label>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <input name="indicatorType" id="radioshow2" value="GSMDATATRAFFICSTATICSFILE"
+                                           class="canclear  required" type="radio"> <label for="32">
+                                        小区数据业务指标 </label>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <input name="indicatorType" id="radiohide" value="GSMCITYNETQUALITYFILE"
+                                           class="canclear  required" type="radio"> <label for="32">
+                                        城市网络质量指标 </label> <br></td>
+
+                            </tr>
+                            <tr>
+                                <td class="menuTd">指标文件（CSV）<span class="txt-impt">*</span> <br>
+                                </td>
+                                <td style="width: 50%; font-weight: bold;" colspan="0">
+                                    <input style="width:44%;display: inline-block" name="file" id="fileid"
+                                           class="canclear  required"
+                                           type="file"> &nbsp;
+                                    <span style="color:red;font-family:华文中宋,serif;text-align:center;"
+                                          id="fileDiv"></span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="menuTd">重复记录处理方式<span class="txt-impt">*</span> <br>
+                                </td>
+                                <td><input name="handleReplicateMethod" id="3" value="true" class="canclear  required"
+                                           checked
+                                           type="radio"> <label for="3">
+                                    覆盖(更新信息) </label>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <input name="handleReplicateMethod" id="32" value="false" class="canclear  required"
+                                           type="radio"> <label for="32"> 忽略
+                                    </label> <br></td>
+                            </tr>
+                            </tbody>
+
+
+                        </table>
+                    </div>
+                    <div class="container-bottom" style="padding-top: 10px">
+                        <table style="width: 60%; margin: auto" align="center">
+                            <tbody>
+                            <tr>
+                                <td><input type="hidden" value="gsm-traffic-data" name="moduleName"/>
+                                    <button
+                                            id="importBtn" name="import" type="submit" class="btn btn-default" style="width: 120px">导 入</button>
+                                </td>
+                            </tr>
+                            <tr></tr>
+                            </tbody>
+                        </table>
+                        <div class="upload-progress">
+                            <div class="bar"></div>
+                            <div class="percent">0%</div>
+                        </div>
+                        <div id="importResultDiv" class="container-bottom" style="padding-top: 10px"></div>
+                        <div id="loadlistDiv">
+                            <table class="tb-transparent-standard" style="width:100%" id="loadlistTable1">
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div id="importListDiv" class="sectionDivCls">
+                <div style="margin-top: 10px"><b style="font-weight: 700">GSM话务指标数据上传记录列表</b></div>
+                <table id="queryRecordResTab" class="display rnoHeader" cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <th>地市</th>
+                        <th>上传日期</th>
+                        <th>文件名称</th>
+                        <th>文件大小</th>
+                        <th>开始时间</th>
+                        <th>完成时间</th>
+                        <th>上传账号</th>
+                        <th>状态</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div id="reportDiv" style="display:none">
+            <form id="reportDetailForm">
+                <input type="hidden" name="id" id="jobId"/>
+            </form>
+            <ul id="icons" class="ui-widget ui-helper-clearfix" style="width:100px;cursor:pointer">
+                <li class="ui-state-default ui-corner-all" title="返回列表" style="width:100px"
+                    onclick="returnToImportList();">
+                    <span class="ui-icon ui-icon-arrowreturnthick-1-w"
+                          style="width:20px"></span>返回列表
+                </li>
+            </ul>
+            <table id="reportListTable" class="display rnoHeader" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                    <th>阶段</th>
+                    <th>开始时间</th>
+                    <th>结束时间</th>
+                    <th>结果</th>
+                    <th>详细信息</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    <div id="tabs-2" style="display:none" class="ui-tabs-panel ui-widget-content ui-corner-bottom">
+        <form id="query-traffic-desc-form" method="get">
+        <div>
+                <table class="main-table1 half-width">
                     <tbody>
+                    <tr>
+                        <td class="menuTd" style="width: 10%">所属地市： <br>
+                        </td>
+                        <td style=" font-weight: normal;" colspan="0">
+                            省：<select name="provinceId" class="required" id="provinceId2" title=""></select>
+                            市：<select name="cityId" class="required" id="cityId2" title=""></select>
+                            区：<select name="areaId" class="required" id="areaId2" title=""></select>
+                        </td>
+
+                        <td class="menuTd" style="width: 10%">指标类型： <br>
+                        </td>
+                        <td>
+                            <input name="searchType" id="4" value="CELL_VIDEO"
+                                   class="canclear required" checked="checked" type="radio">
+                            <label for="4"> 小区语音业务指标 </label>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input name="searchType" id="33" value="CELL_BUSINESS"
+                                   class="canclear  required" type="radio">
+                            <label for="33"> 小区数据业务指标 </label>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <br></td>
+                    </tr>
+                    <tr>
+                        <td class="menuTd" style="width: 10%">日期/时段：<br>
+                        </td>
+                        <td style="font-weight: normal;" colspan="0">
+                            始：<input id="beginTime"  value=""
+                                   readonly="readonly"
+                                   name="beginTime" type="text" style="width: 133px;height: 23px">
+                            止：<input id="latestAllowedTime"
+                                   readonly="readonly" name="latestAllowedTime"
+                                   style="width: 133px;height:23px " type="text">
+                            <select name="stsPeriod">
+                                <option value="-1" selected="selected">全部</option>
+                                <option value="0000-0100">0000-0100</option>
+                                <option value="0100-0200">0100-0200</option>
+                                <option value="0200-0300">0200-0300</option>
+                                <option value="0300-0400">0300-0400</option>
+                                <option value="0400-0500">0400-0500</option>
+                                <option value="0500-0600">0500-0600</option>
+                                <option value="0600-0700">0600-0700</option>
+                                <option value="0700-0800">0700-0800</option>
+                                <option value="0800-0900">0800-0900</option>
+                                <option value="0900-1000">0900-1000</option>
+                                <option value="1000-1100">1000-1100</option>
+                                <option value="1100-1200">1100-1200</option>
+                                <option value="1200-1300">1200-1300</option>
+                                <option value="1300-1400">1300-1400</option>
+                                <option value="1400-1500">1400-1500</option>
+                                <option value="1500-1600">1500-1600</option>
+                                <option value="1600-1700">1600-1700</option>
+                                <option value="1700-1800">1700-1800</option>
+                                <option value="1800-1900">1800-1900</option>
+                                <option value="1900-2000">1900-2000</option>
+                                <option value="2000-2100">2000-2100</option>
+                                <option value="2100-2200">2100-2200</option>
+                                <option value="2200-2300">2200-2300</option>
+                                <option value="2300-0000">2300-0000</option>
+                            </select>
+                        </td>
+                        <td class="menuTd" style="width: 10%">BSC： <br>
+                        </td>
+                        <td>
+
+                            <select name="bsc" style="width:90px;">
+                                <option value="" selected="selected">全部</option>
+                            </select>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+        </div>
+        <div class="container-bottom" style="padding-top: 10px">
+            <table style="width: 60%; margin: auto" align="center">
+                <tbody>
+                <tr><td>
+                    <button  id="queryTrafficBtn" name="querybtn" type="submit" class="btn btn-default" style="width: 120px">查　询</button>
+                </td></tr>
+                </tbody>
+            </table>
+        </div>
+        </form>
+
+        <div style="padding-top:10px">
+            <table width="100%">
+                <tbody>
+                <tr>
+                    <td style="width:20%">
+                        <p>
+                            <font style="font-weight:bold">话统指标</font>
+                        </p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <form id="form1" name="form1" method="post">
+                <table id="telequeryResultDT" class="display rnoHeader" width="98%">
+                    <thead>
                     <tr>
                         <th>区域</th>
                         <th>指标类型</th>
                         <th>话统日期</th>
-                        <th style="width: 10%">全选<input onclick="javascript:operAllCheckbox(this,3);" name="selectall"
-                                                        id="2" type="checkbox"></th>
+                        <th>进入系统时间</th>
                     </tr>
-                    </tbody>
+                    </thead>
                 </table>
-            </div>
+            </form>
         </div>
+        <div style="padding-top: 10px">
+            <table width="100%">
+                <tbody>
+                <tr>
+                    <td style="width: 20%"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="padding-top: 10px;text-align:center">
+            <table class="tb-transparent-standard" style="width:100%" id="loadlistTable2">
+            </table>
+        </div>
+
     </div>
 </div>
 
-<div id="operInfo"
-     style="display:none; top:40px;left:600px;z-index:999;width:400px; height:40px; background-color:#7dff3f; filter:alpha(Opacity=80);-moz-opacity:0.5;opacity: 0.5;z-index:9999;position: fixed;">
-    <table style="text-align:center" width="100%" height="100%">
+<!--<div style="float: left;margin-left: 4px;width: 38%;border: 1px solid #ddd">
+    <div style="padding-top: 2px">
+        <table width="100%">
+            <tbody>
+            <tr>
+                <td style="width: 50%">
+                    <p>
+                        <font style="font-weight: bold">加载到分析列表的话统指标</font>
+                    </p>
+                    <span style="display: block;margin-top: 3px"><input id="refreshLoadedBtn" onclick=""
+                                                                        value="刷新" style="width: 90px;"
+                                                                        name="search" type="button"></span>
+                </td>
+                <td style="width: 50%; text-align: right"><input id="removeFromAnalysis" value="从分析列表删除"
+                                                                 style="width: 90px;" name="search"
+                                                                 type="button"></td>
+            </tr>
+
+            </tbody>
+        </table>
+
+    </div>
+    <table id="loadRefreshlistTable3" class="greystyle-standard" width="100%">
         <tbody>
         <tr>
-            <td>
-                <span id="operTip"></span>
-            </td>
+            <th>区域</th>
+            <th>指标类型</th>
+            <th>话统日期</th>
+            <th style="width: 10%">全选<input onclick="javascript:operAllCheckbox(this,3);" name="selectall"
+                                            id="2" type="checkbox"></th>
         </tr>
         </tbody>
     </table>
-
-</div>
+</div>-->
 
 </body>
 </html>

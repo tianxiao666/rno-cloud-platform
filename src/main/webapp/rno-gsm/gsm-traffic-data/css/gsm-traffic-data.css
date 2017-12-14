@@ -38,7 +38,7 @@ body {
     line-height: 1.231;
     font-family: sans-serif;
     height: 100%;
-    width: 100%;
+    width: 99%;
 }
 
 select, input, textarea, button {
@@ -713,4 +713,76 @@ body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, input, button, textar
     padding-left: 28px;
     padding-top: 1px;
     font-weight: bold;
+}
+
+#navTitle {
+    font-weight: bold;
+}
+
+
+.upload-progress {
+    position: relative;
+    width: 700px;
+    border: 1px solid #ddd;
+    padding: 1px;
+    border-radius: 3px;
+    display: none;
+}
+
+.bar {
+    background-color: #B4F5B4;
+    width: 0;
+    height: 20px;
+    border-radius: 3px;
+}
+
+.percent {
+    position: absolute;
+    display: inline-block;
+    top: 3px;
+    left: 48%;
+}
+
+.info-style {
+    width: 230px;
+    height: 56px;
+    position: fixed;
+    top: 50%;
+    left: 45%;
+    line-height: 56px;
+    color: #0c0c0c;
+    text-align: center;
+    font-size: 15px;
+    background: #ff0000;
+    filter: alpha(opacity=100);
+    -moz-opacity: 1.0;
+    opacity: 1.0;
+    z-index: 9999;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+
+.importTitle {
+    background: url("../images/ui-bg_glass_65_ffffff_1x400.png") 50% 50% repeat-x scroll rgb(255, 255, 255);
+    border: 1px solid rgb(251, 216, 80);
+    color: rgb(235, 143, 0);
+    font-weight: bold;
+    padding-left: 2.2em;
+    height: 30px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.importContent {
+    border: 1px solid rgb(221, 221, 221);
+    padding: 1em 2.2em;
+    border-radius: 5px;
+    height: 250px;
+}
+
+#searchImportDiv {
+    height: 46px;
+    background: rgb(255, 255, 255) url("../images/ui-bg_glass_65_ffffff_1x400.png") repeat-x scroll 50% 50%;
+    border: 1px solid rgb(251, 216, 80);
 }

@@ -22,7 +22,7 @@ public class GsmCoBsicService {
     }
 
     public List<CobsicCellsDTO> getCobsicCells(GsmCoBsicQueryVM vm){
-        log.debug("进入查询cobsic干扰方法areaIds={}", vm.getAreaIds() );
+        log.debug("进入查询cobsic干扰方法areaIds={}", vm.getAreaId() );
         List<Map<String,Object>> list = gsmCoBsicMapper.getCoBsicCellsByAreaId(vm);
         return getCoBsicCellsDTO(list);
     }
@@ -35,7 +35,7 @@ public class GsmCoBsicService {
     }
 
     public List<CobsicCellsDTO> getCobsicCellsByBcchAndBsic(GsmCoBsicQueryVM vm){
-        log.debug("进入查询cobsic干扰方法areaIds={}", vm.getAreaIds() );
+        log.debug("进入查询cobsic干扰方法areaIds={}", vm.getAreaId() );
 
         List<Map<String,Object>> list = gsmCoBsicMapper.getCoBsicCellsByAreaIdAndBcch(vm);
        return getCoBsicCellsDTO(list);

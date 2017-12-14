@@ -10,8 +10,8 @@
          select DISTINCT c1.CELL_ID, c1.bcch , c1.BSIC from RNO_GSM_CELL c1, RNO_GSM_CELL c2
             where c1.BCCH =c2.BCCH
                   and c1.BSIC = c2.BSIC
-                  and c1.AREA_ID in (select id from RNO_SYS_AREA where PARENT_ID=#{areaIds})
-                and c2.AREA_ID in (select id from RNO_SYS_AREA where PARENT_ID= #{areaIds})
+                  and c1.AREA_ID in (select id from RNO_SYS_AREA where PARENT_ID=#{areaId})
+                and c2.AREA_ID in (select id from RNO_SYS_AREA where PARENT_ID= #{areaId})
          ORDER BY  c1.bcch,c1.BSIC)
         where BCCH = #{bcch} and BSIC = #{bsic}
     </select>
@@ -21,8 +21,8 @@
         select DISTINCT c1.CELL_ID as cellId, c1.bcch , c1.bsic from RNO_GSM_CELL c1, RNO_GSM_CELL c2
         where c1.BCCH =c2.BCCH
         and c1.BSIC = c2.BSIC
-        and c1.AREA_ID  in (select id from RNO_SYS_AREA where PARENT_ID=#{areaIds})
-        and c2.AREA_ID in (select id from RNO_SYS_AREA where PARENT_ID=#{areaIds})
+        and c1.AREA_ID  in (select id from RNO_SYS_AREA where PARENT_ID=#{areaId})
+        and c2.AREA_ID in (select id from RNO_SYS_AREA where PARENT_ID=#{areaId})
         ORDER BY  c1.bcch,c1.BSIC
     </select>
     <select id="queryCommonNcellByTwoCell" parameterType="java.lang.String"

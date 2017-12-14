@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class GsmCoBsicQueryVM {
     private String reselected;
-    private Integer areaIds;
+    private Integer areaId;
     private String bcch;
     private String bsic;
 }
