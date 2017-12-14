@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hgicreate.rno.mapper.gsm.GsmParamQueryMapper">
+    <select id="queryBscListByCityId" resultType="java.util.Map">
+        select id,bsc from RNO_GSM_BSC_DATA where AREA_ID = #{param1}
+    </select>
+    <select id="queryDateListByCityId" resultType="java.util.Map">
+        select distinct(to_char(t.mea_date,'yyyy-MM-dd')) mea_date
+        from rno_gsm_eri_cell t,rno_gsm_eri_cell_desc d
+        where
+            t.ERI_CELL_DESC_ID = d.ID
+            and t.mea_date >= add_months(sysdate,-40)
+            and t.city_id=#{param1}
+            and d.data_type=#{param2}
+    </select>
+</mapper>

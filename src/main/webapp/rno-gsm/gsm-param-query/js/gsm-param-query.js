@@ -1,159 +1,233 @@
 $(function () {
 
-    //执行 区域 实例 
-    $("#province-menu").change(function () {
-        var cityId = parseInt($(this).find("option:checked").val());
-        $.getJSON("../../data/area.json", function (data) {
-            renderArea(data, cityId, "city-menu");
-        })
+    $("#progressbar").progressbar({
+        value: 0
     });
+    $("#tabs").tabs();
 
-    $("#province-id").change(function () {
-        var provinceId = parseInt($(this).find("option:checked").val());
-        $.getJSON("../../data/area.json", function (data) {
-            renderArea(data, provinceId, "city-id");
-        })
-    });
+    $("#cell_dateWinDiv").draggable();
+    $("#cell_bscWinDiv").draggable();
+    $("#cell_cellWinDiv").draggable();
+    $("#cell_paramWinDiv").draggable();
+    $("#channel_dateWinDiv").draggable();
+    $("#channel_bscWinDiv").draggable();
+    $("#channel_cellWinDiv").draggable();
+    $("#channel_paramWinDiv").draggable();
+    $("#ncell_dateWinDiv").draggable();
+    $("#ncell_bscWinDiv").draggable();
+    $("#ncell_cellWinDiv").draggable();
+    $("#ncell_paramWinDiv").draggable();
+    $("#ncell_ncellWinDiv").draggable();
 
-    $("#province-name").change(function () {
-        var provinceId = parseInt($(this).find("option:checked").val());
-        $.getJSON("../../data/area.json", function (data) {
-            renderArea(data, provinceId, "city-name");
-        })
-    });
-
-    $("#city-menu").change(function () {
-        var area1 = $("#city-menu option:selected").text();
-        $("#area1").val(area1);
-    })
-
-
-    //初始化区域
-    $.ajax({
-        url: "../../data/area.json",
-        dataType: "json",
-        async: false,
-        success: function (data) {
-            renderArea(data, 0, "province-id");
-            renderArea(data, 0, "province-menu");
-            renderArea(data, 0, "province-name");
-            $("#province-name").change();
-            $("#province-id").change();
-            $("#province-menu").change();
-        }
-    });
-
-    $("#queryBtn").click(function () {
-        $('#queryResultTab').css("line-height", "12px");
-        $('#queryResultTab').DataTable( {
-            "ajax": "data/gsm-param-query-cell-query.json",
-            "columns": [
-                { data: "MEA_DATE" },
-                { data: "MSC" },
-                { data: "BSC" },
-                { data: "CELL" },
-                { data: "ACCMIN" },
-                { data: "ACSTATE" },
-                { data: "ACTIVE_32" },
-                { data: "AGBLK" },
-                { data: "CB" },
-                { data: "CBCHD" },
-                { data: "CBQ" },
-                { data: "CCHPWR" },
-                { data: "CELLQ" },
-                { data: "CELL_DIR" }
-            ],
-            "lengthChange": false,
-            "ordering": true,
-            "searching": true,
-            "language": {
-                url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
-            }
-        } );
-    });
-
-    $("#queryBtn1").click(function () {
-        $('#queryResultTab1').css("line-height", "12px");
-        $('#queryResultTab1').DataTable( {
-            "ajax": "data/gsm-param-query-channel-query.json",
-            "columns": [
-                { data: "MEA_DATE" },
-                { data: "MSC" },
-                { data: "BSC" },
-                { data: "CELL" },
-                { data: "CH_GROUP" },
-                { data: "CHGR_STATE" },
-                { data: "CHGR_TG" },
-                { data: "HSN" },
-                { data: "NUMREQBPC" },
-                { data: "NUMREQEGPRSBPC" },
-                { data: "ODPDCHLIMIT" },
-                { data: "SAS" },
-                { data: "SCTYPE" },
-                { data: "SDCCH" },
-                { data: "DCHNO_32" }
-            ],
-            "lengthChange": false,
-            "ordering": true,
-            "searching": true,
-            "language": {
-                url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
-            }
-        } );
-    });
-
-    $("#queryBtn2").click(function () {
-        $('#queryResultTab2').css("line-height", "12px");
-        $('#queryResultTab2').DataTable( {
-            "ajax": "data/gsm-param-query-ncell-query.json",
-            "columns": [
-                { data: "MEA_DATE" },
-                { data: "MSC" },
-                { data: "BSC" },
-                { data: "CELL" },
-                { data: "N_BSC" },
-                { data: "N_CELL" },
-                { data: "AWOFFSET" },
-                { data: "BQOFFSET" },
-                { data: "BQOFFSETAFR" },
-                { data: "BQOFFSETAWB" },
-                { data: "CAND" },
-                { data: "CS" },
-                { data: "GPRSVALID" },
-                { data: "HIHYST" },
-                { data: "KHYST" },
-                { data: "KOFFSET" }
-
-            ],
-            "lengthChange": false,
-            "ordering": true,
-            "searching": true,
-            "language": {
-                url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
-            }
-        } );
-    });
-
+    // 初始化区域联动
+    initAreaSelectors({selectors: ["province-menu-1", "city-menu-1"]});
+    initAreaSelectors({selectors: ["province-menu-2", "city-menu-2"]});
+    initAreaSelectors({selectors: ["province-menu-3", "city-menu-3"]});
 
 });
 
-// 渲染区域
-function renderArea(data, parentId, areaMenu) {
-    var arr = data.filter(function (v) {
-        return v.parentId === parentId;
-    });
-    if (arr.length > 0) {
-        var areaHtml = [];
-        $.each(arr, function (index) {
-            var area = arr[index];
-            areaHtml.push("<option value='" + area.id + "'>");
-            areaHtml.push(area.name + "</option>");
-        });
-        $("#" + areaMenu).html(areaHtml.join(""));
-        var area1 = $("#city-menu option:selected").text();
-        $("#area1").val(area1);
-    } else {
-        console.log("父ID为" + parentId + "时未找到任何下级区域。");
+function getParamSelect(flag) {
+    //清空原有参数值
+    clearParamSelect(flag);
+    var cityId;
+    if (flag === "channel") {
+        cityId = $("#city-menu-2").find("option:selected").val();
+        uploadParamValue(cityId, "channel");
+    } else if (flag === "ncell") {
+        cityId = $("#city-menu-3").find("option:selected").val();
+        uploadParamValue(cityId, "ncell");
+    } else if (flag === "cell") {
+        cityId = $("#city-menu-1").find("option:selected").val();
+        uploadParamValue(cityId, "cell");
     }
+}
 
+function uploadParamValue(cityId, type) {
+    var dataType;
+    if (type === "cell") {
+        dataType = "CELLDATA";
+    } else if (type === "channel") {
+        dataType = "CHANNELDATA";
+    } else if (type === "ncell") {
+        dataType = "NCELLDATA";
+    }
+    $.ajax({
+        url: "/api/gsm-param-query/query-param-by-cityId",
+        type: "get",
+        data: {
+            "cityId": cityId,
+            "dataType": dataType,
+        },
+        dataType: "text",
+        success: function (data) {
+            var listInfo = {};
+            listInfo = eval("(" + data + ")");
+            var bscId, bscName, dateStr;
+            for (var key in listInfo) {
+                if ("bscInfo" === key) {
+                    for (var bscIndex = 0; bscIndex < listInfo[key].length; bscIndex++) {
+                        bscId = listInfo[key][bscIndex]["ID"];
+                        bscName = listInfo[key][bscIndex]["BSC"];
+                        if (type === "cell") {
+                            $("#cell_targetBsc").append("<option value='" + bscId + "'>" + bscName + "</option>");
+                            $("#cell_waitforselBsc").append("<option value='" + bscId + "'>" + bscName + "</option>");
+                        }
+                        if (type === "channel") {
+                            $("#channel_targetBsc").append("<option value='" + bscId + "'>" + bscName + "</option>");
+                            $("#channel_waitforselBsc").append("<option value='" + bscId + "'>" + bscName + "</option>");
+                        }
+                        if (type === "ncell") {
+                            $("#ncell_targetBsc").append("<option value='" + bscId + "'>" + bscName + "</option>");
+                            $("#ncell_waitforselBsc").append("<option value='" + bscId + "'>" + bscName + "</option>");
+                        }
+                    }
+                }
+                if ("dateInfo" === key) {
+                    for (var dateIndex = 0; dateIndex < listInfo[key].length; dateIndex++) {
+                        dateStr = listInfo[key][dateIndex]["MEA_DATE"];
+                        if (type === "cell") {
+                            $("#cell_targetDate").append("<option>" + dateStr + "</option>");
+                            $("#cell_waitforselDate").append("<option>" + dateStr + "</option>");
+                        }
+                        if (type === "channel") {
+                            $("#channel_targetDate").append("<option>" + dateStr + "</option>");
+                            $("#channel_waitforselDate").append("<option>" + dateStr + "</option>");
+                        }
+                        if (type === "ncell") {
+                            $("#ncell_targetDate").append("<option>" + dateStr + "</option>");
+                            $("#ncell_waitforselDate").append("<option>" + dateStr + "</option>");
+                        }
+                    }
+                }
+            }
+        }, error: function (err) {
+            $(".loading").css("display", "none");
+            $("#info").css("background", "red");
+            showInfoInAndOut("info", "后台程序错误！");
+        }
+    });
+}
+
+function clearParamSelect(flag) {
+    if (flag === "cell" || flag === "channel") {
+        removeParamValue(flag);
+    } else if (flag === "ncell") {
+        removeParamValue(flag);
+        $("#ncell_ncellInput").html("");
+        $("#ncellForNcell").val("");
+        $("#ncell_targetNcell").html("<option>ALL</option>");
+    }
+}
+
+function removeParamValue(flag) {
+    $("#" + flag + "_targetDate option").each(function () {
+        if ("ALL" !== $(this).text()) {
+            $(this).remove();
+        }
+    });
+    $("#" + flag + "_waitforselDate option").each(function () {
+        if ("ALL" !== $(this).text()) {
+            $(this).remove();
+        }
+    });
+    $("#" + flag + "_targetBsc option").each(function () {
+        if ("ALL" !== $(this).text()) {
+            $(this).remove();
+        }
+    });
+    $("#" + flag + "_waitforselBsc option").each(function () {
+        if ("ALL" !== $(this).text()) {
+            $(this).remove();
+        }
+    });
+    $("#" + flag + "_selectedDate").html("");
+    $("#" + flag + "_select").html("");
+    $("#" + flag + "_cellInput").val("");
+    $("#" + flag + "_selectedParam").html("");
+    $("#" + flag + "Bsc").val("");
+    $("#" + flag + "ForCell").val("");
+    $("#" + flag + "Date").val("");
+    $("#" + flag + "Param").val("");
+    $("#" + flag + "_targetCell").html("<option>ALL</option>");
+}
+
+//弹出框选择器
+function PutRightOneClk(defaul, select) {
+    if (document.getElementById(defaul).options.selectedIndex === -1) {
+        return false;
+    }
+    while (document.getElementById(defaul).options.selectedIndex > -1) {
+        var id = document.getElementById(defaul).options.selectedIndex
+        var varitem = new Option(document.getElementById(defaul).options[id].text, document.getElementById(defaul).options[id].value);
+        document.getElementById(select).options.add(varitem);
+        document.getElementById(defaul).options.remove(id);
+    }
+}
+
+function PutRightAllClk(defaul, select) {
+    if (document.getElementById(defaul).options.length === 0) {
+        return false;
+    }
+    for (var i = 0; i < document.getElementById(defaul).options.length; i++) {
+        var varitem = new Option(document.getElementById(defaul).options[i].text, document.getElementById(defaul).options[i].value);
+        document.getElementById(select).options.add(varitem);
+    }
+    document.getElementById(defaul).options.length = 0;
+}
+
+function PutLeftOneClk(defaul, select) {
+    if (document.getElementById(select).options.selectedIndex === -1) {
+        return false;
+    }
+    while (document.getElementById(select).options.selectedIndex > -1) {
+        var id = document.getElementById(select).options.selectedIndex
+        var varitem = new Option(document.getElementById(select).options[id].text, document.getElementById(select).options[id].value);
+        document.getElementById(defaul).options.add(varitem);
+        document.getElementById(select).options.remove(id);
+    }
+}
+
+function PutLeftAllClk(defaul, select) {
+    if (document.getElementById(select).options.length === 0) {
+        return false;
+    }
+    for (var i = 0; i < document.getElementById(select).options.length; i++) {
+        var varitem = new Option(document.getElementById(select).options[i].text, document.getElementById(select).options[i].value);
+        document.getElementById(defaul).options.add(varitem);
+    }
+    document.getElementById(select).options.length = 0;
+}
+
+function ensure(select, selectOri, div) {
+    var bscStr = "";
+    if (document.getElementById(select).options.length === 0) {
+        $("#info").css("background", "red");
+        showInfoInAndOut("info", "请选择参数！");
+        return false;
+    }
+    for (var i = 0; i < document.getElementById(select).options.length; i++) {
+        bscStr += document.getElementById(select).options[i].text + ",";
+    }
+    bscStr = bscStr.substring(0, bscStr.length - 1);
+    $("#" + selectOri + " option[style='display:none']").remove();
+    $("#" + selectOri).prepend("<option selected='selected' style='display:none'>" + bscStr + "</option>");
+    $("#" + div).hide();
+}
+
+function cancle(div) {
+    $("#" + div).hide();
+}
+
+function cellEnsure(id, selectOri) {
+    var text = $("#" + id).val();
+    $("#" + selectOri + " option[style='display:none']").remove();
+    $("#" + selectOri).prepend("<option selected='selected' style='display:none'>" + text + "</option>");
+}
+
+//提示信息
+function showInfoInAndOut(div, info) {
+    var divSet = $("#" + div);
+    divSet.html(info);
+    divSet.fadeIn(2000);
+    setTimeout("$('#" + div + "').fadeOut(2000)", 1000);
 }

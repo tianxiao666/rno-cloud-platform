@@ -95,7 +95,6 @@ $(function () {
             showInfoInAndOut("info", "bsc不能为空");
             return false;
         } else {
-
             return true;
         }
     });

@@ -228,7 +228,6 @@ function PutRightAllClk() {
     if (document.getElementById("defaultBsc").options.length == 0) {
         return false;
     }
-    document.getElementById("selectedBsc").options.length = 0;
     for (var i = 0; i < document.getElementById("defaultBsc").options.length; i++) {
         var varitem = new Option(document.getElementById("defaultBsc").options[i].text, document.getElementById("defaultBsc").options[i].value);
         document.getElementById("selectedBsc").options.add(varitem);
