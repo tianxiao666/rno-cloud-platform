@@ -3,6 +3,8 @@ var stopQueryProgress=false;///停止查询进度
 $(function () {
     // 设置jquery ui
     jqueryUiSet();
+    // 设置导航标题
+    setNavTitle("navTitle");
     //绑定事件
     bindEvent();
     // 执行 laydate 实例 
@@ -239,10 +241,6 @@ function bindEvent(){
         var filename = fileid.value;
         if(!(filename.toUpperCase().endsWith(".ZIP")||filename.toUpperCase().endsWith(".CSV"))){
             $("#fileDiv").html("不支持该类型文件！");
-            return false;
-        }
-        var flag = confirm("是否导入文件？");
-        if (flag === false){
             return false;
         }
         $("#err").remove();
