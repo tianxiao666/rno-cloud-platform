@@ -25,7 +25,6 @@ var defaultdisplayhead="<th>DATE</th>" +
 $(document).ready(function() {
 	// loadevent();
 	// V1.2加载话务统计页面完成后：AJAX获取适用于指定用户的统计报表模板
-	getPersonalReportTemplate("getPersonalReportTemplateForAjaxAction");
 	// 通过选择统计模板的下拉框触发change事件
 	var id1 = $("#rptTemplateId").find("option:selected").val();
 	var id2 = $("#rptTemplateId2").find("option:selected").val();
@@ -57,52 +56,7 @@ $(document).ready(function() {
 	//获取rnoTableDicts
 	getRnoTableDicts();
 });
-/**
- * 获取适用于指定用户的统计报表模板
- * 
- * @param {}
- *            action
- */
-function getPersonalReportTemplate(action) {
-	$.ajax({
-				url : action,
-				//data : ,
-				dataType : 'json',
-				type : 'post',
-				success : function(data) {
-					if (!data) {
-						return;
-					}
-					// 绑定数据
-					// console.log(data.length);
-					for (var i = 0; i < data.length; i++) {
-						$("#rptTemplateId").append("<option value='"
-								+ data[i].id + "'>" + data[i].reportName
-								+ "</option>");
-						$("#rptTemplateId2").append("<option value='"
-								+ data[i].id + "'>" + data[i].reportName
-								+ "</option>");
-					}
-					/*var id1 = $("#rptTemplateId").find("option:selected").val();
-					var id2 = $("#rptTemplateId2").find("option:selected").val();
-					changeTitleHead("rptTemplateId", id1,"getStsRptTemplateFiledForAjaxAction");
-					changeTitleHead("rptTemplateId2", id2,"getStsRptTemplateFiledForAjaxAction");*/
-					/*
-					 * animateInAndOut("operInfo", 500, 500, 1000, "operTip",
-					 * data);
-					 */
-				},
-				error : function(err, status) {
-					// animateInAndOut("operInfo", 500, 500, 1000, "operTip", err);
-				},
-				complete : function() {
-					// animateInAndOut("operInfo", 500, 500, 1000, "operTip",
-							"模块加载完成");
-				},
-				async:false
-			});
 
-}
 /**
  * 通过change事件：改变标题头
  */

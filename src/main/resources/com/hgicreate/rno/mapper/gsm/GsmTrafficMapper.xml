@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hgicreate.rno.mapper.gsm.GsmTrafficMapper">
+
+    <select id="gsmTrafficQuery" resultType="com.hgicreate.rno.service.gsm.dto.GsmTrafficQueryDTO"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmTrafficQueryVM">
+        <bind name="pattern" value="'%' + engName + '%'"/>
+        <bind name="pattern2" value="'%' + cell + '%'"/>
+        <bind name="pattern3" value="'%' + cellChineseName + '%'"/>
+        <if test="stsType == 'max'">
+            SELECT max(tRate) AS tRate, max(defChannel) AS defChannel, max(availableChannel) AS availableChannel,
+            max(carrierNum) AS carrierNum, max(wirelessUseRate) AS wirelessUseRate, max(trafficVolume) trafficVolume,
+            max(preTrafficVolume) preTrafficVolume, max(sts_date) AS sts_date, max(period) AS period, max(bsc) AS bsc,
+            max(cellEnglishName) AS cellEnglishName, max(cellChineseName) AS cellChineseName FROM
+        </if>
+        <if test="stsType == 'min'">
+            SELECT min(tRate) AS tRate, min(defChannel) AS defChannel, min(availableChannel) AS availableChannel,
+            min(carrierNum) AS carrierNum, min(wirelessUseRate) AS wirelessUseRate, min(trafficVolume) trafficVolume,
+            min(preTrafficVolume) preTrafficVolume, max(sts_date) AS sts_date, max(period) AS period, max(bsc) AS bsc,
+            max(cellEnglishName) AS cellEnglishName, max(cellChineseName) AS cellChineseName FROM
+        </if>
+        <if test="stsType == 'avg'">
+            SELECT avg(tRate) AS tRate, avg(defChannel) AS defChannel, avg(availableChannel) AS availableChannel,
+            avg(carrierNum) AS carrierNum, avg(wirelessUseRate) AS wirelessUseRate, avg(trafficVolume) trafficVolume,
+            avg(preTrafficVolume) preTrafficVolume, max(sts_date) AS sts_date, max(period) AS period, max(bsc) AS bsc,
+            max(cellEnglishName) AS cellEnglishName, max(cellChineseName) AS cellChineseName FROM
+        </if>
+        <if test="stsType == 'sum'">
+            SELECT sum(tRate) AS tRate, sum(defChannel) AS defChannel, sum(availableChannel) AS availableChannel,
+            sum(carrierNum) AS carrierNum, sum(wirelessUseRate) AS wirelessUseRate, sum(trafficVolume) trafficVolume,
+            sum(preTrafficVolume) preTrafficVolume, max(sts_date) AS sts_date, max(period) AS period, max(bsc) AS bsc,
+            max(cellEnglishName) AS cellEnglishName, max(cellChineseName) AS cellChineseName FROM
+        </if>
+        (SELECT
+        <choose>
+            <when test="stsType != 'default'">
+                trunc(d.STS_DATE)
+            </when>
+            <otherwise>
+                d.STS_DATE
+            </otherwise>
+        </choose>
+        AS sts_date, d.STS_PERIOD AS period, b.ENGNAME AS bsc, s.CELL AS cellEnglishName,
+        s.CELL_CHINESE_NAME AS cellChineseName, s.TCH_INTACT_RATE AS tRate, s.DECLARE_CHANNEL_NUMBER AS defChannel,
+        s.AVAILABLE_CHANNEL_NUMBER AS availableChannel, s.CARRIER_NUMBER AS carrierNum, s.RESOURCE_USE_RATE AS
+        wirelessUseRate,
+        s.TRAFFIC AS trafficVolume, s.TRAFFIC_PER_LINE AS preTrafficVolume
+        FROM RNO_GSM_STS s, RNO_GSM_STS_DESCRIPTOR d, RNO_GSM_BSC b
+        WHERE s.BSC_ID = b.BSC_ID AND s.DESCRIPTOR_ID = d.STS_DESC_ID AND d.SPEC_TYPE = #{searchType} AND d.AREA_ID =
+        #{areaId}
+
+        <![CDATA[
+            AND d.STS_DATE >= #{beginTime} AND d.STS_DATE <= (#{latestAllowedTime} + 1)
+            ]]>
+        <if test="stsPeriod != null and stsPeriod != ''">
+            AND d.STS_PERIOD = #{stsPeriod}
+        </if>
+        <if test="engName != null and engName != ''">
+            AND b.ENGNAME like #{pattern}
+        </if>
+        <if test="cell != null and cell != ''">
+            AND s.CELL like #{pattern2}
+        </if>
+        <if test="cellChineseName != null and cellChineseName != ''">
+            AND s.CELL_CHINESE_NAME like #{pattern3}
+        </if>)
+        <if test="stsType != 'default'">
+            GROUP BY sts_date
+        </if>
+
+    </select>
+</mapper>
