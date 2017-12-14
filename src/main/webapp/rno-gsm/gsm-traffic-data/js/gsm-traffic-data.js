@@ -7,11 +7,83 @@ $(function () {
     // 设置导航标题
     setNavTitle("navTitle");
 
-    //执行 laydate 实例 
-    laydate.render({elem: '#beginTime', value: new Date(new Date().getTime() - 7 * 86400000)});
-    laydate.render({elem: '#latestAllowedTime', value: new Date()});
-    laydate.render({elem: '#begUploadDate', value: new Date(new Date().getTime() - 7 * 86400000)});
-    laydate.render({elem: '#endUploadDate', value: new Date()});
+    // 执行 laydate 实例 
+    var beginUploadRender = laydate.render({
+        elem: '#begUploadDate',
+        value: new Date(new Date().getTime() - 7 * 86400000),
+        done: function (value,dates) {
+            endUploadRender.config.min = {
+                year: dates.year,
+                month: dates.month - 1,
+                date: dates.date,
+                hours: dates.hours,
+                minutes: dates.minutes,
+                seconds: dates.seconds
+            };
+            var endUploadDate =$("#endUploadDate");
+            if(Date.parse(value)  > Date.parse(endUploadDate.val())){
+                endUploadDate.val(value);
+            }
+        }
+    });
+    var endUploadRender = laydate.render({
+        elem: '#endUploadDate',
+        value: new Date(),
+        done: function (value,dates) {
+            beginUploadRender.config.max = {
+                year: dates.year,
+                month: dates.month - 1,
+                date: dates.date,
+                hours: dates.hours,
+                minutes: dates.minutes,
+                seconds: dates.seconds
+            };
+            // console.log(Date.parse(value)- start.value.getTime());
+            var begUploadDate =$("#begUploadDate");
+            if(Date.parse(value)  < Date.parse(begUploadDate.val())){
+                begUploadDate.val(value);
+            }
+        }
+    });
+
+    // 执行 laydate 实例 
+    var beginTimeRender = laydate.render({
+        elem: '#beginTime',
+        value: new Date(new Date().getTime() - 7 * 86400000),
+        done: function (value,dates) {
+            latestAllowedTimeRender.config.min = {
+                year: dates.year,
+                month: dates.month - 1,
+                date: dates.date,
+                hours: dates.hours,
+                minutes: dates.minutes,
+                seconds: dates.seconds
+            };
+            var latestAllowedTime =$("#latestAllowedTime");
+            if(Date.parse(value)  > Date.parse(latestAllowedTime.val())){
+                latestAllowedTime.val(value);
+            }
+        }
+    });
+    var latestAllowedTimeRender = laydate.render({
+        elem: '#latestAllowedTime',
+        value: new Date(),
+        done: function (value,dates) {
+            beginTimeRender.config.max = {
+                year: dates.year,
+                month: dates.month - 1,
+                date: dates.date,
+                hours: dates.hours,
+                minutes: dates.minutes,
+                seconds: dates.seconds
+            };
+            // console.log(Date.parse(value)- start.value.getTime());
+            var beginTime =$("#beginTime");
+            if(Date.parse(value)  < Date.parse(beginTime.val())){
+                beginTime.val(value);
+            }
+        }
+    });
     // 初始化区域联动
     initAreaSelectors({selectors: ["provinceId", "cityId",'areaId']});
     initAreaSelectors({selectors: ["provinceId2", "cityId2",'areaId2']});
