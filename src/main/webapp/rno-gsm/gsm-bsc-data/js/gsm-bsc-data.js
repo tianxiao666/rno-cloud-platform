@@ -89,7 +89,8 @@ $(function () {
     // AJAX 提交增加bsc的信息
     $("#addBscBtn").on('click', function () {
         //获取area_id上传
-        $("#areas").val($("#cityId").val());
+        var cityId = $("#cityIds").val();
+        $("#areas").val(cityId);
         if (bscName.value.trim()==='') {
             showInfoInAndOut("info", "bsc不能为空");
             return false;
