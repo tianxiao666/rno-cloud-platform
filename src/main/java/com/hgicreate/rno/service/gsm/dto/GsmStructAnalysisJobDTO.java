@@ -14,7 +14,6 @@ public class GsmStructAnalysisJobDTO {
     private Date completeTime;
     private Date begMeaTime;
     private Date endMeaTime;
-    private String resultStorePath;
     private Integer fileNumber;
 
 }

@@ -527,7 +527,7 @@ function showStructTaskResult(data) {
                         return "<span style='color: red'>"+ row['status'] + "</span>";
                 }
             },
-            "targets": 2,
+            "targets": 1,
             "data": null
         }, {
             "render": function (data, type, row) {
@@ -552,9 +552,8 @@ function showStructTaskResult(data) {
             "render": function (data, type, row) {
                 switch (row['status']) {
                     case "正常完成":
-                        return " <input type='button' value='下载结果文件'>" +
-                            "<input type='button' value='查看运行报告' onclick=\"checkStructureTaskReport('" + row['id'] + "')\">" +
-                            "<br><input type='button' value='查看渲染图' onclick='viewRenderImg(\"4729\")'>";
+                        return " <input type='button' value='下载结果文件' onclick=\"downloadResultFiles('" + row['id'] + "')\">"+
+                            "<input type='button' value='查看运行报告' onclick=\"checkStructureTaskReport('" + row['id'] + "')\">";
                     case "异常终止":
                         return "<input type='button' value='查看运行报告'"+
                             " onclick=\"checkStructureTaskReport('" + row['id'] + "')\">"
@@ -573,6 +572,11 @@ function showStructTaskResult(data) {
             url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
         }
     });
+}
+
+function downloadResultFiles(id) {
+    $("#jobId").val(id);
+    $("#downloadStructureFileForm").submit();
 }
 
 // 提交任务
@@ -607,20 +611,12 @@ function submitTask() {
     });
 }
 
-function loadMap() {
-    var baseLayer = new ol.layer.Tile({
-        source: new ol.source.XYZ({
-            url: 'http://rno-omt.hgicreate.com/styles/rno-omt/{z}/{x}/{y}.png'
-        })
-    });
-    map = new ol.Map({
-        target: 'map',
-        layers: [baseLayer],
-        view: new ol.View({
-            center: ol.proj.fromLonLat([113.3612, 23.1247]),
-            zoom: 16
-        })
-    });
+/**
+ * 从报告的详情返回列表页面
+ */
+function returnToTaskList(){
+    $("#reportDiv").css("display","none");
+    $("#structureTaskDiv").css("display","block");
 }
 
 function checkStructureTaskReport(jobId) {
@@ -634,7 +630,6 @@ function checkStructureTaskReport(jobId) {
 
             $("#reportDiv").css("display", "block");
             $("#structureTaskDiv").css("display", "none");
-            $("#renderImgDiv").css("display", "none");
             $("#runResultDT").css("line-height", "12px")
                 .DataTable({
                     "data": JSON.parse(data),
@@ -646,9 +641,11 @@ function checkStructureTaskReport(jobId) {
                         {"data": "message"}
                     ],
                     "lengthChange": false,
-                    "ordering": true,
+                    "ordering": false,
                     "searching": false,
                     "destroy": true,
+                    "paging":false,
+                    "info": false,
                     "language": {
                         url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
                     }
@@ -747,22 +744,10 @@ function ok(obtn) {
     $obj.attr("onclick", "editThis(this)");
 }
 
-//查看渲染图
-function viewRenderImg(jobId) {
-    //保存jobId用于获取对应的渲染图
-    $("#reportNcsTaskId").val(jobId);
-    //加载渲染图
-    var flag = confirm("是否加载渲染图？");
-    if (!flag) {
-        return;
-    }
-    //加载默认渲染规则
-    // showRendererRuleColor();
-
-    $("#renderImgDiv").css("display", "block");
-    $("#structureTaskDiv").css("display", "none");
-    $("#reportDiv").css("display", "none");
-    loadMap();
+// 取消任务
+function calTask() {
+    localStorage.clear();
+    window.location.href = 'gsm-struct-analysis.html';
 }
 
 function showInfoInAndOut(div, info) {

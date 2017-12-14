@@ -15,8 +15,14 @@ import com.hgicreate.rno.service.gsm.mapper.StructJobReportMapper;
 import com.hgicreate.rno.web.rest.gsm.vm.GsmStructAnalysisQueryVM;
 import com.hgicreate.rno.web.rest.gsm.vm.GsmStructTaskInfoVM;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -55,9 +61,29 @@ public class GsmStructAnalysisResource {
     @PostMapping("/query-report")
     public List<StructJobReportDTO> queryReport(String id){
         log.debug("查询任务报告的任务id：{}",id);
-        return gsmStructJobReportRepository.findByGsmStructAnalysisJob_Id(Long.parseLong(id))
+        return gsmStructJobReportRepository.findByGsmStructAnalysisJob_IdOrderByStatusDesc(Long.parseLong(id))
                 .stream().map(StructJobReportMapper.INSTANCE::structJobReportToStructJobReportDTO)
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping("/download-result")
+    @ResponseBody
+    public ResponseEntity<byte[]> downloadResultFile(String id){
+        GsmStructAnalysisJob gsmStructAnalysisJob = gsmStructAnalysisJobRepository.findOne(Long.parseLong(id));
+        Area area = gsmStructAnalysisJob.getArea();
+        String resultFilePath = gsmStructAnalysisService.saveLteStructAnaResult(area.getId());
+        File file = new File(resultFilePath);
+        try {
+            HttpHeaders headers = new HttpHeaders();
+            String fileName = new String(file.getName().getBytes("UTF-8"),
+                    "iso-8859-1");
+            headers.setContentDispositionFormData("attachment", fileName);
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            return new ResponseEntity<>(FileUtils.readFileToByteArray(file), headers, HttpStatus.CREATED);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("/submit-task")

@@ -59,12 +59,12 @@
                     </td>
                     <td style="text-align: left"><select name="taskStatus" id="facturer">
                         <option value="ALL" selected="selected">全部</option>
-                        <option value="LaunchedOrRunning">运行中</option>
-                        <option value="Succeded">正常完成</option>
-                        <option value="Fail">异常终止</option>
-                        <option value="Initiate">排队中</option>
-                        <option value="Stopping">停止中</option>
-                        <option value="Stopped">已停止</option>
+                        <option value="运行中">运行中</option>
+                        <option value="正常完成">正常完成</option>
+                        <option value="异常终止">异常终止</option>
+                        <option value="排队中">排队中</option>
+                        <option value="停止中">停止中</option>
+                        <option value="已停止">已停止</option>
                     </select></td>
                     <td>
                         <input id="measureDate" name="measureDate" class="" style="width: 132px;" type="text">
@@ -120,8 +120,8 @@
             </tr>
             </thead>
         </table>
-        <form id="downloadStructureFileForm" action="downloadStructureFileAction" method="post" style="display:none">
-            <input id="jobId" name="jobId" type="input">
+        <form id="downloadStructureFileForm" action="/api/gsm-struct-analysis/download-result" method="get" style="display:none">
+            <input id="jobId" name="id" type="input">
         </form>
     </div>
 </div>
@@ -148,216 +148,5 @@
         </table>
     </div>
 </div>
-
-
-<div id="renderImgDiv" style="display:none">
-    <div style="width: 94%;margin-top: 20px; margin-left: 3%;">
-        <ul id="icons1" class="ui-widget ui-helper-clearfix" style="width:100px;cursor:pointer">
-            <li class="ui-state-default ui-corner-all" title="返回列表" style="width:100px"
-                onclick="javascript:returnToTaskList();"> &lt;&lt; 返回列表
-            </li>
-        </ul>
-        <input id="reportNcsTaskId" value="" type="hidden">
-
-        <title>NCS小区渲染</title>
-
-        <div id="map" class="map"></div>
-        <div class="dialog2 draggable ui-draggable">
-            <div style="padding: 5px">
-                <select id="ncsRendererType">
-                    <option value="BE_INTERFER" selected="selected">被干扰系数</option>
-                    <option value="NET_STRUCT_FACTOR">网络结构指数</option>
-                    <option value="SRC_INTERFER">干扰源系数</option>
-                </select>
-                <input value="显示专题图" id="displayRenderImg" onclick="displayRenderImg()" type="button">
-                <input id="loadGisCell" value="加载小区" type="button">
-                <span id="loadingCellTip"></span>
-                <form id="conditionForm" method="post">
-                    <input id="cityId2" name="cityId" value="88" type="hidden">
-                    <input id="areaId" name="areaId" value="-1" type="hidden">
-                </form>
-            </div>
-        </div>
-        <div class="resource_list_icon" style="right: 0px;">
-            <a href="#" class="switch"></a> <a href="#" class="switch_hidden" style="display: inline;"></a>
-            <div class="shad_v"></div>
-        </div>
-        <div class="resource_list_box" style="height: 100%; display: none;">
-            <div class="resource_list">
-                <div id="div_tab_ncs_cell" class="div_tab divtab_menu">
-                    <ul style="width:100%">
-                        <li class="selected" style="width:40%">小区结构指标</li>
-                        <li style="width:30%">小区详情</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="divtab_content">
-                <div id="div_tab_ncs_cell_0">
-                    <table class="main-table1 half-width" id="ncsDetailTable">
-                        <tbody>
-                        <tr>
-                            <td class="menuTd" style="width: 20%">小区</td>
-                            <td id="showCellId"></td>
-                        </tr>
-                        <tr>
-                            <td class="menuTd" style="width: 20%">小区频点数</td>
-                            <td id="showFreqCntId"></td>
-                        </tr>
-                        <tr>
-                            <td class="menuTd" style="width: 20%">被干扰系数</td>
-                            <td id="showBeInterferId"></td>
-                        </tr>
-                        <tr>
-                            <td class="menuTd" style="width: 20%">干扰源系数</td>
-                            <td id="showSrcInterferId"></td>
-                        </tr>
-                        <tr>
-                            <td class="menuTd" style="width: 20%">网络结构指数</td>
-                            <td id="showNetStructFactorId"></td>
-                        </tr>
-                        <tr>
-                            <td class="menuTd" style="width: 20%">冗余覆盖指数</td>
-                            <td id="showReduntCoverFactId"></td>
-                        </tr>
-                        <tr>
-                            <td class="menuTd" style="width: 20%">重叠覆盖度</td>
-                            <td id="showOverlapCoverId"></td>
-                        </tr>
-                        <tr>
-                            <td class="menuTd" style="width: 20%">理想覆盖范围</td>
-                            <td id="showExpectedCoverDisId"></td>
-                        </tr>
-                        <tr>
-                            <td class="menuTd" style="width: 20%">过覆盖系数</td>
-                            <td id="showOvershootingFactId"></td>
-                        </tr>
-                        <tr>
-                            <td class="menuTd" style="width: 20%">小区检测次数</td>
-                            <td id="showDetectCntId"></td>
-                        </tr>
-                        <tr>
-                            <td class="menuTd" style="width: 20%">小区覆盖分量</td>
-                            <td id="showCellCoverId"></td>
-                        </tr>
-                        <tr>
-                            <td class="menuTd" style="width: 20%">小区容量破坏分量</td>
-                            <td id="showCapacityDestroyId"></td>
-                        </tr>
-                        <tr>
-                            <td class="menuTd" style="width: 20%">关联邻小区数</td>
-                            <td id="showInterferNcellCntId"></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div id="div_tab_ncs_cell_1" style="display:none">
-                    <table class="main-table1 half-width" id="gisCellTable">
-                        <tbody>
-                        <tr>
-                            <td class="menuTd" style="width: 20%">小区名</td>
-                            <td id="showCellLabelId"></td>
-                        </tr>
-                        <tr>
-                            <td class="menuTd" style="width: 20%">小区中文名</td>
-                            <td id="showCellNameId"></td>
-                        </tr>
-                        <tr>
-                            <td class="menuTd" style="width: 20%">LAC</td>
-                            <td id="showCellLacId"></td>
-                        </tr>
-                        <tr>
-                            <td class="menuTd" style="width: 20%">CI</td>
-                            <td id="showCellCiId"></td>
-                        </tr>
-                        <tr>
-                            <td class="menuTd" style="width: 20%">BCCH</td>
-                            <td id="showCellBcchId"></td>
-                        </tr>
-                        <tr>
-                            <td class="menuTd" style="width: 20%">TCH</td>
-                            <td id="showCellTchId"></td>
-                        </tr>
-                        <tr>
-                            <td class="menuTd" style="width: 20%">BSIC</td>
-                            <td id="showCellBsicId"></td>
-                        </tr>
-                        <tr>
-                            <td class="menuTd" style="width: 20%">天线方向</td>
-                            <td id="showCellAzimuthId"></td>
-                        </tr>
-                        <tr>
-                            <td class="menuTd" style="width: 20%">天线下倾</td>
-                            <td id="showCellDownId"></td>
-                        </tr>
-                        <tr>
-                            <td class="menuTd" style="width: 20%">基站类型</td>
-                            <td id="showCellBtsTypeId"></td>
-                        </tr>
-                        <tr>
-                            <td class="menuTd" style="width: 20%">天线高度</td>
-                            <td id="showCellAntHeightId"></td>
-                        </tr>
-                        <tr>
-                            <td class="menuTd" style="width: 20%">天线类型</td>
-                            <td id="showCellAntTypeId"></td>
-                        </tr>
-                        <tr>
-                            <td class="menuTd" style="width: 20%">经度</td>
-                            <td id="showCellLngId"></td>
-                        </tr>
-                        <tr>
-                            <td class="menuTd" style="width: 20%">纬度</td>
-                            <td id="showCellLatId"></td>
-                        </tr>
-                        <tr>
-                            <td class="menuTd" style="width: 20%">覆盖范围</td>
-                            <td id="showCellCoverareaId"></td>
-                        </tr>
-                        <tr>
-                            <td class="menuTd" style="width: 20%">频段</td>
-                            <td id="showCellFreqSectionId"></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div id="renderProgressDiv" class="dialog_content"
-             style="display: none; width: 300px; background: rgb(249, 249, 249) none repeat scroll 0% 0%; top: 58%; left: 39%; position: absolute; z-index: 31;">
-            <center><span id="progressDesc"></span><br>
-                <span id="threadProgress"></span></center>
-        </div>
-        <div id="analyze_Dialog" class="dialog2 draggable ui-draggable"
-             style="display: none; width: 300px; top: 267px; right: 400px; left: 40px; z-index: 30;">
-            <div class="dialog_header">
-                <div class="dialog_title">NCS专题分析</div>
-                <div class="dialog_tool">
-                    <div class="dialog_tool_close dialog_closeBtn"
-                         onclick="$('#analyze_Dialog').hide();$('.colordialog2').hide();"></div>
-                </div>
-            </div>
-            <div class="dialog_content" style="width:300px; background:#f9f9f9">
-                <table class="tb-transparent-standard" style="width:300px" id="trafficTable">
-                </table>
-            </div>
-        </div>
-        <div id="divColorDiv"></div>
-        <div id="operInfo"
-             style="display:none; top:40px;left:600px;z-index:999;width:400px; height:40px; background-color:#7dff3f; filter:alpha(Opacity=80);-moz-opacity:0.5;opacity: 0.5;z-index:9999;position: fixed;">
-            <table style="text-align:center" height="100%" width="100%">
-                <tbody>
-                <tr>
-                    <td><span id="operTip"></span></td>
-                </tr>
-                </tbody>
-            </table>
-
-        </div>
-
-
-    </div>
-</div>
-
-
 </body>
 </html>

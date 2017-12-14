@@ -22,7 +22,6 @@ public class GsmStructAnalysisJob {
     private Date startTime;
     private Date completeTime;
     private String status;
-    private String resultStorePath;
     private String createdUser;
     private Date createdDate;
     private Integer fileNumber;

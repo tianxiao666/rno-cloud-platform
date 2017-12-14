@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface GsmStructJobReportRepository extends JpaRepository<GsmStructJobReport,Long>{
-    List<GsmStructJobReport> findByGsmStructAnalysisJob_Id(Long jobId);
+    List<GsmStructJobReport> findByGsmStructAnalysisJob_IdOrderByStatusDesc(Long jobId);
 }
