@@ -1,7 +1,11 @@
 package com.hgicreate.rno.service.gsm;
 
+import com.hgicreate.rno.domain.Area;
+import com.hgicreate.rno.domain.gsm.GsmTrafficQuality;
 import com.hgicreate.rno.mapper.gsm.GsmTrafficMapper;
+import com.hgicreate.rno.repository.gsm.GsmTrafficQualityRepository;
 import com.hgicreate.rno.service.gsm.dto.GsmTrafficQueryDTO;
+import com.hgicreate.rno.web.rest.gsm.vm.GsmTrafficQualityQueryVM;
 import com.hgicreate.rno.web.rest.gsm.vm.GsmTrafficQueryVM;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.map.ListOrderedMap;
@@ -15,6 +19,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -26,9 +31,11 @@ import java.util.List;
 @Transactional(rollbackFor = Exception.class)
 public class GsmTrafficService {
     private final GsmTrafficMapper gsmTrafficMapper;
+    private final GsmTrafficQualityRepository gsmTrafficQualityRepository;
 
-    public GsmTrafficService(GsmTrafficMapper gsmTrafficMapper) {
+    public GsmTrafficService(GsmTrafficMapper gsmTrafficMapper, GsmTrafficQualityRepository gsmTrafficQualityRepository) {
         this.gsmTrafficMapper = gsmTrafficMapper;
+        this.gsmTrafficQualityRepository = gsmTrafficQualityRepository;
     }
 
     public List<GsmTrafficQueryDTO> gsmTrafficQuery(GsmTrafficQueryVM vm){
@@ -115,5 +122,20 @@ public class GsmTrafficService {
             }
         }
         return file;
+    }
+
+
+    public List<GsmTrafficQuality> gsmTrafficQualityQuery(GsmTrafficQualityQueryVM vm){
+        Area area = new Area();
+        area.setId(vm.getAreaId());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(vm.getLatestAllowedTime());
+        calendar.add(Calendar.DATE, 1);
+        Date endDate = calendar.getTime();
+        if (vm.getType() == null){
+            return gsmTrafficQualityRepository.findTop1000ByAreaAndStaticTimeBetween(area, vm.getBeginTime(), endDate);
+
+        }
+        return gsmTrafficQualityRepository.findTop1000ByAreaAndTypeAndStaticTimeBetween(area, vm.getType(), vm.getBeginTime(), endDate);
     }
 }

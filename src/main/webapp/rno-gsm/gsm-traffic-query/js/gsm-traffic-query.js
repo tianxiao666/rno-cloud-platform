@@ -11,15 +11,14 @@ $(function () {
     //执行 laydate 实例 
     laydate.render({elem: '#audioBeginTime', value: new Date(new Date().getTime() - 7 * 86400000)});
     laydate.render({elem: '#audioLatestAllowedTime', value: new Date()});
-
     laydate.render({elem: '#dataBeginTime', value: new Date(new Date().getTime() - 7 * 86400000)});
     laydate.render({elem: '#dataLatestAllowedTime', value: new Date()});
-
-    laydate.render({elem: '#beginTime2', value: new Date(new Date().getTime() - 7 * 86400000)});
-    laydate.render({elem: '#latestAllowedTime2', value: new Date()});
+    laydate.render({elem: '#qualityBeginTime', value: new Date(new Date().getTime() - 7 * 86400000)});
+    laydate.render({elem: '#qualityLatestAllowedTime', value: new Date()});
 
     initAreaSelectors({selectors: ["provinceId", "cityId", "audioAreaId"]});
     initAreaSelectors({selectors: ["provinceId1", "cityId1", "dataAreaId"]});
+    initAreaSelectors({selectors: ["qualityProvinceId", "qualityCityId"]});
 });
 //jquery ui 效果
 function jqueryUiSet() {
@@ -94,11 +93,9 @@ function trafficQuery(tab){
         url:'/api/gsm-traffic-query',
         type:'post',
         dataType:'text',
-        beforeSend:function () {
-
-        },
         success:function(data){
             isSerched =true;
+            $('#'+ tab + 'QueryCellTrafficTab').css("line-height", "12px");
             $('#'+ tab + 'QueryCellTrafficTab').DataTable( {
                 "data": JSON.parse(data),
                 "columns": [
@@ -143,6 +140,50 @@ function trafficQuery(tab){
     $("#" + tab +"LatestAllowedTime").val(endTime);
     $('#queryCellTrafficTab').css("line-height", "12px");
 
+}
+
+function searchCityNetQuality() {
+    var beginTime = $("#qualityBeginTime").val();
+    var endTime = $("#qualityLatestAllowedTime").val();
+    $("#qualityBeginTime").val(new Date(beginTime));
+    $("#qualityLatestAllowedTime").val(new Date(endTime));
+    $("#form_tab_2").ajaxSubmit({
+        url:'/api/gsm-traffic-quality-query',
+        type:'post',
+        dataType:'text',
+        beforeSend:function () {
+
+        },
+        success:function(data){
+            $('#queryCityNetworkDT').css("line-height", "12px");
+            $('#queryCityNetworkDT').DataTable( {
+                "data": JSON.parse(data),
+                "columns": [
+                    { "data": "staticTime" , "render": function (data) {
+                        return (new Date(data)).Format("yyyy-MM-dd");
+                    }},
+                    { "data": "type" },
+                    { "data": "area.name" },
+                    { "data": "score" },
+                    { "data": "indexClass" },
+                    { "data": "indexName" },
+                    { "data": "indexValue" }
+                ],
+                "lengthChange": false,
+                "ordering": true,
+                "searching": false,
+                "destroy": true,
+                "language": {
+                    url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
+                }
+            } );
+        },
+        complete:function () {
+
+        }
+    });
+    $("#qualityBeginTime").val(beginTime);
+    $("#qualityLatestAllowedTime").val(endTime);
 }
 
 Date.prototype.Format = function(fmt){

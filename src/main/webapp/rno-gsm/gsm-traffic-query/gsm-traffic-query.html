@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns="">
 <head>
     <meta charset="UTF-8">
     <title>话务性能查询</title>
@@ -20,7 +20,6 @@
     <script src="../../lib/datatables/1.10.16/datatables.min.js"></script>
     <script src="../../js/common.js"></script>
     <script src="js/gsm-traffic-query.js"></script>
-    <script src="js/gsm-traffic-query-manager.js"></script>
 </head>
 <body style="margin-top: 0">
 <h2 style="margin-bottom: 5px"><nav id="navTitle"></nav></h2>
@@ -162,7 +161,6 @@
                                     <input id="audioDlCellChineseName" name="cellChineseName" type="hidden">
                                     <input id="audioDlStsType" name="stsType" type="hidden">
                                 </td>
-                                </tr>
                                 </tbody>
                             </table>
                         </form>
@@ -227,34 +225,35 @@
                                 onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'beginTime\')}'})"
                                 name="latestAllowedTime" type="text" title="">
                         </td>
-                        <td style="text-align:left"><select name="stsPeriod" title="" id="dataStsPeriod">
-                            <option value="" selected="selected">全部</option>
-                            <option value="0000-0100">0000-0100</option>
-                            <option value="0100-0200">0100-0200</option>
-                            <option value="0200-0300">0200-0300</option>
-                            <option value="0300-0400">0300-0400</option>
-                            <option value="0400-0500">0400-0500</option>
-                            <option value="0500-0600">0500-0600</option>
-                            <option value="0600-0700">0600-0700</option>
-                            <option value="0700-0800">0700-0800</option>
-                            <option value="0800-0900">0800-0900</option>
-                            <option value="0900-1000">0900-1000</option>
-                            <option value="1000-1100">1000-1100</option>
-                            <option value="1100-1200">1100-1200</option>
-                            <option value="1200-1300">1200-1300</option>
-                            <option value="1300-1400">1300-1400</option>
-                            <option value="1400-1500">1400-1500</option>
-                            <option value="1500-1600">1500-1600</option>
-                            <option value="1600-1700">1600-1700</option>
-                            <option value="1700-1800">1700-1800</option>
-                            <option value="1800-1900">1800-1900</option>
-                            <option value="1900-2000">1900-2000</option>
-                            <option value="2000-2100">2000-2100</option>
-                            <option value="2100-2200">2100-2200</option>
-                            <option value="2200-2300">2200-2300</option>
-                            <option value="2300-0000">2300-0000</option>
-                        </select></td>
-
+                        <td style="text-align:left">
+                            <select name="stsPeriod" title="" id="dataStsPeriod">
+                                <option value="" selected="selected">全部</option>
+                                <option value="0000-0100">0000-0100</option>
+                                <option value="0100-0200">0100-0200</option>
+                                <option value="0200-0300">0200-0300</option>
+                                <option value="0300-0400">0300-0400</option>
+                                <option value="0400-0500">0400-0500</option>
+                                <option value="0500-0600">0500-0600</option>
+                                <option value="0600-0700">0600-0700</option>
+                                <option value="0700-0800">0700-0800</option>
+                                <option value="0800-0900">0800-0900</option>
+                                <option value="0900-1000">0900-1000</option>
+                                <option value="1000-1100">1000-1100</option>
+                                <option value="1100-1200">1100-1200</option>
+                                <option value="1200-1300">1200-1300</option>
+                                <option value="1300-1400">1300-1400</option>
+                                <option value="1400-1500">1400-1500</option>
+                                <option value="1500-1600">1500-1600</option>
+                                <option value="1600-1700">1600-1700</option>
+                                <option value="1700-1800">1700-1800</option>
+                                <option value="1800-1900">1800-1900</option>
+                                <option value="1900-2000">1900-2000</option>
+                                <option value="2000-2100">2000-2100</option>
+                                <option value="2100-2200">2100-2200</option>
+                                <option value="2200-2300">2200-2300</option>
+                                <option value="2300-0000">2300-0000</option>
+                            </select>
+                        </td>
 
                         <td style="text-align:left"><input id="dataEngName"
                                                            name="engName" type="text" title="">
@@ -265,15 +264,15 @@
                                                            style="color:grey" class="encell"
                                                            onfocus="cellInputFocus(this)"
                                                            onblur="cellInputBlur(this)" type="text">
-                            <span style="color:red;width:100px;font-family:华文中宋;text-align:center"
+                            <span style="color:red;width:100px;font-family:华文中宋,serif;text-align:center"
                                   id="dataenameDiv"></span>
                             <br>
                             <input value="小区中文名" title="小区中文名" id="dataCellChineseName" style="color:grey" name="cellChineseName"
                                    class="chcell" onfocus="cellInputFocus(this)"
                                    onblur="cellInputBlur(this)" type="text">
-                            <span style="color:red;width:100px;font-family:华文中宋;text-align:center"
+                            <span style="color:red;width:100px;font-family:华文中宋,serif;text-align:center"
                                   id="datacnameDiv"></span>
-                        <td><select id="dataStsType" name="stsType">
+                        <td><select id="dataStsType" name="stsType" title="">
                             <option value="default" selected="selected">不汇总</option>
                             <option value="sum">单天求和</option>
                             <option value="avg">单天平均</option>
@@ -289,7 +288,6 @@
                     </tbody>
                 </table>
             </form>
-
         </div>
 
         <div style="padding-top:10px">
@@ -298,7 +296,7 @@
                 <tr>
                     <td style="width:80%">
                         <p>
-                            <font style="font-weight:bold">话务性能指标：</font>
+                            <span style="font-weight:bold">话务性能指标：</span>
                         </p>
                     </td>
                     <td style="text-align:right"><input onclick="exportData('data')" value="导出数据"
@@ -318,17 +316,12 @@
                                     <input id="dataDlCellChineseName" name="cellChineseName" type="hidden">
                                     <input id="dataDlStsType" name="stsType" type="hidden">
                                 </td>
-                            </tr>
                             </tbody>
                         </table>
                     </form>
                 </tr>
-
                 </tbody>
             </table>
-            <form id="export_form_tab_data" method="post" action="exportRnoStsListAction">
-                <input name="searchType" value="CELL_DATA" type="hidden">
-            </form>
 
         </div>
         <div style="padding-top:10px;overflow:auto">
@@ -355,14 +348,9 @@
     <div  id="tabs-3" aria-labelledby="ui-id-3" class="ui-tabs-panel ui-widget-content ui-corner-bottom" role="tabpanel"
           style="display: none;" aria-hidden="true">
         <div>
-            <form id="form_tab_2" method="post">
+            <form id="form_tab_2">
                 <input name="searchType" value="CITY_QUALITY" type="hidden">
-                <input id="tab_2_hiddenPageSize" name="page.pageSize" value="25" type="hidden"> <input
-                    id="tab_2_hiddenCurrentPage" name="page.currentPage" value="1" type="hidden">
-                <input id="tab_2_hiddenTotalPageCnt" type="hidden"> <input id="tab_2_hiddenTotalCnt"
-                                                                           type="hidden">
                 <table class="main-table1 half-width" style="padding-top:10px;width:50%;margin-left:0">
-
                     <tbody>
                     <tr>
                         <td class="menuTd" style="text-align:center;">类别</td>
@@ -371,49 +359,48 @@
                     </tr>
                     <tr>
 
-                        <td style="text-align:left"><select name="queryCondition.grade">
+                        <td style="text-align:left"><select name="type" title="">
                             <option value="" selected="selected">全部</option>
-                            <option value="一类">一类</option>
-                            <option value="二类">二类</option>
-                            <option value="三类">三类</option>
+                            <option value="1">一类</option>
+                            <option value="2">二类</option>
+                            <option value="3">三类</option>
                         </select></td>
 
                         <td>
-                            省：<select name="provinceId2" class="required" id="provinceId2"></select><br>
-                            市：<select name="queryCondition.cityId2" class="required" id="cityId2"></select>
+                            省：<select class="required" id="qualityProvinceId" title=""></select><br>
+                            市：<select name="areaId" class="required" id="qualityCityId" title=""></select>
                         </td>
 
                         <td style="text-align:left">
 
-                            始:<input id="beginTime2" name="queryCondition.beginTime"
+                            始:<input id="qualityBeginTime" name="beginTime"
                                      onfocus="var dd=$dp.$('latestAllowedTime');WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:function(){latestAllowedTime.focus();},maxDate:'#F{$dp.$D(\'latestAllowedTime\')}'})"
                                      readonly="readonly" class="Wdate required input-text"
-                                     value="2017-10-25" type="text"> <br>
-                            止:<input id="latestAllowedTime2"
-                                                                                  name="queryCondition.latestAllowedTime"
+                                     value="2017-10-25" type="text" title=""> <br>
+                            止:<input id="qualityLatestAllowedTime"
+                                                                                  name="latestAllowedTime"
                                                                                   onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'beginTime\')}'})"
                                                                                   readonly="readonly"
                                                                                   class="Wdate required input-text"
-                                                                                  type="text">
+                                                                                  type="text" title="">
 
                         </td>
                     </tr>
                     <tr>
-                        <td style="text-align:right" colspan="3"><input id="queryCityNetworkBtn" value="查  询" style="width:90px;" name="search" type="button">
+                        <td style="text-align:right" colspan="3"><input id="queryCityNetworkBtn" value="查  询" style="width:90px;" name="search" type="button" onclick="searchCityNetQuality();">
                         </td>
                     </tr>
                     </tbody>
                 </table>
             </form>
         </div>
-
         <div style="padding-top:10px">
             <table width="100%">
                 <tbody>
                 <tr>
                     <td style="width:20%">
                         <p>
-                            <font style="font-weight:bold">话务性能指标：</font>
+                            <span style="font-weight:bold">话务性能指标：</span>
                         </p>
                     </td>
 
@@ -426,8 +413,7 @@
         </div>
         <div>
             <form name="form1" method="post">
-                <!--<table id="tab_2_queryResultTab" class="greystyle-standard" width="100%">-->
-                <table id="queryCityNetworkDT" class="display rnoHeader" width="98%">
+                <table id="queryCityNetworkDT" class="display rnoHeader"  cellspacing="0" width="100%">
                     <thead>
                         <tr>
                             <th >STATIC_TIME(指标日期)</th>

@@ -1,7 +1,9 @@
 package com.hgicreate.rno.web.rest.gsm;
 
+import com.hgicreate.rno.domain.gsm.GsmTrafficQuality;
 import com.hgicreate.rno.service.gsm.GsmTrafficService;
 import com.hgicreate.rno.service.gsm.dto.GsmTrafficQueryDTO;
+import com.hgicreate.rno.web.rest.gsm.vm.GsmTrafficQualityQueryVM;
 import com.hgicreate.rno.web.rest.gsm.vm.GsmTrafficQueryVM;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -59,32 +61,9 @@ public class GsmTrafficResource {
             }
         }
     }
-        /*Map<String, List<Map<String, Object>>> map = new LinkedHashMap<>();
-        List<Map<String,Object>> res = new ArrayList<Map<String,Object>>();
-        Date today = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        List<GsmTrafficQueryDTO> list = gsmTrafficService.gsmTrafficQuery(vm);
-        for (int i = 0; i < list.size(); i ++) {
-            Map<String, Object> map1 = Maps.newHashMap();
-            if (list.get(i) != null) {
-                BeanMap beanMap = BeanMap.create(list.get(i));
-                for (Object key : beanMap.keySet()) {
-                    map1.put(key+"", beanMap.get(key));
-                }
-                res.add(map1);
-            }
-        }
-        String fileName = vm.getSearchType() + sdf.format(today) + "-话务性能指标.csv";
-        try {
-            fileName = new String(fileName.getBytes("UTF-8"),
-                    "iso-8859-1");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        resp.setContentType("application/x.ms-excel");
-        resp.setHeader("Content-disposition", "attachment;filename=" + fileName);
-        map.put("话务性能指标", res);
-        ExcelFileTool.createExcel(resp, map);
-        return res;*/
 
+    @PostMapping("/gsm-traffic-quality-query")
+    public List<GsmTrafficQuality> gsmTrafficQualityQuery(GsmTrafficQualityQueryVM vm){
+        return gsmTrafficService.gsmTrafficQualityQuery(vm);
+    }
 }
