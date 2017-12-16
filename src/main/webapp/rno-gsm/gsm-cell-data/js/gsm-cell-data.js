@@ -261,6 +261,7 @@ $(function () {
             showInfoInAndOut('info','开始时间和结束时间不能为空！');
             return false;
         }
+        $(".loading").css("display", "block");
     });
 
     // AJAX 查询导入记录
@@ -270,10 +271,11 @@ $(function () {
     });
 
     $("#searchJob").click(function () {
-        if($("#beginTestDate").val().trim() === '' || $("#endTestDate").val().trim() === ''){
+        if($("#beginJobDate").val().trim() === '' || $("#endJobDate").val().trim() === ''){
             showInfoInAndOut('info','开始时间和结束时间不能为空！');
             return false;
         }
+        $(".loading").css("display", "block");
     });
 
     //查询数据记录
@@ -592,6 +594,11 @@ function updateGsmCellDetail(submitOK) {
 }
 
 function showImportRecord(data) {
+    $(".loading").css("display", "none");
+    if (data == '') {
+        $("#info").css("background", "red");
+        showInfoInAndOut('info', '没有符合条件的工参导入记录');
+    }
     var queryRecordResTab =$('#queryRecordResTab');
     queryRecordResTab.DataTable().clear();
     queryRecordResTab.css("line-height", "12px")
@@ -658,6 +665,11 @@ function showImportRecord(data) {
 }
 
 function showRecord(data) {
+    $(".loading").css("display", "none");
+    if (data == '') {
+        $("#info").css("background", "red");
+        showInfoInAndOut('info', '没有符合条件的文件处理记录');
+    }
     var recordResult =  $('#recordResult');
     recordResult.DataTable().clear();
     recordResult.css("line-height", "12px")

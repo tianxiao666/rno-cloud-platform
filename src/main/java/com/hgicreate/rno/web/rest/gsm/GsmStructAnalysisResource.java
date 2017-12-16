@@ -71,7 +71,7 @@ public class GsmStructAnalysisResource {
     public ResponseEntity<byte[]> downloadResultFile(String id){
         GsmStructAnalysisJob gsmStructAnalysisJob = gsmStructAnalysisJobRepository.findOne(Long.parseLong(id));
         Area area = gsmStructAnalysisJob.getArea();
-        String resultFilePath = gsmStructAnalysisService.saveLteStructAnaResult(area.getId());
+        String resultFilePath = gsmStructAnalysisService.saveGsmStructAnaResult(area.getId());
         File file = new File(resultFilePath);
         try {
             HttpHeaders headers = new HttpHeaders();

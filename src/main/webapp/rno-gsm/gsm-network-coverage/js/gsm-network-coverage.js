@@ -1,121 +1,185 @@
-
 $(function () {
 
-    //执行 laydate 实例 
-    laydate.render({elem: '#begDate', type: 'datetime', value: new Date(new Date().getTime() - 7 * 86400000)});
-    laydate.render({elem: '#endDate', type: 'datetime', value: new Date()});
+    // 设置导航标题
+    setNavTitle("navTitle");
 
-    laydate.render({elem: '#begDate2', type: 'datetime', value: new Date(new Date().getTime() - 7 * 86400000)});
-    laydate.render({elem: '#endDate2', type: 'datetime', value: new Date()});
-
-    $(".draggable").draggable();
-    $("#trigger").css("display", "none");
-
-    $("#provinceId").change(function () {
-        var provinceId = parseInt($(this).find("option:checked").val());
-        $.getJSON("../../data/area.json", function (data) {
-            renderArea(data, provinceId, "cityId");
-        })
-    });
-
-    $("#provinceId2").change(function () {
-        var provinceId = parseInt($(this).find("option:checked").val());
-        $.getJSON("../../data/area.json", function (data) {
-            renderArea(data, provinceId, "cityId2");
-        })
-    });
-
-
-    //初始化区域
-    $.ajax({
-        url: "../../data/area.json",
-        dataType: "json",
-        async: false,
-        success: function (data) {
-            console.log("取到数据。");
-            renderArea(data, 0, "provinceId");
-            renderArea(data, 0, "provinceId2");
-            $("#provinceId").change();
-            $("#provinceId2").change();
+    // 执行 laydate 实例 
+    var begDate = new Date(new Date().getTime() - 7 * 86400000);
+    var endDate = new Date();
+    var begCreatedDate = laydate.render({//渲染开始时间选择
+        elem: '#begDate', //通过id绑定html中插入的start
+        value: begDate,
+        type:"datetime",
+        max: endDate.toString(),//设置一个默认最大值
+        btns: ['clear', 'confirm'],
+        done: function (value, dates) {
+            endCreatedDate.config.min = {
+                year: dates.year,
+                month: dates.month - 1, //关键
+                date: dates.date,
+                hours: dates.hours,
+                minutes: dates.minutes,
+                seconds: dates.seconds
+            };
         }
-    })
+    });
+    var endCreatedDate = laydate.render({//渲染结束时间选择
+        elem: '#endDate',
+        value: endDate,
+        min: begDate.getFullYear() + "-" + (begDate.getMonth() + 1) + "-" + begDate.getDate() + " "
+        + begDate.getHours() + ":" + begDate.getMinutes() + ":" + begDate.getSeconds(),//设置min默认最小值
+        btns: ['clear', 'confirm'],
+        type:"datetime",
+        done: function (value, dates) {
+            begCreatedDate.config.max = {
+                year: dates.year,
+                month: dates.month - 1,//关键
+                date: dates.date,
+                hours: dates.hours,
+                minutes: dates.minutes,
+                seconds: dates.seconds
+            }
+        }
+    });
+
+    // 初始化区域联动
+    initAreaSelectors({selectors: ["provinceId", "cityId"]});
+
+    // 任务表单提交
+    $("#networkCoverageForm").ajaxForm({
+        url:"/api/gsm-network-coverage/job-query",
+        success:showJobQueryResult
+    });
+
+    // ncs数据查询表单提交
+    $("#NcsDataForJobForm").ajaxForm({
+        url:"/api/gsm-network-coverage/ncs-data-query",
+        success:showNcsData
+    });
 
     $("#searchInterMartixDT").click(function () {
-        $('#analysisResultDT').css("line-height", "12px");
-        $('#analysisResultDT').DataTable( {
-            "ajax": "data/gsm-network-coverage-list.json",
-            "columns": [
-                { "data": null },
-                { "data": "CREATE_DATE" },
-                {"data" : null},
-                { "data": "RECORD_NUM" },
-                { "data": "WORK_STATUS" }
-            ],
-            "columnDefs": [ {
-                "render": function(data, type, row) {
-                    return "广州";
-                },
-                "targets": 0,
-                "data": null
-            },{
-                "render": function(data, type, row) {
-                    return row['START_MEA_DATE'] + "~"+row['END_MEA_DATE'];
-                },
-                "targets": 2,
-                "data": null
-            }
-            ],
-            "lengthChange": true,
-            "ordering": false,
-            "searching": true,
-            "language": {
-                url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
-            }
-        });
+        $(".loading").css("display", "block");
     });
 
     $("#showNcsDataDT").click(function () {
-        $('#ncsResultDT').css("line-height", "12px");
-        $('#ncsResultDT').DataTable( {
-            "ajax": "data/gsm-network-coverage-ncs.json",
-            "columns": [
-                { "data": null },
-                { "data": "BSC" },
-                {"data" : "FILE_NAME"},
-                { "data": "MEA_TIME" },
-            ],
-            "columnDefs": [ {
-                "render": function(data, type, row) {
-                    return "广州";
-                },
-                "targets": 0,
-                "data": null
-            }
-            ],
-            "lengthChange": true,
-            "ordering": false,
-            "searching": true,
-            "language": {
-                url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
+        $(".loading").css("display", "block");
+    });
+
+    $("#calculateNcsInterMartix").click(function(){
+        // $("#addJobForm").submit();
+        var data = {};
+        data["cityId"] = $("#cityId").val();
+        data["begMeaDate"] = $("#begDate").val();
+        data["endMeaDate"] = $("#endDate").val();
+
+        $.ajax({
+            url: '/api/gsm-network-coverage/add-job',
+            data:data,
+            dataType: 'text',
+            type:'post',
+            success: addNetCoverJobResult,
+            error: function (err) {
+                console.log(err);
+                showInfoInAndOut("info", "后台程序错误！");
             }
         });
     });
 });
 
-// 渲染区域
-function renderArea(data, parentId, areaMenu) {
-    var arr = data.filter(function (v) {
-        return v.parentId === parentId;
-    });
-    if (arr.length > 0) {
-        console.log("ARR=" + arr.length);
-        var areaHtml = [];
-        $.each(arr, function (index) {
-            var area = arr[index];
-            areaHtml.push("<option value='"+area.id+"'>"+area.name+"</option>");
-        });
-        $("#" + areaMenu).html(areaHtml.join(""));
-    } else {
-        console.log("父ID为" + parentId + "时未找到任何下级区域。");
+// 显示任务查询结果
+function showJobQueryResult(data) {
+    $(".loading").css("display", "none");
+    if (data == '') {
+        $("#info").css("background", "red");
+        showInfoInAndOut('info', '没有符合条件的覆盖分析任务');
     }
+    $('#analysisResultDT').DataTable().clear();
+    $('#analysisResultDT').css("line-height", "12px");
+    $('#analysisResultDT').DataTable( {
+        "data": data,
+        "columns": [
+            { "data": "cityName" },
+            { "data": "createdDate" },
+            {"data" : null},
+            { "data": "fileNumber" },
+            { "data": "status" }
+        ],
+        "columnDefs": [{
+            "render": function(data, type, row) {
+                return row['begMeaTime'] + "~"+row['endMeaTime'];
+            },
+            "targets": 2,
+            "data": null
+        },{
+            "render": function(data, type, row) {
+                switch (row['status']) {
+                    case "正常完成":
+                        return row['status']+"："+ "<input type='button' value='下载结果文件'"+
+                            " onclick=\"downloadResultFiles('" + row['id'] + "')\">";
+                    case "异常终止":
+                        return row['status'];
+                }
+            },
+            "targets": 4,
+            "data": null
+        }
+        ],
+        "lengthChange": false,
+        "ordering": true,
+        "searching": false,
+        "destroy": true,
+        "language": {
+            url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
+        }
+    });
+}
+
+function downloadResultFiles(id) {
+    $("#jobId").val(id);
+    // $(".loading").css("display", "block");
+    $("#downloadDirAngleFileForm").submit();
+}
+
+// 显示ncs数据查询结果
+function showNcsData(data) {
+    $(".loading").css("display", "none");
+    if (data == '') {
+        $("#isDateRightTip").text("该时间段内无数据");
+        // $("#info").css("background", "red");
+        // showInfoInAndOut('info', '没有符合条件的覆盖分析任务');
+    }
+    $('#ncsResultDT').DataTable().clear();
+    $('#ncsResultDT').css("line-height", "12px");
+    $('#ncsResultDT').DataTable( {
+        "data": data,
+        "columns": [
+            { "data": "areaName" },
+            { "data": "bsc" },
+            {"data" : "name"},
+            { "data": "meaDate" }
+        ],
+        "lengthChange": false,
+        "ordering": true,
+        "searching": false,
+        "destroy": true,
+        "language": {
+            url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
+        }
+    });
+}
+
+// 任务提交结果
+function addNetCoverJobResult(flag) {
+    if(flag==="true"){
+        window.location.href = "gsm-network-coverage.html";
+    }else{
+        $("#isDateRightTip").text("该时间段内无数据");
+    }
+}
+
+function showInfoInAndOut(div, info) {
+    var divSet = $("#" + div);
+    divSet.html(info);
+    divSet.fadeIn(2000);
+    setTimeout("$('#" + div + "').fadeOut(2000)", 1000);
 }

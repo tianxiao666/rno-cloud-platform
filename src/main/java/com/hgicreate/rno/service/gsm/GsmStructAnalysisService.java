@@ -111,7 +111,7 @@ public class GsmStructAnalysisService {
         return resultList;
     }
 
-    public String saveLteStructAnaResult(Long cityId){
+    public String saveGsmStructAnaResult(Long cityId){
         List<GsmCell> cellList = gsmCellDataRepository.findByArea_Id(cityId);
         Area area = areaRepository.findById(cityId);
         List<Map<String, Object>> indexSumLists = doIndexSum(cellList,area);
@@ -192,7 +192,7 @@ public class GsmStructAnalysisService {
     }
 
     // 生成指标汇总文件
-    private static boolean saveIndexSum(List<Map<String, Object>> indexSumLists) {
+    private void saveIndexSum(List<Map<String, Object>> indexSumLists) {
         log.debug("进入方法：saveIndexSum");
         BufferedWriter bw = null;
         String directory ="d:/tmp/rno-cloud-platform/downloads/temp/";
@@ -214,7 +214,7 @@ public class GsmStructAnalysisService {
             bw.write(buf.toString());
             bw.newLine();
             // 输出内容
-            Map<String, Object> indexMap = null;
+            Map<String, Object> indexMap;
             for (int i = 0; i < indexSumLists.size(); i++) {
                 try {
                     buf.setLength(0);
@@ -253,10 +253,9 @@ public class GsmStructAnalysisService {
             }
         }
         log.debug("退出方法：saveIndexSum。");
-        return true;
     }
 
-    public List<Map<String, Object>> doOverLayIndex(List<GsmCell> cellList,Area area) {
+    private List<Map<String, Object>> doOverLayIndex(List<GsmCell> cellList,Area area) {
         List<Map<String, Object>> indexLists = new ArrayList<>();
         for(GsmCell gsmCell:cellList) {
             Map<String, Object> map = new HashMap<>();
@@ -353,7 +352,7 @@ public class GsmStructAnalysisService {
     }
 
     // 生成重叠覆盖文件
-    private static boolean saveOverLayIndex(List<Map<String, Object>> indexLists) {
+    private void saveOverLayIndex(List<Map<String, Object>> indexLists) {
         log.debug("进入方法：saveOverLayIndex。" );
         BufferedWriter bw = null;
         String directory ="d:/tmp/rno-cloud-platform/downloads/temp/";
@@ -517,10 +516,9 @@ public class GsmStructAnalysisService {
                 e.printStackTrace();
             }
         }
-        return true;
     }
 
-    private static List<Date> findDates(Date dBegin, Date dEnd) {
+    private List<Date> findDates(Date dBegin, Date dEnd) {
         List<Date> lDate = new ArrayList<>();
         lDate.add(dBegin);
         Calendar calBegin = Calendar.getInstance();

@@ -505,6 +505,7 @@ function showStructTaskResult(data) {
         $("#info").css("background", "red");
         showInfoInAndOut('info', '没有符合条件的结构分析任务');
     }
+    $('#optimizeResultDT').DataTable().clear();
     $('#optimizeResultDT').css("line-height", "12px");
     $('#optimizeResultDT').DataTable({
         "data": data,
@@ -629,6 +630,7 @@ function checkStructureTaskReport(jobId) {
             $("#viewReportForm").find("input#hiddenJobId").val(jobId);
 
             $("#reportDiv").css("display", "block");
+            $('#runResultDT').DataTable().clear();
             $("#structureTaskDiv").css("display", "none");
             $("#runResultDT").css("line-height", "12px")
                 .DataTable({
@@ -696,6 +698,7 @@ function showTaskDetailInfo() {
             $("#taskMeaDateSubmit").text(taskInfo["begMeaDate"] + "-" + taskInfo["endMeaDate"]);
             $("#taskDescSubmit").text(taskInfo["taskDescription"]);
         }
+        $("#eriDataDetailTable").DataTable().clear();
         $("#eriDataDetailTable").css("line-height", "12px");
         $("#eriDataDetailTable").DataTable({
             "data": JSON.parse(eriFileNum),
@@ -715,6 +718,7 @@ function showTaskDetailInfo() {
                 url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
             }
         });
+        $("#hwDataDetailTable").DataTable().clear();
         $("#hwDataDetailTable").css("line-height", "12px");
         $("#hwDataDetailTable").DataTable({
             "data": JSON.parse(eriFileNum),

@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <title>新增2G小区方向角计算任务</title>
 
-    <link rel="stylesheet" href="css/gsm-network-coverage.css">
     <link rel="stylesheet" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
     <link rel="stylesheet" href="../../lib/datatables/1.10.16/datatables.min.css">
+    <link rel="stylesheet" href="css/gsm-network-coverage.css">
 
     <script src="../../lib/jquery/1.8.2/jquery.js"></script>
     <script src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
@@ -17,7 +17,8 @@
     <script src="../../lib/tab.js"></script>
     <script src="../../lib/laydate/5.0.7/laydate.js"></script>
     <script src="../../lib/datatables/1.10.16/datatables.min.js"></script>
-    <script src="js/gsm-network-coverage-add.js"></script>
+
+    <script src="../../js/common.js"></script>
     <script src="js/gsm-network-coverage.js"></script>
 </head>
 <body>
@@ -28,67 +29,47 @@
         <em class="loading_fb" id="loadContentId">正在加载NCS数据</em>,请稍侯...
     </h4>
 </div>
-
-<font style="font-weight: bold;">当前位置： 专项优化 &gt; 方向角任务管理</font>
+<span style="font-weight: bold;">当前位置： 专项优化 &gt; 方向角任务管理</span>
 <br>
-
-
 <div style="width: 80%;margin-top: 20px; margin-left: 6%;">
-    <form id="interferMartixAddNcsForm" method="post">
-        <input id="hiddenPageSize" name="page.pageSize" value="25" type="hidden">
-        <input id="hiddenCurrentPage" name="page.currentPage" value="1" type="hidden">
-        <input id="hiddenTotalPageCnt" value="2967" type="hidden">
-        <input id="hiddenTotalCnt" value="74153" type="hidden">
-
+    <form id="NcsDataForJobForm" method="post">
         <table class="main-table1 half-width" style="padding-top: 10px;">
             <tbody>
             <tr>
                 <td colspan="2" style="text-align: left">
-                    省：<select name="provinceId" class="required" id="provinceId2">
-
-                </select>
-                    市：<select name="cond['cityId']" class="required" id="cityId2">
-
-
-                </select>
+                    省：<select name="provinceId" class="required" id="provinceId"></select>
+                    市：<select name="cityId" class="required" id="cityId"></select>
                     &nbsp;&nbsp;&nbsp;
                     <span id="isCalculateTip" style="font:13px/1.5 Tahoma,'Microsoft Yahei','Simsun';color :red"></span>
                 </td>
-
             </tr>
             <tr>
                 <td style="text-align: left;width: 50%">
                     <div style="margin: 11px"></div>
                     选择NCS数据测量时间&nbsp;&nbsp;从
-
-                    <input id="begDate2" name="attachParams['begUploadDate2']" class=" Wdate input-text"
-                           style="width: 132px;" type="text">
+                    <input id="begDate" name="begMeaDate" class="" style="width: 132px;" type="text">
                     到
-
-                    <input id="endDate2" name="attachParams['endUploadDate2']" class=" Wdate input-text"
-                           style="width: 132px;" type="text">
+                    <input id="endDate" name="endMeaDate" class="" style="width: 132px;" type="text">
                 </td>
                 <td>
                     <div style="margin: 11px"></div>
                     <input id="showNcsDataDT" name="search" style="width: 90px;float: left" value="查看数据" onclick=""
-                           type="button">
-                    <span id="isDateRightTip" style="font:13px/1.5 Tahoma,'Microsoft Yahei','Simsun';color :red"></span>
+                           type="submit">
+                    <span id="isDateRightTip"
+                          style="font:13px/1.5 Tahoma,'Microsoft Yahei','Simsun';color :red;float: left;"></span>
                 </td>
             </tr>
             <tr>
                 <td colspan="2" style=" text-align: left;">
                     <div style="margin: 11px"></div>
-                    <input id="hiddenPageSize" name="cond['jobType']" value="CAL_2G_DIRECTION_ANGLE" type="hidden">
-                    <input id="calculateNcsInterMartix" name="calculateNcsInterMartix" style="width: 90px;" value="开始计算"
-                           onclick="this.disabled=true;" type="button">
+                    <input id="calculateNcsInterMartix" name="calculateNcsInterMartix" style="width: 90px;"
+                           value="开始计算" onclick="" type="button">
                 </td>
             </tr>
             </tbody>
         </table>
     </form>
 </div>
-
-
 <div style="width: 80%;margin-left: 6%;padding-top: 10px">
     <table id="ncsResultDT" class="display rnoHeader" cellspacing="0" width="100%">
         <thead>
@@ -96,12 +77,11 @@
             <th style="width: 8%">地市</th>
             <th style="width: 8%">BSC</th>
             <th style="width: 8%">文件名</th>
-            <th style="width: 8%">测量时间</th></tr>
+            <th style="width: 8%">测量时间</th>
+        </tr>
         </thead>
     </table>
 </div>
-
-
 <div style="position: absolute; z-index: 100006; display: none; top: 114.767px; left: 416.667px;" lang="zh-cn">
     <iframe hidefocus="true" border="0" scrolling="no" src="about:blank" style="width: 182px; height: 222px;" height="7"
             frameborder="0" width="9"></iframe>

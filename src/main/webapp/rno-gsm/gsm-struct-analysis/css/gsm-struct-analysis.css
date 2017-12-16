@@ -4392,3 +4392,7 @@ div.BMap_cmLstItem {
     -webkit-border-radius: 10px;
     border-radius: 10px;
 }
+
+#navTitle {
+    font-weight: bold;
+}
