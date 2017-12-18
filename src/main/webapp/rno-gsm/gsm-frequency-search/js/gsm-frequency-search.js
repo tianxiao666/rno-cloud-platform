@@ -445,13 +445,13 @@ function updateCellFreq() {
         return;
     }
     //判断bcch是否在tch里面
-    for(var k = 0; k < tchArray.length; k++) {
+    /*for(var k = 0; k < tchArray.length; k++) {
         if(tchArray[k] === bcch) {
             flag = false;
             alert("bcch的频点不能出现在tch里面！");
             return;
         }
-    }
+    }*/
     //判断tch的频点是否存在同频，邻频
     for(var i = 0; i < tchArray.length; i++) {
         var temp = tchArray[i];

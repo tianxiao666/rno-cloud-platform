@@ -1,6 +1,8 @@
 package com.hgicreate.rno.service.gsm;
 
+import com.hgicreate.rno.domain.Area;
 import com.hgicreate.rno.mapper.gsm.GsmCoBsicMapper;
+import com.hgicreate.rno.repository.AreaRepository;
 import com.hgicreate.rno.service.gsm.dto.CobsicCellsDTO;
 import com.hgicreate.rno.util.LatLngHelperUtils;
 import com.hgicreate.rno.web.rest.gsm.vm.GsmCoBsicQueryVM;
@@ -17,12 +19,18 @@ public class GsmCoBsicService {
 
     private final GsmCoBsicMapper gsmCoBsicMapper;
 
-    public GsmCoBsicService(GsmCoBsicMapper gsmCoBsicMapper) {
+    private final AreaRepository areaRepository;
+
+    public GsmCoBsicService(GsmCoBsicMapper gsmCoBsicMapper, AreaRepository areaRepository) {
         this.gsmCoBsicMapper = gsmCoBsicMapper;
+        this.areaRepository = areaRepository;
     }
 
     public List<CobsicCellsDTO> getCobsicCells(GsmCoBsicQueryVM vm){
-        log.debug("进入查询cobsic干扰方法areaIds={}", vm.getAreaId() );
+        log.debug("进入查询cobsic干扰方法areaId={}", vm.getCityId() );
+        Area area=areaRepository.findById((long) vm.getCityId());
+        String areaName=area.getName();
+        vm.setCityId(gsmCoBsicMapper.findGsmAreaIdByName(areaName));
         List<Map<String,Object>> list = gsmCoBsicMapper.getCoBsicCellsByAreaId(vm);
         return getCoBsicCellsDTO(list);
     }
@@ -35,20 +43,22 @@ public class GsmCoBsicService {
     }
 
     public List<CobsicCellsDTO> getCobsicCellsByBcchAndBsic(GsmCoBsicQueryVM vm){
-        log.debug("进入查询cobsic干扰方法areaIds={}", vm.getAreaId() );
-
+        log.debug("进入查询cobsic干扰方法areaIds={}", vm.getCityId() );
+        Area area=areaRepository.findById((long) vm.getCityId());
+        String areaName=area.getName();
+        vm.setCityId(gsmCoBsicMapper.findGsmAreaIdByName(areaName));
         List<Map<String,Object>> list = gsmCoBsicMapper.getCoBsicCellsByAreaIdAndBcch(vm);
        return getCoBsicCellsDTO(list);
     }
 
     private List<CobsicCellsDTO> getCoBsicCellsDTO(List<Map<String,Object>> list){
         List<CobsicCellsDTO> cobsicCells = new ArrayList<>();
-        log.debug("list大小为={}",list.size());
+        log.debug("list为={}",list);
         boolean flag = false;
         for(Map<String,Object> map : list){
-            String bcch = map.get("bcch").toString();
-            String bsic = map.get("bsic").toString();
-            String label = map.get("cellId").toString();
+            String bcch = map.get("BCCH").toString();
+            String bsic = map.get("BSIC").toString();
+            String label = map.get("LABEL").toString();
             CobsicCellsDTO oneCell = new CobsicCellsDTO();
             oneCell.setBcch(Long.parseLong(bcch));
             oneCell.setBsic(bsic);

@@ -1,8 +1,10 @@
 var map, tiled, clickedCellLayer, cellLayer, thisCellLayer, lineLayer;
 var popup;
 var redStyle;
+var whetherLoadCellToMap=false;
 $(function () {
     tab("div_tab", "li", "onclick");
+    tab("div_tab1", "li", "onclick");
     $(".dialog").draggable();
     $("#trigger").css("display", "none");
 
@@ -245,6 +247,8 @@ $(function () {
 
     //初始化区域
     initAreaSelectors({selectors: ["provinceId", "cityId", "queryCellAreaId"], coord: true});
+    initAreaSelectors({selectors: ["provinceId1", "cityId1", null]});
+    initAreaSelectors({selectors: ["provinceId2", "cityId2", "areaId2"]});
 
     $("#cellConfigConfirmSelectionAnalysisBtn").click(function () {
         var cityId = parseInt($("#cityId").find("option:checked").val());
@@ -265,6 +269,7 @@ $(function () {
             opacity: 0.5
         });
         map.addLayer(cellLayer);
+        whetherLoadCellToMap = true;
     });
 
     // 小区名图层
@@ -343,7 +348,7 @@ $(function () {
     });
 
     $("#wholeNetInterferQuery").click(function () {
-        if(cellLayer==null){
+        if(!whetherLoadCellToMap){
             showInfoInAndOut("info","请先加载小区到地图！");
             return false;
         }
@@ -353,11 +358,144 @@ $(function () {
     });
 
     $("#interferQuery").click(function () {
+        if($("#bcch").val() ==='' || $("#bsic").val() ===''){
+            showInfoInAndOut("info","BCCH和BSIC均不能为空！");
+            return false;
+        }
+        if(!whetherLoadCellToMap){
+            showInfoInAndOut("info","请先加载小区到地图！");
+            return false;
+        }
+
         var reSelected = false;
         var areaIdStr =$("#cityId").find("option:selected").val();
         cobsiccell(reSelected, areaIdStr, null)
     })
+
+    $("#showCellConfigBtn").click(function() {
+        var reSelCellConfig_Dialog =$("#reSelCellConfig_Dialog");
+        reSelCellConfig_Dialog.toggle();
+        var display = reSelCellConfig_Dialog.css("display");
+    });
+
+    // AJAX 上传文件
+    var progress = $('.upload-progress');
+    var bar = $('.bar');
+    var percent = $('.percent');
+
+    //导入文件类型判断
+    $("#importBtn").click(function () {
+        var path =$("#file").val();
+        var format = path.substring(path.lastIndexOf("."), path.length).toLowerCase();
+        if (format !== '.csv') {
+            showInfoInAndOut("info", "请上传csv格式的工参数据文件");
+            return false;
+        }
+    });
+
+    // 当上传文件域改变时，隐藏进度条
+    $("input[name='file']").change(function () {
+        progress.css("display", "none");
+    });
+
+    //上传
+    $("#formImportCell").ajaxForm({
+        url: "/api/gsm-co-bsic-analysis/upload-file",
+        beforeSend: function () {
+            progress.css("display", "block");
+            var percentVal = '0%';
+            bar.width(percentVal);
+            percent.html(percentVal);
+        },
+        uploadProgress: function (event, position, total, percentComplete) {
+            var percentVal = percentComplete + '%';
+            bar.width(percentVal);
+            percent.html(percentVal);
+        },
+        success: function () {
+            var percentVal = '100%';
+            bar.width(percentVal);
+            percent.html(percentVal);
+            $("#info").css("background","green");
+            showInfoInAndOut("info","文件导入成功！");
+        }
+    });
+
+    $("#queryCellConfigureBtn").click(function () {
+        $("#form_tab_2").ajaxForm({
+            url: '/api/gsm-co-bsic-analysis/config-schema-query',
+            dataType: 'text',
+            success: function (data) {
+                var i =0;
+                console.log(data);
+                var datas =eval('('+data+')');
+                var tab_2_queryResultTab= $("#tab_2_queryResultTab");
+                tab_2_queryResultTab.DataTable().clear();
+                tab_2_queryResultTab.css("line-height", "12px")
+                    .DataTable({
+                        "data": datas,
+                        "columns": [
+                            {"data": "AREANAME"},
+                            {"data": "NAME"},
+                            {"data": "CREATETIME"},
+                            {"data": null}
+                        ],
+                        "columnDefs": [{
+                            "render": function (row) {
+                                var id = row['ID']
+                               return "<input name='bsicCheckbox' type='checkbox' value='"+id+"'>";
+                            },
+                            "targets": -1,
+                            "data": null
+                        }],
+                        "lengthChange": false,
+                        "ordering": false,
+                        "searching": false,
+                        "destroy": true,
+                        "language": {
+                            url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
+                        }
+
+                    });
+            }
+        });
+    });
+
+    $("#loadtoanalysisBtn").click(function () {
+        var ids =[];
+        $("input[name='bsicCheckbox']").each(function () {
+            ids.push(this.value);
+        });
+        ///待续
+       /* $.ajax({
+           url: '/api/gsm-co-bsic-analysis/query-schemas-by-id',
+           type: 'get',
+           dataType: 'text',
+           data:{ids: ids},
+           success: function (data) {
+               var datas = eval("("+data+")");
+
+           }
+        });*/
+    })
+
 });
+
+function operAllCheckbox(obj) {
+    var check = !obj.checked;
+
+    if (check ) {
+        $("input[type='checkbox']").each(function () {
+            this.checked = false;
+        });
+        check = false;
+    } else {
+        $("input[type='checkbox']").each(function () {
+            this.checked = true;
+        });
+        check =true;
+    }
+}
 
 //点击popup表格，添加选中行的背景色
 function addColor(t, isShowRightBox) {
@@ -530,7 +668,7 @@ function drawLine(cellCoors, ncellCoors) {
 function getCobsicCellWholenet (reSelected, areaIdStr,cellConfigIds) {
     var sendData = {
         "reselected" : reSelected,
-        "areaIds" : areaIdStr
+        "areaId" : areaIdStr
     };
     $(".loading").css("display", "block");
     $("#conditionForm").ajaxSubmit({
@@ -720,7 +858,7 @@ function cobsiccell(reSelected, areaIdStr, cellConfigIdStr) {
         "areaIds" : areaIdStr,
         "configIds" : cellConfigIdStr
     };
-    $(".loading_cover").css("display", "block");
+    $("#loading").css("display", "block");
     $("#conditionForm").ajaxSubmit({
         type : "GET",
         data : sendData,

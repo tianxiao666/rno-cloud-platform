@@ -1,9 +1,10 @@
 package com.hgicreate.rno.mapper.gsm;
 
-import com.hgicreate.rno.domain.gsm.GsmNcell;
-import com.hgicreate.rno.domain.gsm.GsmNcellRelation;
+import com.hgicreate.rno.domain.gsm.RnoGsmNcell;
 import com.hgicreate.rno.web.rest.gsm.vm.GsmCoBsicQueryVM;
+import com.hgicreate.rno.web.rest.gsm.vm.GsmCoBsicSchemaQueryVM;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -15,11 +16,14 @@ public interface GsmCoBsicMapper {
 
     List<Map<String, Object>> getCoBsicCellsByAreaIdAndBcch(GsmCoBsicQueryVM vm);
 
-    List<GsmNcellRelation> queryCommonNcellByTwoCell(String sourceCell, String targetCell);
+    List<RnoGsmNcell> queryCommonNcellByTwoCell(@Param("sourceCell") String sourceCell, @Param("targetCell") String targetCell);
 
-    List<GsmNcellRelation> queryNcell(String sourceCell, String targetCell);
+    List<RnoGsmNcell> queryNcell(@Param("sourceCell") String sourceCell, @Param("targetCell")String targetCell);
 
-    List<String> getLonLatsByCells(String sourceCell, String targetCell);
+    List<String> getLonLatsByCells(@Param("sourceCell") String sourceCell,  @Param("targetCell")String targetCell);
 
+    Integer findGsmAreaIdByName(@Param("areaName") String areaName);
+
+    List<Map<String,Object>> queryCoBsicConfigSchema(@Param("cityId") int cityId,@Param("schemaName") String schemaName);
 
 }
