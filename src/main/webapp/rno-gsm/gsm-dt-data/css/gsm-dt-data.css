@@ -723,6 +723,37 @@ body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, input, button, textar
     border: 1px solid rgb(204, 204, 204);
     line-height: 30px;
 }
+.bar {
+    background-color: #B4F5B4;
+    width: 0;
+    height: 20px;
+    border-radius: 3px;
+}
+
+.percent {
+    position: absolute;
+    display: inline-block;
+    top: 3px;
+    left: 48%;
+}
+.importTitle {
+    background: url("../images/ui-bg_glass_65_ffffff_1x400.png") 50% 50% repeat-x scroll rgb(255, 255, 255);
+    border: 1px solid rgb(251, 216, 80);
+    color: rgb(235, 143, 0);
+    font-weight: bold;
+    padding-left: 2.2em;
+    height: 30px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.upload-progress {
+    position: relative;
+    width: 700px;
+    border: 1px solid #ddd;
+    padding: 1px;
+    border-radius: 3px;
+    display: none;
+}
 
 .rnoHeader th {
     text-align: left;

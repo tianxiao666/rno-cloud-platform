@@ -350,7 +350,7 @@
         <div>
             <form id="form_tab_2">
                 <input name="searchType" value="CITY_QUALITY" type="hidden">
-                <table class="main-table1 half-width" style="padding-top:10px;width:50%;margin-left:0">
+                <table class="main-table1 half-width" style="padding-top:10px;width:100%;margin-left:0">
                     <tbody>
                     <tr>
                         <td class="menuTd" style="text-align:center;">类别</td>
@@ -367,7 +367,7 @@
                         </select></td>
 
                         <td>
-                            省：<select class="required" id="qualityProvinceId" title=""></select><br>
+                            省：<select class="required" id="qualityProvinceId" title=""></select>
                             市：<select name="areaId" class="required" id="qualityCityId" title=""></select>
                         </td>
 
@@ -376,7 +376,7 @@
                             始:<input id="qualityBeginTime" name="beginTime"
                                      onfocus="var dd=$dp.$('latestAllowedTime');WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:function(){latestAllowedTime.focus();},maxDate:'#F{$dp.$D(\'latestAllowedTime\')}'})"
                                      readonly="readonly" class="Wdate required input-text"
-                                     value="2017-10-25" type="text" title=""> <br>
+                                     value="2017-10-25" type="text" title="">
                             止:<input id="qualityLatestAllowedTime"
                                                                                   name="latestAllowedTime"
                                                                                   onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'beginTime\')}'})"
