@@ -13,15 +13,15 @@
     <script src="/webjars/bootstrap/3.3.7/js/bootstrap.js"></script>
     <!-- Openlayers & Plugins-->
     <link rel="stylesheet" href="/webjars/openlayers/4.3.1/ol.css"/>
+    <!--<link rel="stylesheet" href="../../lib/openlayers/4.4.2/ol.css">-->
     <script src="/webjars/openlayers/4.3.1/ol-debug.js"></script>
+    <!--<script src="../../lib/openlayers/4.4.2/ol.js"></script>-->
     <link rel="stylesheet" href="../../lib/openlayers/ol3-contextmenu/ol3-contextmenu.css"/>
     <script src="../../lib/openlayers/ol3-contextmenu/ol3-contextmenu-debug.js"></script>
     <link rel="stylesheet" href="/webjars/ol3-layerswitcher/1.1.2/src/ol3-layerswitcher.css"/>
     <script src="/webjars/ol3-layerswitcher/1.1.2/src/ol3-layerswitcher.js"></script>
 
-
     <link rel="stylesheet" href="css/gsm-dynamic-coverage.css">
-
 
     <script src="../../lib/laydate/5.0.7/laydate.js"></script>
     <script src="../../lib/rno/selftools.js"></script>
@@ -139,12 +139,12 @@
             <hr>
             <input id="clearCoverPolygon" value="清除覆盖图" name="clearCoverPolygon"
                    style="margin-right: 0px" type="button">
-
         </div>
 
     </div>
 </div>
 <div id="searchDiv" class="dialog2 draggable ui-draggable" style="display:none; left: 55px; top: 74px;">
+
     <div class="dialog_header">
         <div class="dialog_title">小区查找</div>
         <div class="dialog_tool">
@@ -152,21 +152,46 @@
         </div>
     </div>
     <div class="dialog_content" style="background:#f9f9f9;padding:10px">
-        搜索条件： <select id="conditionType">
-        <option value="cell" selected="selected">CELL</option>
-        <option value="chineseName">小区中文名</option>
-        <option value="site">SITE</option>
-        <option value="lac">LAC</option>
-        <option value="ci">CI</option>
-    </select>
-        <input id="conditionValue" type="text">
-        <input id="searchCellBtn" value="搜小区" type="button"><br>
-        输入邻区：<input id="cellForNcell" type="text">
-        <input id="searchNcellBtn" value="搜邻区" type="button"> <br>
-        输入频点： <input id="freqValue" type="text">
-        <input id="searchFreqBtn" value="搜频点" type="button"> <br><br>
-        <input value="清除搜索结果" id="clearSearchResultBtn" type="button">
-        <span style="color:red;width:100px;font-family:华文中宋;text-align:center" id="errorDiv"></span>
+        <table class=" table-hover table-striped">
+            <tr>
+                <td class="col-2">
+                    搜索条件：
+                </td>
+                <td class="col-8">
+                    <select id="conditionType">
+                        <option value="cell" selected="selected"CELL></option>
+                        <option value="chineseName">小区中文名</option>
+                        <option value="site">SITE</option>
+                        <option value="lac">LAC</option>
+                        <option value="ci">CI</option>
+                    </select>
+                    <input id="conditionValue" type="text">
+                </td>
+                <td class="col-2">
+                    <input id="searchCellBtn" value="搜小区" type="button"><br>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-2">
+                    输入邻区：
+                </td>
+                <td class="col-8">
+                    <input id="cellForNcell" style="width: 100%"  type="text">
+                </td>
+                <td class="col-2">
+                    <input id="searchNcellBtn" value="搜邻区" type="button">
+                </td>
+            </tr>
+            <tr>
+                <td class="col-2">输入频点：</td>
+                <td class="col-8"> <input id="freqValue" style="width: 100%" type="text"></td>
+                <td class="col-2"> <input id="searchFreqBtn" value="搜频点" type="button"></td>
+            </tr>
+            <tr>
+                <td><input value="清除搜索结果" id="clearSearchResultBtn" type="button"></td>
+                <td><span style="color:red;width:100px;font-family:华文中宋;text-align:center" id="errorDiv"></span></td>
+            </tr>
+        </table>
     </div>
 </div>
 
@@ -177,7 +202,6 @@
             <td><span id="operTip"></span></td>
         </tr>
     </table>
-
 </div>
 
 </body>

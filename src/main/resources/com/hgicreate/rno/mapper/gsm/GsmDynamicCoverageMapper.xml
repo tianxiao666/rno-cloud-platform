@@ -10,21 +10,41 @@
 		insert into RNO_2G_NCS_COVER_T(RNO_NCS_DESC_ID, ${ncsFields})
 		  select RNO_2G_ERI_NCS_DESC_ID,  ${ncsFields}
           from RNO_2G_ERI_NCS
-          where ncell = ${cell}
-          and rno_2g_eri_ncs_desc_id = ${ncsDescId}
+          where ncell = (
+                select en_name
+                from RNO_GSM_CELL
+                where cell_id = ${cellId}
+          )
+          and rno_2g_eri_ncs_desc_id in(
+            select rno_2g_eri_ncs_desc_id
+            from RNO_GSM_ERI_NCS_DESCRIPTOR
+            where CITY_ID in(
+                select OLD_SYS_AREA_ID
+                from RNO_OLD_NEW_SYS_AREA_REFERENCE
+                WHERE NEW_SYS_AREA_ID = ${cityId}
+          )
+		  and mea_time>=to_date(${startTime},'yyyy-MM-dd HH24:mi:ss')
+		  and mea_time<=to_date(${endTime},'yyyy-MM-dd HH24:mi:ss')
+          )
           and distance > 0.1
           and reparfcn >=5000
           and cell in (
-          select label from RNO_CELL
-            where indoor_cell_type = '室外覆盖'
-            and area_id in(${areaIdStr})
+          ]]>
+          select EN_NAME from RNO_GSM_CELL
+            where cover_type = '室外'
+            <if test=" null != areaIdStr and areaIdStr != ''">
+              and area_id in(${areaIdStr})
+            </if>
+
+            and CELL_ID in (select NCELL_ID from RNO_GSM_NCELL_RELATION where CELL_ID = ${cellId})
           )
-         ]]>
+
     </insert>
     <update id="updateRno2GNcsCoverTSetInterfer" parameterType="map">
         <![CDATA[
 		update RNO_2G_NCS_COVER_T set interfer=${TIMESRELSS}
-          /DECODE(reparfcn,0,NULL,reparfcn) where RNO_NCS_DESC_ID =${ncsDescId}
+          /DECODE(reparfcn,0,NULL,reparfcn)
+          where RNO_NCS_DESC_ID =${ncsDescId}
          ]]>
     </update>
     <select id="selectInterferCelllonCelllatCellNcelllonNcelllatFromRno2GNcsCoverT" resultType="map">
@@ -48,25 +68,21 @@
         <![CDATA[
 		select id as desc_id
         from rno_2g_hw_ncs_desc
-        where city_id = ${cityId}
+        where CITY_ID in(
+                select OLD_SYS_AREA_ID
+                from RNO_OLD_NEW_SYS_AREA_REFERENCE
+                WHERE NEW_SYS_AREA_ID = ${cityId}
+          )
           and mea_time>=to_date(${startDate},'yyyy-MM-dd HH24:mi:ss')
           and mea_time<=to_date(${endDate},'yyyy-MM-dd HH24:mi:ss')
-         ]]>
-    </select>
-    <select id="selectAllFromRnoGSMMapLngLatRelaGps" parameterType="map" resultType="map">
-        <![CDATA[
-		select * from RNO_GSM_MAP_LNGLAT_RELA_GPS
-        WHERE AREAID = ${areaId}
-        and MAPTYPE = ${mapType}
-        ORDER BY BOTTOMLEFT
          ]]>
     </select>
     <select id="selectManufacturersFromRnoBsc" parameterType="map" resultType="map">
         <![CDATA[
 		select desc_id from RNO_GSM_BSC_DATA
-		where id=(
-		  select bsc_id from RNO_CELL
-		    where label=${cell}
+		where BSC=(
+		  select BSC from RNO_GSM_CELL
+		    where EN_NAME= ${enName}
 		    )
          ]]>
     </select>
@@ -74,8 +90,12 @@
         <![CDATA[
 		select rno_2g_eri_ncs_desc_id as DESC_ID,
 		RELSS_SIGN,RELSS,RELSS2_SIGN,RELSS2,RELSS3_SIGN,RELSS3,RELSS4_SIGN,RELSS4,RELSS5_SIGN,RELSS5
-		from rno_gsm_eri_ncs_descriptor
-		 where city_id = ${cityId}
+		from RNO_GSM_ERI_NCS_DESCRIPTOR
+		 where CITY_ID in(
+                select OLD_SYS_AREA_ID
+                from RNO_OLD_NEW_SYS_AREA_REFERENCE
+                WHERE NEW_SYS_AREA_ID = ${cityId}
+          )
 		  and mea_time>=to_date(${startTime},'yyyy-MM-dd HH24:mi:ss')
 		  and mea_time<=to_date(${endTime},'yyyy-MM-dd HH24:mi:ss')
          ]]>
@@ -157,6 +177,39 @@
     <select id="getPciCellInfo" parameterType="map" resultType="map">
         select cell_id as cell, ncell_id as ncell, rela_val, cell_pci, ncell_pci from lte_inter_matrix where
         job_id=#{jobId} and cell_id=#{cellId} or ncell_id=#{cellId}
+    </select>
+    <select id="getNcellDetailsByCellandCityId" parameterType="map" resultType="map">
+        select *
+		from RNO_GSM_CELL
+        where CELL_ID in (
+          select NCELL_ID from RNO_GSM_NCELL_RELATION
+            where CELL_ID = ${cellId}
+        )
+        and AREA_ID =${areaId}
+    </select>
+    <select id="selectValstrCelllonCelllatCellNcelllonNcelllatFrom" parameterType="map" resultType="map">
+        <![CDATA[
+            select  ${valStr}
+            cell_lon as lng,
+            cell_lat as lat,
+            cell as ncell_id,
+            ncell_lon as cell_lng,
+            ncell_lat as cell_lat
+            from(
+                select cell,s361,s3013,cell_lon,cell_lat,ncell_lon,ncell_lat
+                from rno_2g_hw_ncs
+                where ncell = ${cell}
+                and rno_2ghwncs_desc_id in (${descIds})
+                and distance > 0.1
+                and s3013 >=5000
+                and cell in (
+                    select label from cell
+                    where indoor_cell_type = '室外覆盖'
+                    and area_id in(${areaIdStr})
+                )
+                and s361 <> 0
+            )
+        ]]>
     </select>
 
 </mapper>

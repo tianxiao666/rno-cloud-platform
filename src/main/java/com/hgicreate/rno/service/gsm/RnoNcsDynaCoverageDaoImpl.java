@@ -14,26 +14,15 @@ public class RnoNcsDynaCoverageDaoImpl implements RnoNcsDynaCoverageDao {
     @Autowired
     private GsmDynamicCoverageMapper ncsMapper;
 
-    @Autowired
-    private GsmDynamicCoverageMapper gsmDynamicCoverageMapper;
-    @Autowired
-    private AuthDsDataDaoImpl authDsDataDao;
-
-
     /**
      * 检查小区是华为还是爱立信
-     *
-     * @return
-     * @title
-     * @author peng.jm
-     * @date 2015年3月10日10:59:56
-     * @company 怡创科技
      */
     @Override
-    public String checkCellIsHwOrEri(final String cell) {
+    public String checkCellIsHwOrEri(final String enName) {
+        log.debug("enName ===={}", enName);
         Map<String, Object> map = new HashMap<>();
-        map.put("cell", cell);
-        List<Map<String, Object>> cellDataList = gsmDynamicCoverageMapper.selectManufacturersFromRnoBsc(map);
+        map.put("enName", enName);
+        List<Map<String, Object>> cellDataList = ncsMapper.selectManufacturersFromRnoBsc(map);
         String result = null;
         if (cellDataList.size() > 0) {
             result = cellDataList.get(0).get("DESC_ID").toString();
@@ -43,17 +32,11 @@ public class RnoNcsDynaCoverageDaoImpl implements RnoNcsDynaCoverageDao {
 
     /**
      * 查询爱立信ncs数据，并整理得到需要结果
-     *
-     * @return
-     * @title
-     * @author peng.jm
-     * @date 2015年3月10日10:59:56
-     * @company 怡创科技
      */
     @Override
     @SuppressWarnings("unchecked")
     public List<Map<String, Object>> queryEriDataFromOracle(final long cityId,
-                                                            final String cell, final String startDate, final String endDate, String RELSS) {
+                                                            final String enName, String cellId, final String startDate, final String endDate, String RELSS) {
 
         String startTime = String.format(startDate + " 00:00:00", "yyyy-MM-dd HH:mi:ss");
         String endTime = String.format(endDate + " 00:00:00", "yyyy-MM-dd HH:mi:ss");
@@ -65,44 +48,55 @@ public class RnoNcsDynaCoverageDaoImpl implements RnoNcsDynaCoverageDao {
         String ncsFields = "CELL,NCELL,CELL_LON,CELL_LAT,NCELL_LON,NCELL_LAT,REPARFCN,TIMESRELSS,TIMESRELSS2,TIMESRELSS3,TIMESRELSS4,TIMESRELSS5,DISTANCE,INTERFER";
         String TIMESRELSS = "";
         String ncsDescId = "";
-        String areaIdStr = authDsDataDao
-                .getSubAreaAndSelfIdListStrByParentId(cityId);
-        log.debug("areaIdStr==={}", areaIdStr);
+        Map<String, Object> ncellMap = new HashMap<>();
+        ncellMap.put("cellId", "'" + cellId + "'");
+        ncellMap.put("areaId", cityId);
+        List<Map<String, Object>> gisCells = ncsMapper.getNcellDetailsByCellandCityId(ncellMap);
+        log.debug("gisCells==={}", gisCells);
+        String areaIdStr = "";
+        for (Map<String, Object> oneCell : gisCells) {
+            areaIdStr += oneCell.get("AREA_ID") + ",";
+        }
+        if (areaIdStr.length() > 0) {
+            areaIdStr = areaIdStr.substring(0, areaIdStr.length() - 1);
+        }
         log.debug("eriNcsDescInfos==={}", eriNcsDescInfos.get(0));
+        //先清空临时表
+        ncsMapper.deleteAll();
+
+        Map<String, Object> insertMaps = new HashMap<>();
+        insertMaps.put("ncsFields", ncsFields);
+        insertMaps.put("cellId", "'" + cellId + "'");
+        insertMaps.put("areaIdStr", areaIdStr);
+        insertMaps.put("cityId", cityId);
+        insertMaps.put("startTime", "'" + startTime + "'");
+        insertMaps.put("endTime", "'" + endTime + "'");
+        ncsMapper.insertIntoRno2GNcsCoverT(insertMaps);
+
         for (Map<String, Object> ncsDesc : eriNcsDescInfos) {
 
             ncsDescId = ncsDesc.get("DESC_ID").toString();
-
             //确定门限值字段
-            TIMESRELSS = getEriTimesRelssXByValue((Map<String, Object>) ncsDesc, RELSS);
+            TIMESRELSS = getEriTimesRelssXByValue(ncsDesc, RELSS);
             log.debug("TIMESRELSS === {}", TIMESRELSS);
-            //log.debug("动态覆盖图：获取[" + RELSS + "]对应的列为：" + TIMESRELSS);
             if (TIMESRELSS == null || "".equals(TIMESRELSS)) {
                 log.debug("动态覆盖图：ncs[" + ncsDescId + "]未获取到相应的[" + RELSS + "]对应的列，将尝试用+0获取");
-                TIMESRELSS = getEriTimesRelssXByValue((Map<String, Object>) ncsDesc, "+0");
+                TIMESRELSS = getEriTimesRelssXByValue(ncsDesc, "+0");
                 log.debug("动态覆盖图：获取[+0]对应的列为：" + TIMESRELSS);
             }
             if ("".equals(TIMESRELSS)) {
                 continue;
             }
-            Map<String, Object> insertMaps = new HashMap<>();
-            insertMaps.put("ncsFields", ncsFields);
-            insertMaps.put("cell", "'" + cell + "'");
-            insertMaps.put("ncsDescId", "'" + ncsDescId + "'");
-            insertMaps.put("areaIdStr", areaIdStr);
-
-            ncsMapper.insertIntoRno2GNcsCoverT(insertMaps);
-
             Map<String, Object> updateMaps = new HashMap<>();
             updateMaps.put("TIMESRELSS", TIMESRELSS);
             updateMaps.put("ncsDescId", ncsDescId);
+            updateMaps.put("cellId", "'" + cellId + "'");
+            updateMaps.put("areaIdStr", areaIdStr);
             ncsMapper.updateRno2GNcsCoverTSetInterfer(updateMaps);
         }
-
         List<Map<String, Object>> rss = ncsMapper.selectInterferCelllonCelllatCellNcelllonNcelllatFromRno2GNcsCoverT();
 
         List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
-        map = null;
         for (Map<String, Object> oneRss : rss) {
             map = new HashMap<String, Object>();
             map.put("VAL", oneRss.get("VAL"));
@@ -126,8 +120,8 @@ public class RnoNcsDynaCoverageDaoImpl implements RnoNcsDynaCoverageDao {
      */
     public String getEriTimesRelssXByValue(Map<String, Object> desc,
                                            String relsscons) {
-//		log.debug("进入getTimesRelssXByValue(rnoncsdesc=" + desc
-//				+ ",relsscons=" + relsscons + ")");
+        log.debug("进入getTimesRelssXByValue(rnoncs desc=" + desc
+                + ",relsscons=" + relsscons + ")");
         String TIMESRELSS = "";
         String relss;
         relss = (Integer.parseInt(desc.get("RELSS_SIGN").toString()) == 0 ? "+" : "-")
@@ -159,30 +153,36 @@ public class RnoNcsDynaCoverageDaoImpl implements RnoNcsDynaCoverageDao {
                 }
             }
         }
-//		log.debug("退出getTimesRelssXByValue　TIMESRELSS:" + TIMESRELSS);
         return TIMESRELSS;
     }
 
     /**
      * 查询华为ncs数据，并整理得到需要结果
-     *
-     * @return
-     * @title
-     * @author peng.jm
-     * @date 2015年3月10日10:59:56
-     * @company 怡创科技
      */
     @SuppressWarnings("unchecked")
     public List<Map<String, Object>> queryHwDataFromOracle(final long cityId,
-                                                           final String cell, final String startDate, final String endDate, final String RELSS) {
+                                                           final String cell, String cellId, final String startDate, final String endDate, final String RELSS) {
 
-        final String areaIdStr = authDsDataDao
-                .getSubAreaAndSelfIdListStrByParentId(cityId);
-
+        String startTime = String.format(startDate + " 00:00:00", "yyyy-MM-dd HH:mi:ss");
+        String endTime = String.format(endDate + " 00:00:00", "yyyy-MM-dd HH:mi:ss");
         Map<String, Object> maps = new HashMap<>();
-        maps.put("cityId", cityId);
-        maps.put("endDate", endDate);
+        maps.put("cityId", "'" + cityId + "'");
+        maps.put("startTime", startTime);
+        maps.put("endTime", endTime);
         List<Map<String, Object>> hwNcsDescInfos = ncsMapper.selectIdFromRno2GHwNcsDesc(maps);
+
+        Map<String, Object> ncellMap = new HashMap<>();
+        ncellMap.put("cellId", "'" + cellId + "'");
+        ncellMap.put("areaId", cityId);
+        List<Map<String, Object>> gisCells = ncsMapper.getNcellDetailsByCellandCityId(ncellMap);
+        log.debug("gisCells==={}", gisCells);
+        String areaIdStr = "";
+        for (Map<String, Object> oneCell : gisCells) {
+            areaIdStr += oneCell.get("AREA_ID") + ",";
+        }
+        if (areaIdStr.length() > 0) {
+            areaIdStr = areaIdStr.substring(0, areaIdStr.length() - 1);
+        }
 
         StringBuilder descIdStr = new StringBuilder();
         for (Map<String, Object> map : hwNcsDescInfos) {
