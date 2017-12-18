@@ -24,16 +24,17 @@
         <li><a href="#tabs-3">ncell </a></li>
     </ul>
     <div id="tabs-1">
-        <form id="searchCellForm">
+        <form id="searchCellForm" method="post" action="/api/gsm-param-query/export-param-query-data">
             <input type="hidden" id="cellParam" name="cellParam" value=""/>
             <input type="hidden" id="cellBsc" name="cellBsc" value=""/>
             <input type="hidden" id="cellDate" name="cellDate" value=""/>
             <input type="hidden" id="cellForCell" name="cellForCell" value=""/>
+            <input type="hidden" name="type" value="cell"/>
             <table>
                 <tr>
                     <td>
-                        <select id="province-menu-1"></select>
-                        <select id="city-menu-1" name="cityIdOne" onchange="getParamSelect('cell')"></select>
+                        <select id="province-menu-cell"></select>
+                        <select id="city-menu-cell" name="cityId" onchange="getParamSelect('cell')"></select>
                     </td>
                     <td style="padding-left:30px"><label>日期:</label>
                         <select name="cell_targetDate" id="cell_targetDate" style="width:100px;">
@@ -57,35 +58,35 @@
                     </select></td>
                     <td><input type="button" 　style="font-size: 12px" value="更多" id="cell_moreParam" onclick="$('#cell_paramWinDiv').show()"></td>
 
-                    <td style="padding-left:30px"><input type="button"
+                    <td style="padding-left:30px"><input type="button" onclick="searchRecord('cell')"
                                                          id="searchCellBtn" value="查询记录"></td>
-                    <td style="padding-left:30px"><input type="button"
+                    <td style="padding-left:30px"><input type="submit"
                                                          id="exportCellBtn" value="导出查询结果">
                     </td>
                 </tr>
             </table>
         </form>
         <div id="cellListDiv" class="sectionDivCls">
-            <div style="width:1388px; position: relative;overflow:auto;" class="divtab_content">
-                <table id="cellListTab" class="greystyle-standard"
-                       style="width:auto;margin-left:0">
-                    <thead>
+            <div style="width:98%; overflow:auto;" class="divtab_content">
+                <table id="cellListTab" class="display rnoHeader" cellspacing="0" style="width: 100%">
+                    <thead id="cellTable">
                     </thead>
                 </table>
             </div>
         </div>
     </div>
     <div id="tabs-2">
-        <form id="searchCellChannelForm">
-            <input type="hidden" id="channelBsc" name="channelBsc" value=""/>
-            <input type="hidden" id="channelParam" name="channelParam" value=""/>
-            <input type="hidden" id="channelDate" name="channelDate" value=""/>
-            <input type="hidden" id="channelForCell" name="channelForCell" value=""/>
+        <form id="searchCellChannelForm" method="post" action="/api/gsm-param-query/export-param-query-data">
+            <input type="hidden" id="channelBsc" name="cellBsc" value=""/>
+            <input type="hidden" id="channelParam" name="cellParam" value=""/>
+            <input type="hidden" id="channelDate" name="cellDate" value=""/>
+            <input type="hidden" id="channelForCell" name="cellForCell" value=""/>
+            <input type="hidden"  name="type" value="channel"/>
             <table>
                 <tr>
                     <td>
-                        <select id="province-menu-2"></select>
-                        <select id="city-menu-2" name="cityIdTwo" onchange="getParamSelect('channel')"></select>
+                        <select id="province-menu-channel"></select>
+                        <select id="city-menu-channel" name="cityId" onchange="getParamSelect('channel')"></select>
                     </td>
                     <td style="padding-left:30px"><label>日期:</label>
                         <select name="channel_targetDate" id="channel_targetDate" style="width:100px;">
@@ -110,35 +111,36 @@
                     </select></td>
                     <td><input type="button" 　style="font-size: 12px" value="更多" id="channel_moreParam" onclick="$('#channel_paramWinDiv').show()"></td>
 
-                    <td style="padding-left:30px"><input type="button"
+                    <td style="padding-left:30px"><input type="button" onclick="searchRecord('channel')"
                                                          id="searchCellChannelBtn" value="查询记录"></td>
-                    <td style="padding-left:30px"><input type="button"
-                                                         id="exportCellChannelBtn" value="导出查询结果"></td>
+                    <td style="padding-left:30px"><input type="submit"
+                                                         id="exportChannelBtn" value="导出查询结果"></td>
                 </tr>
             </table>
         </form>
         <div id="channelListDiv" class="sectionDivCls">
-            <div style="width:1388px; position: relative;overflow:auto;" class="divtab_content">
-                <table id="channelListTab" class="greystyle-standard"
-                       style="width:auto;margin-left:0">
-                    <thead>
+            <div style="width:98%; overflow:auto;" class="divtab_content">
+                <table id="channelListTab" class="display rnoHeader" cellspacing="0" style="width: 100%">
+                    <thead id="channelTable">
                     </thead>
                 </table>
             </div>
         </div>
     </div>
     <div id="tabs-3">
-        <form id="searchNcellForm">
-            <input type="hidden" id="ncellBsc" name="ncellBsc" value=""/>
-            <input type="hidden" id="ncellParam" name="ncellParam" value=""/>
-            <input type="hidden" id="ncellDate" name="ncellDate" value=""/>
-            <input type="hidden" id="ncellForCell" name="ncellForCell" value=""/>
-            <input type="hidden" id="ncellForNcell" name="ncellForNcell" value=""/>
+        <form id="searchNcellForm" method="post" action="/api/gsm-param-query/export-param-query-data">
+            <input type="hidden" id="ncellBsc" name="cellBsc" value=""/>
+            <input type="hidden" id="ncellParam" name="cellParam" value=""/>
+            <input type="hidden" id="ncellDate" name="cellDate" value=""/>
+            <input type="hidden" id="ncellForCell" name="cellForCell" value=""/>
+            <input type="hidden" id="ncellForNcell" name="cellForNcell" value=""/>
+            <input type="hidden"  name="type" value="ncell"/>
+
             <table>
                 <tr>
                     <td>
-                        <select id="province-menu-3"></select>
-                        <select id="city-menu-3" name="cityIdThree" onchange="getParamSelect('ncell')"></select>
+                        <select id="province-menu-ncell"></select>
+                        <select id="city-menu-ncell" name="cityId" onchange="getParamSelect('ncell')"></select>
                     </td>
                     <td style="padding-left:30px"><label>日期:</label>
                         <select name="ncell_targetDate" id="ncell_targetDate" style="width:100px;">
@@ -167,18 +169,17 @@
                     </select></td>
                     <td><input type="button" 　style="font-size: 12px" value="更多" id="ncell_moreParam" onclick="$('#ncell_paramWinDiv').show()"></td>
 
-                    <td style="padding-left:30px"><input type="button"
+                    <td style="padding-left:30px"><input type="button"  onclick="searchRecord('ncell')"
                                                          id="searchNcellBtn" value="查询记录"></td>
-                    <td style="padding-left:30px"><input type="button"
+                    <td style="padding-left:30px"><input type="submit"
                                                          id="exportNcellBtn" value="导出查询结果"></td>
                 </tr>
             </table>
         </form>
         <div id="ncellListDiv" class="sectionDivCls">
-            <div style="width:1388px; position: relative;overflow:auto;" class="divtab_content">
-                <table id="ncellListTab" class="greystyle-standard"
-                       style="width:auto;margin-left:0">
-                    <thead>
+            <div style="width:98%; overflow:auto;" class="divtab_content">
+                <table id="ncellListTab" class="display rnoHeader" cellspacing="0" style="width: 100%">
+                    <thead id="ncellTable">
                     </thead>
                 </table>
             </div>
@@ -186,7 +187,7 @@
     </div>
 </div>
 <div id="cell_dateWinDiv" class="dialog2"
-     style="display:none; ">
+     style="display:none;width: 530px;right: 480px; top: 30%; left: 30%; z-index: 30">
     <div class="dialog_header">
         <div class="dialog_title">日期选择列表</div>
         <div class="dialog_tool">
@@ -229,7 +230,7 @@
     </div>
 </div>
 <div id="cell_bscWinDiv" class="dialog2"
-     style="display:none; ">
+     style="display:none;width: 530px;right: 480px; top: 30%; left: 30%; z-index: 30">
     <div class="dialog_header">
         <div class="dialog_title">BSC选择列表</div>
         <div class="dialog_tool">
@@ -264,7 +265,7 @@
             </tr>
             <tr align="center">
                 <td colspan="3">
-                    <input type="button" onclick="ensure('cell_selectedBsc','cell_targetBsc','cell_bscWinDiv')"  value="确定"/>　　　
+                    <input type="button" onclick="ensure('cell_selectedBsc','cell_targetBsc','cell_bscWinDiv','bscParam')"  value="确定"/>　　　
                     <input type="button" onclick="cancle('cell_bscWinDiv')" value="取消"/>
                 </td>
             </tr>
@@ -273,7 +274,7 @@
     </div>
 </div>
 <div id="cell_cellWinDiv" class="dialog2"
-     style="display:none; ">
+     style="display:none;width: 530px;right: 480px; top: 30%; left: 30%; z-index: 30">
     <div class="dialog_header">
         <div class="dialog_title">CELL输入窗口</div>
         <div class="dialog_tool">
@@ -296,7 +297,7 @@
     </div>
 </div>
 <div id="cell_paramWinDiv" class="dialog2"
-     style="display:none; ">
+     style="display:none;width: 530px;right: 480px; top: 30%; left: 30%; z-index: 30">
     <div class="dialog_header">
         <div class="dialog_title">参数选择列表</div>
         <div class="dialog_tool">
@@ -340,7 +341,7 @@
     </div>
 </div>
 <div id="channel_dateWinDiv" class="dialog2"
-     style="display:none; ">
+     style="display:none;width: 530px;right: 480px; top: 30%; left: 30%; z-index: 30">
     <div class="dialog_header">
         <div class="dialog_title">日期选择列表</div>
         <div class="dialog_tool">
@@ -384,7 +385,7 @@
     </div>
 </div>
 <div id="channel_bscWinDiv" class="dialog2"
-     style="display:none; ">
+     style="display:none;width: 530px;right: 480px; top: 30%; left: 30%; z-index: 30">
     <div class="dialog_header">
         <div class="dialog_title">BSC选择列表</div>
         <div class="dialog_tool">
@@ -419,7 +420,7 @@
             </tr>
             <tr align="center">
                 <td colspan="3">
-                    <input type="button" onclick="ensure('channel_selectedBsc','channel_targetBsc','channel_bscWinDiv')"  value="确定"/>　　　
+                    <input type="button" onclick="ensure('channel_selectedBsc','channel_targetBsc','channel_bscWinDiv','bscParam')"  value="确定"/>　　　
                     <input type="button" onclick="cancle('channel_bscWinDiv')" value="取消"/>
                 </td>
             </tr>
@@ -428,7 +429,7 @@
     </div>
 </div>
 <div id="channel_cellWinDiv" class="dialog2"
-     style="display:none; ">
+     style="display:none;width: 530px;right: 480px; top: 30%; left: 30%; z-index: 30">
     <div class="dialog_header">
         <div class="dialog_title">CELL输入窗口</div>
         <div class="dialog_tool">
@@ -451,7 +452,7 @@
     </div>
 </div>
 <div id="channel_paramWinDiv" class="dialog2"
-     style="display:none; ">
+     style="display:none;width: 530px;right: 480px; top: 30%; left: 30%; z-index: 30">
     <div class="dialog_header">
         <div class="dialog_title">参数选择列表</div>
         <div class="dialog_tool">
@@ -486,7 +487,7 @@
             </tr>
             <tr align="center">
                 <td colspan="3">
-                    <input type="button" onclick="ensure('channel_selectedParam','channel_targetBsc','channel_paramWinDiv')"  value="确定"/>　　　
+                    <input type="button" onclick="ensure('channel_selectedParam','channel_targetParam','channel_paramWinDiv')"  value="确定"/>　　　
                     <input type="button" onclick="cancle('channel_paramWinDiv')" value="取消"/>
                 </td>
             </tr>
@@ -495,7 +496,7 @@
     </div>
 </div>
 <div id="ncell_dateWinDiv" class="dialog2"
-     style="display:none; ">
+     style="display:none;width: 530px;right: 480px; top: 30%; left: 30%; z-index: 30">
     <div class="dialog_header">
         <div class="dialog_title">日期选择列表</div>
         <div class="dialog_tool">
@@ -539,7 +540,7 @@
     </div>
 </div>
 <div id="ncell_bscWinDiv" class="dialog2"
-     style="display:none; ">
+     style="display:none;width: 530px;right: 480px; top: 30%; left: 30%; z-index: 30">
     <div class="dialog_header">
         <div class="dialog_title">BSC选择列表</div>
         <div class="dialog_tool">
@@ -574,7 +575,7 @@
             </tr>
             <tr align="center">
                 <td colspan="3">
-                    <input type="button" onclick="ensure('ncell_selectedBsc','ncell_targetBsc','ncell_bscWinDiv')"  value="确定"/>　　　
+                    <input type="button" onclick="ensure('ncell_selectedBsc','ncell_targetBsc','ncell_bscWinDiv','bscParam')"  value="确定"/>　　　
                     <input type="button" onclick="cancle('ncell_bscWinDiv')" value="取消"/>
                 </td>
             </tr>
@@ -583,7 +584,7 @@
     </div>
 </div>
 <div id="ncell_cellWinDiv" class="dialog2"
-     style="display:none; ">
+     style="display:none;width: 530px;right: 480px; top: 30%; left: 30%; z-index: 30">
     <div class="dialog_header">
         <div class="dialog_title">CELL输入窗口</div>
         <div class="dialog_tool">
@@ -606,7 +607,7 @@
     </div>
 </div>
 <div id="ncell_paramWinDiv" class="dialog2"
-     style="display:none; ">
+     style="display:none;width: 530px;right: 480px; top: 30%; left: 30%; z-index: 30">
     <div class="dialog_header">
         <div class="dialog_title">参数选择列表</div>
         <div class="dialog_tool">
@@ -641,7 +642,7 @@
             </tr>
             <tr align="center">
                 <td colspan="3">
-                    <input type="button" onclick="ensure('ncell_selectedParam','ncell_targetBsc','ncell_paramWinDiv')"  value="确定"/>　　　
+                    <input type="button" onclick="ensure('ncell_selectedParam','ncell_targetParam','ncell_paramWinDiv')"  value="确定"/>　　　
                     <input type="button" onclick="cancle('ncell_paramWinDiv')" value="取消"/>
                 </td>
             </tr>
@@ -650,7 +651,7 @@
     </div>
 </div>
 <div id="ncell_ncellWinDiv" class="dialog2"
-     style="display:none; ">
+     style="display:none;width: 530px;right: 480px; top: 30%; left: 30%; z-index: 30">
     <div class="dialog_header">
         <div class="dialog_title">NCELL输入窗口</div>
         <div class="dialog_tool">

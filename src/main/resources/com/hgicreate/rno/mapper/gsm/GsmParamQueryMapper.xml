@@ -15,4 +15,91 @@
             and t.city_id=#{param1}
             and d.data_type=#{param2}
     </select>
+    <select id="getCellParamRecord"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmParamQueryVM"
+            resultType="java.util.Map">
+        select nvl(to_char(BASICTAB.MEA_DATE,'yyyy-mm-dd'),0) as MEA_DATE,nvl(BASICTAB.MSC,0) as MSC,nvl(t.BSC,0) as BSC,
+        nvl(BASICTAB.CELL,0) as CELL,${cellParam}
+        from rno_gsm_eri_cell BASICTAB
+        left join RNO_GSM_BSC_DATA t
+          on (BASICTAB.bsc=t.id)
+        left join rno_gsm_eri_cell_extra_info EXTRATAB
+          on (BASICTAB.mea_date=EXTRATAB.mea_date and BASICTAB.msc=EXTRATAB.msc and BASICTAB.bsc=EXTRATAB.bsc and BASICTAB.cell=EXTRATAB.cell)
+        where BASICTAB.CITY_ID = ${cityId}
+        <if test="cellBsc != null and cellBsc != '' and cellBsc != 'ALL'">
+            and BASICTAB.bsc in (
+            <foreach collection="bscList" item="bsc" index="index" open="" close="" separator=",">
+                '${bsc}'
+            </foreach>)
+        </if>
+        <if test="cellForCell != null and cellForCell != '' and cellForCell != 'ALL'">
+            and BASICTAB.cell in (
+            <foreach collection="cellList" item="cell" index="index" open="" close="" separator=",">
+                '${cell}'
+            </foreach>)
+        </if>
+        <if test="cellDate != null and cellDate != '' and cellDate != 'ALL'">
+            and BASICTAB.MEA_DATE in(
+            <foreach collection="dateList" item="time" index="index" open="" close="" separator=",">
+                to_date('${time}','yyyy-mm-dd')
+            </foreach>)
+        </if>
+    </select>
+    <select id="getChannelParamRecord"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmParamQueryVM"
+            resultType="java.util.Map">
+        select nvl(to_char(t1.MEA_DATE,'yyyy-mm-dd'),0) as MEA_DATE,nvl(t1.MSC,0) as MSC,nvl(t.BSC,0) as BSC,
+                nvl(t1.CELL,0) as CELL,nvl(t1.CH_GROUP,0) as CH_GROUP,nvl(t1.CHGR_STATE,0) as CHGR_STATE,
+                nvl(t1.CHGR_TG,0) as CHGR_TG,${cellParam}
+        from rno_gsm_eri_cell_ch_group t1
+        left join(RNO_GSM_BSC_DATA t)
+        on (t1.bsc=t.id)
+        where t1.CITY_ID = ${cityId}
+        <if test="cellBsc != null and cellBsc != '' and cellBsc != 'ALL'">
+            and t1.bsc in (
+            <foreach collection="bscList" item="bsc" index="index" open="" close="" separator=",">
+                '${bsc}'
+            </foreach>)
+        </if>
+        <if test="cellForCell != null and cellForCell != '' and cellForCell != 'ALL'">
+            and t1.cell in (
+            <foreach collection="cellList" item="cell" index="index" open="" close="" separator=",">
+                '${cell}'
+            </foreach>)
+        </if>
+        <if test="cellDate != null and cellDate != '' and cellDate != 'ALL'">
+            and t1.MEA_DATE in(
+            <foreach collection="dateList" item="time" index="index" open="" close="" separator=",">
+                to_date('${time}','yyyy-mm-dd')
+            </foreach>)
+        </if>
+    </select>
+    <select id="getNcellParamRecord"
+            parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmParamQueryVM"
+            resultType="java.util.Map">
+        select nvl(to_char(t1.MEA_DATE,'yyyy-mm-dd'),0) as MEA_DATE,nvl(t1.MSC,0) as MSC,nvl(t.BSC,0) as BSC,
+        nvl(t1.CELL,0) as CELL,nvl(t1.N_BSC,0) as N_BSC,nvl(t1.N_CELL,0) as N_CELL,${cellParam}
+        from rno_gsm_eri_ncell_param t1
+        left join(RNO_GSM_BSC_DATA t)
+        on (t1.bsc=t.id)
+        where t1.CITY_ID = ${cityId}
+        <if test="cellBsc != null and cellBsc != '' and cellBsc != 'ALL'">
+            and t1.bsc in (
+            <foreach collection="bscList" item="bsc" index="index" open="" close="" separator=",">
+                '${bsc}'
+            </foreach>)
+        </if>
+        <if test="cellForCell != null and cellForCell != '' and cellForCell != 'ALL'">
+            and t1.cell in (
+            <foreach collection="cellList" item="cell" index="index" open="" close="" separator=",">
+                '${cell}'
+            </foreach>)
+        </if>
+        <if test="cellDate != null and cellDate != '' and cellDate != 'ALL'">
+            and t1.MEA_DATE in(
+            <foreach collection="dateList" item="time" index="index" open="" close="" separator=",">
+                to_date('${time}','yyyy-mm-dd')
+            </foreach>)
+        </if>
+    </select>
 </mapper>
