@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 public interface GsmFasDescRepository extends JpaRepository<GsmFasDesc, Long> {
-    List<GsmFasDesc> findTop1000ByAreaAndBscAndMeaTimeBetween(Area area, String bsc, Date beginTestDate, Date endTestDate);
+    List<GsmFasDesc> findTop1000ByAreaAndBscLikeAndMeaTimeBetween(Area area, String bsc, Date beginTestDate, Date endTestDate);
     List<GsmFasDesc> findTop1000ByAreaAndMeaTimeBetween(Area area, Date beginTestDate, Date endTestDate);
 
 }

@@ -36,6 +36,6 @@ public class GsmFasService {
         if (vm.getBsc() == null || Objects.equals(vm.getBsc().trim(), "")){
             return gsmFasDescRepository.findTop1000ByAreaAndMeaTimeBetween(area, vm.getBeginTestDate(), endDate);
         }
-        return gsmFasDescRepository.findTop1000ByAreaAndBscAndMeaTimeBetween(area, vm.getBsc(), vm.getBeginTestDate(), endDate);
+        return gsmFasDescRepository.findTop1000ByAreaAndBscLikeAndMeaTimeBetween(area,"%" + vm.getBsc().trim() + "%", vm.getBeginTestDate(), endDate);
     }
 }

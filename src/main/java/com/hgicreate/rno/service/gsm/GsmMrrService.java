@@ -41,7 +41,7 @@ public class GsmMrrService {
         if (vm.getBsc() == null || Objects.equals(vm.getBsc().trim(), "")) {
             return gsmMrrDescRepository.findTop1000ByAreaAndFactoryAndMeaDateBetween(area, vm.getFactory(), vm.getBeginTestDate(), endDate);
         }
-        return gsmMrrDescRepository.findTop1000ByAreaAndFactoryAndBscAndMeaDateBetween(area, vm.getFactory(), vm.getBsc(), vm.getBeginTestDate(), endDate);
+        return gsmMrrDescRepository.findTop1000ByAreaAndFactoryAndBscLikeAndMeaDateBetween(area, vm.getFactory(), "%" + vm.getBsc().trim() + "%", vm.getBeginTestDate(), endDate);
 
     }
 

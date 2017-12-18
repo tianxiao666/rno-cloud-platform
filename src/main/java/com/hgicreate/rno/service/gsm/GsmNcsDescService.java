@@ -53,14 +53,14 @@ public class GsmNcsDescService {
             }
         }
         if (Objects.equals(vm.getFactory(), "HW")) {
-            return gsmHwNcsDescRepository.findTop1000ByAreaAndBscAndMeaTimeBetween(
-                    area, vm.getBsc(), vm.getBeginTestDate(), endDate)
+            return gsmHwNcsDescRepository.findTop1000ByAreaAndBscLikeAndMeaTimeBetween(
+                    area,"%" + vm.getBsc().trim() + "%", vm.getBeginTestDate(), endDate)
                     .stream().map(GsmNcsDescQueryMapper.INSTANCE::hwNcsDescQueryToDTO)
                     .collect(Collectors.toList());
         }
         if (Objects.equals(vm.getFactory(), "ERI")) {
-            return gsmEriNcsDescRepository.findTop1000ByAreaAndBscAndMeaTimeBetween(
-                    area, vm.getBsc(), vm.getBeginTestDate(), endDate)
+            return gsmEriNcsDescRepository.findTop1000ByAreaAndBscLikeAndMeaTimeBetween(
+                    area, "%" + vm.getBsc().trim() + "%", vm.getBeginTestDate(), endDate)
                     .stream().map(GsmNcsDescQueryMapper.INSTANCE::eriNcsDescQueryToDTO)
                     .collect(Collectors.toList());
         }
