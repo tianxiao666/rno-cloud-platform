@@ -204,7 +204,7 @@ $(document).ready(function () {
     //地图小区右键菜单
     var contextMenuItems = [
         {
-            text:'动态覆盖图1',
+            text:'动态覆盖图',
             callback:function(evt){
                 let features = clickedCellLayer.getSource().getFeatures();
                 var element = popup.getElement();
@@ -459,20 +459,19 @@ function searchCell() {
     cellStr = cellStr.substring(0, cellStr.length - 1);
     let filter ='';
     // let filter = queryType === 'cell' ? `CELL_ID in (${cellStr})` : `CELL_NAME in (${cellStr})`;
-    if(queryType === 'cell'){
+    if(queryType === 'CELL_ID'){
         filter = `CELL_ID in (${cellStr})`;
-    }else if(queryType === 'chineseName'){
+    }else if(queryType === 'CHINESE_NAME'){
         filter = `CELL_NAME in (${cellStr})`
     }
-    else if(queryType === 'site'){
-        filter = `CELL_ID in (${cellStr})`
+    else if(queryType === 'ENGLISH_NAME'){
+        filter = `EN_NAME in (${cellStr})`
     }
-    else if(queryType === 'lac'){
+    else if(queryType === 'LAC'){
         filter = `LAC in (${cellStr})`
-    }else if(queryType === 'ci'){
+    }else if(queryType === 'CI'){
         filter = `CI in (${cellStr})`
     }
-
     $.ajax({
         url: "http://rno-gis.hgicreate.com/geoserver/rnoprod/ows",
         data: {
