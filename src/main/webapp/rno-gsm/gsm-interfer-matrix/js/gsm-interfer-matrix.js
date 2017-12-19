@@ -56,6 +56,7 @@ $(function () {
 
     $("#queryBtn").click(function () {
         if($("#begDate").val().trim() === '' || $("#endDate").val().trim() === ''){
+            $("#info").css("background", "red");
             showInfoInAndOut('info','请选择完整的创建时间段！');
             return false;
         }
@@ -71,6 +72,7 @@ $(function () {
     $("#queryBtn1").click(function () {
         $("#isDateRightTip").text("");
         if($("#begDate").val().trim() === '' || $("#endDate").val().trim() === ''){
+            $("#info").css("background", "red");
             showInfoInAndOut('info','请选择完整的NCS数据测量时间段！');
             return false;
         }
@@ -81,6 +83,7 @@ $(function () {
     $("#calculateNcsInterMartix").click(function(){
         $("#isDateRightTip").text("");
         if($("#begDate").val().trim() === '' || $("#endDate").val().trim() === ''){
+            $("#info").css("background", "red");
             showInfoInAndOut('info','请选择完整的NCS数据测量时间段！');
             return false;
         }
@@ -88,6 +91,8 @@ $(function () {
         data["cityId"] = $("#cityId").val();
         data["begMeaDate"] = $("#begDate").val();
         data["endMeaDate"] = $("#endDate").val();
+        $(".loading").text("任务提交中...");
+        $(".loading").css("display", "block");
         $.ajax({
             url: '/api/gsm-interfer-matrix/add-job',
             data:data,
@@ -96,6 +101,7 @@ $(function () {
             success: addInterferMatrixJobResult,
             error: function (err) {
                 console.log(err);
+                $("#info").css("background", "red");
                 showInfoInAndOut("info", "后台程序错误！");
             }
         });
@@ -155,8 +161,6 @@ function showNcsData(data) {
     $(".loading").css("display", "none");
     if (data == '') {
         $("#isDateRightTip").text("该时间段内无数据");
-        // $("#info").css("background", "red");
-        // showInfoInAndOut('info', '没有符合条件的覆盖分析任务');
     }
     $('#ncsResultDT').DataTable().clear();
     $('#ncsResultDT').css("line-height", "12px");
@@ -181,8 +185,12 @@ function showNcsData(data) {
 // 任务提交结果
 function addInterferMatrixJobResult(flag) {
         if(flag==="true"){
-            window.location.href = "gsm-interfer-matrix.html";
+            // $("#info").css("background","green");
+            // showInfoInAndOut('info', '任务提交成功！');
+            setTimeout("window.location.href = 'gsm-interfer-matrix.html'",2000);
         }else{
+            $(".loading").css("display", "none");
+            $(".loading").text("加载中...");
             $("#isDateRightTip").text("该时间段内无数据");
         }
     }
