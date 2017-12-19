@@ -6,9 +6,9 @@ import com.hgicreate.rno.repository.AreaRepository;
 import com.hgicreate.rno.repository.gsm.GsmNetworkCoverageJobRepository;
 import com.hgicreate.rno.security.SecurityUtils;
 import com.hgicreate.rno.service.gsm.GsmNetworkCoverageService;
-import com.hgicreate.rno.service.gsm.dto.GsmNcsForNetworkCoverageDTO;
+import com.hgicreate.rno.service.gsm.dto.GsmNcsForJobDTO;
 import com.hgicreate.rno.service.gsm.dto.GsmNetworkCoverageJobDTO;
-import com.hgicreate.rno.web.rest.gsm.vm.GsmNcsForNetworkCoverageVM;
+import com.hgicreate.rno.web.rest.gsm.vm.GsmNcsForJobVM;
 import com.hgicreate.rno.web.rest.gsm.vm.GsmNetworkCoverageVM;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
@@ -50,13 +50,13 @@ public class GsmNetworkCoverageJobResource {
     }
 
     @PostMapping("/ncs-data-query")
-    public List<GsmNcsForNetworkCoverageDTO> ncsDataQuery(GsmNcsForNetworkCoverageVM vm) throws ParseException {
+    public List<GsmNcsForJobDTO> ncsDataQuery(GsmNcsForJobVM vm) throws ParseException {
         log.debug("视图模型：{}",vm);
         return gsmNetworkCoverageService.ncsDataQuery(vm);
     }
 
     @PostMapping("/add-job")
-    public boolean addNetCoverJob(GsmNcsForNetworkCoverageVM vm) throws ParseException {
+    public boolean addNetCoverJob(GsmNcsForJobVM vm) throws ParseException {
         log.debug("视图模型：{}",vm);
         Area area = areaRepository.findById(vm.getCityId());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -68,7 +68,8 @@ public class GsmNetworkCoverageJobResource {
         job.setBegMeaTime(beginDate);
         job.setEndMeaTime(endDate);
         Calendar now = Calendar.getInstance();
-        job.setName(area.getName()+now.get(Calendar.MONDAY)+"_"+now.get(Calendar.DATE)+"网络覆盖分析任务");
+        job.setName(area.getName()+now.get(Calendar.YEAR)+now.get(Calendar.MONDAY)+
+                "_"+now.get(Calendar.DATE)+"网络覆盖分析任务");
         job.setPriority(1);
         job.setStartTime(createdDate);
         now.add(Calendar.SECOND,30);
@@ -76,12 +77,12 @@ public class GsmNetworkCoverageJobResource {
         job.setStatus("正常完成");
         job.setCreatedUser(SecurityUtils.getCurrentUserLogin());
         job.setCreatedDate(createdDate);
-        List<GsmNcsForNetworkCoverageDTO> dtoList = gsmNetworkCoverageService.ncsDataQuery(vm);
+        List<GsmNcsForJobDTO> dtoList = gsmNetworkCoverageService.ncsDataQuery(vm);
         if(dtoList==null||dtoList.size()<=0){
             return false;
         }
         int fileNumber = 0;
-        for(GsmNcsForNetworkCoverageDTO ncs:dtoList){
+        for(GsmNcsForJobDTO ncs:dtoList){
             fileNumber += ncs.getRecordCount();
         }
         job.setFileNumber(fileNumber);

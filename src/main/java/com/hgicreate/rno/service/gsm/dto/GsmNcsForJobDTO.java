@@ -3,7 +3,7 @@ package com.hgicreate.rno.service.gsm.dto;
 import lombok.Data;
 
 @Data
-public class GsmNcsForNetworkCoverageDTO {
+public class GsmNcsForJobDTO {
     private String areaName;
     private String name;
     private String bsc;

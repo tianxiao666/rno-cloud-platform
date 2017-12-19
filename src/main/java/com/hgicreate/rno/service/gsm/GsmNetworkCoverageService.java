@@ -7,11 +7,11 @@ import com.hgicreate.rno.repository.AreaRepository;
 import com.hgicreate.rno.repository.gsm.GsmCellDataRepository;
 import com.hgicreate.rno.repository.gsm.GsmEriNcsDescRepository;
 import com.hgicreate.rno.repository.gsm.GsmNetworkCoverageJobRepository;
-import com.hgicreate.rno.service.gsm.dto.GsmNcsForNetworkCoverageDTO;
+import com.hgicreate.rno.service.gsm.dto.GsmNcsForJobDTO;
 import com.hgicreate.rno.service.gsm.dto.GsmNetworkCoverageJobDTO;
-import com.hgicreate.rno.service.gsm.mapper.GsmNcsForNetworkCoverageMapper;
+import com.hgicreate.rno.service.gsm.mapper.GsmNcsForJobMapper;
 import com.hgicreate.rno.service.gsm.mapper.GsmNetworkCoverageJobMapper;
-import com.hgicreate.rno.web.rest.gsm.vm.GsmNcsForNetworkCoverageVM;
+import com.hgicreate.rno.web.rest.gsm.vm.GsmNcsForJobVM;
 import com.hgicreate.rno.web.rest.gsm.vm.GsmNetworkCoverageVM;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -56,7 +56,7 @@ public class GsmNetworkCoverageService {
                 .collect(Collectors.toList());
     }
 
-    public List<GsmNcsForNetworkCoverageDTO> ncsDataQuery(GsmNcsForNetworkCoverageVM vm) throws ParseException {
+    public List<GsmNcsForJobDTO> ncsDataQuery(GsmNcsForJobVM vm) throws ParseException {
         Area area = new Area();
         area.setId(vm.getCityId());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -64,7 +64,7 @@ public class GsmNetworkCoverageService {
         Date endDate = sdf.parse(vm.getEndMeaDate());
         return gsmEriNcsDescRepository.findTop1000ByAreaAndMeaTimeBetween(area,beginDate,endDate)
                 .stream()
-                .map(GsmNcsForNetworkCoverageMapper.INSTANCE::ncsForNetCoverToNcsForNetCoverDTO)
+                .map(GsmNcsForJobMapper.INSTANCE::ncsForJobToNcsForJobDTO)
                 .collect(Collectors.toList());
     }
 

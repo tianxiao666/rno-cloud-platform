@@ -8,15 +8,16 @@ import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "RNO_GSM_NETWORK_COVERAGE_JOB")
-public class GsmNetworkCoverageJob {
+@Table(name = "RNO_GSM_INTERFER_MATRIX_JOB")
+public class GsmInterferMatrixJob {
     @Id
-    @GeneratedValue(generator = "NetworkCoverageJobSeq")
-    @SequenceGenerator(name = "NetworkCoverageJobSeq", sequenceName = "SEQ_GSM_NETWORK_COVERAGE_JOB", allocationSize = 1)
+    @GeneratedValue(generator = "InterferMatrixJobSeq")
+    @SequenceGenerator(name = "InterferMatrixJobSeq", sequenceName = "SEQ_GSM_INTERFER_MATRIX_JOB", allocationSize = 1)
     private Long id;
 
     private String name;
     private Integer priority;
+    private String dataType;
     private Date begMeaTime;
     private Date endMeaTime;
     private Date startTime;
@@ -24,7 +25,7 @@ public class GsmNetworkCoverageJob {
     private String status;
     private String createdUser;
     private Date createdDate;
-    private Integer fileNumber;
+    private Long recordCount;
 
     @ManyToOne
     @JoinColumn(name = "area_id")
