@@ -65,30 +65,12 @@ $(document).ready(function () {
         searchCell(-1);
     });
     $("#searchNcellBtn").click(function () {
-        $("span#errorDiv").html("");
         var ncell = $("#cellForNcell").val();
-        var strExp = /^[\u4e00-\u9fa5A-Za-z0-9\s_-]+$/;
-        if (!strExp.test(ncell)) {
-            $("span#errorDiv").html("含有非法字符！");
-            return false;
-        } else if (!(ncell.length < 40)) {
-            $("span#errorDiv").html("输入信息过长！");
-            return false;
-        }
         searchNcell(ncell);
     });
     // 搜频点
     $("#searchFreqBtn").click(function () {
-        $("span#errorDiv").html("");
         var freq = $("#freqValue").val();
-        var strExp = /^[\u4e00-\u9fa5A-Za-z0-9\s_-]+$/;
-        if (!strExp.test(freq)) {
-            $("span#errorDiv").html("含有非法字符！");
-            return false;
-        } else if (!(freq.length < 40)) {
-            $("span#errorDiv").html("输入信息过长！");
-            return false;
-        }
         searchFreq(freq);
     });
 
@@ -116,6 +98,15 @@ $(document).ready(function () {
         }),
         fill: new ol.style.Fill({
             color: 'rgba(0, 255, 0, 1.0)'
+        })
+    });
+    let blueStyle = new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: 'yellow',
+            size: 5
+        }),
+        fill: new ol.style.Fill({
+            color: 'rgba(255, 100, 255, 1.0)'
         })
     });
     let toolTipStyle = new ol.style.Style({
@@ -159,7 +150,7 @@ $(document).ready(function () {
     queryFreqOverlay = new ol.layer.Vector({
         zIndex: 6,
         source: new ol.source.Vector(),
-        style: redStyle
+        style: blueStyle
     });
     dynamicCoverageCell = new ol.layer.Vector({
         zIndex: 3,
@@ -219,7 +210,7 @@ $(document).ready(function () {
                 let features = clickedCellLayer.getSource().getFeatures();
                 var element = popup.getElement();
                 $(element).popover('destroy');
-                if (features.length) {
+                if (features.length>1) {
                     popup.setPosition(evt.coordinate);
                     $(element).popover({
                         'placement': 'top',
@@ -232,6 +223,8 @@ $(document).ready(function () {
                         let first = $(this).find('td:first');
                         showDynaCoverage(first.text(), first.data("enname"), first.data("lon"), first.data("lat"));
                     });
+                }else if(features.length == 1){
+                    showDynaCoverage(features[0].get('CELL_ID'), features[0].get('EN_NAME'), features[0].get('LONGITUDE'), features[0].get('LATITUDE'));
                 }
             }
         },
@@ -241,7 +234,7 @@ $(document).ready(function () {
                 let features = clickedCellLayer.getSource().getFeatures();
                 var element = popup.getElement();
                 $(element).popover('destroy');
-                if (features.length) {
+                if (features.length>1) {
                     popup.setPosition(evt.coordinate);
                     $(element).popover({
                         'placement': 'top',
@@ -254,12 +247,15 @@ $(document).ready(function () {
                         let first = $(this).find('td:first');
                         searchNcell(first.text());
                     });
+                }else if(features.length == 1){
+                    searchNcell(features[0].get('CELL_ID'));
                 }
             }
         }
     ];
 
     map.on('singleclick', function (evt) {
+        console.log(map)
         if (map.getView().getZoom() < 15) {
             return;
         }
@@ -559,6 +555,11 @@ function searchNcell(cellId) {
         animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "请输入搜索条件");
         return;
     }
+    if (ifHasSpecChar(cellId.trim())) {
+        hideOperTips("loadingDataDiv");
+        animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "查询内容不能包含特殊字符和中文标点符号!");
+        return;
+    }
     if (!isOnlyNumberAndComma(cellId.trim())) {
         hideOperTips("loadingDataDiv");
         animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "小区ID只能输入数字和半角-,用半角逗号隔开!");
@@ -578,7 +579,7 @@ function searchNcell(cellId) {
             var obj = data;
             var view = map.getView();
             if (0 === obj.length) {
-                animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "不存在此空间数据");
+                animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "不存在该空间数据");
                 return;
             }
             if (obj) {
@@ -615,6 +616,7 @@ function searchNcell(cellId) {
                                     $.ajax(url).then(function (response) {
                                         let features = new ol.format.GeoJSON().readFeatures(response);
                                         if (features.length) {
+                                            queryNCellOverlay.getSource().clear();
                                             queryNCellOverlay.getSource().addFeatures(features);
                                         }
                                     }).catch(function (err) {
@@ -666,6 +668,7 @@ function searchFreq(freq) {
         }
     }).then(function (response) {
         hideOperTips("loadingDataDiv");
+        queryFreqOverlay.getSource().clear();
         let view = map.getView();
         let features = new ol.format.GeoJSON().readFeatures(response);
         if (features.length) {
@@ -728,8 +731,8 @@ function showDynaCoverage(cellId, enName, cellLon, cellLat) {
         animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "折线图系数请输入数字");
         return;
     }
-    if (Number(imgCoeff) <= 0) {
-        animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "折线图系数值应大于0！");
+    if (Number(imgCoeff) <= 0 ||Number(imgCoeff) > 0.5) {
+        animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "折线图系数值应大于0且小于等于0.5！");
         return;
     }
     $.ajax({
@@ -784,6 +787,7 @@ function showDynaCoverage(cellId, enName, cellLon, cellLat) {
 }
 
 function drawArrow(cellLon, cellLat, vecLng, vecLat, ratio, color, points) {
+    map.removeLayer(dynamicCoverageOverlay);
     let difflng = vecLng - cellLon;
     let difflat = vecLat - cellLat;
     let r = Math.sqrt(difflng * difflng + difflat * difflat);
@@ -842,6 +846,14 @@ function drawArrow(cellLon, cellLat, vecLng, vecLat, ratio, color, points) {
         style: styles,
         zIndex: 100
     });
+    // if(dynamicCoverageOverlay){
+    //     if(dynamicCoverageOverlay.getSource()){
+    //         console.log("有")
+    //         map.removeLayer(dynamicCoverageOverlay);
+    //         map.getSource().clear();
+    //     }
+    // }
+
     map.addLayer(dynamicCoverageOverlay);
     map.getView().setCenter(coordinates[0])
 }
