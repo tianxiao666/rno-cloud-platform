@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.BufferedOutputStream;
@@ -160,6 +161,7 @@ public class GsmMrrResource {
     }
 
     @PostMapping("/gsm-mrr-data/query-mrr-detail")
+    @ResponseBody
     public List<Map<String, Object>> queryMrrDetail(Long mrrDescId){
         //Page newPage = page.copy();
         List<Map<String, Object>> dataRecs = gsmMrrService.queryEriMrrDetailByPage(mrrDescId);

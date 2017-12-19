@@ -477,20 +477,40 @@ function queryProgress(token) {
  */
 function queryMrrDetailData() {
     showOperTips("loadingDataDiv", "loadContentId", "正在加载详情");
+
     $("#searchMrrDetailForm").ajaxSubmit({
         url:'/api/gsm-mrr-data/query-mrr-detail',
         type:'post',
         dataType:'text',
-        success:function(raw){
-            var data={};
-            try{
-                data=eval("("+raw+")");
-            }catch(err){
-                console.log(err);
-            }
-            displayMrrDetailData(data['data']);
+        success:function(data){
+            $('#mrrDetailListTab').css("line-height", "12px");
+            $("#mrrDetailListTab").DataTable({
+                    "data": JSON.parse(data),
+                    "columns": [
+                        {"data": "CELL_NAME"},
+                        {"data": "BSC"},
+                        {"data": "UL_QUA6T7_RATE"},
+                        {"data": "DL_QUA6T7_RATE"},
+                        {"data": "UL_STREN_RATE"},
+                        {"data": "DL_STREN_RATE"},
+                        {"data": "DL_WEEK_SIGNAL"},
+                        {"data": "AVER_TA"},
+                        {"data": "MAX_TA"},
+                        {"data": "UL_QUA0T5_RATE"},
+                        {"data": "DL_QUA0T5_RATE"}
+                    ],
+                    searching:false, //去掉搜索框
+                    bLengthChange:false,//去掉每页多少条框体
+                    destroy:true, //Cannot reinitialise DataTable,解决重新加载表格内容问题
+                    scrollCollapse:true,
+                    pageLength:20,
+                    "language": {
+                        url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
+                    }
+                });
+            /*displayMrrDetailData(data['data']);
             setFormPageInfo("searchMrrDetailForm",data['page']);
-            setPageView(data['page'],"mrrDetailListPageDiv");
+            setPageView(data['page'],"mrrDetailListPageDiv");*/
         },
         complete : function(){
             hideOperTips("loadingDataDiv");
