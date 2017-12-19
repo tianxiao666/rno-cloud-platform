@@ -119,13 +119,24 @@ function showJobQueryResult(data) {
             { data: null },
             { data: "recordCount" },
             { data: "dataType" },
-            { data: "status" }
+            { data: null }
         ],
         "columnDefs": [{
             "render": function(data, type, row) {
                 return row['begMeaTime'] + "~"+row['endMeaTime'];
             },
             "targets": 2,
+            "data": null
+        },{
+            "render": function(data, type, row) {
+                switch (row['status']) {
+                    case "计算失败":
+                        return "<span style='color: red'>"+ row['status'] + "</span>";
+                    default:
+                        return row['status'];
+                }
+            },
+            "targets": 5,
             "data": null
         }
         ],

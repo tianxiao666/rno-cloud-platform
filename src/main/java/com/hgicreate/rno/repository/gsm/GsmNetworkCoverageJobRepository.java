@@ -11,5 +11,8 @@ import java.util.List;
 
 @Repository
 public interface GsmNetworkCoverageJobRepository extends JpaRepository<GsmNetworkCoverageJob,Long>{
-    List<GsmNetworkCoverageJob> findTop1000ByAreaAndCreatedDateBetween(Area area, Date begDate,Date endDate);
+    List<GsmNetworkCoverageJob> findTop1000ByAreaAndCreatedDateBetweenOrderByCreatedDateDesc(
+            Area area, Date begDate,Date endDate);
+
+    List<GsmNetworkCoverageJob> findByAreaOrderByIdDesc(Area area);
 }

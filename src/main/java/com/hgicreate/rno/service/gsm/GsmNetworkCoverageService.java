@@ -49,8 +49,8 @@ public class GsmNetworkCoverageService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date beginDate = sdf.parse(vm.getBegDate());
         Date endDate = sdf.parse(vm.getEndDate());
-        List<GsmNetworkCoverageJob> list = gsmNetworkCoverageJobRepository.findTop1000ByAreaAndCreatedDateBetween(
-                area,beginDate,endDate);
+        List<GsmNetworkCoverageJob> list = gsmNetworkCoverageJobRepository
+                .findTop1000ByAreaAndCreatedDateBetweenOrderByCreatedDateDesc(area,beginDate,endDate);
         return list.stream()
                 .map(GsmNetworkCoverageJobMapper.INSTANCE::gsmNetworkCoverageToGsmNetworkCoverageDTO)
                 .collect(Collectors.toList());
@@ -68,8 +68,8 @@ public class GsmNetworkCoverageService {
                 .collect(Collectors.toList());
     }
 
+    // 生成结果文件
     public File saveGsmNetworkCoverageResult(String jobId,Long cityId){
-
         List<GsmCell> cellList = gsmCellDataRepository.findByArea_Id(cityId);
         Area area = areaRepository.findById(cityId);
         String directory ="d:/tmp/rno-cloud-platform/downloads/";
@@ -135,5 +135,52 @@ public class GsmNetworkCoverageService {
             }
         }
         return csvFile;
+    }
+
+    // 更新任务状态
+    public void runTask(Area area, GsmNetworkCoverageJob job) {
+        long timeInterval = (long) (Math.random() * (5000) + 60000);
+        Runnable runnable = new Runnable() {
+            boolean isStopped = false;
+            public void run() {
+                while (!isStopped) {
+                    if ("".equals(job.getStatus()) || job.getStatus() == null || "排队中".equals(job.getStatus())) {
+                        List<GsmNetworkCoverageJob> list = gsmNetworkCoverageJobRepository.findByAreaOrderByIdDesc(area);
+                        if ("排队中".equals(list.get(1).getStatus()) || "正在计算".equals(list.get(1).getStatus())) {
+                            job.setStatus("排队中");
+                            gsmNetworkCoverageJobRepository.save(job);
+                            log.debug("覆盖分析任务状态更新：{}",job.getStatus());
+                            try {
+                                Thread.sleep(timeInterval);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            job.setStartTime(new Date());
+                            job.setStatus("正在计算");
+                            gsmNetworkCoverageJobRepository.save(job);
+                            log.debug("覆盖分析任务状态更新：{}",job.getStatus());
+                            try {
+                                Thread.sleep(timeInterval);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    } else {
+                        job.setCompleteTime(new Date());
+                        if (Math.random() < 0.1) {
+                            job.setStatus("异常终止");
+                        } else {
+                            job.setStatus("正常完成");
+                        }
+                        gsmNetworkCoverageJobRepository.save(job);
+                        log.debug("覆盖分析任务状态更新：{}",job.getStatus());
+                        isStopped = true;
+                    }
+                }
+            }
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
     }
 }

@@ -45,19 +45,23 @@ public class GsmNetworkCoverageJobResource {
 
     @PostMapping("/job-query")
     public List<GsmNetworkCoverageJobDTO> jobQuery(GsmNetworkCoverageVM vm) throws ParseException {
-        log.debug("视图模型：{}",vm);
+        log.debug("视图模型：{}", vm);
         return gsmNetworkCoverageService.jobQuery(vm);
     }
 
     @PostMapping("/ncs-data-query")
     public List<GsmNcsForJobDTO> ncsDataQuery(GsmNcsForJobVM vm) throws ParseException {
-        log.debug("视图模型：{}",vm);
+        log.debug("视图模型：{}", vm);
         return gsmNetworkCoverageService.ncsDataQuery(vm);
     }
 
     @PostMapping("/add-job")
     public boolean addNetCoverJob(GsmNcsForJobVM vm) throws ParseException {
-        log.debug("视图模型：{}",vm);
+        log.debug("视图模型：{}", vm);
+        List<GsmNcsForJobDTO> dtoList = gsmNetworkCoverageService.ncsDataQuery(vm);
+        if (dtoList == null || dtoList.size() <= 0) {
+            return false;
+        }
         Area area = areaRepository.findById(vm.getCityId());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date beginDate = sdf.parse(vm.getBegMeaDate());
@@ -68,35 +72,33 @@ public class GsmNetworkCoverageJobResource {
         job.setBegMeaTime(beginDate);
         job.setEndMeaTime(endDate);
         Calendar now = Calendar.getInstance();
-        job.setName(area.getName()+now.get(Calendar.YEAR)+now.get(Calendar.MONDAY)+
-                "_"+now.get(Calendar.DATE)+"网络覆盖分析任务");
+        job.setName(area.getName() + now.get(Calendar.YEAR) + now.get(Calendar.MONDAY) +
+                "_" + now.get(Calendar.DATE) + "网络覆盖分析任务");
         job.setPriority(1);
-        job.setStartTime(createdDate);
-        now.add(Calendar.SECOND,30);
-        job.setCompleteTime(now.getTime());
-        job.setStatus("正常完成");
+        List<GsmNetworkCoverageJob> list = gsmNetworkCoverageJobRepository.findByAreaOrderByIdDesc(area);
+        if (list.size() <= 0) {
+            job.setStartTime(createdDate);
+            job.setStatus("正在计算");
+        }
         job.setCreatedUser(SecurityUtils.getCurrentUserLogin());
         job.setCreatedDate(createdDate);
-        List<GsmNcsForJobDTO> dtoList = gsmNetworkCoverageService.ncsDataQuery(vm);
-        if(dtoList==null||dtoList.size()<=0){
-            return false;
-        }
         int fileNumber = 0;
-        for(GsmNcsForJobDTO ncs:dtoList){
+        for (GsmNcsForJobDTO ncs : dtoList) {
             fileNumber += ncs.getRecordCount();
         }
         job.setFileNumber(fileNumber);
         gsmNetworkCoverageJobRepository.save(job);
+        gsmNetworkCoverageService.runTask(area, job);
         return true;
     }
 
     @GetMapping("/download-result")
     @ResponseBody
     public ResponseEntity<byte[]> downloadResultFile(String id) {
-        log.debug("覆盖分析任务id：{}",id);
+        log.debug("覆盖分析任务id：{}", id);
         GsmNetworkCoverageJob gsmNetworkCoverageJob = gsmNetworkCoverageJobRepository.findOne(Long.parseLong(id));
         Area area = gsmNetworkCoverageJob.getArea();
-        File file = gsmNetworkCoverageService.saveGsmNetworkCoverageResult(id,area.getId());
+        File file = gsmNetworkCoverageService.saveGsmNetworkCoverageResult(id, area.getId());
         try {
             HttpHeaders headers = new HttpHeaders();
             String fileName = new String(file.getName().getBytes("UTF-8"),
@@ -107,7 +109,7 @@ public class GsmNetworkCoverageJobResource {
         } catch (IOException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }finally {
+        } finally {
             if (file.delete()) {
                 log.debug("临时文件删除成功。");
             } else {

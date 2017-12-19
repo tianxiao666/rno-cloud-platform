@@ -58,14 +58,28 @@ $(function () {
     });
 
     $("#searchInterMartixDT").click(function () {
+        if($("#begDate").val().trim()===''||$("#endDate").val().trim()===''){
+            showInfoInAndOut("info","请选择完整的创建时间段！");
+            return false;
+        }
         $(".loading").css("display", "block");
     });
 
     $("#showNcsDataDT").click(function () {
+        $("#isDateRightTip").text("");
+        if($("#begDate").val().trim()===''||$("#endDate").val().trim()===''){
+            showInfoInAndOut("info","请选择完整的NCS测量时间段！");
+            return false;
+        }
         $(".loading").css("display", "block");
     });
 
     $("#calculateNcsInterMartix").click(function(){
+        $("#isDateRightTip").text("");
+        if($("#begDate").val().trim()===''||$("#endDate").val().trim()===''){
+            showInfoInAndOut("info","请选择完整的NCS测量时间段！");
+            return false;
+        }
         // $("#addJobForm").submit();
         var data = {};
         data["cityId"] = $("#cityId").val();
@@ -117,6 +131,8 @@ function showJobQueryResult(data) {
                         return row['status']+"："+ "<input type='button' value='下载结果文件'"+
                             " onclick=\"downloadResultFiles('" + row['id'] + "')\">";
                     case "异常终止":
+                        return "<span style='color: red'>"+ row['status'] + "</span>";
+                    default:
                         return row['status'];
                 }
             },
@@ -136,7 +152,6 @@ function showJobQueryResult(data) {
 
 function downloadResultFiles(id) {
     $("#jobId").val(id);
-    // $(".loading").css("display", "block");
     $("#downloadDirAngleFileForm").submit();
 }
 
@@ -145,8 +160,6 @@ function showNcsData(data) {
     $(".loading").css("display", "none");
     if (data == '') {
         $("#isDateRightTip").text("该时间段内无数据");
-        // $("#info").css("background", "red");
-        // showInfoInAndOut('info', '没有符合条件的覆盖分析任务');
     }
     $('#ncsResultDT').DataTable().clear();
     $('#ncsResultDT').css("line-height", "12px");

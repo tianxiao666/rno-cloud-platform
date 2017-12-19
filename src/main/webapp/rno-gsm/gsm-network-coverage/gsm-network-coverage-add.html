@@ -22,14 +22,9 @@
     <script src="js/gsm-network-coverage.js"></script>
 </head>
 <body>
-
-<div class="loading_cover" id="loadingDataDiv" style="display: none;">
-    <div class="cover"></div>
-    <h4 class="loading">
-        <em class="loading_fb" id="loadContentId">正在加载NCS数据</em>,请稍侯...
-    </h4>
-</div>
 <span style="font-weight: bold;">当前位置： 专项优化 &gt; 方向角任务管理</span>
+<div id="loading" class="loading" style="display: none">加载中...</div>
+<div id="info" class="info-style" style="display: none"></div>
 <br>
 <div style="width: 80%;margin-top: 20px; margin-left: 6%;">
     <form id="NcsDataForJobForm" method="post">
@@ -55,8 +50,7 @@
                     <div style="margin: 11px"></div>
                     <input id="showNcsDataDT" name="search" style="width: 90px;float: left" value="查看数据" onclick=""
                            type="submit">
-                    <span id="isDateRightTip"
-                          style="font:13px/1.5 Tahoma,'Microsoft Yahei','Simsun';color :red;float: left;"></span>
+                    <span id="isDateRightTip" style="font:13px/1.5 Tahoma,'Microsoft Yahei','Simsun';color :red;float: left;"></span>
                 </td>
             </tr>
             <tr>
@@ -81,10 +75,6 @@
         </tr>
         </thead>
     </table>
-</div>
-<div style="position: absolute; z-index: 100006; display: none; top: 114.767px; left: 416.667px;" lang="zh-cn">
-    <iframe hidefocus="true" border="0" scrolling="no" src="about:blank" style="width: 182px; height: 222px;" height="7"
-            frameborder="0" width="9"></iframe>
 </div>
 </body>
 </html>
