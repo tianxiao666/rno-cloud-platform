@@ -85,7 +85,8 @@ $(function () {
         data["cityId"] = $("#cityId").val();
         data["begMeaDate"] = $("#begDate").val();
         data["endMeaDate"] = $("#endDate").val();
-
+        $(".loading").text("任务提交中...");
+        $(".loading").css("display", "block");
         $.ajax({
             url: '/api/gsm-network-coverage/add-job',
             data:data,
@@ -184,8 +185,10 @@ function showNcsData(data) {
 // 任务提交结果
 function addNetCoverJobResult(flag) {
     if(flag==="true"){
-        window.location.href = "gsm-network-coverage.html";
+        setTimeout("window.location.href = 'gsm-network-coverage.html'",2000);
     }else{
+        $(".loading").css("display", "none");
+        $(".loading").text("加载中...");
         $("#isDateRightTip").text("该时间段内无数据");
     }
 }
