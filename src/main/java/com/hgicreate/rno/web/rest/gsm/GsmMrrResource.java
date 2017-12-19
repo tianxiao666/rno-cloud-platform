@@ -163,12 +163,6 @@ public class GsmMrrResource {
     @PostMapping("/gsm-mrr-data/query-mrr-detail")
     @ResponseBody
     public List<Map<String, Object>> queryMrrDetail(Long mrrDescId){
-        //Page newPage = page.copy();
-        List<Map<String, Object>> dataRecs = gsmMrrService.queryEriMrrDetailByPage(mrrDescId);
-        /*log.info("计算以后，page=" + newPage);
-        int totalCnt = newPage.getTotalCnt();
-        newPage.setTotalPageCnt(totalCnt / newPage.getPageSize() + (totalCnt % newPage.getPageSize() == 0 ? 0 : 1));
-        newPage.setForcedStartIndex(-1);*/
-        return dataRecs;
+        return gsmMrrService.queryEriMrrDetailByPage(mrrDescId);
     }
 }
