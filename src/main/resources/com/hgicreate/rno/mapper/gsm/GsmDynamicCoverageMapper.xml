@@ -7,9 +7,9 @@
     <!--                     动态覆盖                           -->
     <insert id="insertIntoRno2GNcsCoverT" parameterType="map">
         <![CDATA[
-		insert into RNO_2G_NCS_COVER_T(RNO_NCS_DESC_ID, ${ncsFields})
+		insert into RNO_GSM_NCS_COVER_T(RNO_NCS_DESC_ID, ${ncsFields})
 		  select RNO_2G_ERI_NCS_DESC_ID,  ${ncsFields}
-          from RNO_2G_ERI_NCS
+          from RNO_GSM_ERI_NCS
           where ncell = (
                 select en_name
                 from RNO_GSM_CELL
@@ -35,14 +35,13 @@
             <if test=" null != areaIdStr and areaIdStr != ''">
               and area_id in(${areaIdStr})
             </if>
-
             and CELL_ID in (select NCELL_ID from RNO_GSM_NCELL_RELATION where CELL_ID = ${cellId})
           )
 
     </insert>
     <update id="updateRno2GNcsCoverTSetInterfer" parameterType="map">
         <![CDATA[
-		update RNO_2G_NCS_COVER_T set interfer=${TIMESRELSS}
+		update RNO_GSM_NCS_COVER_T set interfer=${TIMESRELSS}
           /DECODE(reparfcn,0,NULL,reparfcn)
           where RNO_NCS_DESC_ID =${ncsDescId}
          ]]>
@@ -55,19 +54,19 @@
                 cell as ncell_id,
                 ncell_lon as cell_lng,
                 ncell_lat as cell_lat
-                from RNO_2G_NCS_COVER_T where interfer<>0
+                from RNO_GSM_NCS_COVER_T where interfer<>0
          ]]>
     </select>
     <update id="deleteAll" >
         <![CDATA[
-		delete from RNO_2G_NCS_COVER_T
+		delete from RNO_GSM_NCS_COVER_T
          ]]>
     </update>
 
     <select id="selectIdFromRno2GHwNcsDesc" parameterType="map" resultType="map">
         <![CDATA[
 		select id as desc_id
-        from rno_2g_hw_ncs_desc
+        from RNO_2G_HW_NCS_DESC
         where CITY_ID in(
                 select OLD_SYS_AREA_ID
                 from RNO_OLD_NEW_SYS_AREA_REFERENCE
@@ -86,7 +85,7 @@
 		    )
          ]]>
     </select>
-    <select id="selectfromRnoRnoGSMEriNcsDescripter" parameterType="map" resultType="map">
+    <select id="selectFromRnoGSMEriNcsDescripter" parameterType="map" resultType="map">
         <![CDATA[
 		select rno_2g_eri_ncs_desc_id as DESC_ID,
 		RELSS_SIGN,RELSS,RELSS2_SIGN,RELSS2,RELSS3_SIGN,RELSS3,RELSS4_SIGN,RELSS4,RELSS5_SIGN,RELSS5
@@ -100,84 +99,7 @@
 		  and mea_time<=to_date(${endTime},'yyyy-MM-dd HH24:mi:ss')
          ]]>
     </select>
-    <select id="selectFromSysAreaOrderByParentId" resultType="map">
-        <![CDATA[
-		select  * from RNO_SYS_AREA
-		ORDER BY PARENT_ID
-         ]]>
-    </select>
 
-    <!--                     动态覆盖                           -->
-    <select id="queryDynamicCoverageInData" resultType="com.hgicreate.rno.web.rest.gsm.vm.DynamicCoverageData">
-        <![CDATA[
-		select	DISTINCT t.record_date,
-		t.cell_Id CELL_ID,
-		c.longitude CELL_LON,
-		c.latitude CELL_LAT,
-		t.ncell_id NCELL_ID,
-		d.longitude as NCELL_LON,
-		d.latitude as NCELL_LAT,
-		t.rsrptimes0 RSRPTIMES0,
-		t.rsrptimes2 RSRPTIMES2,
-		t.rsrptimes0 / t.mixingsum as VAL1,
-		t.rsrptimes2 / t.mixingsum as VAL2,
-		t.distance_km*1000 DISTANCE
-	  from
-		lte_mr_data t,
-		lte_cell_param c,
-		lte_cell_param d
-	  where
-		t.cell_Id = c.cell_Id
-		and t.ncell_id = d.cell_Id
-		and d.cover_type = '室外'
-		and t.mixingsum >= 50
-		and t.distance_km >= 0.1
-		and t.distance_km <= 5
-		and t.rsrptimes0 > 0
-		and t.cell_Id = #{lteCellId}
-		and t.area_id = #{cityId}
-		and t.record_date in ${dates}
-		]]>
-    </select>
-
-    <select id="queryDynamicCoverageOutData" resultType="com.hgicreate.rno.web.rest.gsm.vm.DynamicCoverageData">
-        <![CDATA[
-		select	DISTINCT t.record_date,
-		t.cell_Id NCELL_ID,
-		c.longitude NCELL_LON,
-		c.latitude NCELL_LAT,
-		t.ncell_id CELL_ID,
-		d.longitude as CELL_LON,
-		d.latitude as CELL_LAT,
-		t.distance_km*1000 DISTANCE
-	from
-		RNO_LTE_MR_DATA t,
-		RNO_LTE_CELL c,
-		RNO_LTE_CELL d
-	where
-		t.cell_Id = c.cell_Id
-		and t.ncell_id = d.cell_Id
-		and d.cover_type = '室外'
-		and t.distance_km >= 0.1
-		and t.distance_km <= 5
-		and t.ncell_id = ${lteCellId}
-		and t.area_id = ${cityId}
-		and t.record_date in ${dates}
-		]]>
-    </select>
-    <!--                 PCI评估             -->
-    <select id="getInCellInfo" parameterType="map" resultType="map">
-        select cell_id as cell, ncell_id as ncell, rela_val from lte_inter_matrix where job_id=#{jobId} and
-        cell_id=#{cellId}
-    </select>
-    <select id="getOutCellInfo" parameterType="map" resultType="map">
-        select cell_id as cell, ncell_id as ncell, rela_val from lte_inter_matrix where job_id=#{jobId} and
-        ncell_id=#{ncellId}
-    </select>
-    <select id="getPciCellInfo" parameterType="map" resultType="map">
-        select cell_id as cell, ncell_id as ncell, rela_val, cell_pci, ncell_pci from lte_inter_matrix where
-        job_id=#{jobId} and cell_id=#{cellId} or ncell_id=#{cellId}
-    </select>
     <select id="getNcellDetailsByCellandCityId" parameterType="map" resultType="map">
         select *
 		from RNO_GSM_CELL
@@ -196,16 +118,18 @@
             ncell_lon as cell_lng,
             ncell_lat as cell_lat
             from(
-                select cell,s361,s3013,cell_lon,cell_lat,ncell_lon,ncell_lat
-                from rno_2g_hw_ncs
+                select cell,s361,s366,s369,s3013,cell_lon,cell_lat,ncell_lon,ncell_lat
+                from RNO_GSM_HW_NCS
                 where ncell = ${cell}
-                and rno_2ghwncs_desc_id in (${descIds})
+                and rno_2g_hw_ncs_desc_id in (${descIds})
                 and distance > 0.1
                 and s3013 >=5000
                 and cell in (
-                    select label from cell
-                    where indoor_cell_type = '室外覆盖'
-                    and area_id in(${areaIdStr})
+                    select EN_NAME from RNO_GSM_CELL
+                    where cover_type = '室外'
+                    <if test=" null != areaIdStr and areaIdStr != ''">
+                      and area_id in(${areaIdStr})
+                    </if>
                 )
                 and s361 <> 0
             )

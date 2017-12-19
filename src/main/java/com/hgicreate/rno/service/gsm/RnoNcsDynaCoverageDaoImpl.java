@@ -44,7 +44,7 @@ public class RnoNcsDynaCoverageDaoImpl implements RnoNcsDynaCoverageDao {
         map.put("cityId", "'" + cityId + "'");
         map.put("startTime", "'" + startTime + "'");
         map.put("endTime", "'" + endTime + "'");
-        List<Map<String, Object>> eriNcsDescInfos = ncsMapper.selectfromRnoRnoGSMEriNcsDescripter(map);
+        List<Map<String, Object>> eriNcsDescInfos = ncsMapper.selectFromRnoGSMEriNcsDescripter(map);
         if(eriNcsDescInfos.size()<=0){
             return null;
         }
@@ -55,7 +55,6 @@ public class RnoNcsDynaCoverageDaoImpl implements RnoNcsDynaCoverageDao {
         ncellMap.put("cellId", "'" + cellId + "'");
         ncellMap.put("areaId", cityId);
         List<Map<String, Object>> gisCells = ncsMapper.getNcellDetailsByCellandCityId(ncellMap);
-        log.debug("gisCells==={}", gisCells);
         String areaIdStr = "";
         for (Map<String, Object> oneCell : gisCells) {
             areaIdStr += oneCell.get("AREA_ID") + ",";
@@ -63,7 +62,6 @@ public class RnoNcsDynaCoverageDaoImpl implements RnoNcsDynaCoverageDao {
         if (areaIdStr.length() > 0) {
             areaIdStr = areaIdStr.substring(0, areaIdStr.length() - 1);
         }
-        log.debug("eriNcsDescInfos==={}", eriNcsDescInfos.get(0));
         //先清空临时表
         ncsMapper.deleteAll();
 
@@ -81,7 +79,6 @@ public class RnoNcsDynaCoverageDaoImpl implements RnoNcsDynaCoverageDao {
             ncsDescId = ncsDesc.get("DESC_ID").toString();
             //确定门限值字段
             TIMESRELSS = getEriTimesRelssXByValue(ncsDesc, RELSS);
-            log.debug("TIMESRELSS === {}", TIMESRELSS);
             if (TIMESRELSS == null || "".equals(TIMESRELSS)) {
                 log.debug("动态覆盖图：ncs[" + ncsDescId + "]未获取到相应的[" + RELSS + "]对应的列，将尝试用+0获取");
                 TIMESRELSS = getEriTimesRelssXByValue(ncsDesc, "+0");
@@ -123,8 +120,6 @@ public class RnoNcsDynaCoverageDaoImpl implements RnoNcsDynaCoverageDao {
      */
     public String getEriTimesRelssXByValue(Map<String, Object> desc,
                                            String relsscons) {
-        log.debug("进入getTimesRelssXByValue(rnoncs desc=" + desc
-                + ",relsscons=" + relsscons + ")");
         String TIMESRELSS = "";
         String relss;
         relss = (Integer.parseInt(desc.get("RELSS_SIGN").toString()) == 0 ? "+" : "-")
@@ -178,7 +173,6 @@ public class RnoNcsDynaCoverageDaoImpl implements RnoNcsDynaCoverageDao {
         ncellMap.put("cellId", "'" + cellId + "'");
         ncellMap.put("areaId", cityId);
         List<Map<String, Object>> gisCells = ncsMapper.getNcellDetailsByCellandCityId(ncellMap);
-        log.debug("gisCells==={}", gisCells);
         String areaIdStr = "";
         for (Map<String, Object> oneCell : gisCells) {
             areaIdStr += oneCell.get("AREA_ID") + ",";
@@ -186,7 +180,6 @@ public class RnoNcsDynaCoverageDaoImpl implements RnoNcsDynaCoverageDao {
         if (areaIdStr.length() > 0) {
             areaIdStr = areaIdStr.substring(0, areaIdStr.length() - 1);
         }
-
         StringBuilder descIdStr = new StringBuilder();
         for (Map<String, Object> map : hwNcsDescInfos) {
             descIdStr.append(map.get("DESC_ID").toString() + ",");

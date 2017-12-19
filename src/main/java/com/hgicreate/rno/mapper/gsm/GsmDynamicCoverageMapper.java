@@ -22,7 +22,7 @@ public interface GsmDynamicCoverageMapper {
 
     List<Map<String, Object>> selectManufacturersFromRnoBsc(Map<String, Object> map);
 
-    List<Map<String, Object>> selectfromRnoRnoGSMEriNcsDescripter(Map<String, Object> map);
+    List<Map<String, Object>> selectFromRnoGSMEriNcsDescripter(Map<String, Object> map);
 
     List<Map<String, Object>> getNcellDetailsByCellandCityId(Map<String, Object> map);
 }
