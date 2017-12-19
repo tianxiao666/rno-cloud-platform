@@ -155,7 +155,7 @@
         <table class=" table-hover table-striped">
             <tr>
                 <td class="col-2">
-                    搜索条件：
+                    输入主小区：
                 </td>
                 <td class="col-8">
                     <select id="conditionType">
@@ -165,7 +165,7 @@
                         <option value="LAC">LAC</option>
                         <option value="CI">CI</option>
                     </select>
-                    <input id="conditionValue" type="text">
+                    <input id="conditionValue" type="text" >
                 </td>
                 <td class="col-2">
                     <input id="searchCellBtn" value="搜小区" type="button"><br>
@@ -173,7 +173,7 @@
             </tr>
             <tr>
                 <td class="col-2">
-                    输入邻区：
+                    输入主小区ID：
                 </td>
                 <td class="col-8">
                     <input id="cellForNcell" style="width: 100%"  type="text">
@@ -196,10 +196,10 @@
 </div>
 
 <div id="operInfo"
-     style="display:none; top:40px;left:600px;z-index:999;width:400px; height:40px; background-color:#7dff3f; filter:alpha(Opacity=80);-moz-opacity:0.5;opacity: 0.5;z-index:9999;position: fixed;">
+     style="display:none; top:40px;left:600px;z-index:999;width:400px; height:40px; background-color:#00aa00;z-index:1000;position: fixed;">
     <table height="100%" width="100%" style="text-align:center">
         <tr>
-            <td><span id="operTip"></span></td>
+            <td><span id="operTip" style="color:#fff"></span></td>
         </tr>
     </table>
 </div>

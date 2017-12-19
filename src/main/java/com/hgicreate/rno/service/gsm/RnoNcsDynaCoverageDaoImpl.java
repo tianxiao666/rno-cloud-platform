@@ -45,6 +45,9 @@ public class RnoNcsDynaCoverageDaoImpl implements RnoNcsDynaCoverageDao {
         map.put("startTime", "'" + startTime + "'");
         map.put("endTime", "'" + endTime + "'");
         List<Map<String, Object>> eriNcsDescInfos = ncsMapper.selectfromRnoRnoGSMEriNcsDescripter(map);
+        if(eriNcsDescInfos.size()<=0){
+            return null;
+        }
         String ncsFields = "CELL,NCELL,CELL_LON,CELL_LAT,NCELL_LON,NCELL_LAT,REPARFCN,TIMESRELSS,TIMESRELSS2,TIMESRELSS3,TIMESRELSS4,TIMESRELSS5,DISTANCE,INTERFER";
         String TIMESRELSS = "";
         String ncsDescId = "";

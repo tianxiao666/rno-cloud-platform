@@ -9,7 +9,8 @@ let cellNameLayerGroup;
 let tiled;
 let clickedCellLayer;
 let queryCellOverlay;
-let searchFreqOverlay;
+let queryNCellOverlay;
+let queryFreqOverlay;
 let dynamicCoverageOverlay;
 let dynamicCoverageCell;
 
@@ -21,8 +22,8 @@ var isShowCellName = false; //地图是否显示小区
 
 $(document).ready(function () {
 
-    laydate.render({elem: '#begUploadDate', type: 'datetime', value: new Date("2015-01-01 00:00:00")});
-    // laydate.render({elem: '#begUploadDate', type: 'datetime', value: new Date(new Date().getTime() - 7 * 86400000)});
+    // laydate.render({elem: '#begUploadDate', type: 'datetime', value: new Date("2015-01-01 00:00:00")});
+    laydate.render({elem: '#begUploadDate', type: 'datetime', value: new Date(new Date().getTime() - 7 * 86400000)});
     laydate.render({elem: '#endUploadDate', type: 'datetime', value: new Date()});
     $(".draggable").draggable();
 
@@ -56,35 +57,35 @@ $(document).ready(function () {
         }
     });
     //打开查找小区窗口
-    $(".queryButton").click(function() {
+    $(".queryButton").click(function () {
         $("#searchDiv").toggle();
     });
     // 根据条件搜索小区
     $("#searchCellBtn").click(function () {
-        searchCell();
+        searchCell(-1);
     });
-    $("#searchNcellBtn").click(function() {
+    $("#searchNcellBtn").click(function () {
         $("span#errorDiv").html("");
         var ncell = $("#cellForNcell").val();
-        var strExp=/^[\u4e00-\u9fa5A-Za-z0-9\s_-]+$/;
-        if(!strExp.test(ncell)){
+        var strExp = /^[\u4e00-\u9fa5A-Za-z0-9\s_-]+$/;
+        if (!strExp.test(ncell)) {
             $("span#errorDiv").html("含有非法字符！");
             return false;
-        }else if(!(ncell.length<40)){
+        } else if (!(ncell.length < 40)) {
             $("span#errorDiv").html("输入信息过长！");
             return false;
         }
         searchNcell(ncell);
     });
     // 搜频点
-    $("#searchFreqBtn").click(function() {
+    $("#searchFreqBtn").click(function () {
         $("span#errorDiv").html("");
         var freq = $("#freqValue").val();
-        var strExp=/^[\u4e00-\u9fa5A-Za-z0-9\s_-]+$/;
-        if(!strExp.test(freq)){
+        var strExp = /^[\u4e00-\u9fa5A-Za-z0-9\s_-]+$/;
+        if (!strExp.test(freq)) {
             $("span#errorDiv").html("含有非法字符！");
             return false;
-        }else if(!(freq.length<40)){
+        } else if (!(freq.length < 40)) {
             $("span#errorDiv").html("输入信息过长！");
             return false;
         }
@@ -106,6 +107,15 @@ $(document).ready(function () {
         }),
         fill: new ol.style.Fill({
             color: 'rgba(255, 0, 0, 1.0)'
+        })
+    });
+    let greenStyle = new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            color: 'yellow',
+            size: 5
+        }),
+        fill: new ol.style.Fill({
+            color: 'rgba(0, 255, 0, 1.0)'
         })
     });
     let toolTipStyle = new ol.style.Style({
@@ -136,18 +146,18 @@ $(document).ready(function () {
         zIndex: 10,
         style: redStyle
     });
-    searchFreqOverlay = new ol.layer.Vector({
-        source: new ol.source.Vector(),
-        zIndex: 4,
-        style: redStyle
-    });
     queryCellOverlay = new ol.layer.Vector({
-        zIndex: 6,
+        zIndex: 11,
         source: new ol.source.Vector(),
-        style: redStyle
+        style: greenStyle
     });
     queryNCellOverlay = new ol.layer.Vector({
         zIndex: 5,
+        source: new ol.source.Vector(),
+        style: redStyle
+    });
+    queryFreqOverlay = new ol.layer.Vector({
+        zIndex: 6,
         source: new ol.source.Vector(),
         style: redStyle
     });
@@ -164,7 +174,7 @@ $(document).ready(function () {
     var center = [lon, lat];
     map = new ol.Map({
         target: 'map',
-        layers: [baseLayer, cellLayerGroup, cellNameLayerGroup, clickedCellLayer,queryCellOverlay, queryNCellOverlay,searchFreqOverlay],
+        layers: [baseLayer, cellLayerGroup, cellNameLayerGroup, clickedCellLayer,queryFreqOverlay, queryCellOverlay, queryNCellOverlay],
         view: new ol.View({
             projection: 'EPSG:4326',
             center: center,
@@ -204,8 +214,8 @@ $(document).ready(function () {
     //地图小区右键菜单
     var contextMenuItems = [
         {
-            text:'动态覆盖图',
-            callback:function(evt){
+            text: '动态覆盖图',
+            callback: function (evt) {
                 let features = clickedCellLayer.getSource().getFeatures();
                 var element = popup.getElement();
                 $(element).popover('destroy');
@@ -219,9 +229,30 @@ $(document).ready(function () {
                     });
                     $(element).popover('show');
                     $('.table-popup > tbody > tr').click(function () {
-                        // row was clicked
                         let first = $(this).find('td:first');
-                        showDynaCoverage(first.text(),first.data("enname"), first.data("lon"), first.data("lat"));
+                        showDynaCoverage(first.text(), first.data("enname"), first.data("lon"), first.data("lat"));
+                    });
+                }
+            }
+        },
+        {
+            text: '查邻区',
+            callback: function (evt) {
+                let features = clickedCellLayer.getSource().getFeatures();
+                var element = popup.getElement();
+                $(element).popover('destroy');
+                if (features.length) {
+                    popup.setPosition(evt.coordinate);
+                    $(element).popover({
+                        'placement': 'top',
+                        'animation': false,
+                        'html': true,
+                        'content': createPopupContent(features)
+                    });
+                    $(element).popover('show');
+                    $('.table-popup > tbody > tr').click(function () {
+                        let first = $(this).find('td:first');
+                        searchNcell(first.text());
                     });
                 }
             }
@@ -235,18 +266,16 @@ $(document).ready(function () {
         let element = popup.getElement();
         $(element).popover('destroy');
         let view = map.getView();
-        if(tiled){
+        if (tiled) {
             let url = tiled.getSource().getGetFeatureInfoUrl(
                 evt.coordinate, view.getResolution(), view.getProjection(), {
                     'INFO_FORMAT': 'application/json',
                     'FEATURE_COUNT': 1000
                 });
-            console.log(url)
             if (url) {
                 $.ajax(url).then(function (response) {
                     let features = new ol.format.GeoJSON().readFeatures(response);
-                    console.log(response)
-                    if (features.length) {
+                    if (features.length>0) {
                         clickedCellLayer.getSource().clear();
                         clickedCellLayer.getSource().addFeatures(features);
                         popup.setPosition(evt.coordinate);
@@ -258,12 +287,14 @@ $(document).ready(function () {
                         });
                         $(element).popover('show');
                     }
+                    else {
+                        clickedCellLayer.getSource().clear();
+                    }
                 }).catch(function (err) {
                     console.error(err);
                 });
             }
         }
-
     });
 
     let contextmenu = new ContextMenu({
@@ -275,10 +306,7 @@ $(document).ready(function () {
     contextmenu.on('beforeopen', function (evt) {
         let element = popup.getElement();
         $(element).popover('destroy');
-
-        clickedCellLayer.getSource().clear();
-
-        if(tiled){
+        if (tiled) {
             let view = map.getView();
             let url = tiled.getSource().getGetFeatureInfoUrl(evt.coordinate, view.getResolution(), view.getProjection(), {
                 'INFO_FORMAT': 'application/json',
@@ -316,7 +344,6 @@ $(document).ready(function () {
             $("#areaId").trigger("change");
         })
     });
-
 
     $("#provinceId").change(function () {
         var provinceId = parseInt($(this).find("option:checked").val());
@@ -379,7 +406,7 @@ function createPopupContent(features) {
         let feature = features[i];
         content += '<tr style="word-break:break-all">';
 
-        content += '<td style="white-space: nowrap" data-lon=' + feature.get('LONGITUDE') + ' data-lat=' + feature.get('LATITUDE')  + ' data-enname=' + feature.get('EN_NAME')+'>' + feature.get('CELL_ID') + '</td>';
+        content += '<td style="white-space: nowrap" data-lon=' + feature.get('LONGITUDE') + ' data-lat=' + feature.get('LATITUDE') + ' data-enname=' + feature.get('EN_NAME') + '>' + feature.get('CELL_ID') + '</td>';
         content += '<td>' + feature.get('CELL_NAME') + '</td>';
         content += '<td style="white-space: nowrap">' + feature.get('PCI') + '</td>';
         content += '</tr>';
@@ -390,15 +417,31 @@ function createPopupContent(features) {
 
 function clearAll() {
 
+    //clickedCellLayer,queryFreqOverlay, queryCellOverlay, queryNCellOverlay
     clearPopup();
-
     clearDetail();
-
     clearDynamicCoverlayer();
+    clearAllOveraly();
+}
+
+function clearAllOveraly() {
+    if (clickedCellLayer) {
+        clickedCellLayer.getSource().clear();
+    }
+    if (queryFreqOverlay) {
+        queryFreqOverlay.getSource().clear();
+    }
+    if (queryCellOverlay) {
+        queryCellOverlay.getSource().clear();
+    }
+    if (queryNCellOverlay) {
+        queryNCellOverlay.getSource().clear();
+    }
+
 }
 
 function clearDynamicCoverlayer() {
-    if(dynamicCoverageOverlay){
+    if (dynamicCoverageOverlay) {
         dynamicCoverageOverlay.getSource().clear();
     }
 }
@@ -428,49 +471,53 @@ function hideOperTips(outerId) {
     }
 }
 
-function searchCell() {
+function searchCell(cellIdFromOtherMethod) {
     showOperTips("loadingDataDiv", "loadContentId", "正在查找小区");
-    let inputValue = $.trim($("#conditionValue").val());
-    if ($.trim(inputValue) === "") {
-        hideOperTips("loadingDataDiv");
-        alert("请输入搜索条件");
-        return;
-    }
-    let queryType = $("#conditionType").val();
-    let cellArr = inputValue.split(",");
-    let cellStr = "";
-    for (let i = 0; i < cellArr.length; i++) {
-        if ($.trim(cellArr[i]) !== "") {
-            if (ifHasSpecChar(cellArr[i].trim())) {
-                hideOperTips("loadingDataDiv");
-                alert("查询内容不能包含特殊字符和中文标点符号!");
-                return;
-            }
-            if (queryType === 'cell') {
-                if (!isOnlyNumberAndComma(cellArr[i].trim())) {
+    let filter = '';
+    if(cellIdFromOtherMethod!==-1){
+        filter = `CELL_ID in('`+cellIdFromOtherMethod+`')`;
+    }else{
+        let inputValue = $.trim($("#conditionValue").val());
+        if ($.trim(inputValue) === "") {
+            hideOperTips("loadingDataDiv");
+            animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "请输入搜索条件");
+            return;
+        }
+        let queryType = $("#conditionType").val();
+        let cellArr = inputValue.split(",");
+        let cellStr = "";
+        for (let i = 0; i < cellArr.length; i++) {
+            if ($.trim(cellArr[i]) !== "") {
+                if (ifHasSpecChar(cellArr[i].trim())) {
                     hideOperTips("loadingDataDiv");
-                    alert("小区ID只能输入数字和半角-,用半角逗号隔开!");
+                    animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "查询内容不能包含特殊字符和中文标点符号!");
                     return;
                 }
+                if (queryType === 'CELL_ID' || queryType === 'LAC' || queryType === 'CI') {
+                    if (!isOnlyNumberAndComma(cellArr[i].trim())) {
+                        hideOperTips("loadingDataDiv");
+                        animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "当前条件只能输入数字和半角-,用半角逗号隔开!");
+                        return;
+                    }
+                }
+                cellStr += "'" + cellArr[i].trim() + "',";
             }
-            cellStr += "'" + cellArr[i].trim() + "',";
         }
-    }
-    cellStr = cellStr.substring(0, cellStr.length - 1);
-    let filter ='';
-    // let filter = queryType === 'cell' ? `CELL_ID in (${cellStr})` : `CELL_NAME in (${cellStr})`;
-    if(queryType === 'CELL_ID'){
-        filter = `CELL_ID in (${cellStr})`;
-    }else if(queryType === 'CHINESE_NAME'){
-        filter = `CELL_NAME in (${cellStr})`
-    }
-    else if(queryType === 'ENGLISH_NAME'){
-        filter = `EN_NAME in (${cellStr})`
-    }
-    else if(queryType === 'LAC'){
-        filter = `LAC in (${cellStr})`
-    }else if(queryType === 'CI'){
-        filter = `CI in (${cellStr})`
+        cellStr = cellStr.substring(0, cellStr.length - 1);
+
+        if (queryType === 'CELL_ID') {
+            filter = `CELL_ID in (${cellStr})`;
+        } else if (queryType === 'CHINESE_NAME') {
+            filter = `CELL_NAME in (${cellStr})`
+        }
+        else if (queryType === 'ENGLISH_NAME') {
+            filter = `EN_NAME in (${cellStr})`
+        }
+        else if (queryType === 'LAC') {
+            filter = `LAC in (${cellStr})`
+        } else if (queryType === 'CI') {
+            filter = `CI in (${cellStr})`
+        }
     }
     $.ajax({
         url: "http://rno-gis.hgicreate.com/geoserver/rnoprod/ows",
@@ -484,16 +531,14 @@ function searchCell() {
     }).then(function (response) {
         let features = new ol.format.GeoJSON().readFeatures(response);
         if (features.length) {
-            clearAll();
-            queryCellOverlay.getSource().clear();
             queryCellOverlay.getSource().addFeatures(features);
             map.getView().animate({
-                center: [features[0].get('LONGITUDE'),features[0].get('LATITUDE')],
+                center: [features[0].get('LONGITUDE'), features[0].get('LATITUDE')],
                 duration: 1000,
-                zoom:18
+                zoom: 18
             });
         } else {
-            animateInAndOut("operInfo", 1000, 1000, 1000, "operTip", "不存在该空间数据");
+            animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "不存在该空间数据");
         }
     }).catch(function (err) {
         console.error(err);
@@ -501,41 +546,49 @@ function searchCell() {
     hideOperTips("loadingDataDiv");
 }
 
-function searchNcell(cellId){
+function searchNcell(cellId) {
+    clearPopup();
+    if(!tiled){
+        animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "请先加载小区信息!");
+        return;
+    }
+    let inUsedAreaId = getAreaIdInUsed();
     showOperTips("loadingDataDiv", "loadContentId", "正在查找邻区");
-    // 获取输入的值
-    let inputValue = cellId;
-    if ($.trim(inputValue) === "") {
+    if ($.trim(cellId) === "") {
         hideOperTips("loadingDataDiv");
-        alert("请输入搜索条件");
+        animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "请输入搜索条件");
+        return;
+    }
+    if (!isOnlyNumberAndComma(cellId.trim())) {
+        hideOperTips("loadingDataDiv");
+        animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "小区ID只能输入数字和半角-,用半角逗号隔开!");
         return;
     }
     var ncells = new Array();
     $.ajax({
-        url : '/api/dynamicCoverageMapPage/getNcellDetailsByCellandCityIdForAjaxAction',
-        data : {
-            'cell' : cellId,
-            'cityId' : $("#cityId").val(),
+        url: '/api/dynamicCoverageMapPage/getNcellDetailsByCellandCityIdForAjaxAction',
+        data: {
+            'cell': cellId,
+            'cityId': $("#cityId").val(),
         },
-        dataType : 'json',
-        type : 'GET',
-        success : function(data) {
+        dataType: 'json',
+        type: 'GET',
+        success: function (data) {
             hideOperTips("loadingDataDiv");
             var obj = data;
             var view = map.getView();
-            clickedCellLayer.getSource().clear()
-            if(obj){
-                for(var i = 0; i < obj.length; i++){
-                    console.log(obj[i]['CELL_ID'])
-                    if(obj[i]['CELL_ID'] == cellId) {
+            if (0 === obj.length) {
+                animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "不存在此空间数据");
+                return;
+            }
+            if (obj) {
+                for (var i = 0; i < obj.length; i++) {
+                    if (obj[i]['CELL_ID'] == cellId) {
                         continue;
                     }
-                    ncells.push("'"+obj[i]['CELL_ID']+"'");
+                    ncells.push("'" + obj[i]['CELL_ID'] + "'");
                 }
-                console.log(ncells)
-
-                let filter = `CELL_ID IN (`+ncells +`) and AREA_ID = `+ "'"+$("#cityId").val()+"'";
-                console.log(filter)
+                let filter = `CELL_ID IN (` + ncells + `) and AREA_ID = ` + "'" + $("#cityId").val() + "'";
                 $.ajax({
                     url: "http://rno-gis.hgicreate.com/geoserver/rnoprod/ows",
                     data: {
@@ -546,14 +599,13 @@ function searchNcell(cellId){
                         'CQL_FILTER': filter
                     }
                 }).then(function (response) {
-                    console.log(response)
+                    hideOperTips("loadingDataDiv");
                     let view = map.getView();
                     let features = new ol.format.GeoJSON().readFeatures(response);
-                    console.log(features)
                     if (features.length) {
                         features.forEach(function (feature) {
                             if (tiled) {
-                                var coordinate = [feature.values_.LONGITUDE,feature.values_.LATITUDE];
+                                var coordinate = [feature.values_.LONGITUDE, feature.values_.LATITUDE];
                                 let url = tiled.getSource().getGetFeatureInfoUrl(
                                     coordinate, view.getResolution(), view.getProjection(), {
                                         'INFO_FORMAT': 'application/json',
@@ -563,24 +615,21 @@ function searchNcell(cellId){
                                     $.ajax(url).then(function (response) {
                                         let features = new ol.format.GeoJSON().readFeatures(response);
                                         if (features.length) {
-                                            clickedCellLayer.getSource().addFeatures(features);
+                                            queryNCellOverlay.getSource().addFeatures(features);
                                         }
                                     }).catch(function (err) {
                                         console.error(err);
+                                        animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "查询出错");
                                     });
                                 }
                             }
-                        })
+                        });
+                        searchCell(cellId);
                     }
-                    map.getView().animate({
-                        center: [features[0].values_.LONGITUDE,features[0].values_.LATITUDE],
-                        duration: 2000
-                    })
                 })
             }
-            hideOperTips("loadingDataDiv");
         },
-        error : function(xhr, textstatus, e) {
+        error: function (xhr, textstatus, e) {
             console.log(textstatus);
             hideOperTips("loadingDataDiv");
         }
@@ -588,37 +637,24 @@ function searchNcell(cellId){
 }
 
 function searchFreq(freq) {
+    if(!tiled){
+        animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "请先加载小区信息!");
+        return;
+    }
     showOperTips("loadingDataDiv", "loadContentId", "正在查找频点");
     let inputValue = freq;
     if ($.trim(inputValue) === "") {
         hideOperTips("loadingDataDiv");
-        alert("请输入搜索条件");
+        animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "请输入搜索条件");
         return;
     }
-    let queryType = $("#conditionType").val();
-    let cityId = $("#cityId").val();
-    let cellArr = inputValue.split(",");
-    let cellStr = "";
-    for (let i = 0; i < cellArr.length; i++) {
-        if ($.trim(cellArr[i]) !== "") {
-            if (ifHasSpecChar(cellArr[i].trim())) {
-                hideOperTips("loadingDataDiv");
-                alert("查询内容不能包含特殊字符和中文标点符号!");
-                return;
-            }
-            if (queryType === 'cell') {
-                if (!isOnlyNumberAndComma(cellArr[i].trim())) {
-                    hideOperTips("loadingDataDiv");
-                    alert("小区ID只能输入数字和半角-,用半角逗号隔开!");
-                    return;
-                }
-            }
-            cellStr += "'" + cellArr[i].trim() + "',";
-        }
+    if (!isOnlyNumberAndComma(freq.trim())) {
+        hideOperTips("loadingDataDiv");
+        animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "频点只能输入数字!");
+        return;
     }
-    cellStr = cellStr.substring(0, cellStr.length - 1);
-
-    let filter = `BCCH = `+"'"+freq+"'" + `and AREA_ID = `+ "'"+cityId+"'";
+    let cityId = $("#cityId").val();
+    let filter = `BCCH = '`+ freq + `' and AREA_ID = '`+ cityId +`'`;
     $.ajax({
         url: "http://rno-gis.hgicreate.com/geoserver/rnoprod/ows",
         data: {
@@ -629,16 +665,14 @@ function searchFreq(freq) {
             'CQL_FILTER': filter
         }
     }).then(function (response) {
-        console.log(response)
         hideOperTips("loadingDataDiv");
         let view = map.getView();
         let features = new ol.format.GeoJSON().readFeatures(response);
-        console.log(features)
-        clickedCellLayer.getSource().clear();
         if (features.length) {
+            console.log(features)
             features.forEach(function (feature) {
                 if (tiled) {
-                    var coordinate = [feature.values_.LONGITUDE,feature.values_.LATITUDE];
+                    var coordinate = [feature.values_.LONGITUDE, feature.values_.LATITUDE];
                     let url = tiled.getSource().getGetFeatureInfoUrl(
                         coordinate, view.getResolution(), view.getProjection(), {
                             'INFO_FORMAT': 'application/json',
@@ -646,29 +680,36 @@ function searchFreq(freq) {
                         });
                     if (url) {
                         $.ajax(url).then(function (response) {
+                            console.log(response)
                             let features = new ol.format.GeoJSON().readFeatures(response);
                             if (features.length) {
-                                clickedCellLayer.getSource().addFeatures(features);
+                                queryFreqOverlay.getSource().addFeatures(features);
                             }
                         }).catch(function (err) {
                             console.error(err);
+                            animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "查询出错");
                         });
                     }
                 }
             })
+            var coordinateo = [features[0].values_.LONGITUDE, features[0].values_.LATITUDE];
+            map.getView().animate({
+                center: coordinateo,
+                duration: 2000
+            })
+        }else{
+            animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "不存在此空间数据");
+            return;
         }
-        var coordinateo = [features[0].values_.LONGITUDE,features[0].values_.LATITUDE];
-        map.getView().animate({
-            center: coordinateo,
-            duration:2000
-        })
+
     });
 }
 
 /**
  * 查看小区动态覆盖图(折线)
  */
-function showDynaCoverage(cellId,enName, cellLon, cellLat) {
+function showDynaCoverage(cellId, enName, cellLon, cellLat) {
+    showOperTips("loadingDataDiv", "loadContentId", "正在渲染小区动态覆盖图");
     if (!enName || !cellLon || !cellLat) {
         return;
     }
@@ -678,22 +719,19 @@ function showDynaCoverage(cellId,enName, cellLon, cellLat) {
     //清空界面数据
     clearPopup();
     let cityId = $("#cityId").val();
-    let startDate = $("#begUploadDate").val().toString().substring(0,10);
-    let endDate = $("#endUploadDate").val().toString().substring(0,10);
+    let startDate = $("#begUploadDate").val().toString().substring(0, 10);
+    let endDate = $("#endUploadDate").val().toString().substring(0, 10);
     //获取图形大小系数
     let imgCoeff = $("#imgCoeff").val();
     let valiNumber = /^[+]?[0-9]+(\.[0-9]+)?$/;   //验证数字
     if (!valiNumber.test(Number(imgCoeff))) {
-        alert("折线图系数请输入数字");
+        animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "折线图系数请输入数字");
         return;
     }
-    console.log(cityId)
     if (Number(imgCoeff) <= 0) {
-        alert("折线图系数值应大于0！");
+        animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "折线图系数值应大于0！");
         return;
     }
-    showOperTips("loadingDataDiv", "loadContentId", "正在生成动态覆盖图");
-    console.log(enName);
     $.ajax({
         url: '/api/dynamicCoverageMapPage/getDynaCoverageDataForAction',
         data: {
@@ -706,6 +744,10 @@ function showDynaCoverage(cellId,enName, cellLon, cellLat) {
         dataType: 'json',
         type: 'post',
         success: function (data) {
+            hideOperTips("loadingDataDiv");
+            if (data === null) {
+                animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "未能查询到数据，请检查日期！");
+            }
             if (data !== null) {
                 let curvePoints_12 = data['curvePoints_12'];
                 let resInterDetail = data['resInterDetail'];
@@ -734,12 +776,14 @@ function showDynaCoverage(cellId,enName, cellLon, cellLat) {
             } else {
                 animateInAndOut("operInfo", 1000, 1000, 1000, "operTip", "该小区在搜索的时间段内没有数据！");
             }
+        }, error: function (err) {
+            console.log(err);
+            hideOperTips("loadingDataDiv");
         }
     });
-    hideOperTips("loadingDataDiv");
 }
 
-function drawArrow(cellLon, cellLat, vecLng, vecLat, ratio, color,points) {
+function drawArrow(cellLon, cellLat, vecLng, vecLat, ratio, color, points) {
     let difflng = vecLng - cellLon;
     let difflat = vecLat - cellLat;
     let r = Math.sqrt(difflng * difflng + difflat * difflat);
@@ -747,14 +791,14 @@ function drawArrow(cellLon, cellLat, vecLng, vecLat, ratio, color,points) {
     let sinV = difflat / r;
 
     var coordinates = [];
-    points.forEach(function(point) {
-        coordinates.push([point.lng,point.lat]);
+    points.forEach(function (point) {
+        coordinates.push([point.lng, point.lat]);
     });
     var styles = [
         new ol.style.Style({
             stroke: new ol.style.Stroke({
                 color: 'blue',
-                width: 50*$("#imgCoeff").val()
+                width: 50 * $("#imgCoeff").val()
             }),
             fill: new ol.style.Fill({
                 color: 'rgba(0, 0, 255, 0.1)'
@@ -762,12 +806,12 @@ function drawArrow(cellLon, cellLat, vecLng, vecLat, ratio, color,points) {
         }),
         new ol.style.Style({
             image: new ol.style.Circle({
-                radius: 30*$("#imgCoeff").val(),
+                radius: 30 * $("#imgCoeff").val(),
                 fill: new ol.style.Fill({
                     color: 'orange'
                 })
             }),
-            geometry: function(feature) {
+            geometry: function (feature) {
                 var coordinates = feature.getGeometry().getCoordinates()[0];
                 return new ol.geom.MultiPoint(coordinates);
             }
@@ -781,7 +825,7 @@ function drawArrow(cellLon, cellLat, vecLng, vecLat, ratio, color,points) {
                 'name': 'EPSG:4326'
             }
         },
-        'features': [  {
+        'features': [{
             'type': 'Feature',
             'geometry': {
                 'type': 'Polygon',
@@ -875,4 +919,13 @@ function showCellName() {
     setTimeout(function () {
         $("#showCellName").val("隐藏小区名");
     }, 2000);
+}
+function getAreaIdInUsed() {
+    if(!tiled){
+        animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "请先加载小区信息!");
+        return;
+    }
+    let keyString = tiled.getSource().key_;
+    let areaIdInUsed = keyString.substring(keyString.indexOf("AREA_ID=")+8,keyString.length);
+    return areaIdInUsed;
 }
