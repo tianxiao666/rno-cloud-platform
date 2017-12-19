@@ -103,10 +103,12 @@ public class GsmNetworkCoverageJobResource {
             HttpHeaders headers = new HttpHeaders();
             String fileName = new String(file.getName().getBytes("UTF-8"),
                     "iso-8859-1");
+            log.debug("覆盖分析结果文件名称：{}",fileName);
             headers.setContentDispositionFormData("attachment", fileName);
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
             return new ResponseEntity<>(FileUtils.readFileToByteArray(file), headers, HttpStatus.CREATED);
         } catch (IOException e) {
+            log.error("覆盖分析结果下载出错：{}",e.getMessage());
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } finally {

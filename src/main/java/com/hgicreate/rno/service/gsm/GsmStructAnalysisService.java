@@ -65,11 +65,11 @@ public class GsmStructAnalysisService {
         List<GsmMrrDesc> mrrList = gsmMrrDescRepository.findTop1000ByAreaAndMeaDateBetween(area,beginDate,endDate);
         List<GsmEriNcsDesc> ncsList = gsmEriNcsDescRepository.findTop1000ByAreaAndMeaTimeBetween(area,beginDate,endDate);
         List<Map<String,Object>> resultList = new ArrayList<>();
-        List<String> mrrFileList = new ArrayList<>();
-        List<String> ncsFileList = new ArrayList<>();
-        List<String> bscFileList = new ArrayList<>();
         List<Date> dateList = findDates(beginDate,endDate);
         for(Date meaDate:dateList){
+            List<String> mrrFileList = new ArrayList<>();
+            List<String> ncsFileList = new ArrayList<>();
+            List<String> bscFileList = new ArrayList<>();
             Map<String,Object> map = new HashMap<>();
             String meaDateStr = sdf1.format(meaDate);
             map.put("dateTime",meaDateStr);
@@ -87,7 +87,7 @@ public class GsmStructAnalysisService {
             }else{
                 map.put("mrrNum","--");
             }
-            if(ncsFileList.size()>0){
+            if(ncsList.size()>0){
                 for(GsmEriNcsDesc gsmEriNcsDesc:ncsList){
                     String meaTime = sdf1.format(gsmEriNcsDesc.getMeaTime());
                     if(meaDateStr.equals(meaTime)&&!(ncsFileList.contains(gsmEriNcsDesc.getRno_2gEriNcsDescId().toString()))){
@@ -129,13 +129,16 @@ public class GsmStructAnalysisService {
                 File file = new File("d:/tmp/rno-cloud-platform/downloads/temp/");
                 if (file.exists()) {//判断文件是否存在
                     if (file.isFile()) {//判断是否是文件
-                        file.delete();//删除文件
+                        log.debug("文件是否删除成功：{}",file.delete());//删除文件
                     } else if (file.isDirectory()) {//否则如果它是一个目录
                         File[] files = file.listFiles();//声明目录下所有的文件 files[];
-                        for (int i = 0;i < files.length;i ++) {//遍历目录下所有的文件
-                            files[i].delete();
+                        if(files!=null){
+                            for (int i = 0;i < files.length;i ++) {//遍历目录下所有的文件
+                                log.debug("文件是否删除成功：{}",files[i].delete());
+                            }
                         }
-                        file.delete();//删除文件夹
+                        //删除文件夹
+                        log.debug("文件夹是否删除成功：{}",file.delete());
                     }
                 }
             } catch (Exception e2) {

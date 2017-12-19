@@ -77,12 +77,19 @@ public class GsmStructAnalysisResource {
             HttpHeaders headers = new HttpHeaders();
             String fileName = new String(file.getName().getBytes("UTF-8"),
                     "iso-8859-1");
+            log.debug("结构优化结果文件名称：{}",fileName);
             headers.setContentDispositionFormData("attachment", fileName);
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
             return new ResponseEntity<>(FileUtils.readFileToByteArray(file), headers, HttpStatus.CREATED);
         } catch (IOException e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }finally {
+            if (file.delete()) {
+                log.debug("临时文件删除成功。");
+            } else {
+                log.debug("临时文件删除失败。");
+            }
         }
     }
 
@@ -414,7 +421,7 @@ public class GsmStructAnalysisResource {
                     gsmStructJobReport8.setStage("计算结构指数");
                     gsmStructJobReport8.setStartTime(gsmStructJobReportList.get(gsmStructJobReportList.size()-1)
                             .getCompleteTime());
-                    gsmStructJobReport8.setCompleteTime(addSecond(gsmStructJobReport.getStartTime(),2));
+                    gsmStructJobReport8.setCompleteTime(addSecond(gsmStructJobReport8.getStartTime(),2));
                     gsmStructJobReport8.setStatus("成功");
                     gsmStructJobReportList.add(gsmStructJobReport8);
                 }
@@ -424,7 +431,7 @@ public class GsmStructAnalysisResource {
                     gsmStructJobReport9.setStage("计算理想距离");
                     gsmStructJobReport9.setStartTime(gsmStructJobReportList.get(gsmStructJobReportList.size()-1)
                             .getCompleteTime());
-                    gsmStructJobReport9.setCompleteTime(addSecond(gsmStructJobReport.getStartTime(),3));
+                    gsmStructJobReport9.setCompleteTime(addSecond(gsmStructJobReport9.getStartTime(),3));
                     gsmStructJobReport9.setStatus("成功");
                     gsmStructJobReportList.add(gsmStructJobReport9);
                 }

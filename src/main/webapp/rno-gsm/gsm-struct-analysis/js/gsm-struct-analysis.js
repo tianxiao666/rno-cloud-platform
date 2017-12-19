@@ -194,27 +194,13 @@ $(function () {
         $(".search_box_alert").slideToggle("fast");
     });
 
-    $("#loadGisCell").click(function () {
-        var cityId = parseInt($("#cityId").find("option:checked").val());
-        map.removeLayer(tiled);
-        tiled = new ol.layer.Tile({
-            zIndex: 3,
-            source: new ol.source.TileWMS({
-                url: 'http://rno-gis.hgicreate.com/geoserver/rnoprod/wms',
-                params: {
-                    'FORMAT': 'image/png',
-                    'VERSION': '1.1.1',
-                    tiled: true,
-                    STYLES: '',
-                    LAYERS: 'rnoprod:RNO_LTE_CELL_GEOM',
-                    CQL_FILTER: "AREA_ID=" + cityId
-                }
-            }),
-            opacity: 0.5
-        });
-        map.addLayer(tiled);
+    $(".searchStructureTaskDT").click(function () {
+        if($("#begDate").val().trim()===''||$("#endDate").val().trim()===''){
+            showInfoInAndOut("info","请选择完整的创建时间段！");
+            return false;
+        }
+        $(".loadingDataDiv").css("display", "block");
     });
-
 
     // Ajax提交查询任务表单
     $("#structureTaskForm").ajaxForm({
@@ -238,9 +224,15 @@ function taskParams() {
         $("span#nameError").html("※");
         return;
     }
-    if ($("#taskDescription").val() === "") {
-        $("span#descErrorText").html("（请输入任务描述）");
-        $("span#descError").html("※");
+    if($("#begMeaDate").val()==="" || $("#endMeaDate").val()===""){
+        $("span#dateErrorText").html("请填写需要使用的测量数据的时间！");
+        $("span#dateError").html("※");
+        return;
+    }
+    else if(exDateRange($.trim($("#endMeaDate").val()),$.trim($("#begMeaDate").val())) > 10) {
+        //验证测试日期是否大于十天
+        $("span#dateErrorText").html("（时间跨度请不要超过10天！）");
+        $("span#dateError").html("※");
         return;
     }
     if (!($('#useEriData').attr('checked')) && !($('#useEriData').attr('checked'))) {
@@ -501,6 +493,7 @@ function paramsSubmit() {
 
 // 显示结构优化任务列表
 function showStructTaskResult(data) {
+    $(".loadingDataDiv").css("display", "none");
     if (data == '') {
         $("#info").css("background", "red");
         showInfoInAndOut('info', '没有符合条件的结构分析任务');
@@ -595,9 +588,6 @@ function submitTask() {
     $(taskParamsObject).each(function () {
         taskInfo[this.name] = this.value;
     });
-    // var data={};
-    // data["taskInfo"] = taskInfo;
-    // data["taskParams"] = taskParams;
     $.ajax({
         url: '/api/gsm-struct-analysis/submit-task',
         data: taskInfo,
@@ -680,11 +670,6 @@ function showTaskDetailInfo() {
     var eriFileNum = localStorage.getItem("eriFileNum");
     console.log(eriFileNum);
     if (eriFileNum != null && eriFileNum != "") {
-        //     var eriFileNumObject = JSON.parse(eriFileNum);
-        //     var taskParams = {};
-        //     $(taskParamsObject).each(function () {
-        //         taskParams[this.name] = this.value;
-        //     });
         var taskInfoStr = localStorage.getItem("taskInfoStr");
 
         if (taskInfoStr != null && taskInfoStr != "") {
@@ -704,9 +689,41 @@ function showTaskDetailInfo() {
             "data": JSON.parse(eriFileNum),
             "columns": [
                 {"data": "dateTime"},
-                {"data": "bscNum"},
-                {"data": "ncsNum"},
-                {"data": "mrrNum"}
+                {"data": null},
+                {"data": null},
+                {"data": null}
+            ],
+            "columnDefs": [{
+                "render": function (data, type, row) {
+                    if(row['bscNum']===0) {
+                        return "--";
+                    }else{
+                        return row['bscNum'];
+                    }
+                },
+                "targets": 1,
+                "data": null
+            },{
+                "render": function (data, type, row) {
+                    if(row['ncsNum']===0) {
+                        return "--";
+                    }else{
+                        return row['ncsNum'];
+                    }
+                },
+                "targets": 2,
+                "data": null
+            },{
+                "render": function (data, type, row) {
+                    if(row['mrrNum']===0) {
+                        return "--";
+                    }else{
+                        return row['mrrNum'];
+                    }
+                },
+                "targets": 3,
+                "data": null
+            }
             ],
             "lengthChange": false,
             "ordering": false,
@@ -724,7 +741,19 @@ function showTaskDetailInfo() {
             "data": JSON.parse(eriFileNum),
             "columns": [
                 {"data": "dateTime"},
-                {"data": "bscNum"},
+                {"data": null},
+            ],
+            "columnDefs": [{
+                "render": function (data, type, row) {
+                    if(row['bscNum']===0) {
+                        return "--";
+                    }else{
+                        return row['bscNum'];
+                    }
+                },
+                "targets": 1,
+                "data": null
+            }
             ],
             "lengthChange": false,
             "ordering": false,
@@ -759,6 +788,20 @@ function showInfoInAndOut(div, info) {
     divSet.html(info);
     divSet.fadeIn(2000);
     setTimeout("$('#" + div + "').fadeOut(2000)", 1000);
+}
+
+//计算两个日期差值
+function exDateRange(sDate1,sDate2){
+    var iDateRange;
+    if(sDate1!=""&&sDate2!=""){
+        var startDate=sDate1.replace(/-/g,"/");
+        var endDate=sDate2.replace(/-/g,"/");
+        var S_Date=new Date(Date.parse(startDate));
+        var E_Date=new Date(Date.parse(endDate));
+        iDateRange=(S_Date-E_Date)/86400000;
+        //alert(iDateRange);
+    }
+    return iDateRange;
 }
 
 /**
