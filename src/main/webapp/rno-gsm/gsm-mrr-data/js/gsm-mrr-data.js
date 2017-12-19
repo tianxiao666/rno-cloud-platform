@@ -489,15 +489,42 @@ function queryMrrDetailData() {
                     "columns": [
                         {"data": "CELL_NAME"},
                         {"data": "BSC"},
-                        {"data": "UL_QUA6T7_RATE"},
-                        {"data": "DL_QUA6T7_RATE"},
-                        {"data": "UL_STREN_RATE"},
-                        {"data": "DL_STREN_RATE"},
-                        {"data": "DL_WEEK_SIGNAL"},
-                        {"data": "AVER_TA"},
-                        {"data": "MAX_TA"},
-                        {"data": "UL_QUA0T5_RATE"},
-                        {"data": "DL_QUA0T5_RATE"}
+                        {"data": "UL_QUA6T7_RATE", "render": function (data) {
+                            var s = data + "";
+                            return s.substring(0, s.indexOf(".") + 6);
+                        }},
+                        {"data": "DL_QUA6T7_RATE", "render": function (data) {
+                            var s = data + "";
+                            return s.substring(0, s.indexOf(".") + 6);
+                        }},
+                        {"data": "UL_STREN_RATE", "render": function (data) {
+                            var s = data + "";
+                            return s.substring(0, s.indexOf(".") + 6);
+                        }},
+                        {"data": "DL_STREN_RATE", "render": function (data) {
+                            var s = data + "";
+                            return s.substring(0, s.indexOf(".") + 6);
+                        }},
+                        {"data": "DL_WEEK_SIGNAL", "render": function (data) {
+                            var s = data + "";
+                            return s.substring(0, s.indexOf(".") + 5);
+                        }},
+                        {"data": "AVER_TA", "render": function (data) {
+                            var s = data + "";
+                            return s.substring(0, s.indexOf(".") + 5);
+                        }},
+                        {"data": "MAX_TA", "render": function (data) {
+                            var s = data + "";
+                            return s.substring(0, s.indexOf(".") + 5);
+                        }},
+                        {"data": "UL_QUA0T5_RATE", "render": function (data) {
+                            var s = data + "";
+                            return s.substring(0, s.indexOf(".") + 5);
+                        }},
+                        {"data": "DL_QUA0T5_RATE", "render": function (data) {
+                            var s = data + "";
+                            return s.substring(0, s.indexOf(".") + 5);
+                        }}
                     ],
                     searching:false, //去掉搜索框
                     bLengthChange:false,//去掉每页多少条框体
