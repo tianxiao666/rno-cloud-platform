@@ -2,6 +2,8 @@ var map, tiled, clickedCellLayer, cellLayer, thisCellLayer, lineLayer;
 var popup;
 var redStyle;
 var whetherLoadCellToMap=false;
+var ids =[];
+var configIds =[];
 $(function () {
     tab("div_tab", "li", "onclick");
     tab("div_tab1", "li", "onclick");
@@ -347,6 +349,7 @@ $(function () {
         contextmenu.extend(contextmenu_items);
     });
 
+    //全网干扰查询
     $("#wholeNetInterferQuery").click(function () {
         if(!whetherLoadCellToMap){
             showInfoInAndOut("info","请先加载小区到地图！");
@@ -354,9 +357,15 @@ $(function () {
         }
         var reSelected = false;
         var selAreaVal = $("#cityId").find("option:selected").val();
-        getCobsicCellWholenet(reSelected, selAreaVal, null);
+        if(configIds.length === 0){
+            getCobsicCellWholenet(reSelected, selAreaVal, null);
+        }else{
+            getCobsicCellWholenet(reSelected, selAreaVal, configIds);
+        }
+
     });
 
+    //干扰查询
     $("#interferQuery").click(function () {
         if($("#bcch").val() ==='' || $("#bsic").val() ===''){
             showInfoInAndOut("info","BCCH和BSIC均不能为空！");
@@ -369,13 +378,23 @@ $(function () {
 
         var reSelected = false;
         var areaIdStr =$("#cityId").find("option:selected").val();
-        cobsiccell(reSelected, areaIdStr, null)
-    })
+        if(configIds.length === 0){
+            cobsiccell(reSelected, areaIdStr, null);
+        }else{
+            cobsiccell(reSelected, areaIdStr, configIds);
+        }
+    });
 
+    //弹出重选配置模态框
     $("#showCellConfigBtn").click(function() {
         var reSelCellConfig_Dialog =$("#reSelCellConfig_Dialog");
         reSelCellConfig_Dialog.toggle();
         var display = reSelCellConfig_Dialog.css("display");
+    });
+
+    //恢复默认
+    $("#restoreDefaultBtn").click(function () {
+        $('#loadRefreshlistTable3').DataTable().rows().remove().draw();
     });
 
     // AJAX 上传文件
@@ -421,17 +440,22 @@ $(function () {
         }
     });
 
+    //查询配置方案
     $("#queryCellConfigureBtn").click(function () {
+        if($("input[name='searchType']:checked").val() !=='GSM'){
+            showInfoInAndOut("info","小区配置信息不存在！");
+            return false;
+        }
         $("#form_tab_2").ajaxForm({
             url: '/api/gsm-co-bsic-analysis/config-schema-query',
             dataType: 'text',
             success: function (data) {
                 var i =0;
-                console.log(data);
+                //console.log(data);
                 var datas =eval('('+data+')');
                 var tab_2_queryResultTab= $("#tab_2_queryResultTab");
-                tab_2_queryResultTab.DataTable().clear();
-                tab_2_queryResultTab.css("line-height", "12px")
+                tab_2_queryResultTab.DataTable().rows().remove().draw();
+                tab_2_queryResultTab.css("line-height", "10px")
                     .DataTable({
                         "data": datas,
                         "columns": [
@@ -442,7 +466,7 @@ $(function () {
                         ],
                         "columnDefs": [{
                             "render": function (row) {
-                                var id = row['ID']
+                                var id = row['ID'];
                                return "<input name='bsicCheckbox' type='checkbox' value='"+id+"'>";
                             },
                             "targets": -1,
@@ -457,30 +481,77 @@ $(function () {
                         }
 
                     });
+            },error: function (err) {
+                console.log(err);
             }
         });
     });
 
+
+    //加载到分析列表
     $("#loadtoanalysisBtn").click(function () {
-        var ids =[];
+        ids = [];
+        if($(":checkbox[name=bsicCheckbox]:checked").length === 0) {
+            showInfoInAndOut("info","请至少选择一项配置纪录！");
+            return false;
+        }
         $("input[name='bsicCheckbox']").each(function () {
-            ids.push(this.value);
+            if(this.checked){
+                ids.push(this.value);
+            }
         });
-        ///待续
-       /* $.ajax({
+
+        $.ajax({
            url: '/api/gsm-co-bsic-analysis/query-schemas-by-id',
            type: 'get',
            dataType: 'text',
-           data:{ids: ids},
+           data:{ids: ids.toString()},
+           async: false,
            success: function (data) {
                var datas = eval("("+data+")");
+               var loadRefreshlistTable3 =  $("#loadRefreshlistTable3");
+               loadRefreshlistTable3.DataTable().clear();
+               loadRefreshlistTable3.css("line-height", "12px")
+                   .DataTable({
+                       "data": datas,
+                       "columns": [
+                           {"data": "AREANAME"},
+                           {"data": "NAME"},
+                           {"data": "CREATETIME"},
+                           {"data": null}
+                       ],
+                       "columnDefs": [{
+                           "render": function (row) {
+                               var id = row['ID'];
+                               return "<a id='removeTr'>移除</a>";
+                           },
+                           "targets": -1,
+                           "data": null
+                       }],
+                       "lengthChange": false,
+                       "ordering": false,
+                       "searching": false,
+                       "destroy": true,
+                       "language": {
+                           url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
+                       }
+
+                   });
 
            }
-        });*/
-    })
+        });
+    });
 
+   $("#loadRefreshlistTable3 tbody").on('click','#removeTr',function () {
+        $('#loadRefreshlistTable3').DataTable()
+            .row($(this).parents('tr'))
+            .remove()
+            .draw();
+   });
 });
 
+
+//全选表格条目
 function operAllCheckbox(obj) {
     var check = !obj.checked;
 
@@ -668,7 +739,8 @@ function drawLine(cellCoors, ncellCoors) {
 function getCobsicCellWholenet (reSelected, areaIdStr,cellConfigIds) {
     var sendData = {
         "reselected" : reSelected,
-        "areaId" : areaIdStr
+        "areaId" : areaIdStr,
+        "configIds" : cellConfigIds
     };
     $(".loading").css("display", "block");
     $("#conditionForm").ajaxSubmit({

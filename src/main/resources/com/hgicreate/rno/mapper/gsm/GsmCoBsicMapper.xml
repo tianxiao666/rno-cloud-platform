@@ -6,40 +6,40 @@
     <select id="getCoBsicCellsByAreaIdAndBcch"
             parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmCoBsicQueryVM"
             resultType="java.util.Map">
-        SELECT LABEL as label,bcch as bcch,BSIC as bsic from (
-         select DISTINCT c1.LABEL, c1.bcch , c1.BSIC from RNO_CELL c1, RNO_CELL c2
+        SELECT EN_NAME as label,bcch as bcch,BSIC as bsic from (
+         select DISTINCT c1.EN_NAME, c1.bcch , c1.BSIC from RNO_GSM_CELL c1, RNO_GSM_CELL c2
             where
-                 <![CDATA[c1.id <> c2.id and c1.LABEL<>c2.LABEL ]]>
+                 <![CDATA[c1.EN_NAME <> c2.EN_NAME and c1.CELL_ID <> c2.CELL_ID ]]>
                 and c1.BCCH =c2.BCCH
                   and c1.BSIC = c2.BSIC
-                  and c1.AREA_ID in ( select AREA_ID from RNO_GSM_SYS_AREA where PARENT_ID= #{cityId})
-                and c2.AREA_ID in ( select AREA_ID from RNO_GSM_SYS_AREA where PARENT_ID= #{cityId})
+                  and c1.AREA_ID = #{cityId}
+                and c2.AREA_ID = #{cityId}
          ORDER BY  c1.bcch,c1.BSIC)
         where BCCH = #{bcch} and BSIC = #{bsic}
     </select>
     <select id="getCoBsicCellsByAreaId"
             parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmCoBsicQueryVM"
             resultType="java.util.Map">
-        select DISTINCT c1.LABEL as label, c1.bcch as bcch, c1.bsic as bsic
-        from RNO_CELL c1, RNO_CELL c2
-        where  <![CDATA[ c1.id <> c2.id and c1.LABEL<>c2.LABEL ]]>
+        select DISTINCT c1.EN_NAME as label, c1.bcch as bcch, c1.bsic as bsic
+        from RNO_GSM_CELL c1, RNO_GSM_CELL c2
+        where  <![CDATA[  c1.EN_NAME<>c2.EN_NAME and c1.CELL_ID <> c2.CELL_ID ]]>
            and  c1.BCCH =c2.BCCH
         and c1.BSIC = c2.BSIC
-        and c1.AREA_ID in ( select AREA_ID from RNO_GSM_SYS_AREA where PARENT_ID= #{cityId})
-        and c2.AREA_ID in ( select AREA_ID from RNO_GSM_SYS_AREA where PARENT_ID= #{cityId})
+        and c1.AREA_ID = #{cityId}
+        and c2.AREA_ID = #{cityId}
         ORDER BY  c1.bcch,c1.BSIC
     </select>
     <select id="queryCommonNcellByTwoCell" parameterType="java.lang.String"
-        resultType="com.hgicreate.rno.domain.gsm.RnoGsmNcell">
-        select * from RNO_NCELL where NCELL = #{sourceCell}
-        and CELL in (select CELL from RNO_NCELL where NCELL = #{targetCell})
+        resultType="com.hgicreate.rno.domain.gsm.GsmNcellRelation">
+        select * from RNO_GSM_NCELL_RELATION where NCELL_ID = #{sourceCell}
+        and CELL_ID in (select CELL_ID from RNO_GSM_CELL where NCELL_ID = #{targetCell})
     </select>
-    <select id="queryNcell" parameterType="java.lang.String" resultType="com.hgicreate.rno.domain.gsm.RnoGsmNcell">
-        select * from RNO_NCELL where CELL = #{sourceCell} and NCELL = #{targetCell}
+    <select id="queryNcell" parameterType="java.lang.String" resultType="com.hgicreate.rno.domain.gsm.GsmNcellRelation">
+        select * from RNO_GSM_NCELL_RELATION where CELL_ID = #{sourceCell} and NCELL_ID = #{targetCell}
     </select>
     <select id="getLonLatsByCells" parameterType="java.lang.String" resultType="java.lang.String">
-        select wmsys.wm_concat(LONGITUDE||','||LATITUDE) as lonlats from RNO_CELL
-        where LABEL = #{sourceCell} or LABEL = #{targetCell}
+        select wmsys.wm_concat(LONGITUDE||','||LATITUDE) as lonlats from RNO_GSM_CELL
+        where EN_NAME = #{sourceCell} or EN_NAME = #{targetCell}
     </select>
     <select id="findGsmAreaIdByName" parameterType="java.lang.String" resultType="java.lang.Integer">
         select area_id from RNO_GSM_SYS_AREA where NAME= #{areaName}
@@ -54,5 +54,10 @@
             and a.name like #{schemaName}
         </if>
         order by a.CREATE_TIME DESC
+    </select>
+    <select id="queryConfigSchemaById" parameterType="java.lang.String" resultType="java.util.Map">
+        select a.id,a.name as name, to_char(a.create_time,'YYYY-MM-DD HH24:mi:ss') as createTime, b.name as areaName
+        from RNO_GSM_CO_BSIC_DESCRIPTOR a, RNO_GSM_SYS_AREA b
+        where a.AREA_ID = b.AREA_ID and a.id in (${ids})
     </select>
 </mapper>

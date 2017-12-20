@@ -1,7 +1,7 @@
 package com.hgicreate.rno.web.rest.gsm;
 
 import com.hgicreate.rno.domain.*;
-import com.hgicreate.rno.domain.gsm.RnoGsmNcell;
+import com.hgicreate.rno.domain.gsm.GsmNcellRelation;
 import com.hgicreate.rno.mapper.gsm.GsmCoBsicMapper;
 import com.hgicreate.rno.repository.*;
 import com.hgicreate.rno.security.SecurityUtils;
@@ -65,11 +65,11 @@ public class GsmCoBsicResource {
         return getCoBsic(cobsicCells);
     }
 
-    private void prepareCellsExpand(List<RnoGsmNcell> list, CobsicCellsExpandDTO gsmCobsicCellsExpand){
+    private void prepareCellsExpand(List<GsmNcellRelation> list, CobsicCellsExpandDTO gsmCobsicCellsExpand){
         for (int l = 0; l < list.size(); l++) {
             log.info("获取共同邻区共多少：" + list.size());
             gsmCobsicCellsExpand.setWhetherComNcell(true);
-            gsmCobsicCellsExpand.setCommonNcell(list.get(l).getCell());
+            gsmCobsicCellsExpand.setCommonNcell(list.get(l).getCellId());
         }
     }
 
@@ -99,7 +99,7 @@ public class GsmCoBsicResource {
                     for(int j = i+1; j< labels.length; j++){
                         boolean isNcell = gsmCoBsicMapper.queryNcell(labels[i], labels[j]) != null
                                 && gsmCoBsicMapper.queryNcell(labels[i], labels[j]).size() != 0;
-                        List<RnoGsmNcell> ncells= gsmCoBsicMapper.queryCommonNcellByTwoCell(labels[i],labels[j]);
+                        List<GsmNcellRelation> ncells= gsmCoBsicMapper.queryCommonNcellByTwoCell(labels[i],labels[j]);
                         double distance = gsmCoBsicService.getDistanceBetweenCells(labels[i],labels[j]);
                         if((isNcell|| (ncells !=null && ncells.size() !=0))&& distance < 2000){
                             log.debug("isNcell:" + isNcell);
@@ -250,5 +250,14 @@ public class GsmCoBsicResource {
             schemaName ="%" + schemaName +"%";
         }
         return gsmCoBsicMapper.queryCoBsicConfigSchema(gsmCityId,schemaName);
+    }
+
+    @GetMapping("/query-schemas-by-id")
+    public List<Map<String,Object>> queryConfigSchemasByIds(String ids){
+        log.debug("进入添加到分析列表方法ids={}",ids);
+        if("".equals(ids) || ids.split(",").length ==0){
+            return null;
+        }
+        return gsmCoBsicMapper.queryConfigSchemaById(ids);
     }
 }

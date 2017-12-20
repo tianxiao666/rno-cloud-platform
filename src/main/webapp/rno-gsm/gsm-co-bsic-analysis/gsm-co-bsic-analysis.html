@@ -22,8 +22,8 @@
     <script src="../../lib/openlayers/4.4.2/ol.js"></script>
     <script src="../../lib/openlayers/ol3-contextmenu/ol3-contextmenu.js"></script>
     <script src="../../js/common.js"></script>
-<!--    <script src="js/gsm-co-bisc-cell-display.js"></script>
-    <script src="js/gsm-co-bisc-analysis-origin.js"></script>-->
+    <!--    <script src="js/gsm-co-bisc-cell-display.js"></script>
+        <script src="js/gsm-co-bisc-analysis-origin.js"></script>-->
     <script src="js/gsm-co-bsic-analysis.js"></script>
 
 </head>
@@ -31,7 +31,7 @@
 <div id="loading" class="loading" style="display: none">加载中...</div>
 <div id="info" class="info-style" style="display: none"></div>
 <div id="map" class="map"></div>
-<div style="display: none"> 
+<div style="display: none">
     <div id="popup"></div>
 </div>
 <div class="dialog">
@@ -82,25 +82,30 @@
                 <tr>
                     <td>
                         <button name="showCellConfigBtn" id="showCellConfigBtn" class="btn btn-default">重新选择</button>
-                        <button name="restoreDefaultBtn" id="restoreDefaultBtn" class="btn btn-default">恢复默认</button></td>
+                        <button name="restoreDefaultBtn" id="restoreDefaultBtn" class="btn btn-default">恢复默认</button>
+                    </td>
                 </tr>
-                <tr><td>
-                    <button id="cellConfigConfirmSelectionAnalysisBtn" data="cellConfig"
-                            class="btn btn-info">加载小区</button>
-                    <button id="showCellName" class="btn btn-info" type="button">显示小区名字</button>
-                </td></tr>
+                <tr>
+                    <td>
+                        <button id="cellConfigConfirmSelectionAnalysisBtn"
+                                class="btn btn-info">加载小区
+                        </button>
+                        <button id="showCellName" class="btn btn-info" type="button">显示小区名字</button>
+                    </td>
+                </tr>
                 </tbody>
             </table>
-            <div style="margin-top: 0;display: block;">
-                <table id="loadRefreshlistTable3" class="table table-bordered table-responsive" width="100%">
-                    <tbody>
+            <div style="margin-top: 0;display: block;overflow-x:scroll;overflow-y:hidden;  width:100%; height:100%">
+                <table style="border-radius: 8px" id="loadRefreshlistTable3" class="table table-striped table-bordered" cellspacing="0" width="100%">
+                    <thead>
                     <tr>
-                        <th>标题</th>
+                        <th>区域</th>
                         <th>方案名称</th>
                         <th>上传时间</th>
                         <th>操作</th>
                     </tr>
-                    </tbody>
+                    </thead>
+                    <tbody></tbody>
                 </table>
             </div>
             <div id="cellConfigAnalysisBtnDiv">
@@ -200,105 +205,37 @@
                  onclick="$('#reSelCellConfig_Dialog').hide();$('.colordialog2').hide();"></div>
         </div>
     </div>
-    <div class="dialog_content" style="width:650px; height:350px; background:#f9f9f9;>
-        <div id="frame" style="border: 1px solid rgb(221, 221, 221); float: left; width: 600px;">
-        <div id="div_tab1" class="div_tab divtab_menu250px">
-            <ul>
-                <li class="selected"  style="width: 119px" id="div_tab_0_li">小区配置导入</li>
-                <li  id="div_tab_1_li" style="width: 119px">从系统中加载</li>
-            </ul>
-        </div>
-
-        <div class="divtab_content" style="float: left;width: 100%;">
-            <div id="div_tab1_0" style="display: block;">
-                <form id="formImportCell" enctype="multipart/form-data" method="post">
-                    <input type="hidden" name="needPersist" value="true"> <input type="hidden" name="systemConfig" value="true">
-                    <input type="hidden" name="update" value="true">
-                    <div>
-
-                        <table class="main-table1 half-width">
-                            <tbody>
-                            <tr>
-                                <td class="menuTd" style="width: 20%">所属地市： <br>
-                                </td>
-                                <td style="width: 50%; font-weight: normal;" colspan="0">
-                                    省：<select name="provinceId" class="required" id="provinceId1" title="">
-
-
-                                </select> 市：<select name="areaId" class="required" id="cityId1" title="">
-
-                                </select>
-
-                                    <br>
-                                </td>
-
-
-                            </tr>
-                            <tr>
-                                <td class="menuTd" style="width: 20%">网络制式： <br>
-                                </td>
-                                <td><input type="radio" name="fileCode"  value="GSMPLANCELLFILE" class="canclear required" checked> <label >
-                                    GSM </label>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <input type="radio" name="fileCode"  value="TDPLANCELLFILE" class="canclear  required"> <label >
-                                        TD </label>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <input type="radio" name="fileCode"  value="WLANPLANCELLFILE" class="canclear  required"> <label>
-                                        WLAN </label> <br></td>
-
-                            </tr>
-                            <tr>
-                                <td class="menuTd" style="width: 20%">小区配置文件(CSV)：<br>
-                                </td>
-                                <td style="width: 50%; font-weight: bold" colspan="0">
-                                    <input type="file" style="width:44%;" name="file" id="file" class="canclear  required">
-                                </td>
-                            </tr>
-                            </tbody>
-
-
-                        </table>
-                    </div>
-                    <div class="container-bottom" style="padding-top: 10px">
-                        <table style="width: 60%; margin: auto" align="center">
-                            <tbody><tr>
-                                <td>
-                                    <input type="hidden" name="moduleName" value="gsm-co-bsic-analysis" />
-                                    <button type="submit" class="btn btn-default" style="width: 100px;" id="importBtn" name="import">导 入</button>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-
-                        <div id="importResultDiv" class="container-bottom" style="padding-top: 10px"></div>
-                        <div id="loadlistDiv">
-                            <table class="tb-transparent-standard" style="width:100%" id="loadlistTable1">
-                            </table>
-                        </div>
-                    </div>
-                </form>
-                <div class="upload-progress">
-                    <div class="bar"></div>
-                    <div class="percent">0%</div>
-                </div>
+    <div class="dialog_content" style="width:650px; height:330px; background:#f9f9f9;overflow-y: auto" id="configResDialog">
+        <div id="frame" style="border: 1px solid rgb(221, 221, 221); width: 600px;">
+            <div id="div_tab1" class="div_tab divtab_menu250px">
+                <ul>
+                    <li class="selected" style="width: 119px" id="div_tab_0_li">小区配置导入</li>
+                    <li id="div_tab_1_li" style="width: 119px">从系统中加载</li>
+                </ul>
             </div>
-            <div id="div_tab1_1" style="display: none;overflow-y: scroll">
-                <div style="float: left;width: 100%">
-                    <form id="form_tab_2" method="get">
-                    <div>
+
+            <div class="divtab_content" style="float: left;width: 100%;">
+                <div id="div_tab1_0" style="display: block;">
+                    <form id="formImportCell" enctype="multipart/form-data" method="post">
+                        <input type="hidden" name="needPersist" value="true"> <input type="hidden" name="systemConfig"
+                                                                                     value="true">
+                        <input type="hidden" name="update" value="true">
+                        <div>
+
                             <table class="main-table1 half-width">
                                 <tbody>
                                 <tr>
                                     <td class="menuTd" style="width: 20%">所属地市： <br>
                                     </td>
                                     <td style="width: 50%; font-weight: normal;" colspan="0">
-                                        省：<select name="provinceId" class="required" id="provinceId2">
+                                        省：<select name="provinceId" class="required" id="provinceId1" title="">
 
-                                    </select> 市：<select name="cityId" class="required" id="cityId2">
 
-                                    </select><select name="areaId" style="display: none" class="required" id="areaId2" >
+                                    </select> 市：<select name="areaId" class="required" id="cityId1" title="">
+
                                     </select>
 
+                                        <br>
                                     </td>
 
 
@@ -306,76 +243,164 @@
                                 <tr>
                                     <td class="menuTd" style="width: 20%">网络制式： <br>
                                     </td>
-                                    <td><input type="radio" name="searchType" value="GSM" class="canclear required" checked>
-                                        <label> GSM </label>
+                                    <td><input type="radio" name="fileCode" value="GSMPLANCELLFILE" class="canclear required" title=""
+                                               checked> <label>
+                                        GSM </label>
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <input type="radio" name="searchType" value="TD" class="canclear  required">
-                                        <label> TD </label>
+                                        <input type="radio" name="fileCode" value="TDPLANCELLFILE" class="canclear  required" title="">
+                                        <label>
+                                            TD </label>
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <input type="radio" name="searchType" value="WLAN" class="canclear  required">
-                                        <label> WLAN </label>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <br></td>
+                                        <input type="radio" name="fileCode" value="WLANPLANCELLFILE" class="canclear  required" title="">
+                                        <label>
+                                            WLAN </label> <br></td>
+
                                 </tr>
-                                <tr><td class="menuTd">方案名称：</td><td><input type="text" name="schemaName" id="schemeName" class="required"></td></tr>
+                                <tr>
+                                    <td class="menuTd" style="width: 20%">小区配置文件(CSV)：<br>
+                                    </td>
+                                    <td style="width: 50%; font-weight: bold" colspan="0">
+                                        <input type="file" style="width:44%;" name="file" id="file" class="canclear  required">
+                                    </td>
+                                </tr>
                                 </tbody>
 
 
                             </table>
-
-                    </div>
-                    <div class="container-bottom" style="padding-top: 10px">
-                        <table style="width: 60%; margin: auto" align="center">
-                            <tbody><tr>
-                                <td>
-                                    <button type="submit" class="btn btn-default" id="queryCellConfigureBtn" name="querybtn">查　　询</button></td>
-                            </tr>
-                            </tbody></table>
-                    </div>
-                    </form>
-                    <div style="padding-top:10px">
-                        <table width="100%">
-                            <tbody>
-                            <tr>
-                                <td style="width:20%">
-                                        <div><label style="font-weight: bold;margin-top: 10px">小区描述配置指标</label>
-                                    <button type="button" style="float: right;" id="loadtoanalysisBtn" class="btn btn-default" name="queryAndLoadBtn">添加到分析列表</button></div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <form id="form1" name="form1" method="post">
-                            <table id="tab_2_queryResultTab" class="display rnoHeader" cellspacing="0" width="100%">
-                                <thead>
-                                <tr><th>区域</th>
-                                    <th>方案名称</th>
-                                    <th>上传时间</th>
-                                    <th>加载项&nbsp;<input onclick="operAllCheckbox(this)" id="allCheckbox" type="checkbox" />
-                                        </th>
-                                </tr></thead>
+                        </div>
+                        <div class="container-bottom" style="padding-top: 10px">
+                            <table style="width: 60%; margin: auto" align="center">
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <input type="hidden" name="moduleName" value="gsm-co-bsic-analysis"/>
+                                        <button type="submit" class="btn btn-default" style="width: 100px;" id="importBtn"
+                                                name="import">导 入
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
                             </table>
-                        </form>
-                    </div>
-                    <div style="padding-top: 10px">
-                        <table width="100%">
-                            <tbody><tr>
-                                <td style="width: 20%"></td>
-                            </tr>
-                            </tbody></table>
-                    </div>
-                    <div style="padding-top: 10px;text-align:center">
-                        <table class="tb-transparent-standard" style="width:100%" id="loadlistTable2">
-                        </table>
+
+                            <div id="importResultDiv" class="container-bottom" style="padding-top: 10px"></div>
+                            <div id="loadlistDiv">
+                                <table class="tb-transparent-standard" style="width:100%" id="loadlistTable1">
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="upload-progress">
+                        <div class="bar"></div>
+                        <div class="percent">0%</div>
                     </div>
                 </div>
+                <div id="div_tab1_1" style="display: none;overflow-y: auto">
+                    <div style="float: left;width: 100%">
+                        <form id="form_tab_2" method="get">
+                            <div>
+                                <table class="main-table1 half-width">
+                                    <tbody>
+                                    <tr>
+                                        <td class="menuTd" style="width: 20%">所属地市： <br>
+                                        </td>
+                                        <td style="width: 50%; font-weight: normal;" colspan="0">
+                                            省：<select name="provinceId" class="required" id="provinceId2" title="">
 
+                                        </select> 市：<select name="cityId" class="required" id="cityId2" title="">
+
+                                        </select><select name="areaId" style="display: none" class="required" id="areaId2" title="">
+                                        </select>
+
+                                        </td>
+
+
+                                    </tr>
+                                    <tr>
+                                        <td class="menuTd" style="width: 20%">网络制式： <br>
+                                        </td>
+                                        <td><input type="radio" name="searchType" title="" value="GSM" class="canclear required" checked>
+                                            <label> GSM </label>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <input type="radio" name="searchType" title="" value="TD" class="canclear  required">
+                                            <label> TD </label>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <input type="radio" title="" name="searchType" value="WLAN" class="canclear  required">
+                                            <label> WLAN </label>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <br></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="menuTd">方案名称：</td>
+                                        <td><input type="text" name="schemaName" id="schemeName" class="required" title=""></td>
+                                    </tr>
+                                    </tbody>
+
+
+                                </table>
+
+                            </div>
+                            <div class="container-bottom" style="padding-top: 10px">
+                                <table style="width: 60%; margin: auto" align="center">
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <button type="submit" class="btn btn-default" id="queryCellConfigureBtn"
+                                                    name="querybtn">查　　询
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
+                        <div style="padding-top:10px">
+                            <table width="100%">
+                                <tbody>
+                                <tr>
+                                    <td style="width:20%">
+                                        <div><label style="font-weight: bold;margin-top: 10px">小区描述配置指标</label>
+                                            <button type="button" style="float: right;" id="loadtoanalysisBtn"
+                                                    class="btn btn-default" name="queryAndLoadBtn">添加到分析列表
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <table id="tab_2_queryResultTab" class="display rnoHeader" cellspacing="0" width="100%">
+                                <thead>
+                                <tr>
+                                    <th>区域</th>
+                                    <th>方案名称</th>
+                                    <th>上传时间</th>
+                                    <th>加载项&nbsp;&nbsp;&nbsp;
+                                        <input onclick="operAllCheckbox(this)" id="allCheckbox" title="" type="checkbox"/>
+                                    </th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                        <div style="padding-top: 10px">
+                            <table width="100%">
+                                <tbody>
+                                <tr>
+                                    <td style="width: 20%"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div style="padding-top: 10px;text-align:center">
+                            <table class="tb-transparent-standard" style="width:100%" id="loadlistTable2">
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
-
-
-    </div>
     </div>
 </div>
+
 
 </body>
 </html>
