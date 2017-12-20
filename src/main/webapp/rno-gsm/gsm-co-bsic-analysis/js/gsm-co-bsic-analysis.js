@@ -252,6 +252,7 @@ $(function () {
     initAreaSelectors({selectors: ["provinceId1", "cityId1", null]});
     initAreaSelectors({selectors: ["provinceId2", "cityId2", "areaId2"]});
 
+    //加载小区
     $("#cellConfigConfirmSelectionAnalysisBtn").click(function () {
         var cityId = parseInt($("#cityId").find("option:checked").val());
         map.removeLayer(cellLayer);
@@ -367,7 +368,7 @@ $(function () {
 
     //干扰查询
     $("#interferQuery").click(function () {
-        if($("#bcch").val() ==='' || $("#bsic").val() ===''){
+        if($("#bcch").val().trim() ==='' || $("#bsic").val().trim() ===''){
             showInfoInAndOut("info","BCCH和BSIC均不能为空！");
             return false;
         }
@@ -443,6 +444,15 @@ $(function () {
     //查询配置方案
     $("#queryCellConfigureBtn").click(function () {
         if($("input[name='searchType']:checked").val() !=='GSM'){
+            $("#tab_2_queryResultTab").DataTable({
+                "lengthChange": false,
+                "ordering": false,
+                "searching": false,
+                "destroy": true,
+                "language": {
+                    url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
+                }
+            }).rows().remove().draw();
             showInfoInAndOut("info","小区配置信息不存在！");
             return false;
         }
@@ -801,23 +811,20 @@ function createWholeNetInterferTable(data) {
                 drawLineBetweenCells(cs[1], commonNcell);
                 drawLineBetweenCells(cs[0], cs[1]);
             }
-           /* if (!isPanto) {
-                gisCellDisplayLib.panToCell(cs[0]);
-            }*/
+            if (!isPanto) {
+                panToCell(cs[0]);
+            }
             isPanto = true;
             var string = "";
             for (var k = 0; k < cs.length; k++) {
                 if (!cs[k] || cs[k] === "") {
                     continue;
                 }
-                gisCellDisplayLib.changeCellPolygonOptions(cs[k], {
-                    'fillColor' : '#660033'
-                }, true);
-                string += "<a title='点击移动到该小区' href='javascript:moveToCell(\""
+                string += "<a title='点击移动到该小区' href='javascript:panToCell(\""
                     + cs[k] + "\")' style='margin-right:2px'>" + cs[k]
                     + "</a>";
             }
-            var strcomme = "<a title='点击移动到该小区' href='javascript:moveToCell(\""
+            var strcomme = "<a title='点击移动到该小区' href='javascript:panToCell(\""
                 + (typeof(commonNcell) === undefined ? "" : commonNcell)
                 + "\")' style='margin-right:2px'>"
                 + (typeof(commonNcell) === undefined ? "" : commonNcell)
@@ -850,18 +857,15 @@ function createWholeNetInterferTable(data) {
                     }
                     var str = "";
                     for (var k = 0; k < cs.length; k++) {
-                        if (!cs[k] || cs[k] == "") {
+                        if (!cs[k] || cs[k] === "") {
                             continue;
                         }
-                       /* gisCellDisplayLib.changeCellPolygonOptions(cs[k], {
-                            'fillColor' : '#660033'
-                        }, true);*/
-                        str += "<a title='点击移动到该小区' href='javascript:moveToCell(\""
+                        str += "<a title='点击移动到该小区' href='javascript:panToCell(\""
                             + cs[k]
                             + "\")' style='margin-right:2px'>"
                             + cs[k] + "</a>";
                     }
-                    var strcomm = "<a title='点击移动到该小区' href='javascript:moveToCell(\""
+                    var strcomm = "<a title='点击移动到该小区' href='javascript:panToCell(\""
                         + (typeof(commonNcell) === undefined
                             ? ""
                             : commonNcell)
@@ -869,14 +873,12 @@ function createWholeNetInterferTable(data) {
                         + (typeof(commonNcell) === undefined
                             ? ""
                             : commonNcell) + "</a>";
-                    var str2 = "<tr>"
+                    str3 += "<tr>"
                         + "<td align=\"center\">"
                         + str
                         + " "
                         + getNcellDesc(whetherNcell, whetherComNcell,
-                            strcomm) + "</td>"
-                    "</tr>";
-                    str3 += str2;
+                            strcomm) + "</td></tr>";
                 }
                 $("#interfertable").append(str1 + str3);
             } else {
@@ -889,15 +891,49 @@ function createWholeNetInterferTable(data) {
 
 
 function drawLineBetweenCells(x,y) {
-    var line = new ol.geom.LineString([x,y]);
-    var feature = new ol.Feature({geometry : line});
-    feature.setStyle(new ol.style.Style({
-        stroke: new ol.style.Stroke({
-            color: 'green',
-            width: 1
-        })
-    }));
-    lineLayer.getSource().addFeature(feature);
+    var cell1 ="'"+x+"'"+",";
+    var cell2 ="'"+y+"'";
+    var filter = encodeURIComponent("CELL_ID in (" + cell1+cell2 + ")");
+    //console.log(filter);
+
+    var url = 'http://rno-gis.hgicreate.com/geoserver/rnoprod/ows?service=WFS&version=1.1.1' +
+        '&request=GetFeature&typeName=rnoprod:RNO_GSM_CELL_GEOM&maxFeatures=50&' +
+        'outputFormat=text%2Fjavascript&CQL_FILTER=' + filter;
+    var parser = new ol.format.GeoJSON();
+    $.ajax({
+        url: url,
+        dataType: 'jsonp',
+        jsonpCallback: 'parseResponse'
+    }).then(function (response) {
+        var features = parser.readFeatures(response);
+        var xCoors =[];
+        var yCoors =[];
+        if(features.length){
+            for(var n = 0; n < features.length; n++){
+                if(features[n].get('CELL_ID')===x){
+                    xCoors =[features[n].get('LONGITUDE'), features[n].get('LATITUDE')];
+                    features[n].setStyle(redStyle);
+                    thisCellLayer.getSource().addFeature(features[n]);
+                }else{
+                    yCoors = [features[n].get('LONGITUDE'), features[n].get('LATITUDE')];
+                    features[n].setStyle(orangeStyle);
+                    thisCellLayer.getSource().addFeature(features[n]);
+                }
+            }
+
+            var line = new ol.geom.LineString([xCoors,yCoors]);
+            var feature = new ol.Feature({geometry : line});
+            feature.setStyle(new ol.style.Style({
+                stroke: new ol.style.Stroke({
+                    color: 'black',
+                    width: 1
+                })
+            }));
+            lineLayer.getSource().addFeature(feature);
+        }
+    });
+
+
 }
 
 /**
@@ -914,11 +950,27 @@ function getNcellDesc(whetherNcell,whetherComNcell,commonNcell){
         return "不相邻但与 "+commonNcell+"共邻";
     }
 }
-function moveToCell(cell) {
+
+function panToCell(cell) {
     if (cell == null || cell === undefined) {
         return;
     }
-    gisCellDisplayLib.panToCell(cell);
+    var filter ='CELL_ID='+cell;
+    var url = 'http://rno-gis.hgicreate.com/geoserver/rnoprod/ows?service=WFS&version=1.1.1' +
+        '&request=GetFeature&typeName=rnoprod:RNO_GSM_CELL_GEOM&maxFeatures=50&' +
+        'outputFormat=text%2Fjavascript&CQL_FILTER=' + filter;
+    var parser = new ol.format.GeoJSON();
+    $.ajax({
+        url: url,
+        dataType: 'jsonp',
+        jsonpCallback: 'parseResponse'
+    }).then(function (response) {
+        var feature = parser.readFeatures(response);
+        map.getView().animate({
+            center: [parseFloat(feature.get('LONGITUDE')), parseFloat(feature.get('LATITUDE'))],
+            duration: 2000
+        });
+    });
 }
 
 /**
@@ -946,9 +998,6 @@ function cobsiccell(reSelected, areaIdStr, cellConfigIdStr) {
             var cobsic = bcch + "," + bsic;
             // Js循环读取JSON数据，并增加下拉列表选项
             clearinterfertable();
-/*
-            gisCellDisplayLib.resetSpecPolygonToDefaultOutlook();
-*/
             if (mes_obj['fail'] !== null
                 && mes_obj['fail'] !== undefined) {
                 // console.log(mes_obj['fail']);

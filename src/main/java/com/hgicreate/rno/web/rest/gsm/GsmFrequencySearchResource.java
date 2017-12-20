@@ -20,12 +20,13 @@ public class GsmFrequencySearchResource {
     }
 
     @PostMapping("/update-cell-freq-by-cellId")
-    public void updateCellFreqByCellId(GsmFrequencyUpdateVM vm){
+    public boolean updateCellFreqByCellId(GsmFrequencyUpdateVM vm){
         log.debug("更新频点参数bcch={},tch={},cellId={}",
                 vm.getBcch(),vm.getTch(),vm.getCellId());
         GsmCell gsmCell = gsmCellDataRepository.findOne(vm.getCellId());
         gsmCell.setBcch(Integer.parseInt(vm.getBcch()));
         gsmCell.setTch(vm.getTch());
         gsmCellDataRepository.save(gsmCell);
+        return true;
     }
 }

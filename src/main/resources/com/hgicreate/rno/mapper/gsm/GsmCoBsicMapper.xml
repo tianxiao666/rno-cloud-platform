@@ -31,11 +31,11 @@
     </select>
     <select id="queryCommonNcellByTwoCell" parameterType="java.lang.String"
         resultType="com.hgicreate.rno.domain.gsm.GsmNcellRelation">
-        select * from RNO_GSM_NCELL_RELATION where NCELL_ID = #{sourceCell}
+        select id,CELL_ID,NCELL_ID,CREATED_USER,CREATED_DATE,DESC_ID from RNO_GSM_NCELL_RELATION where NCELL_ID = #{sourceCell}
         and CELL_ID in (select CELL_ID from RNO_GSM_CELL where NCELL_ID = #{targetCell})
     </select>
     <select id="queryNcell" parameterType="java.lang.String" resultType="com.hgicreate.rno.domain.gsm.GsmNcellRelation">
-        select * from RNO_GSM_NCELL_RELATION where CELL_ID = #{sourceCell} and NCELL_ID = #{targetCell}
+        select id,CELL_ID,NCELL_ID,CREATED_USER,CREATED_DATE,DESC_ID from RNO_GSM_NCELL_RELATION where CELL_ID = #{sourceCell} and NCELL_ID = #{targetCell}
     </select>
     <select id="getLonLatsByCells" parameterType="java.lang.String" resultType="java.lang.String">
         select wmsys.wm_concat(LONGITUDE||','||LATITUDE) as lonlats from RNO_GSM_CELL

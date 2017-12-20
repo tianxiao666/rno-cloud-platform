@@ -513,8 +513,10 @@ function updateCellFreq() {
             },
             dataType : 'json',
             type : 'post',
-            success : function() {
-                showInfoInAndOut("info","更新频点成功！")
+            success : function(data) {
+                $("#freq_dialogId").hide();
+                $("#info").css("background","green");
+                showInfoInAndOut("info","更新频点成功！");
             },
             error : function(xhr, textstatus, e) {
                 //出错隐藏编辑窗口
