@@ -1,0 +1,28 @@
+package com.hgicreate.rno.domain.gsm;
+
+import com.hgicreate.rno.domain.Area;
+import lombok.Data;
+
+import javax.persistence.*;
+import java.util.Date;
+
+@Data
+@Entity
+@Table(name = "RNO_LTE_NCELL_DESC")
+public class GsmLteNcellDesc {
+    @Id
+    private Long id;
+
+    private String filename;
+    private String dataType;
+    private Integer recordCount;
+    private String createdUser;
+    private Date createdDate;
+
+    @OneToOne
+    @JoinColumn(name = "area_id", referencedColumnName = "id")
+    private Area area;
+
+    private Integer jobId;
+    private Integer originFileId;
+}

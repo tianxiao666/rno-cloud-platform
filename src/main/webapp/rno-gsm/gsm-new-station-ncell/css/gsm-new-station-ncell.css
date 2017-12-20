@@ -23,6 +23,27 @@ blockquote, q {
 blockquote::before, blockquote::after, q::before, q::after {
     content: none;
 }
+.upload-progress {
+    position: relative;
+    width: 700px;
+    border: 1px solid #ddd;
+    padding: 1px;
+    border-radius: 3px;
+    display: none;
+}
+.bar {
+    background-color: #B4F5B4;
+    width: 0;
+    height: 20px;
+    border-radius: 3px;
+}
+
+.percent {
+    position: absolute;
+    display: inline-block;
+    top: 3px;
+    left: 48%;
+}
 
 table {
     border-collapse: collapse;
