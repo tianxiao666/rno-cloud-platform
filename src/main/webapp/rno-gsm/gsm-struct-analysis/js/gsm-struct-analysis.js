@@ -141,28 +141,28 @@ $(function () {
         $(taskParamsObject).each(function () {
             taskParams[this.name] = this.value;
         });
-        $("#SAMEFREQINTERTHRESHOLD").text(taskParams["SAMEFREQINTERTHRESHOLD"]);
-        $("#OVERSHOOTINGIDEALDISMULTIPLE").text(taskParams["OVERSHOOTINGIDEALDISMULTIPLE"]);
-        $("#BETWEENCELLIDEALDISMULTIPLE").text(taskParams["BETWEENCELLIDEALDISMULTIPLE"]);
-        $("#CELLCHECKTIMESIDEALDISMULTIPLE").text(taskParams["CELLCHECKTIMESIDEALDISMULTIPLE"]);
-        $("#CELLDETECTCITHRESHOLD").text(taskParams["CELLDETECTCITHRESHOLD"]);
-        $("#CELLIDEALDISREFERENCECELLNUM").text(taskParams["CELLIDEALDISREFERENCECELLNUM"]);
-        $("#GSM900CELLFREQNUM").text(taskParams["GSM900CELLFREQNUM"]);
-        $("#GSM1800CELLFREQNUM").text(taskParams["GSM1800CELLFREQNUM"]);
-        $("#GSM900CELLIDEALCAPACITY").text(taskParams["GSM900CELLIDEALCAPACITY"]);
-        $("#GSM1800CELLIDEALCAPACITY").text(taskParams["GSM1800CELLIDEALCAPACITY"]);
-        $("#DLCOVERMINIMUMSIGNALSTRENGTHTHRESHOLD").text(taskParams["DLCOVERMINIMUMSIGNALSTRENGTHTHRESHOLD"]);
-        $("#ULCOVERMINIMUMSIGNALSTRENGTHTHRESHOLD").text(taskParams["ULCOVERMINIMUMSIGNALSTRENGTHTHRESHOLD"]);
-        $("#INTERFACTORMOSTDISTANT").text(taskParams["INTERFACTORMOSTDISTANT"]);
-        $("#INTERFACTORSAMEANDADJFREQMINIMUMTHRESHOLD").text(taskParams["INTERFACTORSAMEANDADJFREQMINIMUMTHRESHOLD"]);
-        $("#RELATIONNCELLCITHRESHOLD").text(taskParams["RELATIONNCELLCITHRESHOLD"]);
+        $("#SAMEFREQINTERTHRESHOLD").text(taskParams["sameFreqInterThreshold"]);
+        $("#OVERSHOOTINGIDEALDISMULTIPLE").text(taskParams["overShootingIdealDisMultiple"]);
+        $("#BETWEENCELLIDEALDISMULTIPLE").text(taskParams["betweenNcellIdealDisMultiple"]);
+        $("#CELLCHECKTIMESIDEALDISMULTIPLE").text(taskParams["cellCheckTimesIdealDisMultiple"]);
+        $("#CELLDETECTCITHRESHOLD").text(taskParams["cellDetectCiThreshold"]);
+        $("#CELLIDEALDISREFERENCECELLNUM").text(taskParams["cellIdealDisReferenceCellNum"]);
+        $("#GSM900CELLFREQNUM").text(taskParams["gsm900CellFreqNum"]);
+        $("#GSM1800CELLFREQNUM").text(taskParams["gsm1800CellFreqNum"]);
+        $("#GSM900CELLIDEALCAPACITY").text(taskParams["gsm900CellIdealCapacity"]);
+        $("#GSM1800CELLIDEALCAPACITY").text(taskParams["gsm1800CellIdealCapacity"]);
+        $("#DLCOVERMINIMUMSIGNALSTRENGTHTHRESHOLD").text(taskParams["dlCoverMiniMumSignalStrengthThreshold"]);
+        $("#ULCOVERMINIMUMSIGNALSTRENGTHTHRESHOLD").text(taskParams["ulCoverMiniMumSignalStrengthThreshold"]);
+        $("#INTERFACTORMOSTDISTANT").text(taskParams["interFactorMostDistant"]);
+        $("#INTERFACTORSAMEANDADJFREQMINIMUMTHRESHOLD").text(taskParams["interFactorSameAndAdjFreqMiniMumThreshold"]);
+        $("#RELATIONNCELLCITHRESHOLD").text(taskParams["relationNcellCiThreshold"]);
 
-        $("#TOTALSAMPLECNTSMALL").text(taskParams["TOTALSAMPLECNTSMALL"]);
-        $("#TOTALSAMPLECNTTOOSMALL").text(taskParams["TOTALSAMPLECNTTOOSMALL"]);
-        $("#SAMEFREQINTERCOEFBIG").text(taskParams["SAMEFREQINTERCOEFBIG"]);
-        $("#SAMEFREQINTERCOEFSMALL").text(taskParams["SAMEFREQINTERCOEFSMALL"]);
-        $("#OVERSHOOTINGCOEFRFFERDISTANT").text(taskParams["OVERSHOOTINGCOEFRFFERDISTANT"]);
-        $("#NONNCELLSAMEFREQINTERCOEF").text(taskParams["NONNCELLSAMEFREQINTERCOEF"]);
+        $("#TOTALSAMPLECNTSMALL").text(taskParams["totalSampleCntSmall"]);
+        $("#TOTALSAMPLECNTTOOSMALL").text(taskParams["totalSampleCntTooSmall"]);
+        $("#SAMEFREQINTERCOEFBIG").text(taskParams["sameFreqInterCoefBig"]);
+        $("#SAMEFREQINTERCOEFSMALL").text(taskParams["sameFreqInterCoefSmall"]);
+        $("#OVERSHOOTINGCOEFRFFERDISTANT").text(taskParams["overShootingCoefRfferDistant"]);
+        $("#NONNCELLSAMEFREQINTERCOEF").text(taskParams["nonNcellSameFreqInterCoef"]);
     }
 
     // 显示任务详细信息
@@ -449,27 +449,27 @@ function paramsSubmit() {
         $("span#RELATIONNCELLCITHRESHOLD1").html("※值需大于等于0.03※");
         return;
     }
-    var taskParams = [{"name": "SAMEFREQINTERTHRESHOLD", "value": SAMEFREQINTERTHRESHOLD},
-        {"name": "OVERSHOOTINGIDEALDISMULTIPLE", "value": OVERSHOOTINGIDEALDISMULTIPLE},
-        {"name": "BETWEENCELLIDEALDISMULTIPLE", "value": BETWEENCELLIDEALDISMULTIPLE},
-        {"name": "CELLCHECKTIMESIDEALDISMULTIPLE", "value": CELLCHECKTIMESIDEALDISMULTIPLE},
-        {"name": "CELLDETECTCITHRESHOLD", "value": CELLDETECTCITHRESHOLD},
-        {"name": "CELLIDEALDISREFERENCECELLNUM", "value": CELLIDEALDISREFERENCECELLNUM},
-        {"name": "GSM900CELLFREQNUM", "value": GSM900CELLFREQNUM},
-        {"name": "GSM1800CELLFREQNUM", "value": GSM1800CELLFREQNUM},
-        {"name": "GSM900CELLIDEALCAPACITY", "value": GSM900CELLIDEALCAPACITY},
-        {"name": "GSM1800CELLIDEALCAPACITY", "value": GSM1800CELLIDEALCAPACITY},
-        {"name": "DLCOVERMINIMUMSIGNALSTRENGTHTHRESHOLD", "value": DLCOVERMINIMUMSIGNALSTRENGTHTHRESHOLD},
-        {"name": "ULCOVERMINIMUMSIGNALSTRENGTHTHRESHOLD", "value": ULCOVERMINIMUMSIGNALSTRENGTHTHRESHOLD},
-        {"name": "INTERFACTORMOSTDISTANT", "value": INTERFACTORMOSTDISTANT},
-        {"name": "INTERFACTORSAMEANDADJFREQMINIMUMTHRESHOLD", "value": INTERFACTORSAMEANDADJFREQMINIMUMTHRESHOLD},
-        {"name": "RELATIONNCELLCITHRESHOLD", "value": RELATIONNCELLCITHRESHOLD},
-        {"name": "TOTALSAMPLECNTSMALL", "value": TOTALSAMPLECNTSMALL},
-        {"name": "TOTALSAMPLECNTTOOSMALL", "value": TOTALSAMPLECNTTOOSMALL},
-        {"name": "SAMEFREQINTERCOEFBIG", "value": SAMEFREQINTERCOEFBIG},
-        {"name": "SAMEFREQINTERCOEFSMALL", "value": SAMEFREQINTERCOEFSMALL},
-        {"name": "OVERSHOOTINGCOEFRFFERDISTANT", "value": OVERSHOOTINGCOEFRFFERDISTANT},
-        {"name": "NONNCELLSAMEFREQINTERCOEF", "value": NONNCELLSAMEFREQINTERCOEF}];
+    var taskParams = [{"name": "sameFreqInterThreshold", "value": SAMEFREQINTERTHRESHOLD},
+        {"name": "overShootingIdealDisMultiple", "value": OVERSHOOTINGIDEALDISMULTIPLE},
+        {"name": "betweenNcellIdealDisMultiple", "value": BETWEENCELLIDEALDISMULTIPLE},
+        {"name": "cellCheckTimesIdealDisMultiple", "value": CELLCHECKTIMESIDEALDISMULTIPLE},
+        {"name": "cellDetectCiThreshold", "value": CELLDETECTCITHRESHOLD},
+        {"name": "cellIdealDisReferenceCellNum", "value": CELLIDEALDISREFERENCECELLNUM},
+        {"name": "gsm900CellFreqNum", "value": GSM900CELLFREQNUM},
+        {"name": "gsm1800CellFreqNum", "value": GSM1800CELLFREQNUM},
+        {"name": "gsm900CellIdealCapacity", "value": GSM900CELLIDEALCAPACITY},
+        {"name": "gsm1800CellIdealCapacity", "value": GSM1800CELLIDEALCAPACITY},
+        {"name": "dlCoverMiniMumSignalStrengthThreshold", "value": DLCOVERMINIMUMSIGNALSTRENGTHTHRESHOLD},
+        {"name": "ulCoverMiniMumSignalStrengthThreshold", "value": ULCOVERMINIMUMSIGNALSTRENGTHTHRESHOLD},
+        {"name": "interFactorMostDistant", "value": INTERFACTORMOSTDISTANT},
+        {"name": "interFactorSameAndAdjFreqMiniMumThreshold", "value": INTERFACTORSAMEANDADJFREQMINIMUMTHRESHOLD},
+        {"name": "relationNcellCiThreshold", "value": RELATIONNCELLCITHRESHOLD},
+        {"name": "totalSampleCntSmall", "value": TOTALSAMPLECNTSMALL},
+        {"name": "totalSampleCntTooSmall", "value": TOTALSAMPLECNTTOOSMALL},
+        {"name": "sameFreqInterCoefBig", "value": SAMEFREQINTERCOEFBIG},
+        {"name": "sameFreqInterCoefSmall", "value": SAMEFREQINTERCOEFSMALL},
+        {"name": "overShootingCoefRfferDistant", "value": OVERSHOOTINGCOEFRFFERDISTANT},
+        {"name": "nonNcellSameFreqInterCoef", "value": NONNCELLSAMEFREQINTERCOEF}];
     console.log(JSON.stringify(taskParams));
     localStorage.setItem("taskParamsStr", JSON.stringify(taskParams));
     var taskInfoStr = localStorage.getItem("taskInfoStr");
@@ -560,6 +560,7 @@ function showStructTaskResult(data) {
         ],
         "lengthChange": false,
         "ordering": true,
+        "order":[[5,"desc"]],
         "searching": false,
         "destroy": true,
         "language": {

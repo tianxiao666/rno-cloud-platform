@@ -18,6 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -55,90 +57,90 @@ public class GsmStructAnalysisService {
         return gsmStructAnalysisQueryMapper.taskQuery(vm);
     }
 
-    public List<Map<String,Object>> queryFileNumber(GsmStructTaskInfoVM vm) throws ParseException {
+    public List<Map<String, Object>> queryFileNumber(GsmStructTaskInfoVM vm) throws ParseException {
         Area area = new Area();
         area.setId(vm.getCityId());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
         Date beginDate = sdf.parse(vm.getBegMeaDate());
         Date endDate = sdf.parse(vm.getEndMeaDate());
-        List<GsmMrrDesc> mrrList = gsmMrrDescRepository.findTop1000ByAreaAndMeaDateBetween(area,beginDate,endDate);
-        List<GsmEriNcsDesc> ncsList = gsmEriNcsDescRepository.findTop1000ByAreaAndMeaTimeBetween(area,beginDate,endDate);
-        List<Map<String,Object>> resultList = new ArrayList<>();
-        List<Date> dateList = findDates(beginDate,endDate);
-        for(Date meaDate:dateList){
+        List<GsmMrrDesc> mrrList = gsmMrrDescRepository.findTop1000ByAreaAndMeaDateBetween(area, beginDate, endDate);
+        List<GsmEriNcsDesc> ncsList = gsmEriNcsDescRepository.findTop1000ByAreaAndMeaTimeBetween(area, beginDate, endDate);
+        List<Map<String, Object>> resultList = new ArrayList<>();
+        List<Date> dateList = findDates(beginDate, endDate);
+        for (Date meaDate : dateList) {
             List<String> mrrFileList = new ArrayList<>();
             List<String> ncsFileList = new ArrayList<>();
             List<String> bscFileList = new ArrayList<>();
-            Map<String,Object> map = new HashMap<>();
+            Map<String, Object> map = new HashMap<>();
             String meaDateStr = sdf1.format(meaDate);
-            map.put("dateTime",meaDateStr);
-            if(mrrList.size()>0){
-                for(GsmMrrDesc gsmMrrDesc:mrrList){
+            map.put("dateTime", meaDateStr);
+            if (mrrList.size() > 0) {
+                for (GsmMrrDesc gsmMrrDesc : mrrList) {
                     String meaTime = sdf1.format(gsmMrrDesc.getMeaDate());
-                    if(meaDateStr.equals(meaTime)&&!(mrrFileList.contains(gsmMrrDesc.getFileName()))){
+                    if (meaDateStr.equals(meaTime) && !(mrrFileList.contains(gsmMrrDesc.getFileName()))) {
                         mrrFileList.add(gsmMrrDesc.getFileName());
                     }
-                    if(meaDateStr.equals(meaTime)&&!(bscFileList.contains(gsmMrrDesc.getBsc()))){
+                    if (meaDateStr.equals(meaTime) && !(bscFileList.contains(gsmMrrDesc.getBsc()))) {
                         bscFileList.add(gsmMrrDesc.getBsc());
                     }
                 }
-                map.put("mrrNum",mrrFileList.size());
-            }else{
-                map.put("mrrNum","--");
+                map.put("mrrNum", mrrFileList.size());
+            } else {
+                map.put("mrrNum", "--");
             }
-            if(ncsList.size()>0){
-                for(GsmEriNcsDesc gsmEriNcsDesc:ncsList){
+            if (ncsList.size() > 0) {
+                for (GsmEriNcsDesc gsmEriNcsDesc : ncsList) {
                     String meaTime = sdf1.format(gsmEriNcsDesc.getMeaTime());
-                    if(meaDateStr.equals(meaTime)&&!(ncsFileList.contains(gsmEriNcsDesc.getRno_2gEriNcsDescId().toString()))){
+                    if (meaDateStr.equals(meaTime) && !(ncsFileList.contains(gsmEriNcsDesc.getRno_2gEriNcsDescId().toString()))) {
                         ncsFileList.add(gsmEriNcsDesc.getRno_2gEriNcsDescId().toString());
                     }
-                    if(meaDateStr.equals(meaTime)&&!(bscFileList.contains(gsmEriNcsDesc.getBsc()))){
+                    if (meaDateStr.equals(meaTime) && !(bscFileList.contains(gsmEriNcsDesc.getBsc()))) {
                         bscFileList.add(gsmEriNcsDesc.getBsc());
                     }
                 }
-                map.put("ncsNum",ncsFileList.size());
-            }else {
-                map.put("ncsNum","--");
+                map.put("ncsNum", ncsFileList.size());
+            } else {
+                map.put("ncsNum", "--");
             }
-            if(bscFileList.size()>0){
-                map.put("bscNum",bscFileList.size());
-            }else {
-                map.put("bscNum","--");
+            if (bscFileList.size() > 0) {
+                map.put("bscNum", bscFileList.size());
+            } else {
+                map.put("bscNum", "--");
             }
             resultList.add(map);
         }
         return resultList;
     }
 
-    public String saveGsmStructAnaResult(Long cityId){
+    public String saveGsmStructAnaResult(Long cityId) {
         List<GsmCell> cellList = gsmCellDataRepository.findByArea_Id(cityId);
         Area area = areaRepository.findById(cityId);
-        List<Map<String, Object>> indexSumLists = doIndexSum(cellList,area);
-        List<Map<String, Object>> indexLists = doOverLayIndex(cellList,area);
+        List<Map<String, Object>> indexSumLists = doIndexSum(cellList, area);
+        List<Map<String, Object>> indexLists = doOverLayIndex(cellList, area);
         saveIndexSum(indexSumLists);
         saveOverLayIndex(indexLists);
-        String realUserDataName = "d:/tmp/rno-cloud-platform/downloads/"+"GSM结构优化分析结果.zip";
-        try{
+        String realUserDataName = "d:/tmp/rno-cloud-platform/downloads/" + "GSM结构优化分析结果.zip";
+        try {
             ZipFileHandler.zip("d:/tmp/rno-cloud-platform/downloads/temp/", "", realUserDataName);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             // 删除临时目录
             try {
                 File file = new File("d:/tmp/rno-cloud-platform/downloads/temp/");
                 if (file.exists()) {//判断文件是否存在
                     if (file.isFile()) {//判断是否是文件
-                        log.debug("文件是否删除成功：{}",file.delete());//删除文件
+                        log.debug("文件是否删除成功：{}", file.delete());//删除文件
                     } else if (file.isDirectory()) {//否则如果它是一个目录
                         File[] files = file.listFiles();//声明目录下所有的文件 files[];
-                        if(files!=null){
-                            for (int i = 0;i < files.length;i ++) {//遍历目录下所有的文件
-                                log.debug("文件是否删除成功：{}",files[i].delete());
+                        if (files != null) {
+                            for (int i = 0; i < files.length; i++) {//遍历目录下所有的文件
+                                log.debug("文件是否删除成功：{}", files[i].delete());
                             }
                         }
                         //删除文件夹
-                        log.debug("文件夹是否删除成功：{}",file.delete());
+                        log.debug("文件夹是否删除成功：{}", file.delete());
                     }
                 }
             } catch (Exception e2) {
@@ -148,46 +150,46 @@ public class GsmStructAnalysisService {
         return realUserDataName;
     }
 
-    public List<Map<String, Object>> doIndexSum(List<GsmCell> cellList,Area area){
+    public List<Map<String, Object>> doIndexSum(List<GsmCell> cellList, Area area) {
         List<Map<String, Object>> indexSumLists = new ArrayList<>();
-        for(GsmCell gsmCell:cellList){
+        for (GsmCell gsmCell : cellList) {
             double rate = Math.random();
-            Map<String,Object> map = new HashMap<>();
-            map.put("cityName",area.getName());
-            map.put("cellId",gsmCell.getCellId());
-            map.put("cellName",gsmCell.getCellName());
-            if(rate<0.9){
-                map.put("weakFlag","是");
-            }else{
-                map.put("weakFlag","否");
+            Map<String, Object> map = new HashMap<>();
+            map.put("cityName", area.getName());
+            map.put("cellId", gsmCell.getCellId());
+            map.put("cellName", gsmCell.getCellName());
+            if (rate < 0.9) {
+                map.put("weakFlag", "是");
+            } else {
+                map.put("weakFlag", "否");
             }
             rate = Math.random();
-            if(rate<0.9){
-                map.put("overLayFlag","否");
-            }else{
-                map.put("overLayFlag","是");
+            if (rate < 0.9) {
+                map.put("overLayFlag", "否");
+            } else {
+                map.put("overLayFlag", "是");
             }
             rate = Math.random();
-            if(rate>0.96){
-                map.put("overCoverGroupFlag","是");
+            if (rate > 0.96) {
+                map.put("overCoverGroupFlag", "是");
             }
             rate = Math.random();
-            if(rate<0.3){
-                map.put("overCoverGroupCnt","1");
+            if (rate < 0.3) {
+                map.put("overCoverGroupCnt", "1");
             }
-            if(rate<0.1){
-                map.put("overCoverGroupCnt","2");
+            if (rate < 0.1) {
+                map.put("overCoverGroupCnt", "2");
             }
-            if(rate<0.05){
-                map.put("overCoverGroupCnt","3");
-            }
-            rate = Math.random();
-            if(rate<0.1){
-                map.put("overCoverProVinFlag","是");
+            if (rate < 0.05) {
+                map.put("overCoverGroupCnt", "3");
             }
             rate = Math.random();
-            if(rate<0.03){
-                map.put("overCoverProVinCnt","1");
+            if (rate < 0.1) {
+                map.put("overCoverProVinFlag", "是");
+            }
+            rate = Math.random();
+            if (rate < 0.03) {
+                map.put("overCoverProVinCnt", "1");
             }
             indexSumLists.add(map);
         }
@@ -198,18 +200,18 @@ public class GsmStructAnalysisService {
     private void saveIndexSum(List<Map<String, Object>> indexSumLists) {
         log.debug("进入方法：saveIndexSum");
         BufferedWriter bw = null;
-        String directory ="d:/tmp/rno-cloud-platform/downloads/temp/";
+        String directory = "d:/tmp/rno-cloud-platform/downloads/temp/";
         File fileDirectory = new File(directory);
-        if(!fileDirectory.exists()){
+        if (!fileDirectory.exists()) {
             fileDirectory.mkdirs();
         }
-        String saveFullPath = directory+"指标汇总.csv";
+        String saveFullPath = directory + "指标汇总.csv";
         log.debug("保存指标汇总，saveFullPath=" + saveFullPath);
         try {
             bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(saveFullPath), "gbk"));
             StringBuffer buf = new StringBuffer();
             // 输出指标汇总标题
-            List<String> titles = Arrays.asList("城市","CELLID", "小区名", "弱覆盖", "重叠覆盖", "过覆盖", "过覆盖数", "1.6过覆盖", "1.6过覆盖数");
+            List<String> titles = Arrays.asList("城市", "CELLID", "小区名", "弱覆盖", "重叠覆盖", "过覆盖", "过覆盖数", "1.6过覆盖", "1.6过覆盖数");
             for (String str : titles) {
                 buf.append(str).append(",");
             }
@@ -258,96 +260,96 @@ public class GsmStructAnalysisService {
         log.debug("退出方法：saveIndexSum。");
     }
 
-    private List<Map<String, Object>> doOverLayIndex(List<GsmCell> cellList,Area area) {
+    private List<Map<String, Object>> doOverLayIndex(List<GsmCell> cellList, Area area) {
         List<Map<String, Object>> indexLists = new ArrayList<>();
-        for(GsmCell gsmCell:cellList) {
+        for (GsmCell gsmCell : cellList) {
             Map<String, Object> map = new HashMap<>();
             map.put("cityName", area.getName());
             map.put("cellId", gsmCell.getCellId());
-            map.put("totalCnt",(int)(Math.random()*(16000)+15000));
-            if(Math.random()<0.97){
-                map.put("db105PartCnt",(int)(Math.random()*(19500)+500));
+            map.put("totalCnt", (int) (Math.random() * (16000) + 15000));
+            if (Math.random() < 0.97) {
+                map.put("db105PartCnt", (int) (Math.random() * (19500) + 500));
             }
-            if(Math.random()<0.05){
-                map.put("db110PartCnt","1");
+            if (Math.random() < 0.05) {
+                map.put("db110PartCnt", "1");
             }
-            if(Math.random()<0.97){
-                map.put("db105PartCntPer",(int)(Math.random()*(20000)+500));
+            if (Math.random() < 0.97) {
+                map.put("db105PartCntPer", (int) (Math.random() * (20000) + 500));
             }
             double rate = Math.random();
-            if(rate>0.35){
-                map.put("db110PartCntPer",rate);
+            if (rate > 0.35) {
+                map.put("db110PartCntPer", rate);
             }
-            if(Math.random()<0.85){
-                map.put("db11063PartCnt",(int)(Math.random()*(4500)+200));
+            if (Math.random() < 0.85) {
+                map.put("db11063PartCnt", (int) (Math.random() * (4500) + 200));
             }
-            if(Math.random()<0.85){
-                map.put("db11065PartCnt",(int)(Math.random()*(3500)+200));
+            if (Math.random() < 0.85) {
+                map.put("db11065PartCnt", (int) (Math.random() * (3500) + 200));
             }
-            if(Math.random()<0.85){
-                map.put("db110103PartCnt",(int)(Math.random()*(7500)+500));
+            if (Math.random() < 0.85) {
+                map.put("db110103PartCnt", (int) (Math.random() * (7500) + 500));
             }
-            if(Math.random()<0.06){
-                map.put("db110104PartCnt","1");
+            if (Math.random() < 0.06) {
+                map.put("db110104PartCnt", "1");
             }
-            if(Math.random()<0.85){
-                map.put("db110105PartCnt",(int)(Math.random()*(4000)+150));
+            if (Math.random() < 0.85) {
+                map.put("db110105PartCnt", (int) (Math.random() * (4000) + 150));
             }
-            if(Math.random()<0.06){
-                map.put("db110106PartCnt","1");
+            if (Math.random() < 0.06) {
+                map.put("db110106PartCnt", "1");
             }
-            if(Math.random()<0.86){
-                map.put("db11063PartCntPer",(int)(Math.random()*(1000)+50));
+            if (Math.random() < 0.86) {
+                map.put("db11063PartCntPer", (int) (Math.random() * (1000) + 50));
             }
-            if(Math.random()<0.86){
-                map.put("db11064PartCntPer",(int)(Math.random()*(1000)+50));
+            if (Math.random() < 0.86) {
+                map.put("db11064PartCntPer", (int) (Math.random() * (1000) + 50));
             }
-            if(Math.random()<0.86){
-                map.put("db11065PartCntPer",(int)(Math.random()*(1000)+50));
-            }
-            rate = Math.random();
-            if(rate<0.85){
-                map.put("db11066PartCntPer",Math.random()*(0.005)+0.005);
-            }
-            if(Math.random()<0.86){
-                map.put("db110103PartCntPer",(int)(Math.random()*(1000)+50));
-            }
-            if(Math.random()<0.86){
-                map.put("db110104PartCntPer",(int)(Math.random()*(1000)+50));
-            }
-            if(Math.random()<0.86){
-                map.put("db110105PartCntPer",(int)(Math.random()*(1000)+50));
+            if (Math.random() < 0.86) {
+                map.put("db11065PartCntPer", (int) (Math.random() * (1000) + 50));
             }
             rate = Math.random();
-            if(rate<0.85){
-                map.put("db110106PartCntPer",Math.random()*(0.005)+0.005);
+            if (rate < 0.85) {
+                map.put("db11066PartCntPer", Math.random() * (0.005) + 0.005);
             }
-            if(Math.random()<0.86){
-                map.put("db1101PartCnt",(int)(Math.random()*(5000)+50));
+            if (Math.random() < 0.86) {
+                map.put("db110103PartCntPer", (int) (Math.random() * (1000) + 50));
             }
-            if(Math.random()<0.86){
-                map.put("db1102PartCnt",(int)(Math.random()*(6000)+50));
+            if (Math.random() < 0.86) {
+                map.put("db110104PartCntPer", (int) (Math.random() * (1000) + 50));
             }
-            if(Math.random()<0.86){
-                map.put("db1103PartCnt",(int)(Math.random()*(8000)+50));
+            if (Math.random() < 0.86) {
+                map.put("db110105PartCntPer", (int) (Math.random() * (1000) + 50));
             }
-            if(Math.random()<0.86){
-                map.put("db1104PartCnt",(int)(Math.random()*(9000)+200));
+            rate = Math.random();
+            if (rate < 0.85) {
+                map.put("db110106PartCntPer", Math.random() * (0.005) + 0.005);
             }
-            if(Math.random()<0.86){
-                map.put("db1105PartCnt",(int)(Math.random()*(10000)+200));
+            if (Math.random() < 0.86) {
+                map.put("db1101PartCnt", (int) (Math.random() * (5000) + 50));
             }
-            if(Math.random()<0.86){
-                map.put("db1106PartCnt",(int)(Math.random()*(12000)+600));
+            if (Math.random() < 0.86) {
+                map.put("db1102PartCnt", (int) (Math.random() * (6000) + 50));
             }
-            if(Math.random()<0.86){
-                map.put("db1107PartCnt",(int)(Math.random()*(12000)+1200));
+            if (Math.random() < 0.86) {
+                map.put("db1103PartCnt", (int) (Math.random() * (8000) + 50));
             }
-            if(Math.random()<0.86){
-                map.put("db1108PartCnt",(int)(Math.random()*(18000)+3000));
+            if (Math.random() < 0.86) {
+                map.put("db1104PartCnt", (int) (Math.random() * (9000) + 200));
             }
-            if(Math.random()<0.86){
-                map.put("db1109PartCnt",(int)(Math.random()*(22000)+3500));
+            if (Math.random() < 0.86) {
+                map.put("db1105PartCnt", (int) (Math.random() * (10000) + 200));
+            }
+            if (Math.random() < 0.86) {
+                map.put("db1106PartCnt", (int) (Math.random() * (12000) + 600));
+            }
+            if (Math.random() < 0.86) {
+                map.put("db1107PartCnt", (int) (Math.random() * (12000) + 1200));
+            }
+            if (Math.random() < 0.86) {
+                map.put("db1108PartCnt", (int) (Math.random() * (18000) + 3000));
+            }
+            if (Math.random() < 0.86) {
+                map.put("db1109PartCnt", (int) (Math.random() * (22000) + 3500));
             }
             indexLists.add(map);
         }
@@ -356,14 +358,14 @@ public class GsmStructAnalysisService {
 
     // 生成重叠覆盖文件
     private void saveOverLayIndex(List<Map<String, Object>> indexLists) {
-        log.debug("进入方法：saveOverLayIndex。" );
+        log.debug("进入方法：saveOverLayIndex。");
         BufferedWriter bw = null;
-        String directory ="d:/tmp/rno-cloud-platform/downloads/temp/";
+        String directory = "d:/tmp/rno-cloud-platform/downloads/temp/";
         File fileDirectory = new File(directory);
-        if(!fileDirectory.exists()){
+        if (!fileDirectory.exists()) {
             fileDirectory.mkdirs();
         }
-        String saveFullPath = directory+ "重叠覆盖.csv";
+        String saveFullPath = directory + "重叠覆盖.csv";
         log.debug("保存重叠覆盖指标，saveFullPath=" + saveFullPath);
         try {
             bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(saveFullPath), "gbk"));
@@ -518,6 +520,75 @@ public class GsmStructAnalysisService {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    // 获取参数名及参数值
+    public List<Map<String, Object>> getParamsInfo(GsmStructTaskInfoVM vm) {
+        Field[] fields = vm.getClass().getDeclaredFields();
+        List<Map<String, Object>> list = new ArrayList<>();
+        Map<String, Object> infoMap;
+        for (int i = fields.length - 21; i < fields.length; i++) {
+            infoMap = new HashMap();
+            infoMap.put("type", "STRUCTANA_THRESHOLD");
+            infoMap.put("name", fields[i].getName().toUpperCase());
+            Object value = getFieldValueByName(fields[i].getName(), vm);
+            infoMap.put("value", value);
+            list.add(infoMap);
+        }
+        List<Map<String,Object>> infoParamList = new ArrayList<>();
+        Map<String,Object> mapParam = new HashMap<>();
+        mapParam.put("type","STRUCTANA_DATATYPE");
+        mapParam.put("name","useEriData");
+        infoParamList.add(mapParam);
+        mapParam = new HashMap<>();
+        mapParam.put("type","STRUCTANA_DATATYPE");
+        mapParam.put("name","useHwData");
+        infoParamList.add(mapParam);
+        mapParam = new HashMap<>();
+        mapParam.put("type","STRUCTANA_CALPROCE");
+        mapParam.put("name","calConCluster");
+        infoParamList.add(mapParam);
+        mapParam = new HashMap<>();
+        mapParam.put("type","STRUCTANA_CALPROCE");
+        mapParam.put("name","calClusterConstrain");
+        infoParamList.add(mapParam);
+        mapParam = new HashMap<>();
+        mapParam.put("type","STRUCTANA_CALPROCE");
+        mapParam.put("name","calClusterWeight");
+        infoParamList.add(mapParam);
+        mapParam = new HashMap<>();
+        mapParam.put("type","STRUCTANA_CALPROCE");
+        mapParam.put("name","calCellRes");
+        infoParamList.add(mapParam);
+        mapParam = new HashMap<>();
+        mapParam.put("type","STRUCTANA_CALPROCE");
+        mapParam.put("name","calIdealDis");
+        infoParamList.add(mapParam);
+        for(Map<String,Object> map:infoParamList){
+            infoMap = new HashMap();
+            infoMap.put("type", map.get("type").toString());
+            infoMap.put("name", map.get("name").toString().toUpperCase());
+            if ("on".equals(getFieldValueByName(map.get("name").toString(),vm))) {
+                infoMap.put("value", "Y");
+            }else{
+                infoMap.put("value", "N");
+            }
+            list.add(infoMap);
+        }
+        return list;
+    }
+
+    private Object getFieldValueByName(String fieldName, Object o) {
+        try {
+            String firstLetter = fieldName.substring(0, 1).toUpperCase();
+            String getter = "get" + firstLetter + fieldName.substring(1);
+            Method method = o.getClass().getMethod(getter, new Class[]{});
+            Object value = method.invoke(o, new Object[]{});
+            return value;
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            return null;
         }
     }
 

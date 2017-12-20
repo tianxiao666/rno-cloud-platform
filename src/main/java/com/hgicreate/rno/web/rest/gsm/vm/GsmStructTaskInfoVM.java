@@ -20,26 +20,26 @@ public class GsmStructTaskInfoVM {
     private String provinceName;
     private String cityName;
 
-    private String SAMEFREQINTERTHRESHOLD;
-    private String OVERSHOOTINGIDEALDISMULTIPLE ;
-    private String  BETWEENCELLIDEALDISMULTIPLE ;
-    private String  CELLCHECKTIMESIDEALDISMULTIPLE;
-    private String  CELLDETECTCITHRESHOLD;
-    private String  CELLIDEALDISREFERENCECELLNUM ;
-    private String  GSM900CELLFREQNUM;
-    private String  GSM1800CELLFREQNUM;
-    private String  GSM900CELLIDEALCAPACITY;
-    private String  GSM1800CELLIDEALCAPACITY;
-    private String  DLCOVERMINIMUMSIGNALSTRENGTHTHRESHOLD;
-    private String  ULCOVERMINIMUMSIGNALSTRENGTHTHRESHOLD;
-    private String  INTERFACTORMOSTDISTANT;
-    private String  INTERFACTORSAMEANDADJFREQMINIMUMTHRESHOLD;
-    private String  RELATIONNCELLCITHRESHOLD;
+    private String sameFreqInterThreshold;
+    private String overShootingIdealDisMultiple ;
+    private String  betweenNcellIdealDisMultiple ;
+    private String  cellCheckTimesIdealDisMultiple;
+    private String  cellDetectCiThreshold;
+    private String  cellIdealDisReferenceCellNum ;
+    private String  gsm900CellFreqNum;
+    private String  gsm1800CellFreqNum;
+    private String  gsm900CellIdealCapacity;
+    private String  gsm1800CellIdealCapacity;
+    private String  dlCoverMiniMumSignalStrengthThreshold;
+    private String  ulCoverMiniMumSignalStrengthThreshold;
+    private String  interFactorMostDistant;
+    private String  interFactorSameAndAdjFreqMiniMumThreshold;
+    private String  relationNcellCiThreshold;
 
-    private String  TOTALSAMPLECNTSMALL;
-    private String  TOTALSAMPLECNTTOOSMALL ;
-    private String  SAMEFREQINTERCOEFBIG ;
-    private String  SAMEFREQINTERCOEFSMALL;
-    private String  OVERSHOOTINGCOEFRFFERDISTANT;
-    private String  NONNCELLSAMEFREQINTERCOEF;
+    private String  totalSampleCntSmall;
+    private String  totalSampleCntTooSmall ;
+    private String  sameFreqInterCoefBig ;
+    private String  sameFreqInterCoefSmall;
+    private String  overShootingCoefRfferDistant;
+    private String  nonNcellSameFreqInterCoef;
 }
