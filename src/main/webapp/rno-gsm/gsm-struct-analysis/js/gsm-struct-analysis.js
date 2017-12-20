@@ -589,16 +589,18 @@ function submitTask() {
     $(taskParamsObject).each(function () {
         taskInfo[this.name] = this.value;
     });
+    $("#loadingDataDiv").css("display", "block");
     $.ajax({
         url: '/api/gsm-struct-analysis/submit-task',
         data: taskInfo,
         type: 'post',
         success: function () {
+            setTimeout("$(\"#loadingDataDiv\").css(\"display\", \"none\");",2000);
             $("#info").css("background", "green");
             showInfoInAndOut("info", "任务提交成功！");
         },
         complete: function () {
-            window.location.href = 'gsm-struct-analysis.html';
+            setTimeout("window.location.href = 'gsm-struct-analysis.html'",3000);
         }
     });
 }
@@ -684,7 +686,7 @@ function showTaskDetailInfo() {
             $("#taskMeaDateSubmit").text(taskInfo["begMeaDate"] + "-" + taskInfo["endMeaDate"]);
             $("#taskDescSubmit").text(taskInfo["taskDescription"]);
         }
-        $("#eriDataDetailTable").DataTable().clear();
+        // $("#eriDataDetailTable").DataTable().clear();
         $("#eriDataDetailTable").css("line-height", "12px");
         $("#eriDataDetailTable").DataTable({
             "data": JSON.parse(eriFileNum),
@@ -736,7 +738,7 @@ function showTaskDetailInfo() {
                 url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
             }
         });
-        $("#hwDataDetailTable").DataTable().clear();
+        // $("#hwDataDetailTable").DataTable().clear();
         $("#hwDataDetailTable").css("line-height", "12px");
         $("#hwDataDetailTable").DataTable({
             "data": JSON.parse(eriFileNum),
@@ -746,11 +748,12 @@ function showTaskDetailInfo() {
             ],
             "columnDefs": [{
                 "render": function (data, type, row) {
-                    if(row['bscNum']===0) {
-                        return "--";
-                    }else{
-                        return row['bscNum'];
-                    }
+                    // if(row['bscNum']===0) {
+                    //     return "--";
+                    // }else{
+                    //     return row['bscNum'];
+                    // }
+                    return "--";
                 },
                 "targets": 1,
                 "data": null
