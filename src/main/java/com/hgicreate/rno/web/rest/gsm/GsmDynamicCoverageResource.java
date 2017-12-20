@@ -15,14 +15,14 @@ import java.util.Map;
 @Slf4j
 @CrossOrigin
 @RestController
-@RequestMapping("/api/dynamicCoverageMapPage")
+@RequestMapping("/api/dynamic-coverage")
 public class GsmDynamicCoverageResource {
     private static Gson gson = new GsonBuilder().create();// 线程安全
     @Autowired
     private RnoNcsDynaCoverageService rnoNcsDynaCoverageService;
 
-    @RequestMapping("/getDynaCoverageDataForAction")
-    public String getDynaCoverageDataForAction(String enName, long cityId, String cellId, String startDate, String endDate) {
+    @RequestMapping("/get-dynamic-coverage-data")
+    public String getDynamicCoverageData(String enName, long cityId, String cellId, String startDate, String endDate) {
         log.debug("获取画小区动态覆盖图(曲线)所需的数据, cell=" + enName + ", cityId=" + cityId
                 + ", startDate=" + startDate + ", endDate=" + endDate);
         Map<String, List<Map<String, Object>>> res = rnoNcsDynaCoverageService
@@ -32,8 +32,8 @@ public class GsmDynamicCoverageResource {
         return result;
     }
 
-    @RequestMapping("/getNcellDetailsByCellandCityIdForAjaxAction")
-    public String getNcellDetailsByCellAndAreaIdForAjaxAction(String cell, long cityId) {
+    @RequestMapping("/get-ncell-details")
+    public String getNcellDetails(String cell, long cityId) {
         log.info("进入getNcellDetailsByCellandCityIdForAjaxAction方法,cell=" + cell + ",cityId=" + cityId);
 
         List<Map<String, Object>> res = rnoNcsDynaCoverageService.getNcellDetailsByCellAndAreaId(cell, cityId);

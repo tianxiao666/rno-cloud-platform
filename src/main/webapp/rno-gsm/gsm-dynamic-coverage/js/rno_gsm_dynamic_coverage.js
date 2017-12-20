@@ -567,7 +567,7 @@ function searchNcell(cellId) {
     }
     var ncells = new Array();
     $.ajax({
-        url: '/api/dynamicCoverageMapPage/getNcellDetailsByCellandCityIdForAjaxAction',
+        url: '/api/dynamic-coverage/get-ncell-details',
         data: {
             'cell': cellId,
             'cityId': $("#cityId").val(),
@@ -736,7 +736,7 @@ function showDynaCoverage(cellId, enName, cellLon, cellLat) {
         return;
     }
     $.ajax({
-        url: '/api/dynamicCoverageMapPage/getDynaCoverageDataForAction',
+        url: '/api/dynamic-coverage/get-dynamic-coverage-data',
         data: {
             'cityId': cityId,
             'cellId': cellId,
