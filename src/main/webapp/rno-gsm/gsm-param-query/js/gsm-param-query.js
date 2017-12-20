@@ -355,6 +355,9 @@ function showInfoInAndOut(div, info) {
     setTimeout("$('#" + div + "').fadeOut(2000)", 1000);
 }
 
+//datatable是否有data的标记
+var dataFlag = false;
+
 function searchRecord(type) {
     var param = $("#" + type + "_targetParam").find("option:selected").val();
     if (param === "ALL") {
@@ -387,6 +390,11 @@ function searchRecord(type) {
     var date = $("#" + type + "_targetDate").val();
     var cell = $("#" + type + "_targetCell").val().trim();
     var cityid = $("#" + "city-menu-" + type).find("option:selected").val();
+    if(dataFlag === true) {
+        $("#" + type + "ListTab").DataTable().clear();
+        $("#" + type + "ListTab").DataTable().destroy();
+        $("#" + type + "Table").html("");
+    }
     $(".loading").show();
     if (type === "cell" || type === "channel") {
         $.ajax({
@@ -403,11 +411,13 @@ function searchRecord(type) {
             dataType: "text",
             success: function (raw) {
                 $(".loading").css("display", "none");
-                var data = eval("(" + raw + ")");
+                data = eval("(" + raw + ")");
                 if (data.length === 0) {
+                    dataFlag = false
                     $("#info").css("background", "red");
                     showInfoInAndOut("info", "没有符合条件的数据");
                 } else {
+                    dataFlag = true;
                     var th = "";
                     var cloumn = "";
                     if(type === "cell") {
@@ -425,7 +435,6 @@ function searchRecord(type) {
                         th += "<th>" + p + "</th>";
                         cloumn += "{'data': '" + p + "'},";
                     }
-                    $("#" + type + "Table").html("");
                     $("#" + type + "Table").append("<tr>" + th + "</tr>");
                     cloumn += "]";
                     var cloumnData = eval("(" + cloumn + ")");
@@ -444,6 +453,7 @@ function searchRecord(type) {
                         });
                 }
             }, error: function (err) {
+                dataFlag = false;
                 $(".loading").css("display", "none");
                 $("#info").css("background", "red");
                 showInfoInAndOut("info", "后台程序错误！");
@@ -468,9 +478,11 @@ function searchRecord(type) {
                 $(".loading").css("display", "none");
                 var data = eval("(" + raw + ")");
                 if (data.length === 0) {
+                    dataFlag = false;
                     $("#info").css("background", "red");
                     showInfoInAndOut("info", "没有符合条件的数据");
                 } else {
+                    dataFlag = true;
                     var th = "<th>日期</th>" + "<th>MSC</th>" + "<th>BSC</th>" + "<th>CELL</th>" +
                         "<th>N_BSC</th>" + "<th>N_CELL</th>" ;
                     var cloumn = "[{'data': 'MEA_DATE'},{'data': 'MSC'}," +
@@ -498,6 +510,7 @@ function searchRecord(type) {
                         });
                 }
             }, error: function (err) {
+                dataFlag = false
                 $(".loading").css("display", "none");
                 $("#info").css("background", "red");
                 showInfoInAndOut("info", "后台程序错误！");
