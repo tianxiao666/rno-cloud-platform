@@ -127,8 +127,6 @@ $(function () {
                         "data": null
                     }
                     ],
-                    searching:false, //去掉搜索框
-                    bLengthChange:false,//去掉每页多少条框体
                     destroy:true, //Cannot reinitialise DataTable,解决重新加载表格内容问题
                     "language": {
                         url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
@@ -170,8 +168,6 @@ function queryDtData() {
                     { "data": "device" },
                     { "data": "version" }
                 ],
-                searching:false, //去掉搜索框
-                bLengthChange:false,//去掉每页多少条框体
                 destroy:true, //Cannot reinitialise DataTable,解决重新加载表格内容问题
                 "language": {
                     url: '../../lib/datatables/1.10.16/i18n/Chinese.json'

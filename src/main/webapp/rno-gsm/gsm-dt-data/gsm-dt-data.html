@@ -32,82 +32,6 @@
             </li>
         </ul>
         <div id="tabs-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom">
-            <!--<form id="formImportDT" enctype="multipart/form-data" method="post">
-                <input name="fileCode" value="GSMDTDLLOGFILE" class="canclear" type="hidden">
-                <div>
-                    <table class="main-table1 half-width" style="width: 50%; margin-left: 0">
-                        <tbody>
-                        <tr>
-                            <td class="menuTd">所属地市<span class="txt-impt">*</span>
-                            </td>
-                            <td style=" font-weight: normal;" colspan="0">
-                                <select  id="province-id" title="">
-
-                            </select> <select class="required" id="city-id" title="">
-
-                            </select> <select name="areaId" class="required" id="area-id" title="">
-
-                            </select>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td class="menuTd">DT测量文件（TXT）<span class="txt-impt">*</span>
-                            </td>
-                            <td style="width: 50%; font-weight: bold" colspan="0">
-                                <input style="width: 44%;" name="file" id="fileid" class="canclear required"
-                                       type="file">
-                                <span style="color:red;width:100px;font-family:华文中宋;text-align:center"
-                                      id="fileDiv"></span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="menuTd">测试任务名称<span class="txt-impt">*</span></td>
-                            <td><input name="taskName" id="taskname" class="required"
-                                       type="text">
-                                <span style="color:red;width:100px;font-family:华文中宋;text-align:center"
-                                      id="tasknameDiv"></span>
-                            </td>
-                        </tr>
-                        </tbody>
-
-
-                    </table>
-                </div>
-                <div class="container-bottom" style="padding-top: 10px">
-                    <table style="width: 60%; margin: auto" align="center">
-                        <tbody>
-                        <tr>
-                            <td>
-                                <input value="导    入" style="width: 90px;" id="importBtn" name="import" type="button">
-                                <br><br>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <div id="importResultDiv" class="container-bottom" style="padding-top: 10px">
-                        <div class="upload-progress">
-                            <div class="bar"></div>
-                            <div class="percent">0%</div>
-                        </div>
-                    </div>
-                    <div id="loadlistDiv" style="display:none">
-                        <table class="tb-transparent-standard" style="width:100%" id="loadlistTable1">
-                            <tbody>
-                            <tr>
-                                <th>测试任务名称</th>
-                                <th>网络制式</th>
-                                <th>测试类型</th>
-                                <th>测量时间</th>
-                                <th>厂家</th>
-                                <th>设备</th>
-                                <th>版本</th>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </form>-->
             <div id="listInfoDiv">
                 <form id="searchImportForm">
                     <td style=" font-weight: normal;" colspan="0">
@@ -257,35 +181,35 @@
              style="display: none;" aria-hidden="true">
             <form id="conditionForm" method="post">
                 <div>
-                    <table class="main-table1 half-width" style="width: 50%; padding-top: 10px; margin-left: 0">
+                    <table class="main-table1 half-width" style="width: 100%; padding-top: 10px; margin-left: 0">
                         <tbody>
                         <tr>
                             <td class="menuTd" style="text-align: center"><span
                                     style="padding-top: 0">区域</span></td>
                             <td class="menuTd" style="text-align: center">测试任务名称</td>
-                            <td class="menuTd" style="text-align: center">测试时间</td>
+                            <td class="menuTd" style="text-align: center;">测试时间</td>
+                            <td class="menuTd" style="text-align: center;width: auto"></td>
                         </tr>
 
                         <tr>
                             <td style="text-align: left">
-                                省：<select class="required" id="province-id2" title=""></select><br>
-                                市：<select class="required" id="city-id2" title=""></select> <br>
-                                区：<select name="areaId" class="required" id="area-id2" title=""></select>
+                                省：<select class="required" id="province-id2" style="height: 30px" title=""></select>
+                                市：<select class="required" id="city-id2" style="height: 30px" title=""></select>
+                                区：<select name="areaId" class="required" id="area-id2" style="height: 30px" title=""></select>
                             </td>
-                            <td style="text-align: left">
-                                <input id="testTaskName" name="taskName" style="width:95%" type="text" title=""><br>
+                            <td style="text-align: center">
+                                <input id="testTaskName" name="taskName" style="width:50%" type="text" title=""><br>
                                 <span style="color:red;width:100px;font-family:华文中宋,serif;text-align:center"></span>
                             </td>
-                            <td style="text-align: left">
-                                从<input value="" id="begUploadDate2" name="begUploadDate" class="hasDatepicker" type="text" title="">
-                                至：<input value="" id="endUploadDate2" name="endUploadDate" class="hasDatepicker" type="text" title="">
+                            <td style="text-align: center">
+                                从 <input id="begUploadDate2" name="begUploadDate" class="hasDatepicker" type="text" title="">
+                                至 <input id="endUploadDate2" name="endUploadDate" class="hasDatepicker" type="text" title="">
                             </td>
-                        </tr>
-                        <tr>
-                            <td style=" text-align: right" colspan="3">
+                            <td style="text-align: center;width: 5%">
                                 <input value="查  询" style="width: 90px;" name="search" title="" type="button" onclick="queryDtData()">
                             </td>
                         </tr>
+
                         </tbody>
                     </table>
                 </div>
