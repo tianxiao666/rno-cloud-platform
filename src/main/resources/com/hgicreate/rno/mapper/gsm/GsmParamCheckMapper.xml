@@ -218,7 +218,7 @@
     <select id="getEriCellCoBsicCheckResult"
             parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmParamCheckVM"
             resultType="java.util.Map">
-            select incell.bsc || '-' || incell.cell || '-' || decode(c.name,null,'空',c.name)|| '-' || decode(c.LONGITUDE,null,'空',c.LONGITUDE)|| ',' || decode(c.latitude,null,'空',c.latitude) cell,
+            select incell.bsc || '-' || incell.cell || '-' || decode(c.EN_NAME,null,'空',c.CELL_NAME)|| '-' || decode(c.LONGITUDE,null,'空',c.LONGITUDE)|| ',' || decode(c.latitude,null,'空',c.latitude) cell,
                     incell.bsic,                                                   
                     incell.bcch                                                    
                from (SELECT d.bsc, t.cell, t.BSIC, t.BCCH
@@ -247,8 +247,8 @@
                               ORDER BY c1.bcchno, c1.ncc || c1.bcc) t
                       left join RNO_GSM_BSC_DATA d on (d.ID = t.bsc)
                     ) incell
-                left join RNO_CELL c
-             on c.label = incell.cell
+                left join RNO_GSM_CELL c
+             on c.EN_NAME = incell.cell
     </select>
    <select id="getEriCellNcellNumCheckResult"
            parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmParamCheckVM"
@@ -431,7 +431,7 @@
         								c.longitude as lng,
         								c.latitude as lat
                                       from rno_gsm_eri_cell_ch_group g
-        							left join RNO_CELL c on (c.label = g.cell)
+        							left join RNO_GSM_CELL c on (c.EN_NAME = g.cell)
                                      where
                                     <if test="date1 != null and date1 != ''">
                                         g.mea_date = to_date('${date1}', 'yyyy-MM-dd')
@@ -484,7 +484,7 @@
                              				  c.latitude as n_lat
                                         from rno_gsm_eri_cell cell
                                         left join RNO_GSM_BSC_DATA d on (d.ID = cell.bsc)
-                                        left join RNO_CELL c on (c.label = cell.cell)
+                                        left join RNO_GSM_CELL c on (c.EN_NAME = cell.cell)
                                         where
                                         <if test="date1 != null and date1 != ''">
                                             cell.mea_date = to_date('${date1}', 'yyyy-MM-dd')

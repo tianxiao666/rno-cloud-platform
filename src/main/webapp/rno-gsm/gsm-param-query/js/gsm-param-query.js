@@ -170,12 +170,6 @@ function uploadParamValue(cityId, type) {
             }
             //cell参数
             if (type === "cell") {
-                /*for (var i = 0; i < cellParam.length; i++) {
-                    $("#cell_targetParam").append("<option value='" + cellParam[i] + "'>" +
-                        cellParam[i].split(".")[1] + "</option>");
-                    $("#cell_waitforselParam").append("<option value='" + cellParam[i] + "'>"+
-                        cellParam[i].split(".")[1] + "</option>");
-                }*/
                 for (var i = 0; i < cellParam.length; i++) {
                     $("#cell_targetParam").append("<option >" + cellParam[i] + "</option>");
                     $("#cell_waitforselParam").append("<option>" + cellParam[i] + "</option>");
@@ -356,13 +350,15 @@ function showInfoInAndOut(div, info) {
 }
 
 //datatable是否有data的标记
-var dataFlag = false;
+var cellFlag = false;
+var ncellFlag = false;
+var channelFlag = false;
+var typeFlag;
 
 function searchRecord(type) {
     var param = $("#" + type + "_targetParam").find("option:selected").val();
     if (param === "ALL") {
         param = "";
-        var paramStr;
         if(type === "cell") {
             for (var i = 0; i < cellParam.length; i++) {
                 param += cellParam[i];
@@ -390,7 +386,14 @@ function searchRecord(type) {
     var date = $("#" + type + "_targetDate").val();
     var cell = $("#" + type + "_targetCell").val().trim();
     var cityid = $("#" + "city-menu-" + type).find("option:selected").val();
-    if(dataFlag === true) {
+    if(type === "cell") {
+        typeFlag = cellFlag;
+    }else if(type === "channel"){
+        typeFlag = channelFlag;
+    }else if(type === "ncell") {
+        typeFlag = ncellFlag;
+    }
+    if(typeFlag === true) {
         $("#" + type + "ListTab").DataTable().clear();
         $("#" + type + "ListTab").DataTable().destroy();
         $("#" + type + "Table").html("");
@@ -413,11 +416,19 @@ function searchRecord(type) {
                 $(".loading").css("display", "none");
                 data = eval("(" + raw + ")");
                 if (data.length === 0) {
-                    dataFlag = false
+                    if(type === "cell") {
+                        cellFlag = false;
+                    }else {
+                        channelFlag = false;
+                    }
                     $("#info").css("background", "red");
                     showInfoInAndOut("info", "没有符合条件的数据");
                 } else {
-                    dataFlag = true;
+                    if(type === "cell") {
+                        cellFlag = true;
+                    }else {
+                        channelFlag = true;
+                    }
                     var th = "";
                     var cloumn = "";
                     if(type === "cell") {
@@ -453,7 +464,11 @@ function searchRecord(type) {
                         });
                 }
             }, error: function (err) {
-                dataFlag = false;
+                if(type === "cell") {
+                    cellFlag = false;
+                }else {
+                    channelFlag = false;
+                }
                 $(".loading").css("display", "none");
                 $("#info").css("background", "red");
                 showInfoInAndOut("info", "后台程序错误！");
@@ -478,11 +493,11 @@ function searchRecord(type) {
                 $(".loading").css("display", "none");
                 var data = eval("(" + raw + ")");
                 if (data.length === 0) {
-                    dataFlag = false;
+                    ncellFlag = false;
                     $("#info").css("background", "red");
                     showInfoInAndOut("info", "没有符合条件的数据");
                 } else {
-                    dataFlag = true;
+                    ncellFlag = true;
                     var th = "<th>日期</th>" + "<th>MSC</th>" + "<th>BSC</th>" + "<th>CELL</th>" +
                         "<th>N_BSC</th>" + "<th>N_CELL</th>" ;
                     var cloumn = "[{'data': 'MEA_DATE'},{'data': 'MSC'}," +
@@ -491,7 +506,6 @@ function searchRecord(type) {
                         th += "<th>" + p + "</th>";
                         cloumn += "{'data': '" + p + "'},";
                     }
-                    $("#ncellTable").html("");
                     $("#ncellTable").append("<tr>" + th + "</tr>");
                     cloumn += "]";
                     var cloumnData = eval("(" + cloumn + ")");
@@ -510,7 +524,7 @@ function searchRecord(type) {
                         });
                 }
             }, error: function (err) {
-                dataFlag = false
+                ncellFlag = false
                 $(".loading").css("display", "none");
                 $("#info").css("background", "red");
                 showInfoInAndOut("info", "后台程序错误！");

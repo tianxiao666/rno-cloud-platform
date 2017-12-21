@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hgicreate.rno.mapper.gsm.GsmMrrAnalysisMapper">
+    <select id="queryAllBscByAreaId" resultType="java.util.Map">
+      select mid1.EN_NAME as label,mid1.CELL_NAME as name, mid2.bsc as engname,mid2.vendor as manufacturers
+      from ( select distinct(d.EN_NAME),d.CELL_NAME,t.id
+      			from RNO_GSM_CELL d
+      			left JOIN RNO_GSM_BSC_DATA t
+      			on t.BSC = d.BSC
+      			where t.area_id = #{param1}
+      		) mid1
+	  left join (select id,bsc,vendor from RNO_GSM_BSC_DATA where status='N') mid2
+	  on mid1.id=mid2.id
+	  order by mid2.bsc,mid1.EN_NAME
+    </select>
+</mapper>

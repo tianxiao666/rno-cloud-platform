@@ -116,7 +116,7 @@ $(document).ready(
 //				var str=$(this).text();
 				$(this).text($(this).attr("part"));
 			});
-		
+
 
 			// 模糊查询
 			$("#inputCell").keyup(function() {
@@ -129,7 +129,7 @@ $(document).ready(
 			//新的开始
 //			generateCellIndexChart(cellIndexObj,"chartDiv","line","Rxlev",chartType);
 			defaultCellIndexChart(cellIndexObj,"chartDiv",true);
-			$("#mrrInfoTab tr:first td").text($("#mrrDateType").find("option:selected").text()+"测量信息"); 
+			$("#mrrInfoTab tr:first td").text($("#mrrDateType").find("option:selected").text()+"测量信息");
 			//全屏展现
 			$("#fullScreen").click(function(){
 				//click全屏
@@ -146,7 +146,7 @@ $(document).ready(
 			//日期选择器
 			//timeFormat: "HH:mm:ss",datetimepicker
 		   $.datepicker.regional['zh-CN'] = {
-			       
+
 			        monthNames: ['一月','二月','三月','四月','五月','六月', '七月','八月','九月','十月','十一月','十二月'],
 			        monthNamesShort: ['一月','二月','三月','四月','五月','六月', '七月','八月','九月','十月','十一月','十二月'],
 			        dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],
@@ -163,7 +163,7 @@ $(document).ready(
 						defaultDate : "-2",
 						changeMonth : true,
 						numberOfMonths : 1,
-						showButtonPanel:true,//是否显示按钮面板  
+						showButtonPanel:true,//是否显示按钮面板
 						closeText: '关闭',
 						currentText:'加载数据',
 						gotoCurrent:true,
@@ -191,7 +191,7 @@ $(document).ready(
 							}
 						}
 					});
-			 
+
 //			$("#mrrMeaBegDate").datetimepicker("setDate",-30);// 减去2天
 //			console.log($('#mrrMeaBegDate').datepicker('option', 'buttonText'));
 //			$('#mrrMeaBegDate').datepicker('option', 'currentText','加载');
@@ -203,7 +203,7 @@ $(document).ready(
 						defaultDate :"+1w",
 						changeMonth : true,
 						numberOfMonths : 1,
-						showButtonPanel:true,//是否显示按钮面板  
+						showButtonPanel:true,//是否显示按钮面板
 						maxDate:new Date(),
 						closeText: '关闭',
 						currentText:'加载数据',
@@ -267,11 +267,11 @@ $(document).ready(
 						generateCellIndexChart(cellIndexObj,"chartDiv","bar","TA",chartType);
 					}
 				}
-				
+
 			});
 			//切换数据类型
 			$("#mrrDateType").change(function(){
-				getCellMrrList(selectCell,'chartDiv');				
+				getCellMrrList(selectCell,'chartDiv');
 			});
 			//选取不同信道组号
 			$("#mrrChgr").change(function(){
@@ -290,7 +290,7 @@ $(document).ready(
 			$("#mrrChartType").change(function(){
 				getCellMrrList(selectCell,'chartDiv');
 			});
-			
+
 		});
 
 /**
@@ -322,7 +322,7 @@ function matchCell() {
 				$(ele).closest("li").css("display", 'none');
 			}
 		});
-		
+
 	}
 			if(cell != ''){
 				$("span.bscCls").each(function(i, ele) {
@@ -339,7 +339,7 @@ function matchCell() {
 									count++;
 //									console.log("count:"+count);
 								}
-							
+
 					})
 					$(ele).text(bscstr+"(小区数量:"+count+")");
 					if(count==0){
@@ -369,7 +369,7 @@ function initAreaCascade() {
 
 /**
  * 获取包含有指定小区的ncs的信息
- * 
+ *
  * @param cell
  *//*
 function getCellNcsList(cell) {
@@ -465,7 +465,7 @@ function getCellNcsList(cell) {
 
 /**
  * 获取区域下的所有的bsc列表
- * 
+ *
  * @param cityId
  */
 /*function getAllBscCell(cityId) {
@@ -488,7 +488,7 @@ function getCellNcsList(cell) {
 				collapsed : true
 			});
 			$("span.cellCls").each(function(i, ele) {
-			
+
 			var str=$(ele).text();
 			$(ele).attr("all",str) ;
 			$(ele).attr("part",str.length>14?str.substring(0,14)+"...":str) ;
@@ -529,10 +529,10 @@ function getAllBscCell(cityId) {
 			var bscHtml = "";
 
 			for(var i=0; i<bscList.length; i++) {
-				bscHtml += "<li><span class='bscCls' id='"+bscList[i]+"'>" + bscList[i] + "(小区数量：" 
+				bscHtml += "<li><span class='bscCls' id='"+bscList[i]+"'>" + bscList[i] + "(小区数量："
 					+ bscToCells[bscList[i]].length + ")</span><ul id='"+bscList[i]+"'></ul></li>";
-			} 
-			
+			}
+
 			$("#allBscCell").html(bscHtml);
 			$("#allBscCell").treeview({
 				collapsed : true
@@ -548,11 +548,11 @@ function getAllBscCell(cityId) {
 				for(var i=0; i<cells.length; i++) {
 					all = cells[i]['LABEL'] + "(" + cells[i]['NAME'] + ")";
 					part = all.length>12?all.substring(0,12)+"...":all;
-					cellsHtml += "<li><span class='cellCls' data='" + cells[i]['LABEL'] + "'" 
-							+ " bsc='" + bsc + "'" 
-							+ " manufacturers='"+cells[i]['MANUFACTURERS']+"' " 
-							+ " all='"+all+"' " 
-							+ " part='"+part+"'>" 
+					cellsHtml += "<li><span class='cellCls' data='" + cells[i]['LABEL'] + "'"
+							+ " bsc='" + bsc + "'"
+							+ " manufacturers='"+cells[i]['MANUFACTURERS']+"' "
+							+ " all='"+all+"' "
+							+ " part='"+part+"'>"
 							+ part +"</span></li>";
 				}
 				$("ul#"+bsc).html(cellsHtml);
@@ -568,11 +568,11 @@ function getAllBscCell(cityId) {
 				for(var i=0; i<cells.length; i++) {
 					all = cells[i]['LABEL'] + "(" + cells[i]['NAME'] + ")";
 					part = all.length>12?all.substring(0,12)+"...":all;
-					cellsHtml += "<li><span class='cellCls' data='" + cells[i]['LABEL'] + "'" 
-							+ " bsc='" + bsc + "'" 
-							+ " manufacturers='"+cells[i]['MANUFACTURERS']+"' " 
-							+ " all='"+all+"' " 
-							+ " part='"+part+"'>" 
+					cellsHtml += "<li><span class='cellCls' data='" + cells[i]['LABEL'] + "'"
+							+ " bsc='" + bsc + "'"
+							+ " manufacturers='"+cells[i]['MANUFACTURERS']+"' "
+							+ " all='"+all+"' "
+							+ " part='"+part+"'>"
 							+ part +"</span></li>";
 				}
 				$("ul#"+bsc).html(cellsHtml);
@@ -600,7 +600,7 @@ function addDays(baseDate,day){
     return newD;
 }
 /**
- * 
+ *
  * @title 生成动态小区指标图表
  * @param data
  * @param chartDiv 装载图表容器
@@ -613,7 +613,7 @@ function addDays(baseDate,day){
  * @version 1.2
  */
 function generateCellIndexChart(data,chartDiv,disMode,dataType,chartType) {
-	
+
 	if (data == null || data == undefined) {
 		animateInAndOut("operInfo", 500, 500, 2000, "operTip", "无相关MRR数据！");
 		return;
@@ -650,7 +650,7 @@ function generateCellIndexChart(data,chartDiv,disMode,dataType,chartType) {
 						if(key.indexOf("RXLEVUL")!=-1){
 							UL[getNum(key)]=data[key];
 							axis.push(getNum(key)-110);
-							
+
 						}
 						if(key.indexOf("RXLEVDL")!=-1){
 							DL[getNum(key)]=data[key];
@@ -749,8 +749,8 @@ function generateCellIndexChart(data,chartDiv,disMode,dataType,chartType) {
 				axis.sort(function compare(a,b){return a-b;});
 				//填充测量信息表
 //				$("#mrrInfoTab tr").eq(0).nextAll().remove();
-				$("#mrrInfoTab tr:first td").text(dataType+"测量信息"); 
-				$("#mrrInfoTab tr:not(:first)").remove();  
+				$("#mrrInfoTab tr:first td").text(dataType+"测量信息");
+				$("#mrrInfoTab tr:not(:first)").remove();
 				$("#mrrInfoTab").append("<TR><td class='menuTd'>CELL_NAME</td><td>"+cell+"</td></TR>");
 				$("#mrrInfoTab").append("<TR><td class='menuTd'>CHANNEL_GROUP_NUM</td><td>"+(typeof(channel_group_num)=="undefined"?"全部":channel_group_num)+"</td></TR>");
 				for ( var i = 0; i < UL.length; i++) {
@@ -777,7 +777,7 @@ function generateCellIndexChart(data,chartDiv,disMode,dataType,chartType) {
 	        ],
 	        function (ec) {
 	            var myChart = ec.init(dom);
-	            
+
 	            myChart.showLoading({
 	                text : "图表数据正在努力加载..."
 	            });
@@ -787,7 +787,7 @@ function generateCellIndexChart(data,chartDiv,disMode,dataType,chartType) {
 	            	        text: dataType+'指标',
 	            	        subtext: title,
 	            			x: "center", //标题水平方向位置
-	            			subtextStyle:{color: '#4A4AFF'} 
+	            			subtextStyle:{color: '#4A4AFF'}
 	            	    },
 	            	    tooltip : {
 	            	        trigger: 'axis'
@@ -903,7 +903,7 @@ function generateCellIndexChart(data,chartDiv,disMode,dataType,chartType) {
 
 }
 /**
- * 
+ *
  * @title 获取包含有指定小区的mrr的信息
  * @param cell
  * @author chao.xj
@@ -952,7 +952,7 @@ function getCellMrrList(cell,chartDiv) {
 			if (obj == null || obj == undefined) {
 				defaultCellIndexChart(obj,"chartDiv",false);
 			}else{
-				
+
 				if("折线图"===mrrDisMode){
 					generateCellIndexChart(obj,chartDiv,"line",mrrDateType,mrrChartType);
 				}else if("柱状图"===mrrDisMode){
@@ -967,7 +967,7 @@ function getCellMrrList(cell,chartDiv) {
 	})
 }
 /**
- * 
+ *
  * @title 从字符串中提取数字
  * @param text
  * @returns
@@ -977,11 +977,11 @@ function getCellMrrList(cell,chartDiv) {
  * @version 1.2
  */
 function getNum(text){
-	var value = text.replace(/[^0-9]/ig,""); 
+	var value = text.replace(/[^0-9]/ig,"");
 	return value;
 	}
 /*function test(arrDemo){
-	
+
 	arrDemo.sort(function(a,b){return a>b?1:-1});//从小到大排序
 }*/
 /**
@@ -989,7 +989,7 @@ function getNum(text){
  */
 function defaultCellIndexChart(data,chartDiv,isInit) {
 	if(isInit){
-		
+
 		if (data == null || data == undefined) {
 			animateInAndOut("operInfo", 500, 500, 2000, "operTip", "请选择小区数据！");
 			return;
@@ -999,7 +999,7 @@ function defaultCellIndexChart(data,chartDiv,isInit) {
 			animateInAndOut("operInfo", 500, 500, 2000, "operTip", "无相关MRR数据！");
 		}
 	}
-	$("#mrrInfoTab tr:not(:first)").remove();  
+	$("#mrrInfoTab tr:not(:first)").remove();
 	for ( var i = 0; i < Rxlev.length; i++) {
 		$("#mrrInfoTab").append("<TR><td class='menuTd'>"+Rxlev[i]+"</td><td></td></TR>");
 	}
@@ -1012,7 +1012,7 @@ function defaultCellIndexChart(data,chartDiv,isInit) {
 	        ],
 	        function (ec) {
 	            var myChart = ec.init(dom);
-	            
+
 	            myChart.showLoading({
 	                text : "图表数据正在努力加载..."
 	            });
@@ -1022,7 +1022,7 @@ function defaultCellIndexChart(data,chartDiv,isInit) {
 	            	        text: '标题',
 	            	        subtext: '请在左侧选择小区数据',
 	            			x: "center", //标题水平方向位置
-	            			subtextStyle:{color: '#FF0000'} 
+	            			subtextStyle:{color: '#FF0000'}
 	            	    },
 	            	    tooltip : {
 	            	        trigger: 'axis'
@@ -1108,13 +1108,13 @@ function defaultCellIndexChart(data,chartDiv,isInit) {
 
 }
 /**
- * 对Date的扩展，将 Date 转化为指定格式的String   
- *月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，   
- *年(y)可以用 1-4 个占位符，毫秒(S)只能用 1 个占位符(是 1-3 位的数字)   
- *例子：   
- *(new Date()).Format("yyyy-MM-dd hh:mm:ss.S") ==> 2006-07-02 08:09:04.423   
- *(new Date()).Format("yyyy-M-d h:m:s.S")      ==> 2006-7-2 8:9:4.18   
- * @title 
+ * 对Date的扩展，将 Date 转化为指定格式的String
+ *月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，
+ *年(y)可以用 1-4 个占位符，毫秒(S)只能用 1 个占位符(是 1-3 位的数字)
+ *例子：
+ *(new Date()).Format("yyyy-MM-dd hh:mm:ss.S") ==> 2006-07-02 08:09:04.423
+ *(new Date()).Format("yyyy-M-d h:m:s.S")      ==> 2006-7-2 8:9:4.18
+ * @title
  * @param fmt
  * @returns
  * @author chao.xj
@@ -1122,23 +1122,23 @@ function defaultCellIndexChart(data,chartDiv,isInit) {
  * @company 怡创科技
  * @version 1.2
  */
-Date.prototype.Format = function(fmt)   
-{  
-  var o = {   
-    "M+" : this.getMonth()+1,                 //月份   
-    "d+" : this.getDate(),                    //日   
-    "h+" : this.getHours(),                   //小时   
-    "m+" : this.getMinutes(),                 //分   
-    "s+" : this.getSeconds(),                 //秒   
-    "q+" : Math.floor((this.getMonth()+3)/3), //季度   
-    "S"  : this.getMilliseconds()             //毫秒   
-  };   
-  if(/(y+)/.test(fmt))   
-    fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));   
-  for(var k in o)   
-    if(new RegExp("("+ k +")").test(fmt))   
-  fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));   
-  return fmt;   
+Date.prototype.Format = function(fmt)
+{
+  var o = {
+    "M+" : this.getMonth()+1,                 //月份
+    "d+" : this.getDate(),                    //日
+    "h+" : this.getHours(),                   //小时
+    "m+" : this.getMinutes(),                 //分
+    "s+" : this.getSeconds(),                 //秒
+    "q+" : Math.floor((this.getMonth()+3)/3), //季度
+    "S"  : this.getMilliseconds()             //毫秒
+  };
+  if(/(y+)/.test(fmt))
+    fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+  for(var k in o)
+    if(new RegExp("("+ k +")").test(fmt))
+  fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+  return fmt;
 }
 /**
  * 单击全屏幕展现
@@ -1161,7 +1161,7 @@ function clickFullScreen(){
 		"bottom" : "0px",
 		"background" : "white",
 		"visibility" : "visible",
-		"z-index":"999"	
+		"z-index":"999"
 			/*,
 		"filter" : "Alpha(opacity=90)",
 		"-moz-opacity":"0.4"*/
@@ -1173,8 +1173,8 @@ function clickFullScreen(){
        },
            width:"100%"
         });
-     
-	getCellMrrList(selectCell,'fullScreenChart');	
+
+	getCellMrrList(selectCell,'fullScreenChart');
 //	$("#fullScreenChart").css("background","white");
 }
 /**
@@ -1200,7 +1200,7 @@ function searchCell() {
 		}
 	}
 	//console.log(obj);
-	
+
 	//排序BSC
 	var bscList = new Array();
 	for(var key in obj) {
@@ -1209,11 +1209,11 @@ function searchCell() {
 	bscList.sort();
 	//console.log(bscList);
 	var bscHtml = "";
-	
+
 	for(var i=0; i<bscList.length; i++) {
-		bscHtml += "<li><span class='bscCls' id='"+bscList[i]+"'>" + bscList[i] + "(小区数量：" 
+		bscHtml += "<li><span class='bscCls' id='"+bscList[i]+"'>" + bscList[i] + "(小区数量："
 			+ obj[bscList[i]].length + ")</span><ul id='"+bscList[i]+"'></ul></li>";
-	} 
+	}
 
 	$("#allBscCell").html(bscHtml);
 	$("#allBscCell").treeview({
@@ -1229,11 +1229,11 @@ function searchCell() {
 		for(var i=0; i<cells1.length; i++) {
 			all = cells1[i]['LABEL'] + "(" + cells1[i]['NAME'] + ")";
 			part = all.length>12?all.substring(0,12)+"...":all;
-			cellsHtml += "<li><span class='cellCls' data='" + cells1[i]['LABEL'] + "'" 
-					+ " bsc='" + bsc + "'" 
-					+ " manufacturers='"+cells1[i]['MANUFACTURERS']+"' " 
-					+ " all='"+all+"' " 
-					+ " part='"+part+"'>" 
+			cellsHtml += "<li><span class='cellCls' data='" + cells1[i]['LABEL'] + "'"
+					+ " bsc='" + bsc + "'"
+					+ " manufacturers='"+cells1[i]['MANUFACTURERS']+"' "
+					+ " all='"+all+"' "
+					+ " part='"+part+"'>"
 					+ part +"</span></li>";
 		}
 		$("ul#"+bsc).html(cellsHtml);
@@ -1249,11 +1249,11 @@ function searchCell() {
 		for(var i=0; i<cells2.length; i++) {
 			all = cells2[i]['LABEL'] + "(" + cells2[i]['NAME'] + ")";
 			part = all.length>12?all.substring(0,12)+"...":all;
-			cellsHtml += "<li><span class='cellCls' data='" + cells2[i]['LABEL'] + "'" 
-					+ " bsc='" + bsc + "'" 
-					+ " manufacturers='"+cells2[i]['MANUFACTURERS']+"' " 
-					+ " all='"+all+"' " 
-					+ " part='"+part+"'>" 
+			cellsHtml += "<li><span class='cellCls' data='" + cells2[i]['LABEL'] + "'"
+					+ " bsc='" + bsc + "'"
+					+ " manufacturers='"+cells2[i]['MANUFACTURERS']+"' "
+					+ " all='"+all+"' "
+					+ " part='"+part+"'>"
 					+ part +"</span></li>";
 		}
 		$("ul#"+bsc).html(cellsHtml);
