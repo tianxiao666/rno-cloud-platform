@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hgicreate.rno.mapper.gsm.GsmFrequencySearchMapper">
+    <select id="findCellByCondition" parameterType="java.lang.String"
+            resultType="com.hgicreate.rno.domain.gsm.GsmCell">
+        select * from RNO_GSM_CELL where 1 = 1
+        <if test="cellId !=null">
+            and CELL_ID = #{cellId}
+        </if>
+        <if test="cellName !=null">
+            and CELL_NAME like #{cellName}
+        </if>
+        <if test="cellEnName != null">
+            and EN_NAME = #{cellEnName}
+        </if>
+        <if test="lac != null">
+            and LAC = #{lac}
+        </if>
+        <if test="ci != null">
+            and CI = #{ci}
+        </if>
+    </select>
+    <select id="findNcellByCondition" parameterType="java.lang.String"
+            resultType="com.hgicreate.rno.domain.gsm.GsmCell">
+        select *
+        from RNO_GSM_CELL
+        where CELL_ID in (
+        select NCELL_ID from RNO_GSM_NCELL_RELATION
+        where CELL_ID = #{cellId}
+        )
+    </select>
+</mapper>

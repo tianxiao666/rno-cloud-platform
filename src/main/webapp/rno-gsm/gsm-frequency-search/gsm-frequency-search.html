@@ -31,7 +31,6 @@
     <div id="popup"></div>
 </div>
 <div id="map" class="map"></div>
-
 <div class="dialog">
     <div style="padding: 5px">
 
@@ -46,42 +45,10 @@
             <button  id="queryButton" class="btn btn-info custom-btn" type="button">打开搜索面板</button>
             <button id="showCellName" class="btn btn-info custom-btn" type="button">显示小区名字</button>
             <span id="loadingCellTip"></span>
-            <div id="hiddenAreaLngLatDiv" style="display:none">
-
-                <input id="areaid_187" value="113.361397,23.12489" type="hidden">
-
-                <input id="areaid_188" value="113.26664,23.128836" type="hidden">
-
-                <input id="areaid_189" value="113.244324,23.126310999999998" type="hidden">
-
-                <input id="areaid_190" value="113.317451,23.084153" type="hidden">
-
-                <input id="areaid_191" value="113.273849,23.159301" type="hidden">
-
-                <input id="areaid_192" value="113.45941499999999,23.106734" type="hidden">
-
-                <input id="areaid_193" value="113.384399,22.936895" type="hidden">
-
-                <input id="areaid_194" value="113.220291,23.405286" type="hidden">
-
-                <input id="areaid_195" value="113.608932,22.772382999999998" type="hidden">
-
-                <input id="areaid_196" value="113.481216,23.181395" type="hidden">
-
-                <input id="areaid_197" value="113.810806,23.261533999999997" type="hidden">
-
-                <input id="areaid_198" value="113.586365,23.548403999999998" type="hidden">
-
-            </div>
 
             <input id="hiddenZoom" name="zoom" value="16" type="hidden">
             <input id="hiddenLng" value="" type="hidden"> <input id="hiddenLat" value=""
-                                                                 type="hidden"> <input
-                id="hiddenPageSize" name="page.pageSize" value="100" type="hidden"> <input
-                id="hiddenCurrentPage" name="page.currentPage" value="1" type="hidden"> <input
-                id="hiddenForcedStartIndex" name="page.forcedStartIndex" value="-1" type="hidden">
-            <input id="hiddenTotalPageCnt" type="hidden">
-            <input id="hiddenTotalCnt" type="hidden">
+                                                                 type="hidden">
         </form>
 
     </div>
@@ -401,7 +368,7 @@
             </div>
         </div>
 
-        <div id="searchDiv" class="dialog2 draggable ui-draggable" style="display:none; left: 55px; top: 74px;">
+        <div id="searchDiv" class="dialog2 draggable ui-draggable" style="display:none; left: 35px; top: 84px;">
             <div class="dialog_header">
                 <div class="dialog_title">小区查找</div>
                 <div class="dialog_tool">
@@ -409,20 +376,28 @@
                 </div>
             </div>
             <div class="dialog_content" style="background:#f9f9f9;padding:10px">
-                搜索条件： <select id="conditionType">
-                <option value="cell" selected="selected">CELL</option>
-                <option value="chineseName">小区中文名</option>
-                <option value="site">SITE</option>
-                <option value="lac">LAC</option>
-                <option value="ci">CI</option>
-            </select>
-                <input id="conditionValue" type="text">
-                <input id="searchCellBtn" value="搜小区" type="button"><br>
-                输入邻区：<input id="cellForNcell" type="text">
-                <input id="searchNcellBtn" value="搜邻区" type="button"> <br>
-                输入频点： <input id="freqValue" type="text">
-                <input id="searchFreqBtn" value="搜频点" type="button"> <br><br>
-                <input value="清除搜索结果" id="clearSearchResultBtn" type="button">
+                <div class="form-inline">
+                    <label for="conditionType" class="control-label">搜索条件：</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <select id="conditionType" name="conditionType" class="form-control">
+                                <option value="cellId" selected="selected">小区 ID</option>
+                                <option value="cellName">小区中文名</option>
+                                <option value="cellEnName">小区英文名</option>
+                                <option value="lac">LAC</option>
+                                <option value="ci">CI</option>
+                            </select>
+                    <input id="conditionValue" name="conditionValue" type="text" title="" class="form-control">
+                    <button id="searchCellBtn" class="btn btn-default btn-group-sm" type="button">搜小区</button>
+                </div><br>
+                <div class="form-inline">
+                    <label for="cellForNcell" class="control-label">输入小区ID：</label>
+                    <input id="cellForNcell" name="cellForNcell" type="text" class="form-control">
+                    <button id="searchNcellBtn" class="btn btn-default btn-group-sm" type="button">搜邻区 </button>
+                </div><br>
+                <div class="form-inline">
+                    <label for="freqValue" class="control-label">输入频点：</label>&nbsp;&nbsp;&nbsp;&nbsp;<input id="freqValue" type="text" class="form-control">
+                    <button id="searchFreqBtn" class="btn btn-default btn-group-sm" type="button">搜频点 </button>
+                </div><br><br>
+                <button  id="clearSearchResultBtn" class="btn btn-group-sm" type="button">清除搜索结果</button>
                 <span style="color:red;width:100px;font-family:华文中宋;text-align:center" id="errorDiv"></span>
             </div>
         </div>

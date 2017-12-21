@@ -1,4 +1,4 @@
-var map, cellLayer, clickedCellLayer, thisCellLayer;
+var map, cellLayer, clickedCellLayer, thisCellLayer,nCellLayer, lineLayer;
 var popup;
 var redStyle;
 //bcch与tch缓存
@@ -57,6 +57,18 @@ $(function () {
         zIndex: 4
     });
 
+    //邻区图层
+    nCellLayer = new ol.layer.Vector({
+        source: new ol.source.Vector(),
+        zIndex: 3
+    });
+
+    //线图层
+    lineLayer = new ol.layer.Vector({
+        source: new ol.source.Vector(),
+        zIndex: 6
+    });
+
     //主小区专用
     redStyle = new ol.style.Style({
         stroke: new ol.style.Stroke({
@@ -67,6 +79,19 @@ $(function () {
         fill: new ol.style.Fill({
             // 设置填充颜色与不透明度
             color: 'rgba(255, 0, 0, 1.0)'
+        })
+    });
+
+    //邻区专用
+    orangeStyle = new ol.style.Style({
+        stroke: new ol.style.Stroke({
+            // 设置线条颜色
+            color: 'yellow',
+            size: 5
+        }),
+        fill: new ol.style.Fill({
+            // 设置填充颜色与不透明度
+            color: 'rgba(255, 165, 0, 1.0)'
         })
     });
 
@@ -102,7 +127,7 @@ $(function () {
         if (map === undefined) {
             map = new ol.Map({
                 target: 'map',
-                layers: [clickedCellLayer, baseLayer, thisCellLayer],
+                layers: [clickedCellLayer, baseLayer, thisCellLayer,nCellLayer,lineLayer],
                 view: new ol.View({
                     projection: 'EPSG:4326',
                     center: [lon, lat],
@@ -302,7 +327,212 @@ $(function () {
         //$("#searchDiv").slideToggle();
         $("#searchDiv").toggle();
     });
+
+    //搜小区
+    $("#searchCellBtn").click(function () {
+       var conditionType = $("#conditionType").val();
+       var conditionValue = $("#conditionValue").val();
+       var strExp=/^[\u4e00-\u9fa5A-Za-z0-9\s_-]+$/;
+        if(conditionValue.trim() ===""){
+            $("span#errorDiv").html("请输入小区信息！");
+            return false;
+        }
+        if(!strExp.test(conditionValue)){
+            $("span#errorDiv").html("含有非法字符！");
+            return false;
+        }
+        if(!(conditionValue.length < 40)){
+            $("span#errorDiv").html("输入信息过长！");
+            return false;
+        }
+
+        searchCell(conditionType,conditionValue);
+    });
+
+    $("#searchNcellBtn").click(function () {
+        var cellForNcell = $("#cellForNcell").val();
+        var strExp=/^[\u4e00-\u9fa5A-Za-z0-9\s_-]+$/;
+        if(cellForNcell.trim() ===""){
+            $("span#errorDiv").html("请输入小区ID！");
+            return false;
+        }
+        if(!strExp.test(cellForNcell)){
+            $("span#errorDiv").html("含有非法字符！");
+            return false;
+        }
+        if(!(cellForNcell.length < 40)){
+            $("span#errorDiv").html("输入信息过长！");
+            return false;
+        }
+        searchNcell(cellForNcell);
+    });
+
+    $("#clearSearchResultBtn").click(function () {
+        map.removeLayer(cellLayer);
+        map.removeLayer(nCellLayer);
+        map.removeLayer(lineLayer);
+        map.removeLayer(thisCellLayer);
+    });
 });
+
+function searchCell(conditionType, conditionValue) {
+    var longitude=113.2644,latitude=23.1291;
+    $.ajax({
+       url: '/api/gsm-frequency-search/cell-search',
+       dataType: 'text',
+       data:{
+           conditionType: conditionType,
+           conditionValue: conditionValue
+       },
+       type: 'get',
+       async: false,
+       success: function (dat) {
+           var data =eval('('+dat+')');
+           console.log(data[0]);
+           if(data===""|| data ===null||data.length === 0){
+               showInfoInAndOut('info','未找到符合条件的小区！');
+               return false;
+           }
+           longitude=parseFloat(data[0].longitude);
+           latitude=parseFloat(data[0].latitude);
+       }
+    });
+   // console.log(longitude);
+    var cityId = parseInt($("#cityId").find("option:checked").val());
+    //console.log(btsType);
+    var requestParams ="AREA_ID=" + cityId ;
+    if(conditionType === 'cellId'){
+        requestParams += "and CELL_ID='"+ conditionValue +"'";
+    }else if(conditionType === 'cellName'){
+        requestParams += "and CELL_NAME like '%"+ conditionValue +"%'";
+    }else if(conditionType === 'cellEnName'){
+        requestParams += "and EN_NAME='"+ conditionValue +"'";
+    }else if(conditionType === 'lac'){
+        requestParams += "and LAC='"+ conditionValue +"'";
+    }else{
+        requestParams += "and CI='"+ conditionValue +"'";
+    }
+    map.removeLayer(cellLayer);
+    cellLayer = new ol.layer.Tile({
+        zIndex : 4,
+        source : new ol.source.TileWMS({
+            url : 'http://rno-gis.hgicreate.com/geoserver/rnoprod/wms',
+            params : {
+                'FORMAT' : 'image/png',
+                'VERSION' : '1.1.1',
+                tiled : true,
+                STYLES : '',
+                LAYERS : 'rnoprod:RNO_GSM_CELL_GEOM',
+                CQL_FILTER : requestParams
+            }
+        }),
+        opacity : 0.5
+    });
+    map.addLayer(cellLayer);
+    map.getView().animate({
+        center: [parseFloat(longitude), parseFloat(latitude)],
+        duration: 2000
+    });
+}
+
+function searchNcell(cellForNcell) {
+    map.removeLayer(thisCellLayer);
+    map.removeLayer(nCellLayer);
+    map.removeLayer(lineLayer);
+    var longitude=113.2644,latitude =23.1291;
+    var cells = [];
+    $.ajax({
+        url: '/api/gsm-frequency-search/ncell-search',
+        dataType: 'text',
+        data:{
+            cellForNcell: cellForNcell
+        },
+        type: 'get',
+        async: false,
+        success: function (dat) {
+            var data =eval('('+dat+')');
+            console.log(data[0]);
+            if(data===""|| data ===null||data.length === 0){
+                showInfoInAndOut('info','未找到符合条件的小区！');
+                return false;
+            }
+            longitude=parseFloat(data[0].longitude);
+            latitude=parseFloat(data[0].latitude);
+            for(var i = 0; i< data.length; i ++){
+                cells.push(data[i].cellId)
+            }
+        }
+    });
+
+    console.log(cells);
+    var ncellStr = "'" + cellForNcell + "',";
+    $.each(cells, function (index, value) {
+        ncellStr += "'" + value + "',";
+    });
+    console.log(ncellStr);
+    var filter = encodeURIComponent("CELL_ID in (" + ncellStr.substring(0, ncellStr.length - 1) + ")");
+    //console.log(filter);
+
+    var url = 'http://rno-gis.hgicreate.com/geoserver/rnoprod/ows?service=WFS&version=1.1.1' +
+        '&request=GetFeature&typeName=rnoprod:RNO_GSM_CELL_GEOM&maxFeatures=50&' +
+        'outputFormat=text%2Fjavascript&CQL_FILTER=' + filter;
+    //console.log(url);
+    var parser = new ol.format.GeoJSON();
+    $.ajax({
+        url: url,
+        dataType: 'jsonp',
+        jsonpCallback: 'parseResponse'
+    }).then(function (response) {
+        var features = parser.readFeatures(response);
+        var cellCoors = [];
+        var ncellCoors = [];
+        //console.log(features.length);
+        if (features.length) {
+            for (var m = 0; m < features.length; m++) {
+                var onefeature = features[m];
+                if (onefeature.get('CELL_ID') === cellForNcell) {
+                    cellCoors = [onefeature.get('LONGITUDE'), onefeature.get('LATITUDE')];
+                    onefeature.setStyle(redStyle);
+                    thisCellLayer.getSource().addFeature(onefeature);
+                } else {
+                    ncellCoors.push([onefeature.get('LONGITUDE'), onefeature.get('LATITUDE')]);
+                    onefeature.setStyle(orangeStyle);
+                    nCellLayer.getSource().addFeature(onefeature);
+                }
+            }
+            drawLine(cellCoors, ncellCoors);
+        }
+        $("#loading").css("display", "none");
+    });
+
+    map.addLayer(nCellLayer);
+    map.addLayer(lineLayer);
+    map.addLayer(thisCellLayer);
+
+    map.getView().animate({
+        center: [parseFloat(longitude), parseFloat(latitude)],
+        duration: 2000
+    });
+
+}
+
+//绘制主小区与邻区之间的连线
+function drawLine(cellCoors, ncellCoors) {
+    var line, feature;
+    $.each(ncellCoors, function (index, value) {
+        line = new ol.geom.LineString([cellCoors, value]);
+        feature = new ol.Feature({
+            geometry: line
+        });
+        feature.setStyle(new ol.style.Style({
+            stroke: new ol.style.Stroke({
+                color: 'green',
+                width: 1
+            })
+        }));
+        lineLayer.getSource().addFeature(feature);
+    });
+}
 
 
 //点击popup表格，添加选中行的背景色
@@ -505,7 +735,7 @@ function updateCellFreq() {
     var cellId = $("#freqCellId").val();
     if(flag) {
         $.ajax({
-            url : '/api/gsm-frequency-research/update-cell-freq-by-cellId',
+            url : '/api/gsm-frequency-search/update-cell-freq-by-cellId',
             data : {
                 'cellId' : cellId,
                 'bcch' : bcch,

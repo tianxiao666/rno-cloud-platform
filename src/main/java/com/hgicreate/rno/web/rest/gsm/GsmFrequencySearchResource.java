@@ -1,22 +1,26 @@
 package com.hgicreate.rno.web.rest.gsm;
 
 import com.hgicreate.rno.domain.gsm.GsmCell;
+import com.hgicreate.rno.mapper.gsm.GsmFrequencySearchMapper;
 import com.hgicreate.rno.repository.gsm.GsmCellDataRepository;
 import com.hgicreate.rno.web.rest.gsm.vm.GsmFrequencyUpdateVM;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/gsm-frequency-research")
+@RequestMapping("/api/gsm-frequency-search")
 public class GsmFrequencySearchResource {
 
     private final GsmCellDataRepository gsmCellDataRepository;
 
-    public GsmFrequencySearchResource(GsmCellDataRepository gsmCellDataRepository) {
+    private final GsmFrequencySearchMapper gsmFrequencySearchMapper;
+
+    public GsmFrequencySearchResource(GsmCellDataRepository gsmCellDataRepository, GsmFrequencySearchMapper gsmFrequencySearchMapper) {
         this.gsmCellDataRepository = gsmCellDataRepository;
+        this.gsmFrequencySearchMapper = gsmFrequencySearchMapper;
     }
 
     @PostMapping("/update-cell-freq-by-cellId")
@@ -28,5 +32,39 @@ public class GsmFrequencySearchResource {
         gsmCell.setTch(vm.getTch());
         gsmCellDataRepository.save(gsmCell);
         return true;
+    }
+
+    @GetMapping("/cell-search")
+    public List<GsmCell> searchCellDetail(@RequestParam String conditionType, @RequestParam String conditionValue){
+        log.debug("进入搜小区方法conditionType={},conditionValue={}",conditionType,conditionValue);
+        String cellId = null,cellName = null,cellEnName = null,lac = null,ci = null;
+        switch (conditionType){
+            case "cellId":
+                cellId = conditionValue;
+                break;
+            case "cellName":
+                cellName = "%" + conditionValue + "%";
+                break;
+            case "cellEnName":
+                cellEnName = conditionValue;
+                break;
+            case "las":
+                lac = conditionValue;
+                break;
+            default:
+                ci= conditionValue;
+        }
+        return gsmFrequencySearchMapper.findCellByCondition(cellId,cellName,cellEnName,lac,ci);
+    }
+
+    @GetMapping("/ncell-search")
+    public List<GsmCell> searchNcellDetail(String cellForNcell){
+        log.debug("进入搜邻区方法cellId={}",cellForNcell);
+        return gsmFrequencySearchMapper.findNcellByCondition(cellForNcell);
+    }
+
+    @GetMapping("/frequency-search")
+    public void searchFrequency(String cellForNcell){
+
     }
 }
