@@ -418,8 +418,8 @@ function loadResultForTab(checkType) {
                 $("#" + checkType + "Table").append(thHtml);
                 //缓存数据
                 saveCache(checkType, data);
-                //tr，初始加载200条信息
-                appendTr(checkType, 0, 200);
+                //tr，初始加载50条信息
+                appendTr(checkType, 0, 50);
             } else {
                 $("#info").css("background", "red");
                 showInfoInAndOut('info', '没有符合条件的数据');
@@ -583,7 +583,7 @@ function appendTr(checkType, start, end) {
                 "<td colspan='3' style='text-align: center;cursor:pointer;background: #bdd3ef;border:2px solid #eee ' " +
                 " onclick='appendTr(\"" + checkType + "\"," + end + "," + powerCheckResult.length + ")'>显示全部</td>" +
                 "<td colspan='3' style='text-align: center;cursor:pointer;background: #bdd3ef;border:2px solid #eee ' " +
-                " onclick='appendTr(\"" + checkType + "\"," + end + "," + (end + 200) + ")'>加载更多</td></tr>";
+                " onclick='appendTr(\"" + checkType + "\"," + end + "," + (end + 50) + ")'>加载更多</td></tr>";
         }
     }
     //跳频检查
@@ -612,7 +612,7 @@ function appendTr(checkType, start, end) {
                 "<td colspan='4' style='text-align: center;cursor:pointer;background: #bdd3ef;border:2px solid #eee ' " +
                 " onclick='appendTr(\"" + checkType + "\"," + end + "," + freqHopCheckResult.length + ")'>显示全部</td>" +
                 "<td colspan='4' style='text-align: center;cursor:pointer;background: #bdd3ef;border:2px solid #eee ' " +
-                " onclick='appendTr(\"" + checkType + "\"," + end + "," + (end + 200) + ")'>加载更多</td></tr>";
+                " onclick='appendTr(\"" + checkType + "\"," + end + "," + (end + 50) + ")'>加载更多</td></tr>";
         }
     }
     //NCCPERM检查
@@ -637,7 +637,7 @@ function appendTr(checkType, start, end) {
                 "<td colspan='3' style='text-align: center;cursor:pointer;background: #bdd3ef;border:2px solid #eee ' " +
                 " onclick='appendTr(\"" + checkType + "\"," + end + "," + nccpermResult.length + ")'>显示全部</td>" +
                 "<td colspan='3' style='text-align: center;cursor:pointer;background: #bdd3ef;border:2px solid #eee ' " +
-                " onclick='appendTr(\"" + checkType + "\"," + end + "," + (end + 200) + ")'>加载更多</td></tr>";
+                " onclick='appendTr(\"" + checkType + "\"," + end + "," + (end + 50) + ")'>加载更多</td></tr>";
         }
     }
     //测量频点多定义
@@ -662,7 +662,7 @@ function appendTr(checkType, start, end) {
                 "<td colspan='3' style='text-align: center;cursor:pointer;background: #bdd3ef;border:2px solid #eee ' " +
                 " onclick='appendTr(\"" + checkType + "\"," + end + "," + meaFreqMultidefinedResult.length + ")'>显示全部</td>" +
                 "<td colspan='3' style='text-align: center;cursor:pointer;background: #bdd3ef;border:2px solid #eee ' " +
-                " onclick='appendTr(\"" + checkType + "\"," + end + "," + (end + 200) + ")'>加载更多</td></tr>";
+                " onclick='appendTr(\"" + checkType + "\"," + end + "," + (end + 50) + ")'>加载更多</td></tr>";
         }
     }
     //测量频点漏定义
@@ -687,7 +687,7 @@ function appendTr(checkType, start, end) {
                 "<td colspan='3' style='text-align: center;cursor:pointer;background: #bdd3ef;border:2px solid #eee ' " +
                 " onclick='appendTr(\"" + checkType + "\"," + end + "," + meaFreqMomitResult.length + ")'>显示全部</td>" +
                 "<td colspan='3' style='text-align: center;cursor:pointer;background: #bdd3ef;border:2px solid #eee ' " +
-                " onclick='appendTr(\"" + checkType + "\"," + end + "," + (end + 200) + ")'>加载更多</td></tr>";
+                " onclick='appendTr(\"" + checkType + "\"," + end + "," + (end + 50) + ")'>加载更多</td></tr>";
         }
     }
     //BA表个数检查
@@ -710,7 +710,7 @@ function appendTr(checkType, start, end) {
                 "<td colspan='3' style='text-align: center;cursor:pointer;background: #bdd3ef;border:2px solid #eee ' " +
                 " onclick='appendTr(\"" + checkType + "\"," + end + "," + baNumCheckResult.length + ")'>显示全部</td>" +
                 "<td colspan='2' style='text-align: center;cursor:pointer;background: #bdd3ef;border:2px solid #eee ' " +
-                " onclick='appendTr(\"" + checkType + "\"," + end + "," + (end + 200) + ")'>加载更多</td></tr>";
+                " onclick='appendTr(\"" + checkType + "\"," + end + "," + (end + 50) + ")'>加载更多</td></tr>";
         }
     }
     //同频同bsic检查
@@ -745,7 +745,7 @@ function appendTr(checkType, start, end) {
                 "<td colspan='6' style='text-align: center;cursor:pointer;background: #bdd3ef;border:2px solid #eee ' " +
                 " onclick='appendTr(\"" + checkType + "\"," + end + "," + sameFreqBsicCheckResult.length + ")'>显示全部</td>" +
                 "<td colspan='5' style='text-align: center;cursor:pointer;background: #bdd3ef;border:2px solid #eee ' " +
-                " onclick='appendTr(\"" + checkType + "\"," + end + "," + (end + 200) + ")'>加载更多</td></tr>";
+                " onclick='appendTr(\"" + checkType + "\"," + end + "," + (end + 50) + ")'>加载更多</td></tr>";
         }
     }
     //TALIM_MAXTA检查
@@ -770,7 +770,7 @@ function appendTr(checkType, start, end) {
                 "<td colspan='3' style='text-align: center;cursor:pointer;background: #bdd3ef;border:2px solid #eee ' " +
                 " onclick='appendTr(\"" + checkType + "\"," + end + "," + talimMaxTaResult.length + ")'>显示全部</td>" +
                 "<td colspan='3' style='text-align: center;cursor:pointer;background: #bdd3ef;border:2px solid #eee ' " +
-                " onclick='appendTr(\"" + checkType + "\"," + end + "," + (end + 200) + ")'>加载更多</td></tr>";
+                " onclick='appendTr(\"" + checkType + "\"," + end + "," + (end + 50) + ")'>加载更多</td></tr>";
         }
     }
 
@@ -798,7 +798,7 @@ function appendTr(checkType, start, end) {
                 "<td colspan='4' style='text-align: center;cursor:pointer;background: #bdd3ef;border:2px solid #eee ' " +
                 " onclick='appendTr(\"" + checkType + "\"," + end + "," + ncellMomitResult.length + ")'>显示全部</td>" +
                 "<td colspan='3' style='text-align: center;cursor:pointer;background: #bdd3ef;border:2px solid #eee ' " +
-                " onclick='appendTr(\"" + checkType + "\"," + end + "," + (end + 200) + ")'>加载更多</td></tr>";
+                " onclick='appendTr(\"" + checkType + "\"," + end + "," + (end + 50) + ")'>加载更多</td></tr>";
         }
     }
     //单向邻区检查
@@ -827,7 +827,7 @@ function appendTr(checkType, start, end) {
                 "<td colspan='4' style='text-align: center;cursor:pointer;background: #bdd3ef;border:2px solid #eee ' " +
                 " onclick='appendTr(\"" + checkType + "\"," + end + "," + unidirNcellResult.length + ")'>显示全部</td>" +
                 "<td colspan='4' style='text-align: center;cursor:pointer;background: #bdd3ef;border:2px solid #eee ' " +
-                " onclick='appendTr(\"" + checkType + "\"," + end + "," + (end + 200) + ")'>加载更多</td></tr>";
+                " onclick='appendTr(\"" + checkType + "\"," + end + "," + (end + 50) + ")'>加载更多</td></tr>";
         }
     }
     //邻区过多过少检查
@@ -850,7 +850,7 @@ function appendTr(checkType, start, end) {
                 "<td colspan='3' style='text-align: center;cursor:pointer;background: #bdd3ef;border:2px solid #eee ' " +
                 " onclick='appendTr(\"" + checkType + "\"," + end + "," + ncellNumCheckResult.length + ")'>显示全部</td>" +
                 "<td colspan='2' style='text-align: center;cursor:pointer;background: #bdd3ef;border:2px solid #eee ' " +
-                " onclick='appendTr(\"" + checkType + "\"," + end + "," + (end + 200) + ")'>加载更多</td></tr>";
+                " onclick='appendTr(\"" + checkType + "\"," + end + "," + (end + 50) + ")'>加载更多</td></tr>";
         }
     }
     //同邻频检查
@@ -887,7 +887,7 @@ function appendTr(checkType, start, end) {
                 "<td colspan='6' style='text-align: center;cursor:pointer;background: #bdd3ef;border:2px solid #eee ' " +
                 " onclick='appendTr(\"" + checkType + "\"," + end + "," + sameNcellFreqCheckResult.length + ")'>显示全部</td>" +
                 "<td colspan='6' style='text-align: center;cursor:pointer;background: #bdd3ef;border:2px solid #eee ' " +
-                " onclick='appendTr(\"" + checkType + "\"," + end + "," + (end + 200) + ")'>加载更多</td></tr>";
+                " onclick='appendTr(\"" + checkType + "\"," + end + "," + (end + 50) + ")'>加载更多</td></tr>";
         }
     }
     //邻区数据检查
@@ -916,7 +916,7 @@ function appendTr(checkType, start, end) {
                 "<td colspan='4' style='text-align: center;cursor:pointer;background: #bdd3ef;border:2px solid #eee ' " +
                 " onclick='appendTr(\"" + checkType + "\"," + end + "," + ncellDataCheckResult.length + ")'>显示全部</td>" +
                 "<td colspan='4' style='text-align: center;cursor:pointer;background: #bdd3ef;border:2px solid #eee ' " +
-                " onclick='appendTr(\"" + checkType + "\"," + end + "," + (end + 200) + ")'>加载更多</td></tr>";
+                " onclick='appendTr(\"" + checkType + "\"," + end + "," + (end + 50) + ")'>加载更多</td></tr>";
         }
     }
 
