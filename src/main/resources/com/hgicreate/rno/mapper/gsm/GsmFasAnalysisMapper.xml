@@ -6,8 +6,8 @@
     <select id="queryFasChartData"
             resultType="java.util.Map">
         select t1.FAS_DESC_ID, t1.MEA_TIME, t1.CELL, t2.BCCH, t2.TCH, t1.FREQ_NUM, t1.ARFCN_1_150,
-            t1.AVMEDIAN_1_150, t1.AVPERCENTILE_1_150,t1.NOOFMEAS_1_150,t1.CITY_ID,t2.NAME
-         from RNO_GSM_FAS_CELL_DATA t1 left join RNO_CELL t2 on t2.LABEL = t1.CELL
+            t1.AVMEDIAN_1_150, t1.AVPERCENTILE_1_150,t1.NOOFMEAS_1_150,t1.CITY_ID,t2.CELL_NAME
+         from RNO_GSM_FAS_CELL_DATA t1 left join RNO_GSM_CELL t2 on t2.EN_NAME = t1.CELL
         where
         <![CDATA[
             MEA_TIME >= to_date(${fasMeaBegTime} ,'yyyy-MM-dd')
@@ -17,11 +17,11 @@
 
     </select>
     <select id="getBscCellByCityId" parameterType="java.lang.Long" resultType="java.util.Map">
-        select mid1.label,mid1.name, bsc.bsc,bsc.VENDOR  from
-            ( select distinct label,name,bsc_id from RNO_CELL where area_id in (
+        select mid1.EN_NAME,mid1.CELL_NAME, bsc.bsc,bsc.VENDOR  from
+            ( select distinct EN_NAME,CELL_NAME,BSC from RNO_GSM_CELL where area_id in (
                select AREA_ID from RNO_GSM_SYS_AREA where PARENT_ID= #{cityId}
             )) mid1
             left join (select id,bsc,VENDOR from RNO_GSM_BSC_DATA where status='N') bsc
-                on mid1.bsc_id=bsc.id order by bsc.bsc,mid1.label
+                on mid1.BSC=bsc.id order by bsc.bsc,mid1.EN_NAME
     </select>
 </mapper>

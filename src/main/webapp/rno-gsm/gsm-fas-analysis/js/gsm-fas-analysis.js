@@ -153,7 +153,7 @@ $(function () {
 });
 
 function showChart(data,myChart){
-   // console.log(data);
+    console.log(data);
     if(data === null || data===''|| data.length ===0){
         showInfoInAndOut('info','无FAS测量数据');
         return false;
@@ -162,7 +162,7 @@ function showChart(data,myChart){
     var arfcn = oneData['ARFCN_1_150'];
     var avmedian =oneData ['AVMEDIAN_1_150'];
     var avpercentile = oneData ['AVPERCENTILE_1_150'];
-    var cellName = oneData['NAME'];
+    var cellName = oneData['CELL_NAME'];
     var bcch =oneData['BCCH'];
     var cell = oneData['CELL'];
     var tch = oneData['TCH'];
