@@ -278,6 +278,7 @@ function showChart(data) {
                 DL[j]=accumuValDL;
             }
         }
+        DL.length=UL.length=axis.length;
         //加载数据至echart
         var disMode = $("#mrrDisMode").val().trim();
         var myChart = echarts.init(document.getElementById("main"));
