@@ -1,4 +1,3 @@
-
 var bscToCells;
 $(function () {
 //默认右侧栏打开
@@ -27,18 +26,19 @@ $(function () {
     });
 
     var dateBeg = new Date();
-    dateBeg.setFullYear(2015, 8, 1);
-    var dateEnd = new Date();
-    dateEnd.setFullYear(2015, 8, 30);
+    dateBeg.setFullYear(2014, 12, 1);
     var start = {
         elem: "#mrrMeaBegDate",
-        type: "date",
+        type: "datetime",
         value: dateBeg,
         done: function (value, dates) {
             endRenderDate.config.min = {
                 year: dates.year,
                 month: dates.month - 1,
-                date: dates.date
+                date: dates.date,
+                hours: dates.hours,
+                minutes: dates.minutes,
+                seconds: dates.seconds
             };
             var mrrMeaEndDate = $("#mrrMeaEndDate");
             if (Date.parse(value) > Date.parse(mrrMeaEndDate.val())) {
@@ -48,13 +48,16 @@ $(function () {
     };
     var end = {
         elem: "#mrrMeaEndDate",
-        type: "date",
-        value: dateEnd,
+        type: "datetime",
+        value: new Date(),
         done: function (value, dates) {
             startRenderDate.config.max = {
                 year: dates.year,
                 month: dates.month - 1,
-                date: dates.date
+                date: dates.date,
+                hours: dates.hours,
+                minutes: dates.minutes,
+                seconds: dates.seconds
             };
             var mrrMeaBegDate = $("#mrrMeaBegDate");
             if (Date.parse(value) < Date.parse(mrrMeaBegDate.val())) {
@@ -98,7 +101,7 @@ $(function () {
         xAxis: {
             name: "X轴",
             type: "category",
-            data: ["00:00", "05:00", "12:00", "18:00", "00:00"],
+            data: ["05:00", "12:00", "18:00", "00:00"],
             axisTick: {
                 alignWithLabel: true
             }
@@ -119,6 +122,7 @@ $(function () {
             data: []
         }]
     };
+    myChart.setOption(option);
 
     $("#searchButton").click(function () {
         var inputCell = $("#inputCell");
@@ -137,191 +141,228 @@ $(function () {
         success: showChart,
         error: showError
     });
-    myChart.setOption(option);
 });
 
 function showChart(data) {
-    alert("aaaa")
     var mrrInfoTab = $("#mrrInfoTab");
     mrrInfoTab.children().remove();
-    if (data === null || data === "") {
-        showInfoInAndOut("info", "无符合条件的指标分布数据！");
+    if (data == '') {
+        showInfoInAndOut("info", "没有mrr对应的指标分析数据！");
         return false;
-    }
-    var chartTitle = $("#mrDataType").val();
-    var cellId = $("#inputCell").val();
-    var cellName = data["cellName"] === null ? "" : data["cellName"];
-    var cellNameTitle = data["cellName"] === null ? "" : "(" + data["cellName"] + ")";
-    $("#tab1Title").html(chartTitle + "测量信息");
-    $("#tab1CellName").html(cellName);
+    }else {
+        var UL = new Array();//上行有序数组
+        var DL = new Array();//下行有序数组
+        var boundGap = false;
+        var cell = data[0]["CELL_NAME"];
+        var channel_group_num = data[0]["CHANNEL_GROUP_NUM"];
+        var title = "";//图表子标题
+        var fieldUL = "";//上行字段前缀
+        var fieldDL = "";//下行字段前缀
+        var serieNameUL = "";//上行系统名
+        var serieNameDL = "";//下行系统名
+        var xAxis_name = "";//X轴名称
+        var accumuValUL = 0;//上行累积值
+        var accumuValDL = 0;//下行累积值
+        var dataType = $("#mrrDataType").val();
+        var chartType = $("#mrrChartType").val();
+        var axis =new Array();
+        if (dataType === "Rxlev") {
+            title = cell + (channel_group_num === null ? "全部信道组" : "信道组号" + channel_group_num) + "的接收电平分布图";
+            fieldUL = "RXLEVUL";
+            fieldDL = "RXLEVDL";
+            serieNameUL = "上行电平";
+            serieNameDL = "下行电平";
+            xAxis_name = "电平值(dBm)";
+            for (var key in data[0]) {
+                if (key.indexOf("RXLEVUL") !== -1) {
+                    UL[getNum(key)] = data[0][key];
+                    axis.push(getNum(key) - 110);
 
-    var xAxisVal = [];
-    var yAxisVal = [];
-    var pieLegendVal = [];
-    var pieVal = [];
-    if (chartTitle === "RSRP") {
-        xAxisVal = ["小于-110", "小于-95大于等于-110", "小于-80大于等于-95", "大于等于-80"];
-        pieLegendVal = ["RSRP小于-110", "RSRP小于-95大于等于-110", "RSRP小于-80大于等于-95", "RSRP大于等于-80"];
-        yAxisVal = [data["xbelowNegative110"], data["xbetweenNegative110And95"], data["xbetweenNegative95And80"], data["xonNegative80"]];
-        pieVal = [
-            {value: data["xbelowNegative110"], name: "RSRP小于-110"},
-            {value: data["xbetweenNegative110And95"], name: "RSRP小于-95大于等于-110"},
-            {value: data["xbetweenNegative95And80"], name: "RSRP小于-80大于等于-95"},
-            {value: data["xonNegative80"], name: "RSRP大于等于-80"}
-        ];
-
-        mrrInfoTab.append("<tbody><tr><td colspan='2' style='text-align: center'>" + chartTitle + "测量信息" + "</td></tr>"
-            + "<tr><td class='menuTd'>CELL NAME</td><td>" + cellName + "</td></tr>"
-            + "<tr><td class='menuTd'>X < -110</td><td>" + data['xbelowNegative110'] + "</td></tr>"
-            + "<tr><td class='menuTd'>-110 <= X < -95</td><td>" + data['xbetweenNegative110And95'] + "</td></tr>"
-            + "<tr><td class='menuTd'>-95 <= X < -80</td><td>" + data['xbetweenNegative95And80'] + "</td></tr>"
-            + "<tr><td class='menuTd'>X >= -80</td><td>" + data['xonNegative80'] + "</td></tr></tbody>"
-        );
-    } else if (chartTitle === "RSRQ") {
-        xAxisVal = ["小于8", "小于15大于等于8", "大于等于15"];
-        pieLegendVal = ["RSRQ小于8", "RSRQ小于15大于等于8", "RSRQ大于等于15"];
-        yAxisVal = [data["xbelow8"], data["xbetween8And15"], data["xon15"]];
-        pieVal = [
-            {value: data["xbelow8"], name: "RSRQ小于8"},
-            {value: data["xbetween8And15"], name: "RSRQ小于15大于等于8"},
-            {value: data["xon15"], name: "RSRQ大于等于15"}
-        ];
-        mrrInfoTab.append("<tbody><tr><td colspan='2' style='text-align: center;'>" + chartTitle + "测量信息" + "</td></tr>"
-            + "<tr><td class='menuTd'>CELL NAME</td><td>" + cellName + "</td></tr>"
-            + "<tr><td class='menuTd'>X < 8</td><td>" + data['xbelow8'] + "</td></tr>"
-            + "<tr><td class='menuTd'>8 <= X <15</td><td>" + data['xbetween8And15'] + "</td></tr>"
-            + "<tr><td class='menuTd'>X >= 15</td><td>" + data['xon15'] + "</td></tr></tbody>"
-        );
-    } else {
-        xAxisVal = ['小于-110', '小于-95大于等于-110', '小于-85大于等于-95', '大于等于-85'];
-        pieLegendVal = ['覆盖率小于-110', '覆盖率小于-95大于等于-110', '覆盖率小于-85大于等于-95', '覆盖率大于等于-85'];
-        yAxisVal = [data['xbelowNegative110'], data['xbetweenNegative110And95'], data['xbetweenNegative95And85'], data['xonNegative85']];
-        pieVal = [
-            {value: data['xbelowNegative110'], name: '覆盖率小于-110'},
-            {value: data['xbetweenNegative110And95'], name: '覆盖率小于-95大于等于-110'},
-            {value: data['xbetweenNegative95And85'], name: '覆盖率小于-85大于等于-95'},
-            {value: data['xonNegative85'], name: '覆盖率大于等于-85'}
-        ];
-
-        mrrInfoTab.append("<tbody><tr><td colspan='2' style='text-align: center'>" + chartTitle + "测量信息" + "</td></tr>"
-            + "<tr><td class='menuTd'>CELL NAME</td><td>" + cellName + "</td></tr>"
-            + "<tr><td class='menuTd'>X < -110</td><td>" + data['xbelowNegative110'] + "</td></tr>"
-            + "<tr><td class='menuTd'>-110 <= X < -95</td><td>" + data['xbetweenNegative110And95'] + "</td></tr>"
-            + "<tr><td class='menuTd'>-95 <= X < -85</td><td>" + data['xbetweenNegative95And85'] + "</td></tr>"
-            + "<tr><td class='menuTd'>X >= -85</td><td>" + data['xonNegative85'] + "</td></tr></tbody>"
-        );
-    }
-    var option = {
-        color: ['#3398DB'],
-        tooltip: {
-            trigger: 'axis',
-            axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-                type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                }
+                if (key.indexOf("RXLEVDL") !== -1) {
+                    DL[getNum(key)] = data[0][key];
+                }
             }
-        },
-        title: {
-            text: chartTitle + '指标',
-            left: 'center',
-            subtext: cellId + cellNameTitle + '信号接收功能' + chartTitle + '分布图 采样点个数(' + data['sampleNum'] + ')个',
-            subtextStyle: {
-                color: '#6C6FFD'
+        } else if (dataType === "RxQual") {
+            title = cell + (channel_group_num === null ? "全部信道组" : "信道组号" + channel_group_num) + "的通话质量分布图";
+            fieldUL = "RXQUALUL";
+            fieldDL = "RXQUALDL";
+            serieNameUL = "上行质量";
+            serieNameDL = "下行质量";
+            xAxis_name = "质量";
+            boundGap = true;
+            for (var key in data[0]) {
+                if (key.indexOf("RXQUALUL") !== -1) {
+                    UL[getNum(key)] = data[0][key];
+                    axis.push(getNum(key));
+                }
+                if (key.indexOf("RXQUALDL") !== -1) {
+                    DL[getNum(key)] = data[0][key];
+                }
             }
-        },
-        legend: {
-            data: []
-        },
-        xAxis: {
-            name: chartTitle,
-            type: 'category',
-            data: xAxisVal,
-            axisTick: {
-                alignWithLabel: true
+        } else if (dataType === "POWER") {
+            title = cell + (channel_group_num === null ? "全部信道组" : "信道组号" + channel_group_num) + "的发射功率分布图";
+            fieldUL = "MSPOWER";
+            fieldDL = "BSPOWER";
+            serieNameUL = "手机功率";
+            serieNameDL = "基站功率";
+            xAxis_name = "功率等级(dBm)";
+            for (var key in data[0]) {
+                if (key.indexOf("MSPOWER") !== -1) {
+                    UL[getNum(key)] = data[0][key];
+                    axis.push(getNum(key));
+                }
+                if (key.indexOf("BSPOWER") !== -1) {
+                    DL[getNum(key)] = data[0][key];
+                }
             }
-        },
-        yAxis: {
-            name: '采样点个数',
-            type: 'value'
-        },
-        series: [{
-            name: '',
-            type: 'bar',
-            data: yAxisVal,
-            itemStyle: {
-                normal: {
-                    label: {
-                        show: true,
-                        position: 'top',
-                        textStyle: {
-                            color: function (params) {
-                                var colorList = ['#C33531', '#0AAF9F', '#64BD3D', '#EE9201'];
-                                return colorList[params.dataIndex]
-                            }
-                        },
-                        formatter: function (params) {
-                            if (params.value === 0) {
-                                return '';
-                            } else {
-                                return params.value + "(占比" + parseFloat(params.value / data['sampleNum'] * 100).toFixed(2) + "%)";
-                            }
-                        }
+        } else if (dataType === "PATHLOSS") {
+            boundGap = true;
+            title = cell + (channel_group_num === null ? "全部信道组" : "信道组号" + channel_group_num) + "的路径损耗分布图";
+            fieldUL = "PLOSSUL";
+            fieldDL = "PLOSSDL";
+            serieNameUL = "上行路径损耗";
+            serieNameDL = "下行路径损耗";
+            xAxis_name = "路径损耗(dBm)";
+            for (var key in data[0]) {
+                if (key.indexOf("PLOSSUL") !== -1) {
+                    UL[getNum(key)] = data[0][key];
+                    axis.push(getNum(key) * 2 + 30);
+                }
+                if (key.indexOf("PLOSSDL") !== -1) {
+                    DL[getNum(key)] = data[0][key];
+                }
+            }
+        } else if (dataType === "PLDIFF") {
+            boundGap = true;
+            title = cell + (channel_group_num === null ? "全部信道组" : "信道组号" + channel_group_num) + "的上下行路径损耗分布图";
+            fieldUL = "PLDIFF";
+            serieNameUL = "下行-上行路径损耗差";
+            xAxis_name = "下行-上行路径损耗差(dBm)";
+            for (var key in data[0]) {
+                if (key.indexOf("PLDIFF") !== -1) {
+                    UL[getNum(key)] = data[0][key];
+                    axis.push(getNum(key) - 25);
+                }
+            }
+            DL.length = 0;
+        } else if (dataType === "TA") {
+            title = cell + (channel_group_num === null ? "全部信道组" : "信道组号" + channel_group_num) + "的时间提前量分布图";
+            fieldUL = "TAVAL";
+            serieNameUL = "时间提前量";
+            xAxis_name = "时间提前量";
+            for (var key in data[0]) {
+                if (key.indexOf("TAVAL") !== -1) {
+                    UL[getNum(key)] = data[0][key];
+                    axis.push(getNum(key));
+                }
+            }
+            DL.length = 0;
+        }
+        axis.sort(function compare(a,b){return a-b;});
+        //填充测量信息表
+        $("#mrrInfoTab").append("<TR><td class='menuTd'>"+dataType+"测量信息"+"</td><td>"+cell+"</td></TR>");
+        $("#mrrInfoTab").append("<TR><td class='menuTd'>CHANNCELL_GROUP_NUM</td><td>"+(typeof(channel_group_num)==="undefined"?"全部":channel_group_num)+"</td></TR>");
+        //累加
+        for ( var i = 0; i < UL.length; i++) {
+            $("#mrrInfoTab").append("<TR><td class='menuTd'>"+fieldUL+i+"</td><td>"+UL[i]+"</td></TR>");
+            if(chartType==="accumulatedVal"){
+                accumuValUL+=UL[i];
+                UL[i]=accumuValUL;
+            }
+        }
+        for ( var j = 0; j < DL.length; j++) {
+            $("#mrrInfoTab").append("<TR><td class='menuTd'>"+fieldDL+j+"</td><td>"+DL[j]+"</td></TR>");
+            if(chartType==="accumulatedVal"){
+                accumuValDL+=DL[j];
+                DL[j]=accumuValDL;
+            }
+        }
+        //加载数据至echart
+        var disMode = $("#mrrDisMode").val().trim();
+        var myChart = echarts.init(document.getElementById("main"));
+        myChart.clear();
+        var option = {
+            title : {
+                text: dataType+'指标',
+                subtext: title,
+                x: "center", //标题水平方向位置
+                subtextStyle:{color: '#4A4AFF'}
+            },
+            tooltip : {
+                trigger: 'axis'
+            },
+            legend: {
+                data:[serieNameDL,serieNameUL] ,
+                y: 'top',
+                x: 'left',
+            },
+            toolbox: {
+                show : true,
+                feature : {
+                    mark : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+            xAxis : [
+                {
+                    name:xAxis_name,
+                    type : 'category',
+                    boundaryGap : boundGap,
+                    data : axis
+                }
+            ],
+            yAxis : [
+                {
+                    name:'采样点个数(个)',
+                    type : 'value',
+                    axisLabel : {
+                        formatter: '{value}'
                     },
-                    color: function (params) {
-                        var colorList = ['#C33531', '#0AAF9F', '#64BD3D', '#EE9201'];
-                        return colorList[params.dataIndex]
-                    }
+                    splitLine:{lineStyle:{type: 'dashed'}},
+                    axisLine:{lineStyle:{color: '#223434'}}
                 }
-            }
-        }]
-    };
-
-    var pieOption = {
-        title: {
-            text: chartTitle + '指标',
-            x: 'center',
-            subtext: cellId + cellNameTitle + '信号接收功能' + chartTitle + '分布图 采样点个数(' + data['sampleNum'] + ')个',
-            subtextStyle: {
-                color: '#6C6FFD'
-            }
-        },
-        tooltip: {
-            trigger: 'item',
-            formatter: '{a} <br/> {b} : <br/>{c}'
-        },
-        legend: {
-            orient: 'vertical',
-            left: 'left',
-            top: '10%',
-            data: pieLegendVal
-        },
-        series: [{
-            name: chartTitle + '指标',
-            type: 'pie',
-            radius: '55%',
-            center: ['50%', '60%'],
-            data: pieVal,
-            itemStyle: {
-                normal: {
-                    shadowBlur: 10,
-                    shadowOffsetX: 0,
-                    shadowColor: 'rgba(0, 0, 0, 0.5)',
-                    label: {
-                        show: true,
-                        position: 'outer',
-                        formatter: function (params) {
-                            return params.name + " (" + parseFloat(params.value / data['sampleNum'] * 100).toFixed(2) + "%)";
-                        }
-                    }
+            ],
+            series : [
+                {
+                    name:serieNameDL,
+                    type:disMode,
+                    data:DL,
+                    markPoint : {
+                        data : [
+                            {type : 'max', name: '最大值'},
+                            {type : 'min', name: '最小值'}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            {type : 'average', name : '平均值'}
+                        ]
+                    },
+                    itemStyle :{normal :{color:"#007300"}}
+                },
+                {
+                    name:serieNameUL,
+                    type:disMode,
+                    data:UL,
+                    markPoint : {
+                        data : [
+                            {type : 'max', name: '最大值'},
+                            {type : 'min', name: '最小值'}
+                        ]
+                    },
+                    markLine : {
+                        data : [
+                            {type : 'average', name: '平均值'}
+                        ]
+                    },
+                    itemStyle :{normal :{color:"#FF0000"}}
                 }
-            }
-        }]
-    };
-    // 使用刚指定的配置项和数据显示图表。
-    if ($("#mrDisMode").val() === '柱状图') {
-        myChart.clear();
+            ]
+        };
+        // 为echarts对象加载数据
         myChart.setOption(option);
-    } else {
-        myChart.clear();
-        myChart.setOption(pieOption);
     }
 }
 
@@ -351,7 +392,7 @@ function searchCell() {
         }
     }
     //填充至bsc信息栏
-    showBsc(obj)
+    showBsc(obj);
 }
 
 function getAllBscCell() {
@@ -359,22 +400,22 @@ function getAllBscCell() {
     $("#inputCell").val("");
     var cityId = $("#cityId1").val();
     $.ajax({
-        url: '/api/gsm-mrr-analysis/get-bsc-by-cityId',
+        url: "/api/gsm-mrr-analysis/get-bsc-by-cityId",
         data: {
-            'cityId': cityId
+            "cityId": cityId
         },
-        type: 'get',
-        dataType: 'text',
+        type: "get",
+        dataType: "text",
         success: function (raw) {
             var data = eval("(" + raw + ")");
             bscToCells = data;
             //填充至bsc信息栏
-            showBsc(data)
+            showBsc(data);
         }, error: function (err) {
             $("#info").css("background", "red");
             showInfoInAndOut("info", "后台程序错误！");
         }
-    })
+    });
 }
 
 function showBsc(obj) {
@@ -386,8 +427,8 @@ function showBsc(obj) {
     bscList.sort();
     var bscHtml = "";
     for (var i = 0; i < bscList.length; i++) {
-        bscHtml += "<li><span class='bscCls' id='" + bscList[i] + "'>" + bscList[i] + "(小区数量："
-            + obj[bscList[i]].length + ")</span><ul id='" + bscList[i] + "'></ul></li>";
+        bscHtml += "<li><span class='bscCls' id='" + bscList[i] + "'>" + bscList[i] + "(小区数量：" +
+            obj[bscList[i]].length + ")</span><ul id='" + bscList[i] + "'></ul></li>";
     }
 
     $("#allBscCell").html(bscHtml);
@@ -412,14 +453,11 @@ function showBscDetail(bsc, obj) {
     var all;
     var part;
     for (var i = 0; i < cells1.length; i++) {
-        all = cells1[i]['LABEL'] + "(" + cells1[i]['NAME'] + ")";
+        all = cells1[i]["LABEL"] + "(" + cells1[i]["NAME"] + ")";
         part = all.length > 12 ? all.substring(0, 12) + "..." : all;
-        cellsHtml += "<li><span style='cursor: pointer' class='cellCls' data='" + cells1[i]['LABEL'] + "'"
-            + " bsc='" + bsc + "'"
-            + " manufacturers='" + cells1[i]['MANUFACTURERS'] + "' "
-            + " all='" + all + "' "
-            + " part='" + part + "'>"
-            + part + "</span></li>";
+        cellsHtml += "<li><span style='cursor: pointer' class='cellCls' data='" + cells1[i]["LABEL"] +
+            "'" + " bsc='" + bsc + "'" + " manufacturers='" + cells1[i]["MANUFACTURERS"] + "' " + " all='" +
+            all + "' " + " part='" + part + "'>" + part + "</span></li>";
     }
     $("ul#" + bsc).html(cellsHtml);
     //单选小区至小区输入框内
@@ -434,4 +472,9 @@ function showInfoInAndOut(div, info) {
     divSet.html(info);
     divSet.fadeIn(2000);
     setTimeout("$('#" + div + "').fadeOut(2000)", 1000);
+}
+
+function getNum(text){
+    var value = text.replace(/[^0-9]/ig,"");
+    return value;
 }

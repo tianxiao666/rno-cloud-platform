@@ -15,4 +15,21 @@
 	  on mid1.id=mid2.id
 	  order by mid2.bsc,mid1.EN_NAME
     </select>
+	<select id="queryAllMrrData"
+			parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmMrrAnalysisQueryVM"
+			resultType="java.util.Map">
+		select *
+		from ${tableName}
+		where city_id =  ${cityId}
+			and cell_name = '${inputCell}'
+		<if test="mrrCHGRType != 'ALL'">
+			and CHANNEL_GROUP_NUM = ${mrrCHGRType}
+		</if>
+		<if test="mrrMeaBegDate != '' and mrrMeaBegDate != null">
+			<![CDATA[and mea_date > to_date('${mrrMeaBegDate}', 'yyyy-MM-dd HH24:MI:SS')	]]>
+		</if>
+		<if test="mrrMeaEndDate != '' and mrrMeaEndDate != null">
+			<![CDATA[and mea_date < to_date('${mrrMeaEndDate}', 'yyyy-MM-dd HH24:MI:SS')  ]]>
+		</if>
+	</select>
 </mapper>

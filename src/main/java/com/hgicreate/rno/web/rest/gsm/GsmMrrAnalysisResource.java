@@ -1,6 +1,7 @@
 package com.hgicreate.rno.web.rest.gsm;
 
 import com.hgicreate.rno.service.gsm.GsmMrrAnalysisService;
+import com.hgicreate.rno.web.rest.gsm.vm.GsmMrrAnalysisQueryVM;
 import com.hgicreate.rno.web.rest.gsm.vm.GsmParamCheckVM;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,9 +23,9 @@ public class GsmMrrAnalysisResource {
     }
 
     @GetMapping("/query-mrr-data")
-    public List<Map<String, Object>> queryParam(GsmParamCheckVM vm) {
+    public List<Map<String, Object>> queryParam(GsmMrrAnalysisQueryVM vm) {
         log.debug("进入GSM MRR指标分析数据查询方法,视图模型={}",vm);
-        return null;
+        return gsmMrrAnalysisService.queryEriMrrData(vm);
     }
 
     @GetMapping("/get-bsc-by-cityId")
