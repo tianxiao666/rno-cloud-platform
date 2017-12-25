@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hgicreate.rno.mapper.gsm.GsmFrequencyReuseMapper">
+    <select id="selectFreqReuseCellGisInfoFromSelectionList" parameterType="map" resultType="com.hgicreate.rno.web.rest.gsm.vm.GsmGisCellVM">
+        <![CDATA[
+            select cell.EN_NAME               as cell,
+	        cell.CELL_NAME                as chineseName,
+			cell.LONGITUDE           as lng,
+			cell.LATITUDE            as lat,
+			cell.AZIMUTH             as azimuth,
+			cell.FREQ_HOPPING_TYPE as freqType,
+			cell.EN_NAME                as site,
+			cell.LAC                 as lac,
+			cell.CI                  as ci,
+			cell.BCCH                as bcch,
+			cell.TCH                 as tch
+			from RNO_GSM_CELL cell
+			WHERE CELL_ID =${configId}
+        ]]>
+    </select>
+    <select id="selectBcchTchFrom" parameterType="map" resultType="map">
+        select bcch,tch
+        from RNO_GSM_CELL
+        WHERE CELL_ID=${cellId}
+    </select>
+
+</mapper>

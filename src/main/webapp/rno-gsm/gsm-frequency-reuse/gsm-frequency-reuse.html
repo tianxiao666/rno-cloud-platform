@@ -6,8 +6,8 @@
 
     <link rel="stylesheet" href="css/gsm-frequency-reuse.css">
     <link rel="stylesheet" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
-    <link rel="stylesheet" href="../../lib/openlayers/4.4.2/ol.css">
-
+    <!--<link rel="stylesheet" href="../../lib/openlayers/4.4.2/ol.css">-->
+    <link rel="stylesheet" href="/webjars/openlayers/4.3.1/ol.css"/>
     <script src="../../lib/jquery/1.8.2/jquery.js"></script>
     <script src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
     <script src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
@@ -15,8 +15,12 @@
     <script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
     <script src="../../lib/validate.js"></script>
     <script src="../../lib/tab.js"></script>
-    <script src="../../lib/openlayers/4.4.2/ol.js"></script>
-    <script src="js/gsm-frequency-reuse-origin.js"></script>
+    <!--<script src="../../lib/openlayers/4.4.2/ol.js"></script>-->
+    <script src="/webjars/openlayers/4.3.1/ol-debug.js"></script>
+
+    <script src="../../lib/rno/selftools.js"></script>
+    <script src="../../lib/echarts/echarts.common.min.js"></script>
+    <!--<script src="js/gsm-frequency-reuse-origin.js"></script>-->
     <script src="js/gsm-frequency-reuse.js"></script>
 </head>
 <body>
@@ -139,7 +143,7 @@
         </div>
     </div></div>
 
-<div id="report_Dialog" class="dialog2" style="display:none;height:510px;top: 40px; right: 298px; z-index: 30;">
+<div id="report_Dialog" class="reportContainer" style="display:none;height:510px;top: 40px; left: 298px; z-index: 30;">
     <div class="dialog_header">
         <div class="dialog_title">频点复用统计</div>
         <div class="dialog_tool">
@@ -147,24 +151,32 @@
         </div>
     </div>
     <form id="reportForm" method="post">
-        <input id="reportPageSize" name="page.pageSize" value="20" type="hidden"> <input id="reportCurrentPage"
-                                                                                         name="page.currentPage"
-                                                                                         value="0" type="hidden"> <input
-            id="reportTotalCount" type="hidden"> <input id="reportPageCount" type="hidden">
-        <input id="reportId" name="id" type="hidden"> <input id="reportType" name="type" type="hidden">
+        <input id="reportPageSize" name="page.pageSize" value="20" type="hidden">
+        <input id="reportCurrentPage" name="page.currentPage" value="0" type="hidden">
+        <input id="reportTotalCount" type="hidden">
+        <input id="reportPageCount" type="hidden">
+        <input id="reportId" name="id" type="hidden">
+        <input id="reportType" name="type" type="hidden">
     </form>
-    <div class="dialog_content" id="report_Div" style="width:900px;height:422px; background:#f9f9f9"></div>
+    <div style="width: 900px;height:450px;background: #fff">
+        <div id="reportDiv"  style="width: 900px;height: 450px;background: rgba(255,0,0,1)"></div>
+    </div>
     <br>
+
     <div class="paging_div" style="border: 1px solid #ddd">
-        <span class="mr10"><a href="javascript:void(0);" onclick="reportFreqByPage('all')">显示全部</a></span> <span
-            class="mr10">每页
-				20 条记录,共 <em id="emTotalCnt" class="blue">0</em> 条记录
-			</span> <a class="paging_link page-first" title="首页" onclick="reportFreqByPage('first')"></a> <a
-            class="paging_link page-prev" title="上一页" onclick="reportFreqByPage('back')"></a> 第 <input
-            id="showCurrentPage" class="paging_input_text" value="0" type="text"> 页/<em id="emTotalPageCnt">0</em>页 <a
-            class="paging_link page-go" title="GO" onclick="reportFreqByPage('num')">GO</a> <a
-            class="paging_link page-next" title="下一页" onclick="reportFreqByPage('next')"></a> <a
-            class="paging_link page-last" title="末页" onclick="reportFreqByPage('last')"></a>
+        <span class="mr10">
+            <a href="javascript:void(0);" onclick="reportFreqByPage('all')">显示全部</a>
+        </span>
+        <span
+            class="mr10">每页20 条记录,共 <span id="emTotalCnt"  value="0" type="text" class="blue"></span> 条记录
+        </span>
+        <a class="paging_link page-first" title="首页" onclick="reportFreqByPage('first')"></a>
+        <a class="paging_link page-prev" title="上一页" onclick="reportFreqByPage('back')"></a>
+            第 <input id="showCurrentPage" class="paging_input_text" value="0" type="text"> 页/
+        <em id="emTotalPageCnt">0</em>页
+        <a class="paging_link page-go" title="GO" onclick="reportFreqByPage('num')">GO</a>
+        <a class="paging_link page-next" title="下一页" onclick="reportFreqByPage('next')"></a>
+        <a class="paging_link page-last" title="末页" onclick="reportFreqByPage('last')"></a>
     </div>
     <div class="loading_cover" id="reportCoverDiv" style="display: none;position:absolute">
         <div class="cover"></div>
