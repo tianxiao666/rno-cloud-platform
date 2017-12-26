@@ -9,7 +9,7 @@ public class GsmPlanConfigVM {
 	private boolean isTemp;
 	private boolean isSelected;
 	private String type;
-
+	private String btsType;
 	private String title;
 	private String name;
 	private String collectTime;

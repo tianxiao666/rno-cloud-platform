@@ -793,11 +793,12 @@ function drawArrow(cellLon, cellLat, vecLng, vecLat, ratio, color, points) {
     let r = Math.sqrt(difflng * difflng + difflat * difflat);
     let conV = difflng / r;
     let sinV = difflat / r;
-
+console.log(points);
     var coordinates = [];
     points.forEach(function (point) {
         coordinates.push([point.lng, point.lat]);
     });
+    console.log(coordinates);
     var styles = [
         new ol.style.Style({
             stroke: new ol.style.Stroke({
