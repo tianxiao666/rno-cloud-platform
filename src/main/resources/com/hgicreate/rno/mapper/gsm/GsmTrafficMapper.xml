@@ -71,4 +71,26 @@
         </if>
 
     </select>
+
+    <select id="busyCellQuery" parameterType="java.lang.Long" resultType="java.util.Map">
+        select DISTINCT(cell),max(TRAFFIC_PER_LINE) as maxValue,avg(TRAFFIC_PER_LINE) as avgValue,
+        MIN(TRAFFIC_PER_LINE) as minValue,COUNT(TRAFFIC_PER_LINE) as cnt
+        from rno_gsm_sts sts
+        INNER JOIN RNO_GSM_STS_DESCRIPTOR descp on sts.DESCRIPTOR_ID=descp.STS_DESC_ID
+        and descp.AREA_ID = #{areaId}
+        and descp.STS_PERIOD='2000-2100' group by cell having(max(TRAFFIC_PER_LINE)>0.9)
+    </select>
+
+    <select id="idleCellQuery" parameterType="java.lang.Long" resultType="java.util.Map">
+        select DISTINCT(cell) as cell ,max(TRAFFIC_PER_LINE) as maxValue,avg(TRAFFIC_PER_LINE) as avgValue,
+        min(TRAFFIC_PER_LINE) as minValue,count(TRAFFIC_PER_LINE) as cnt
+        from rno_gsm_sts sts
+        INNER JOIN RNO_GSM_STS_DESCRIPTOR descp on sts.DESCRIPTOR_ID=descp.STS_DESC_ID
+        and descp.AREA_ID = #{areaId}
+        <![CDATA[
+          and STS.CARRIER_NUMBER>2 GROUP BY cell having (
+          max(TRAFFIC_PER_LINE)<0.15 OR max(PDCH_CARRYING_EFFICIENCY)<3
+          )
+        ]]>
+    </select>
 </mapper>
