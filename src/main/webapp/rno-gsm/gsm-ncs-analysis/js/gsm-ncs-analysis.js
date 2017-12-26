@@ -1,42 +1,671 @@
+var ncsDates = [];// 日期
+var ncsIdToDetail = {};// key为ncsId，value为ncs对象
+var ncsDateToTime = {};// key为date
+var currentCellNcsData = null;
+var selectCell = "";
 $(function () {
-
+    // set highchart
+    sethighchart();
     $(".draggable").draggable();
     $("#trigger").css("display", "none");
 
     laydate.render({elem: '#beginTime', value: new Date()});
+    initAreaSelectors({selectors: ["provinceId", "cityId"]});
 
-    $("#provinceId1").change(function () {
-        var provinceId = parseInt($(this).find("option:checked").val());
-        $.getJSON("../../data/area.json", function (data) {
-            renderArea(data, provinceId, "cityId1");
-        })
+    // 展开、收缩小区ncs信息的控制
+    $("#toggleCellInfoDiv").click(function() {
+        if ($("#cellInfoTab_div").css("display") !== 'none') {
+            $("#cellInfoTab_div").css("display", "none");
+            $("#toggleCellInfoDiv").html("原始数据(点击展开)");
+        } else {
+            $("#toggleCellInfoDiv").html("原始数据(点击收缩)");
+            $("#cellInfoTab_div").css("display", 'block');
+        }
     });
 
-    //初始化区域
-    $.ajax({
-        url: "../../data/area.json",
-        dataType: "json",
-        async: false,
-        success: function (data) {
-            renderArea(data, 0, "provinceId1");
-            $("#provinceId1").change();
+    // 数据类型变化
+    $("#ncsDataType").change(function() {
+        var ncsId = $("#ncsTime").val();
+        if (!ncsId || ncsId === '') {
+            return;
         }
-    })
+        // 图表
+        displayChart(currentCellNcsData, $("#ncsDataType").val());
+    });
+
+
+    $("#queryBtn").click(function () {
+        selectCell = $("#inputCell").val();
+        $("#cellNcsForm").ajaxSubmit({
+            url:"/api/gsm-ncs-analysis/cell-ncs-query",
+            type:"post",
+            dataType:'text',
+            success:function(raw){
+                ncsDateToTime = {};
+                ncsIdToDetail = {};
+                ncsDates.splice(0, ncsDates.length);
+
+                var data = eval("(" + raw + ")");
+                if(data.length !== 0) {
+                    currentCellNcsData = data;// 更新小区对应的该ncs的信息
+
+                } else {
+                    $("#ncsDate").html("");
+                    $("#ncsTime").html("");
+                    hideOperTips("loadingDataDiv");
+                    animateInAndOut("operInfo", 500, 500, 1000, "operTip",
+                        "该小区无测量数据！");
+                    return;
+                }
+                var one;
+                var ncsId;
+                var index, startdate, starthour;
+                var times;
+                var t;
+                for ( var i = 0; i < data.length; i++) {
+                    one = data[i];
+                    if (!one) {
+                        continue;
+                    }
+                    ncsId = one['rno2gEriNcsId'];
+                    var startTime = (new Date(one['meaTime'])).Format("yyyy-MM-dd hh:mm:ss");
+                    index = startTime.indexOf(' ');
+                    startdate = startTime.substring(0, index);
+                    starthour = startTime.substring(index + 1);
+
+                    // 记录
+                    ncsIdToDetail[ncsId] = one;
+                    //
+                    times = ncsDateToTime[startdate];
+                    if (!times) {
+                        times = [];
+                        ncsDateToTime[startdate] = times;
+
+                        ncsDates.push(startdate);
+                    }
+                    t = {};
+                    t['time'] = starthour;
+                    t['ncsId'] = ncsId;
+                    times.push(t);
+                }
+
+                // 填充日期和时间下来框
+                if (ncsDates.length > 0) {
+                    var ds = "";
+                    for ( var j = 0; j < ncsDates.length; j++) {
+                        ds += "<option value='" + ncsDates[j] + "'>" + ncsDates[j]
+                            + "</option>";
+                    }
+                    // alert(ds);
+                    $("#ncsDate").html(ds);
+
+                    // 取第一个日期的时间填充时间下来框
+                    times = ncsDateToTime[ncsDates[0]];
+                    if (times) {
+                        var ts = "";
+                        for ( j = 0; j < times.length; j++) {
+                            ts += "<option value='" + times[j]['ncsId'] +","+ times[j]['manufacturers'] + "'>"
+                                + times[j]['time'] + "</option>"
+                        }
+                        // alert(ts);
+                        $("#ncsTime").html(ts);
+                    }
+
+                    // 触发一次获取小区在ncs里的测量信息的事件
+                    $("#ncsTime").trigger("change");
+                } else {
+                    hideOperTips("loadingDataDiv");
+                    animateInAndOut("operInfo", 500, 500, 3000, "operTip",
+                        "该小区无测量数据！");
+                    hideOperTips("loadingDataDiv");
+                    return;
+                }
+                $('#cellInfoTab').css("line-height", "12px");
+                var table = $('#cellInfoTab').DataTable( {
+                    "data": JSON.parse(raw),
+                    "columns": [
+                        { "data": null },
+                        { "data": "cell" },
+                        { "data": "bsic" },
+                        { "data": "arfcn" },
+                        { "data": "rep" },
+                        { "data": "topsix" },
+                        { "data": "toptwo" },
+                        { "data": "abss" },
+                        { "data": "alone" },
+                        { "data": "ncell" },
+                        { "data": "distance" },
+                        { "data": "ncells" },
+                        { "data": "defined" }
+                    ],
+                    "columnDefs": [ {
+                        "searchable": false,
+                        "orderable": false,
+                        "targets": 0
+                    } ],
+                    "order": [[ 1, 'asc' ]],
+                    "lengthChange": false,
+                    "ordering": true,
+                    "searching": false,
+                    "destroy": true,
+                    "language": {
+                        url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
+                    }
+                } );
+                table.on( 'order.dt search.dt', function () {
+                    table.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+                        cell.innerHTML = i+1;
+                    } );
+                } ).draw();
+            },
+            complete : function() {
+                $("#ncsDataType").trigger("change");
+            }
+        });
+
+    });
+
+    // 日期下来框联动
+    $("#ncsDate").change(
+        function() {
+            // 情况时间下拉框，重新绑定时间
+            $("#ncsTime").html("");
+            var startdate = $("#ncsDate").val();
+            var times = ncsDateToTime[startdate];
+            if (times) {
+                var ts = "";
+                for ( var j = 0; j < times.length; j++) {
+                    ts += "<option value='" + times[j]['ncsId'] +","+ times[j]['manufacturers']
+                        + "'>" + times[j]['time'] + "</option>"
+                }
+                // alert(ts);
+                $("#ncsTime").html(ts);
+                //加一次触发事件，是因为华为ncs数据没有时间，取00:00:00，当改变日期的时候，
+                //时间select不变，change事件不触发
+                $("#ncsTime").trigger("change");
+            }
+        });
+    // 时间下来框
+    $("#ncsTime").change(function() {
+        var valStr = $("#ncsTime").val();
+        var val = valStr.split(",");
+        var ncsId = val[0];
+        var manufacturers = val[1];
+        /*getCellNcsInfo(ncsId, selectCell, manufacturers);
+        showNcsInfo(ncsIdToDetail[ncsId]);*/
+    });
 });
 
-// 渲染区域
-function renderArea(data, parentId, areaMenu) {
-    var arr = data.filter(function (v) {
-        return v.parentId === parentId;
-    });
-    if (arr.length > 0) {
-        var areaHtml = [];
-        $.each(arr, function (index) {
-            var area = arr[index];
-            areaHtml.push("<option value='"+area.id+"'>"+area.name+"</option>");
-        });
-        $("#" + areaMenu).html(areaHtml.join(""));
-    } else {
-        console.log("父ID为" + parentId + "时未找到任何下级区域。");
+/**
+ * 显示数据
+ *
+ * @param data
+ * @param type
+ *            类型：包括；six,two,abss,alone
+ */
+function displayChart(data, type) {
+
+    if (!data || data.length === 0) {
+        return;
     }
+    var cells = [];
+    var title = "";
+    if (type === 'topsix') {
+        title = '六强';
+    } else if (type === 'toptwo') {
+        title = '两强'
+    } else if (type === 'cellRate') {
+        title = '强于主小区'
+    } else if (type === 'abss') {
+        title = 'ABSS';
+    } else if (type === 'alone') {
+        title = 'ALONE';
+    } else {
+        return;
+    }
+
+    var ratioData = createRatioData(data, type);
+    for ( i = 0; i < ratioData.length; i++) {
+        cells.push(ratioData[i]['ncell']);
+    }
+    var ratioRedData=[];
+    var ratioYelData=[];
+    if (type === 'topsix') {
+        title = '六强';
+        for (i = 0; i < ratioData.length; i++) {
+            var one = ratioData[i];
+            if (ratioData[i]['color'] === 'red') {
+                ratioRedData.push([i, one['topsix'] * 100]);
+            } else {
+                ratioYelData.push([i, one['topsix'] * 100]);
+            }
+        }
+    }
+    if (type === 'toptwo') {
+        title = '两强';
+        for (i = 0; i < ratioData.length; i++) {
+            var one = ratioData[i];
+            if (ratioData[i]['color'] === 'red') {
+                ratioRedData.push([i, one['toptwo'] * 100]);
+            } else {
+                ratioYelData.push([i, one['toptwo'] * 100]);
+            }
+        }
+    }
+    if (type === 'cellRate') {
+        title = '强于主小区';
+        for (i = 0; i < ratioData.length; i++) {
+            var one = ratioData[i];
+            if (ratioData[i]['color'] === 'red') {
+                ratioRedData.push([i, one['cellRate'] * 100]);
+            } else {
+                ratioYelData.push([i, one['cellRate'] * 100]);
+            }
+        }
+    }
+    if (type === 'abss') {
+        title = 'ABSS';
+        for (i = 0; i < ratioData.length; i++) {
+            var one = ratioData[i];
+            if (ratioData[i]['color'] === 'red') {
+                ratioRedData.push([i, one['abss'] * 100]);
+            } else {
+                ratioYelData.push([i, one['abss'] * 100]);
+            }
+        }
+    }
+    if (type === 'alone') {
+        title = 'ALONE';
+        for (i = 0; i < ratioData.length; i++) {
+            var one = ratioData[i];
+            if (ratioData[i]['color'] === 'red') {
+                ratioRedData.push([i, one['alone'] * 100]);
+            } else {
+                ratioYelData.push([i, one['alone'] * 100]);
+            }
+        }
+    }
+
+    /*console.log(ratioRedData);
+    console.log(ratioYelData);*/
+    // 比例
+    var chart = $('#chartDiv').highcharts();
+    var disData = [];
+    for ( var i = 0; i < ratioData.length; i++) {
+        disData.push(ratioData[i]['dis']);
+    }
+    /*console.log(disData);*/
+    if (chart) {
+        chart.destroy();
+    }
+    var options = {
+        chart : {
+            zoomType : 'xy'
+        },
+        title : {
+            text : '[' + selectCell + ']' + title + '比例',
+            align:'left',
+            x:500,
+            y:10
+        },
+        xAxis : [ {
+            id : 'ncellAxis',
+            gridLineWidth : 1,
+            categories : cells,
+            labels : {
+                rotation : 90
+            }
+        } ],
+        yAxis : [ { // Primary yAxis
+            id : 'ratioAxis',
+            labels : {
+                style : {
+                    color : '#89A54E'
+                }
+            },
+            title : {
+                text : title + '比例（%）'
+            }
+
+        }, { // Tertiary yAxis
+            id : 'disAxis',
+            gridLineWidth : 1,
+            title : {
+                text : '距离(km)',
+                style : {
+                    color : '#AA4643'
+                }
+            },
+            labels : {
+                style : {
+                    color : '#AA4643'
+                }
+            },
+            opposite : true
+        } ],
+        tooltip : {
+            shared : false,
+            formatter : function() {
+                return this.x + "---" + this.y;
+            }
+        },
+        legend : {
+            layout : 'horizontal',
+            align : 'left',
+            x : 10,//20
+            verticalAlign : 'top',
+            y : -5,
+            floating : true,
+            backgroundColor : '#FFFFFF'
+        },
+        series : [{
+            id : 'ratioSeries',
+            name : '红色：已定义邻区',
+            color : '#FF0000',
+            type : 'column',
+            yAxis : 'ratioAxis',
+            data : ratioRedData,
+            tooltip : {
+                // // valueSuffix : ' %',
+                // formatter : function() {
+                // return this.y + "bili";
+                // }
+            }
+        },
+            {
+                id : 'ratioSeries',
+                name : '黄色：未定义邻区',
+                color : '#FFFF00',
+                type : 'column',
+                yAxis : 'ratioAxis',
+                data : ratioYelData,
+                tooltip : {
+
+                }
+
+            }
+            , {
+                id : 'disSeries',
+                name : '与目标小区的距离',
+                color : '#89A54E',
+                type : 'scatter',
+                yAxis : 'disAxis',
+                data : disData,
+                tooltip : {
+                    valueSuffix : ' km'
+                }
+            } ]
+        //
+    };
+    $('#chartDiv').highcharts(options);
+}
+
+Date.prototype.Format = function(fmt){
+    //author: Shf
+    var o = {
+        "M+" : this.getMonth()+1,                 //月份
+        "d+" : this.getDate(),                    //日
+        "h+" : this.getHours(),                   //小时
+        "m+" : this.getMinutes(),                 //分
+        "s+" : this.getSeconds(),                 //秒
+        "q+" : Math.floor((this.getMonth()+3)/3), //季度
+        "S"  : this.getMilliseconds()             //毫秒
+    };
+    if(/(y+)/.test(fmt)){
+        fmt = fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+    }
+
+    for(var k in o){
+        if(new RegExp("("+ k +")").test(fmt)){
+            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length===1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+        }
+    }
+    return fmt;
+};
+
+function showOperTips(outerId, tipId, tips) {
+    try {
+        var outerIdDiv = $("#" + outerId);
+        outerIdDiv.css("display", "");
+        outerIdDiv.find("#" + tipId).html(tips);
+    } catch (err) {
+    }
+}
+
+function hideOperTips(outerId) {
+    try {
+        $("#" + outerId).css("display", "none");
+    } catch (err) {
+    }
+}
+
+
+/**
+ * 创建柱状图的data
+ *
+ * @param cellNcsArr
+ * @param code
+ * @param multiplier
+ */
+function createRatioData(cellNcsArr, code, multiplier) {
+
+    var data = [];
+    if (!cellNcsArr) {
+        return data;
+    }
+    var one = null;
+    var isnei = 0;
+    var field = "";
+    if (code === 'topsix') {
+        field = 'TOPSIX'
+    } else if (code === 'toptwo') {
+        field = 'TOPTWO';
+    } else if (code === 'cellRate') {
+        field = 'CELLRATE';
+    } else if (code === 'abss') {
+        field = 'ABSSRATE';
+    } else if (code === 'alone') {
+        field = 'ALONERATE';
+    } else {
+        return data;
+    }
+
+    if (multiplier === undefined || multiplier === null) {
+        multiplier = 1;
+    }
+    for ( i = 0; i < cellNcsArr.length; i++) {
+        one = {};
+        isnei = cellNcsArr[i]['defined'];
+
+        var aa=cellNcsArr[i];
+//		for(var key in aa){
+//			console.log(key+":"+aa[key]);
+//		}
+        if (isnei === 0) {
+            one['color'] = 'yellow';
+        } else {
+            one['color'] = 'red';
+        }
+        // console.log(cellNcsArr[i][field]*multiplier + '---'+new
+        // Number(cellNcsArr[i][field]*multiplier).toFixed(3));
+        // one['y'] = new Number(cellNcsArr[i][field]*multiplier).toFixed(3)+'';
+        one['y'] = cellNcsArr[i][field];
+        one['x']=i;//cellNcsArr记录x下标
+
+        //peng.jm 2015-1-26 加入 start
+        one['topsix'] = cellNcsArr[i]['topsix']; //记录topsix
+        one['toptwo'] = cellNcsArr[i]['toptwo']; //记录toptwo
+        one['abss'] = cellNcsArr[i]['abss']; //记录abss
+        one['alone'] = cellNcsArr[i]['alone']; //记录alone
+        one['cellRate'] = cellNcsArr[i]['cellRate']; //记录cellRate
+        one['ncell'] = cellNcsArr[i]['ncell']; //记录ncell
+        cellNcsArr[i]['distance'] === "10000000000" ? "": cellNcsArr[i]['distance'];
+        one['dis'] = cellNcsArr[i]['distance']; // 记录距离
+        //peng.jm 2015-1-26 加入end
+
+//		console.log("one:"+one['color']);
+        data.push(one);
+    }
+
+
+    //peng.jm 2015-1-26 加入 start
+    //对各项指标值进行排序
+    var temp;
+    var x;
+    for ( var i = 0; i < data.length; i++) {
+        for ( var j = i; j < data.length; j++) {
+            if(data[j]['y'] >= data[i]['y']) {
+                temp = data[i];
+                data[i] = data[j];
+                data[j] = temp;
+
+                x = data[i]['x'];
+                data[i]['x'] = data[j]['x'];
+                data[j]['x'] = x;
+            }
+        }
+    }
+    //peng.jm 2015-1-26 加入 end
+
+    //peng.jm 2015-3-18 加入 start
+
+    var isNeiArray = []; //定义邻区
+    var notNeiArray = []; //未定义邻区
+    for ( var i = 0; i < data.length; i++) {
+        if(data[i]['color'] === 'red') {
+            isNeiArray.push(data[i]);
+        } else {
+            notNeiArray.push(data[i]);
+        }
+    }
+	/*console.log(isNeiArray);
+	console.log(notNeiArray);*/
+
+    var result = [];
+
+    if(isNeiArray.length === 0) {
+        for ( var i = 0; i < notNeiArray.length; i++) {
+            if(i>=60) break;
+            result.push(notNeiArray[i]);
+        }
+    }
+    else if(isNeiArray.length>0 && isNeiArray.length<60) {
+        for ( var i = 0; i < isNeiArray.length; i++) {
+            result.push(isNeiArray[i]);
+        }
+        for ( var i = result.length; i < notNeiArray.length; i++) {
+            if(i>=60) break;
+            result.push(notNeiArray[i]);
+        }
+    }
+    else if(isNeiArray.length>60) {
+        for ( var i = 0; i < isNeiArray.length; i++) {
+            if(i>=60) break;
+            result.push(isNeiArray[i]);
+        }
+    }
+
+    //初始化60条数据的x值
+    for ( var i = 0; i < result.length; i++) {
+        result[i]['x'] = i;
+    }
+    //将整理好的60条数据再进行排序，保证从大到小
+    for ( var i = 0; i < result.length; i++) {
+        for ( var j = i; j < result.length; j++) {
+            if(result[j]['y'] >= result[i]['y']) {
+                temp = result[i];
+                result[i] = result[j];
+                result[j] = temp;
+
+                x = result[i]['x'];
+                result[i]['x'] = result[j]['x'];
+                result[j]['x'] = x;
+            }
+        }
+    }
+    return result;
+}
+
+/**
+ * 设置highchart
+ */
+function sethighchart() {
+
+    Highcharts.setOptions({
+        chart : {
+            backgroundColor : {
+                linearGradient : [ 0, 0, 500, 500 ],
+                stops : [ [ 0, 'rgb(255, 255, 255)' ],
+                    [ 1, 'rgb(240, 240, 255)' ] ]
+            },
+            borderWidth : 2,
+            plotBackgroundColor : 'rgba(255, 255, 255, .9)',
+            plotShadow : true,
+            plotBorderWidth : 1
+        }
+    });
+
+    // 空图表
+    var options = {
+        chart : {
+            zoomType : 'xy'
+        },
+        title : {
+            text : '六强比例'
+        },
+        xAxis : [ {
+            id : 'ncellAxis',
+            gridLineWidth : 1,
+            categories : [ '邻区' ],
+            labels : {
+                rotation : 90
+            }
+        } ],
+        yAxis : [ { // Primary yAxis
+            id : 'ratioAxis',
+            labels : {
+                style : {
+                    color : '#89A54E'
+                }
+            },
+            title : {
+                text : '六强比例（%）'
+            },
+
+        }, { // Tertiary yAxis
+            id : 'disAxis',
+            gridLineWidth : 1,
+            title : {
+                text : '距离',
+                style : {
+                    color : '#AA4643'
+                }
+            },
+            labels : {
+                style : {
+                    color : '#AA4643'
+                }
+            },
+            opposite : true
+        } ],
+        tooltip : {
+            shared : false,
+            formatter : function() {
+                return this.x + "---" + this.y;
+            }
+        },
+        legend : {
+            layout : 'horizontal',
+            align : 'left',
+            x : 20,
+            verticalAlign : 'top',
+            y : -5,
+            floating : true,
+            backgroundColor : '#FFFFFF'
+        },
+
+        //
+    };
+    chart = $('#chartDiv').highcharts(options);
+
 }

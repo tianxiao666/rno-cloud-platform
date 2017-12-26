@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hgicreate.rno.mapper.gsm.GsmNcsAnalysisMapper">
+    <select id="queryGsmEriNcs" resultType="com.hgicreate.rno.service.gsm.dto.GsmNcsAnalysisDTO">
+SELECT CELL AS cell, NCELL AS ncell, NCELLS AS ncells, BSIC AS bsic, ARFCN AS arfcn, REPARFCN AS rep,
+ TIMES / REPARFCN AS topsix, (TIMES1 + TIMES2)/REPARFCN AS toptwo,
+  timesabss / REPARFCN AS abss, timesalone / REPARFCN AS alone,
+  (case when DISTANCE = 1000000 then 0 else DISTANCE end) AS distance, DEFINED_NEIGHBOUR AS defined,
+  MEA_TIME AS meaTime, TIMESRELSS2 / REPARFCN AS cellRate
+  FROM RNO_GSM_ERI_NCS
+WHERE CELL = '${cell}' AND
+      CITY_ID =
+      (SELECT OLD_SYS_AREA_ID FROM RNO_OLD_NEW_SYS_AREA_REFERENCE WHERE NEW_SYS_AREA_ID = ${cityId})
+    </select>
+    <select id="queryGsmHwNcs" resultType="com.hgicreate.rno.service.gsm.dto.GsmNcsAnalysisDTO">
+SELECT CELL AS cell, NCELL AS ncell, NCELLS AS ncells, BSIC AS bsic, ARFCN AS arfcn, S3013 AS rep,
+       S361 / S3013 AS topsix, ( (NVL(S374 ,0) + NVL(S375 ,0))/ S3013 ) AS toptwo,
+       S372 / S3013 AS abss, NVL(S374 ,0) / S3013 AS alone, (case when DISTANCE = 1000000 then 0 else DISTANCE end) AS distance,
+       MEA_TIME AS meaTime, (S361 - S366)/S3013 AS cellRate
+FROM RNO_GSM_HW_NCS
+WHERE CELL = '${cell}' AND
+      CITY_ID =
+      (SELECT OLD_SYS_AREA_ID FROM RNO_OLD_NEW_SYS_AREA_REFERENCE WHERE NEW_SYS_AREA_ID = ${cityId})
+    </select>
+    <select id="queryGsmNcell" resultType="java.lang.String">
+        SELECT EN_NAME FROM RNO_GSM_CELL WHERE CELL_ID IN
+        (SELECT NCELL_ID FROM RNO_GSM_NCELL_RELATION WHERE CELL_ID =
+        (SELECT CELL_ID FROM RNO_GSM_CELL WHERE EN_NAME = '${cell}'))
+    </select>
+</mapper>
