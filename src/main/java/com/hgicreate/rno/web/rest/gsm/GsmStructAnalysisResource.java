@@ -150,9 +150,7 @@ public class GsmStructAnalysisResource {
         // 保存任务参数
         List<GsmStructJobParam> gsmStructJobParamList = new ArrayList<>();
         List<Map<String,Object>> Paramlist = gsmStructAnalysisService.getParamsInfo(vm);
-        List<String> paramName = new ArrayList<>();
         for(Map map:Paramlist){
-//            paramName.add(map.get("name").toString());
             GsmStructJobParam gsmStructJobParam = new GsmStructJobParam();
             gsmStructJobParam.setGsmStructAnalysisJob(gsmStructAnalysisJob);
             gsmStructJobParam.setParamType(map.get("type").toString());

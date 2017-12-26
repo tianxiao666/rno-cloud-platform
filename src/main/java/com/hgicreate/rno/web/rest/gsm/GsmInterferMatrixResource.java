@@ -10,7 +10,6 @@ import com.hgicreate.rno.service.gsm.dto.GsmInterferMatrixJobDTO;
 import com.hgicreate.rno.service.gsm.dto.GsmNcsForJobDTO;
 import com.hgicreate.rno.web.rest.gsm.vm.GsmInterferMatrixVM;
 import com.hgicreate.rno.web.rest.gsm.vm.GsmNcsForJobVM;
-import com.sun.jmx.snmp.tasks.ThreadService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -69,7 +68,7 @@ public class GsmInterferMatrixResource {
         GsmInterferMatrixJob job = new GsmInterferMatrixJob();
         job.setArea(area);
         Calendar now = Calendar.getInstance();
-        job.setName(area.getName() + now.get(Calendar.YEAR) + now.get(Calendar.MONDAY) +
+        job.setName(area.getName() + now.get(Calendar.YEAR) + now.get(Calendar.MONTH) +
                 "_" + now.get(Calendar.DATE) + "干扰矩阵计算");
         job.setPriority(1);
         job.setDataType("NCS");

@@ -72,7 +72,7 @@ public class GsmNetworkCoverageJobResource {
         job.setBegMeaTime(beginDate);
         job.setEndMeaTime(endDate);
         Calendar now = Calendar.getInstance();
-        job.setName(area.getName() + now.get(Calendar.YEAR) + now.get(Calendar.MONDAY) +
+        job.setName(area.getName() + now.get(Calendar.YEAR) + now.get(Calendar.MONTH) +
                 "_" + now.get(Calendar.DATE) + "网络覆盖分析任务");
         job.setPriority(1);
         List<GsmNetworkCoverageJob> list = gsmNetworkCoverageJobRepository.findByAreaOrderByIdDesc(area);
