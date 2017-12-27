@@ -565,8 +565,9 @@ function searchNcell(cellId) {
         return;
     }
     var ncells = new Array();
+    queryNCellOverlay.getSource().clear();
     $.ajax({
-        url: '/api/dynamic-coverage/get-ncell-details',
+        url: '/portal/api/dynamic-coverage/get-ncell-details',
         data: {
             'cell': cellId,
             'cityId': $("#cityId").val(),
@@ -615,7 +616,6 @@ function searchNcell(cellId) {
                                     $.ajax(url).then(function (response) {
                                         let features = new ol.format.GeoJSON().readFeatures(response);
                                         if (features.length) {
-                                            queryNCellOverlay.getSource().clear();
                                             queryNCellOverlay.getSource().addFeatures(features);
                                         }
                                     }).catch(function (err) {
@@ -733,7 +733,7 @@ function showDynaCoverage(cellId, enName, cellLon, cellLat) {
         return;
     }
     $.ajax({
-        url: '/api/dynamic-coverage/get-dynamic-coverage-data',
+        url: '/portal/api/dynamic-coverage/get-dynamic-coverage-data',
         data: {
             'cityId': cityId,
             'cellId': cellId,
