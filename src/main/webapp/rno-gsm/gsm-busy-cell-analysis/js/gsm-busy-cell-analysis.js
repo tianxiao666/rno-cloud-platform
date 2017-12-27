@@ -1,8 +1,7 @@
 var map, cellLayer, busyCellLayer, idleNcellLayer, clickedCellLayer, lineLayer;
 var busyCells;
 var busyCellRedStyle, idleNcellOrangeLayer;
-var busyCellId, busyCellName;
-var isShowMenu;
+var busyCellId;
 $(function () {
 
     $(".draggable").draggable();
@@ -119,7 +118,6 @@ $(function () {
         defaultItems:false,
         items: contextmenu_items
     });
-
     $("#areaId").change(function () {
         var lon = parseFloat($(this).find("option:checked").attr("data-lon"));
         var lat = parseFloat($(this).find("option:checked").attr("data-lat"));
@@ -234,15 +232,22 @@ $(function () {
     });
 
     $("#displayBusyCellBtn").click(function () {
+        contextmenu.close();
+        contextmenu.clear();
+        map.removeControl(contextmenu);
         busyCellLayer.getSource().clear();
+        idleNcellLayer.getSource().clear();
+        lineLayer.getSource().clear();
         $("#busyCount").text("");
+        $("#idleBusyCellDT tbody").html("");
+        $("#idleBusyCount").text("");
         if (cellLayer === undefined) {
             showInfoInAndOut("warn", "请先加载小区！");
         } else {
             $("#loading").css("display", "block");
             $("#busyCellDT tbody").html("");
             $.ajax({
-                url: "/api/gsm-busy-cell-analysis/busy-cell",
+                url: "../../api/gsm-busy-cell-analysis/busy-cell",
                 dataType: "json",
                 data: {
                     'areaId': parseInt($("#areaId").find("option:checked").val())
@@ -307,6 +312,7 @@ $(function () {
                     });
                     // 右键菜单打开之前
                     contextmenu.on('beforeopen', function (e) {
+                        busyCellId = "";
                         var element = popup.getElement();
                         $(element).popover('destroy');
                         var view = map.getView();
@@ -329,17 +335,21 @@ $(function () {
                                 var features = parser.readFeatures(response);
                                 if (features.length > 0) {
                                     clickedCellLayer.getSource().clear();
+                                    var isBusy = false;
                                     for (var i = 0; i < features.length; i++) {
                                         var feature = features[i];
                                         if (cellIds.indexOf(feature.get("CELL_ID")) >= 0) {
-                                            contextmenu.enable();
-                                            clickedCellLayer.getSource().addFeatures(features);
-                                            busyCellId = feature.get("CELL_ID");
-                                            busyCellName = feature.get("CELL_NAME");
-                                            break;
-                                        } else {
-                                            contextmenu.disable();
+                                            isBusy = true;
+                                            busyCellId += feature.get("CELL_ID")+",";
+                                            // busyCellName = feature.get("CELL_NAME");
+                                            // break;
                                         }
+                                    }
+                                    if(isBusy){
+                                        clickedCellLayer.getSource().addFeatures(features);
+                                        contextmenu.enable();
+                                    }else{
+                                        contextmenu.disable();
                                     }
                                 } else {
                                     console.log('No result');
@@ -396,89 +406,125 @@ var showIdleNcell = function getIdleNcell(evt) {
         'FEATURE_COUNT': 50
     });
     if (url) {
-        // var parser = new ol.format.GeoJSON();
+        var parser = new ol.format.GeoJSON();
         $.ajax({
             url: url,
             dataType: 'jsonp',
             jsonpCallback: 'parseResponse'
         }).then(function (response) {
-            if (busyCellId !== null && busyCellId !== "") {
-                // $("#loading").show();
-                $("#loading").css("display", "block");
-                $("#idleBusyCellDT tbody").html("");
-                $("#idleBusyCount").text("");
-                $.ajax({
-                    url: "/api/gsm-busy-cell-analysis/idle-ncell-detail",
-                    dataType: "json",
-                    data: {
-                        'cellId': busyCellId,
-                        'areaId': parseInt($("#areaId").find("option:checked").val())
-                    },
-                    async: false,
-                    success: function (data) {
-                        if (data != '' && data != null) {
-                            console.log(data);
-                            $("#myTab li:eq(1)").addClass("active");
-                            $("#myTab li:eq(1)").siblings().removeClass("active");
-                            $("#idleCellList").addClass("active");
-                            $("#idleCellList").siblings().removeClass("active");
-                            $("#idleBusyCount").text("找到" + busyCellName + "小区的闲邻区" + data.length + "个");
-                            var ncellIds = "";
-                            $.each(data, function (key, value) {
-                                $("#idleBusyCellDT").append("<tr class='custom-content' onclick='addColor(this, false)'>" +
-                                    "<td style='display: none'>" + value.cellId +
-                                    "</td><td>" + value.cellName + "</td></tr>");
-                                ncellIds += "'" + value.cellId + "' ,";
-                            });
-                            paintNcell(busyCellId, ncellIds);
-                            $("#idleBusyCellDT tbody tr").click(function () {
-                                var thisCell = $(this).find('td:eq(0)').text();
-                                var element = popup.getElement();
-                                $(element).popover('destroy');
-                                var content = '<table id="cellTable1" class="table custom">';
-                                content += '<thead style="white-space: nowrap"><th>小区ID</th><th>小区名称</th></thead>';
-                                content += '<tbody>';
-                                content += '<tr style="word-break:break-all">';
-                                content += '<td style="white-space: nowrap">' + thisCell + '</td>';
-                                content += '<td>' + $(this).find('td:eq(1)').text() + '</td>';
-                                content += '</tr>';
-                                content += '</tbody></table>';
+            var allFeatures = parser.readFeatures(response);
+            var allFeatureNum = allFeatures.length;
+            if(allFeatureNum){
+                if (busyCellId !== null && busyCellId !== "") {
+                    // 高亮 Features
+                    clickedCellLayer.getSource().clear();
+                    clickedCellLayer.getSource().addFeatures(allFeatures);
 
-                                var filter = encodeURIComponent("CELL_ID in ('" + thisCell + "')");
-
-                                var url = 'http://rno-gis.hgicreate.com/geoserver/rnoprod/ows?service=WFS&version=1.1.1' +
-                                    '&request=GetFeature&typeName=rnoprod:RNO_GSM_CELL_GEOM&maxFeatures=50&' +
-                                    'outputFormat=text%2Fjavascript&CQL_FILTER=' + filter;
-                                //console.log(url);
-                                var parser = new ol.format.GeoJSON();
-                                $.ajax({
-                                    url: url,
-                                    dataType: 'jsonp',
-                                    jsonpCallback: 'parseResponse'
-                                }).then(function (response) {
-                                    var feature = parser.readFeatures(response)[0];
-                                    var cellCoor = [feature.get('LONGITUDE'), feature.get('LATITUDE')];
-
-                                    popup.setPosition(cellCoor);
-                                    map.getView().setCenter(cellCoor);
-                                });
-
-                                $(element).popover({
-                                    'placement': 'auto',
-                                    'animation': false,
-                                    'html': true,
-                                    'content': content
-                                });
-                                $(element).popover('show');
-                            });
-                        } else {
-                            $("#loading").css("display", "none");
-                            showInfoInAndOut('info', '没有找到闲邻区数据！');
+                    var content = '<table id="cellTable1" class="table custom">';
+                    content += '<thead style="white-space: nowrap"><th>小区ID</th><th>小区名称</th></thead>';
+                    content += '<tbody>';
+                    for (var i = 0; i < allFeatureNum; i++) {
+                        var feature = allFeatures[i];
+                        if(busyCellId.indexOf(feature.get('CELL_ID'))>=0){
+                            content += '<tr style="word-break:break-all" onclick="addColor(this, false)">';
+                            content += '<td style="white-space: nowrap">' + feature.get('CELL_ID') + '</td>';
+                            content += '<td>' + feature.get('CELL_NAME') + '</td>';
+                            content += '</tr>';
                         }
-                        //console.log(data);
                     }
-                });
-            } else {
+                    content += '</tbody></table>';
+
+                    popup.setPosition(evt.coordinate);
+                    $(element).popover({
+                        'placement': 'auto',
+                        'animation': false,
+                        'html': true,
+                        'content': content
+                    });
+                    $(element).popover('show');
+
+                    $('#cellTable1 tbody tr').click(function () {
+                        $(element).popover('destroy');
+                        $("#loading").css("display", "block");
+                        $("#idleBusyCellDT tbody").html("");
+                        $("#idleBusyCount").text("");
+                        var cellId = $(this).find('td:first').text();
+                        var cellName = $(this).find('td:eq(1)').text();
+                        $.ajax({
+                            url: "../../api/gsm-busy-cell-analysis/idle-ncell-detail",
+                            dataType: "json",
+                            data: {
+                                'cellId': cellId,
+                                'areaId': parseInt($("#areaId").find("option:checked").val())
+                            },
+                            async: false,
+                            success: function (data) {
+                                if (data != '' && data != null) {
+                                    console.log(data);
+                                    $("#myTab li:eq(1)").addClass("active");
+                                    $("#myTab li:eq(1)").siblings().removeClass("active");
+                                    $("#idleCellList").addClass("active");
+                                    $("#idleCellList").siblings().removeClass("active");
+                                    $("#idleBusyCount").text("找到" + cellName +
+                                        "小区的闲邻区" + data.length + "个");
+                                    var ncellIds = "";
+                                    $.each(data, function (key, value) {
+                                        $("#idleBusyCellDT").append("<tr class='custom-content' onclick='addColor(this, false)'>" +
+                                            "<td style='display: none'>" + value.cellId +
+                                            "</td><td>" + value.cellName + "</td></tr>");
+                                        ncellIds += "'" + value.cellId + "' ,";
+                                    });
+                                    paintNcell(cellId, ncellIds);
+                                    $("#idleBusyCellDT tbody tr").click(function () {
+                                        var thisCell = $(this).find('td:eq(0)').text();
+                                        var element = popup.getElement();
+                                        $(element).popover('destroy');
+                                        var content = '<table id="cellTable1" class="table custom">';
+                                        content += '<thead style="white-space: nowrap"><th>小区ID</th><th>小区名称</th></thead>';
+                                        content += '<tbody>';
+                                        content += '<tr style="word-break:break-all">';
+                                        content += '<td style="white-space: nowrap">' + thisCell + '</td>';
+                                        content += '<td>' + $(this).find('td:eq(1)').text() + '</td>';
+                                        content += '</tr>';
+                                        content += '</tbody></table>';
+
+                                        var filter = encodeURIComponent("CELL_ID in ('" + thisCell + "')");
+
+                                        var url = 'http://rno-gis.hgicreate.com/geoserver/rnoprod/ows?service=WFS&version=1.1.1' +
+                                            '&request=GetFeature&typeName=rnoprod:RNO_GSM_CELL_GEOM&maxFeatures=50&' +
+                                            'outputFormat=text%2Fjavascript&CQL_FILTER=' + filter;
+                                        //console.log(url);
+                                        var parser = new ol.format.GeoJSON();
+                                        $.ajax({
+                                            url: url,
+                                            dataType: 'jsonp',
+                                            jsonpCallback: 'parseResponse'
+                                        }).then(function (response) {
+                                            var feature = parser.readFeatures(response)[0];
+                                            var cellCoor = [feature.get('LONGITUDE'), feature.get('LATITUDE')];
+
+                                            popup.setPosition(cellCoor);
+                                            map.getView().setCenter(cellCoor);
+                                        });
+
+                                        $(element).popover({
+                                            'placement': 'auto',
+                                            'animation': false,
+                                            'html': true,
+                                            'content': content
+                                        });
+                                        $(element).popover('show');
+                                    });
+                                } else {
+                                    $("#loading").css("display", "none");
+                                    showInfoInAndOut('info', '没有找到闲邻区数据！');
+                                }
+                                //console.log(data);
+                            }
+                        });
+                    });
+                }
+            }else {
                 console.log('No result');
             }
         })

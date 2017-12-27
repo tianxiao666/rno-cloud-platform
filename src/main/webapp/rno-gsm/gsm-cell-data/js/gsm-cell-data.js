@@ -83,7 +83,7 @@ $(function () {
 
     //查询小区信息
     $("#conditionForm").ajaxForm({
-        url: "/api/gsm-cell-data/cell-query",
+        url: "../../api/gsm-cell-data/cell-query",
         success: showQueryList,
         error: function (err) {
             console.log(err);
@@ -233,7 +233,7 @@ $(function () {
 
     //上传
     $("#file-upload-form").ajaxForm({
-        url: "/api/gsm-cell-data/upload-file",
+        url: "../../api/gsm-cell-data/upload-file",
         beforeSend: function () {
             progress.css("display", "block");
             var percentVal = '0%';
@@ -266,7 +266,7 @@ $(function () {
 
     // AJAX 查询导入记录
     $("#import-query-form").ajaxForm({
-        url: "/api/gsm-cell-data/query-import",
+        url: "../../api/gsm-cell-data/query-import",
         success: showImportRecord
     });
 
@@ -280,7 +280,7 @@ $(function () {
 
     //查询数据记录
     $("#searchRecordForm").ajaxForm({
-        url: "/api/gsm-cell-data/query-record",
+        url: "../../api/gsm-cell-data/query-record",
         success: showRecord
     });
 
@@ -329,7 +329,7 @@ function showQueryList(data) {
 
 function showDetail(cellId) {
     $.ajax({
-        url: '/api/gsm-cell-data/cell-detail-id',
+        url: '../../api/gsm-cell-data/cell-detail-id',
         dataType: 'text',
         data: {cellId: cellId},
         async: true,
@@ -356,7 +356,7 @@ function showEditor(cellId) {	//加载gsm小区id保存到隐藏域
     //加载需要编辑的gsm小区数据到页面
     $(".loading").css("display", "block");
     $.ajax({
-        url: '/api/gsm-cell-data/cell-detail-edit',
+        url: '../../api/gsm-cell-data/cell-detail-edit',
         data: {
             'cellId': cellId
         },
@@ -471,7 +471,7 @@ function deleteCell(cellId) {
     var r = confirm("删除该条小区工参信息？");
     if(r === true){
         $.ajax({
-            url: '/api/gsm-cell-data/cell-delete',
+            url: '../../api/gsm-cell-data/cell-delete',
             dataType: 'text',
             type: 'post',
             data: {cellId: cellId},
@@ -573,7 +573,7 @@ function updateGsmCellDetail(submitOK) {
     if (submitOK) {
         $("#gsmCellDetailForm")
             .ajaxSubmit({
-                url: "/api/gsm-cell-data/cell-detail-update",
+                url: "../../api/gsm-cell-data/cell-detail-update",
                 dataType: 'text',
                 success: function (flag) {
                     // console.log(flag);
@@ -700,7 +700,7 @@ function showImportDetail(id) {
         dataTable.dataTable().fnClearTable();
     }
     $.ajax({
-        url: '/api/gsm-cell-data/query-report',
+        url: '../../api/gsm-cell-data/query-report',
         data:{id:id},
         dataType: 'text',
         type:'get',

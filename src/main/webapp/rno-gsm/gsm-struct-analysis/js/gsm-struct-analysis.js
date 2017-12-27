@@ -204,7 +204,7 @@ $(function () {
 
     // Ajax提交查询任务表单
     $("#structureTaskForm").ajaxForm({
-        url: "/api/gsm-struct-analysis/task-query",
+        url: "../../api/gsm-struct-analysis/task-query",
         success: showStructTaskResult
     });
 });
@@ -479,7 +479,7 @@ function paramsSubmit() {
         taskInfo[this.name] = this.value;
     });
     $.ajax({
-        url: '/api/gsm-struct-analysis/query-file-number',
+        url: '../../api/gsm-struct-analysis/query-file-number',
         data: taskInfo,
         type: 'post',
         success: function (raw) {
@@ -591,7 +591,7 @@ function submitTask() {
     });
     $("#loadingDataDiv").css("display", "block");
     $.ajax({
-        url: '/api/gsm-struct-analysis/submit-task',
+        url: '../../api/gsm-struct-analysis/submit-task',
         data: taskInfo,
         type: 'post',
         success: function () {
@@ -615,7 +615,7 @@ function returnToTaskList(){
 
 function checkStructureTaskReport(jobId) {
     $.ajax({
-        url: '/api/gsm-struct-analysis/query-report',
+        url: '../../api/gsm-struct-analysis/query-report',
         dataType: 'text',
         type:'post',
         data: {id: jobId},

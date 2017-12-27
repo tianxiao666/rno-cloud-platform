@@ -47,13 +47,13 @@ $(function () {
 
     // 任务表单提交
     $("#networkCoverageForm").ajaxForm({
-        url:"/api/gsm-network-coverage/job-query",
+        url:"../../api/gsm-network-coverage/job-query",
         success:showJobQueryResult
     });
 
     // ncs数据查询表单提交
     $("#NcsDataForJobForm").ajaxForm({
-        url:"/api/gsm-network-coverage/ncs-data-query",
+        url:"../../api/gsm-network-coverage/ncs-data-query",
         success:showNcsData
     });
 
@@ -88,7 +88,7 @@ $(function () {
         $(".loading").text("任务提交中...");
         $(".loading").css("display", "block");
         $.ajax({
-            url: '/api/gsm-network-coverage/add-job',
+            url: '../../api/gsm-network-coverage/add-job',
             data:data,
             dataType: 'text',
             type:'post',

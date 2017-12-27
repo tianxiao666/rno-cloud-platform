@@ -50,7 +50,7 @@ $(function () {
     $("#trigger").css("display", "none");
 
     $("#interferMatrixForm").ajaxForm({
-        url:"/api/gsm-interfer-matrix/job-query",
+        url:"../../api/gsm-interfer-matrix/job-query",
         success:showJobQueryResult
     });
 
@@ -65,7 +65,7 @@ $(function () {
 
     // ncs数据查询表单提交
     $("#interferMartixAddNcsForm").ajaxForm({
-        url:"/api/gsm-interfer-matrix/ncs-data-query",
+        url:"../../api/gsm-interfer-matrix/ncs-data-query",
         success:showNcsData
     });
 
@@ -94,7 +94,7 @@ $(function () {
         $(".loading").text("任务提交中...");
         $(".loading").css("display", "block");
         $.ajax({
-            url: '/api/gsm-interfer-matrix/add-job',
+            url: '../../api/gsm-interfer-matrix/add-job',
             data:data,
             dataType: 'text',
             type:'post',

@@ -69,19 +69,19 @@ $(function () {
 
     // //AJAX 提交邻区关系查询条件表单
     $("#conditionForm").ajaxForm({
-        url: "/api/gsm-ncell-relation/ncell-query",
+        url: "../../api/gsm-ncell-relation/ncell-query",
         success: showNcellRelationResult
     });
 
     //AJAX 提交邻区导入记录查询条件表单
     $("#importQuery").ajaxForm({
-        url: "/api/gsm-ncell-relation/ncell-import-query",
+        url: "../../api/gsm-ncell-relation/ncell-import-query",
         success: showNcellImportResult
     });
 
     //AJAX 提交邻区关系数据查询条件表单
     $("#searchNcellDtForm").ajaxForm({
-        url: "/api/gsm-ncell-relation/ncell-import-data-query",
+        url: "../../api/gsm-ncell-relation/ncell-import-data-query",
         success: showNcellImportDtResult
     });
 
@@ -104,7 +104,7 @@ $(function () {
     });
 
     $("#file-upload-form").ajaxForm({
-        url: "/api/gsm-ncell-relation/upload-file",
+        url: "../../api/gsm-ncell-relation/upload-file",
         beforeSend: function () {
             progress.css("display", "block");
             var percentVal = '0%';
@@ -292,7 +292,7 @@ function deleteCell(id) {
     var r = confirm("删除该邻区关系？");
     if (r === true) {
         $.ajax({
-            url: '/api/gsm-ncell-relation/delete-by-id?id=' + id,
+            url: '../../api/gsm-ncell-relation/delete-by-id?id=' + id,
             dataType: 'text',
             type:'delete',
             success: function () {
@@ -310,7 +310,7 @@ function deleteCell(id) {
 //显示导入记录的状态的详情
 function showImportDetail(id) {
     $.ajax({
-        url: '/api/gsm-ncell-relation/query-report',
+        url: '../../api/gsm-ncell-relation/query-report',
         dataType: 'text',
         type:'post',
         data: {id: id},
