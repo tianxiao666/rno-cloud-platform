@@ -140,7 +140,7 @@ $(function () {
     });
 
     $("#queryFasForm").ajaxForm({
-        url: "/api/gsm-fas-analysis/fas-chart-query",
+        url: "../../api/gsm-fas-analysis/fas-chart-query",
         success:function (data) {
             $("#fasInfoTab").children().remove();
             myChart.setOption(option);

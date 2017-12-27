@@ -100,15 +100,15 @@ $(function () {
         {
             text: '查看NOISE',
             data: 1,
-            callback: ''/*showNoice*/
+            callback: showOut
         },{
             text: 'IN干扰',
             data: 2,
-            callback: ''/*showIn*/
+            callback: showOut
         },{
             text: 'OUT干扰',
             data: 3,
-            callback: ''/*showOut*/
+            callback: showOut
         },{
             text: '改频点',
             data: 3,
@@ -217,9 +217,7 @@ $(function () {
         }
     });
 
-
     initAreaSelectors({selectors: ["provinceId", "cityId", "areaId"], coord: true});
-
 
     $("#loadGsmCellToMap").click(function () {
         var cityId = parseInt($("#cityId").find("option:checked").val());
@@ -349,6 +347,7 @@ $(function () {
         searchCell(conditionType,conditionValue);
     });
 
+    //搜邻区
     $("#searchNcellBtn").click(function () {
         var cellForNcell = $("#cellForNcell").val();
         var strExp=/^[\u4e00-\u9fa5A-Za-z0-9\s_-]+$/;
@@ -367,18 +366,44 @@ $(function () {
         searchNcell(cellForNcell);
     });
 
+    //搜频点
+    $("#searchFreqBtn").click(function () {
+        $("span#errorDiv").html("");
+        var freq = $("#freqValue").val();
+        var strExp=/^[\u4e00-\u9fa5A-Za-z0-9\s_-]+$/;
+        if(freq.trim()===''){
+            $("span#errorDiv").html("频点值不能为空！");
+            return false;
+        }
+        if(!strExp.test(freq)){
+            $("span#errorDiv").html("含有非法字符！");
+            return false;
+        }
+        if(!(freq.length<40)){
+            $("span#errorDiv").html("输入信息过长！");
+            return false;
+        }
+        if(isNaN(freq)){
+            $("span#errorDiv").html("频点应为数字！");
+            return false;
+        }
+        searchFreq(freq);
+    });
+
+    //清除搜索结果
     $("#clearSearchResultBtn").click(function () {
         map.removeLayer(cellLayer);
         map.removeLayer(nCellLayer);
         map.removeLayer(lineLayer);
         map.removeLayer(thisCellLayer);
+        map.removeLayer(clickedCellLayer);
     });
 });
 
 function searchCell(conditionType, conditionValue) {
-    var longitude=113.2644,latitude=23.1291;
+    var longitude=113.3612,latitude=23.1247;
     $.ajax({
-       url: '/api/gsm-frequency-search/cell-search',
+       url: '../../api/gsm-frequency-search/cell-search',
        dataType: 'text',
        data:{
            conditionType: conditionType,
@@ -439,10 +464,10 @@ function searchNcell(cellForNcell) {
     map.removeLayer(thisCellLayer);
     map.removeLayer(nCellLayer);
     map.removeLayer(lineLayer);
-    var longitude=113.2644,latitude =23.1291;
+    var longitude=113.3612,latitude =23.1247;
     var cells = [];
     $.ajax({
-        url: '/api/gsm-frequency-search/ncell-search',
+        url: '../../api/gsm-frequency-search/ncell-search',
         dataType: 'text',
         data:{
             cellForNcell: cellForNcell
@@ -451,7 +476,7 @@ function searchNcell(cellForNcell) {
         async: false,
         success: function (dat) {
             var data =eval('('+dat+')');
-            console.log(data[0]);
+            //console.log(data[0]);
             if(data===""|| data ===null||data.length === 0){
                 showInfoInAndOut('info','未找到符合条件的小区！');
                 return false;
@@ -464,12 +489,12 @@ function searchNcell(cellForNcell) {
         }
     });
 
-    console.log(cells);
+   // console.log(cells);
     var ncellStr = "'" + cellForNcell + "',";
     $.each(cells, function (index, value) {
         ncellStr += "'" + value + "',";
     });
-    console.log(ncellStr);
+    //console.log(ncellStr);
     var filter = encodeURIComponent("CELL_ID in (" + ncellStr.substring(0, ncellStr.length - 1) + ")");
     //console.log(filter);
 
@@ -516,6 +541,57 @@ function searchNcell(cellForNcell) {
 
 }
 
+function searchFreq(freq) {
+    var longitude=113.3612,latitude=23.1247;
+    var cityId = parseInt($("#cityId").find("option:checked").val());
+    $.ajax({
+        url: '../../api/gsm-frequency-search/frequency-search',
+        dataType: 'text',
+        data:{
+            bcch: freq,
+            cityId: cityId
+        },
+        type: 'get',
+        async: false,
+        success: function (dat) {
+            var data =eval('('+dat+')');
+            console.log(data[0]);
+            if(data===""|| data ===null||data.length === 0){
+                showInfoInAndOut('info','未找到符合条件的小区！');
+                return false;
+            }
+            longitude=parseFloat(data[0].longitude);
+            latitude=parseFloat(data[0].latitude);
+        }
+    });
+    // console.log(longitude);
+
+    //console.log(btsType);
+    var requestParams ="AREA_ID=" + cityId + "and BCCH='"+ freq +"'";
+
+    map.removeLayer(cellLayer);
+    cellLayer = new ol.layer.Tile({
+        zIndex : 4,
+        source : new ol.source.TileWMS({
+            url : 'http://rno-gis.hgicreate.com/geoserver/rnoprod/wms',
+            params : {
+                'FORMAT' : 'image/png',
+                'VERSION' : '1.1.1',
+                tiled : true,
+                STYLES : '',
+                LAYERS : 'rnoprod:RNO_GSM_CELL_GEOM',
+                CQL_FILTER : requestParams
+            }
+        }),
+        opacity : 0.5
+    });
+    map.addLayer(cellLayer);
+    map.getView().animate({
+        center: [parseFloat(longitude), parseFloat(latitude)],
+        duration: 2000
+    });
+}
+
 //绘制主小区与邻区之间的连线
 function drawLine(cellCoors, ncellCoors) {
     var line, feature;
@@ -551,6 +627,298 @@ function showInfoInAndOut(div, info) {
     divX.html(info);
     divX.fadeIn(2000);
     setTimeout("$('#" + div + "').fadeOut(2000)", 1000);
+}
+
+function showNoise(evt) {
+    thisCellLayer.getSource().clear();
+    var element = popup.getElement();
+    $(element).popover('destroy');
+    var view = map.getView();
+    var url = cellLayer.getSource().getGetFeatureInfoUrl(evt.coordinate, view.getResolution(), view.getProjection(), {
+        'INFO_FORMAT': 'text/javascript',
+        'FEATURE_COUNT': 50
+    });
+
+    if (url) {
+        var parser = new ol.format.GeoJSON();
+        $.ajax({
+            url: url,
+            dataType: 'jsonp',
+            jsonpCallback: 'parseResponse'
+        }).then(function (response) {
+            var allFeatures = parser.readFeatures(response);
+            var allFeatureNum = allFeatures.length;
+
+            if (allFeatureNum) {
+                // 高亮 Features
+                clickedCellLayer.getSource().clear();
+                clickedCellLayer.getSource().addFeatures(allFeatures);
+
+                var content = '<table id="cellTable1" class="table custom">';
+                content += '<thead style="white-space: nowrap"><th>小区ID</th><th>小区名称</th><th>BCCH</th></thead>';
+                content += '<tbody>';
+                // 获取多个重叠 feature
+                for (var i = 0; i < allFeatureNum; i++) {
+                    var feature = allFeatures[i];
+                    console.log(feature);
+
+                    content += '<tr style="word-break:break-all" onclick="addColor(this, false)">';
+                    content += '<td style="display:none">' + i + '</td>';
+                    content += '<td style="white-space: nowrap">' + feature.get('CELL_ID') + '</td>';
+                    content += '<td>' + feature.get('CELL_NAME') + '</td>';
+                    content += '<td style="white-space: nowrap">' + feature.get('BCCH') + '</td>';
+                    content += '</tr>';
+
+                    // 设置 feature 的样式
+                    feature.setStyle(redStyle);
+                }
+                content += '</tbody></table>';
+
+                popup.setPosition(evt.coordinate);
+                $(element).popover({
+                    'placement': 'auto',
+                    'animation': false,
+                    'html': true,
+                    'content': content
+                });
+                $(element).popover('show');
+
+                $('#cellTable1 tbody tr').click(function () {
+                    $(element).popover('destroy');
+                    $("#loading").show();
+                    var index = $(this).find('td:first').text();
+                    var cellId = allFeatures[index].get('CELL_ID');
+                    var cellName = allFeatures[index].get('CELL_NAME');
+                    $.ajax({
+                        url: "../../api/gsm-frequency-search/cell-noise",
+                        dataType: "json",
+                        data: {
+                            'cellId': cellId
+                        },
+                        async: false,
+                        success: function (data) {
+                            if (data !== '' && data !== null) {
+                                console.log(data);
+
+
+                            } else {
+                                $("#loading").css("display", "none");
+                                showInfoInAndOut('info', '未找到小区'+cellId+'的干扰记录！');
+                            }
+                        },error: function (XMLHttpRequest, textStatus) {
+                        $("#loading").css("display", "none");
+                            $("#loadingStatus").html('未找到小区'+cellName+'的干扰记录！')
+                        },complete: function (XMLHttpRequest, textStatus) {
+                            $("#loading").css("display", "none");
+                        }
+                    });
+                });
+            } else {
+                console.log('No result');
+            }
+        });
+    }
+}
+
+function showIn(evt) {
+    thisCellLayer.getSource().clear();
+    var element = popup.getElement();
+    $(element).popover('destroy');
+    var view = map.getView();
+    var url = cellLayer.getSource().getGetFeatureInfoUrl(evt.coordinate, view.getResolution(), view.getProjection(), {
+        'INFO_FORMAT': 'text/javascript',
+        'FEATURE_COUNT': 50
+    });
+
+    if (url) {
+        var parser = new ol.format.GeoJSON();
+        $.ajax({
+            url: url,
+            dataType: 'jsonp',
+            jsonpCallback: 'parseResponse'
+        }).then(function (response) {
+            var allFeatures = parser.readFeatures(response);
+            var allFeatureNum = allFeatures.length;
+
+            if (allFeatureNum) {
+                // 高亮 Features
+                clickedCellLayer.getSource().clear();
+                clickedCellLayer.getSource().addFeatures(allFeatures);
+
+                var content = '<table id="cellTable1" class="table custom">';
+                content += '<thead style="white-space: nowrap"><th>小区ID</th><th>小区名称</th><th>BCCH</th></thead>';
+                content += '<tbody>';
+                // 获取多个重叠 feature
+                for (var i = 0; i < allFeatureNum; i++) {
+                    var feature = allFeatures[i];
+                    console.log(feature);
+
+                    content += '<tr style="word-break:break-all" onclick="addColor(this, false)">';
+                    content += '<td style="display:none">' + i + '</td>';
+                    content += '<td style="white-space: nowrap">' + feature.get('CELL_ID') + '</td>';
+                    content += '<td>' + feature.get('CELL_NAME') + '</td>';
+                    content += '<td style="white-space: nowrap">' + feature.get('BCCH') + '</td>';
+                    content += '</tr>';
+
+                    // 设置 feature 的样式
+                    feature.setStyle(redStyle);
+                }
+                content += '</tbody></table>';
+
+                popup.setPosition(evt.coordinate);
+                $(element).popover({
+                    'placement': 'auto',
+                    'animation': false,
+                    'html': true,
+                    'content': content
+                });
+                $(element).popover('show');
+
+                $('#cellTable1 tbody tr').click(function () {
+                    $(element).popover('destroy');
+                    $("#loading").show();
+                    var index = $(this).find('td:first').text();
+                    var cellId = allFeatures[index].get('CELL_ID');
+                    var cellName = allFeatures[index].get('CELL_NAME');
+                    $.ajax({
+                        url: "../../api/gsm-frequency-search/cell-in",
+                        dataType: "json",
+                        data: {
+                            'cellId': cellId
+                        },
+                        async: false,
+                        success: function (data) {
+                            $("#loading").css("display", "none");
+                            if (data !== '' && data !== null) {
+                                console.log(data);
+
+
+                            } else {
+
+                                showInfoInAndOut('info', '未找到小区'+cellName+'的干扰记录！');
+                            }
+                            //console.log(data);
+                        },error: function (XMLHttpRequest, textStatus) {
+                            $("#loading").css("display", "none");
+                            $("#loadingStatus").html('未找到小区'+cellName+'的干扰记录！')
+                        },complete: function (XMLHttpRequest, textStatus) {
+                            $("#loading").css("display", "none");
+                        }
+                    });
+                });
+            } else {
+                console.log('No result');
+            }
+        });
+    }
+}
+
+function showOut(evt) {
+
+
+    thisCellLayer.getSource().clear();
+    var element = popup.getElement();
+    $(element).popover('destroy');
+    var view = map.getView();
+    var url = cellLayer.getSource().getGetFeatureInfoUrl(evt.coordinate, view.getResolution(), view.getProjection(), {
+        'INFO_FORMAT': 'text/javascript',
+        'FEATURE_COUNT': 50
+    });
+
+    if (url) {
+        var parser = new ol.format.GeoJSON();
+        $.ajax({
+            url: url,
+            dataType: 'jsonp',
+            jsonpCallback: 'parseResponse'
+        }).then(function (response) {
+            var allFeatures = parser.readFeatures(response);
+            var allFeatureNum = allFeatures.length;
+
+            if (allFeatureNum) {
+                // 高亮 Features
+                clickedCellLayer.getSource().clear();
+                clickedCellLayer.getSource().addFeatures(allFeatures);
+
+                var content = '<table id="cellTable1" class="table custom">';
+                content += '<thead style="white-space: nowrap"><th>小区ID</th><th>小区名称</th><th>BCCH</th></thead>';
+                content += '<tbody>';
+                // 获取多个重叠 feature
+                for (var i = 0; i < allFeatureNum; i++) {
+                    var feature = allFeatures[i];
+                    //console.log(feature);
+
+                    content += '<tr style="word-break:break-all" onclick="addColor(this, false)">';
+                    content += '<td style="display:none">' + i + '</td>';
+                    content += '<td style="white-space: nowrap">' + feature.get('CELL_ID') + '</td>';
+                    content += '<td>' + feature.get('CELL_NAME') + '</td>';
+                    content += '<td style="white-space: nowrap">' + feature.get('BCCH') + '</td>';
+                    content += '</tr>';
+
+                    // 设置 feature 的样式
+                    feature.setStyle(redStyle);
+                }
+                content += '</tbody></table>';
+
+                popup.setPosition(evt.coordinate);
+                $(element).popover({
+                    'placement': 'auto',
+                    'animation': false,
+                    'html': true,
+                    'content': content
+                });
+                $(element).popover('show');
+
+                $('#cellTable1 tbody tr').click(function () {
+
+                    var modalTbody =$("#freqintersituation tbody");
+                    modalTbody.children().remove();
+                    $("#cellFreq").html("BCCH:   TCH:");
+                    $("#cellInterfereId").html("");
+                    $("#cellname").text('');
+                    $(element).popover('destroy');
+                    $("#loading").show();
+                    var index = $(this).find('td:first').text();
+                    var cellId = allFeatures[index].get('CELL_ID');
+                    var cellName = allFeatures[index].get('CELL_NAME');
+                    var bcch = allFeatures[index].get('BCCH');
+                    var tch =allFeatures[index].get('TCH');
+                    var btsType = allFeatures[index].get('BTS_TYPE');
+                    $.ajax({
+                        url: "../../api/gsm-frequency-search/cell-out",
+                        dataType: "json",
+                        data: {
+                            'cellId': cellId
+                        },
+                        async: false,
+                        success: function (data) {
+                            var datas = eval('('+data+')');
+                            console.log(datas);
+                            if(data === null){
+                                $("#loading").css("display", "none");
+                                showInfoInAndOut('info', '未找到小区'+cellName+'的干扰记录！');
+                            }
+                        },error: function (XMLHttpRequest, textStatus) {
+                            $("#loading").css("display", "none");
+                            showInfoInAndOut('info', '未找到小区'+cellName+'的干扰记录！');
+                            $("#loadingStatus").html('未找到小区'+cellName+'的干扰记录！');
+                            $("#cellname").text(cellName);
+                            $("#cellFreq").html("BCCH:"+bcch+"<br/>TCH:"+tch);
+                            $("#cellInterfereId").html(cellName);
+
+                            for(var i = 0; i< tch.split(",").length;i++){
+                                modalTbody.append("<tr><td>"+tch.split(',')[i]+"</td><td></td><td></td><td></td><td>"+btsType+"</td></tr>")
+                            }
+                        },complete: function (XMLHttpRequest, textStatus) {
+                            $("#loading").css("display", "none");
+                        }
+                    });
+                });
+            } else {
+                console.log('No result');
+            }
+        });
+    }
 }
 
 function showFreqDialog(evt) {
@@ -613,7 +981,7 @@ function showFreqDialog(evt) {
                     var index = $(this).find('td:first').text();
                     var cellId = allFeatures[index].get('CELL_ID');
                     $.ajax({
-                        url: "/api/gsm-cell-gis/cell-detail",
+                        url: "../../api/gsm-cell-gis/cell-detail",
                         dataType: "json",
                         data: {
                             'cellId': cellId
@@ -621,7 +989,8 @@ function showFreqDialog(evt) {
                         async: false,
                         success: function (data) {
                             if (data !== '' && data !== null) {
-                                console.log(data);
+                                $("#loading").css("display", "none");
+                                // console.log(data);
                                 bcchCache =data[0].bcch;
                                 tchCache =data[0].tch;
                                 $("#cellBcch").val(bcchCache);
@@ -630,7 +999,7 @@ function showFreqDialog(evt) {
                                 $("#freq_dialogId").toggle();
                             } else {
                                 $("#loading").css("display", "none");
-                                showInfoInAndOut('info', '没有找到邻区数据！');
+                                showInfoInAndOut('info', '没有找到频点数据！');
                             }
                             //console.log(data);
                         }
@@ -735,7 +1104,7 @@ function updateCellFreq() {
     var cellId = $("#freqCellId").val();
     if(flag) {
         $.ajax({
-            url : '/api/gsm-frequency-search/update-cell-freq-by-cellId',
+            url : '../../api/gsm-frequency-search/update-cell-freq-by-cellId',
             data : {
                 'cellId' : cellId,
                 'bcch' : bcch,

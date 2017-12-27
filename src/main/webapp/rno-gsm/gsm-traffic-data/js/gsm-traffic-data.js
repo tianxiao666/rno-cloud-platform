@@ -115,7 +115,7 @@ $(function () {
     });
 
     $("#file-upload-form").ajaxForm({
-        url: "/api/gsm-traffic-data/upload-file",
+        url: "../../api/gsm-traffic-data/upload-file",
         beforeSend: function () {
             progress.css("display", "block");
             var percentVal = '0%';
@@ -160,13 +160,13 @@ $(function () {
 
     //导入记录查询
     $("#import-query-form").ajaxForm({
-        url: "/api/gsm-traffic-data/query-import",
+        url: "../../api/gsm-traffic-data/query-import",
         success: showImportRecord
     });
 
 
     $("#query-traffic-desc-form").ajaxForm({
-        url: "/api/gsm-traffic-data/query-traffic-desc",
+        url: "../../api/gsm-traffic-data/query-traffic-desc",
         success: showTrafficDesc
     });
     $("#queryTrafficBtn").click(function () {
@@ -255,7 +255,7 @@ function showImportDetail(id) {
         dataTable.dataTable().fnClearTable();
     }
     $.ajax({
-        url: '/api/gsm-traffic-data/query-report',
+        url: '../../api/gsm-traffic-data/query-report',
         data:{id:id},
         dataType: 'text',
         type:'get',

@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -64,7 +65,26 @@ public class GsmFrequencySearchResource {
     }
 
     @GetMapping("/frequency-search")
-    public void searchFrequency(String cellForNcell){
+    public List<GsmCell> searchFrequency(String bcch,String cityId){
+        log.debug("进入搜频点方法bcch={}",bcch);
+        return gsmFrequencySearchMapper.findCellByBcchAndCityId(bcch,cityId);
+    }
 
+    @GetMapping("/cell-noise")
+    public List<Map<String,Object>> getCellNoise(String cellId){
+        log.debug("进入查看Noise方法cellId={}",cellId);
+        return null;
+    }
+
+    @GetMapping("/cell-in")
+    public List<Map<String,Object>> getCellIn(String cellId){
+        log.debug("进入in干扰方法cellId={}",cellId);
+        return null;
+    }
+
+    @GetMapping("/cell-out")
+    public List<Map<String,Object>> getCellOut(String cellId){
+        log.debug("进入out干扰方法cellId={}",cellId);
+        return null;
     }
 }

@@ -31,4 +31,9 @@
         where CELL_ID = #{cellId}
         )
     </select>
+    <select id="findCellByBcchAndCityId" parameterType="java.lang.String"
+            resultType="com.hgicreate.rno.domain.gsm.GsmCell">
+        select * from RNO_GSM_CELL where BCCH = #{bcch}
+        and AREA_ID = #{cityId}
+    </select>
 </mapper>

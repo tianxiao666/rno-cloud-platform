@@ -16,4 +16,6 @@ public interface GsmFrequencySearchMapper {
                                              @Param("ci") String ci);
 
     List<GsmCell> findNcellByCondition(@Param("cellId") String cellId);
+
+    List<GsmCell> findCellByBcchAndCityId(@Param("bcch") String bcch,@Param("cityId") String cityId);
 }

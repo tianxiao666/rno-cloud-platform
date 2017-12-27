@@ -98,7 +98,7 @@
                     <span class="sp_title">最新干扰矩阵计算时间</span>
                 </div>
                 <div style="margin: 3px"></div>
-                <span id="latelytasktime">2017-01-22 14:52:23</span>
+                <span id="latelytasktime">2017-06-22 14:52:23</span>
 
                 <input id="latelyMartixDescId" value="83" type="hidden">
                 <div class="div_title_24px_blue">
@@ -172,7 +172,7 @@
                 <div style="margin: 3px"></div>
                 <div class="div_transparent_standard_border" style="margin: 3px;" id="listdisplay">
                     <div class="div_title_24px_grey sp_title_left" style="background-color: #bdd3ef">
-                        <span class="sp_title" id="interDetailTitle">小区〖〗的 干扰情况</span>
+                        <span class="sp_title" id="interDetailTitle">小区〖<span id="cellInterfereId"></span>〗的 干扰情况</span>
                     </div>
                     <div style="margin: 10px"></div>
                     <table class="table table-bordered" id="listdistab" width="100%" >
@@ -245,7 +245,8 @@
             </div>
         </div>
 
-        <div class="interferDialog draggable" id="interference_dialogId" style="display:none; top:40px;z-index:30;">
+        <div class="interferDialog draggable" id="interference_dialogId"
+             style="display:none; top:80px;left:35px;z-index:30;">
             <div id="dialogHeader" class="interferDialog_header">
                 <span id="celllabel"></span>&nbsp;〖<label id="cellname"></label>〗PCI智能优化
                 <div class="dialog_tool">
@@ -258,11 +259,10 @@
                 <div class="interferDialog_content" style="background:#FFFFFF;padding: 0;height: auto;">
                     <div style="width: 370px; float: left; height:500px;overflow-y:auto;">
                         <div style="width:100%;height: auto;text-align: center; padding-top: 6px;">
-                            <span id="cellFreq" style="font-weight: bold;">bcch:&nbsp;&nbsp;tch:</span>
-                        </div>
+                            <span id="cellFreq" style="font-weight: bold;">BCCH:&nbsp;&nbsp;TCH:</span>
+                        </div><br>
                         <table id="freqintersituation" class="table table-bordered" width="100%">
-                            <tbody>
-                            <tr>
+                            <thead><tr>
                                 <th align="center">
                                     小区频点
                                 </th>
@@ -278,7 +278,9 @@
                                 <th align="center">
                                     频点类型
                                 </th>
-                            </tr>
+                            </tr></thead>
+                            <tbody>
+
 
                             </tbody>
                         </table>
@@ -331,7 +333,7 @@
         </div>
 
 
-        <div class="interferDialog draggable" id="freq_dialogId" style="display:none; top:270px;z-index:30;left：500px;">
+        <div class="interferDialog draggable" id="freq_dialogId" style="display:none; top:200px;left:35px;z-index:30;">
             <div id="freq_dialogHeader" class="interferDialog_header">
                 <label>频点编辑</label>
                 <div class="dialog_tool">

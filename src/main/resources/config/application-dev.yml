@@ -1,5 +1,6 @@
 server:
   port: 8380
+  context-path: /portal
 
 management:
   security:

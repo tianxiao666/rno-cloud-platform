@@ -196,7 +196,7 @@ $(function () {
                                 var index = $(this).find('td:first').text();
                                 var feature = allFeatures[index];
                                 $.ajax({
-                                    url: "/api/gsm-cell-gis/cell-detail",
+                                    url: "../../api/gsm-cell-gis/cell-detail",
                                     dataType: "json",
                                     data: {
                                         'cellId': feature.get('CELL_ID')
@@ -420,7 +420,7 @@ $(function () {
 
     //上传
     $("#formImportCell").ajaxForm({
-        url: "/api/gsm-co-bsic-analysis/upload-file",
+        url: "../../api/gsm-co-bsic-analysis/upload-file",
         beforeSend: function () {
             progress.css("display", "block");
             var percentVal = '0%';
@@ -457,7 +457,7 @@ $(function () {
             return false;
         }
         $("#form_tab_2").ajaxForm({
-            url: '/api/gsm-co-bsic-analysis/config-schema-query',
+            url: '../../api/gsm-co-bsic-analysis/config-schema-query',
             dataType: 'text',
             success: function (data) {
                 var i =0;
@@ -512,7 +512,7 @@ $(function () {
         });
 
         $.ajax({
-           url: '/api/gsm-co-bsic-analysis/query-schemas-by-id',
+           url: '../../api/gsm-co-bsic-analysis/query-schemas-by-id',
            type: 'get',
            dataType: 'text',
            data:{ids: ids.toString()},
@@ -651,7 +651,7 @@ var showNcell = function getNcell(evt) {
                     var index = $(this).find('td:first').text();
                     var cellId = allFeatures[index].get('CELL_ID');
                     $.ajax({
-                        url: "/api/gsm-cell-gis/ncell-detail",
+                        url: "../../api/gsm-cell-gis/ncell-detail",
                         dataType: "json",
                         data: {
                             'cellId': cellId
@@ -756,26 +756,29 @@ function getCobsicCellWholenet (reSelected, areaIdStr,cellConfigIds) {
     $("#conditionForm").ajaxSubmit({
         type: "GET",
         data: sendData,
-        url: "/api/gsm-co-bsic-analysis/whole-net-cobsic-query",
+        timeout: 20000,
+        url: "../../api/gsm-co-bsic-analysis/whole-net-cobsic-query",
         dataType: "text",
         async: true,
-        success: function (data, textStatus) {
+        success: function (data) {
             var res = eval('('+data+')');
-            console.log(res);
-            console.log(textStatus);
+            // console.log(res);
             if(res['fail']){
                 showInfoInAndOut('info',res['fail']);
             }else{
                 createWholeNetInterferTable(res);
             }
-
         },
         error : function(XMLHttpRequest, textStatus) {
             alert("\u8fd4\u56de\u6570\u636e\u9519\u8bef\uff1a"
                 + textStatus);
         },
-        complete:function(){
+        complete:function(XMLHttpRequest,status){
             $(".loading").css("display", "none");
+            if(status ==='timeout'){
+                showInfoInAndOut('info','请求超时！');
+            }
+
         }
     });
 
@@ -986,7 +989,7 @@ function cobsiccell(reSelected, areaIdStr, cellConfigIdStr) {
     $("#conditionForm").ajaxSubmit({
         type : "GET",
         data : sendData,
-        url : "/api/gsm-co-bsic-analysis/cobsic-query-by-bcch-bsic",
+        url : "../../api/gsm-co-bsic-analysis/cobsic-query-by-bcch-bsic",
         dataType : "text",
         async : true,
         success : function(data, textStatus) {
