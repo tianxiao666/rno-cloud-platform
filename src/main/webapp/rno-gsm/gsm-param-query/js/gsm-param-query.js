@@ -5,19 +5,7 @@ $(function () {
     });
     $("#tabs").tabs();
 
-    $("#cell_dateWinDiv").draggable();
-    $("#cell_bscWinDiv").draggable();
-    $("#cell_cellWinDiv").draggable();
-    $("#cell_paramWinDiv").draggable();
-    $("#channel_dateWinDiv").draggable();
-    $("#channel_bscWinDiv").draggable();
-    $("#channel_cellWinDiv").draggable();
-    $("#channel_paramWinDiv").draggable();
-    $("#ncell_dateWinDiv").draggable();
-    $("#ncell_bscWinDiv").draggable();
-    $("#ncell_cellWinDiv").draggable();
-    $("#ncell_paramWinDiv").draggable();
-    $("#ncell_ncellWinDiv").draggable();
+    $(".dialog2").draggable();
 
     // 初始化区域联动
     initAreaSelectors({selectors: ["province-menu-cell", "city-menu-cell"]});
@@ -112,7 +100,7 @@ function uploadParamValue(cityId, type) {
         dataType = "NCELLDATA";
     }
     $.ajax({
-        url: "/api/gsm-param-query/query-param-by-cityId",
+        url: "../../api/gsm-param-query/query-param-by-cityId",
         type: "get",
         data: {
             "cityId": cityId,
@@ -401,7 +389,7 @@ function searchRecord(type) {
     $(".loading").show();
     if (type === "cell" || type === "channel") {
         $.ajax({
-            url: "/api/gsm-param-query/query-cell-param",
+            url: "../../api/gsm-param-query/query-cell-param",
             data: {
                 "cellParam": param,
                 "cellBsc": bsc,
@@ -477,7 +465,7 @@ function searchRecord(type) {
     }else if(type === "ncell") {
         var ncell = $("#ncell_targetNcell").val().trim();
         $.ajax({
-            url: "/api/gsm-param-query/query-cell-param",
+            url: "../../api/gsm-param-query/query-cell-param",
             data: {
                 "cellParam": param,
                 "cellBsc": bsc,

@@ -82,7 +82,7 @@ $(function () {
         }
     });
     $("#import-query-form").ajaxForm({
-        url: "/api/gsm-bsc-data/query-import",
+        url: "../../api/gsm-bsc-data/query-import",
         success: showQueryImportResult
     });
 
@@ -99,13 +99,13 @@ $(function () {
         }
     });
     $("#addSingleBscForm").ajaxForm({
-        url: "/api/gsm-bsc-data/bsc-data-update",
+        url: "../../api/gsm-bsc-data/bsc-data-update",
         success: showResult
     });
 
     //提交bsc信息查询
     $("#conditionForm").ajaxForm({
-        url: "/api/gsm-bsc-data/query-record",
+        url: "../../api/gsm-bsc-data/query-record",
         success: showRecord
     });
 
@@ -127,7 +127,7 @@ $(function () {
     });
 
     $("#file-upload-form").ajaxForm({
-        url: "/api/gsm-bsc-data/upload-file",
+        url: "../../api/gsm-bsc-data/upload-file",
         beforeSend: function () {
             progress.css("display", "block");
             var percentVal = '0%';
@@ -242,7 +242,7 @@ function showQueryImportResult(data) {
 //显示导入记录的状态的详情
 function showImportDetail(id) {
     $.ajax({
-        url: '/api/gsm-bsc-data/query-report',
+        url: '../../api/gsm-bsc-data/query-report',
         dataType: 'text',
         data: {id: id},
         success: function (data) {
@@ -320,7 +320,7 @@ function showRecord(data) {
 //显示导入记录的状态的详情
 function deleteBsc(id) {
     $.ajax({
-        url: '/api/gsm-bsc-data/delete-by-bscId',
+        url: '../../api/gsm-bsc-data/delete-by-bscId',
         dataType: 'text',
         data: {bscId: id},
         type: "Get",

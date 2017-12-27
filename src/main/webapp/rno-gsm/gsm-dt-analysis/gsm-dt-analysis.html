@@ -1,194 +1,251 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>DT专题分析</title>
+    <meta charset="UTF-8">
+    <title>DT专题分析</title>
 
-	<link rel="stylesheet" href="../../lib/bootstrap/3.3.7/css/bootstrap.min.css">
-	<link rel="stylesheet" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
-	<link rel="stylesheet" href="../../lib/openlayers/ol3-contextmenu/ol3-contextmenu.min.css">
-	<link rel="stylesheet" href="../../lib/openlayers/4.4.2/ol.css">
-	<link rel="stylesheet" href="css/gsm-dt-analysis.css">
+    <link rel="stylesheet" href="../../lib/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
+    <link rel="stylesheet" href="../../lib/openlayers/ol3-contextmenu/ol3-contextmenu.min.css">
+    <link rel="stylesheet" href="../../lib/openlayers/4.4.2/ol.css">
+    <link rel="stylesheet" href="css/gsm-dt-analysis.css">
 
-	<script src="../../lib/jquery/3.2.1/jquery.js"></script>
-	<script src="../../lib/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<script src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
-	<script src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
-	<script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
-	<script src="../../lib/validate.js"></script>
-	<script src="../../lib/tab.js"></script>
-	<script src="../../lib/openlayers/4.4.2/ol.js"></script>
-	<script src="../../lib/openlayers/ol3-contextmenu/ol3-contextmenu.js"></script>
-	<script src="../../js/common.js"></script>
-	<script src="js/gsm-dt-analysis.js"></script>
+    <script src="../../lib/jquery/3.2.1/jquery.js"></script>
+    <script src="../../lib/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
+    <script src="../../lib/validate.js"></script>
+    <script src="../../lib/tab.js"></script>
+    <script src="../../lib/openlayers/4.4.2/ol.js"></script>
+    <script src="../../lib/openlayers/ol3-contextmenu/ol3-contextmenu.js"></script>
+    <script src="../../js/common.js"></script>
+    <script src="js/gsm-dt-analysis.js"></script>
 </head>
 <body>
 <div id="loading" class="loading" style="display: none">加载中...</div>
 <div id="info" class="info-style" style="display: none"></div>
-<div style="display: none"> 
-	<div id="popup"></div>
-</div>
+<div id="warn" class="warn-style" style="display: none"></div>
+<div id="success" class="success-style" style="display: none"></div>
 <div id="map" class="map"></div>
-<div class="dialog draggable">
-	<div style="padding: 5px">
-
-		<form id="conditionForm" method="post">
-			<select name="provinceId" class="form-control custom-select"
-					title="" id="provinceId">
-			</select>
-			<select name="cityId" class="form-control custom-select"
-					title="" id="cityId">
-			</select>
-			<select name="areaId" class="form-control custom-select"
-					title="" id="areaId">
-				<!--<option value="-1">全部</option>-->
-			</select>
-			<button id="displaycell" class="btn btn-info custom-btn"
-					data="cellConfig" type="button">加载小区</button>
-		</form>
-
-	</div>
+<div class="dialog draggable ui-draggable">
+    <div style="padding: 5px">
+        <form id="conditionForm" method="post">
+            <!--省：-->
+            <select title="" class="form-control custom-select" id="provinceId"></select>
+            <!--市：-->
+            <select title="" class="form-control custom-select" id="cityId"></select>
+            <!--区：-->
+            <select title="" class="form-control custom-select" id="areaId"></select>
+            <button id="showCellName" class="btn btn-info custom-btn" type="button">显示小区名字</button>
+            <button type="button" id="loadGsmDtGisCell" name="trigger" class="btn btn-info custom-btn">加载小区</button>
+        </form>
+    </div>
 </div>
-<div class="resource_list_icon" style="right:380px">
-	<a href="#" class="switch"></a> <a href="#" class="switch_hidden"></a>
-	<div class="shad_v"></div>
+<div class="resource_list_icon" style="right: 400px;">
+    <a href="#" class="switch"></a>
+    <a href="#" class="switch_hidden" style="display: none;"></a>
+    <div class="shad_v"></div>
 </div>
-<div class="resource_list300_box" style="height:100%;">
-	<div class="resource_list300">
-		<div id="div_tab" class="div_tab divtab_menu">
-			<ul>
-				<li class="selected">DT数据</li>
-				<li>采样点详情</li>
-			</ul>
-		</div>
-	</div>
-	<div class="divtab_content">
-		<div id="div_tab_0">
-			<input id="showRenderColorBtn" value="显示渲染图例" type="button">
+<div class="resource_list_box">
+    <div style="margin-bottom: 39px">
+        <div class="panel-body">
+            <ul class="nav nav-tabs" role="tablist" id="myTab">
+                <li role="presentation" class="active">
+                    <a href="#loadData" role="tab" data-toggle="tab">DT任务</a>
+                </li>
+                <li role="presentation">
+                    <a href="#sampleDetail" role="tab" data-toggle="tab">采样点详情</a>
+                </li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="loadData">
+                    <div style="height: 23px"></div>
+                    <div style="border: 1px solid #E7E7E7; border-radius: 8px">
+                        <div class="form-inline" style="height: 42px;line-height:42px;padding-bottom: 2px">
+                            <button style="width: 100%" class="btn btn-info" id="queryDt" type="button">显示渲染图例
+                            </button>
+                        </div>
+                    </div>
+                    <div style="height: 28px"></div>
+                    <div class="resource_list">
+                        <h4>分析应用</h4>
+                        <div style="height: 8px"></div>
+                        <div>
+                            <button class="btn btn-info" id="signalstrenthbtn" type="button">信号强度
+                            </button>&nbsp;&nbsp;
+                            <button class="btn btn-info" id="signalqualitybtn" type="button">信号质量
+                            </button>&nbsp;&nbsp;
+                            <button class="btn btn-info" id="signalstructurebtn" type="button">信号结构
+                            </button>
+                        </div>
+                        <div id="showRxlev" style="display:none;">
+                            <div style="height: 18px"></div>
+                            <table class="table-bordered" id="signalstrenthColor" style="width: 100%">
+                                <tbody>
+                                <tr>
+                                    <td colspan="6" style="font-weight: bold;"
+                                        align="center">Rxler颜色设置
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border:1px solid #ccc;" align="center">强度</td>
+                                    <td style="border:1px solid #ccc;" align="center">颜色</td>
+                                    <td style="border:1px solid #ccc;" align="center">强度</td>
+                                    <td style="border:1px solid #ccc;" align="center">颜色</td>
+                                    <td style="border:1px solid #ccc;" align="center">强度</td>
+                                    <td style="border:1px solid #ccc;" align="center">颜色</td>
+                                </tr>
+                                <tr>
+                                    <td align="center">X<-90</td>
+                                    <td style="background-color: #EE3B3B"></td>
+                                    <td align="center">-90<=X<-85</td>
+                                    <td style="background-color:#FF00FF"></td>
+                                    <td align="center">-85<=X<-80</td>
+                                    <td style="background-color:#FFA500"></td>
+                                </tr>
+                                <tr>
+                                    <td align="center">-80<=X<-75</td>
+                                    <td style="background-color: #8B8B7A"></td>
+                                    <td align="center">-75<=X<-70</td>
+                                    <td style="background-color:#0000FF"></td>
+                                    <td align="center">-70<=X<-65</td>
+                                    <td style="background-color:#87CEFA"></td>
+                                </tr>
+                                <tr>
+                                    <td align="center">-65<=X<-60</td>
+                                    <td style="background-color: #7CFC00"></td>
+                                    <td align="center">-60<=X<0</td>
+                                    <td style="background-color:#32CD32"></td>
+                                    <td align="center">无效点</td>
+                                    <td style="background-color:#E8E8E8"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div style="height: 20px"></div>
+                        </div>
+                        <div id="showQuality" style="display: none">
+                            <div style="height: 18px"></div>
+                            <table class="table-bordered" id="signalqualityColor" style="width: 100%">
+                                <tbody>
+                                <tr>
+                                    <td colspan="4" style="font-weight: bold;"
+                                        align="center">Quality颜色设置
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border:1px solid #ccc;" align="center">质量</td>
+                                    <td style="border:1px solid #ccc;" align="center">颜色</td>
+                                    <td style="border:1px solid #ccc;" align="center">质量</td>
+                                    <td style="border:1px solid #ccc;" align="center">颜色</td>
+                                </tr>
+                                <tr>
+                                    <td align="center">0<=X<4</td>
+                                    <td style="background-color: #FF00FF"></td>
+                                    <td align="center">4<=X<7</td>
+                                    <td style="background-color:#0000FF"></td>
+                                </tr>
+                                <tr>
+                                    <td align="center">7<=X<10</td>
+                                    <td style="background-color:#87CEFA"></td>
+                                    <td align="center">X>=10</td>
+                                    <td style="background-color: #7CFC00"></td>
+                                </tr>
+                                </tr>
+                                <tr>
+                                    <td align="center">无效点</td>
+                                    <td colspan="3" style="background-color:#E8E8E8"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div style="height: 20px"></div>
+                        </div>
+                        <div style="height: 8px"></div>
+                        <div>
+                            <button class="btn btn-info" id="primaryservicebtn" type="button">全路段主服务覆盖图
+                            </button>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <button class="btn btn-info" id="cellcoveragebtn" type="button">小区覆盖图
+                            </button>
+                        </div>
+                        <div style="height: 8px"></div>
+                        <div>
+                            <button class="btn btn-info" id="samplecelloccupybtn" type="button">采样点小区占用图
+                            </button>
+                        </div>
+                        <hr/>
+                        <h4>弱覆盖</h4>
+                        <div style="height: 8px"></div>
+                        <div>
+                            <button class="btn btn-info" id="weakCoverageBtn" type="button">弱覆盖
+                            </button>
+                        </div>
+                        <hr/>
+                        <h4>过覆盖</h4>
+                        <div style="height: 8px"></div>
+                        <div>
+                            <button class="btn btn-info" id="overcoveragebtn" type="button">覆盖过远
+                            </button>&nbsp;&nbsp;
+                            <button class="btn btn-info" id="radioresourceutilizationbtn" type="button">室分外泄
+                            </button>&nbsp;&nbsp;
+                            <button class="btn btn-info" id="nomaincoveragebtn" type="button">无主覆盖
+                            </button>
+                        </div>
+                        <hr/>
+                        <h4>异常覆盖</h4>
+                        <div style="height: 8px"></div>
+                        <div>
+                            <button class="btn btn-info" id="rapidattenuationbtn" type="button">信号快速衰减
+                            </button>&nbsp;&nbsp;
+                            <button class="btn btn-info" id="abnormalcoveragebtn" type="button">信号与天线方向不符
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
-			<div class="div_title_24px_blue">
-				<span class="sp_title"> DT任务</span>
-			</div>
-
-			<div class="div_transparentstandard_nopaddming" id="analysisListDiv">
-				<table class="tb-transparent-standard" style="width:100%" id="analysisListTable"></table>
-				<div id="analysisBtnDiv" style="display:none">
-					<input value="确定" id="confirmSelectionAnalysisBtn" type="button">&nbsp;&nbsp;&nbsp;<input id="showWithCellCheck" checked="checked" type="checkbox">同步显示小区
-				</div>
-			</div>
-			<div class="div-m-split-10px"></div>
-			<div class="div_transparent_standard_border">
-				<div class="div_title_24px_grey sp_title_left">
-					<span style="font-style: italic;"> 分析应用</span>
-				</div>
-
-				<div id="analysisDiv">
-					<input id="signalstrenthbtn" onclick="javascript:commondtstatics('signalstrength','staticsResourceUtilizationRateForAjaxAction',null,staticsSignalStrength);" value="信号强度" type="button"> <input id="signalqualitybtn" onclick="javascript:commondtstatics('signalquality','staticsResourceUtilizationRateForAjaxAction',null,staticsSignalQuality);" value="信号质量" type="button"> <input id="signalstructurebtn" onclick="javascript:commondtstatics('signalstructure','staticsResourceUtilizationRateForAjaxAction',null,staticsSignalStructure);" value="信号结构" type="button"> <input id="primaryservicebtn" onclick="javascript:commondtstatics('primaryservice','staticsResourceUtilizationRateForAjaxAction',null,staticsPrimaryService);" value="全路段主服务覆盖图" type="button"> <input id="cellcoveragebtn" onclick="javascript:commondtstatics('servercellcover','staticsResourceUtilizationRateForAjaxAction',null,CellCoverClickEvent,true);" value="小区覆盖图" type="button"> <input id="samplecelloccupybtn" onclick="javascript:commondtstatics('singlesampledetail','staticsResourceUtilizationRateForAjaxAction',null,SampleCellOccupyClickEvent,true);" value="采样点小区占用图" type="button"> <br>
-					<p>
-
-					</p></div>
-				<div class="div_title_24px_grey sp_title_left">
-					<span style="font-style: italic;"> 弱覆盖</span>
-				</div>
-				<div id="analysisDiv">
-					<input id="weakcoveragebtn" onclick="javascript:commondtstatics('weakcoverage','staticsResourceUtilizationRateForAjaxAction',null,staticsWeakCoverage);" value="弱覆盖" type="button">
-				</div>
-				<div class="div_title_24px_grey sp_title_left">
-					<span style="font-style: italic;"> 过覆盖</span>
-				</div>
-				<div id="analysisDiv">
-					<input id="overcoveragebtn" onclick="javascript:commondtstatics('overcoverage','staticsResourceUtilizationRateForAjaxAction',null,staticsOverCoverage);" value="覆盖过远" type="button"> <input id="radioresourceutilizationbtn" onclick="javascript:commondtstatics('indoorsignalleakoutside','staticsResourceUtilizationRateForAjaxAction',null,analysisIndoorSignalLeakOutside);" value="室分外泄" type="button"> <input id="nomaincoveragebtn" onclick="javascript:commondtstatics('nomaincoverage','staticsResourceUtilizationRateForAjaxAction',null,staticsNoMainCoverage);" value="无主覆盖" type="button">
-				</div>
-				<div class="div_title_24px_grey sp_title_left">
-					<span style="font-style: italic;"> 异常覆盖</span>
-				</div>
-				<div id="analysisDiv">
-					<input id="rapidattenuationbtn" onclick="javascript:commondtstatics('rapidattenuation','staticsResourceUtilizationRateForAjaxAction',null,staticsRapidAttenuation);" value="信号快速衰减" type="button"> <input id="abnormalcoveragebtn" onclick="javascript:commondtstatics('signalandantennanotmatch','staticsResourceUtilizationRateForAjaxAction',null,staticsSignalAndAntennaNotMatch);" value="信号与天线方向不符" type="button">
-				</div>
-			</div>
-		</div>
-		<div id="div_tab_1" style="display:none">
-			<table class="main-table1 half-width" id="sampleDetailTable">
-				<tbody><tr>
-					<td class="menuTd" style="width:20%">时间</td>
-					<td id="tdSampleTime"></td>
-				</tr>
-				<tr>
-					<td class="menuTd">主覆盖小区</td>
-					<td id="tdServerCell"></td>
-				</tr>
-				<tr>
-					<td class="menuTd">信号强度</td>
-					<td id="tdRxLev"></td>
-
-				</tr>
-				<tr>
-					<td class="menuTd">信号质量</td>
-					<td id="tdRxQual"></td>
-				</tr>
-				<tr>
-					<td class="menuTd">邻区</td>
-					<td id="tdNcells"></td>
-				</tr>
-				<tr>
-					<td class="menuTd">六强邻区平均强度</td>
-					<td id="tdNcellRxLev"></td>
-				</tr>
-				<tr>
-					<td class="menuTd">覆盖小区到采样点角度</td>
-					<td id="tdServerCellToSampleAngle"></td>
-				</tr>
-				<tr>
-					<td class="menuTd">服务小区方向角</td>
-					<td id="tdServerCellAngle"></td>
-				</tr>
-				</tbody></table>
-		</div>
-	</div>
+                <div role="tabpanel" class="tab-pane" id="sampleDetail">
+                    <div style="height: 10px"></div>
+                    <table class="table-bordered" id="sampleDetailTable" style="width: 100%;table-layout:fixed;">
+                        <tbody>
+                        <tr style="height: 50px">
+                            <td style="width:49%;text-align: center;font-weight: bold">时间</td>
+                            <td id="tdSampleTime" style="text-align: center;font-weight: bold"></td>
+                        </tr>
+                        <tr style="height: 50px">
+                            <td style="width:49%;text-align: center;font-weight: bold">主覆盖小区</td>
+                            <td id="tdServerCell" style="text-align: center;font-weight: bold"></td>
+                        </tr>
+                        <tr style="height: 50px">
+                            <td style="width:49%;text-align: center;font-weight: bold">信号强度</td>
+                            <td id="tdRxLev" style="text-align: center;font-weight: bold"></td>
+                        </tr>
+                        <tr style="height: 50px">
+                            <td style="width:49%;text-align: center;font-weight: bold">信号质量</td>
+                            <td id="tdRxQual" style="text-align: center;font-weight: bold"></td>
+                        </tr>
+                        <tr style="height: 100px">
+                            <td style="width:49%;text-align: center;font-weight: bold">邻区</td>
+                            <td id="tdNcells" style="text-align: center;font-weight: bold;word-wrap:break-word;"></td>
+                        </tr>
+                        <tr style="height: 50px">
+                            <td style="width:49%;text-align: center;font-weight: bold">六强邻区平均强度</td>
+                            <td id="tdNcellRxLev" style="text-align: center;font-weight: bold"></td>
+                        </tr>
+                        <tr style="height: 50px">
+                            <td style="width:49%;text-align: center;font-weight: bold">覆盖小区到采样点距离</td>
+                            <td id="tdServerCellToSampleAngle" style="text-align: center;font-weight: bold"></td>
+                        </tr>
+                        <tr style="height: 50px">
+                            <td style="width:49%;text-align: center;font-weight: bold">服务小区方向角</td>
+                            <td id="tdServerCellAngle" style="text-align: center;font-weight: bold"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-
-<div id="analyze_Dialog" class="dialog2 draggable ui-draggable" style="display:none; width:250px;">
-	<div class="dialog_header">
-		<div class="dialog_title">DT专题分析</div>
-		<div class="dialog_tool">
-			<div class="dialog_tool_close dialog_closeBtn" onclick="$('#analyze_Dialog').hide();$('.colordialog2').hide();"></div>
-		</div>
-	</div>
-	<div class="dialog_content" style="width:300px; background:#f9f9f9">
-		<table class="tb-transparent-standard" style="width:300px" id="trafficTable">
-
-		</table>
-
-	</div>
 </div>
-
-<div>
-	<div class="black"></div>
-	<div id="analyzeedit_Dialog" class="dialog2 draggable ui-draggable" style="display:none; width:410px;">
-		<div class="dialog_header">
-			<div class="dialog_title">DT专题分析修改</div>
-			<div class="dialog_tool">
-				<div class="dialog_tool_close dialog_closeBtn2" onclick="$('#analyzeedit_Dialog').hide();$('.black').hide();$('.colordialog2').hide();"></div>
-			</div>
-		</div>
-		<div class="dialog_content" style="width:410px; background:#f9f9f9">
-			<form action="updateOrAddrnoTrafficRendererAction" id="rendererForm" method="post">
-				<table class="tb-transparent-standard" style="width:350px " id="analyzeedit_trafficTable">
-
-				</table>
-			</form>
-		</div>
-	</div>
-</div>
-<div id="divColorDiv"></div>
-<div id="operInfo" style="display:none; top:40px;left:600px;z-index:999;width:400px; height:40px; background-color:#7dff3f; filter:alpha(Opacity=80);-moz-opacity:0.5;opacity: 0.5;z-index:9999;position: fixed;">
-	<table style="text-align:center" width="100%" height="100%">
-		<tbody><tr>
-			<td><span id="operTip"></span></td>
-		</tr>
-		</tbody></table>
-
-</div>
-
 </body>
 </html>

@@ -137,7 +137,7 @@ $(function () {
     });
     //查询小区信息
     $("#queryGsmMrrForm").ajaxForm({
-        url: "/api/gsm-mrr-analysis/query-mrr-data",
+        url: "../../api/gsm-mrr-analysis/query-mrr-data",
         success: showChart,
         error: showError
     });
@@ -401,7 +401,7 @@ function getAllBscCell() {
     $("#inputCell").val("");
     var cityId = $("#cityId1").val();
     $.ajax({
-        url: "/api/gsm-mrr-analysis/get-bsc-by-cityId",
+        url: "../../api/gsm-mrr-analysis/get-bsc-by-cityId",
         data: {
             "cityId": cityId
         },

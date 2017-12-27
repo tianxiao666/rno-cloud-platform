@@ -173,7 +173,7 @@ function getAllBsc() {
     $("#selectedBsc").html("");
     var cityId = $("#city-menu").val()
     $.ajax({
-        url: '/api/gsm-param-check/check-bsc-by-cityId',
+        url: '../../api/gsm-param-check/check-bsc-by-cityId',
         data: {
             'cityId': cityId
         },
@@ -388,7 +388,7 @@ function loadResultForTab(checkType) {
     }
     $(".loading").show();
     $.ajax({
-        url: '/api/gsm-param-check/check-param',
+        url: '../../api/gsm-param-check/check-param',
         data: {
             'bscStr': bscStr,
             'date1': date1,

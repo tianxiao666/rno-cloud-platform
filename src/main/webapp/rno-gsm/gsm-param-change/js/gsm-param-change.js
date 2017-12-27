@@ -61,7 +61,7 @@ function getAllBscCell() {
     $("#bscTree").html("");
     var cityId = $("#city-id").val();
     $.ajax({
-        url : '/api/gsm-param-check/check-bsc-by-cityId',
+        url : '../../api/gsm-param-check/check-bsc-by-cityId',
         data : {
             'cityId' : cityId
         },
@@ -173,7 +173,7 @@ function paramCompare(flag) {
         $(this).attr("disabled", "disabled");
         $(".loading").show();
         $.ajax({
-            url: '/api/gsm-param-change/change-param',
+            url: '../../api/gsm-param-change/change-param',
             data: {
                 'cityId': cityId,
                 'paramType': paramType,
@@ -254,7 +254,7 @@ function showMessage() {
 function getParamDiffDetail(bsc, paramType, param, cityId, date1, date2) {
     $(".loading").show();
     $.ajax({
-        url: '/api/gsm-param-change/get-param-detail',
+        url: '../../api/gsm-param-change/get-param-detail',
         data: {
             'bsc': bsc,
             'paramType': paramType,
