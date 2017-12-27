@@ -121,7 +121,7 @@ $(function () {
         });
         $("#type").val(gridType.substring(0, gridType.length -1));
         $("#areaId").val($("#cityId").find("option:checked").val());
-        $('#gridForm').attr("action", "/api/lte-grid-gis/download-cell-data");
+        $('#gridForm').attr("action", "../../api/lte-grid-gis/download-cell-data");
         $("#gridForm").submit();
     });
 
@@ -134,7 +134,7 @@ $(function () {
             gridType += $(this).val() + "," ;
         });
         $.ajax({
-            url: "/api/lte-grid-gis/grid-data",
+            url: "../../api/lte-grid-gis/grid-data",
             dataType: "json",
             data: {
                 'gridType' : gridType.substring(0, gridType.length -1),

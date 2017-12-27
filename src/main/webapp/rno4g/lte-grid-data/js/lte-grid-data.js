@@ -82,7 +82,7 @@ $(function () {
     });
 
     $("#formImportNcs").ajaxForm({
-        url: "/api/lte-grid-data/upload-file",
+        url: "../../api/lte-grid-data/upload-file",
         beforeSend: function () {
             progress.css("display", "block");
             var percentVal = '0%';
@@ -107,13 +107,13 @@ $(function () {
 
     //AJAX 提交网格数据导入记录查询条件表单
     $("#searchImportForm").ajaxForm({
-        url: "/api/lte-grid-data/import-query",
+        url: "../../api/lte-grid-data/import-query",
         success: showLteGridImportResult
     });
 
     //AJAX 提交网格数据记录查询条件表单
     $("#searchNcsForm").ajaxForm({
-        url: "/api/lte-grid-data/data-query",
+        url: "../../api/lte-grid-data/data-query",
         success: showLteGridDataResult
     });
 
@@ -230,7 +230,7 @@ function showInfoInAndOut(div, info) {
 //显示导入记录的状态的结果报告
 function showImportDetail(id) {
     $.ajax({
-        url: '/api/lte-grid-data/query-report',
+        url: '../../api/lte-grid-data/query-report',
         dataType: 'text',
         type:'post',
         data: {id: id},

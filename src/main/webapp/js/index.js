@@ -29,7 +29,7 @@ $(function () {
 
     //初始化菜单
     $.ajax({
-        url: "/api/app-menu",
+        url: "api/app-menu",
         dataType: "json",
         async: false,
         success: function (data) {
@@ -38,7 +38,7 @@ $(function () {
     });
 
     //初始化区域联动
-    initAreaSelectors({selectors: ["province", "city"]});
+    initAreaSelectors({selectors: ["province", "city"], baseLevel: 0});
 
     //初始化内容显示区域高度
     var clientHeight = document.documentElement.clientHeight;
@@ -224,7 +224,7 @@ function nowTime(ev, type) {
 //保存用户配置
 function saveUserConfig() {
     $.ajax({
-        url: "/api/save-default-city",
+        url: "api/save-default-city",
         type: "POST",
         data: {
             'areaId': $("#city").val()
@@ -333,7 +333,7 @@ var openModulePage = function (obj) {
 };
 
 function logout() {
-    $.get("/api/logout").then(function () {
+    $.get("api/logout").then(function () {
         window.location.href = "/";
     });
 }

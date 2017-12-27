@@ -15,7 +15,7 @@ $(document).ready(function () {
 
     //初始化菜单
     $.ajax({
-        url: "/api/app-menu",
+        url: "api/app-menu",
         dataType: "json",
         async: false,
         success: function (data) {

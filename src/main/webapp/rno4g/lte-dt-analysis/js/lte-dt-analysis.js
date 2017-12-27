@@ -51,7 +51,6 @@ $(function () {
         $("#listDtRes tbody").html("");
         var lon = parseFloat($(this).find("option:checked").attr("data-lon"));
         var lat = parseFloat($(this).find("option:checked").attr("data-lat"));
-        console.log(lon + ","+ lat);
         if (map === undefined) {
             //采样点图层
             samplePointLayer = new ol.layer.Vector({
@@ -94,7 +93,7 @@ $(function () {
 
                 if(feature) {
                     $.ajax({
-                        url: "/api/lte-dt-analysis/dt-data-detail",
+                        url: "../../api/lte-dt-analysis/dt-data-detail",
                         type: "GET",
                         data:{
                             'dataId': feature.getId()
@@ -168,7 +167,7 @@ $(function () {
         var dataType = $('#factory').find("option:selected").val();
         var areaType = $('#areaType').find("option:selected").val();
         $.ajax({
-            url : "/api/lte-dt-analysis/dt-desc",
+            url : "../../api/lte-dt-analysis/dt-desc",
             type: "GET",
             data: {
                 "areaId": $('#cityId').val(),
@@ -197,7 +196,7 @@ $(function () {
             id_array.push($(this).val());//向数组中添加元素
         });
         $.ajax({
-            url : "/api/lte-dt-analysis/dt-data",
+            url : "../../api/lte-dt-analysis/dt-data",
             type: "GET",
             data: {
                 "descId": id_array.join(','),
@@ -223,7 +222,7 @@ $(function () {
         });
 
         $.ajax({
-            url : "/api/lte-dt-analysis/weak-coverage",
+            url : "../../api/lte-dt-analysis/weak-coverage",
             type: "GET",
             data: {
                 "descId": id_array.join(','),
@@ -249,7 +248,7 @@ $(function () {
         });
 
         $.ajax({
-            url : "/api/lte-dt-analysis/room-leakage",
+            url : "../../api/lte-dt-analysis/room-leakage",
             type: "GET",
             data: {
                 "descId": id_array.join(','),
@@ -275,7 +274,7 @@ $(function () {
         });
 
         $.ajax({
-            url : "/api/lte-dt-analysis/overlap-coverage",
+            url : "../../api/lte-dt-analysis/overlap-coverage",
             type: "GET",
             data: {
                 "descId": id_array.join(','),

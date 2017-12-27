@@ -414,7 +414,7 @@ function submitMenu() {
     var submitDataList = transformJSONtoeachJSON();
     $.ajax({
         type: 'POST',
-        url: "/api/submit-menu?appId=" + $("#appId").text(),
+        url: "api/submit-menu?appId=" + $("#appId").text(),
         contentType: "application/json", //必须有
         data: JSON.stringify(submitDataList),
         success: function(data){
@@ -435,7 +435,7 @@ $(document).ready(function(){
     $.ajax({
         type: 'GET',
         dataType:'json',
-        url: "/api/get-menu?appId=" + appId,
+        url: "api/get-menu?appId=" + appId,
         success: function(data){
             zNodes = data;
             zTreeObj = $.fn.zTree.init($("#treeDemo"), setting, zNodes);

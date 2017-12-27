@@ -115,7 +115,7 @@ $(function () {
     });
 
     $("#file-upload-form").ajaxForm({
-        url: "/api/lte-mr-data/upload-file",
+        url: "../../api/lte-mr-data/upload-file",
         beforeSend: function () {
             progress.css("display", "block");
             var percentVal = '0%';
@@ -145,13 +145,13 @@ $(function () {
 
     //AJAX 提交MR数据导入记录查询条件表单
     $("#importQuery").ajaxForm({
-        url: "/api/lte-mr-data/mr-import-query",
+        url: "../../api/lte-mr-data/mr-import-query",
         success: showNcellImportResult
     });
 
     //AJAX 提交Mr数据记录查询条件表单
     $("#searchMrDtForm").ajaxForm({
-        url: "/api/lte-mr-data/data-query",
+        url: "../../api/lte-mr-data/data-query",
         success: showNcellImportDtResult
     });
 });
@@ -258,7 +258,7 @@ function showNcellImportDtResult(data) {
 //显示导入记录的状态的详情
 function showImportDetail(id) {
     $.ajax({
-        url: '/api/lte-mr-data/query-report',
+        url: '../../api/lte-mr-data/query-report',
         dataType: 'text',
         type:'post',
         data: {id: id},

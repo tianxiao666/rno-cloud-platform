@@ -218,7 +218,7 @@ $(function () {
                                 var index = $(this).find('td:first').text();
                                 var feature = allFeatures[index];
                                 $.ajax({
-                                    url: "/api/lte-cell-gis/cell-detail",
+                                    url: "../../api/lte-cell-gis/cell-detail",
                                     dataType: "json",
                                     data: {
                                         'cellId' : feature.get('CELL_ID')
@@ -418,7 +418,7 @@ var showNcell = function getNcell(evt) {
                     var index = $(this).find('td:first').text();
                     var cellId = allFeatures[index].get('CELL_ID');
                     $.ajax({
-                        url: "/api/lte-cell-gis/ncell-detail",
+                        url: "../../api/lte-cell-gis/ncell-detail",
                         dataType: "json",
                         data: {
                             'cellId' : cellId

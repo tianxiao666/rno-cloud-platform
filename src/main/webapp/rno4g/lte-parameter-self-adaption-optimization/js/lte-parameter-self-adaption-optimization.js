@@ -35,7 +35,7 @@ function queryCellsNeedsToBeHandle() {
     $.ajax({
         type: "POST",
         data: dataString,
-        url: "/api/lte-parameter-self-adaption-optimization//query-cell-info",
+        url: "../../api/lte-parameter-self-adaption-optimization//query-cell-info",
         success: showCellRecord
     });
 }

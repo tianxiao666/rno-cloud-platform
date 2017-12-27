@@ -88,7 +88,7 @@ $(function () {
 
     // AJAX 查询话务性能指标
     $("#queryForm").ajaxForm({
-        url: "/api/lte-kpi-query/query-result",
+        url: "../../api/lte-kpi-query/query-result",
         success: showQueryResult
     });
 
@@ -160,7 +160,7 @@ function initDownloadAttachParams() {
 function getRno4GStsIndex() {
     $(".loading").show();
     $.ajax({
-        url: '/api/lte-kpi-query/load-index',
+        url: '../../api/lte-kpi-query/load-index',
         dataType: 'text',
         type: 'get',
         success: function (data) {

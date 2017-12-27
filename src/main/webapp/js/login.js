@@ -6,7 +6,7 @@ localStorage['SelectedMenuRank'] = "";
 $(function () {
     // 初始化系统标题、Logo与软件版本
     $.ajax({
-        url: "/api/app-info",
+        url: "api/app-info",
         dataType: "json",
         async: false,
         success: function (data) {

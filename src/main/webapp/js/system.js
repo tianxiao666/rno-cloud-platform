@@ -115,7 +115,7 @@ function deleteAppInfo(appId){
     showOperTips("loadingDataDiv", "loadContentId", "正在删除");
     $.ajax({
         type:'delete',
-        url : '/api/delete-app-by-id?appId=' + appId,
+        url : 'api/delete-app-by-id?appId=' + appId,
         dataType : 'text',
         success : function() {
             alert("成功删除数据！");
@@ -145,7 +145,7 @@ function clearAll(){
 function getAppNameList(){
     $.ajax({
         type:'get',
-        url : '/api/list-app-names',
+        url : 'api/list-app-names',
         dataType : 'text',
         success : function(raw) {
             //console.log(raw);
@@ -173,7 +173,7 @@ function getAppById(appId){
     };
     $.ajax({
         type:'get',
-        url : '/api/get-app-by-id',
+        url : 'api/get-app-by-id',
         data:data,
         dataType : 'text',
         success : function(raw) {
@@ -281,7 +281,7 @@ function updateAppInfo(appDataMap){
     showOperTips("loadingDataDiv", "loadContentId", "正在更新");
     $.ajax({
         type:'post',
-        url : '/api/update-app',
+        url : 'api/update-app',
         data:appDataMap,
         dataType : 'text',
         success : function(raw) {

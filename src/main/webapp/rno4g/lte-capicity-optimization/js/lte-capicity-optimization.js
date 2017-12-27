@@ -120,7 +120,7 @@ $(function () {
 
     //AJAX 查询导入记录
     $("#capicity-query-form").ajaxForm({
-        url: "/api/lte-capicity-optimization/query-info",
+        url: "../../api/lte-capicity-optimization/query-info",
         success: function (data) {
             showCellRecord(data, 0);
         }
@@ -169,7 +169,7 @@ function beforeSubmitForm() {
                 $.ajax({
                     type: "POST",
                     data: $("#capicity-query-form").formSerialize(),
-                    url: "/api/lte-capicity-optimization/query-info",
+                    url: "../../api/lte-capicity-optimization/query-info",
                     success: function (data) {
                         dataOfHighStressList = [];
                         dataFullFromServer = null;
@@ -193,7 +193,7 @@ function beforeSubmitForm() {
                 $.ajax({
                     type: "POST",
                     data: $("#capicity-query-form").formSerialize(),
-                    url: "/api/lte-capicity-optimization/query-info",
+                    url: "../../api/lte-capicity-optimization/query-info",
                     success: function (data) {
                         dataOfHighStressList = [];
                         dataFullFromServer = null;
@@ -219,7 +219,7 @@ function beforeSubmitForm() {
             $.ajax({
                 type: "POST",
                 data: $("#capicity-query-form").formSerialize(),
-                url: "/api/lte-capicity-optimization/query-info",
+                url: "../../api/lte-capicity-optimization/query-info",
                 success: function (data) {
                     dataOfHighStressList = [];
                     dataFullFromServer = null;
@@ -237,7 +237,7 @@ function beforeSubmitForm() {
             $.ajax({
                 type: "POST",
                 data: $("#capicity-query-form").formSerialize(),
-                url: "/api/lte-capicity-optimization/query-info",
+                url: "../../api/lte-capicity-optimization/query-info",
                 success: function (data) {
                     dataOfHighStressList = [];
                     dataFullFromServer = null;

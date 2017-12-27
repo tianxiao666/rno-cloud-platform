@@ -136,7 +136,7 @@ $(function () {
                             }
                             //console.log(cellIds.substring(0, cellIds.length-1));
                             $.ajax({
-                                url: "/api/lte-traffic-analysis/cell-record",
+                                url: "../../api/lte-traffic-analysis/cell-record",
                                 dataType: "json",
                                 data: {
                                     'cellIds': cellIds.substring(0, cellIds.length-1)
@@ -188,7 +188,7 @@ $(function () {
                                 var cellId = $(this).find('td:eq(1)').text();
                                 $("#lteStsCellIndex tbody").html("");
                                 $.ajax({
-                                    url: "/api/lte-traffic-analysis/cell-index",
+                                    url: "../../api/lte-traffic-analysis/cell-index",
                                     dataType: "json",
                                     data: {
                                         'beginTime' : beginTime,
@@ -211,7 +211,7 @@ $(function () {
 
                                         var color;
                                         $.ajax({
-                                            url: "/api/lte-traffic-analysis/one-problem-cell",
+                                            url: "../../api/lte-traffic-analysis/one-problem-cell",
                                             dataType: "json",
                                             data: {
                                                 'beginTime' : beginTime,
@@ -282,7 +282,7 @@ $(function () {
             $("#loading").css("display", "block");
             $("#probCellList tbody").html("");
             $.ajax({
-                url: "/api/lte-traffic-analysis/problem-cell",
+                url: "../../api/lte-traffic-analysis/problem-cell",
                 dataType: "json",
                 data: {
                     'areaId' : parseInt($("#cityId").find("option:checked").val())
@@ -309,7 +309,7 @@ $(function () {
                         var content = '<table id="cellTable1" class="table custom">';
                         content += '<tbody>';
                         $.ajax({
-                            url: "/api/lte-traffic-analysis/cell-record",
+                            url: "../../api/lte-traffic-analysis/cell-record",
                             dataType: "json",
                             data: {
                                 'cellIds': thisCell
@@ -379,7 +379,7 @@ $(function () {
                             var beginTime = $(this).find('td:eq(0)').text();
                             var cellId = $(this).find('td:eq(1)').text();
                             $.ajax({
-                                url: "/api/lte-traffic-analysis/cell-index",
+                                url: "../../api/lte-traffic-analysis/cell-index",
                                 dataType: "json",
                                 data: {
                                     'beginTime' : beginTime,
@@ -400,7 +400,7 @@ $(function () {
                                     //console.log($(this).find('td:eq(1)').text());
                                     var color;
                                     $.ajax({
-                                        url: "/api/lte-traffic-analysis/one-problem-cell",
+                                        url: "../../api/lte-traffic-analysis/one-problem-cell",
                                         dataType: "json",
                                         data: {
                                             'beginTime' : beginTime,

@@ -92,7 +92,7 @@ function cancelChangePassword() {
 function updateUserInfo(user){
     $.ajax({
         type:'post',
-        url : '/api/update-user',
+        url : '../../api/update-user',
         data:user,
         dataType : 'text',
         success : function(raw) {
@@ -110,7 +110,7 @@ function updateUserInfo(user){
 function getCurrentUserInfo(){
     $.ajax({
         type:'get',
-        url : '/api/get-current-user',
+        url : '../../api/get-current-user',
         dataType : 'text',
         success : function(raw) {
             showUserInfo(raw);
@@ -180,7 +180,7 @@ function getAreaById(id) {
     $.ajax({
         type:'get',
         async: false,
-        url : '/api/get-area-by-id?id=' + id,
+        url : '../../api/get-area-by-id?id=' + id,
         dataType : 'text',
         success : function(raw) {
             result = raw;

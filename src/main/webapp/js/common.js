@@ -1,18 +1,33 @@
+var defaultAreaUrl;
+var areasUrl;
+
+// 定义字符串重复函数
+String.prototype.times = function(n){ return (new Array(n+1)).join(this) };
+
 // 区域联动
 function initAreaSelectors(options) {
     var $provinceId = $("#" + options.selectors[0]);
 
+    var base = "";
+    // 调用所在的级别，如 index.js 的 baseLevel 为 0，具体应用都是2，缺省为2
+    if (options.baseLevel !== undefined) {
+        base = "../".times(options.baseLevel);
+    } else {
+        base = "../".times(2);
+    }
+
+    defaultAreaUrl = base + "api/get-user-default-area";
+    areasUrl = base + "api/areas";
 
     // 缺省地市，如广东省广州市天河区 440106
     var defaultAreaId = 440106;
 
     //获取当前用户缺省区域
     $.ajax({
-        url: "/api/get-user-default-area",
+        url: defaultAreaUrl,
         dataType: "json",
         async: false,
         success: function (data) {
-            console.log(data);
             if(data !==null ){
                 defaultAreaId = parseInt(data);
             }
@@ -82,7 +97,7 @@ function initAreaSelectors(options) {
 // 渲染区域
 function renderArea(parentId, areaSelector, boolLonLat) {
     $.ajax({
-        url: "/api/areas",
+        url: areasUrl,
         data: {"parentId": parentId},
         dataType: "json",
         async: false,

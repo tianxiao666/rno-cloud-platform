@@ -83,7 +83,7 @@ $(function () {
         }
     });
     $("#import-query-form").ajaxForm({
-        url: "/api/lte-dt-data/query-import",
+        url: "../../api/lte-dt-data/query-import",
         success: showQueryImportResult
     });
 
@@ -105,7 +105,7 @@ $(function () {
     });
 
     $("#file-upload-form").ajaxForm({
-        url: "/api/lte-dt-data/upload-file",
+        url: "../../api/lte-dt-data/upload-file",
         beforeSend: function () {
             progress.css("display", "block");
             var percentVal = '0%';
@@ -150,7 +150,7 @@ $(function () {
         }
     });
     $("#searchDtRecordForm").ajaxForm({
-       url: "/api/lte-dt-data/query-record",
+       url: "../../api/lte-dt-data/query-record",
         success: showDtRecord
     });
 
@@ -250,7 +250,7 @@ function showImportDtDetail(id) {
         dataTable.dataTable().fnClearTable();
     }
     $.ajax({
-        url: '/api/lte-dt-data/query-import-detail-id',
+        url: '../../api/lte-dt-data/query-import-detail-id',
         data:{id:id},
         dataType: 'text',
         type:'get',

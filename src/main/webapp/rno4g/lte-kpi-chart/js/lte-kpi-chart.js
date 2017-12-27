@@ -138,7 +138,7 @@ $(function () {
     });
     //查询小区信息
     $("#queryKpiForm").ajaxForm({
-        url: "/api/lte-kpi-chart/chart-query",
+        url: "../../api/lte-kpi-chart/chart-query",
         success:function (data) {
             myChart.setOption(option);
             showChart(data, myChart);

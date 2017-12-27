@@ -92,7 +92,7 @@ $(function () {
     });
     //查询数据记录
     $("#searchRecordForm").ajaxForm({
-        url: "/api/lte-kpi-data/query-record",
+        url: "../../api/lte-kpi-data/query-record",
         success: showRecord
     });
 
@@ -120,7 +120,7 @@ $(function () {
 
     //上传
     $("#file-upload-form").ajaxForm({
-        url: "/api/lte-kpi-data/upload-file",
+        url: "../../api/lte-kpi-data/upload-file",
         beforeSend: function () {
             progress.css("display", "block");
             var percentVal = '0%';
@@ -152,7 +152,7 @@ $(function () {
 
     // AJAX 查询导入记录
     $("#import-query-form").ajaxForm({
-        url: "/api/lte-kpi-data/query-import",
+        url: "../../api/lte-kpi-data/query-import",
         success: showImportRecord
     });
 });
@@ -263,7 +263,7 @@ function showImportDetail(id) {
         dataTable.dataTable().fnClearTable();
     }
     $.ajax({
-       url: "/api/lte-kpi-data/query-import-detail-id",
+       url: "../../api/lte-kpi-data/query-import-detail-id",
         data:{id:id},
         dataType: 'text',
         type:'get',

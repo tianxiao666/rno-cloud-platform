@@ -94,7 +94,7 @@ $(function () {
 
     //查询小区信息
     $("#conditionForm").ajaxForm({
-        url: "/api/lte-cell-data/cell-query",
+        url: "../../api/lte-cell-data/cell-query",
         success: showQueryList,
         error: function (err) {
             console.log(err);
@@ -250,7 +250,7 @@ $(function () {
 
     //上传
     $("#file-upload-form").ajaxForm({
-        url: "/api/lte-cell-data/upload-file",
+        url: "../../api/lte-cell-data/upload-file",
         beforeSend: function () {
             progress.css("display", "block");
             var percentVal = '0%';
@@ -282,7 +282,7 @@ $(function () {
 
     // AJAX 查询导入记录
     $("#import-query-form").ajaxForm({
-        url: "/api/lte-cell-data/query-import",
+        url: "../../api/lte-cell-data/query-import",
         success: showImportRecord
     });
 
@@ -295,7 +295,7 @@ $(function () {
 
     //查询数据记录
     $("#searchRecordForm").ajaxForm({
-       url: "/api/lte-cell-data/query-record",
+       url: "../../api/lte-cell-data/query-record",
         success: showRecord
     });
 
@@ -346,7 +346,7 @@ function showQueryList(data) {
 
 function showDetail(cellId) {
     $.ajax({
-        url: '/api/lte-cell-data/cell-detail-id',
+        url: '../../api/lte-cell-data/cell-detail-id',
         dataType: 'text',
         data: {cellId: cellId},
         async: true,
@@ -377,7 +377,7 @@ function showEditor(cellId) {	//加载lte小区id保存到隐藏域
     //加载需要编辑的lte小区数据到页面
     $(".loading").css("display", "block");
     $.ajax({
-        url: '/api/lte-cell-data/cell-detail-edit',
+        url: '../../api/lte-cell-data/cell-detail-edit',
         data: {
             'cellId': cellId
         },
@@ -511,7 +511,7 @@ function deleteCell(cellId) {
     var r = confirm("删除该条小区工参信息？");
     if(r === true){
         $.ajax({
-            url: '/api/lte-cell-data/cell-delete',
+            url: '../../api/lte-cell-data/cell-delete',
             dataType: 'text',
             type: 'post',
             data: {cellId: cellId},
@@ -613,14 +613,14 @@ function updateLteCellDetail(submitOK) {
     if (submitOK) {
         $("#lteCellDetailForm")
             .ajaxSubmit({
-                url: "/api/lte-cell-data/cell-detail-update",
+                url: "../../api/lte-cell-data/cell-detail-update",
                 dataType: 'text',
                 success: function (flag) {
                     console.log(flag);
                     if (flag === "true") {
                         showInfoInAndOut("info", "更新成功！");
                         $("#conditionForm").ajaxForm({
-                            url: "/api/lte-cell-data/cell-query",
+                            url: "../../api/lte-cell-data/cell-query",
                             success: showQueryList,
                             error: function (err) {
                                 console.log(err);
@@ -736,7 +736,7 @@ function showImportDetail(id) {
         dataTable.dataTable().fnClearTable();
     }
     $.ajax({
-        url: '/api/lte-cell-data/query-import-detail-id',
+        url: '../../api/lte-cell-data/query-import-detail-id',
         data:{id:id},
         dataType: 'text',
         type:'get',

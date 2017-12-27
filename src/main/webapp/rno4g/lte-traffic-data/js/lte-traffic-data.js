@@ -81,7 +81,7 @@ $(function () {
         }
     });
     $("#import-query-form").ajaxForm({
-        url: "/api/lte-traffic-data/query-import",
+        url: "../../api/lte-traffic-data/query-import",
         success: showQueryImportResult
     });
 
@@ -99,7 +99,7 @@ $(function () {
         }
     });
     $("#searchRecordForm").ajaxForm({
-        url: "/api/lte-traffic-data/query-record",
+        url: "../../api/lte-traffic-data/query-record",
         success: showRecord
     });
 
@@ -122,7 +122,7 @@ $(function () {
     });
 
     $("#file-upload-form").ajaxForm({
-        url: "/api/lte-traffic-data/upload-file",
+        url: "../../api/lte-traffic-data/upload-file",
         beforeSend: function () {
             progress.css("display", "block");
             var percentVal = '0%';
@@ -235,7 +235,7 @@ function showQueryImportResult(data) {
 //显示导入记录的状态的详情
 function showImportDetail(id) {
     $.ajax({
-        url: '/api/lte-traffic-data/query-report',
+        url: '../../api/lte-traffic-data/query-report',
         dataType: 'text',
         data: {id: id},
         success:function(data){

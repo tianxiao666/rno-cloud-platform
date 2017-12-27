@@ -4,7 +4,7 @@ var editText;
 var submitStatus = true;
 var sceneNames; //保存场景名列表
 
-$(document).ready(function () {
+$(function () {
     // 设置导航标题
     setNavTitle("navTitle");
 
@@ -79,7 +79,7 @@ function getSceneNameListTask() {
     showOperTips("loadingDataDiv", "loadContentId", "正在查询");
     $.ajax({
         type: 'post',
-        url: '/api/lte-geo-scene/get-all-name',
+        url: '../../api/lte-geo-scene/get-all-name',
         dataType: 'text',
         success: function (raw) {
             //console.log(raw);
@@ -139,7 +139,7 @@ function getSceneInfoTask(sceneId) {
 
     $.ajax({
         type: 'post',
-        url: '/api/lte-geo-scene/get-scene-by-id',
+        url: '../../api/lte-geo-scene/get-scene-by-id',
         data: data,
         dataType: 'text',
         success: function (raw) {
@@ -312,7 +312,7 @@ function updateSceneInfo(sceneDataMap) {
     showOperTips("loadingDataDiv", "loadContentId", "正在更新");
     $.ajax({
         type: 'post',
-        url: '/api/lte-geo-scene/update-scene-by-id',
+        url: '../../api/lte-geo-scene/update-scene-by-id',
         data: sceneDataMap,
         dataType: 'text',
         success: function () {
@@ -339,7 +339,7 @@ function deleteSceneInfo(sceneId) {
     showOperTips("loadingDataDiv", "loadContentId", "正在删除");
     $.ajax({
         type: 'post',
-        url: '/api/lte-geo-scene/delete-scene-by-id',
+        url: '../../api/lte-geo-scene/delete-scene-by-id',
         data: {
             'sceneId': sceneId
         },
@@ -430,7 +430,7 @@ function insertSceneInfo(sceneDataMap) {
     showOperTips("loadingDataDiv", "loadContentId", "正在插入");
     $.ajax({
         type: 'post',
-        url: '/api/lte-geo-scene/insert-scene',
+        url: '../../api/lte-geo-scene/insert-scene',
         data: sceneDataMap,
         dataType: 'text',
         success: function () {
