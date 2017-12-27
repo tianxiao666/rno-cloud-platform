@@ -255,7 +255,6 @@ $(document).ready(function () {
     ];
 
     map.on('singleclick', function (evt) {
-        console.log(map)
         if (map.getView().getZoom() < 15) {
             return;
         }
@@ -672,7 +671,6 @@ function searchFreq(freq) {
         let view = map.getView();
         let features = new ol.format.GeoJSON().readFeatures(response);
         if (features.length) {
-            console.log(features)
             features.forEach(function (feature) {
                 if (tiled) {
                     var coordinate = [feature.values_.LONGITUDE, feature.values_.LATITUDE];
@@ -683,7 +681,6 @@ function searchFreq(freq) {
                         });
                     if (url) {
                         $.ajax(url).then(function (response) {
-                            console.log(response)
                             let features = new ol.format.GeoJSON().readFeatures(response);
                             if (features.length) {
                                 queryFreqOverlay.getSource().addFeatures(features);
@@ -793,12 +790,10 @@ function drawArrow(cellLon, cellLat, vecLng, vecLat, ratio, color, points) {
     let r = Math.sqrt(difflng * difflng + difflat * difflat);
     let conV = difflng / r;
     let sinV = difflat / r;
-console.log(points);
     var coordinates = [];
     points.forEach(function (point) {
         coordinates.push([point.lng, point.lat]);
     });
-    console.log(coordinates);
     var styles = [
         new ol.style.Style({
             stroke: new ol.style.Stroke({
@@ -847,14 +842,6 @@ console.log(points);
         style: styles,
         zIndex: 100
     });
-    // if(dynamicCoverageOverlay){
-    //     if(dynamicCoverageOverlay.getSource()){
-    //         console.log("有")
-    //         map.removeLayer(dynamicCoverageOverlay);
-    //         map.getSource().clear();
-    //     }
-    // }
-
     map.addLayer(dynamicCoverageOverlay);
     map.getView().setCenter(coordinates[0])
 }
