@@ -6,7 +6,7 @@
 
     <link rel="stylesheet" href="css/lte-geo-scene.css">
 
-    <script src="/lib/jquery/1.8.2/jquery.js"></script>
+    <script src="../../lib/jquery/3.2.1/jquery.js"></script>
     <script src="../../js/common.js"></script>
     <script src="js/lte-geo-scene.js"></script>
 </head>
@@ -45,11 +45,11 @@
             <table id="sceneSelect">
                 <tbody>
                     <tr id="sceneNameTr">
-                        <td style="margin: 0; text-align: center">场景名称：</td>
+                        <td style="margin: 0; text-align: center" onclick="alert()">场景名称：</td>
                             <td id="sceneNameTd" style="text-align: left">
                                 <label for="sceneNameList"></label>
-                                <select name="cond[sceneNameList]" id="sceneNameList">
-                                    <option value="21" selected="selected">室外</option>
+                                <select name="cond[sceneNameList]" id="sceneNameList" onchange="alert()">
+                                    <option value="21">室外</option>
                                     <option value="41">商业区</option>
                                     <option value="42">居民区</option>
                                     <option value="164">室内</option>

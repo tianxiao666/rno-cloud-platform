@@ -90,7 +90,7 @@ function trafficQuery(tab){
     $("#" + tab +"DlCellChineseName").val($("#" + tab +"CellChineseName").val());
     $("#" + tab +"DlStsType").val($("#" + tab +"StsType").val());
     $("#form_tab_" + tab).ajaxSubmit({
-        url:'/api/gsm-traffic-query',
+        url:'../../api/gsm-traffic-query',
         type:'post',
         dataType:'text',
         success:function(data){
@@ -148,7 +148,7 @@ function searchCityNetQuality() {
     $("#qualityBeginTime").val(new Date(beginTime));
     $("#qualityLatestAllowedTime").val(new Date(endTime));
     $("#form_tab_2").ajaxSubmit({
-        url:'/api/gsm-traffic-quality-query',
+        url:'../../api/gsm-traffic-quality-query',
         type:'post',
         dataType:'text',
         beforeSend:function () {

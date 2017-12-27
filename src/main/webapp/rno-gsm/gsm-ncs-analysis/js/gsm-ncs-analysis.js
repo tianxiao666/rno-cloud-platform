@@ -62,7 +62,7 @@ $(function () {
     $("#queryBtn").click(function () {
         selectCell = $("#inputCell").val();
         $("#cellNcsForm").ajaxForm({
-            url:"/api/gsm-ncs-analysis/cell-ncs-query",
+            url:"../../api/gsm-ncs-analysis/cell-ncs-query",
             type:"post",
             dataType:'text',
             success:function(raw){
@@ -223,7 +223,7 @@ $(function () {
         var ncsId = val[0];
         var manufacturers = val[1];
         $.ajax({
-            url : '/api/gsm-ncs-analysis/ncs-desc-query',
+            url : '../../api/gsm-ncs-analysis/ncs-desc-query',
             data : {
                 'ncsId' : ncsId,
                 'manufacturers' : manufacturers

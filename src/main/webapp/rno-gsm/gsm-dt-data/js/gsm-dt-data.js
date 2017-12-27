@@ -67,7 +67,7 @@ $(function () {
         };
         $('#queryResultTab').css("line-height", "12px");
         $.ajax({
-            url: '/api/gsm-import-query',
+            url: '../../api/gsm-import-query',
             dataType: 'json',
             data: dataMap,
             type: 'post',
@@ -150,7 +150,7 @@ function queryDtData() {
     };
     $('#queryResultDT').css("line-height", "12px");
     $.ajax({
-        url: '/api/gsm-dt/find-dt-desc-list',
+        url: '../../api/gsm-dt/find-dt-desc-list',
         dataType: 'json',
         data: dataMap,
         type: 'post',
@@ -192,7 +192,7 @@ function doUpload() {
     var bar = $('.bar');
     var percent = $('.percent');
     $("#formImportDT").ajaxSubmit({
-        url: "/api/gsm-dt/upload-file",
+        url: "../../api/gsm-dt/upload-file",
 
         beforeSend: function () {
             progress.css("display", "block");
@@ -225,7 +225,7 @@ function returnToImportList(){
 //显示导入记录的状态的详情
 function showImportDetail(id) {
     $.ajax({
-        url: '/api/lte-mr-data/query-report',
+        url: '../../api/lte-mr-data/query-report',
         dataType: 'text',
         type:'post',
         data: {id: id},

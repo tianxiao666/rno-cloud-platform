@@ -53,7 +53,7 @@ $(function () {
         };
         $('#queryResultTab').css("line-height", "12px");
         $.ajax({
-            url: '/api/gsm-import-query',
+            url: '../../api/gsm-import-query',
             dataType: 'json',
             data: dataMap,
             type: 'post',
@@ -140,7 +140,7 @@ $(function () {
         };
         $('#queryMrrResultTab').css("line-height", "12px");
         $.ajax({
-            url: '/api/gsm-mrr-data/gsm-mrr-data-query',
+            url: '../../api/gsm-mrr-data/gsm-mrr-data-query',
             dataType: 'json',
             data: dataMap,
             type: 'post',
@@ -249,7 +249,7 @@ function renderArea(data, parentId, areaMenu) {
 //显示导入记录的状态的详情
 function showImportDetail(id) {
     $.ajax({
-        url: '/api/lte-mr-data/query-report',
+        url: '../../api/lte-mr-data/query-report',
         dataType: 'text',
         type:'post',
         data: {id: id},
@@ -407,7 +407,7 @@ function doUpload() {
     var bar = $('.bar');
     var percent = $('.percent');
     $("#formImportMrr").ajaxForm({
-        url: "/api/upload-file",
+        url: "../../api/upload-file",
         beforeSend: function () {
             progress.css("display", "block");
             var percentVal = '0%';
@@ -479,7 +479,7 @@ function queryMrrDetailData() {
     showOperTips("loadingDataDiv", "loadContentId", "正在加载详情");
 
     $("#searchMrrDetailForm").ajaxSubmit({
-        url:'/api/gsm-mrr-data/query-mrr-detail',
+        url:'../../api/gsm-mrr-data/query-mrr-detail',
         type:'post',
         dataType:'text',
         success:function(data){

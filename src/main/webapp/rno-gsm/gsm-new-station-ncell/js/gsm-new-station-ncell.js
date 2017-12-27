@@ -34,7 +34,7 @@ $(function () {
         };
         $('#queryResultTab').css("line-height", "12px");
         $.ajax({
-            url: '/api/gsm-import-query',
+            url: '../../api/gsm-import-query',
             dataType: 'json',
             data: dataMap,
             type: 'post',
@@ -140,7 +140,7 @@ $(function () {
         };
         $('#queryNcsResultTab').css("line-height", "12px");
         $.ajax({
-            url: '/api/gsm-new-station-ncell/desc-query',
+            url: '../../api/gsm-new-station-ncell/desc-query',
             dataType: 'json',
             data: dataMap,
             type: 'post',
@@ -186,7 +186,7 @@ function doUpload() {
     var bar = $('.bar');
     var percent = $('.percent');
     $("#formImportNcs").ajaxForm({
-        url: "/api/gsm-new-station-ncell/upload-file",
+        url: "../../api/gsm-new-station-ncell/upload-file",
         beforeSend: function () {
             progress.css("display", "block");
             var percentVal = '0%';
@@ -210,7 +210,7 @@ function doUpload() {
 //显示导入记录的状态的详情
 function showImportDetail(id) {
     $.ajax({
-        url: '/api/lte-mr-data/query-report',
+        url: '../../api/lte-mr-data/query-report',
         dataType: 'text',
         type:'post',
         data: {id: id},

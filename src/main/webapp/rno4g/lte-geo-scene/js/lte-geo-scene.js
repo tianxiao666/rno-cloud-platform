@@ -42,11 +42,6 @@ function bindEvent() {
         chooseTask();
     });
 
-    //场景名选择事件
-    $("#sceneNameList").live("change", function () {
-        var sceneId = $("#sceneNameList").val();
-        getSceneInfoTask(sceneId);
-    });
     //删除记录
     $("#deleteScene").click(function () {
         var sceneId = $("#sceneNameList").val();
@@ -67,6 +62,10 @@ function chooseTask() {
         //	console.log(submitStatus);
         submitInsertData();
     }
+}
+function sceneNameChange() {
+    var sceneId = $("#sceneNameList").val();
+    getSceneInfoTask(sceneId);
 }
 
 /**
@@ -110,7 +109,7 @@ function fillSelectList(selectParentId, selectId, raw) {
             return;
         }
         sceneNames = data;
-        var selectStr = "<select 	name='cond[sceneNameList]' id='" + selectId + "'></select>";
+        var selectStr = "<select 	name='cond[sceneNameList]' id='" + selectId + "' onchange='sceneNameChange();'></select>";
         selectParent.append(selectStr);
         var select = $("#" + selectId);
         for (var i = 0; i < data.length; i++) {
