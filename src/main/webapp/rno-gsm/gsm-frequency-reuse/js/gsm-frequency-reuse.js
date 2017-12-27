@@ -255,6 +255,7 @@ function getCellConfigAnaliysisHtml(data) {
  * 根据所选择的分析列表加载小区数据
  */
 function loadGisCellData(loadToken, btsType) {
+    $("#loadingMapCoverDiv").show();
     queryCellOverlay.getSource().clear();
     let cityId = $("#cityId").val();
     let filter = `BTS_TYPE = '` + btsType + `' and AREA_ID = '` + cityId + `'`;
@@ -290,6 +291,7 @@ function loadGisCellData(loadToken, btsType) {
             $("#reportCurrentPage").val(0);
             $("#reportPageCount").val(parseInt(tchList.length / $("#reportPageSize").val()) + 1);
             $("#reportTotalCount").val(tchList.length);
+            $("#loadingMapCoverDiv").hide();
         } else {
             animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "不存在该空间数据");
         }
@@ -305,8 +307,9 @@ function reportFreqReuse() {
  * 获取频点统计数据并生成统计图
  */
 function getReportFreqReuseData() {
+    $("#reportCoverDiv").show();
+    $("#report_Dialog").show();
     $("#analyzeedit_Dialog").hide();
-    $(".loading_cover").css("display", "block");
     var btsType = $("input[name='btsType']:checked").val();
     currentSelConfigId = btsType;
     if (currentSelConfigId == "" || currentSelConfigId == undefined) {
@@ -319,8 +322,7 @@ function getReportFreqReuseData() {
     var currentPage = $("#reportCurrentPage").val();
     var pageSize = $("#reportPageSize").val();
     var areaId = $("#cityId").val();
-    $("#reportCoverDiv").show();
-    $("#report_Dialog").show();
+
     $("#reportId").val(currentSelConfigId);
     $("#reportType").val("CELLDATA");
     $("#reportForm")
@@ -365,7 +367,7 @@ function getReportFreqReuseData() {
                 //alert("出错啦！" + textstatus);
             },
             complete: function () {
-                $("#reportCoverDiv").css("display", "none");
+                // $("#reportCoverDiv").css("display", "none");
             }
         });
     return true;
