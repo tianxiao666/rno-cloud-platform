@@ -218,9 +218,17 @@ html, body {
     width: 100px;
 }
 
+#busyCellList td:hover{
+    background: rgba(94, 94, 94, 0.32);
+}
+
 #busyCellList th:hover{
     cursor: text;
     background: white;
+}
+
+#busyCellList tr{
+    cursor: pointer;
 }
 
 .custom-btn {
@@ -313,5 +321,23 @@ html, body {
 }
 
 .custom-bg{
+    background: rgba(94, 94, 94, 0.32);
+}
+
+.custom-content{
+    cursor: pointer;
+    word-break:break-all;
+    font-size: 12px;
+}
+
+.custom tbody tr{
+    border-top: none;
+}
+
+.custom-content :hover{
+    background: rgba(94, 94, 94, 0.32);
+}
+
+.custom tbody tr:hover{
     background: rgba(94, 94, 94, 0.32);
 }
