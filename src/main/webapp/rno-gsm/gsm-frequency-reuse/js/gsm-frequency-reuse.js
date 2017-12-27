@@ -50,8 +50,6 @@ $(function () {
     };
     var createTextStyle = function (feature) {
         return new ol.style.Text({
-            // textAlign: align == '' ? undefined : align,
-            // textBaseline: baseline,
             font: 'bold' + ' 16px' +' 宋体',
             text: getText(feature),
             fill: new ol.style.Fill({color: '#000'}),
@@ -88,10 +86,12 @@ $(function () {
         source: new ol.source.Vector(),
         style: redStyle
     });
-    $("#queryCellAreaId").change(function () {
+    $("#districtId").change(function () {
         var lon = parseFloat($(this).find("option:checked").attr("data-lon"));
         var lat = parseFloat($(this).find("option:checked").attr("data-lat"));
+        console.log(lat)
         if (map === undefined) {
+            console.log(11111)
             map = new ol.Map({
                 target: 'map',
                 layers: [baseLayer, markCellOverlay, queryCellOverlay],
@@ -105,37 +105,10 @@ $(function () {
             map.getView().setCenter([lon, lat]);
         }
     });
-
-    $("#cityId").change(function () {
-        var cityId = parseInt($(this).find("option:checked").val());
-        $.getJSON("../../data/area.json", function (data) {
-            renderArea(data, cityId, "queryCellAreaId", true);
-            $("#queryCellAreaId").trigger("change");
-        })
-    });
-
-    $("#provinceId").change(function () {
-        var provinceId = parseInt($(this).find("option:checked").val());
-        var cityId = $("#cityId").val();
-        loadAndShowCellConfigAnalysisList();//小区配置
-        $.getJSON("../../data/area.json", function (data) {
-            renderArea(data, provinceId, "cityId", false);
-            $("#cityId").trigger("change");
-        })
-    });
+    $("#districtId").trigger("change");
 
     //初始化区域
-    $.ajax({
-        url: "../../data/area.json",
-        dataType: "json",
-        async: false,
-        success: function (data) {
-            renderArea(data, 0, "provinceId");
-            renderArea(data, 440000, "cityId");
-            $("#provinceId").change();
-            $("#cityId").change();
-        }
-    });
+    initAreaSelectors({selectors: ["provinceId", "cityId", "districtId"], coord: true});
 
     $("#queryGsmCell").click(function () {
         var cityId = parseInt($("#cityId").find("option:checked").val());
@@ -174,14 +147,14 @@ $(function () {
     $("#confirmSelectionAnalysisBtn").click(function () {
         return;
     });
-
+    loadAndShowCellConfigAnalysisList()
 });
 
 //获取和展现被加载的小区配置分析列表
 function loadAndShowCellConfigAnalysisList() {
     $("#analysisListTable_cellconfig").empty();
     $.ajax({
-        url: "/api/gsm-frequency-reuse-analysis/cell-config-analysis-list",
+        url: "/portal/api/gsm-frequency-reuse-analysis/cell-config-analysis-list",
         dataType: 'json',
         type: 'GET',
         success: function (data) {
@@ -328,7 +301,7 @@ function getReportFreqReuseData() {
     $("#reportType").val("CELLDATA");
     $("#reportForm")
         .ajaxSubmit({
-            url: '/api/gsm-frequency-reuse-analysis/statistics-frequency-reuse-info',
+            url: '/portal/api/gsm-frequency-reuse-analysis/statistics-frequency-reuse-info',
             dataType: 'json',
             data: {
                 'btsType': 'GSM900',
@@ -567,30 +540,6 @@ function markCellForFreqReuse() {
 
 function clearMarkCellForFreqReuse() {
     markCellOverlay.getSource().clear();
-}
-
-// 渲染区域
-function renderArea(data, parentId, areaMenu, boolLonLat) {
-    var arr = data.filter(function (v) {
-        return v.parentId === parentId;
-    });
-    if (arr.length > 0) {
-        var areaHtml = [];
-        $.each(arr, function (index) {
-            var area = arr[index];
-
-            if (boolLonLat) {
-                areaHtml.push("<option value='" + area.id + "' data-lon='" + area.longitude + "' data-lat='" + area.latitude + "'>");
-            } else {
-                areaHtml.push("<option value='" + area.id + "'>");
-            }
-
-            areaHtml.push(area.name + "</option>");
-        });
-        $("#" + areaMenu).html(areaHtml.join(""));
-    } else {
-        console.log("父ID为" + parentId + "时未找到任何下级区域。");
-    }
 }
 
 /**
