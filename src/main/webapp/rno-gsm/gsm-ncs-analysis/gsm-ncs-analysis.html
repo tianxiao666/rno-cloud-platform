@@ -5,6 +5,7 @@
     <title>NCS小区信息查看</title>
 
     <link rel="stylesheet" href="css/gsm-ncs-analysis.css">
+    <link rel="stylesheet" href="../../lib/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
     <link rel="stylesheet" href="../../lib/datatables/1.10.16/datatables.min.css">
 
@@ -39,23 +40,64 @@
 <table width="100%" height="100%">
     <tbody>
     <tr>
-        <td style="vertical-align: top" width="16%" bgcolor="#E2ECF7">
-            <div style="margin:10px">
-                <form id="cellNcsForm" style="width:auto">
-                    &nbsp;&nbsp;&nbsp;省份：<select class="required" id="provinceId" title="" style="width: 150px"></select><br><br>
-                    &nbsp;&nbsp;&nbsp;地市：<select name="cityId" class="required" id="cityId" title="" style="width: 150px"></select> <br><br>
-                    &nbsp;&nbsp;&nbsp;厂家：<select name="factory" class="required" id="factory" title="" style="width: 150px">
-                        <option value="ERI">爱立信</option>
-                        <option value="HW">华为</option>
-                    </select> <br><br>
-                    小区名：<input name="cell" id="inputCell" style="width: 142px" type="text" title=""><br><br>
-                    <input id="queryBtn" value="查询" type="button">
-                </form>
+        <td style="vertical-align: top" width="16%" bgcolor="#E3ECF7">
+
+            <div style="margin:10px" >
+                <div style="height:325px;width: 300px;">
+                    <div class="divtab_content"
+                         style="overflow-x:hidden;width:100%; height: 325px">
+                        <div id="div_tab_0">
+                            <form id="cellNcsForm">
+                                <div id="div_list" class="form-horizontal">
+                                    <div class="form-group">
+                                        <label for="provinceId" class="col-sm-4 control-label">省份</label>
+                                        <div class="col-sm-8">
+                                            <select class="required form-control" id="provinceId" title=""></select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cityId" class="col-sm-4 control-label">地市</label>
+                                        <div class="col-sm-8">
+                                            <select name="cityId" class="required form-control" id="cityId" title=""></select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="factory" class="col-sm-4 control-label">厂家</label>
+                                        <div class="col-sm-8">
+                                            <select name="factory" class="required form-control" id="factory" title="" style="width: 160px">
+                                                <option value="ERI">爱立信</option>
+                                                <option value="HW">华为</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputCell" class="col-sm-4 control-label">小区名</label>
+                                        <div class="col-sm-8">
+                                            <input name="cell" id="inputCell" class="" type="text" title="" style="width: 160px">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-offset-4 col-sm-8">
+                                            <button id="queryBtn" class="btn btn-default">查 询</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div id="div_tab_1" style="display:none">
+                            <div id="mrrInfoDiv"
+                                 style="background:white;float: left; width:100%">
+                                <table class="main-table1 half-width" id="mrrInfoTab">
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </td>
         <td style="vertical-align: top" bgcolor="#E2ECF7">
-            <table width="100%">
+            <table width="100%" style=" margin-left: 200px">
                 <tbody>
                 <tr>
                     <td style="vertical-align: top" colspan="3">
@@ -68,8 +110,8 @@
                             <option value="abss">ABSS</option>
                             <option value="alone">ALONE</option>
                         </select>&nbsp;&nbsp;
-                                日期:<select id="ncsDate" class="Wdate required input-text" style="width:100px" title=""></select> &nbsp;&nbsp;&nbsp;
-                                时间:<select id="ncsTime" style="width:80px" title=""></select> &nbsp;&nbsp;&nbsp;
+                                日期:<select id="ncsDate" style="width:100px" title=""></select> &nbsp;&nbsp;&nbsp;
+                                时间:<select id="ncsTime" style="width:100px" title=""></select> &nbsp;&nbsp;&nbsp;
                         </div>
                     </td>
                 </tr>

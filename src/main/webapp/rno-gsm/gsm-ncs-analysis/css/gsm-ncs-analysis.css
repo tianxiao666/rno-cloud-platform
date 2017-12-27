@@ -20,6 +20,146 @@ blockquote, q {
     quotes: none;
 }
 
+.divtab_menu {
+    clear: both;
+    height: 25px;
+}
+.divtab_menu ul li.selected {
+    background: none 0 0 repeat scroll rgb(255, 255, 255);
+    border-right: 1px solid rgb(153, 187, 232);
+    border-top: 3px solid rgb(153, 188, 232);
+    border-bottom: none;
+    height: 23px;
+    line-height: 22px;
+}
+.resource_list300_box {
+    background: url("../images/shadh.png") 0 0 repeat-x scroll rgb(255, 255, 255);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 380px;
+    z-index: 2;
+    box-shadow: rgb(153, 153, 153) -2px -2px 5px;
+}
+
+.resource_list300_box .no_result {
+    line-height: 26px;
+    padding: 16px 0 0 20px;
+}
+
+.resource_list300_box .sort_box {
+    margin: 8px 0 8px 4px;
+    padding-left: 1px;
+}
+
+.resource_list300_box .sort_title {
+    float: left;
+    line-height: 18px;
+    padding: 5px 2px;
+}
+
+.resource_list_icon .shad_v {
+    background: url("../images/shadv.png") 0 0 repeat-y transparent;
+    height: 325px;
+    right: 0;
+    position: absolute;
+    top: 0;
+    width: 4px;
+}
+
+.resource_list_icon .switch {
+    background: url("../images/flexArrow.png") no-repeat #E2ECF7;
+    height: 68px;
+    right: 0;
+    position: absolute;
+    top: 6px;
+    width: 18px;
+    z-index: 10;
+}
+
+.resource_list_icon .switch_hidden {
+    background: url("../images/flexArrow.png") -22px 0 no-repeat #E2ECF7;
+    height: 68px;
+    left: -18px;
+    position: absolute;
+    top: 6px;
+    width: 18px;
+    z-index: 10;
+    display: none;
+}
+.resource_list_icon {
+    position: absolute;
+    right: 381px;
+    top: 0;
+    z-index: 2;
+    height: 100%;
+}
+
+.resource_list300 {
+    overflow-y: auto;
+}
+.divtab_content {
+
+    padding: 10px;
+}
+
+
+.resource_list300 .resource_item {
+    border-bottom: 1px dashed rgb(204, 204, 204);
+    padding: 10px 0 10px 10px;
+    cursor: pointer;
+}
+
+.resource_list300 .resource_item:hover {
+    background-color: rgb(206, 229, 254);
+}
+
+.resource_list300 .resource_item .r {
+    float: left;
+    width: 220px;
+}
+
+.resource_list300 .resource_item .name {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 230px;
+}
+
+.resource_list300 .resource_item .mt5 {
+    margin-top: 5px;
+}
+
+.resource_list300_box .resource_page {
+    margin: 10px 5px;
+    text-align: center;
+}
+
+.resource_list300_box .resource_page a {
+    border: 1px solid rgb(154, 175, 229);
+    color: rgb(46, 106, 177);
+    margin-right: 2px;
+    padding: 2px 5px;
+    text-decoration: none;
+}
+
+.resource_list300_box .resource_page a:hover {
+    background-color: lightyellow;
+    border: 1px solid rgb(43, 102, 165);
+    color: rgb(0, 0, 0);
+}
+
+.resource_list300_box .resource_page span.current {
+    background-color: rgb(46, 106, 177);
+    border-right: 1px solid navy;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    margin-right: 2px;
+    padding: 2px 5px;
+}
+
+
 blockquote::before, blockquote::after, q::before, q::after {
     content: none;
 }

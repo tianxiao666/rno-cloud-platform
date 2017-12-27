@@ -4,6 +4,31 @@ var ncsDateToTime = {};// key为date
 var currentCellNcsData = null;
 var selectCell = "";
 $(function () {
+    //默认右侧栏打开
+    var switchHidden = $(".switch_hidden");
+    $(".resource_list300_box").css("display", "block");
+    switchHidden.hide();
+    $(".resource_list_icon").css("right", "300px;");
+    $(".switch").click(function () {
+        $(this).hide();
+        $(".switch_hidden").show();
+        $(".resource_list_icon").animate({
+            right: "0px"
+        }, "fast");
+        $(".resource_list300_box").hide("fast");
+    });
+    switchHidden.click(function () {
+        $(this).hide();
+        $(".switch").show();
+        $(".resource_list_icon").animate({
+            right: "300px"
+        }, "fast");
+        $(".resource_list300_box").show("fast");
+    });
+    $(".zy_show").click(function () {
+        $(".search_box_alert").slideToggle("fast");
+    });
+
     // set highchart
     sethighchart();
     $(".draggable").draggable();
@@ -36,7 +61,7 @@ $(function () {
 
     $("#queryBtn").click(function () {
         selectCell = $("#inputCell").val();
-        $("#cellNcsForm").ajaxSubmit({
+        $("#cellNcsForm").ajaxForm({
             url:"/api/gsm-ncs-analysis/cell-ncs-query",
             type:"post",
             dataType:'text',
@@ -222,7 +247,7 @@ function showNcsInfo(ncs) {
     $("#ncsInfoTab").html("");
     var ht = "<tr><td colspan=2>测量信息</td></tr>";
     ht += "<TR><td class='menuTd'>BSC</td><td>" + ncs['bsc'] + "</td></TR>";
-    ht += "<TR><td class='menuTd'>CREATE_TIME</td><td>" + ncs['meaTime']
+    ht += "<TR><td class='menuTd'>CREATE_TIME</td><td>" + (new Date(ncs['meaTime'])).Format("yyyy-MM-dd hh:mm:ss")
         + "</td>";
     ht += "<TR><td class='menuTd'>RECORDCOUNT</td><td>" + getValidValue(ncs['recordCount'])
         + "</td>";
