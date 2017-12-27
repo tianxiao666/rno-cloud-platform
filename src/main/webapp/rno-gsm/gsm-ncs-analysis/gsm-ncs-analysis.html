@@ -42,14 +42,13 @@
         <td style="vertical-align: top" width="16%" bgcolor="#E2ECF7">
             <div style="margin:10px">
                 <form id="cellNcsForm" style="width:auto">
-                      省份：<select class="required" id="provinceId" title=""></select>
-                    地市：<select name="cityId" class="required" id="cityId" title=""></select> <br><br>
-                    厂家：
-                    <select name="factory" class="required" id="factory" title="">
+                    &nbsp;&nbsp;&nbsp;省份：<select class="required" id="provinceId" title="" style="width: 150px"></select><br><br>
+                    &nbsp;&nbsp;&nbsp;地市：<select name="cityId" class="required" id="cityId" title="" style="width: 150px"></select> <br><br>
+                    &nbsp;&nbsp;&nbsp;厂家：<select name="factory" class="required" id="factory" title="" style="width: 150px">
                         <option value="ERI">爱立信</option>
                         <option value="HW">华为</option>
                     </select> <br><br>
-                    小区名:<input name="cell" id="inputCell" style="width: 194px" type="text" title=""><br><br>
+                    小区名：<input name="cell" id="inputCell" style="width: 142px" type="text" title=""><br><br>
                     <input id="queryBtn" value="查询" type="button">
                 </form>
             </div>
@@ -60,9 +59,7 @@
                 <tbody>
                 <tr>
                     <td style="vertical-align: top" colspan="3">
-                        <div style="margin:10px">
-                            日期:<select id="ncsDate" class="Wdate required input-text" style="width:80px" title=""></select> &nbsp;&nbsp;&nbsp;
-                            时间:<select id="ncsTime" style="width:80px" title=""></select> &nbsp;&nbsp;&nbsp;
+                        <div style="margin:10px" id="hiddenDiv" hidden>
 
                             数据类型:<select id="ncsDataType" style="width:120px" title="">
                             <option value="topsix" selected="selected">六强比例</option>
@@ -71,7 +68,8 @@
                             <option value="abss">ABSS</option>
                             <option value="alone">ALONE</option>
                         </select>&nbsp;&nbsp;
-
+                                日期:<select id="ncsDate" class="Wdate required input-text" style="width:100px" title=""></select> &nbsp;&nbsp;&nbsp;
+                                时间:<select id="ncsTime" style="width:80px" title=""></select> &nbsp;&nbsp;&nbsp;
                         </div>
                     </td>
                 </tr>
@@ -314,7 +312,7 @@
             class="ui-datepicker-next ui-corner-all ui-state-disabled" title="Next"><span
             class="ui-icon ui-icon-circle-triangle-e">Next</span></a>
         <div class="ui-datepicker-title"><select class="ui-datepicker-month" data-handler="selectMonth"
-                                                 data-event="change">
+                                                 data-event="change" title="">
             <option value="0">一月</option>
             <option value="1">二月</option>
             <option value="2">三月</option>
@@ -449,10 +447,10 @@
             <dd class="ui_tpicker_microsec">
                 <div class="ui_tpicker_microsec_slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"
                      style="display:none;" aria-disabled="false"><a
-                        class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 0%;"></a></div>
+                        class="ui-slider-handle ui-state-default ui-corner-all" href="#" style="left: 0;"></a></div>
             </dd>
             <dt class="ui_tpicker_timezone_label" style="display:none;">Time Zone</dt>
-            <dd class="ui_tpicker_timezone" style="display:none;"><select>
+            <dd class="ui_tpicker_timezone" style="display:none;"><select title="">
                 <option value="-720">-1200</option>
                 <option value="-660">-1100</option>
                 <option value="-600">-1000</option>

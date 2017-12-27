@@ -61,13 +61,15 @@ $(function () {
                 var ncsId;
                 var index, startdate, starthour;
                 var times;
+                var manufacturers;
                 var t;
                 for ( var i = 0; i < data.length; i++) {
                     one = data[i];
                     if (!one) {
                         continue;
                     }
-                    ncsId = one['rno2gEriNcsId'];
+                    manufacturers = one['manufacturers'];
+                    ncsId = one['ncsId'];
                     var startTime = (new Date(one['meaTime'])).Format("yyyy-MM-dd hh:mm:ss");
                     index = startTime.indexOf(' ');
                     startdate = startTime.substring(0, index);
@@ -86,6 +88,7 @@ $(function () {
                     t = {};
                     t['time'] = starthour;
                     t['ncsId'] = ncsId;
+                    t['manufacturers'] = manufacturers;
                     times.push(t);
                 }
 
@@ -101,6 +104,7 @@ $(function () {
 
                     // 取第一个日期的时间填充时间下来框
                     times = ncsDateToTime[ncsDates[0]];
+                    console.log(times);
                     if (times) {
                         var ts = "";
                         for ( j = 0; j < times.length; j++) {
@@ -109,6 +113,7 @@ $(function () {
                         }
                         // alert(ts);
                         $("#ncsTime").html(ts);
+                        $("#hiddenDiv").show();
                     }
 
                     // 触发一次获取小区在ncs里的测量信息的事件
@@ -160,6 +165,7 @@ $(function () {
             },
             complete : function() {
                 $("#ncsDataType").trigger("change");
+
             }
         });
 
@@ -191,10 +197,57 @@ $(function () {
         var val = valStr.split(",");
         var ncsId = val[0];
         var manufacturers = val[1];
-        /*getCellNcsInfo(ncsId, selectCell, manufacturers);
-        showNcsInfo(ncsIdToDetail[ncsId]);*/
+        $.ajax({
+            url : '/api/gsm-ncs-analysis/ncs-desc-query',
+            data : {
+                'ncsId' : ncsId,
+                'manufacturers' : manufacturers
+            },
+            type : 'post',
+            dataType : 'text',
+            success:function(data) {
+                data = eval("(" + data + ")");
+                showNcsInfo(data);
+            }
+        })
     });
 });
+
+/**
+ * 显示ncs信息
+ *
+ * @param ncs
+ */
+function showNcsInfo(ncs) {
+    $("#ncsInfoTab").html("");
+    var ht = "<tr><td colspan=2>测量信息</td></tr>";
+    ht += "<TR><td class='menuTd'>BSC</td><td>" + ncs['bsc'] + "</td></TR>";
+    ht += "<TR><td class='menuTd'>CREATE_TIME</td><td>" + ncs['meaTime']
+        + "</td>";
+    ht += "<TR><td class='menuTd'>RECORDCOUNT</td><td>" + getValidValue(ncs['recordCount'])
+        + "</td>";
+    ht += "<TR><td class='menuTd'>RID</td><td>" + getValidValue(ncs['rid']) + "</td>";
+    ht += "<TR><td class='menuTd'>RELSS</td><td>" +getValidValue(ncs['relss']) + "</td>";
+    ht += "<TR><td class='menuTd'>RELSS2</td><td>" + getValidValue(ncs['relss2']) + "</td>";
+    ht += "<TR><td class='menuTd'>RELSS3</td><td>" + getValidValue(ncs['relss3'])+ "</td>";
+    ht += "<TR><td class='menuTd'>RELSS4</td><td>" + getValidValue(ncs['relss4']) + "</td>";
+    ht += "<TR><td class='menuTd'>RELSS5</td><td>" + getValidValue(ncs['relss5']) + "</td>";
+    ht += "<TR><td class='menuTd'>NCELLTYPE</td><td>" + getValidValue(ncs['ncelltype'])
+        + "</td>";
+    ht += "<TR><td class='menuTd'>NUMFREQ</td><td>" + getValidValue(ncs['numfreq']) + "</td>";
+    ht += "<TR><td class='menuTd'>PERIODLEN</td><td>" + getValidValue(ncs['rectime'])
+        + "</td>";
+    ht += "<TR><td class='menuTd'>TERMREASON</td><td>" + getValidValue(ncs['termReason'])
+        + "</td>";
+    ht += "<TR><td class='menuTd'>RECTIME</td><td>" + getValidValue(ncs['rectime']) + "</td>";
+    ht += "<TR><td class='menuTd'>ECNOABSS</td><td>" + getValidValue(ncs['ecnoabss'])
+        + "</td>";
+    ht += "<TR><td class='menuTd'>NUCELLTYPE</td><td>" + getValidValue(ncs['nucelltype'])
+        + "</td>";
+    ht += "<TR><td class='menuTd'>TFDDMRR</td><td>" + getValidValue(ncs['tfddmrr']) + "</td>";
+    ht += "<TR><td class='menuTd'>NUMUMFI</td><td>" + getValidValue(ncs['numumfi']) + "</td>";
+    $("#ncsInfoTab").html(ht);
+}
 
 /**
  * 显示数据
@@ -244,7 +297,7 @@ function displayChart(data, type) {
     if (type === 'toptwo') {
         title = '两强';
         for (i = 0; i < ratioData.length; i++) {
-            var one = ratioData[i];
+            one = ratioData[i];
             if (ratioData[i]['color'] === 'red') {
                 ratioRedData.push([i, one['toptwo'] * 100]);
             } else {
@@ -255,7 +308,7 @@ function displayChart(data, type) {
     if (type === 'cellRate') {
         title = '强于主小区';
         for (i = 0; i < ratioData.length; i++) {
-            var one = ratioData[i];
+            one = ratioData[i];
             if (ratioData[i]['color'] === 'red') {
                 ratioRedData.push([i, one['cellRate'] * 100]);
             } else {
@@ -266,7 +319,7 @@ function displayChart(data, type) {
     if (type === 'abss') {
         title = 'ABSS';
         for (i = 0; i < ratioData.length; i++) {
-            var one = ratioData[i];
+            one = ratioData[i];
             if (ratioData[i]['color'] === 'red') {
                 ratioRedData.push([i, one['abss'] * 100]);
             } else {
@@ -277,7 +330,7 @@ function displayChart(data, type) {
     if (type === 'alone') {
         title = 'ALONE';
         for (i = 0; i < ratioData.length; i++) {
-            var one = ratioData[i];
+            one = ratioData[i];
             if (ratioData[i]['color'] === 'red') {
                 ratioRedData.push([i, one['alone'] * 100]);
             } else {
@@ -394,7 +447,8 @@ function displayChart(data, type) {
                 tooltip : {
                     valueSuffix : ' km'
                 }
-            } ]
+            }
+            ]
         //
     };
     $('#chartDiv').highcharts(options);
@@ -445,9 +499,8 @@ function hideOperTips(outerId) {
  *
  * @param cellNcsArr
  * @param code
- * @param multiplier
  */
-function createRatioData(cellNcsArr, code, multiplier) {
+function createRatioData(cellNcsArr, code) {
 
     var data = [];
     if (!cellNcsArr) {
@@ -470,25 +523,16 @@ function createRatioData(cellNcsArr, code, multiplier) {
         return data;
     }
 
-    if (multiplier === undefined || multiplier === null) {
-        multiplier = 1;
-    }
     for ( i = 0; i < cellNcsArr.length; i++) {
         one = {};
         isnei = cellNcsArr[i]['defined'];
 
         var aa=cellNcsArr[i];
-//		for(var key in aa){
-//			console.log(key+":"+aa[key]);
-//		}
         if (isnei === 0) {
             one['color'] = 'yellow';
         } else {
             one['color'] = 'red';
         }
-        // console.log(cellNcsArr[i][field]*multiplier + '---'+new
-        // Number(cellNcsArr[i][field]*multiplier).toFixed(3));
-        // one['y'] = new Number(cellNcsArr[i][field]*multiplier).toFixed(3)+'';
         one['y'] = cellNcsArr[i][field];
         one['x']=i;//cellNcsArr记录x下标
 
@@ -531,7 +575,7 @@ function createRatioData(cellNcsArr, code, multiplier) {
 
     var isNeiArray = []; //定义邻区
     var notNeiArray = []; //未定义邻区
-    for ( var i = 0; i < data.length; i++) {
+    for ( i = 0; i < data.length; i++) {
         if(data[i]['color'] === 'red') {
             isNeiArray.push(data[i]);
         } else {
@@ -544,34 +588,34 @@ function createRatioData(cellNcsArr, code, multiplier) {
     var result = [];
 
     if(isNeiArray.length === 0) {
-        for ( var i = 0; i < notNeiArray.length; i++) {
+        for ( i = 0; i < notNeiArray.length; i++) {
             if(i>=60) break;
             result.push(notNeiArray[i]);
         }
     }
     else if(isNeiArray.length>0 && isNeiArray.length<60) {
-        for ( var i = 0; i < isNeiArray.length; i++) {
+        for ( i = 0; i < isNeiArray.length; i++) {
             result.push(isNeiArray[i]);
         }
-        for ( var i = result.length; i < notNeiArray.length; i++) {
+        for ( i = result.length; i < notNeiArray.length; i++) {
             if(i>=60) break;
             result.push(notNeiArray[i]);
         }
     }
     else if(isNeiArray.length>60) {
-        for ( var i = 0; i < isNeiArray.length; i++) {
+        for ( i = 0; i < isNeiArray.length; i++) {
             if(i>=60) break;
             result.push(isNeiArray[i]);
         }
     }
 
     //初始化60条数据的x值
-    for ( var i = 0; i < result.length; i++) {
+    for ( i = 0; i < result.length; i++) {
         result[i]['x'] = i;
     }
     //将整理好的60条数据再进行排序，保证从大到小
-    for ( var i = 0; i < result.length; i++) {
-        for ( var j = i; j < result.length; j++) {
+    for ( i = 0; i < result.length; i++) {
+        for ( j = i; j < result.length; j++) {
             if(result[j]['y'] >= result[i]['y']) {
                 temp = result[i];
                 result[i] = result[j];
@@ -630,8 +674,7 @@ function sethighchart() {
             },
             title : {
                 text : '六强比例（%）'
-            },
-
+            }
         }, { // Tertiary yAxis
             id : 'disAxis',
             gridLineWidth : 1,
@@ -662,7 +705,7 @@ function sethighchart() {
             y : -5,
             floating : true,
             backgroundColor : '#FFFFFF'
-        },
+        }
 
         //
     };

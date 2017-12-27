@@ -20,4 +20,6 @@ public class GsmNcsAnalysisDTO {
     private Long defined;
     private Date meaTime;
     private Float cellRate;
+    private Long ncsId;
+    private String manufacturers;
 }

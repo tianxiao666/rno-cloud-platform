@@ -8,7 +8,7 @@ SELECT CELL AS cell, NCELL AS ncell, NCELLS AS ncells, BSIC AS bsic, ARFCN AS ar
  TIMES / REPARFCN AS topsix, (TIMES1 + TIMES2)/REPARFCN AS toptwo,
   timesabss / REPARFCN AS abss, timesalone / REPARFCN AS alone,
   (case when DISTANCE = 1000000 then 0 else DISTANCE end) AS distance, DEFINED_NEIGHBOUR AS defined,
-  MEA_TIME AS meaTime, TIMESRELSS2 / REPARFCN AS cellRate
+  MEA_TIME AS meaTime, TIMESRELSS2 / REPARFCN AS cellRate, RNO_2G_ERI_NCS_DESC_ID AS ncsId
   FROM RNO_GSM_ERI_NCS
 WHERE CELL = '${cell}' AND
       CITY_ID =
@@ -18,7 +18,7 @@ WHERE CELL = '${cell}' AND
 SELECT CELL AS cell, NCELL AS ncell, NCELLS AS ncells, BSIC AS bsic, ARFCN AS arfcn, S3013 AS rep,
        S361 / S3013 AS topsix, ( (NVL(S374 ,0) + NVL(S375 ,0))/ S3013 ) AS toptwo,
        S372 / S3013 AS abss, NVL(S374 ,0) / S3013 AS alone, (case when DISTANCE = 1000000 then 0 else DISTANCE end) AS distance,
-       MEA_TIME AS meaTime, (S361 - S366)/S3013 AS cellRate
+       MEA_TIME AS meaTime, (S361 - S366)/S3013 AS cellRate, RNO_2GHWNCS_DESC_ID AS ncsId
 FROM RNO_GSM_HW_NCS
 WHERE CELL = '${cell}' AND
       CITY_ID =

@@ -1,6 +1,8 @@
 package com.hgicreate.rno.service.gsm;
 
+import com.hgicreate.rno.domain.gsm.GsmEriNcsDesc;
 import com.hgicreate.rno.mapper.gsm.GsmNcsAnalysisMapper;
+import com.hgicreate.rno.repository.gsm.GsmEriNcsDescRepository;
 import com.hgicreate.rno.service.gsm.dto.GsmNcsAnalysisDTO;
 import com.hgicreate.rno.web.rest.gsm.vm.CellNcsQueryVM;
 import lombok.extern.slf4j.Slf4j;
@@ -16,11 +18,13 @@ import java.util.Objects;
 @Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class GsmEriNcsService {
+public class GsmNcsService {
     private final GsmNcsAnalysisMapper gsmNcsAnalysisMapper;
+    private final GsmEriNcsDescRepository gsmEriNcsDescRepository;
 
-    public GsmEriNcsService(GsmNcsAnalysisMapper gsmNcsAnalysisMapper) {
+    public GsmNcsService(GsmNcsAnalysisMapper gsmNcsAnalysisMapper, GsmEriNcsDescRepository gsmEriNcsDescRepository) {
         this.gsmNcsAnalysisMapper = gsmNcsAnalysisMapper;
+        this.gsmEriNcsDescRepository = gsmEriNcsDescRepository;
     }
 
     public List<GsmNcsAnalysisDTO> cellNcsQuery(CellNcsQueryVM vm){
@@ -28,6 +32,7 @@ public class GsmEriNcsService {
         if (Objects.equals(vm.getFactory(), "ERI")){
         List<GsmNcsAnalysisDTO> result = gsmNcsAnalysisMapper.queryGsmEriNcs(vm.getCityId(), vm.getCell());
             for (GsmNcsAnalysisDTO dto:result) {
+                dto.setManufacturers("ERI");
                 if (dto.getDefined() != 1L) {
                     if (ncells.contains(dto.getNcell())) {
                         dto.setDefined(1L);
@@ -39,6 +44,7 @@ public class GsmEriNcsService {
         if (Objects.equals(vm.getFactory(), "HW")) {
             List<GsmNcsAnalysisDTO> result = gsmNcsAnalysisMapper.queryGsmHwNcs(vm.getCityId(), vm.getCell());
             for (GsmNcsAnalysisDTO dto:result) {
+                dto.setManufacturers("HW");
                 if (ncells.contains(dto.getNcell())) {
                     dto.setDefined(1L);
                 }else {
@@ -48,5 +54,9 @@ public class GsmEriNcsService {
             return result;
         }
         return null;
+    }
+
+    public GsmEriNcsDesc queryGsmEriNcsDesc(Long ncsDescId) {
+        return gsmEriNcsDescRepository.findOne(ncsDescId);
     }
 }
