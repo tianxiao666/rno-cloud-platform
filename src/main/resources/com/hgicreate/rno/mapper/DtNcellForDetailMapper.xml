@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hgicreate.rno.mapper.DtNcellForDetailMapper">
+    <select id="findDtNCellDetailById"
+            resultType="com.hgicreate.rno.domain.DtNcellForDetail">
+      SELECT n.ID, n.RSRP AS ncell_rsrp, c.CELL_NAME AS ncell_name FROM RNO_LTE_DT_NCELL n,
+            RNO_LTE_CELL c WHERE n.NCELL_ID = c.CELL_ID AND n.data_id=#{id}
+    </select>
+
+</mapper>

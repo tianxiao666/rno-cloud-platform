@@ -22,29 +22,4 @@
     </named-native-query>
     -->
 
-    <named-native-query name="DtDataForDetail.findDtCellDetailById"
-                        result-class="com.hgicreate.rno.domain.DtDataForDetail">
-        <query>
-           SELECT d.EARFCN, d.ID, d.META_TIME, d.PCI, d.RSRP, d.RS_SINR, d.SCELL_DIST,
-           d.LONGITUDE, d.LATITUDE, c.CELL_NAME, de.AREA_TYPE FROM RNO_LTE_DT_DATA d, RNO_LTE_CELL c,
-           RNO_LTE_DT_DESC de WHERE d.SCELL_ID= c.CELL_ID AND de.ID = d.DESC_ID AND d.id=?1
-        </query>
-    </named-native-query>
-
-    <named-native-query name="DtNcellForDetail.findDtNCellDetailById"
-                        result-class="com.hgicreate.rno.domain.DtNcellForDetail">
-        <query>
-            SELECT n.ID, n.RSRP AS ncell_rsrp, c.CELL_NAME AS ncell_name FROM RNO_LTE_DT_NCELL n,
-            RNO_LTE_CELL c WHERE n.NCELL_ID = c.CELL_ID AND n.data_id=?1
-        </query>
-    </named-native-query>
-
-    <named-native-query name="DtNcell.findByDataIdInOrderByDataIdAsc"
-                        result-class="com.hgicreate.rno.domain.DtNcell">
-        <query>
-            SELECT n.* FROM RNO_LTE_DT_NCELL n, RNO_LTE_DT_DATA d WHERE d.ID =
-             n.DATA_ID AND d.DESC_ID= ?1 ORDER BY n.DATA_ID ASC
-        </query>
-    </named-native-query>
-
 </entity-mappings>

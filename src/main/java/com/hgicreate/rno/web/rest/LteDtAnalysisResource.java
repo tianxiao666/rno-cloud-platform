@@ -2,10 +2,10 @@ package com.hgicreate.rno.web.rest;
 
 import com.hgicreate.rno.config.Constants;
 import com.hgicreate.rno.domain.DtData;
-import com.hgicreate.rno.repository.DtDataForDetailRepository;
+import com.hgicreate.rno.mapper.DtDataForDetailMapper;
+import com.hgicreate.rno.mapper.DtNcellForDetailMapper;
 import com.hgicreate.rno.repository.DtDataRepository;
 import com.hgicreate.rno.repository.DtDescRepository;
-import com.hgicreate.rno.repository.DtNcellForDetailRepository;
 import com.hgicreate.rno.service.LteDtAnalysisService;
 import com.hgicreate.rno.service.dto.DtDataDTO;
 import com.hgicreate.rno.service.dto.DtDescDTO;
@@ -33,18 +33,18 @@ public class LteDtAnalysisResource {
 
     private final DtDescRepository dtDescRepository;
     private final DtDataRepository dtDataRepository;
-    private final DtDataForDetailRepository dtDataForDetailRepository;
-    private final DtNcellForDetailRepository dtNcellForDetailRepository;
+    private final DtDataForDetailMapper dtDataForDetailMapper;
+    private final DtNcellForDetailMapper dtNcellForDetailMapper;
     private final LteDtAnalysisService lteDtAnalysisService;
 
     public LteDtAnalysisResource(DtDescRepository dtDescRepository, DtDataRepository dtDataRepository,
-                                 DtDataForDetailRepository dtDataForDetailRepository,
-                                 DtNcellForDetailRepository dtNcellForDetailRepository,
+                                 DtDataForDetailMapper dtDataForDetailMapper,
+                                 DtNcellForDetailMapper dtNcellForDetailMapper,
                                  LteDtAnalysisService lteDtAnalysisService) {
         this.dtDescRepository = dtDescRepository;
         this.dtDataRepository = dtDataRepository;
-        this.dtDataForDetailRepository = dtDataForDetailRepository;
-        this.dtNcellForDetailRepository = dtNcellForDetailRepository;
+        this.dtDataForDetailMapper = dtDataForDetailMapper;
+        this.dtNcellForDetailMapper = dtNcellForDetailMapper;
         this.lteDtAnalysisService = lteDtAnalysisService;
     }
 
@@ -76,8 +76,8 @@ public class LteDtAnalysisResource {
     public Map<String, Object> getDtDataDetail(Long dataId) {
         log.debug("dataId={}", dataId);
         Map<String, Object> res = new HashMap<>();
-        res.put("cell", dtDataForDetailRepository.findDtCellDetailById(dataId));
-        res.put("ncell", dtNcellForDetailRepository.findDtNCellDetailById(dataId));
+        res.put("cell", dtDataForDetailMapper.findDtCellDetailById(dataId));
+        res.put("ncell", dtNcellForDetailMapper.findDtNCellDetailById(dataId));
         return res;
     }
 

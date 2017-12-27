@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hgicreate.rno.mapper.DtDataForDetailMapper">
+    <select id="findDtCellDetailById"
+            resultType="com.hgicreate.rno.domain.DtDataForDetail">
+      SELECT d.EARFCN, d.ID, d.META_TIME, d.PCI, d.RSRP, d.RS_SINR, d.SCELL_DIST,
+           d.LONGITUDE, d.LATITUDE, c.CELL_NAME, de.AREA_TYPE FROM RNO_LTE_DT_DATA d, RNO_LTE_CELL c,
+           RNO_LTE_DT_DESC de WHERE d.SCELL_ID= c.CELL_ID AND de.ID = d.DESC_ID AND d.id=#{id}
+    </select>
+
+</mapper>
