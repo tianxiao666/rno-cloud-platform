@@ -38,7 +38,7 @@ public final class SecurityUtils {
         if (getKeycloakSecurityContext() == null) {
             AccessToken token = new AccessToken();
             token.setPreferredUsername(Constants.ANONYMOUS_USER);
-            token.setName(Constants.ANONYMOUS_NAME);
+            token.setGivenName(Constants.ANONYMOUS_NAME);
             return token;
         } else {
             return getKeycloakSecurityContext().getToken();
