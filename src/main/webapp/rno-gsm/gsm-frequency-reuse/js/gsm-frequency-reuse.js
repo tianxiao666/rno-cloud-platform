@@ -299,6 +299,12 @@ function loadGisCellData(loadToken, btsType) {
 }
 
 function reportFreqReuse() {
+    var btsType = $("input[name='btsType']:checked").val();
+    currentSelConfigId = btsType;
+    if (currentSelConfigId == "" || currentSelConfigId == undefined) {
+        animateInAndOut("operInfo", 500, 500, 1000, "operTip", "请先选择一个小区配置再进行统计");
+        return ;
+    }
     $("#reportCurrentPage").val(0);
     getReportFreqReuseData();
 }
@@ -310,12 +316,7 @@ function getReportFreqReuseData() {
     $("#reportCoverDiv").show();
     $("#report_Dialog").show();
     $("#analyzeedit_Dialog").hide();
-    var btsType = $("input[name='btsType']:checked").val();
-    currentSelConfigId = btsType;
-    if (currentSelConfigId == "" || currentSelConfigId == undefined) {
-        animateInAndOut("operInfo", 500, 500, 1000, "operTip", "请先选择一个小区配置再进行分析");
-        return false;
-    }
+
     if($("#reportCurrentPage").val()==0){
         $("#reportCurrentPage").val(1);
     }
