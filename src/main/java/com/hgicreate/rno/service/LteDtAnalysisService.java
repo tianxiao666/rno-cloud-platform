@@ -3,9 +3,9 @@ package com.hgicreate.rno.service;
 import com.hgicreate.rno.config.Constants;
 import com.hgicreate.rno.domain.DtData;
 import com.hgicreate.rno.domain.DtNcell;
+import com.hgicreate.rno.mapper.DtNcellMapper;
 import com.hgicreate.rno.repository.DtDataRepository;
 import com.hgicreate.rno.repository.DtDescRepository;
-import com.hgicreate.rno.repository.DtNcellRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -18,13 +18,13 @@ import java.util.Set;
 @Service
 public class LteDtAnalysisService {
     private final DtDataRepository dtDataRepository;
-    private final DtNcellRepository dtNcellRepository;
+    private final DtNcellMapper dtNcellMapper;
     private final DtDescRepository dtDescRepository;
 
-    public LteDtAnalysisService(DtDataRepository dtDataRepository, DtNcellRepository dtNcellRepository,
+    public LteDtAnalysisService(DtDataRepository dtDataRepository, DtNcellMapper dtNcellMapper,
                                 DtDescRepository dtDescRepository) {
         this.dtDataRepository = dtDataRepository;
-        this.dtNcellRepository = dtNcellRepository;
+        this.dtNcellMapper = dtNcellMapper;
         this.dtDescRepository = dtDescRepository;
     }
 
@@ -94,7 +94,7 @@ public class LteDtAnalysisService {
         long lastId = -2;
         for (Long id: descId) {
             dtData = dtDataRepository.findAllByDescIdOrderByIdAsc(id);
-            dtNcell = dtNcellRepository.findByDataIdInOrderByDataIdAsc(id);
+            dtNcell = dtNcellMapper.findByDataIdInOrderByDataIdAsc(id);
             tmp.clear();
             for (DtData d: dtData) {
                 count = 0;
