@@ -6,20 +6,33 @@
 
     <link rel="stylesheet" href="css/gsm-traffic-map.css">
     <link rel="stylesheet" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
+    <link rel="stylesheet" href="../../lib/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../lib/openlayers/4.4.2/ol.css">
 
-    <script src="../../lib/jquery/1.8.2/jquery.js"></script>
+    <script src="../../lib/jquery/3.2.1/jquery.js"></script>
     <script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
+    <script src="../../lib/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="../../lib/openlayers/4.4.2/ol.js"></script>
     <script src="js/gsm-traffic-map.js"></script>
+    <script src="../../js/rendererrule.js"></script>
+    <script src="../../lib/echarts/echarts.common.min.js"></script>
 </head>
 <body>
 <div id="map" class="map"></div>
 
-<div class="dialog draggable ui-draggable">
-    省：<select name="provinceId" class="required" id="provinceId" title=""></select>
-    市：<select name="cityId" class="required" id="cityId" title=""></select>
-    区：<select name="districtId" class="required" id="queryCellAreaId" title=""></select>
+<div class="dialog draggable ui-draggable" style="width: 360px;">
+    <div style="float: left;margin-left: 10px;">
+        <select name="provinceId" class="required form-control custom-select"
+                style="width: 100px;display: inline;" id="provinceId"></select>
+    </div>
+    <div style="float: left;margin-left: 10px;">
+        <select name="cityId" class="required form-control custom-select"
+                style="width: 100px;display: inline;" id="cityId"></select>
+    </div>
+    <div style="float: left;margin-left: 10px;">
+        <select name="areaId" class="required form-control custom-select"
+                style="width: 100px;display: inline;" id="queryCellAreaId"></select>
+    </div>
 </div>
 <div class="resource_list_icon" style="right:380px">
     <a href="#" class="switch"></a>
@@ -42,7 +55,6 @@
             <div class="div_transparentstandard_nopaddming" id="analysisListDiv">
                 <table class="tb-transparent-standard" style="width:100%"
                        id="analysisListTable"></table>
-                <div id="analysisBtnDiv" style="display:none"><input value="确定" id="confirmSelectionAnalysisBtn" type="button"></div>
             </div>
 
             <div class="div-m-split-10px">
@@ -55,19 +67,19 @@
 
                 <div id="analysisDiv">
                     <input id="radioresourceutilizationbtn"
-                           onclick="javascript:commonstatics('radioresourcerate','staticsResourceUtilizationRateForAjaxAction');"
+                           onclick="javascript:commonstatics('radioresourcerate','statics-resource-utilization-rate');"
                            value="无线资源利用率%" type="button">
                     <input id="accsucratebtn"
-                           onclick="javascript:commonstatics('accsucrate','staticsResourceUtilizationRateForAjaxAction')"
+                           onclick="javascript:commonstatics('accsucrate','statics-resource-utilization-rate')"
                            value="接通率%" type="button">
                     <input id="dropratebtn"
-                           onclick="javascript:commonstatics('droprate','staticsResourceUtilizationRateForAjaxAction')"
+                           onclick="javascript:commonstatics('droprate','statics-resource-utilization-rate')"
                            value="掉话率%" type="button">
                     <input id="dropnumbtn"
-                           onclick="javascript:commonstatics('dropnum','staticsResourceUtilizationRateForAjaxAction')"
+                           onclick="javascript:commonstatics('dropnum','statics-resource-utilization-rate')"
                            value="掉话数" type="button">
                     <input id="handoversucratebtn"
-                           onclick="javascript:commonstatics('handoversucrate','staticsResourceUtilizationRateForAjaxAction')"
+                           onclick="javascript:commonstatics('handoversucrate','statics-resource-utilization-rate')"
                            value="切换成功率" type="button">
                     <br>
                     <p>
@@ -91,18 +103,28 @@
         </div>
     </div>
 </div>
-<div id="analyze_Dialog" class="dialog2 draggable ui-draggable" style="display:none; ">
+<div id="radioResourceUseRateDialog" class="dialog2 draggable ui-draggable" style="display:none; height:510px;top: 40px; left: 298px; z-index: 30;">
     <div class="dialog_header">
-        <div class="dialog_title">话备性能专题分析</div>
+        <div class="dialog_title">无线资源利用率</div>
         <div class="dialog_tool">
             <div class="dialog_tool_close dialog_closeBtn"
-                 onclick="$('#analyze_Dialog').hide();$('.colordialog2').hide();"></div>
+                 onclick="$('#radioResourceUseRateDialog').hide();$('.colordialog2').hide();"></div>
         </div>
     </div>
-    <div class="dialog_content" style="width:300px; background:#f9f9f9">
-        <table class="tb-transparent-standard" style="width:300px" id="trafficTable">
-        </table>
-
+    <div class="dialog_content" style="width:900px; background:#f9f9f9">
+            <div id="radioResourceUseRateEChart" style="width: 900px;height: 450px;background: rgba(50,50,50,0.1)">11</div>
+    </div>
+</div>
+<div id="accessRate" class="dialog2 draggable ui-draggable" style="display:none; height:510px;top: 40px; left: 298px; z-index: 30;">
+    <div class="dialog_header">
+        <div class="dialog_title">接通率</div>
+        <div class="dialog_tool">
+            <div class="dialog_tool_close dialog_closeBtn"
+                 onclick="$('#accessRate').hide();$('.colordialog2').hide();"></div>
+        </div>
+    </div>
+    <div class="dialog_content" style="width:900px; background:#f9f9f9">
+        <div id="accessRateEChart" style="width: 900px;height: 450px;background: rgba(50,50,50,0.1)">11</div>
     </div>
 </div>
 
@@ -129,7 +151,7 @@
 <div id="divColorDiv">
 </div>
 <div id="operInfo"
-     style="display:none; top:40px;left:600px;z-index:999;width:400px; height:40px; background-color:#7dff3f; filter:alpha(Opacity=80);-moz-opacity:0.5;opacity: 0.5;z-index:9999;position: fixed;">
+     style="display:none; top:40px;left:600px;z-index:999;width:400px; height:40px; background-color:#7dff3f;position: fixed;">
     <table style="text-align:center" width="100%" height="100%">
         <tbody>
         <tr>
@@ -141,7 +163,6 @@
     </table>
 
 </div>
-
 
 </body>
 </html>
