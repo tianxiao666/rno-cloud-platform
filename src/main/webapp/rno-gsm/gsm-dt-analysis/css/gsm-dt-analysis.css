@@ -886,13 +886,15 @@ body {
 }
 
 .dialog2 {
-    background: url("../images/panel_title.png") 0 0 repeat scroll transparent;
+    background: white;
     border: 1px solid rgb(153, 187, 232);
     border-radius: 5px;
     font-size: 12px;
-    padding: 5px;
+    padding: 10px;
     position: absolute;
-    z-index: 20;
+    top: 216px;
+    left: 1194px;
+    z-index: 160;
 }
 
 .dialog_header {

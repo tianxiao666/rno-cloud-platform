@@ -42,6 +42,22 @@
         </form>
     </div>
 </div>
+<div class="dialog2 draggable" id="showResultTable" style="display: none">
+    <table class="table-bordered" style="width: 300px">
+        <tbody id="tbContext">
+        <tr style="height: 30px">
+            <td colspan="3" style="font-weight: bold;"
+                align="center" id="tdTitle">
+            </td>
+        </tr>
+        <tr style="height: 20px">
+            <td style="text-align: center;font-weight: bold">等级</td>
+            <td style="text-align: center;font-weight: bold">数量</td>
+            <td style="text-align: center;font-weight: bold">比例</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 <div class="resource_list_icon" style="right: 400px;">
     <a href="#" class="switch"></a>
     <a href="#" class="switch_hidden" style="display: none;"></a>
@@ -64,7 +80,8 @@
                     <div style="height: 23px"></div>
                     <div style="border: 1px solid #E7E7E7; border-radius: 8px">
                         <div class="form-inline" style="height: 42px;line-height:42px;padding-bottom: 2px">
-                            <button style="width: 100%" class="btn btn-info" id="queryDt" type="button">显示渲染图例
+                            <button style="width: 100%" class="btn btn-info" onclick="showDtAnalysisResult('chart')"
+                                    type="button">显示渲染图例
                             </button>
                         </div>
                     </div>
@@ -73,11 +90,11 @@
                         <h4>分析应用</h4>
                         <div style="height: 8px"></div>
                         <div>
-                            <button class="btn btn-info" id="signalstrenthbtn" type="button">信号强度
+                            <button class="btn btn-info" onclick="showDtAnalysisResult('strenth')" type="button">信号强度
                             </button>&nbsp;&nbsp;
-                            <button class="btn btn-info" id="signalqualitybtn" type="button">信号质量
+                            <button class="btn btn-info" onclick="showDtAnalysisResult('quality')" type="button">信号质量
                             </button>&nbsp;&nbsp;
-                            <button class="btn btn-info" id="signalstructurebtn" type="button">信号结构
+                            <button class="btn btn-info" onclick="showDtAnalysisResult('structure')" type="button">信号结构
                             </button>
                         </div>
                         <div id="showRxlev" style="display:none;">
@@ -160,6 +177,48 @@
                                 </tbody>
                             </table>
                             <div style="height: 20px"></div>
+                        </div>
+                        <div id="showStructure" style="display: none">
+                            <div style="height: 18px"></div>
+                            <table class="table-bordered" style="width: 100%">
+                                <tbody>
+                                <tr>
+                                    <td colspan="4" style="font-weight: bold;"
+                                        align="center">信号结构颜色设置
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border:1px solid #ccc;" align="center">颜色</td>
+                                    <td style="border:1px solid #ccc;" align="center">复用邻区个数</td>
+                                    <td style="border:1px solid #ccc;" align="center">颜色</td>
+                                    <td style="border:1px solid #ccc;" align="center">复用邻区个数</td>
+                                </tr>
+                                <tr>
+                                    <td style="background-color: #87CEFA"></td>
+                                    <td align="center">1</td>
+                                    <td style="background-color:#FFA500"></td>
+                                    <td align="center">2</td>
+                                </tr>
+                                <tr>
+                                    <td style="background-color: #7CFC00"></td>
+                                    <td align="center">3</td>
+                                    <td style="background-color:#32CD32"></td>
+                                    <td align="center">4</td>
+                                </tr>
+                                <tr>
+                                    <td style="background-color: #FF00FF"></td>
+                                    <td align="center">5</td>
+                                    <td style="background-color:#EE3B3B"></td>
+                                    <td align="center">6</td>
+                                </tr>
+                                <tr>
+                                    <td style="background-color: #3A5FCD"></td>
+                                    <td align="center">0</td>
+                                    <td style="background-color: #121212"></td>
+                                    <td align="center">无效点</td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                         <div style="height: 8px"></div>
                         <div>

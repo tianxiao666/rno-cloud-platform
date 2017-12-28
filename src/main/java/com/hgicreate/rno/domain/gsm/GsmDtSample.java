@@ -15,9 +15,9 @@ public class GsmDtSample {
     @Id
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "DATA_ID")
-    private GsmDtData gsmDtData;
+    @ManyToOne
+    @JoinColumn(name = "DESCRIPTOR_ID")
+    private GsmDtDesc gsmDtDesc;
 
     private Date sampleTime ;
     private Double longitude ;
