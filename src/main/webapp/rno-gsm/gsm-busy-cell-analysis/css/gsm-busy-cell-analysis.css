@@ -341,3 +341,9 @@ html, body {
 .custom tbody tr:hover{
     background: rgba(94, 94, 94, 0.32);
 }
+
+.popover-content {
+    max-height: 350px;
+    min-width: 280px;
+    overflow-x: auto;
+}

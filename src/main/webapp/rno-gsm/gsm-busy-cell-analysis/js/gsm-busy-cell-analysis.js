@@ -232,6 +232,8 @@ $(function () {
     });
 
     $("#displayBusyCellBtn").click(function () {
+        var element = popup.getElement();
+        $(element).popover('destroy');
         contextmenu.close();
         contextmenu.clear();
         map.removeControl(contextmenu);
