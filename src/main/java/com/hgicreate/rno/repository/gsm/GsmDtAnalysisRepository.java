@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface GsmDtAnalysisRepository extends JpaRepository<GsmDtSample, Long>  {
 
-    List<GsmDtSample> findAllByGsmDtDesc_AreaId(Long id);
+    List<GsmDtSample> findAllByGsmDtDesc_AreaIdOrderBySampleTime(Long id);
     List<GsmDtSample> findAllById(Long id);
 
 }

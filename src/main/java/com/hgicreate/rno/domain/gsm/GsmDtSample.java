@@ -29,8 +29,8 @@ public class GsmDtSample {
     private Integer ci ;
     private String cell;
     private String cellIndoor;
-    private Integer cellLongitude ;
-    private Integer cellLatitude ;
+    private Double cellLongitude ;
+    private Double cellLatitude ;
     private Integer rxlevsub ;
     private Integer rxqualsub ;
     private Integer distance ;
