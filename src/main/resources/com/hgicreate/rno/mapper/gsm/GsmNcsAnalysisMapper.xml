@@ -11,7 +11,7 @@ SELECT CELL AS cell, NCELL AS ncell, NCELLS AS ncells, BSIC AS bsic, ARFCN AS ar
   MEA_TIME AS meaTime, TIMESRELSS2 / REPARFCN AS cellRate, RNO_2G_ERI_NCS_DESC_ID AS ncsId
   FROM RNO_GSM_ERI_NCS
 WHERE CELL = '${cell}' AND
-      CITY_ID =
+      CITY_ID IN
       (SELECT OLD_SYS_AREA_ID FROM RNO_OLD_NEW_SYS_AREA_REFERENCE WHERE NEW_SYS_AREA_ID = ${cityId})
     </select>
     <select id="queryGsmHwNcs" resultType="com.hgicreate.rno.service.gsm.dto.GsmNcsAnalysisDTO">
@@ -21,7 +21,7 @@ SELECT CELL AS cell, NCELL AS ncell, NCELLS AS ncells, BSIC AS bsic, ARFCN AS ar
        MEA_TIME AS meaTime, (S361 - S366)/S3013 AS cellRate, RNO_2GHWNCS_DESC_ID AS ncsId
 FROM RNO_GSM_HW_NCS
 WHERE CELL = '${cell}' AND
-      CITY_ID =
+      CITY_ID IN
       (SELECT OLD_SYS_AREA_ID FROM RNO_OLD_NEW_SYS_AREA_REFERENCE WHERE NEW_SYS_AREA_ID = ${cityId})
     </select>
     <select id="queryGsmNcell" resultType="java.lang.String">
