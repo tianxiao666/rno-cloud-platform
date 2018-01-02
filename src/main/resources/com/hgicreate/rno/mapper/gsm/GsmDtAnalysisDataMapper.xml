@@ -13,4 +13,10 @@
         WHERE CELL_LONGITUDE = #{param1}
               and CELL_LATITUDE = #{param2}
     </select>
+    <select id="getCoverageCell" resultType="map">
+        SELECT LONGITUDE,LATITUDE,CELL_LONGITUDE,CELL_LATITUDE
+        FROM RNO_GSM_DT_SAMPLE
+        WHERE CELL_LONGITUDE in (select LONGITUDE from RNO_GSM_DT_SAMPLE where cell = #{param1})
+              and CELL_LATITUDE in (select LATITUDE from RNO_GSM_DT_SAMPLE where cell = #{param1})
+    </select>
 </mapper>

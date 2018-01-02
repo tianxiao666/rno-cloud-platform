@@ -57,4 +57,10 @@ public class GsmDtAnalysisResource {
         log.debug("查询邻区={}",longitude,latitude);
         return gsmDtAnalysisDataMapper.getNcell(Double.parseDouble(longitude),Double.parseDouble(latitude));
     }
+
+    @GetMapping("/cell-coverage")
+    public List<Map<String, Object>> queryCellCoverage(String cellId) {
+        log.debug("查询小区覆盖");
+        return gsmDtAnalysisDataMapper.getCoverageCell(cellId);
+    }
 }

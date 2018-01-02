@@ -224,10 +224,38 @@
                         <div>
                             <button class="btn btn-info" onclick="showDtAnalysisResult('sampleCell')" type="button">全路段主服务覆盖图
                             </button>&nbsp;&nbsp;&nbsp;&nbsp;
-                            <button class="btn btn-info" id="cellcoveragebtn" type="button">小区覆盖图
+                            <button class="btn btn-info" onclick="showDtAnalysisResult('cellCover')" type="button">小区覆盖图
                             </button>
                         </div>
-                        <div style="height: 8px"></div>
+                        <div id="showCoverage" style="display: none">
+                            <div style="height: 18px"></div>
+                            <table class="table-bordered" style="width: 100%">
+                                <tbody>
+                                <tr>
+                                    <td colspan="2" style="font-weight: bold;"
+                                        align="center">主服务覆盖颜色设置
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border:1px solid #ccc;" align="center" width="50%">边界采样点</td>
+                                    <td style="background-color: #FF00FF"></td>
+                                </tr>
+                                <tr>
+                                    <td style="border:1px solid #ccc;" align="center" width="50%">主服务小区</td>
+                                    <td style="background-color:#EE3B3B"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="cellCoverage" style="display: none" class="form-inline">
+                            <div style="height: 18px"></div>
+                            <span style="color:blue;font-weight:bold;font-size: 15px">小区：</span>
+                            <input id="cellCover" class="form-control" style="width: 150px;
+                            display: inline-block" value="669420-7">
+                            <button id="cellSelect" class="btn btn-primary">查看</button>
+                            <div style="height: 10px"></div>
+                        </div>
+                        <div style="height: 10px"></div>
                         <div>
                             <button class="btn btn-info"  type="button">采样点小区占用图
                             </button>

@@ -146,6 +146,41 @@ $(function () {
             map.removeLayer(textImageTile);
         }
     });
+    //查看小区覆盖
+    $("#cellSelect").click(function () {
+        lineLayer.getSource().clear();
+        if($("#cellCover").val().trim()==="") {
+            showInfoInAndOut('warn', '小区不能为空！！');
+            return;
+        }
+        $("#loading").css("display", "block");
+        $.ajax({
+            url: "../../api/gsm-dt-analysis/cell-coverage",
+            type: "GET",
+            data: {
+                "cellId": $("#cellCover").val().trim(),
+            },
+            success: function (data) {
+                $("#loading").css("display", "none");
+                if(data[0]) {
+                    var cell = [parseFloat(data[0]["CELL_LONGITUDE"]), parseFloat(data[0]["CELL_LATITUDE"])];
+                    var ncellList = [];
+                    $.each(data, function (index, value) {
+                        ncellList.push([parseFloat(value["LONGITUDE"]), parseFloat(value["LATITUDE"])]);
+                    });
+                    //绘制连线
+                    drawLine(cell, ncellList);
+                }else {
+                    $("#loading").css("display", "none");
+                    showInfoInAndOut('warn', '没有找到相关的数据！');
+                }
+            },
+            error: function (err) {
+                $("#loading").css("display", "none");
+                showInfoInAndOut('error', '程序出错了！');
+            }
+        });
+    });
 });
 
 var strenth1 = 0, strenth2 = 0, strenth3 = 0, strenth4 = 0, strenth5 = 0, strenth6 = 0, strenth7 = 0, strenth8 = 0,
@@ -158,6 +193,8 @@ function showDtAnalysisResult(type) {
     $("#showRxlev").hide();
     $("#showStructure").hide();
     $("#showResultTable").hide();
+    $("#showCoverage").hide();
+    $("#cellCoverage").hide();
     //清空图层
     samplePointLayer.getSource().clear();
     cellLayer.getSource().clear();
@@ -172,15 +209,18 @@ function showDtAnalysisResult(type) {
         strenth5 = 0;
         strenth6 = 0;
         strenth7 = 0;
-        strenth8 = 0, strenth9 = 0;
-    } else if (type === "quality") {
+        strenth8 = 0;
+        strenth9 = 0;
+    }
+    if (type === "quality") {
         $("#showQuality").show();
         quality1 = 0;
         quality2 = 0;
         quality3 = 0;
         quality4 = 0;
         quality5 = 0;
-    } else if (type === "structure") {
+    }
+    if (type === "structure") {
         $("#showStructure").show();
     }
     $("#loading").css("display", "block");
@@ -219,12 +259,20 @@ function showDtAnalysisResult(type) {
                             duration: 2000
                         });
                     }
+                    //小区覆盖功能
+                    if(type === "cellCover") {
+                        $("#cellCoverage").show();
+                        showInfoInAndOut('warn', '请选择小区后查看');
+                    }
                 });
                 if (type === "sampleCell") {
                     //获取服务小区与其对应的采样点
                     showNcellLine();
+                    $("#showCoverage").show();
                 }
-                showInfoInAndOut('success', '渲染完成！');
+                if(type !== "cellCover") {
+                    showInfoInAndOut('success', '渲染完成！');
+                }
                 showResultTable(type);
             }
         },
@@ -388,6 +436,8 @@ function setColor(type, value) {
         }
     }else if(type === "sampleCell"){
         color = "#FF00FF";
+    }else if(type === "cellCover") {
+        color = "#EE3B3B";
     }
     return color;
 }

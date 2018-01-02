@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 public class GsmDtAnalysisDTO {
     private Long id;
+    private String cell;
     private Double longitude ;
     private Double latitude ;
     private Integer rxlevsub ;
