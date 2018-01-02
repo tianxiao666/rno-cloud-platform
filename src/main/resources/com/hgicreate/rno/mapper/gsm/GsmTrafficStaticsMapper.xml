@@ -19,37 +19,18 @@
         WHERE a.AREA_ID=b.ID
           AND STS_DESC_ID in (${configIds})
     </select>
-    <select id="getAllFromRnoTrafficIndexType" parameterType="map" resultType="map">
-        select *
-        from RNO_TRAFFIC_INDEX_TYPE rtit
-        where rtit.code = ${trafficCode}
-    </select>
-    <select id="getAllFromRnoTrafficIndexTypeAndRnoTrafficRendererConfig" parameterType="map" resultType="map">
-        select rtit.*,rtrc.*,rtrc.name RENDERERNAME
-		from RNO_TRAFFIC_INDEX_TYPE rtit, RNO_TRAFFIC_RENDERER_CONFIG rtrc
-		where rtit.traffic_index_id = rtrc.TRAFFIC_TYPE
-        <if test=" areaId >0 ">
-            and rtrc.area_id = ${areaId}
-        </if>
-        <if test=" areaId ==-1 ">
-            and (rtrc.area_id is null or rtrc.area_id = ${areaId})
-        </if>
-        <if test=" null != trafficCode and '' != trafficCode ">
-            and rtit.code = ${trafficCode}
-        </if>
-    </select>
     <select id="getStsSpecFieldInSelConfig" parameterType="map" resultType="map">
         select distinct(cell),
         avg(${fieldName}) as avgValue,
         max(${fieldName}) as maxValue,
         min(${fieldName}) as minValue,
         count(${fieldName}) as cnt
-        from rno_sts
+        from RNO_GSM_STS
         where DESCRIPTOR_ID IN (${buf})
         group by cell
     </select>
     <select id="selectSpecialCellInSelConfig" parameterType="map" resultType="map">
-
+      ${sql}
     </select>
 
 </mapper>

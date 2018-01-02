@@ -10,8 +10,8 @@ import java.util.Map;
 public interface GsmTrafficStaticsMapper {
 
     List<Map<String, Object>> getCellAudioOrDataDescByConfigIds(Map<String, Object> map);
-    List<Map<String, Object>> getAllFromRnoTrafficIndexType(Map<String, Object> map);
-    List<Map<String, Object>> getAllFromRnoTrafficIndexTypeAndRnoTrafficRendererConfig(Map<String, Object> map);
+
     List<GsmStsResultVM> getStsSpecFieldInSelConfig(Map<String, Object> map);
+
     List<GsmStsResultVM> selectSpecialCellInSelConfig(Map<String, Object> map);
 }

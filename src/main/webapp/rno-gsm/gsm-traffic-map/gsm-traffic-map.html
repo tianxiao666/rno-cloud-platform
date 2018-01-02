@@ -12,14 +12,24 @@
     <script src="../../lib/jquery/3.2.1/jquery.js"></script>
     <script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
     <script src="../../lib/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="../../lib/openlayers/4.4.2/ol.js"></script>
+    <script src="js/ol-debug.js"></script>
     <script src="js/gsm-traffic-map.js"></script>
     <script src="../../js/rendererrule.js"></script>
+    <script src="../../js/common.js"></script>
     <script src="../../lib/echarts/echarts.common.min.js"></script>
 </head>
 <body>
 <div id="map" class="map"></div>
-
+<div class="loading_cover" id="loadingCoverDiv" style="display: none;z-index:100;position:absolute">
+    <div class="cover"></div>
+    <h4 class="loading">正在加载,请稍侯...</h4>
+</div>
+<div class="loading_cover" style="display: none">
+    <div class="cover"></div>
+    <h4 class="loading">
+        正在进行 <em class="loading_fb"></em>,请稍侯...
+    </h4>
+</div>
 <div class="dialog draggable ui-draggable" style="width: 360px;">
     <div style="float: left;margin-left: 10px;">
         <select name="provinceId" class="required form-control custom-select"
@@ -31,7 +41,7 @@
     </div>
     <div style="float: left;margin-left: 10px;">
         <select name="areaId" class="required form-control custom-select"
-                style="width: 100px;display: inline;" id="queryCellAreaId"></select>
+                style="width: 100px;display: inline;" id="districtId"></select>
     </div>
 </div>
 <div class="resource_list_icon" style="right:380px">
@@ -66,39 +76,39 @@
                 </div>
 
                 <div id="analysisDiv">
-                    <input id="radioresourceutilizationbtn"
-                           onclick="javascript:commonstatics('radioresourcerate','statics-resource-utilization-rate');"
-                           value="无线资源利用率%" type="button">
-                    <input id="accsucratebtn"
-                           onclick="javascript:commonstatics('accsucrate','statics-resource-utilization-rate')"
-                           value="接通率%" type="button">
-                    <input id="dropratebtn"
-                           onclick="javascript:commonstatics('droprate','statics-resource-utilization-rate')"
-                           value="掉话率%" type="button">
-                    <input id="dropnumbtn"
-                           onclick="javascript:commonstatics('dropnum','statics-resource-utilization-rate')"
-                           value="掉话数" type="button">
-                    <input id="handoversucratebtn"
-                           onclick="javascript:commonstatics('handoversucrate','statics-resource-utilization-rate')"
-                           value="切换成功率" type="button">
+                    <button id="radioresourceutilizationbtn" class="btn btn-primary" style="margin: 5px;"
+                            onclick="javascript:commonstatics('radioresourcerate','statics-resource-utilization-rate');">无线资源利用率</button>
+                    <button id="accsucratebtn" class="btn btn-primary" style="margin: 5px;"
+                           onclick="javascript:commonstatics('accsucrate','statics-resource-utilization-rate')">接通率</button>
+                    <button id="dropratebtn" class="btn btn-primary" style="margin: 5px;"
+                            onclick="javascript:commonstatics('droprate','statics-resource-utilization-rate')">掉话率</button>
+                    <button id="dropnumbtn" class="btn btn-primary" style="margin: 5px;"
+                            onclick="javascript:commonstatics('dropnum','statics-resource-utilization-rate')">掉话数</button>
+                    <button id="handoversucratebtn" class="btn btn-primary" style="margin: 5px;"
+                            onclick="javascript:commonstatics('handoversucrate','statics-resource-utilization-rate')">切换成功率</button>
                     <br>
                     <p>
-                        <input id="veryidlecellbtn"
-                               onclick="javascript:commonstatics('veryidlecell','staticsSpecialCellForAjaxAction')"
-                               value="超闲小区" type="button">
-                        <input id="overloadcellbtn"
-                               onclick="javascript:commonstatics('overloadcell','staticsSpecialCellForAjaxAction')"
-                               value="超忙小区" type="button">
-                        <input id="highuseradiocellbtn"
-                               onclick="javascript:commonstatics('highuseradiocell','staticsSpecialCellForAjaxAction')"
-                               value="高无线利用率小区" type="button">
-                        <input id="highcongindatacellbtn"
-                               onclick="javascript:commonstatics('highcongindatacell','staticsSpecialCellForAjaxAction')"
-                               value="数据高拥塞率小区" type="button">
-                        <input id="badlyicmcellbtn"
-                               onclick="javascript:commonstatics('badlyicmcell','staticsSpecialCellForAjaxAction')"
-                               value="高干扰小区" type="button">
+                        <button id="veryidlecellbtn" class="btn btn-primary" style="margin: 5px;"
+                                onclick="javascript:commonstatics('veryidlecell','staticsSpecialCellForAjaxAction')">超闲小区</button>
+                        <button id="overloadcellbtn" class="btn btn-primary" style="margin: 5px;"
+                                onclick="javascript:commonstatics('overloadcell','staticsSpecialCellForAjaxAction')">超忙小区</button>
+                        <button id="highuseradiocellbtn" class="btn btn-primary" style="margin: 5px;"
+                                onclick="javascript:commonstatics('highuseradiocell','staticsSpecialCellForAjaxAction')">高无线利用率小区</button>
+                        <button id="highcongindatacellbtn" class="btn btn-primary" style="margin: 5px;"
+                                onclick="javascript:commonstatics('highcongindatacell','staticsSpecialCellForAjaxAction')">数据高拥塞率小区</button>
+                        <button id="badlyicmcellbtn" class="btn btn-primary" style="margin: 5px;"
+                                onclick="javascript:commonstatics('badlyicmcell','staticsSpecialCellForAjaxAction')">高干扰小区</button>
                     </p></div>
+            </div>
+            <br>
+            <div class="div_transparent_standard_border">
+                <div class="div_title_24px_grey sp_title_left">
+                    <span id="legendTitle"> 图例说明</span>
+                </div>
+
+                <div id="legendExplain">
+
+                </div>
             </div>
         </div>
     </div>
@@ -141,8 +151,6 @@
         <div class="dialog_content" style="width:410px; background:#f9f9f9">
             <form action="updateOrAddrnoTrafficRendererAction" id="rendererForm" method="post">
                 <table class="tb-transparent-standard" style="width:350px " id="analyzeedit_trafficTable">
-
-
                 </table>
             </form>
         </div>
