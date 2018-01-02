@@ -395,7 +395,15 @@ $(function () {
 
     //恢复默认
     $("#restoreDefaultBtn").click(function () {
-        $('#loadRefreshlistTable3').DataTable().rows().remove().draw();
+        $('#loadRefreshlistTable3').DataTable({
+            "lengthChange": false,
+            "ordering": false,
+            "searching": false,
+            "destroy": true,
+            "language": {
+                url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
+            }
+        }).rows().remove().draw();
     });
 
     // AJAX 上传文件
@@ -761,8 +769,12 @@ function getCobsicCellWholenet (reSelected, areaIdStr,cellConfigIds) {
         dataType: "text",
         async: true,
         success: function (data) {
+            if(data ===null || data ===''){
+                showInfoInAndOut('info','不存在co-bsic小区');
+                return false;
+            }
             var res = eval('('+data+')');
-            // console.log(res);
+           // console.log(res);
             if(res['fail']){
                 showInfoInAndOut('info',res['fail']);
             }else{
@@ -770,8 +782,7 @@ function getCobsicCellWholenet (reSelected, areaIdStr,cellConfigIds) {
             }
         },
         error : function(XMLHttpRequest, textStatus) {
-            alert("\u8fd4\u56de\u6570\u636e\u9519\u8bef\uff1a"
-                + textStatus);
+            console.log(textStatus);
         },
         complete:function(XMLHttpRequest,status){
             $(".loading").css("display", "none");

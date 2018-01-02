@@ -62,7 +62,8 @@ public class GsmCoBsicResource {
     @GetMapping("/whole-net-cobsic-query")
     public Map<String, Object> getWholeNetCoBsicCells(GsmCoBsicQueryVM vm){
         List<CobsicCellsDTO> cobsicCells = gsmCoBsicService.getCobsicCells(vm);
-        return getCoBsic(cobsicCells);
+        log.debug("cobsicCells大小为{}",cobsicCells.size());
+        return cobsicCells.size()>1000?null:getCoBsic(cobsicCells);
     }
 
     private void prepareCellsExpand(List<GsmNcellRelation> list, CobsicCellsExpandDTO gsmCobsicCellsExpand){
