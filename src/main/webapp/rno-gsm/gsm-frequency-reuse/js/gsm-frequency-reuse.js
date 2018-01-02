@@ -89,9 +89,7 @@ $(function () {
     $("#districtId").change(function () {
         var lon = parseFloat($(this).find("option:checked").attr("data-lon"));
         var lat = parseFloat($(this).find("option:checked").attr("data-lat"));
-        console.log(lat)
         if (map === undefined) {
-            console.log(11111)
             map = new ol.Map({
                 target: 'map',
                 layers: [baseLayer, markCellOverlay, queryCellOverlay],
