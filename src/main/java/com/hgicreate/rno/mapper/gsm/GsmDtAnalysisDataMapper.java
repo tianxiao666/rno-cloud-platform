@@ -10,5 +10,6 @@ import java.util.Map;
 public interface GsmDtAnalysisDataMapper {
     List<Map<String, Object>> getDistinctCell();
     List<Map<String, Object>> getCoverageCell(String cellId);
+    List<Map<String, Object>> getCoverageSample(String cellId);
     List<Map<String, Object>> getNcell(Double longitude,Double latitude);
 }

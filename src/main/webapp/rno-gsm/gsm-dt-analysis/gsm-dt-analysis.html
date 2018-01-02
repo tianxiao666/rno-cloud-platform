@@ -252,39 +252,47 @@
                             <span style="color:blue;font-weight:bold;font-size: 15px">小区：</span>
                             <input id="cellCover" class="form-control" style="width: 150px;
                             display: inline-block" value="669420-7">
-                            <button id="cellSelect" class="btn btn-primary">查看</button>
+                            <button onclick="showCoverageLine('cell')" class="btn btn-primary">查看</button>
                             <div style="height: 10px"></div>
                         </div>
                         <div style="height: 10px"></div>
                         <div>
-                            <button class="btn btn-info"  type="button">采样点小区占用图
+                            <button class="btn btn-info" onclick="showDtAnalysisResult('sampleCover')" type="button">采样点小区占用图
                             </button>
+                        </div>
+                        <div id="sampleCoverage" style="display: none" class="form-inline">
+                            <div style="height: 18px"></div>
+                            <span style="color:blue;font-weight:bold;font-size: 15px">采样点小区：</span>
+                            <input id="sampleCover" class="form-control" style="width: 150px;
+                            display: inline-block" value="569423-3">
+                            <button onclick="showCoverageLine('sample')" class="btn btn-primary">查看</button>
+                            <div style="height: 10px"></div>
                         </div>
                         <hr/>
                         <h4>弱覆盖</h4>
                         <div style="height: 8px"></div>
                         <div>
-                            <button class="btn btn-info" id="weakCoverageBtn" type="button">弱覆盖
+                            <button class="btn btn-info" onclick="toAnalysis('get-weak-cover')" type="button">弱覆盖
                             </button>
                         </div>
                         <hr/>
                         <h4>过覆盖</h4>
                         <div style="height: 8px"></div>
                         <div>
-                            <button class="btn btn-info" id="overcoveragebtn" type="button">覆盖过远
+                            <button class="btn btn-info" onclick="toAnalysis('get-over-cover')" type="button">覆盖过远
                             </button>&nbsp;&nbsp;
-                            <button class="btn btn-info" id="radioresourceutilizationbtn" type="button">室分外泄
+                            <button class="btn btn-info" onclick="toAnalysis('get-indoor-signal')" type="button">室分外泄
                             </button>&nbsp;&nbsp;
-                            <button class="btn btn-info" id="nomaincoveragebtn" type="button">无主覆盖
+                            <button class="btn btn-info" onclick="toAnalysis('get-no-main-cell')" type="button">无主覆盖
                             </button>
                         </div>
                         <hr/>
                         <h4>异常覆盖</h4>
                         <div style="height: 8px"></div>
                         <div>
-                            <button class="btn btn-info" id="rapidattenuationbtn" type="button">信号快速衰减
+                            <button class="btn btn-info" onclick="toAnalysis('get-rapid-atten-cell')" type="button">信号快速衰减
                             </button>&nbsp;&nbsp;
-                            <button class="btn btn-info" id="abnormalcoveragebtn" type="button">信号与天线方向不符
+                            <button class="btn btn-info" onclick="toAnalysis('get-signal-antenna-cell')" type="button">信号与天线方向不符
                             </button>
                         </div>
                     </div>

@@ -76,36 +76,38 @@ $(function () {
                 feature = map.forEachFeatureAtPixel(evt.pixel, function (feature) {
                     return feature;
                 });
-                if (feature.getId()) {
-                    $.ajax({
-                        url: "../../api/gsm-dt-analysis/dt-data-detail",
-                        type: "GET",
-                        data: {
-                            'dataId': feature.getId()
-                        },
-                        success: function (data) {
-                            if (data != '') {
-                                $("#tdSampleTime").text(data[0].time);
-                                $("#tdServerCell").text(data[0].cell);
-                                $("#tdRxLev").text(data[0].rxlevsub);
-                                $("#tdRxQual").text(data[0].rxqualsub);
-                                var ncell1 = data[0].ncellNameOne ? data[0].ncellNameOne + "," : "";
-                                var ncell2 = data[0].ncellNameTwo ? data[0].ncellNameTwo + "," : "";
-                                var ncell3 = data[0].ncellNameThree ? data[0].ncellNameThree + "," : "";
-                                var ncell4 = data[0].ncellNameFour ? data[0].ncellNameFour + "," : "";
-                                var ncell5 = data[0].ncellNameFive ? data[0].ncellNameFive + "," : "";
-                                var ncell6 = data[0].ncellNameSix ? data[0].ncellNameSix : "";
-                                $("#tdNcells").text(ncell1 + ncell2 + ncell3 + ncell4 + ncell5 + ncell6);
-                                $("#tdNcellRxLev").text(data[0].ncellAvgRxlev);
-                                $("#tdServerCellToSampleAngle").text(data[0].distance);
-                                $("#tdServerCellAngle").text(data[0].angle);
-                                $("#myTab li:eq(1)").addClass("active");
-                                $("#myTab li:eq(1)").siblings().removeClass("active");
-                                $("#sampleDetail").addClass("active");
-                                $("#sampleDetail").siblings().removeClass("active");
+                if (feature) {
+                    if(feature.getId()) {
+                        $.ajax({
+                            url: "../../api/gsm-dt-analysis/dt-data-detail",
+                            type: "GET",
+                            data: {
+                                'dataId': feature.getId()
+                            },
+                            success: function (data) {
+                                if (data != '') {
+                                    $("#tdSampleTime").text(data[0].time);
+                                    $("#tdServerCell").text(data[0].cell);
+                                    $("#tdRxLev").text(data[0].rxlevsub);
+                                    $("#tdRxQual").text(data[0].rxqualsub);
+                                    var ncell1 = data[0].ncellNameOne ? data[0].ncellNameOne + "," : "";
+                                    var ncell2 = data[0].ncellNameTwo ? data[0].ncellNameTwo + "," : "";
+                                    var ncell3 = data[0].ncellNameThree ? data[0].ncellNameThree + "," : "";
+                                    var ncell4 = data[0].ncellNameFour ? data[0].ncellNameFour + "," : "";
+                                    var ncell5 = data[0].ncellNameFive ? data[0].ncellNameFive + "," : "";
+                                    var ncell6 = data[0].ncellNameSix ? data[0].ncellNameSix : "";
+                                    $("#tdNcells").text(ncell1 + ncell2 + ncell3 + ncell4 + ncell5 + ncell6);
+                                    $("#tdNcellRxLev").text(data[0].ncellAvgRxlev);
+                                    $("#tdServerCellToSampleAngle").text(data[0].distance);
+                                    $("#tdServerCellAngle").text(data[0].angle);
+                                    $("#myTab li:eq(1)").addClass("active");
+                                    $("#myTab li:eq(1)").siblings().removeClass("active");
+                                    $("#sampleDetail").addClass("active");
+                                    $("#sampleDetail").siblings().removeClass("active");
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 }
             });
         } else {
@@ -146,41 +148,6 @@ $(function () {
             map.removeLayer(textImageTile);
         }
     });
-    //查看小区覆盖
-    $("#cellSelect").click(function () {
-        lineLayer.getSource().clear();
-        if($("#cellCover").val().trim()==="") {
-            showInfoInAndOut('warn', '小区不能为空！！');
-            return;
-        }
-        $("#loading").css("display", "block");
-        $.ajax({
-            url: "../../api/gsm-dt-analysis/cell-coverage",
-            type: "GET",
-            data: {
-                "cellId": $("#cellCover").val().trim(),
-            },
-            success: function (data) {
-                $("#loading").css("display", "none");
-                if(data[0]) {
-                    var cell = [parseFloat(data[0]["CELL_LONGITUDE"]), parseFloat(data[0]["CELL_LATITUDE"])];
-                    var ncellList = [];
-                    $.each(data, function (index, value) {
-                        ncellList.push([parseFloat(value["LONGITUDE"]), parseFloat(value["LATITUDE"])]);
-                    });
-                    //绘制连线
-                    drawLine(cell, ncellList);
-                }else {
-                    $("#loading").css("display", "none");
-                    showInfoInAndOut('warn', '没有找到相关的数据！');
-                }
-            },
-            error: function (err) {
-                $("#loading").css("display", "none");
-                showInfoInAndOut('error', '程序出错了！');
-            }
-        });
-    });
 });
 
 var strenth1 = 0, strenth2 = 0, strenth3 = 0, strenth4 = 0, strenth5 = 0, strenth6 = 0, strenth7 = 0, strenth8 = 0,
@@ -195,6 +162,7 @@ function showDtAnalysisResult(type) {
     $("#showResultTable").hide();
     $("#showCoverage").hide();
     $("#cellCoverage").hide();
+    $("#sampleCoverage").hide();
     //清空图层
     samplePointLayer.getSource().clear();
     cellLayer.getSource().clear();
@@ -232,7 +200,6 @@ function showDtAnalysisResult(type) {
         },
         success: function (data) {
             var point, feature;
-            $("#loading").css("display", "none");
             if (data[0] === undefined) {
                 showInfoInAndOut('warn', '没有找到数据！');
             } else {
@@ -259,21 +226,67 @@ function showDtAnalysisResult(type) {
                             duration: 2000
                         });
                     }
-                    //小区覆盖功能
-                    if(type === "cellCover") {
-                        $("#cellCoverage").show();
-                        showInfoInAndOut('warn', '请选择小区后查看');
-                    }
                 });
                 if (type === "sampleCell") {
                     //获取服务小区与其对应的采样点
                     showNcellLine();
                     $("#showCoverage").show();
                 }
-                if(type !== "cellCover") {
+                $("#loading").css("display", "none");
+                //小区覆盖功能、采样点小区有后续处理
+                if(type === "cellCover") {
+                    $("#cellCoverage").show();
+                    showInfoInAndOut('warn', '请输入小区后查看');
+                }else if(type === "sampleCover") {
+                    $("#sampleCoverage").show();
+                    showInfoInAndOut('warn', '请输入采样点小区后查看');
+                }else {
                     showInfoInAndOut('success', '渲染完成！');
                 }
                 showResultTable(type);
+            }
+        },
+        error: function (err) {
+            $("#loading").css("display", "none");
+            showInfoInAndOut('error', '程序出错了！');
+        }
+    });
+}
+
+function showCoverageLine(type) {
+    lineLayer.getSource().clear();
+    if($("#"+type+"Cover").val().trim()==="") {
+        showInfoInAndOut('warn', '采样点小区不能为空！！');
+        return;
+    }
+    $("#loading").css("display", "block");
+    $.ajax({
+        url: "../../api/gsm-dt-analysis/"+type+"-coverage",
+        type: "GET",
+        data: {
+            "cellId": $("#"+type+"Cover").val().trim(),
+        },
+        success: function (data) {
+            $("#loading").css("display", "none");
+            if(data.length>1) {
+                var cell ;
+                var ncellList = [];
+                if(type === "cell") {       //处理小区覆盖划线
+                    cell = [parseFloat(data[0]["CELL_LONGITUDE"]), parseFloat(data[0]["CELL_LATITUDE"])];
+                    $.each(data, function (index, value) {
+                        ncellList.push([parseFloat(value["LONGITUDE"]), parseFloat(value["LATITUDE"])]);
+                    });
+                }else {         //处理采样点小区覆盖划线
+                    cell = [parseFloat(data[0]["LONGITUDE"]), parseFloat(data[0]["LATITUDE"])];
+                    for(var i=1; i<data.length; i++) {
+                        ncellList.push([parseFloat(data[i]["LONGITUDE"]), parseFloat(data[i]["LATITUDE"])]);
+                    }
+                }
+                //绘制连线
+                drawLine(cell, ncellList);
+            }else {
+                $("#loading").css("display", "none");
+                showInfoInAndOut('warn', '没有找到相关的小区！');
             }
         },
         error: function (err) {
@@ -438,6 +451,8 @@ function setColor(type, value) {
         color = "#FF00FF";
     }else if(type === "cellCover") {
         color = "#EE3B3B";
+    }else if(type === "sampleCover") {
+        color = "#FF00FF";
     }
     return color;
 }
@@ -527,4 +542,23 @@ function showInfoInAndOut(div, info) {
     $("#" + div).html(info);
     $("#" + div).fadeIn(2000);
     setTimeout("$('#" + div + "').fadeOut(2000)", 1000);
+}
+
+//待完善的功能
+function toAnalysis(fun) {
+    $.ajax({
+        url: "../../api/gsm-dt-analysis/"+fun,
+        type: "GET",
+        success: function (data) {
+            if(data.length>0) {
+                //后续数据处理
+                showInfoInAndOut('success', '渲染完成');
+            }else {
+                showInfoInAndOut('warn', '无相关数据！！');
+            }
+        },
+        error: function (err) {
+            showInfoInAndOut('error', '程序出错了！');
+        }
+    });
 }

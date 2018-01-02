@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -62,5 +63,48 @@ public class GsmDtAnalysisResource {
     public List<Map<String, Object>> queryCellCoverage(String cellId) {
         log.debug("查询小区覆盖");
         return gsmDtAnalysisDataMapper.getCoverageCell(cellId);
+    }
+
+    @GetMapping("/sample-coverage")
+    public List<Map<String, Object>> querySampleCoverage(String cellId) {
+        log.debug("查询采样点小区覆盖");
+        return gsmDtAnalysisDataMapper.getCoverageSample(cellId);
+    }
+
+    @GetMapping("/get-weak-cover")
+    public List<Map<String, Object>> queryWeakCoverageCell() {
+        log.debug("查询弱覆盖小区");
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+        return list;
+    }
+    @GetMapping("/get-over-cover")
+    public List<Map<String, Object>> queryOverCoverageCell() {
+        log.debug("查询覆盖过远小区");
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+        return list;
+    }
+    @GetMapping("/get-indoor-signal")
+    public List<Map<String, Object>> queryIndoorSignalLeakOutsideCell() {
+        log.debug("查询室分外泄小区");
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+        return list;
+    }
+    @GetMapping("/get-no-main-cell")
+    public List<Map<String, Object>> queryNoMainCoverageCell() {
+        log.debug("查询无主覆盖小区");
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+        return list;
+    }
+    @GetMapping("/get-rapid-atten-cell")
+    public List<Map<String, Object>> queryRapidAttenuationCell() {
+        log.debug("查询信号快速衰减小区");
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+        return list;
+    }
+    @GetMapping("/get-signal-antenna-cell")
+    public List<Map<String, Object>> querySignalAndAntennaNotMatchCell() {
+        log.debug("查询信号与天线方向不符小区");
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+        return list;
     }
 }

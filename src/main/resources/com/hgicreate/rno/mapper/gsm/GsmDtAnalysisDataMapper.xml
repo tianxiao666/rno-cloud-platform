@@ -19,4 +19,9 @@
         WHERE CELL_LONGITUDE in (select LONGITUDE from RNO_GSM_DT_SAMPLE where cell = #{param1})
               and CELL_LATITUDE in (select LATITUDE from RNO_GSM_DT_SAMPLE where cell = #{param1})
     </select>
+    <select id="getCoverageSample" resultType="map">
+        SELECT DISTINCT LONGITUDE,LATITUDE
+        FROM RNO_GSM_DT_SAMPLE
+        WHERE cell = #{param1}
+    </select>
 </mapper>
