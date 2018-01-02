@@ -629,6 +629,7 @@ function showInfoInAndOut(div, info) {
     setTimeout("$('#" + div + "').fadeOut(2000)", 1000);
 }
 
+//查看noise
 function showNoise(evt) {
     thisCellLayer.getSource().clear();
     var element = popup.getElement();
@@ -720,6 +721,7 @@ function showNoise(evt) {
     }
 }
 
+//in干扰
 function showIn(evt) {
     thisCellLayer.getSource().clear();
     var element = popup.getElement();
@@ -813,6 +815,7 @@ function showIn(evt) {
     }
 }
 
+//out干扰
 function showOut(evt) {
 
 
@@ -903,7 +906,7 @@ function showOut(evt) {
                             showInfoInAndOut('info', '未找到小区'+cellName+'的干扰记录！');
                             $("#loadingStatus").html('未找到小区'+cellName+'的干扰记录！');
                             $("#cellname").text(cellName);
-                            $("#cellFreq").html("BCCH:"+bcch+"<br/>TCH:"+tch);
+                            $("#cellFreq").html("BCCH:"+bcch+"<br/>TCH:<span style='word-break:break-all'>"+tch+"</span>");
                             $("#cellInterfereId").html(cellName);
 
                             for(var i = 0; i< tch.split(",").length;i++){
