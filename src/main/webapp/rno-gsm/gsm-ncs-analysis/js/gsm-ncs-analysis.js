@@ -4,6 +4,8 @@ var ncsDateToTime = {};// key为date
 var currentCellNcsData = null;
 var selectCell = "";
 $(function () {
+    // 设置导航标题
+    setNavTitle("navTitle");
     //默认右侧栏打开
     var switchHidden = $(".switch_hidden");
     $(".resource_list300_box").css("display", "block");
