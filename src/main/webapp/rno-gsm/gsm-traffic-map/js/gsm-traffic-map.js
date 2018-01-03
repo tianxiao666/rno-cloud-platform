@@ -172,12 +172,12 @@ function loadAndShowAnalysisList() {
                         htmlstr += "<tr class=\""
                             + trClass
                             + "\">"// table 内容 yuan.yw 修改 2013-10-28
-                            + "  <td width=\"45%\" class=\"bd-right-white\" >    "
+                            + "  <td width=\"25%\" class=\"bd-right-white\" >    "
                             + "  <span >"
                             + one['areaName']
                             + "</span>"
                             + "  </td>"
-                            + "  <td  width=\"20%\"  class=\"bd-right-white td_nowrap\">"
+                            + "  <td  width=\"40%\"  class=\"bd-right-white td_nowrap\">"
                             + "  <span >"
                             + getValidValue(one['stsType'], "未知")
                             + "</span>"
@@ -193,16 +193,11 @@ function loadAndShowAnalysisList() {
                             + "</span>"
                             + "  </td>"
                             + "  <td width=\"5%\" class=\"bd-right-white\">"
-                            + "  <input type=\"checkbox\" class=\"forselect\" name=\"checkbox\" id='"
+                            + "  <input type=\"checkbox\" class=\"forselect\" name=\"checkbox\" value="+getValidValue(one['areaId'], "未知")+" id='"
                             + data[i]['configId']
                             + "' />"
                             + "  <label for=\"checkbox\"></label>"
                             + "  </td>"
-                            + "  <td width=\"10%\">"
-                            + "<input type=\"hidden\" class=\"hiddenconfigid\" value=\""
-                            + data[i]['configId']
-                            + "\" />"
-                            + "  </td >"
                             + "  </tr>";
                     }
                 }
@@ -274,6 +269,7 @@ function loadStaticsInfo(action, type, name, startIndex, callback) {
     $('input[name="checkbox"]:checked').each(function () {
         selectedList += ($(this).attr('id')) + ",";
     });
+
     if (selectedList.length <= 0) {
         animateInAndOut("operInfo", 500, 500, 1000, "operTip", "请先选择一个小区指标");
         return;
@@ -352,7 +348,7 @@ function loadStaticsInfo(action, type, name, startIndex, callback) {
                                         map.getView().animate({
                                             center: [lon, lat],
                                             duration: 1000,
-                                            zoom: 14
+                                            zoom: 16
                                         });
                                     }
                                 }
