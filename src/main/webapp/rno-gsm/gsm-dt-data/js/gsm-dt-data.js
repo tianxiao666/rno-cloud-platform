@@ -37,7 +37,11 @@ $(function () {
         $("span#tasknameDiv").html("");
         var taskname = $("#taskname").val()+"-";
         var strExp=/^[\u4e00-\u9fa5A-Za-z0-9_-]+$/;
-        if(!strExp.test(taskname)){
+        if (taskname === "-"){
+            $("span#tasknameDiv").html("任务名称不能为空！");
+            return false;
+        }
+        else if(!strExp.test(taskname)){
             $("span#tasknameDiv").html("含有非法字符！");
             return false;
         }else if(!(taskname.length<40)){
