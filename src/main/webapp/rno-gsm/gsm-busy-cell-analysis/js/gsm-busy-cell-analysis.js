@@ -519,7 +519,7 @@ var showIdleNcell = function getIdleNcell(evt) {
                                     });
                                 } else {
                                     $("#loading").css("display", "none");
-                                    showInfoInAndOut('info', '没有找到闲邻区数据！');
+                                    showInfoInAndOut('warn', '没有找到该小区闲邻区数据！');
                                 }
                                 //console.log(data);
                             }

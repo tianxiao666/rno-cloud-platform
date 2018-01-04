@@ -37,9 +37,11 @@ public class GsmBusyCellAnalysisService {
                 Example<GsmCell> example = Example.of(gsmCell);
                 Map<String, Object> map = new HashMap<>();
                 GsmCell cellResult = gsmCellDataRepository.findOne(example);
-                map.put("cellId", cellResult.getCellId());
-                map.put("cellName", cellResult.getCellName());
-                result.add(map);
+                if(cellResult!=null){
+                    map.put("cellId", cellResult.getCellId());
+                    map.put("cellName", cellResult.getCellName());
+                    result.add(map);
+                }
             }
         }
         return result;
