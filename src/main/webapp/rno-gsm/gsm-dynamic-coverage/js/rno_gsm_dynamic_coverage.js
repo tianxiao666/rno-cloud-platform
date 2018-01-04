@@ -774,7 +774,7 @@ function drawArrow(cellLon, cellLat, vecLng, vecLat, ratio, color, points) {
         new ol.style.Style({
             stroke: new ol.style.Stroke({
                 color: 'blue',
-                width: 50 * $("#imgCoeff").val()
+                width: 15 * $("#imgCoeff").val()
             }),
             fill: new ol.style.Fill({
                 color: 'rgba(0, 0, 255, 0.1)'
@@ -782,7 +782,7 @@ function drawArrow(cellLon, cellLat, vecLng, vecLat, ratio, color, points) {
         }),
         new ol.style.Style({
             image: new ol.style.Circle({
-                radius: 30 * $("#imgCoeff").val(),
+                radius: 15 * $("#imgCoeff").val(),
                 fill: new ol.style.Fill({
                     color: 'orange'
                 })
