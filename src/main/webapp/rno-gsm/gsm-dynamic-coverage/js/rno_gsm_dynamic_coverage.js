@@ -543,7 +543,7 @@ function searchNcell(cellId) {
     var ncells = new Array();
     queryNCellOverlay.getSource().clear();
     $.ajax({
-        url: '/portal/api/dynamic-coverage/get-ncell-details',
+        url: '../..//api/dynamic-coverage/get-ncell-details',
         data: {
             'cell': cellId,
             'cityId': $("#cityId").val(),
@@ -709,7 +709,7 @@ function showDynaCoverage(cellId, enName, cellLon, cellLat) {
         return;
     }
     $.ajax({
-        url: '/portal/api/dynamic-coverage/get-dynamic-coverage-data',
+        url: '../../api/dynamic-coverage/get-dynamic-coverage-data',
         data: {
             'cityId': cityId,
             'cellId': cellId,
