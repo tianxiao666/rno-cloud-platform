@@ -42,26 +42,26 @@
         </form>
     </div>
 </div>
-<div class="dialog2 draggable" id="showResultTable" style="display: none">
-    <table class="table-bordered" style="width: 300px">
-        <tbody id="tbContext">
-        <tr style="height: 30px">
-            <td colspan="3" style="font-weight: bold;"
-                align="center" id="tdTitle">
-            </td>
-        </tr>
-        <tr style="height: 20px">
-            <td style="text-align: center;font-weight: bold">等级</td>
-            <td style="text-align: center;font-weight: bold">数量</td>
-            <td style="text-align: center;font-weight: bold">比例</td>
-        </tr>
-        </tbody>
-    </table>
-</div>
 <div class="resource_list_icon" style="right: 400px;">
     <a href="#" class="switch"></a>
     <a href="#" class="switch_hidden" style="display: none;"></a>
     <div class="shad_v"></div>
+    <div class="dialog2" id="showResultTable" style="display: none">
+        <table class="table-bordered" style="width: 300px">
+            <tbody id="tbContext">
+            <tr style="height: 30px">
+                <td colspan="3" style="font-weight: bold;"
+                    align="center" id="tdTitle">
+                </td>
+            </tr>
+            <tr style="height: 20px">
+                <td style="text-align: center;font-weight: bold">等级</td>
+                <td style="text-align: center;font-weight: bold">数量</td>
+                <td style="text-align: center;font-weight: bold">比例</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 <div class="resource_list_box">
     <div style="margin-bottom: 39px">
@@ -222,7 +222,8 @@
                         </div>
                         <div style="height: 8px"></div>
                         <div>
-                            <button class="btn btn-info" onclick="showDtAnalysisResult('sampleCell')" type="button">全路段主服务覆盖图
+                            <button class="btn btn-info" onclick="showDtAnalysisResult('sampleCell')" type="button">
+                                全路段主服务覆盖图
                             </button>&nbsp;&nbsp;&nbsp;&nbsp;
                             <button class="btn btn-info" onclick="showDtAnalysisResult('cellCover')" type="button">小区覆盖图
                             </button>
@@ -257,7 +258,8 @@
                         </div>
                         <div style="height: 10px"></div>
                         <div>
-                            <button class="btn btn-info" onclick="showDtAnalysisResult('sampleCover')" type="button">采样点小区占用图
+                            <button class="btn btn-info" onclick="showDtAnalysisResult('sampleCover')" type="button">
+                                采样点小区占用图
                             </button>
                         </div>
                         <div id="sampleCoverage" style="display: none" class="form-inline">
@@ -290,9 +292,11 @@
                         <h4>异常覆盖</h4>
                         <div style="height: 8px"></div>
                         <div>
-                            <button class="btn btn-info" onclick="toAnalysis('get-rapid-atten-cell')" type="button">信号快速衰减
+                            <button class="btn btn-info" onclick="toAnalysis('get-rapid-atten-cell')" type="button">
+                                信号快速衰减
                             </button>&nbsp;&nbsp;
-                            <button class="btn btn-info" onclick="toAnalysis('get-signal-antenna-cell')" type="button">信号与天线方向不符
+                            <button class="btn btn-info" onclick="toAnalysis('get-signal-antenna-cell')" type="button">
+                                信号与天线方向不符
                             </button>
                         </div>
                     </div>

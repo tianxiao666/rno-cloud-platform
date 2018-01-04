@@ -66,7 +66,7 @@ $(function () {
                 view: new ol.View({
                     projection: 'EPSG:4326',
                     center: [lon, lat],
-                    zoom: 21,
+                    zoom: 18,
                 })
             });
 
@@ -77,7 +77,7 @@ $(function () {
                     return feature;
                 });
                 if (feature) {
-                    if(feature.getId()) {
+                    if (feature.getId()) {
                         $.ajax({
                             url: "../../api/gsm-dt-analysis/dt-data-detail",
                             type: "GET",
@@ -234,13 +234,13 @@ function showDtAnalysisResult(type) {
                 }
                 $("#loading").css("display", "none");
                 //小区覆盖功能、采样点小区有后续处理
-                if(type === "cellCover") {
+                if (type === "cellCover") {
                     $("#cellCoverage").show();
                     showInfoInAndOut('warn', '请输入小区后查看');
-                }else if(type === "sampleCover") {
+                } else if (type === "sampleCover") {
                     $("#sampleCoverage").show();
                     showInfoInAndOut('warn', '请输入采样点小区后查看');
-                }else {
+                } else {
                     showInfoInAndOut('success', '渲染完成！');
                 }
                 showResultTable(type);
@@ -255,36 +255,36 @@ function showDtAnalysisResult(type) {
 
 function showCoverageLine(type) {
     lineLayer.getSource().clear();
-    if($("#"+type+"Cover").val().trim()==="") {
+    if ($("#" + type + "Cover").val().trim() === "") {
         showInfoInAndOut('warn', '采样点小区不能为空！！');
         return;
     }
     $("#loading").css("display", "block");
     $.ajax({
-        url: "../../api/gsm-dt-analysis/"+type+"-coverage",
+        url: "../../api/gsm-dt-analysis/" + type + "-coverage",
         type: "GET",
         data: {
-            "cellId": $("#"+type+"Cover").val().trim(),
+            "cellId": $("#" + type + "Cover").val().trim(),
         },
         success: function (data) {
             $("#loading").css("display", "none");
-            if(data.length>1) {
-                var cell ;
+            if (data.length > 1) {
+                var cell;
                 var ncellList = [];
-                if(type === "cell") {       //处理小区覆盖划线
+                if (type === "cell") {       //处理小区覆盖划线
                     cell = [parseFloat(data[0]["CELL_LONGITUDE"]), parseFloat(data[0]["CELL_LATITUDE"])];
                     $.each(data, function (index, value) {
                         ncellList.push([parseFloat(value["LONGITUDE"]), parseFloat(value["LATITUDE"])]);
                     });
-                }else {         //处理采样点小区覆盖划线
+                } else {         //处理采样点小区覆盖划线
                     cell = [parseFloat(data[0]["LONGITUDE"]), parseFloat(data[0]["LATITUDE"])];
-                    for(var i=1; i<data.length; i++) {
+                    for (var i = 1; i < data.length; i++) {
                         ncellList.push([parseFloat(data[i]["LONGITUDE"]), parseFloat(data[i]["LATITUDE"])]);
                     }
                 }
                 //绘制连线
                 drawLine(cell, ncellList);
-            }else {
+            } else {
                 $("#loading").css("display", "none");
                 showInfoInAndOut('warn', '没有找到相关的小区！');
             }
@@ -444,14 +444,14 @@ function setColor(type, value) {
             } else if (count == 6) {
                 color = "#EE3B3B";
             }
-        }else {
+        } else {
             color = "#121212";
         }
-    }else if(type === "sampleCell"){
+    } else if (type === "sampleCell") {
         color = "#FF00FF";
-    }else if(type === "cellCover") {
+    } else if (type === "cellCover") {
         color = "#EE3B3B";
-    }else if(type === "sampleCover") {
+    } else if (type === "sampleCover") {
         color = "#FF00FF";
     }
     return color;
@@ -547,13 +547,13 @@ function showInfoInAndOut(div, info) {
 //待完善的功能
 function toAnalysis(fun) {
     $.ajax({
-        url: "../../api/gsm-dt-analysis/"+fun,
+        url: "../../api/gsm-dt-analysis/" + fun,
         type: "GET",
         success: function (data) {
-            if(data.length>0) {
+            if (data.length > 0) {
                 //后续数据处理
                 showInfoInAndOut('success', '渲染完成');
-            }else {
+            } else {
                 showInfoInAndOut('warn', '无相关数据！！');
             }
         },
