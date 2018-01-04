@@ -152,7 +152,7 @@ $(function () {
 function loadAndShowCellConfigAnalysisList() {
     $("#analysisListTable_cellconfig").empty();
     $.ajax({
-        url: "/portal/api/gsm-frequency-reuse-analysis/cell-config-analysis-list",
+        url: "../../api/gsm-frequency-reuse-analysis/cell-config-analysis-list",
         dataType: 'json',
         type: 'GET',
         success: function (data) {
@@ -299,7 +299,7 @@ function getReportFreqReuseData() {
     $("#reportType").val("CELLDATA");
     $("#reportForm")
         .ajaxSubmit({
-            url: '/portal/api/gsm-frequency-reuse-analysis/statistics-frequency-reuse-info',
+            url: '../../api/gsm-frequency-reuse-analysis/statistics-frequency-reuse-info',
             dataType: 'json',
             data: {
                 'btsType': 'GSM900',
