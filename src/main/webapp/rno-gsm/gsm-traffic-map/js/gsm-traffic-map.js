@@ -314,10 +314,10 @@ function loadStaticsInfo(action, type, name, startIndex, callback) {
                     return;
                 }
                 $.each(data["rnoStsResults"], function (key, value) {
-                    let cellId = value['CELL'];
+                    let enName = value['CELL'];
                     let avgValue = value['AVGVALUE'];
                     let cityId = $("#cityId").val();
-                    let filter = `CELL_ID = '` + cellId + `' and AREA_ID = '` + cityId + `'`;
+                    let filter = `EN_NAME = '` + enName + `' and AREA_ID = '` + cityId + `'`;
                     $.ajax({
                         url: "http://rno-gis.hgicreate.com/geoserver/rnoprod/ows",
                         data: {
