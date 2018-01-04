@@ -284,6 +284,7 @@ function showCoverageLine(type) {
                 }
                 //绘制连线
                 drawLine(cell, ncellList);
+                showInfoInAndOut('success', '渲染完成！');
             } else {
                 $("#loading").css("display", "none");
                 showInfoInAndOut('warn', '没有找到相关的小区！');
