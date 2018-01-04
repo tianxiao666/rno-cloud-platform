@@ -147,7 +147,7 @@ function loadAndShowAnalysisList() {
     $("#analysisListTable").empty();
     $
         .ajax({
-            url: '/portal/api/gsm-traffic-statics/get-cell-performance-quota-list',
+            url: '../../api/gsm-traffic-statics/get-cell-performance-quota-list',
             data: {
                 'data': data
             },
@@ -276,7 +276,7 @@ function loadStaticsInfo(action, type, name, startIndex, callback) {
     }
     selectedList = selectedList.substring(0, selectedList.length - 1);
     $.ajax({
-        url: "/portal/api/gsm-traffic-statics/" + action,
+        url: "../../api/gsm-traffic-statics/" + action,
         data: {
             'stsCode': type,
             'startIndex': startIndex,
