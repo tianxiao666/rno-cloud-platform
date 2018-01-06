@@ -44,6 +44,9 @@
                 to_date('${time}','yyyy-mm-dd')
             </foreach>)
         </if>
+        <![CDATA[
+             and rownum < 1000
+        ]]>
     </select>
     <select id="getChannelParamRecord"
             parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmParamQueryVM"
@@ -73,6 +76,9 @@
                 to_date('${time}','yyyy-mm-dd')
             </foreach>)
         </if>
+        <![CDATA[
+             and rownum < 1000
+        ]]>
     </select>
     <select id="getNcellParamRecord"
             parameterType="com.hgicreate.rno.web.rest.gsm.vm.GsmParamQueryVM"
@@ -101,5 +107,8 @@
                 to_date('${time}','yyyy-mm-dd')
             </foreach>)
         </if>
+        <![CDATA[
+             and rownum < 1000
+        ]]>
     </select>
 </mapper>
