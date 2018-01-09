@@ -6,6 +6,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+/**
+ * @author zeng.dh1
+ */
+
 @Service
 public class GsmParamChangeServiceImpl implements GsmParamChangeService {
 
@@ -182,7 +186,8 @@ public class GsmParamChangeServiceImpl implements GsmParamChangeService {
         vm.setParams1(params1.substring(0, params1.length() - 1));
         vm.setParams2(params2.substring(0, params2.length() - 1));
         vm.setParamsTot(paramsTot.substring(0, paramsTot.length() - 1));
-        vm.setWhereSql(whereSql.substring(0, whereSql.length() - 2)); //去掉or
+        //去掉or
+        vm.setWhereSql(whereSql.substring(0, whereSql.length() - 2));
 
         if (("cell").equals(vm.getParamType())) {
             resSize = gsmParamChangeMapper.eriCellParamsCompareResult(vm);

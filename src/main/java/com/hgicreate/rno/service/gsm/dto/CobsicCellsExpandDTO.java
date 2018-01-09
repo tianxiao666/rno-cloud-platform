@@ -5,9 +5,9 @@ import lombok.Data;
 @Data
 public class CobsicCellsExpandDTO {
     private String combinedCell;
-    private boolean whetherNcell;
+    private Boolean whetherNcell;
     private String commonNcell;
-    private boolean whetherComNcell;
-    private double meaDis;
+    private Boolean whetherComNcell;
+    private Double meaDis;
     private String mml;
 }

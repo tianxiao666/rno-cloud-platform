@@ -7,8 +7,17 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * @author zeng.dh1
+ */
 
 @Repository
 public interface GsmBscDataRepository extends JpaRepository<GsmBscData,Long>{
+    /**
+     * 根据区域和状态查询所有bsc
+     * @param area
+     * @param status
+     * @return
+     */
     List<GsmBscData> findByAreaAndStatus(Area area, String status);
 }

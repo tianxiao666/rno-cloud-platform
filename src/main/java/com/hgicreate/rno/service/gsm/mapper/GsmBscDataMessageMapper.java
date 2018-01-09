@@ -6,9 +6,14 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
+/**
+ * @author zeng.dh1
+ */
+
 @Mapper
 public interface GsmBscDataMessageMapper {
     GsmBscDataMessageMapper INSTANCE = Mappers.getMapper(GsmBscDataMessageMapper.class);
+
 
     @Mapping(source = "area.name", target = "areaName")
     GsmBscDataDTO bscDataToBscDataDto(GsmBscData gsmBscData);

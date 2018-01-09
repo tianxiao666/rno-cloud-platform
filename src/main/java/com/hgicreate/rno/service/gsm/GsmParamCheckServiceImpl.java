@@ -9,6 +9,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+/**
+ * @author zeng.dh1
+ */
+
 @Service
 public class GsmParamCheckServiceImpl implements GsmParamCheckService {
 
@@ -630,8 +634,8 @@ public class GsmParamCheckServiceImpl implements GsmParamCheckService {
                 }
             }
             //邻BCCH
-            bcchR = (Integer.parseInt(bcch) + 1) + ""; //加1
-            bcchL = (Integer.parseInt(bcch) - 1) + ""; //减1
+            bcchR = (Integer.parseInt(bcch) + 1) + "";
+            bcchL = (Integer.parseInt(bcch) - 1) + "";
             nbcchR = (Integer.parseInt(bcch) + 1) + "";
             nbcchL = (Integer.parseInt(bcch) - 1) + "";
             if (ntchList.contains(bcchR)) {
