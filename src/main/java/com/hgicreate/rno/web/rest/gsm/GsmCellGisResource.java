@@ -33,7 +33,6 @@ public class GsmCellGisResource {
 
     @GetMapping("/ncell-detail")
     public List<String> getNcellByCellId(String cellId) {
-        log.debug("Ncell个数为={}",gsmNcellRelationRepository.findByCellId(cellId).size());
         return gsmNcellRelationRepository.findByCellId(cellId).stream()
                 .map(GsmNcellRelation::getNcellId).collect(Collectors.toList());
     }
