@@ -11,6 +11,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author xiao.sz
+ */
 @Slf4j
 @Service
 public class GsmTrafficStaticsServiceImpl implements GsmTrafficStaticsService {
@@ -18,12 +21,14 @@ public class GsmTrafficStaticsServiceImpl implements GsmTrafficStaticsService {
     @Autowired
     private GsmTrafficStaticsMapper gsmTrafficStaticsMapper;
 
+    @Override
     public List<Map<String, Object>> getCellAudioOrDataDescByConfigIds(final String configIds) {
         Map<String, Object> map = new HashMap<>();
         map.put("configIds", configIds);
         return gsmTrafficStaticsMapper.getCellAudioOrDataDescByConfigIds(map);
     }
 
+    @Override
     public List<GsmStsResultVM> staticsResourceUtilizationRateInSelList(
             String stsCode, List<Integer> selConfigs) {
         log.info("进入staticsResourceUtilizationRateInSelList。 selConfigs="
@@ -70,6 +75,7 @@ public class GsmTrafficStaticsServiceImpl implements GsmTrafficStaticsService {
         return stsResults;
     }
 
+    @Override
     public List<GsmStsResultVM> staticsSpecialCellInSelList(String needCellType, List<Integer> selConfigs) {
         log.info("进入staticsSpecialCellInSelList。 selConfigs=" + selConfigs
                 + ",cellType=" + needCellType);
