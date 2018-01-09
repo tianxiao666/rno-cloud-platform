@@ -2,6 +2,10 @@ package com.hgicreate.rno.service.gsm.dto;
 
 import lombok.Data;
 
+/**
+ * @author zeng.dh1
+ */
+
 @Data
 public class GsmDtDetailDTO {
     private Long id;

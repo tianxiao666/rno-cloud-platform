@@ -1,7 +1,10 @@
 package com.hgicreate.rno.service.gsm.dto;
 
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
+
+/**
+ * @author zeng.dh1
+ */
 
 @Data
 public class GsmDtAnalysisDTO {

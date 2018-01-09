@@ -33,6 +33,11 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * @author zeng.dh1
+ * @date 2017/12/5
+ */
+
 @Slf4j
 @RestController
 @RequestMapping("/api/gsm-bsc-data")
@@ -171,11 +176,7 @@ public class GsmBscDataResource {
             stream.write(vm.getFile().getBytes());
             stream.close();
 
-           /* // 保存文件到FTP
-            String ftpFullPath = FtpUtils.sendToFtp(vm.getModuleName(), filepath, true, env);
-            log.debug("获取FTP文件的全路径：{}", ftpFullPath);*/
-
-            //建立任务
+            //写入任务表
             DataJob dataJob = new DataJob();
             dataJob.setName("BSC数据导入");
             dataJob.setType(vm.getModuleName().toUpperCase());
@@ -188,10 +189,9 @@ public class GsmBscDataResource {
             dataJob.setCreatedUser(SecurityUtils.getCurrentUserLogin());
             dataJob.setStatus("全部成功");
             dataJob.setDataStoreType("FTP");
-            // dataJob.setDataStorePath(ftpFullPath);
             dataJobRepository.save(dataJob);
 
-            //建立任务报告
+            //写入任务报告表
             DataJobReport dataJobReport = new DataJobReport();
             dataJobReport.setDataJob(dataJob);
             dataJobReport.setStage("文件上传");

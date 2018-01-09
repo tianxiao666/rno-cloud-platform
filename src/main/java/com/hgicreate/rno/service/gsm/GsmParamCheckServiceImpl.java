@@ -18,6 +18,7 @@ public class GsmParamCheckServiceImpl implements GsmParamCheckService {
         this.gsmParamCheckMapper = gsmParamCheckMapper;
     }
 
+    @Override
     public List<Map<String, Object>> checkParamData(GsmParamCheckVM vm) {
         List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
         //功率检查
@@ -151,7 +152,7 @@ public class GsmParamCheckServiceImpl implements GsmParamCheckService {
                 cellLists = cobsicLists.get(k).getCells();
                 bcch = cobsicLists.get(k).getBcch() + "";
                 bsic = cobsicLists.get(k).getBsic();
-                String labels[] = new String[cellLists.size()];
+                String[] labels = new String[cellLists.size()];
                 for (int i = 0; i < cellLists.size(); i++) {
                     labels[i] = cellLists.get(i).toString();
                 }
@@ -297,7 +298,8 @@ public class GsmParamCheckServiceImpl implements GsmParamCheckService {
 
         String cell = "", nccpermStr = "", ncellNccStr = "", leakNcc = "", command = "", nccStr = "";
 
-        String nccperm[] = {}, ncellNcc[] = {};
+        String[] nccperm = {};
+        String[] ncellNcc = {};
 
         List<String> nccpermList;
 
@@ -350,7 +352,12 @@ public class GsmParamCheckServiceImpl implements GsmParamCheckService {
 
         List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
 
-        String activeStr = "", idleStr = "", ncellBcchStr = "", actives[] = {}, idles[] = {}, ncellBcchs[] = {};
+        String activeStr = "";
+        String idleStr = "";
+        String ncellBcchStr = "";
+        String[] actives = {};
+        String[] idles = {};
+        String[] ncellBcchs = {};
 
         List<String> ncellBcchList;
 
@@ -433,7 +440,9 @@ public class GsmParamCheckServiceImpl implements GsmParamCheckService {
 
         String activeStr = "", idleStr = "", ncellBcchStr = "";
 
-        String actives[] = {}, idles[] = {}, ncellBcchs[] = {};
+        String[] actives = {};
+        String[] idles = {};
+        String[] ncellBcchs = {};
 
         List<String> activeList;
         List<String> idleList;
@@ -520,7 +529,8 @@ public class GsmParamCheckServiceImpl implements GsmParamCheckService {
 
         String comment = "", bsc = "", cell = "", ncell = "", bcch = "", tch = "", nbcch = "", ntch = "", cs = "";
 
-        String tchStr[] = {}, ntchStr[] = {};
+        String[] tchStr = {};
+        String[] ntchStr = {};
 
         List<String> tchList;
         List<String> ntchList;

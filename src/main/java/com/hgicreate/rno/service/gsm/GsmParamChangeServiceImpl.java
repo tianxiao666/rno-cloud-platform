@@ -2,8 +2,6 @@ package com.hgicreate.rno.service.gsm;
 
 import com.hgicreate.rno.mapper.gsm.GsmParamChangeMapper;
 import com.hgicreate.rno.web.rest.gsm.vm.GsmParamChangeVM;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -17,9 +15,10 @@ public class GsmParamChangeServiceImpl implements GsmParamChangeService {
         this.gsmParamChangeMapper = gsmParamChangeMapper;
     }
 
+    @Override
     public List<Map<String, Object>> changeParamData(GsmParamChangeVM vm) {
         String sumSql = "", caseSql = "", paramsSql = "";
-        String params[] = vm.getParamStr().split(",");
+        String[] params = vm.getParamStr().split(",");
         for (String param : params) {
             //TO改为“TO”
             if (("TO").equals(param)) {
@@ -120,12 +119,13 @@ public class GsmParamChangeServiceImpl implements GsmParamChangeService {
         return result;
     }
 
+    @Override
     public List<Map<String, Object>> exportChangeParamData(GsmParamChangeVM vm) {
         List<Map<String, Object>> res = new ArrayList<Map<String, Object>>();
         List<Map<String, Object>> resSize = new ArrayList<Map<String, Object>>();
 
         String paramsTot = "", params1 = "", params2 = "", whereSql = "";
-        String params[] = vm.getParamStr().split(",");
+        String[] params = vm.getParamStr().split(",");
         for (String param : params) {
             paramsTot += " " + param + "_d1," + param + "_d2,";
             whereSql += " " + param + "_d1<>" + param + "_d2 or";
@@ -225,6 +225,7 @@ public class GsmParamChangeServiceImpl implements GsmParamChangeService {
         }
     }
 
+    @Override
     public List<Map<String, Object>> queryParamDeatialData(GsmParamChangeVM vm) {
         //TO改为“TO”
         if (("TO").equals(vm.getParam())) {
@@ -274,6 +275,7 @@ public class GsmParamChangeServiceImpl implements GsmParamChangeService {
         return res;
     }
 
+    @Override
     public Boolean queryDateExist(GsmParamChangeVM vm) {
         Boolean flag = true;
         Integer count = 0;

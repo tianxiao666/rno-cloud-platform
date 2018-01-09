@@ -5,6 +5,10 @@ import lombok.Data;
 import javax.persistence.*;
 import java.util.Date;
 
+/**
+ * @author zeng.dh1
+ */
+
 @Data
 @Entity
 @Table(name = "RNO_GSM_DT_SAMPLE")

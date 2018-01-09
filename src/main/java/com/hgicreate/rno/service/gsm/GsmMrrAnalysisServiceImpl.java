@@ -15,6 +15,7 @@ public class GsmMrrAnalysisServiceImpl implements GsmMrrAnalysisService {
         this.gsmMrrAnalysisMapper = gsmMrrAnalysisMapper;
     }
 
+    @Override
     public Map<String, List<Map<String, Object>>> queryAllBscByAreaId(String areaId) {
         Map<String, List<Map<String, Object>>> res = new HashMap<String, List<Map<String, Object>>>();
         List<Map<String, Object>> cells = gsmMrrAnalysisMapper.queryAllBscByAreaId(Long.parseLong(areaId));
@@ -45,8 +46,8 @@ public class GsmMrrAnalysisServiceImpl implements GsmMrrAnalysisService {
         return res;
     }
 
+    @Override
     public List<Map<String, Object>> queryEriMrrData(GsmMrrAnalysisQueryVM vm) {
-        //SimpleDateFormat sdf =   new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
         if(("Rxlev").equals(vm.getMrrDataType())) {
             vm.setTableName("RNO_GSM_MRR_STRENGTH");
         } else if(("RxQual").equals(vm.getMrrDataType())) {

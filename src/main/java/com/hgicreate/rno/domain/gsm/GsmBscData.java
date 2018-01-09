@@ -6,6 +6,10 @@ import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/**
+ * @author zeng.dh1
+ */
+
 @Data
 @Entity
 @Table(name = "RNO_GSM_BSC_DATA")

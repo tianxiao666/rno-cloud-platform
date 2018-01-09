@@ -3,6 +3,10 @@ package com.hgicreate.rno.service.gsm.dto;
 import com.hgicreate.rno.util.FileSizeUtil;
 import lombok.Data;
 
+/**
+ * @author zeng.dh1
+ */
+
 @Data
 public class GsmBscReportDTO {
     private Long id;
