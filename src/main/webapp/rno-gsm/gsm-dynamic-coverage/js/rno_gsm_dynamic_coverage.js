@@ -862,7 +862,7 @@ function showCellName() {
                 VERSION: '1.1.1',
                 TILED: true,
                 STYLES: '',
-                LAYERS: 'rnoprod:RNO_LTE_CELL_CENTROID',
+                LAYERS: 'rnoprod:RNO_GSM_CELL_CENTROID',
                 'CQL_FILTER': filter
             }
         }),
