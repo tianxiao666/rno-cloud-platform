@@ -528,7 +528,7 @@ function markCellForFreqReuse() {
             map.getView().animate({
                 // center: [features[0].get('LONGITUDE'), features[0].get('LATITUDE')],
                 duration: 1000,
-                zoom: 16
+                zoom: 10
             });
         } else {
             animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "不存在该空间数据");
