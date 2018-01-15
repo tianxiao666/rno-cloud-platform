@@ -75,10 +75,19 @@ $(function () {
                 var data = eval("(" + raw + ")");
                 if(data.length !== 0) {
                     currentCellNcsData = data;// 更新小区对应的该ncs的信息
-
+                    $("#chartHide").hide();
+                    $("#ncsDataType").show();
+                    $("#hiddenDiv").show();
+                    $("#chartDiv").show();
+                    $("#cellInfoTab").show();
                 } else {
+                    $("#chartHide").show();
+                    $("#hiddenDiv").hide();
+                    $("#chartDiv").hide();
+                    $("#cellInfoTab").hide();
                     $("#ncsDate").html("");
                     $("#ncsTime").html("");
+                    showNcsInfo([]);
                     hideOperTips("loadingDataDiv");
                     animateInAndOut("operInfo", 500, 500, 1000, "operTip",
                         "该小区无测量数据！");
@@ -233,8 +242,13 @@ $(function () {
             type : 'post',
             dataType : 'text',
             success:function(data) {
-                data = eval("(" + data + ")");
-                showNcsInfo(data);
+                if (data === ''){
+                    showNcsInfo([]);
+                }else {
+                    data = eval("(" + data + ")");
+                    showNcsInfo(data);
+                }
+
             }
         })
     });
@@ -248,9 +262,14 @@ $(function () {
 function showNcsInfo(ncs) {
     $("#ncsInfoTab").html("");
     var ht = "<tr><td colspan=2>测量信息</td></tr>";
-    ht += "<TR><td class='menuTd'>BSC</td><td>" + ncs['bsc'] + "</td></TR>";
-    ht += "<TR><td class='menuTd'>CREATE_TIME</td><td>" + (new Date(ncs['meaTime'])).Format("yyyy-MM-dd hh:mm:ss")
-        + "</td>";
+    ht += "<TR><td class='menuTd'>BSC</td><td>" + getValidValue(ncs['bsc']) + "</td></TR>";
+    if (ncs.length === 0){
+        ht += "<TR><td class='menuTd'>CREATE_TIME</td><td></td>";
+    }else {
+        ht += "<TR><td class='menuTd'>CREATE_TIME</td><td>" + getValidValue((new Date(ncs['meaTime'])).Format("yyyy-MM-dd hh:mm:ss"))
+            + "</td>";
+    }
+
     ht += "<TR><td class='menuTd'>RECORDCOUNT</td><td>" + getValidValue(ncs['recordCount'])
         + "</td>";
     ht += "<TR><td class='menuTd'>RID</td><td>" + getValidValue(ncs['rid']) + "</td>";
