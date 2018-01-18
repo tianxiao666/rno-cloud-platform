@@ -36,7 +36,9 @@ public class GsmFrequencySearchResource {
     }
 
     @GetMapping("/cell-search")
-    public List<GsmCell> searchCellDetail(@RequestParam String conditionType, @RequestParam String conditionValue){
+    public List<GsmCell> searchCellDetail(@RequestParam String conditionType,
+                                          @RequestParam String conditionValue,
+                                          @RequestParam String cityId){
         log.debug("进入搜小区方法conditionType={},conditionValue={}",conditionType,conditionValue);
         String cellId = null,cellName = null,cellEnName = null,lac = null,ci = null;
         switch (conditionType){
@@ -55,7 +57,7 @@ public class GsmFrequencySearchResource {
             default:
                 ci= conditionValue;
         }
-        return gsmFrequencySearchMapper.findCellByCondition(cellId,cellName,cellEnName,lac,ci);
+        return gsmFrequencySearchMapper.findCellByCondition(cellId,cellName,cellEnName,lac,ci,cityId);
     }
 
     @GetMapping("/ncell-search")

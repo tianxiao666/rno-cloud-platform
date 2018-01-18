@@ -220,6 +220,7 @@ $(function () {
     initAreaSelectors({selectors: ["provinceId", "cityId", "areaId"], coord: true});
 
     $("#loadGsmCellToMap").click(function () {
+        contextmenu.disable();
         var cityId = parseInt($("#cityId").find("option:checked").val());
         var btsType = $("input[name='freqType']:checked").val();
         //console.log(btsType);
@@ -228,6 +229,7 @@ $(function () {
             requestParams = "AREA_ID=" + cityId +"and BTS_TYPE='"+ btsType +"'";
         }
         map.removeLayer(cellLayer);
+        clickedCellLayer.getSource().clear();
         cellLayer = new ol.layer.Tile({
             zIndex : 3,
             source : new ol.source.TileWMS({
@@ -244,6 +246,7 @@ $(function () {
             opacity : 0.5
         });
         map.addLayer(cellLayer);
+        contextmenu.enable();
     });
 
     // 小区名图层
@@ -344,7 +347,7 @@ $(function () {
             return false;
         }
 
-        searchCell(conditionType,conditionValue);
+        searchCell(conditionType,conditionValue,contextmenu);
     });
 
     //搜邻区
@@ -363,7 +366,7 @@ $(function () {
             $("span#errorDiv").html("输入信息过长！");
             return false;
         }
-        searchNcell(cellForNcell);
+        searchNcell(cellForNcell,contextmenu);
     });
 
     //搜频点
@@ -387,7 +390,7 @@ $(function () {
             $("span#errorDiv").html("频点应为数字！");
             return false;
         }
-        searchFreq(freq);
+        searchFreq(freq,contextmenu);
     });
 
     //清除搜索结果
@@ -397,17 +400,21 @@ $(function () {
         map.removeLayer(lineLayer);
         map.removeLayer(thisCellLayer);
         map.removeLayer(clickedCellLayer);
+        contextmenu.disable();
     });
 });
 
-function searchCell(conditionType, conditionValue) {
+function searchCell(conditionType, conditionValue,contextmenu) {
+    contextmenu.disable();
     var longitude=113.3612,latitude=23.1247;
+    var cityId = parseInt($("#cityId").find("option:checked").val());
     $.ajax({
        url: '../../api/gsm-frequency-search/cell-search',
        dataType: 'text',
        data:{
            conditionType: conditionType,
-           conditionValue: conditionValue
+           conditionValue: conditionValue,
+           cityId: cityId
        },
        type: 'get',
        async: false,
@@ -415,6 +422,7 @@ function searchCell(conditionType, conditionValue) {
            var data =eval('('+dat+')');
            console.log(data[0]);
            if(data===""|| data ===null||data.length === 0){
+               contextmenu.disable();
                showInfoInAndOut('info','未找到符合条件的小区！');
                return false;
            }
@@ -423,11 +431,11 @@ function searchCell(conditionType, conditionValue) {
        }
     });
    // console.log(longitude);
-    var cityId = parseInt($("#cityId").find("option:checked").val());
+
     //console.log(btsType);
     var requestParams ="AREA_ID=" + cityId ;
     if(conditionType === 'cellId'){
-        requestParams += "and CELL_ID='"+ conditionValue +"'";
+        requestParams += "and CELL_ID='"+ conditionValue+"'" ;
     }else if(conditionType === 'cellName'){
         requestParams += "and CELL_NAME like '%"+ conditionValue +"%'";
     }else if(conditionType === 'cellEnName'){
@@ -437,7 +445,10 @@ function searchCell(conditionType, conditionValue) {
     }else{
         requestParams += "and CI='"+ conditionValue +"'";
     }
+
     map.removeLayer(cellLayer);
+    clickedCellLayer.getSource().clear();
+
     cellLayer = new ol.layer.Tile({
         zIndex : 4,
         source : new ol.source.TileWMS({
@@ -458,12 +469,16 @@ function searchCell(conditionType, conditionValue) {
         center: [parseFloat(longitude), parseFloat(latitude)],
         duration: 2000
     });
+    contextmenu.enable();
 }
 
-function searchNcell(cellForNcell) {
+function searchNcell(cellForNcell,contextmenu) {
     map.removeLayer(thisCellLayer);
     map.removeLayer(nCellLayer);
     map.removeLayer(lineLayer);
+    clickedCellLayer.getSource().clear();
+    contextmenu.disable();
+
     var longitude=113.3612,latitude =23.1247;
     var cells = [];
     $.ajax({
@@ -478,6 +493,7 @@ function searchNcell(cellForNcell) {
             var data =eval('('+dat+')');
             //console.log(data[0]);
             if(data===""|| data ===null||data.length === 0){
+                contextmenu.disable();
                 showInfoInAndOut('info','未找到符合条件的小区！');
                 return false;
             }
@@ -538,10 +554,12 @@ function searchNcell(cellForNcell) {
         center: [parseFloat(longitude), parseFloat(latitude)],
         duration: 2000
     });
-
+    contextmenu.enable();
 }
 
-function searchFreq(freq) {
+function searchFreq(freq,contextmenu) {
+    contextmenu.disable();
+    clickedCellLayer.getSource().clear();
     var longitude=113.3612,latitude=23.1247;
     var cityId = parseInt($("#cityId").find("option:checked").val());
     $.ajax({
@@ -557,6 +575,7 @@ function searchFreq(freq) {
             var data =eval('('+dat+')');
             console.log(data[0]);
             if(data===""|| data ===null||data.length === 0){
+                contextmenu.disable();
                 showInfoInAndOut('info','未找到符合条件的小区！');
                 return false;
             }
@@ -586,10 +605,13 @@ function searchFreq(freq) {
         opacity : 0.5
     });
     map.addLayer(cellLayer);
+
     map.getView().animate({
         center: [parseFloat(longitude), parseFloat(latitude)],
         duration: 2000
     });
+
+    contextmenu.enable();
 }
 
 //绘制主小区与邻区之间的连线

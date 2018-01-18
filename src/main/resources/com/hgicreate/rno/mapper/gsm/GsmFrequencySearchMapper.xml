@@ -21,6 +21,7 @@
         <if test="ci != null">
             and CI = #{ci}
         </if>
+        and AREA_ID = #{cityId}
     </select>
     <select id="findNcellByCondition" parameterType="java.lang.String"
             resultType="com.hgicreate.rno.domain.gsm.GsmCell">

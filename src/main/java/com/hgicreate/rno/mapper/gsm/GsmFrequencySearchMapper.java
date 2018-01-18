@@ -10,10 +10,11 @@ import java.util.List;
 public interface GsmFrequencySearchMapper {
 
     List<GsmCell> findCellByCondition(@Param("cellId") String cellId,
-                                             @Param("cellName") String cellName,
-                                             @Param("cellEnName") String cellEnName,
-                                             @Param("lac") String lac,
-                                             @Param("ci") String ci);
+                                      @Param("cellName") String cellName,
+                                      @Param("cellEnName") String cellEnName,
+                                      @Param("lac") String lac,
+                                      @Param("ci") String ci,
+                                      @Param("cityId") String cityId);
 
     List<GsmCell> findNcellByCondition(@Param("cellId") String cellId);
 
