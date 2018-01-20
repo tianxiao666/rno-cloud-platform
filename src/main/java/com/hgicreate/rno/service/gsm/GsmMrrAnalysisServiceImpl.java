@@ -64,6 +64,8 @@ public class GsmMrrAnalysisServiceImpl implements GsmMrrAnalysisService {
             vm.setTableName("RNO_GSM_MRR_PLD");
         } else if(("TA").equals(vm.getMrrDataType())) {
             vm.setTableName("RNO_GSM_MRR_TA");
+        }else {
+            return new ArrayList<>();
         }
         return gsmMrrAnalysisMapper.queryAllMrrData(vm);
     }

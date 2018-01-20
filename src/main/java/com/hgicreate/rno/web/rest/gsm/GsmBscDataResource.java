@@ -18,7 +18,6 @@ import com.hgicreate.rno.web.rest.gsm.vm.GsmBscFileUploadVM;
 import com.hgicreate.rno.web.rest.gsm.vm.GsmBscImportQueryVM;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,7 +43,6 @@ import java.util.stream.Collectors;
 public class GsmBscDataResource {
     @Value("${rno.path.upload-files}")
     private String directory;
-
     private final GsmBscDataService gsmBscDataService;
     private final DataJobRepository dataJobRepository;
     private  final OriginFileRepository originFileRepository;
@@ -52,22 +50,19 @@ public class GsmBscDataResource {
     private final DataJobReportRepository dataJobReportRepository;
     private final GsmBscDataRepository gsmBscDataRepository;
 
-    private final Environment env;
-
     public GsmBscDataResource(GsmBscDataService gsmBscDataService,
                               DataJobRepository dataJobRepository,
                               GsmBscDataRepository gsmBscDataRepository,
                               DataJobReportRepository dataJobReportRepository,
                               OriginFileRepository originFileRepository,
-                              OriginFileAttrRepository originFileAttrRepository,
-                              Environment env) {
+                              OriginFileAttrRepository originFileAttrRepository
+                             ) {
         this.gsmBscDataService = gsmBscDataService;
         this.dataJobRepository = dataJobRepository;
         this.originFileRepository = originFileRepository;
         this.originFileAttrRepository = originFileAttrRepository;
         this.dataJobReportRepository = dataJobReportRepository;
         this.gsmBscDataRepository = gsmBscDataRepository;
-        this.env = env;
     }
 
     @GetMapping("/query-import")
@@ -86,7 +81,7 @@ public class GsmBscDataResource {
     }
 
     @GetMapping("/query-record")
-    public List<GsmBscDataDTO> queryRecord(GsmBscDataQueryVM vm) throws ParseException{
+    public List<GsmBscDataDTO> queryRecord(GsmBscDataQueryVM vm){
         log.debug("查询 bsc 信息。");
         log.debug("视图模型vm ={}", vm);
         return gsmBscDataService.queryRecord(vm);
@@ -123,20 +118,16 @@ public class GsmBscDataResource {
      */
     @PostMapping("/upload-file")
     public ResponseEntity<?> uploadFile(GsmBscFileUploadVM vm) {
-
         log.debug("模块名：" + vm.getModuleName());
         log.debug("视图模型: " + vm);
-
         try {
             Date uploadBeginTime = new Date();
             // 获取文件名，并构建为本地文件路径
             String filename = vm.getFile().getOriginalFilename();
             log.debug("上传的文件名：{}", filename);
-
             //创建更新对象
             OriginFile originFile = new OriginFile();
             OriginFileAttr originFileAttr = new OriginFileAttr();
-
             // 如果目录不存在则创建目录
             File fileDirectory = new File(directory + "/" + vm.getModuleName());
             if (!fileDirectory.exists() && !fileDirectory.mkdirs()) {
@@ -151,9 +142,7 @@ public class GsmBscDataResource {
                 originFile.setFileType("ZIP");
             }
             String filepath = Paths.get(directory + "/" + vm.getModuleName(), filename).toString();
-
             log.debug("存储的文件名：{}", filename);
-
             //更新文件记录RNO_ORIGIN_FILE
             originFile.setFilename(vm.getFile().getOriginalFilename());
             originFile.setDataType(vm.getModuleName().toUpperCase());
@@ -163,19 +152,16 @@ public class GsmBscDataResource {
             originFile.setCreatedUser(SecurityUtils.getCurrentUserLogin());
             originFile.setCreatedDate(new Date());
             originFileRepository.save(originFile);
-
             //更新文件记录RNO_ORIGIN_FILE_ATTR
             originFileAttr.setOriginFile(originFile);
             originFileAttr.setName("importModel");
             originFileAttr.setValue(vm.getImportModel());
             originFileAttrRepository.save(originFileAttr);
-
             // 保存文件到本地
             BufferedOutputStream stream =
                     new BufferedOutputStream(new FileOutputStream(new File(filepath)));
             stream.write(vm.getFile().getBytes());
             stream.close();
-
             //写入任务表
             DataJob dataJob = new DataJob();
             dataJob.setName("BSC数据导入");
@@ -190,7 +176,6 @@ public class GsmBscDataResource {
             dataJob.setStatus("全部成功");
             dataJob.setDataStoreType("FTP");
             dataJobRepository.save(dataJob);
-
             //写入任务报告表
             DataJobReport dataJobReport = new DataJobReport();
             dataJobReport.setDataJob(dataJob);
@@ -200,12 +185,10 @@ public class GsmBscDataResource {
             dataJobReport.setStatus("成功");
             dataJobReport.setMessage("文件成功上传至服务器");
             dataJobReportRepository.save(dataJobReport);
-
         } catch (Exception e) {
             log.error(e.getMessage());
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

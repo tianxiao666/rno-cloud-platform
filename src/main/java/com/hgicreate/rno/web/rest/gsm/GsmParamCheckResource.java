@@ -58,34 +58,8 @@ public class GsmParamCheckResource {
         Map<String, List<Map<String, Object>>> map = new LinkedHashMap<>();
         for (String powerCheck : vm.getItems().split(",")) {
             vm.setCheckType(powerCheck);
-            //获取sheetname与对应的list
-            String sheetName = "";
-            if (("powerCheck").equals(vm.getCheckType())) {
-                sheetName = "功率检查";
-            } else if (("freqHopCheck").equals(vm.getCheckType())) {
-                sheetName = "跳频检查";
-            } else if (("nccperm").equals(vm.getCheckType())) {
-                sheetName = "NCCPERM检查";
-            } else if (("meaFreqMultidefined").equals(vm.getCheckType())) {
-                sheetName = "测量频点多定义";
-            } else if (("meaFreqMomit").equals(vm.getCheckType())) {
-                sheetName = "测量频点漏定义";
-            } else if (("baNumCheck").equals(vm.getCheckType())) {
-                sheetName = "BA表个数检查";
-            } else if (("talimMaxTa").equals(vm.getCheckType())) {
-                sheetName = "TALIM_MAXTA检查";
-            } else if (("sameFreqBsicCheck").equals(vm.getCheckType())) {
-                sheetName = "同频同bsic检查";
-            } else if (("ncellNumCheck").equals(vm.getCheckType())) {
-                sheetName = "邻区过多过少检查";
-            } else if (("ncellMomit").equals(vm.getCheckType())) {
-                sheetName = "本站邻区漏定义";
-            } else if (("unidirNcell").equals(vm.getCheckType())) {
-                sheetName = "单向邻区检查";
-            } else if (("sameNcellFreqCheck").equals(vm.getCheckType())) {
-                sheetName = "同邻频检查";
-            }
-            map.put(sheetName, gsmParamCheckService.checkParamData(vm));
+            //获取sheetname与data数据并放进map
+            map.put(gsmParamCheckService.getSheetName(vm.getCheckType()), gsmParamCheckService.checkParamData(vm));
         }
         //把map放进工具导出
         ExcelFileTool.createExcel(resp, map);

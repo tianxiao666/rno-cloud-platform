@@ -57,7 +57,7 @@ public class GsmBscDataService {
                 .collect(Collectors.toList());
     }
 
-    public List<GsmBscDataDTO> queryRecord(GsmBscDataQueryVM vm) throws ParseException {
+    public List<GsmBscDataDTO> queryRecord(GsmBscDataQueryVM vm){
         GsmBscData gsmBscData = new GsmBscData();
         Area area = new Area();
         area.setId(Long.parseLong(vm.getCityIds()));

@@ -97,7 +97,6 @@ public class GsmParamQueryResource {
         }else {
             map.put(sheetName,  gsmParamQueryMapper.getNcellParamRecord(vm));
         }
-
         //把map放进工具导出
         ExcelFileTool.createExcel(resp, map);
     }

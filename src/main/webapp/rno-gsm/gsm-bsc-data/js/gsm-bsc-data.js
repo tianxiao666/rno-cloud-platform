@@ -1,26 +1,22 @@
 $(function () {
     $("#tabs").tabs();
     $("#addSingleBscDiv").draggable();
-
     // 设置导航标题
     setNavTitle("navTitle");
-
     // 初始化区域联动
     initAreaSelectors({selectors: ["provinceId", "cityId"]});
     initAreaSelectors({selectors: ["provinceIds", "cityIds"]});
-
     //显示隐藏导入窗口
     $("#importTitleDiv").click(function () {
-        var flag = $("#importDiv").is(":hidden");//是否隐藏
+        const flag = $("#importDiv").is(":hidden");//是否隐藏
         if (flag) {
             $(".importContent").show("fast");
         } else {
             $(".importContent").hide("fast");
         }
     });
-
     // 执行 laydate 实例 
-    var start = laydate.render({
+    const start = laydate.render({
         elem: '#begUploadDate',
         value: new Date(new Date().getTime() - 7 * 86400000),
         done: function (value, date) {
@@ -32,7 +28,7 @@ $(function () {
         }
     });
 
-    var end = laydate.render({
+    const end = laydate.render({
         elem: '#endUploadDate',
         value: new Date(),
         done: function (value, date) {
@@ -44,7 +40,7 @@ $(function () {
         }
     });
 
-    var beginTest = laydate.render({
+    const beginTest = laydate.render({
         elem: '#beginTestDate',
         value: new Date(new Date().getTime() - 7 * 86400000),
         done: function (value, date) {
@@ -56,7 +52,7 @@ $(function () {
         }
     });
 
-    var endTest = laydate.render({
+    const endTest = laydate.render({
         elem: '#endTestDate',
         value: new Date(),
         done: function (value, date) {
@@ -72,8 +68,8 @@ $(function () {
     $("#search-bsc-record").on('click', function () {
         //获取area_id上传
         $("#area").val($("#cityId").val());
-        var startTime = begUploadDate.value;
-        var endTime = endUploadDate.value;
+        const startTime = begUploadDate.value;
+        const endTime = endUploadDate.value;
         if (startTime > endTime) {
             showInfoInAndOut("info", "开始时间不能大于结束时间");
             return false;
@@ -89,7 +85,7 @@ $(function () {
     // AJAX 提交增加bsc的信息
     $("#addBscBtn").on('click', function () {
         //获取area_id上传
-        var cityId = $("#cityIds").val();
+        const cityId = $("#cityIds").val();
         $("#areas").val(cityId);
         if (bscName.value.trim()==='') {
             showInfoInAndOut("info", "bsc不能为空");
@@ -110,14 +106,14 @@ $(function () {
     });
 
     // AJAX 上传文件
-    var progress = $('.upload-progress');
-    var bar = $('.bar');
-    var percent = $('.percent');
+    let progress = $('.upload-progress');
+    let bar = $('.bar');
+    let percent = $('.percent');
 
     $("#bsc-import").on('click', function () {
         //获取area_id上传
         $("#area").val($("#cityId").val());
-        var filename = fileid.value;
+        const filename = fileid.value;
         if (!(filename.toUpperCase().endsWith(".CSV") || filename.toUpperCase().endsWith(".ZIP"))) {
             showInfoInAndOut("info", "请选择csv或者zip格式的数据文件");
             return false;
@@ -130,17 +126,17 @@ $(function () {
         url: "../../api/gsm-bsc-data/upload-file",
         beforeSend: function () {
             progress.css("display", "block");
-            var percentVal = '0%';
+            const percentVal = '0%';
             bar.width(percentVal);
             percent.html(percentVal);
         },
         uploadProgress: function (event, position, total, percentComplete) {
-            var percentVal = percentComplete + '%';
+            const percentVal = percentComplete + '%';
             bar.width(percentVal);
             percent.html(percentVal);
         },
         success: function () {
-            var percentVal = '100%';
+            const percentVal = '100%';
             bar.width(percentVal);
             percent.html(percentVal);
             $("#search-bsc-record").click();
@@ -149,20 +145,13 @@ $(function () {
 
     // 当上传文件域改变时，隐藏进度条
     $("input[name='file']").change(function () {
-        var filename = fileid.value;
-        if (!(filename.toUpperCase().endsWith(".CSV") || filename.toUpperCase().endsWith(".ZIP"))) {
-            alert(filename)
-            $("#fileDiv").html("不支持该类型文件！");
-        } else {
-            $("#fileDiv").html("");
-        }
         progress.css("display", "none");
     });
 
 });
 
 function showInfoInAndOut(div, info) {
-    var divSet = $("#" + div);
+    let divSet = $("#" + div);
     divSet.html(info);
     divSet.fadeIn(2000);
     setTimeout("$('#" + div + "').fadeOut(2000)", 1000);
@@ -170,7 +159,7 @@ function showInfoInAndOut(div, info) {
 
 //显示导入记录
 function showQueryImportResult(data) {
-    if (data == '') {
+    if (data === '') {
         $("#info").css("background", "red");
         showInfoInAndOut('info', '没有符合条件的BSC信息记录');
     }

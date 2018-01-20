@@ -1,4 +1,4 @@
-var map, tiled, samplePointLayer, lineLayer, cellLayer;
+let map, tiled, samplePointLayer, lineLayer, cellLayer;
 $(function () {
     $(".draggable").draggable();
     $("#trigger").css("display", "none");
@@ -7,42 +7,42 @@ $(function () {
         $(this).hide();
         $(".switch_hidden").show();
         $(".resource_list_icon").animate({
-            right: '0px'
-        }, 'fast');
+            right: "0px"
+        }, "fast");
         $(".resource_list_box").hide("fast");
     });
     $(".switch_hidden").click(function () {
         $(this).hide();
         $(".switch").show();
         $(".resource_list_icon").animate({
-            right: '400px'
-        }, 'fast');
+            right: "400px"
+        }, "fast");
         $(".resource_list_box").show("fast");
     });
 
-    var baseLayer = new ol.layer.Tile({
+    const baseLayer = new ol.layer.Tile({
         source: new ol.source.XYZ({
-            url: 'http://rno-omt.hgicreate.com/styles/rno-omt/{z}/{x}/{y}.png'
+            url: "http://rno-omt.hgicreate.com/styles/rno-omt/{z}/{x}/{y}.png"
         })
     });
     // 小区名图层
-    var textImageTile = new ol.layer.Tile({
+    const textImageTile = new ol.layer.Tile({
         source: new ol.source.TileWMS({
-            url: 'http://rno-gis.hgicreate.com/geoserver/wms',
+            url: "http://rno-gis.hgicreate.com/geoserver/wms",
             params: {
-                'FORMAT': 'image/png',
-                'SRS': 'EPSG:4326',
-                'tiled': true,
-                'LAYERS': 'rnoprod:RNO_GSM_CELL_CENTROID'
+                "FORMAT": "image/png",
+                "SRS": "EPSG:4326",
+                "tiled": true,
+                "LAYERS": "rnoprod:RNO_GSM_CELL_CENTROID"
             },
-            serverType: 'geoserver'
+            serverType: "geoserver"
         }),
         opacity: 0.8
     });
 
     $("#areaId").change(function () {
-        var lon = parseFloat($(this).find("option:checked").attr("data-lon"));
-        var lat = parseFloat($(this).find("option:checked").attr("data-lat"));
+        const lon = parseFloat($(this).find("option:checked").attr("data-lon"));
+        const lat = parseFloat($(this).find("option:checked").attr("data-lat"));
         if (map === undefined) {
             //采样点图层
             samplePointLayer = new ol.layer.Vector({
@@ -61,18 +61,18 @@ $(function () {
             });
 
             map = new ol.Map({
-                target: 'map',
+                target: "map",
                 layers: [baseLayer, samplePointLayer, cellLayer, lineLayer],
                 view: new ol.View({
-                    projection: 'EPSG:4326',
+                    projection: "EPSG:4326",
                     center: [lon, lat],
                     zoom: 18,
                 })
             });
 
             //获取新点击采样点信息
-            var feature;
-            map.on('singleclick', function (evt) {
+            let feature;
+            map.on("singleclick", function (evt) {
                 feature = map.forEachFeatureAtPixel(evt.pixel, function (feature) {
                     return feature;
                 });
@@ -82,20 +82,20 @@ $(function () {
                             url: "../../api/gsm-dt-analysis/dt-data-detail",
                             type: "GET",
                             data: {
-                                'dataId': feature.getId()
+                                "dataId": feature.getId()
                             },
                             success: function (data) {
-                                if (data != '') {
+                                if (data != "") {
                                     $("#tdSampleTime").text(data[0].time);
                                     $("#tdServerCell").text(data[0].cell);
                                     $("#tdRxLev").text(data[0].rxlevsub);
                                     $("#tdRxQual").text(data[0].rxqualsub);
-                                    var ncell1 = data[0].ncellNameOne ? data[0].ncellNameOne + "," : "";
-                                    var ncell2 = data[0].ncellNameTwo ? data[0].ncellNameTwo + "," : "";
-                                    var ncell3 = data[0].ncellNameThree ? data[0].ncellNameThree + "," : "";
-                                    var ncell4 = data[0].ncellNameFour ? data[0].ncellNameFour + "," : "";
-                                    var ncell5 = data[0].ncellNameFive ? data[0].ncellNameFive + "," : "";
-                                    var ncell6 = data[0].ncellNameSix ? data[0].ncellNameSix : "";
+                                    const ncell1 = data[0].ncellNameOne ? data[0].ncellNameOne + "," : "";
+                                    const ncell2 = data[0].ncellNameTwo ? data[0].ncellNameTwo + "," : "";
+                                    const ncell3 = data[0].ncellNameThree ? data[0].ncellNameThree + "," : "";
+                                    const ncell4 = data[0].ncellNameFour ? data[0].ncellNameFour + "," : "";
+                                    const ncell5 = data[0].ncellNameFive ? data[0].ncellNameFive + "," : "";
+                                    const ncell6 = data[0].ncellNameSix ? data[0].ncellNameSix : "";
                                     $("#tdNcells").text(ncell1 + ncell2 + ncell3 + ncell4 + ncell5 + ncell6);
                                     $("#tdNcellRxLev").text(data[0].ncellAvgRxlev);
                                     $("#tdServerCellToSampleAngle").text(data[0].distance);
@@ -119,18 +119,18 @@ $(function () {
     initAreaSelectors({selectors: ["provinceId", "cityId", "areaId"], coord: true, relate: true});
     //加载小区
     $("#loadGsmDtGisCell").click(function () {
-        var cityId = parseInt($("#cityId").find("option:checked").val());
+        const cityId = parseInt($("#cityId").find("option:checked").val());
         map.removeLayer(tiled);
         tiled = new ol.layer.Tile({
             zIndex: 3,
             source: new ol.source.TileWMS({
-                url: 'http://rno-gis.hgicreate.com/geoserver/rnoprod/wms',
+                url: "http://rno-gis.hgicreate.com/geoserver/rnoprod/wms",
                 params: {
-                    'FORMAT': 'image/png',
-                    'VERSION': '1.1.1',
+                    "FORMAT": "image/png",
+                    "VERSION": "1.1.1",
                     tiled: true,
-                    STYLES: '',
-                    LAYERS: 'rnoprod:RNO_GSM_CELL_GEOM',
+                    STYLES: "",
+                    LAYERS: "rnoprod:RNO_GSM_CELL_GEOM",
                     CQL_FILTER: "AREA_ID=" + cityId
                 }
             }),
@@ -150,9 +150,9 @@ $(function () {
     });
 });
 
-var strenth1 = 0, strenth2 = 0, strenth3 = 0, strenth4 = 0, strenth5 = 0, strenth6 = 0, strenth7 = 0, strenth8 = 0,
+let strenth1 = 0, strenth2 = 0, strenth3 = 0, strenth4 = 0, strenth5 = 0, strenth6 = 0, strenth7 = 0, strenth8 = 0,
     strenth9 = 0;
-var quality1 = 0, quality2 = 0, quality3 = 0, quality4 = 0, quality5 = 0;
+let quality1 = 0, quality2 = 0, quality3 = 0, quality4 = 0, quality5 = 0;
 
 function showDtAnalysisResult(type) {
     //隐藏信息表
@@ -199,11 +199,11 @@ function showDtAnalysisResult(type) {
             "descId": $("#areaId").val(),
         },
         success: function (data) {
-            var point, feature;
             if (data[0] === undefined) {
-                showInfoInAndOut('warn', '没有找到数据！');
+                showInfoInAndOut("warn", "没有找到数据！");
             } else {
                 //console.info(data)
+                let point, feature;
                 $.each(data, function (index, value) {
                     point = [parseFloat(value.longitude),
                         parseFloat(value.latitude)];
@@ -211,12 +211,12 @@ function showDtAnalysisResult(type) {
                         geometry: new ol.geom.Point(point),
                     });
                     feature.setId(value.id);
-                    var color = setColor(type, value);
+                    const color = setColor(type, value);
                     feature.setStyle(new ol.style.Style({
                         image: new ol.style.Circle({
                             radius: 4,
                             fill: new ol.style.Fill({color: color}),
-                            stroke: new ol.style.Stroke({color: 'blue', width: 1}),
+                            stroke: new ol.style.Stroke({color: "blue", width: 1}),
                         })
                     }));
                     samplePointLayer.getSource().addFeature(feature);
@@ -236,19 +236,19 @@ function showDtAnalysisResult(type) {
                 //小区覆盖功能、采样点小区有后续处理
                 if (type === "cellCover") {
                     $("#cellCoverage").show();
-                    showInfoInAndOut('warn', '请输入小区后查看');
+                    showInfoInAndOut("warn", "请输入小区后查看");
                 } else if (type === "sampleCover") {
                     $("#sampleCoverage").show();
-                    showInfoInAndOut('warn', '请输入采样点小区后查看');
+                    showInfoInAndOut("warn", "请输入采样点小区后查看");
                 } else {
-                    showInfoInAndOut('success', '渲染完成！');
+                    showInfoInAndOut("success", "渲染完成！");
                 }
                 showResultTable(type);
             }
         },
         error: function (err) {
             $("#loading").css("display", "none");
-            showInfoInAndOut('error', '程序出错了！');
+            showInfoInAndOut("error", "程序出错了！");
         }
     });
 }
@@ -256,7 +256,7 @@ function showDtAnalysisResult(type) {
 function showCoverageLine(type) {
     lineLayer.getSource().clear();
     if ($("#" + type + "Cover").val().trim() === "") {
-        showInfoInAndOut('warn', '采样点小区不能为空！！');
+        showInfoInAndOut("warn", "采样点小区不能为空！！");
         return;
     }
     $("#loading").css("display", "block");
@@ -269,8 +269,8 @@ function showCoverageLine(type) {
         success: function (data) {
             $("#loading").css("display", "none");
             if (data.length > 1) {
-                var cell;
-                var ncellList = [];
+                let cell;
+                let ncellList = [];
                 if (type === "cell") {       //处理小区覆盖划线
                     cell = [parseFloat(data[0]["CELL_LONGITUDE"]), parseFloat(data[0]["CELL_LATITUDE"])];
                     $.each(data, function (index, value) {
@@ -278,21 +278,21 @@ function showCoverageLine(type) {
                     });
                 } else {         //处理采样点小区覆盖划线
                     cell = [parseFloat(data[0]["LONGITUDE"]), parseFloat(data[0]["LATITUDE"])];
-                    for (var i = 1; i < data.length; i++) {
+                    for (let i = 1; i < data.length; i++) {
                         ncellList.push([parseFloat(data[i]["LONGITUDE"]), parseFloat(data[i]["LATITUDE"])]);
                     }
                 }
                 //绘制连线
                 drawLine(cell, ncellList);
-                showInfoInAndOut('success', '渲染完成！');
+                showInfoInAndOut("success", "渲染完成！");
             } else {
                 $("#loading").css("display", "none");
-                showInfoInAndOut('warn', '没有找到相关的小区！');
+                showInfoInAndOut("warn", "没有找到相关的小区！");
             }
         },
         error: function (err) {
             $("#loading").css("display", "none");
-            showInfoInAndOut('error', '程序出错了！');
+            showInfoInAndOut("error", "程序出错了！");
         }
     });
 }
@@ -302,11 +302,11 @@ function showNcellLine() {
         url: "../../api/gsm-dt-analysis/get-cell",
         type: "GET"
     }).then(function (data) {
-        var cellList = [];
+        let cellList = [];
         $.each(data, function (index, value) {
             cellList.push([parseFloat(value["CELL_LONGITUDE"]), parseFloat(value["CELL_LATITUDE"])]);
         });
-        for (var i = 0; i < cellList.length; i++) {
+        for (let i = 0; i < cellList.length; i++) {
             showCellChart(cellList[i]);
             getNcell(cellList[i]);
         }
@@ -322,7 +322,7 @@ function getNcell(cell) {
             "latitude": cell[1]
         }
     }).then(function (data) {
-        var ncellList = [];
+        let ncellList = [];
         $.each(data, function (index, value) {
             ncellList.push([parseFloat(value["LONGITUDE"]), parseFloat(value["LATITUDE"])]);
         });
@@ -332,7 +332,7 @@ function getNcell(cell) {
 }
 
 function showCellChart(cell) {
-    var pointN, featureN;
+    let pointN, featureN;
     pointN = [cell[0], cell[1]];
     featureN = new ol.Feature({
         geometry: new ol.geom.Point(pointN),
@@ -341,14 +341,14 @@ function showCellChart(cell) {
         image: new ol.style.Circle({
             radius: 4,
             fill: new ol.style.Fill({color: "#EE3B3B"}),
-            stroke: new ol.style.Stroke({color: 'blue', width: 1}),
+            stroke: new ol.style.Stroke({color: "blue", width: 1}),
         })
     }));
     cellLayer.getSource().addFeature(featureN);
 }
 
 function drawLine(cellCoors, ncellCoors) {
-    var line, feature;
+    let line, feature;
     $.each(ncellCoors, function (index, value) {
         line = new ol.geom.LineString([cellCoors, value]);
         feature = new ol.Feature({
@@ -365,7 +365,7 @@ function drawLine(cellCoors, ncellCoors) {
 }
 
 function setColor(type, value) {
-    var color = "rgba(0, 255, 0, 1.0)";
+    let color = "rgba(0, 255, 0, 1.0)";
     if (type === "strenth") {
         if (value.rxlevsub < -90) {
             color = "#EE3B3B";
@@ -417,15 +417,15 @@ function setColor(type, value) {
         }
     } else if (type === "structure") {
         if (value.rxqualsub) {
-            var count = 0;
-            var ncellRxlevArr = new Array();
+            let count = 0;
+            let ncellRxlevArr = new Array();
             ncellRxlevArr.push(value.ncellRxlevOne ? value.ncellRxlevOne : 0);
             ncellRxlevArr.push(value.ncellRxlevTwo ? value.ncellRxlevTwo : 0);
             ncellRxlevArr.push(value.ncellRxlevThree ? value.ncellRxlevThree : 0);
             ncellRxlevArr.push(value.ncellRxlevFour ? value.ncellRxlevFour : 0);
             ncellRxlevArr.push(value.ncellRxlevFive ? value.ncellRxlevFive : 0);
             ncellRxlevArr.push(value.ncellRxlevSix ? value.ncellRxlevSix : 0);
-            for (var h = 0; h < ncellRxlevArr.length; h++) {
+            for (let h = 0; h < ncellRxlevArr.length; h++) {
                 if (ncellRxlevArr[h] >= (value.rxqualsub - 12) && ncellRxlevArr[h] <= (value.rxqualsub + 12)) {
                     count++;
                 }
@@ -463,7 +463,7 @@ function showResultTable(type) {
     $("[name='move']").remove();
     if (type === "strenth") {
         $("#tdTitle").text("Rxlev渲染指标统计");
-        var trLine = "";
+        let trLine = "";
         trLine = "<tr style='height: 20px' id='tr0' name='move'><td style='text-align: center'>X<-90</td></tr>" +
             "<tr style='height: 20px' id='tr1' name='move'><td style='text-align: center'>-90<=X<-85</td></tr>" +
             "<tr style='height: 20px' id='tr2' name='move'><td style='text-align: center'>-85<=X<-80</td></tr>" +
@@ -474,8 +474,8 @@ function showResultTable(type) {
             "<tr style='height: 20px' id='tr7' name='move'><td style='text-align: center'>-60<=X<0</td></tr>" +
             "<tr style='height: 20px' id='tr8' name='move'><td style='text-align: center'>无效点</td></tr>";
         $("#tbContext").append(trLine);
-        var total = strenth1 + strenth2 + strenth3 + strenth4 + strenth5 + strenth6 + strenth7 + strenth8;
-        var strenthArray = new Array();
+        let total = strenth1 + strenth2 + strenth3 + strenth4 + strenth5 + strenth6 + strenth7 + strenth8;
+        let strenthArray = new Array();
         strenthArray.push(strenth1);
         strenthArray.push(strenth2);
         strenthArray.push(strenth3);
@@ -485,7 +485,7 @@ function showResultTable(type) {
         strenthArray.push(strenth7);
         strenthArray.push(strenth8);
         strenthArray.push(strenth9);
-        var strenthCount = new Array();
+        let strenthCount = new Array();
         strenthCount.push(mathPercent(strenth1, total));
         strenthCount.push(mathPercent(strenth2, total));
         strenthCount.push(mathPercent(strenth3, total));
@@ -495,8 +495,8 @@ function showResultTable(type) {
         strenthCount.push(mathPercent(strenth7, total));
         strenthCount.push(mathPercent(strenth8, total));
         strenthCount.push(mathPercent(strenth9, total));
-        for (var i = 0; i < 9; i++) {
-            var html = "";
+        for (let i = 0; i < 9; i++) {
+            let html = "";
             html += "<td style='text-align: center;'>" + strenthArray[i] + "</td>";
             html += "<td style='text-align: center;'>" + strenthCount[i] + "</td>";
             $("#tr" + i).append(html);
@@ -504,28 +504,28 @@ function showResultTable(type) {
         $("#showResultTable").show();
     } else if (type === "quality") {
         $("#tdTitle").text("可用信号渲染指标统计");
-        var trList = "";
+        let trList = "";
         trList = "<tr style='height: 20px' id='tr0' name='move'><td style='text-align: center'>0<=X<4</td></tr>" +
             "<tr style='height: 20px' id='tr1' name='move'><td style='text-align: center'>4<=X<7</td></tr>" +
             "<tr style='height: 20px' id='tr2' name='move'><td style='text-align: center'>-7<=X<10</td></tr>" +
             "<tr style='height: 20px' id='tr3' name='move'><td style='text-align: center'>X>=10</td></tr>" +
             "<tr style='height: 20px' id='tr4' name='move'><td style='text-align: center'>无效点</td></tr>";
         $("#tbContext").append(trList);
-        var tot = quality1 + quality2 + quality3 + quality4 + quality5;
-        var qualityArray = new Array();
+        const tot = quality1 + quality2 + quality3 + quality4 + quality5;
+        let qualityArray = new Array();
         qualityArray.push(quality1);
         qualityArray.push(quality2);
         qualityArray.push(quality3);
         qualityArray.push(quality4);
         qualityArray.push(quality5);
-        var qualityCount = new Array();
+        let qualityCount = new Array();
         qualityCount.push(mathPercent(quality1, tot));
         qualityCount.push(mathPercent(quality2, tot));
         qualityCount.push(mathPercent(quality3, tot));
         qualityCount.push(mathPercent(quality4, tot));
         qualityCount.push(mathPercent(quality5, tot));
-        for (var i = 0; i < 5; i++) {
-            var html = "";
+        for (let i = 0; i < 5; i++) {
+            let html = "";
             html += "<td style='text-align: center;'>" + qualityArray[i] + "</td>";
             html += "<td style='text-align: center;'>" + qualityCount[i] + "</td>";
             $("#tr" + i).append(html);
@@ -547,19 +547,31 @@ function showInfoInAndOut(div, info) {
 
 //待完善的功能
 function toAnalysis(fun) {
+    //隐藏信息表
+    $("#showQuality").hide();
+    $("#showRxlev").hide();
+    $("#showStructure").hide();
+    $("#showResultTable").hide();
+    $("#showCoverage").hide();
+    $("#cellCoverage").hide();
+    $("#sampleCoverage").hide();
+    //清空图层
+    samplePointLayer.getSource().clear();
+    cellLayer.getSource().clear();
+    lineLayer.getSource().clear();
     $.ajax({
         url: "../../api/gsm-dt-analysis/" + fun,
         type: "GET",
         success: function (data) {
             if (data.length > 0) {
                 //后续数据处理
-                showInfoInAndOut('success', '渲染完成');
+                showInfoInAndOut("success", "渲染完成");
             } else {
-                showInfoInAndOut('warn', '无相关数据！！');
+                showInfoInAndOut("warn", "无相关数据！！");
             }
         },
         error: function (err) {
-            showInfoInAndOut('error', '程序出错了！');
+            showInfoInAndOut("error", "程序出错了！");
         }
     });
 }

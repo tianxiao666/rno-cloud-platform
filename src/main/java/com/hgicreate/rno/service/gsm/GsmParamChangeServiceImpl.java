@@ -237,36 +237,35 @@ public class GsmParamChangeServiceImpl implements GsmParamChangeService {
             vm.setParam("\"TO\"");
         }
         //BCCH改为BCCHNO
-        else if (("BCCH").equals(vm.getParam())) {
+        if (("BCCH").equals(vm.getParam())) {
             vm.setParam("BCCHNO");
         }
         //BSIC改为NCC||BCC as BSIC
-        else if (("BSIC").equals(vm.getParam())) {
+        if (("BSIC").equals(vm.getParam())) {
             vm.setParam("NCC||BCC");
         }
         //ACC改为ACC_16
-        else if (("ACC").equals(vm.getParam())) {
+        if (("ACC").equals(vm.getParam())) {
             vm.setParam("ACC_16");
         }
         //NCCPERM改为NCCPERM_8
-        else if (("NCCPERM").equals(vm.getParam())) {
+        if (("NCCPERM").equals(vm.getParam())) {
             vm.setParam("NCCPERM_8");
         }
         //ACTIVEMBCCHNO改为ACTIVE_32
-        else if (("ACTIVEMBCCHNO").equals(vm.getParam())) {
+        if (("ACTIVEMBCCHNO").equals(vm.getParam())) {
             vm.setParam("ACTIVE_32");
         }
         //IDLEMBCCHNO改为IDLE_32
-        else if (("IDLEMBCCHNO").equals(vm.getParam())) {
+        if (("IDLEMBCCHNO").equals(vm.getParam())) {
             vm.setParam("IDLE_32");
         }
-        /**Channel**/
         //MAIO改为MAIO_16
-        else if (("MAIO").equals(vm.getParam())) {
+        if (("MAIO").equals(vm.getParam())) {
             vm.setParam("MAIO_16");
         }
         //ETCHTN改为ETCHTN_8
-        else if (("ETCHTN").equals(vm.getParam())) {
+        if (("ETCHTN").equals(vm.getParam())) {
             vm.setParam("ETCHTN_8");
         }
         List<Map<String, Object>> res = new ArrayList<Map<String, Object>>();

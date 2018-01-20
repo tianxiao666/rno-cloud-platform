@@ -31,7 +31,7 @@ public class GsmParamCheckServiceImpl implements GsmParamCheckService {
         }
         //跳频检查
         if (("freqHopCheck").equals(vm.getCheckType())) {
-            if (vm.getCheckMaxChgr() == true) {
+            if (vm.getCheckMaxChgr()) {
                 result = gsmParamCheckMapper.getEriCellFreqHopCheckResultTrue(vm);
             } else {
                 result = gsmParamCheckMapper.getEriCellFreqHopCheckResult(vm);
@@ -67,7 +67,7 @@ public class GsmParamCheckServiceImpl implements GsmParamCheckService {
         }
         //邻区过多过少检查
         if (("ncellNumCheck").equals(vm.getCheckType())) {
-            if (vm.getCheckNcellNum() == false) {
+            if (!vm.getCheckNcellNum()) {
                 vm.setNcellMaxNum(32);
                 vm.setNcellMinNum(2);
             }
@@ -93,16 +93,56 @@ public class GsmParamCheckServiceImpl implements GsmParamCheckService {
         return result;
     }
 
+    @Override
+    public String getSheetName(String name) {
+        String sheetName = "sheet1";
+        if (("powerCheck").equals(name)) {
+            sheetName = "功率检查";
+        }
+        if (("freqHopCheck").equals(name)) {
+            sheetName = "跳频检查";
+        }
+        if (("nccperm").equals(name)) {
+            sheetName = "NCCPERM检查";
+        }
+        if (("meaFreqMultidefined").equals(name)) {
+            sheetName = "测量频点多定义";
+        }
+        if (("meaFreqMomit").equals(name)) {
+            sheetName = "测量频点漏定义";
+        }
+        if (("baNumCheck").equals(name)) {
+            sheetName = "BA表个数检查";
+        }
+        if (("talimMaxTa").equals(name)) {
+            sheetName = "TALIM_MAXTA检查";
+        }
+        if (("sameFreqBsicCheck").equals(name)) {
+            sheetName = "同频同bsic检查";
+        }
+        if (("ncellNumCheck").equals(name)) {
+            sheetName = "邻区过多过少检查";
+        }
+        if (("ncellMomit").equals(name)) {
+            sheetName = "本站邻区漏定义";
+        }
+        if (("unidirNcell").equals(name)) {
+            sheetName = "单向邻区检查";
+        }
+        if (("sameNcellFreqCheck").equals(name)) {
+            sheetName = "同邻频检查";
+        }
+        return sheetName;
+    }
+
     /**
      * 获取BA表个数检查结果
      */
     private List<Map<String, Object>> getEriCellBaNumCheckFinalResult(List<Map<String, Object>> res, GsmParamCheckVM vm) {
         List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
         Map<String, Object> baMap;
-
         String activeStr = "", idleStr = "", bscStr = "", cellStr = "";
-
-        if (vm.getCheckBaNum() == false) {
+        if (!vm.getCheckBaNum()) {
             vm.setMaxNum(20);
             vm.setMinNum(5);
         }
@@ -139,9 +179,9 @@ public class GsmParamCheckServiceImpl implements GsmParamCheckService {
     /**
      * 获取爱立信小区同频同bsic检查结果集
      */
-    public List<Map<String, Object>> getEriCellCoBsicCheckFinalResult(GsmParamCheckVM vm) {
+    private List<Map<String, Object>> getEriCellCoBsicCheckFinalResult(GsmParamCheckVM vm) {
         double meaDis;
-        if (vm.getCheckCoBsic() == false) {
+        if (!vm.getCheckCoBsic()) {
             vm.setDistance(15000);
         }
         List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
@@ -243,7 +283,7 @@ public class GsmParamCheckServiceImpl implements GsmParamCheckService {
     /**
      * 通过相同bcchbsic的组合cobsic下有两个或多个label,从而保存CobsicCells对象集合数据
      */
-    public List<CobsicCellsDTO> saveCobsicCellsByCoBsicKeys(GsmParamCheckVM vm) {
+    private List<CobsicCellsDTO> saveCobsicCellsByCoBsicKeys(GsmParamCheckVM vm) {
         List<Map<String, Object>> res = gsmParamCheckMapper.getEriCellCoBsicCheckResult(vm);
         List<CobsicCellsDTO> coblists = new ArrayList<CobsicCellsDTO>();
         boolean flag = false;
@@ -280,13 +320,12 @@ public class GsmParamCheckServiceImpl implements GsmParamCheckService {
         return coblists;
     }
 
-    public double getDistanceBetweenTheCells(String sourcecell, String targetcell) {
+    private double getDistanceBetweenTheCells(String sourcecell, String targetcell) {
         double dis = 0;
         String lng1 = sourcecell.substring(sourcecell.lastIndexOf("-") + 1).split(",")[0];
         String lat1 = sourcecell.substring(sourcecell.lastIndexOf("-") + 1).split(",")[1];
         String lng2 = targetcell.substring(targetcell.lastIndexOf("-") + 1).split(",")[0];
         String lat2 = targetcell.substring(targetcell.lastIndexOf("-") + 1).split(",")[1];
-
         if (!"空".equals(lng1) && !"空".equals(lng2)) {
             dis = LatLngHelperUtils.Distance(Double.parseDouble(lng1), Double.parseDouble(lat1), Double.parseDouble(lng2), Double.parseDouble(lat2));
         }
@@ -299,14 +338,10 @@ public class GsmParamCheckServiceImpl implements GsmParamCheckService {
     private List<Map<String, Object>> getEriCellNccpermFinalResult(List<Map<String, Object>> res) {
 
         List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
-
         String cell = "", nccpermStr = "", ncellNccStr = "", leakNcc = "", command = "", nccStr = "";
-
         String[] nccperm = {};
         String[] ncellNcc = {};
-
         List<String> nccpermList;
-
         //判断nccperm是否存在漏定，有则加入结果集
         for (Map<String, Object> one : res) {
             //初始化
@@ -355,20 +390,15 @@ public class GsmParamCheckServiceImpl implements GsmParamCheckService {
     private List<Map<String, Object>> getEriCellMeaFreqMultidefineResult(List<Map<String, Object>> res) {
 
         List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
-
         String activeStr = "";
         String idleStr = "";
         String ncellBcchStr = "";
         String[] actives = {};
         String[] idles = {};
         String[] ncellBcchs = {};
-
         List<String> ncellBcchList;
-
         String overActiveStr = "", overActiveComm = "", overIdleStr = "", overIdleComm = "", command = "";
-
         Map<String, Object> map = null;
-
         //判断active与idle是否多定义
         for (Map<String, Object> one : res) {
             //初始化
@@ -376,7 +406,6 @@ public class GsmParamCheckServiceImpl implements GsmParamCheckService {
             overActiveComm = "";
             overIdleStr = "";
             overIdleComm = "";
-
             if (one.get("ACTIVE") != null && one.get("IDLE") != null
                     && one.get("NCELL_BCCH") != null) {
                 activeStr = one.get("ACTIVE").toString();
@@ -441,20 +470,14 @@ public class GsmParamCheckServiceImpl implements GsmParamCheckService {
      */
     private List<Map<String, Object>> getEriCellMeaFreqMomitResult(List<Map<String, Object>> res) {
         List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
-
         String activeStr = "", idleStr = "", ncellBcchStr = "";
-
         String[] actives = {};
         String[] idles = {};
         String[] ncellBcchs = {};
-
         List<String> activeList;
         List<String> idleList;
-
         String leakActiveStr = "", leakActiveComm = "", leakIdleStr = "", leakIdleComm = "", command = "";
-
         Map<String, Object> map = null;
-
         //判断active与idle是否多定义
         for (Map<String, Object> one : res) {
             //初始化
@@ -462,7 +485,6 @@ public class GsmParamCheckServiceImpl implements GsmParamCheckService {
             leakActiveComm = "";
             leakIdleStr = "";
             leakIdleComm = "";
-
             if (one.get("ACTIVE") != null && one.get("IDLE") != null
                     && one.get("NCELL_BCCH") != null) {
                 activeStr = one.get("ACTIVE").toString();
@@ -529,31 +551,22 @@ public class GsmParamCheckServiceImpl implements GsmParamCheckService {
     private List<Map<String, Object>> getEriCellSameNcellFreqCheckResult(List<Map<String, Object>> res) {
 
         List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
-        ;
-
         String comment = "", bsc = "", cell = "", ncell = "", bcch = "", tch = "", nbcch = "", ntch = "", cs = "";
-
         String[] tchStr = {};
         String[] ntchStr = {};
-
         List<String> tchList;
         List<String> ntchList;
-
         Map<String, Object> map;
-
         String distance = "", bcchR = "", bcchL = "", nbcchR = "", nbcchL = "", tchR = "", tchL = "";
-
         for (Map<String, Object> one : res) {
             //初始化
             comment = "";
-
             if (one.get("CELL") == null || one.get("N_CELL") == null
                     || one.get("BCCHNO") == null || one.get("N_BCCHNO") == null
                     || one.get("TCH") == null || one.get("N_TCH") == null
                     || one.get("DISTANCE") == null) {
                 continue;
             }
-
             bsc = one.get("BSC").toString();
             cell = one.get("CELL").toString();
             ncell = one.get("N_CELL").toString();
@@ -563,20 +576,17 @@ public class GsmParamCheckServiceImpl implements GsmParamCheckService {
             ntch = one.get("N_TCH").toString();
             cs = one.get("CS").toString();
             distance = one.get("DISTANCE").toString();
-
             if (("YES").equals(cs)) {
                 comment = "同站";
             } else if (("NO").equals(cs)) {
                 comment = "邻站";
             }
-
             tchStr = tch.split(",");
             ntchStr = ntch.split(",");
             tchList = Arrays.asList(tchStr);
             ntchList = Arrays.asList(ntchStr);
-
             //同BCCH
-            if (ntchList.contains(bcch)) {
+            if (ntchList.contains(bcch)||tchList.contains(nbcch)) {
                 map = new HashMap<String, Object>();
                 map.put("BSC", bsc);
                 map.put("CELL", cell);
@@ -585,22 +595,6 @@ public class GsmParamCheckServiceImpl implements GsmParamCheckService {
                 map.put("CELLR_BCCH", nbcch);
                 map.put("CELL_FREQ", bcch);
                 map.put("CELLR_FREQ", bcch);
-                map.put("DIR", "MUTAUL");
-                map.put("CS", cs);
-                map.put("DISTANCE", distance);
-                map.put("COMMENT", comment + "同BCCH");
-                result.add(map);
-            }
-
-            if (tchList.contains(nbcch)) {
-                map = new HashMap<String, Object>();
-                map.put("BSC", bsc);
-                map.put("CELL", cell);
-                map.put("CELLR", ncell);
-                map.put("CELL_BCCH", bcch);
-                map.put("CELLR_BCCH", nbcch);
-                map.put("CELL_FREQ", nbcch);
-                map.put("CELLR_FREQ", nbcch);
                 map.put("DIR", "MUTAUL");
                 map.put("CS", cs);
                 map.put("DISTANCE", distance);
@@ -638,7 +632,7 @@ public class GsmParamCheckServiceImpl implements GsmParamCheckService {
             bcchL = (Integer.parseInt(bcch) - 1) + "";
             nbcchR = (Integer.parseInt(bcch) + 1) + "";
             nbcchL = (Integer.parseInt(bcch) - 1) + "";
-            if (ntchList.contains(bcchR)) {
+            if (ntchList.contains(bcchR)||ntchList.contains(bcchL)) {
                 map = new HashMap<String, Object>();
                 map.put("BSC", bsc);
                 map.put("CELL", cell);
@@ -653,44 +647,18 @@ public class GsmParamCheckServiceImpl implements GsmParamCheckService {
                 map.put("COMMENT", comment + "邻BCCH");
                 result.add(map);
             }
-            if (ntchList.contains(bcchL)) {
+            if (tchList.contains(nbcchR)||tchList.contains(nbcchL)) {
                 map = new HashMap<String, Object>();
                 map.put("BSC", bsc);
                 map.put("CELL", cell);
                 map.put("CELLR", ncell);
                 map.put("CELL_BCCH", bcch);
                 map.put("CELLR_BCCH", nbcch);
-                map.put("CELL_FREQ", bcch);
-                map.put("CELLR_FREQ", bcchL);
-                map.put("DIR", "MUTAUL");
-                map.put("CS", cs);
-                map.put("DISTANCE", distance);
-                map.put("COMMENT", comment + "邻BCCH");
-                result.add(map);
-            }
-            if (tchList.contains(nbcchR)) {
-                map = new HashMap<String, Object>();
-                map.put("BSC", bsc);
-                map.put("CELL", cell);
-                map.put("CELLR", ncell);
-                map.put("CELL_BCCH", bcch);
-                map.put("CELLR_BCCH", nbcch);
-                map.put("CELL_FREQ", nbcchR);
-                map.put("CELLR_FREQ", nbcch);
-                map.put("DIR", "MUTAUL");
-                map.put("CS", cs);
-                map.put("DISTANCE", distance);
-                map.put("COMMENT", comment + "邻BCCH");
-                result.add(map);
-            }
-            if (tchList.contains(nbcchL)) {
-                map = new HashMap<String, Object>();
-                map.put("BSC", bsc);
-                map.put("CELL", cell);
-                map.put("CELLR", ncell);
-                map.put("CELL_BCCH", bcch);
-                map.put("CELLR_BCCH", nbcch);
-                map.put("CELL_FREQ", nbcchL);
+                if(tchList.contains(nbcchR)) {
+                    map.put("CELL_FREQ", nbcchR);
+                }else if(tchList.contains(nbcchL)) {
+                    map.put("CELL_FREQ", nbcchL);
+                }
                 map.put("CELLR_FREQ", nbcch);
                 map.put("DIR", "MUTAUL");
                 map.put("CS", cs);
@@ -706,11 +674,11 @@ public class GsmParamCheckServiceImpl implements GsmParamCheckService {
                 }
                 tchR = (Integer.parseInt(t) + 1) + "";
                 tchL = (Integer.parseInt(t) - 1) + "";
-                //过滤tch中的邻nbcch，以免重复
-                if (tchR.equals(nbcch)) {
+                //过滤tch中的邻nbcch、nbcch，以免重复
+                if (tchR.equals(nbcch)||tchL.equals(nbcch)) {
                     continue;
                 }
-                if (ntchList.contains(tchR)) {
+                if (ntchList.contains(tchR)||ntchList.contains(tchL)) {
                     map = new HashMap<String, Object>();
                     map.put("BSC", bsc);
                     map.put("CELL", cell);
@@ -718,26 +686,11 @@ public class GsmParamCheckServiceImpl implements GsmParamCheckService {
                     map.put("CELL_BCCH", bcch);
                     map.put("CELLR_BCCH", nbcch);
                     map.put("CELL_FREQ", t);
-                    map.put("CELLR_FREQ", tchR);
-                    map.put("DIR", "MUTAUL");
-                    map.put("CS", cs);
-                    map.put("DISTANCE", distance);
-                    map.put("COMMENT", comment + "邻TCH");
-                    result.add(map);
-                }
-                //过滤tch中的邻nbcch，以免重复
-                if (tchL.equals(nbcch)) {
-                    continue;
-                }
-                if (ntchList.contains(tchL)) {
-                    map = new HashMap<String, Object>();
-                    map.put("BSC", bsc);
-                    map.put("CELL", cell);
-                    map.put("CELLR", ncell);
-                    map.put("CELL_BCCH", bcch);
-                    map.put("CELLR_BCCH", nbcch);
-                    map.put("CELL_FREQ", t);
-                    map.put("CELLR_FREQ", tchL);
+                    if(ntchList.contains(tchR)) {
+                        map.put("CELLR_FREQ", tchR);
+                    }else if(ntchList.contains(tchL)){
+                        map.put("CELLR_FREQ", tchL);
+                    }
                     map.put("DIR", "MUTAUL");
                     map.put("CS", cs);
                     map.put("DISTANCE", distance);

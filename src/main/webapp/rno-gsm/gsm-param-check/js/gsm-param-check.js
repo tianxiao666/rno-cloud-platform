@@ -62,7 +62,6 @@ var ncellDataCheckResult = new Array();
 var bsc,bscStr,date1,cityId,isCheckMaxChgr ,isCheckBaNum ,maxNum,minNum,isCheckCoBsic,distance,isCheckNcellNum,ncell_maxNum,ncell_minNum;
 
 $(function () {
-
     // 执行 laydate 实例 
     var dateBeg = new Date();
     dateBeg.setFullYear(2014, 11, 5);

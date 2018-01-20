@@ -16,4 +16,10 @@ public interface GsmParamCheckService {
      * @return
      */
     List<Map<String, Object>> checkParamData(GsmParamCheckVM vm);
+    /**
+     * 获取sheetname名字
+     * @param name 核查类型
+     * @return sheetname
+     */
+    String getSheetName(String name);
 }

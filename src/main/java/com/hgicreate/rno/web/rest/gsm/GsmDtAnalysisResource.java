@@ -78,37 +78,31 @@ public class GsmDtAnalysisResource {
     @GetMapping("/get-weak-cover")
     public List<Map<String, Object>> queryWeakCoverageCell() {
         log.debug("查询弱覆盖小区");
-        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-        return list;
+        return new ArrayList<>();
     }
     @GetMapping("/get-over-cover")
     public List<Map<String, Object>> queryOverCoverageCell() {
         log.debug("查询覆盖过远小区");
-        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-        return list;
+        return new ArrayList<>();
     }
     @GetMapping("/get-indoor-signal")
     public List<Map<String, Object>> queryIndoorSignalLeakOutsideCell() {
         log.debug("查询室分外泄小区");
-        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-        return list;
+        return new ArrayList<>();
     }
     @GetMapping("/get-no-main-cell")
     public List<Map<String, Object>> queryNoMainCoverageCell() {
         log.debug("查询无主覆盖小区");
-        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-        return list;
+        return new ArrayList<>();
     }
     @GetMapping("/get-rapid-atten-cell")
     public List<Map<String, Object>> queryRapidAttenuationCell() {
         log.debug("查询信号快速衰减小区");
-        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-        return list;
+        return new ArrayList<>();
     }
     @GetMapping("/get-signal-antenna-cell")
     public List<Map<String, Object>> querySignalAndAntennaNotMatchCell() {
         log.debug("查询信号与天线方向不符小区");
-        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
-        return list;
+        return new ArrayList<>();
     }
 }

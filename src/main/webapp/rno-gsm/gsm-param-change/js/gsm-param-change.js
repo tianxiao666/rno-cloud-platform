@@ -1,4 +1,4 @@
-var cellParams = ["BCCH", "BSIC", "ATT", "ACC", "CB", "CBQ", "CCHPWR", "MAXRET", "NCCPERM", "T3212", "QCOMPDL", "PTIMTEMP",
+const cellParams = ["BCCH", "BSIC", "ATT", "ACC", "CB", "CBQ", "CCHPWR", "MAXRET", "NCCPERM", "T3212", "QCOMPDL", "PTIMTEMP",
     "QLENSD", "TO", "TX", "QDESDL", "MISSNM", "SSDESDLAFR", "SSDESDLAHR", "QEVALSD", "QEVALSI", "SSEVALSD", "PTIMHF", "PTIMTA",
     "SSEVALSI", "SCHO", "SSRAMPSD", "SSRAMPSI", "RLINKUP", "CELLQ", "RLINKT", "AW", "RLINKTAFR", "PSSTEMP", "PTIMBQ", "RLINKTAHR",
     "NECI", "DHA", "CLS_STATUS", "CLSLEVEL", "SCLD", "SCLDSC", "CLSACC", "FNOFFSET", "BSRXMIN", "QLENSI", "HOCLSACC", "ACTIVEMBCCHNO", "IDLEMBCCHNO",
@@ -11,35 +11,31 @@ var cellParams = ["BCCH", "BSIC", "ATT", "ACC", "CB", "CBQ", "CCHPWR", "MAXRET",
     "SSLENSI", "QLIMULAFR", "QLIMDLAFR", "TALIM", "FLEXHIGHGPRS", "PDCHPREEMPT", "TBFDLLIM", "TBFULLIM", "BSPWRMIN", "ISHOLEV", "LAC", "CRH",
     "FPDCH", "DYNBTSPWR_STATE", "FASTMSREG", "GAMMA", "GPRSPRIO", "HYSTSEP", "LCOMPDL", "LCOMPUL", "MFRMS", "CI", "PSSBQ", "PSSHF", "PSSTA"];
 
-var chgParams = ["CHGR_STATE", "CHGR_TG", "BAND", "BCCD", "CBCH", "CCCH", "EACPREF", "DCHNO_32", "ETCHTN", "EXCHGR", "HOP", "HOPTYPE", "HSN", "MAIO",
+const chgParams = ["CHGR_STATE", "CHGR_TG", "BAND", "BCCD", "CBCH", "CCCH", "EACPREF", "DCHNO_32", "ETCHTN", "EXCHGR", "HOP", "HOPTYPE", "HSN", "MAIO",
     "NUMREQBPC", "NUMREQCS3CS4BPC", "NUMREQE2ABPC", "NUMREQEGPRSBPC", "ODPDCHLIMIT"];
 
-var neightbourParams = ["AWOFFSET", "BQOFFSET", "BQOFFSETAFR", "BQOFFSETAWB", "CAND", "CS", "GPRSVALID", "HIHYST", "KHYST", "KOFFSET",
+const neightbourParams = ["AWOFFSET", "BQOFFSET", "BQOFFSETAFR", "BQOFFSETAWB", "CAND", "CS", "GPRSVALID", "HIHYST", "KHYST", "KOFFSET",
     "LHYST", "OFFSET", "LOHYST", "PROFFSET", "TRHYST", "TROFFSET", "USERDATA"];
 
-var cityId,paramStr,bscStr,paramType;
+let cityId,paramStr,bscStr,paramType;
 
 $(function () {
     // 初始化区域联动
     initAreaSelectors({selectors: ["province-id", "city-id"]});
-
     // 执行 laydate 实例 
-    var dateBeg = new Date();
+    const dateBeg = new Date();
     dateBeg.setFullYear(2014,11,1);
     laydate.render({elem: '#begUploadDate', value: dateBeg});
     dateBeg.setFullYear(2014,11,5);
     laydate.render({elem: '#endUploadDate', value: dateBeg});
-
     //加载bsc树形菜单
     getAllBscCell();
     //加载参数类型
     changeParam();
-
     //参数对比点击事件
     $("#compareBtn").click(function () {
         paramCompare('compare');
     });
-
     //导出
     $("#exportBtn").on('click', function() {
         if(paramCompare('export')===false){
@@ -59,7 +55,7 @@ $(function () {
 
 function getAllBscCell() {
     $("#bscTree").html("");
-    var cityId = $("#city-id").val();
+    const cityId = $("#city-id").val();
     $.ajax({
         url : '../../api/gsm-param-check/check-bsc-by-cityId',
         data : {
@@ -72,18 +68,19 @@ function getAllBscCell() {
                 $("#info").css("background", "yellow");
                 showInfoInAndOut("info", "该城市匹配不到BSC");
             }else {
-                var data = eval("("+raw+")");
-                var html = "";
+                const data = eval("("+raw+")");
+                let html = "";
                 html += "<li><input name='bscChk'  type='checkbox'/><span>全选</span><ul>";
-                for (var i = 0; i < data.length; i++) {
-                    html += "<li><input name='bsc' value='" + data[i]['id'] + "' type='checkbox'/> <span>" + data[i]['bsc'] + "</span></li>";
+                for (let i = 0; i < data.length; i++) {
+                    html += "<li><input name='bsc' value='" + data[i]['id'] + "' type='checkbox'/> <span>" +
+                        data[i]['bsc'] + "</span></li>";
                 }
                 html += "</ul></li>";
                 $("#allBsc").html(html);
                 $("#allBsc").treeview();
                 //加入关联选择事件
                 $("input[name='bscChk']").click(function () {
-                    var checkedValue = this.checked;
+                    const checkedValue = this.checked;
                     $(this).parent("li").find("input[name='bsc']").attr("checked", checkedValue);
                 });
             }
@@ -96,9 +93,8 @@ function getAllBscCell() {
 
 function changeParam() {
     $("#paramCheckBox").html("");
-
-    var paramType = $('input[name="paramType"]:checked').val();
-    var paramHtml;
+    const paramType = $('input[name="paramType"]:checked').val();
+    let paramHtml;
     if (paramType === "cell") {
         paramHtml = strToHtmlByParams(cellParams);
     } else if (paramType === "channel") {
@@ -106,22 +102,18 @@ function changeParam() {
     } else if (paramType === "neighbour") {
         paramHtml = strToHtmlByParams(neightbourParams);
     }
-
     $("#paramCheckBox").html(paramHtml);
-    //console.log(paramHtml);
-
     //绑定树形菜单样式
     $("#paramCheckBox").treeview({
         collapsed: true
     });
-
     //加入关联选择事件
     $("input[name='pmChk']").click(function () {
-        var checkedValue = this.checked;
+        const checkedValue = this.checked;
         $(this).parent("li").find("input[name='pmChk']").attr("checked", checkedValue);
     });
     $("input[name='pmChk']").click(function () {
-        var checkedValue = this.checked;
+        const checkedValue = this.checked;
         $(this).parent("li").find("input[name='params']").attr("checked", checkedValue);
     });
 }
@@ -143,24 +135,23 @@ function paramCompare(flag) {
     });
     bscStr = bscStr.substring(0, bscStr.length - 1);
     //获取第一个日期
-    var date1 = $("#begUploadDate").val();
+    const date1 = $("#begUploadDate").val();
     //获取第二个日期
-    var date2 = $("#endUploadDate").val();
-
+    const date2 = $("#endUploadDate").val();
     //验证
-    if (paramType == undefined || paramType == "") {
+    if (paramType === undefined || paramType === "") {
         alert("请选择参数类型！");
         return false;
     }
-    if (paramStr == undefined || paramStr == "") {
+    if (paramStr === undefined || paramStr === "") {
         alert("请选择需要对比的参数！");
         return false;
     }
-    if (bscStr == undefined || bscStr == "") {
+    if (bscStr === undefined || bscStr === "") {
         alert("请选择需要对比的BSC！");
         return false;
     }
-    if (date1 == date2) {
+    if (date1 === date2) {
         alert("选择比较的两个日期是同一天！");
         return false;
     }
@@ -186,8 +177,8 @@ function paramCompare(flag) {
             dataType: 'text',
             success: function (raw) {
                 $(".loading").css("display", "none");
-                var data = eval("(" + raw + ")");
-                var flag;
+                const data = eval("(" + raw + ")");
+                let flag;
                 if(data.length === 1) {
                     flag = data[0]['dateMessage'];
                 }
@@ -199,24 +190,23 @@ function paramCompare(flag) {
                         $("#info").css("background", "yellow");
                         showInfoInAndOut("info", "没有找到相应的数据");
                     }else {
-                        var paramTitle = paramStr.split(",");
-                        var html = "<tr><th>BSC</th>";
-                        for (var i = 0; i < paramTitle.length; i++) {
+                        const paramTitle = paramStr.split(",");
+                        let html = "<tr><th>BSC</th>";
+                        for (let i = 0; i < paramTitle.length; i++) {
                             html += "<th>" + paramTitle[i] + "</th>";
                         }
                         html += "</tr>";
-                        var title;
-                        var one;
-                        for (var i = 0; i < data.length; i++) {
+                        let title;
+                        for (let i = 0; i < data.length; i++) {
                             html += "<tr>";
                             html += "<td>" + data[i]['BSC_ENGNAME'] + "</td>";
-                            for (var j = 0; j < paramTitle.length; j++) {
+                            for (let j = 0; j < paramTitle.length; j++) {
                                 title = paramTitle[j];
                                 if (Number(data[i][title]) > 0) {
                                     html += "<td style='background:red; cursor:pointer' " +
-                                        " onclick='getParamDiffDetail(\"" + data[i]['BSC_ENGNAME'] + "\",\""
-                                        + paramType + "\",\"" + title + "\",\"" + cityId + "\",\"" + date1 + "\",\"" + date2 + "\")'>"
-                                        + data[i][title] + "</td>";
+                                        " onclick='getParamDiffDetail(\"" + data[i]['BSC_ENGNAME'] + "\",\"" +
+                                        paramType + "\",\"" + title + "\",\"" + cityId + "\",\"" + date1 + "\",\"" +
+                                        date2 + "\")'>" + data[i][title] + "</td>";
                                 } else {
                                     html += "<td>" + data[i][title] + "</td>";
                                 }
@@ -241,8 +231,8 @@ function paramCompare(flag) {
 }
 
 function showMessage() {
-    var body = $(window.frames['file_download_return'].document.body);
-    var data = eval('(' + body[0].textContent + ')');
+    const body = $(window.frames['file_download_return'].document.body);
+    const data = eval('(' + body[0].textContent + ')');
     if (data.length === 1){
         alert(data[0]['dateMessage']);
     }
@@ -267,17 +257,17 @@ function getParamDiffDetail(bsc, paramType, param, cityId, date1, date2) {
         dataType: 'text',
         success: function (raw) {
             $(".loading").css("display", "none");
-            var data = eval("(" + raw + ")");
+            const data = eval("(" + raw + ")");
             $("#paramDiffDetailTable").html("");
             $("#paramName").html("");
             if (data.length === 0) {
                 $("#info").css("background", "yellow");
                 showInfoInAndOut("info", "没有找到相应的数据");
             }else {
-                var html = "";
-                if (paramType == "cell") {
+                let html = "";
+                if (paramType === "cell") {
                     html += "<tr><th>BSC</th><th>CELL</th><th>" + date1 + "</th><th>" + date2 + "</th></tr>";
-                    for (var i = 0; i < data.length; i++) {
+                    for (let i = 0; i < data.length; i++) {
                         html += "<tr>";
                         html += "<td>" + bsc + "</td>";
                         html += "<td>" + getValidValue(data[i]['CELL']) + "</td>";
@@ -287,7 +277,7 @@ function getParamDiffDetail(bsc, paramType, param, cityId, date1, date2) {
                     }
                 } else if (paramType == "channel") {
                     html += "<tr><th>BSC</th><th>CELL</th><th>CHGR</th><th>" + date1 + "</th><th>" + date2 + "</th></tr>";
-                    for (var i = 0; i < data.length; i++) {
+                    for (let i = 0; i < data.length; i++) {
                         html += "<tr>";
                         html += "<td>" + bsc + "</td>";
                         html += "<td>" + getValidValue(data[i]['CELL']) + "</td>";
@@ -298,7 +288,7 @@ function getParamDiffDetail(bsc, paramType, param, cityId, date1, date2) {
                     }
                 } else if (paramType == "neighbour") {
                     html += "<tr><th>BSC</th><th>CELL</th><th>NCELL</th><th>" + date1 + "</th><th>" + date2 + "</th></tr>";
-                    for (var i = 0; i < data.length; i++) {
+                    for (let i = 0; i < data.length; i++) {
                         html += "<tr>";
                         html += "<td>" + bsc + "</td>";
                         html += "<td>" + getValidValue(data[i]['CELL']) + "</td>";
@@ -324,22 +314,22 @@ function getParamDiffDetail(bsc, paramType, param, cityId, date1, date2) {
  * 并以首字母为分组，排序
  */
 function strToHtmlByParams(params) {
-    var html = "";
+    let html = "";
     //将字符串按字母排序
     params.sort();
     //获取原数组中的元素首字母，作为一个新数组，并去掉重复
-    var ul = [];
-    var a;
-    for (var i = 0; i < params.length; i++) {
+    let ul = [];
+    let a;
+    for (let i = 0; i < params.length; i++) {
         a = params[i].substring(0, 1);
         ul.push(a);
     }
     ul = unique(ul);
     //拼接html
     html += "<li><input name='pmChk' checked='checked' type='checkbox'/><span>全选</span><ul>";
-    for (var i = 0; i < ul.length; i++) {
+    for (let i = 0; i < ul.length; i++) {
         html += "<li><input name='pmChk' checked='checked' type='checkbox'/> <span>" + ul[i] + "</span><ul>";
-        for (var j = 0; j < params.length; j++) {
+        for (let j = 0; j < params.length; j++) {
             if (ul[i] == params[j].substring(0, 1)) {
                 html += "<li><input name='params' checked='checked' value='" + params[j] + "' type='checkbox'/> <span>" + params[j] + "</span></li>";
             }
@@ -354,8 +344,8 @@ function strToHtmlByParams(params) {
  * 返回元素不重复的数组
  */
 function unique(arr) {
-    var result = [], hash = {};
-    for (var i = 0, elem; (elem = arr[i]) != null; i++) {
+    let result = [], hash = {};
+    for (let i = 0, elem; (elem = arr[i]) != null; i++) {
         if (!hash[elem]) {
             result.push(elem);
             hash[elem] = true;
@@ -366,7 +356,7 @@ function unique(arr) {
 
 //提示信息
 function showInfoInAndOut(div, info) {
-    var divSet = $("#" + div);
+    let divSet = $("#" + div);
     divSet.html(info);
     divSet.fadeIn(2000);
     setTimeout("$('#" + div + "').fadeOut(2000)", 1000);

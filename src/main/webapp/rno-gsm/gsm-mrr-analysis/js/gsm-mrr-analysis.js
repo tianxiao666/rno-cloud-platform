@@ -1,7 +1,7 @@
-var bscToCells;
+let bscToCells;
 $(function () {
 //默认右侧栏打开
-    var switchHidden = $(".switch_hidden");
+    const switchHidden = $(".switch_hidden");
     $(".resource_list300_box").css("display", "block");
     switchHidden.hide();
     $(".resource_list_icon").css("right", "300px;");
@@ -25,9 +25,9 @@ $(function () {
         $(".search_box_alert").slideToggle("fast");
     });
 
-    var dateBeg = new Date();
+    const dateBeg = new Date();
     dateBeg.setFullYear(2014, 12, 1);
-    var start = {
+    const start = {
         elem: "#mrrMeaBegDate",
         type: "datetime",
         value: dateBeg,
@@ -40,13 +40,13 @@ $(function () {
                 minutes: dates.minutes,
                 seconds: dates.seconds
             };
-            var mrrMeaEndDate = $("#mrrMeaEndDate");
+            const mrrMeaEndDate = $("#mrrMeaEndDate");
             if (Date.parse(value) > Date.parse(mrrMeaEndDate.val())) {
                 mrrMeaEndDate.val(value);
             }
         }
     };
-    var end = {
+    const end = {
         elem: "#mrrMeaEndDate",
         type: "datetime",
         value: new Date(),
@@ -59,14 +59,14 @@ $(function () {
                 minutes: dates.minutes,
                 seconds: dates.seconds
             };
-            var mrrMeaBegDate = $("#mrrMeaBegDate");
+            const mrrMeaBegDate = $("#mrrMeaBegDate");
             if (Date.parse(value) < Date.parse(mrrMeaBegDate.val())) {
                 mrrMeaBegDate.val(value);
             }
         }
     };
-    var startRenderDate = laydate.render(start);
-    var endRenderDate = laydate.render(end);
+    const startRenderDate = laydate.render(start);
+    const endRenderDate = laydate.render(end);
 
 
 //tab切换
@@ -83,8 +83,8 @@ $(function () {
     getAllBscCell();
 
 //初始化图表
-    var myChart = echarts.init(document.getElementById("main"));
-    var option = {
+    let myChart = echarts.init(document.getElementById("main"));
+    const option = {
         color: ["#E2ECF7"],
         tooltip: "none",
         title: {
@@ -125,7 +125,7 @@ $(function () {
     myChart.setOption(option);
 
     $("#searchButton").click(function () {
-        var inputCell = $("#inputCell");
+        const inputCell = $("#inputCell");
         if (inputCell.val().trim() === "" || inputCell.val() === null) {
             showInfoInAndOut("info", "请先输入小区ID再进行查询！");
             return false;
@@ -144,28 +144,40 @@ $(function () {
 });
 
 function showChart(data) {
-    var mrrInfoTab = $("#mrrInfoTab");
+    const mrrInfoTab = $("#mrrInfoTab");
     mrrInfoTab.children().remove();
-    if (data == '') {
+    let myChart = echarts.init(document.getElementById("main"));
+    myChart.clear();
+    if (data == "") {
         showInfoInAndOut("info", "没有mrr对应的指标分析数据！");
         return false;
     }else {
-        var UL = new Array();//上行有序数组
-        var DL = new Array();//下行有序数组
-        var boundGap = false;
-        var cell = data[0]["CELL_NAME"];
-        var channel_group_num = data[0]["CHANNEL_GROUP_NUM"];
-        var title = "";//图表子标题
-        var fieldUL = "";//上行字段前缀
-        var fieldDL = "";//下行字段前缀
-        var serieNameUL = "";//上行系统名
-        var serieNameDL = "";//下行系统名
-        var xAxis_name = "";//X轴名称
-        var accumuValUL = 0;//上行累积值
-        var accumuValDL = 0;//下行累积值
-        var dataType = $("#mrrDataType").val();
-        var chartType = $("#mrrChartType").val();
-        var axis =new Array();
+        //上行有序数组
+        let UL = new Array();
+        //下行有序数组
+        let DL = new Array();
+        let boundGap = false;
+        const cell = data[0]["CELL_NAME"];
+        const channel_group_num = data[0]["CHANNEL_GROUP_NUM"];
+        //图表子标题
+        let title = "";
+        //上行字段前缀
+        let fieldUL = "";
+        //下行字段前缀
+        let fieldDL = "";
+        //上行系统名
+        let serieNameUL = "";
+        //下行系统名
+        let serieNameDL = "";
+        //X轴名称
+        let xAxis_name = "";
+        //上行累积值
+        let accumuValUL = 0;
+        //下行累积值
+        let accumuValDL = 0;
+        const dataType = $("#mrrDataType").val();
+        const chartType = $("#mrrChartType").val();
+        let axis =new Array();
         if (dataType === "Rxlev") {
             title = cell + (channel_group_num === null ? "全部信道组" : "信道组号" + channel_group_num) + "的接收电平分布图";
             fieldUL = "RXLEVUL";
@@ -173,7 +185,7 @@ function showChart(data) {
             serieNameUL = "上行电平";
             serieNameDL = "下行电平";
             xAxis_name = "电平值(dBm)";
-            for (var key in data[0]) {
+            for (let key in data[0]) {
                 if (key.indexOf("RXLEVUL") !== -1) {
                     UL[getNum(key)] = data[0][key];
                     axis.push(getNum(key) - 110);
@@ -191,7 +203,7 @@ function showChart(data) {
             serieNameDL = "下行质量";
             xAxis_name = "质量";
             boundGap = true;
-            for (var key in data[0]) {
+            for (let key in data[0]) {
                 if (key.indexOf("RXQUALUL") !== -1) {
                     UL[getNum(key)] = data[0][key];
                     axis.push(getNum(key));
@@ -207,7 +219,7 @@ function showChart(data) {
             serieNameUL = "手机功率";
             serieNameDL = "基站功率";
             xAxis_name = "功率等级(dBm)";
-            for (var key in data[0]) {
+            for (let key in data[0]) {
                 if (key.indexOf("MSPOWER") !== -1) {
                     UL[getNum(key)] = data[0][key];
                     axis.push(getNum(key));
@@ -224,7 +236,7 @@ function showChart(data) {
             serieNameUL = "上行路径损耗";
             serieNameDL = "下行路径损耗";
             xAxis_name = "路径损耗(dBm)";
-            for (var key in data[0]) {
+            for (let key in data[0]) {
                 if (key.indexOf("PLOSSUL") !== -1) {
                     UL[getNum(key)] = data[0][key];
                     axis.push(getNum(key) * 2 + 30);
@@ -239,7 +251,7 @@ function showChart(data) {
             fieldUL = "PLDIFF";
             serieNameUL = "下行-上行路径损耗差";
             xAxis_name = "下行-上行路径损耗差(dBm)";
-            for (var key in data[0]) {
+            for (let key in data[0]) {
                 if (key.indexOf("PLDIFF") !== -1) {
                     UL[getNum(key)] = data[0][key];
                     axis.push(getNum(key) - 25);
@@ -251,7 +263,7 @@ function showChart(data) {
             fieldUL = "TAVAL";
             serieNameUL = "时间提前量";
             xAxis_name = "时间提前量";
-            for (var key in data[0]) {
+            for (let key in data[0]) {
                 if (key.indexOf("TAVAL") !== -1) {
                     UL[getNum(key)] = data[0][key];
                     axis.push(getNum(key));
@@ -264,14 +276,14 @@ function showChart(data) {
         $("#mrrInfoTab").append("<TR><td class='menuTd'>"+dataType+"测量信息"+"</td><td>"+cell+"</td></TR>");
         $("#mrrInfoTab").append("<TR><td class='menuTd'>CHANNCELL_GROUP_NUM</td><td>"+(typeof(channel_group_num)==="undefined"?"全部":channel_group_num)+"</td></TR>");
         //累加
-        for ( var i = 0; i < UL.length; i++) {
+        for ( let i = 0; i < UL.length; i++) {
             $("#mrrInfoTab").append("<TR><td class='menuTd'>"+fieldUL+i+"</td><td>"+UL[i]+"</td></TR>");
             if(chartType==="accumulatedVal"){
                 accumuValUL+=UL[i];
                 UL[i]=accumuValUL;
             }
         }
-        for ( var j = 0; j < DL.length; j++) {
+        for ( let j = 0; j < DL.length; j++) {
             $("#mrrInfoTab").append("<TR><td class='menuTd'>"+fieldDL+j+"</td><td>"+DL[j]+"</td></TR>");
             if(chartType==="accumulatedVal"){
                 accumuValDL+=DL[j];
@@ -280,23 +292,22 @@ function showChart(data) {
         }
         DL.length=UL.length=axis.length;
         //加载数据至echart
-        var disMode = $("#mrrDisMode").val().trim();
-        var myChart = echarts.init(document.getElementById("main"));
-        myChart.clear();
-        var option = {
+        const disMode = $("#mrrDisMode").val().trim();
+        const option = {
             title : {
-                text: dataType+'指标',
+                text: dataType+"指标",
                 subtext: title,
-                x: "center", //标题水平方向位置
-                subtextStyle:{color: '#4A4AFF'}
+                //标题水平方向位置
+                x: "center",
+                subtextStyle:{color: "#4A4AFF"}
             },
             tooltip : {
-                trigger: 'axis'
+                trigger: "axis"
             },
             legend: {
                 data:[serieNameDL,serieNameUL] ,
-                y: 'top',
-                x: 'left',
+                y: "top",
+                x: "left",
             },
             toolbox: {
                 show : true,
@@ -309,20 +320,20 @@ function showChart(data) {
             xAxis : [
                 {
                     name:xAxis_name,
-                    type : 'category',
+                    type : "category",
                     boundaryGap : boundGap,
                     data : axis
                 }
             ],
             yAxis : [
                 {
-                    name:'采样点个数(个)',
-                    type : 'value',
+                    name:"采样点个数(个)",
+                    type : "value",
                     axisLabel : {
-                        formatter: '{value}'
+                        formatter: "{value}"
                     },
-                    splitLine:{lineStyle:{type: 'dashed'}},
-                    axisLine:{lineStyle:{color: '#223434'}}
+                    splitLine:{lineStyle:{type: "dashed"}},
+                    axisLine:{lineStyle:{color: "#223434"}}
                 }
             ],
             series : [
@@ -332,13 +343,13 @@ function showChart(data) {
                     data:DL,
                     markPoint : {
                         data : [
-                            {type : 'max', name: '最大值'},
-                            {type : 'min', name: '最小值'}
+                            {type : "max", name: "最大值"},
+                            {type : "min", name: "最小值"}
                         ]
                     },
                     markLine : {
                         data : [
-                            {type : 'average', name : '平均值'}
+                            {type : "average", name : "平均值"}
                         ]
                     },
                     itemStyle :{normal :{color:"#007300"}}
@@ -349,13 +360,13 @@ function showChart(data) {
                     data:UL,
                     markPoint : {
                         data : [
-                            {type : 'max', name: '最大值'},
-                            {type : 'min', name: '最小值'}
+                            {type : "max", name: "最大值"},
+                            {type : "min", name: "最小值"}
                         ]
                     },
                     markLine : {
                         data : [
-                            {type : 'average', name: '平均值'}
+                            {type : "average", name: "平均值"}
                         ]
                     },
                     itemStyle :{normal :{color:"#FF0000"}}
@@ -374,16 +385,16 @@ function showError() {
 }
 
 function searchCell() {
-    var cell = $.trim($("#inputCell").val());
+    const cell = $.trim($("#inputCell").val());
     //清空
     $("#allBscCell").html("");
 
     //符合搜索条件的bsc到cell信息的映射对象
-    var obj = new Object();
-    var list;
-    for (var key in bscToCells) {
+    let obj = new Object();
+    let list;
+    for (let key in bscToCells) {
         list = new Array();
-        for (var i = 0; i < bscToCells[key].length; i++) {
+        for (let i = 0; i < bscToCells[key].length; i++) {
             if (bscToCells[key][i]["LABEL"].indexOf(cell) >= 0) {
                 list.push(bscToCells[key][i]);
             }
@@ -399,7 +410,7 @@ function searchCell() {
 function getAllBscCell() {
     $("#allBscCell").html("");
     $("#inputCell").val("");
-    var cityId = $("#cityId1").val();
+    const cityId = $("#cityId1").val();
     $.ajax({
         url: "../../api/gsm-mrr-analysis/get-bsc-by-cityId",
         data: {
@@ -408,7 +419,7 @@ function getAllBscCell() {
         type: "get",
         dataType: "text",
         success: function (raw) {
-            var data = eval("(" + raw + ")");
+            const data = eval("(" + raw + ")");
             bscToCells = data;
             //填充至bsc信息栏
             showBsc(data);
@@ -421,13 +432,13 @@ function getAllBscCell() {
 
 function showBsc(obj) {
     //排序BSC
-    var bscList = new Array();
-    for (var key in obj) {
+    let bscList = new Array();
+    for (let key in obj) {
         bscList.push(key);
     }
     bscList.sort();
-    var bscHtml = "";
-    for (var i = 0; i < bscList.length; i++) {
+    let bscHtml = "";
+    for (let i = 0; i < bscList.length; i++) {
         bscHtml += "<li><span class='bscCls' id='" + bscList[i] + "'>" + bscList[i] + "(小区数量：" +
             obj[bscList[i]].length + ")</span><ul id='" + bscList[i] + "'></ul></li>";
     }
@@ -438,22 +449,22 @@ function showBsc(obj) {
     });
 
     $("span.bscCls").on("click", function () {
-        var bsc = $(this).attr("id");
+        const bsc = $(this).attr("id");
         showBscDetail(bsc, obj);
     });
     //图标事件
     $("#allBscCell").find("div").bind("click", function (event) {
-        var bsc = $(this).parent().find("span").attr("id");
+        const bsc = $(this).parent().find("span").attr("id");
         showBscDetail(bsc, obj);
     });
 }
 
 function showBscDetail(bsc, obj) {
-    var cells1 = obj[bsc];
-    var cellsHtml = "";
-    var all;
-    var part;
-    for (var i = 0; i < cells1.length; i++) {
+    const cells1 = obj[bsc];
+    let cellsHtml = "";
+    let all;
+    let part;
+    for (let i = 0; i < cells1.length; i++) {
         all = cells1[i]["LABEL"] + "(" + cells1[i]["NAME"] + ")";
         part = all.length > 12 ? all.substring(0, 12) + "..." : all;
         cellsHtml += "<li><span style='cursor: pointer' class='cellCls' data='" + cells1[i]["LABEL"] +
@@ -463,19 +474,19 @@ function showBscDetail(bsc, obj) {
     $("ul#" + bsc).html(cellsHtml);
     //单选小区至小区输入框内
     $("span.cellCls").on("click", function () {
-        var EN_NAME = $(this).attr("data");
+        const EN_NAME = $(this).attr("data");
         $("#inputCell").val(EN_NAME);
     });
 }
 
 function showInfoInAndOut(div, info) {
-    var divSet = $("#" + div);
+    const divSet = $("#" + div);
     divSet.html(info);
     divSet.fadeIn(2000);
     setTimeout("$('#" + div + "').fadeOut(2000)", 1000);
 }
 
 function getNum(text){
-    var value = text.replace(/[^0-9]/ig,"");
+    const value = text.replace(/[^0-9]/ig,"");
     return value;
 }
