@@ -1,5 +1,5 @@
 // 地图主对象
-var map;
+let map;
 // 弹窗对象
 let popup;
 // 图层组
@@ -18,7 +18,7 @@ let dynamicCoverageCell;
 let repaintCell = [];
 let dynaPolylineColor_12 = "#2EFE2E";
 
-var isShowCellName = false; //地图是否显示小区
+let isShowCellName = false; //地图是否显示小区
 
 $(document).ready(function () {
 
@@ -65,12 +65,12 @@ $(document).ready(function () {
         searchCell(-1);
     });
     $("#searchNcellBtn").click(function () {
-        var ncell = $("#cellForNcell").val();
+        let ncell = $("#cellForNcell").val();
         searchNcell(ncell);
     });
     // 搜频点
     $("#searchFreqBtn").click(function () {
-        var freq = $("#freqValue").val();
+        let freq = $("#freqValue").val();
         searchFreq(freq);
     });
 
@@ -119,7 +119,7 @@ $(document).ready(function () {
         })
     });
 
-    var baseLayer = new ol.layer.Tile({
+    let baseLayer = new ol.layer.Tile({
         source: new ol.source.XYZ({
             url: 'http://rno-omt.hgicreate.com/styles/rno-omt/{z}/{x}/{y}.png',
             zIndex: 1
@@ -160,9 +160,9 @@ $(document).ready(function () {
 
     cellNameLayerGroup = new ol.layer.Group();
 
-    var lon = parseFloat($(this).find("option:checked").attr("data-lon"));
-    var lat = parseFloat($(this).find("option:checked").attr("data-lat"));
-    var center = [lon, lat];
+    let lon = parseFloat($(this).find("option:checked").attr("data-lon"));
+    let lat = parseFloat($(this).find("option:checked").attr("data-lat"));
+    let center = [lon, lat];
     map = new ol.Map({
         target: 'map',
         layers: [baseLayer, cellLayerGroup, cellNameLayerGroup, clickedCellLayer,queryFreqOverlay, queryCellOverlay, queryNCellOverlay],
@@ -203,12 +203,12 @@ $(document).ready(function () {
     map.addOverlay(popup);
 
     //地图小区右键菜单
-    var contextMenuItems = [
+    let contextMenuItems = [
         {
             text: '动态覆盖图',
             callback: function (evt) {
                 let features = clickedCellLayer.getSource().getFeatures();
-                var element = popup.getElement();
+                let element = popup.getElement();
                 $(element).popover('destroy');
                 if (features.length>1) {
                     popup.setPosition(evt.coordinate);
@@ -232,7 +232,7 @@ $(document).ready(function () {
             text: '查邻区',
             callback: function (evt) {
                 let features = clickedCellLayer.getSource().getFeatures();
-                var element = popup.getElement();
+                let element = popup.getElement();
                 $(element).popover('destroy');
                 if (features.length>1) {
                     popup.setPosition(evt.coordinate);
@@ -326,8 +326,8 @@ $(document).ready(function () {
 
     $(".ol-unselectable.ol-control.layer-switcher").css("right", "350px").css("top", "0px");
     $("#areaId").change(function () {
-        var lon = parseFloat($(this).find("option:checked").attr("data-lon"));
-        var lat = parseFloat($(this).find("option:checked").attr("data-lat"));
+        let lon = parseFloat($(this).find("option:checked").attr("data-lon"));
+        let lat = parseFloat($(this).find("option:checked").attr("data-lat"));
         map.getView().setCenter([lon, lat]);
     });
     $("#areaId").trigger("change");
@@ -336,10 +336,10 @@ $(document).ready(function () {
     initAreaSelectors({selectors: ["provinceId", "cityId", "areaId"], coord: true});
 
     $("#queryCellAreaId").click(function () {
-        var btn = $("#queryCellAreaId");
+        let btn = $("#queryCellAreaId");
         btn.val("loading");
-        var cityId = parseInt($("#cityId").find("option:checked").val());
-        var filter = " AREA_ID=" + cityId;
+        let cityId = parseInt($("#cityId").find("option:checked").val());
+        let filter = " AREA_ID=" + cityId;
         cellLayerGroup.getLayers().clear();
         tiled = new ol.layer.Tile({
             zIndex: 2,
@@ -428,7 +428,7 @@ function clearDetail() {
 
 function showOperTips(outerId, tipId, tips) {
     try {
-        var oId = $("#" + outerId);
+        let oId = $("#" + outerId);
         oId.css("display", "");
         oId.find("#" + tipId).html(tips);
     } catch (err) {
@@ -540,26 +540,26 @@ function searchNcell(cellId) {
         animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "小区ID只能输入数字和半角-,用半角逗号隔开!");
         return;
     }
-    var ncells = new Array();
+    let ncells = new Array();
     queryNCellOverlay.getSource().clear();
     $.ajax({
-        url: '../..//api/dynamic-coverage/get-ncell-details',
+        url: '../../api/gsm-dynamic-coverage/ncell-details',
         data: {
-            'cell': cellId,
+            'cellId': cellId,
             'cityId': $("#cityId").val(),
         },
         dataType: 'json',
         type: 'GET',
         success: function (data) {
             hideOperTips("loadingDataDiv");
-            var obj = data;
-            var view = map.getView();
+            let obj = data;
+            let view = map.getView();
             if (0 === obj.length) {
                 animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "不存在该空间数据");
                 return;
             }
             if (obj) {
-                for (var i = 0; i < obj.length; i++) {
+                for (let i = 0; i < obj.length; i++) {
                     if (obj[i]['CELL_ID'] == cellId) {
                         continue;
                     }
@@ -582,7 +582,7 @@ function searchNcell(cellId) {
                     if (features.length) {
                         features.forEach(function (feature) {
                             if (tiled) {
-                                var coordinate = [feature.values_.LONGITUDE, feature.values_.LATITUDE];
+                                let coordinate = [feature.values_.LONGITUDE, feature.values_.LATITUDE];
                                 let url = tiled.getSource().getGetFeatureInfoUrl(
                                     coordinate, view.getResolution(), view.getProjection(), {
                                         'INFO_FORMAT': 'application/json',
@@ -649,7 +649,7 @@ function searchFreq(freq) {
         if (features.length) {
             features.forEach(function (feature) {
                 if (tiled) {
-                    var coordinate = [feature.values_.LONGITUDE, feature.values_.LATITUDE];
+                    let coordinate = [feature.values_.LONGITUDE, feature.values_.LATITUDE];
                     let url = tiled.getSource().getGetFeatureInfoUrl(
                         coordinate, view.getResolution(), view.getProjection(), {
                             'INFO_FORMAT': 'application/json',
@@ -668,7 +668,7 @@ function searchFreq(freq) {
                     }
                 }
             })
-            var coordinateo = [features[0].values_.LONGITUDE, features[0].values_.LATITUDE];
+            let coordinateo = [features[0].values_.LONGITUDE, features[0].values_.LATITUDE];
             map.getView().animate({
                 center: coordinateo,
                 duration: 2000
@@ -709,7 +709,7 @@ function showDynaCoverage(cellId, enName, cellLon, cellLat) {
         return;
     }
     $.ajax({
-        url: '../../api/dynamic-coverage/get-dynamic-coverage-data',
+        url: '../../api/gsm-dynamic-coverage/dynamic-coverage-data',
         data: {
             'cityId': cityId,
             'cellId': cellId,
@@ -718,19 +718,12 @@ function showDynaCoverage(cellId, enName, cellLon, cellLat) {
             'endDate': endDate
         },
         dataType: 'json',
-        type: 'post',
+        type: 'get',
         success: function (data) {
             hideOperTips("loadingDataDiv");
-            if (data === null) {
-                animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "未能查询到数据，请检查日期！");
-            }
             if (data !== null) {
                 let curvePoints_12 = data['curvePoints_12'];
-                let resInterDetail = data['resInterDetail'];
                 if (curvePoints_12 !== null) {
-                    let vectorPoints_12 = data['vectorPoint_12'];
-                    let vecLng_12 = vectorPoints_12[0]['lng'];
-                    let vecLat_12 = vectorPoints_12[0]['lat'];
                     let pointArray_12 = [];
                     for (let i = 0, idx; idx = curvePoints_12[i++];) {
                         pointArray_12.push([idx["lng"], idx["lat"]]);
@@ -739,11 +732,10 @@ function showDynaCoverage(cellId, enName, cellLon, cellLat) {
                     $("#title").text(title);
                     let html = "<tbody>";
                     if (pointArray_12.length > 4) {
-                        drawArrow(cellLon, cellLat, vecLng_12, vecLat_12, 0.002, dynaPolylineColor_12, curvePoints_12);
+                        drawArrow(curvePoints_12);
                         let element = popup.getElement();
                         $(element).popover('destroy');
                     } else {
-                        // alert("Each LinearRing of a Polygon must have 4 or more Positions");
                         animateInAndOut("operInfo", 1000, 1000, 1000, "operTip", "多边形点数不足！");
                     }
                 } else {
@@ -753,24 +745,23 @@ function showDynaCoverage(cellId, enName, cellLon, cellLat) {
                 animateInAndOut("operInfo", 1000, 1000, 1000, "operTip", "该小区在搜索的时间段内没有数据！");
             }
         }, error: function (err) {
-            console.log(err);
             hideOperTips("loadingDataDiv");
+            if(err.status ===200){
+                animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "未能查询到数据，请检查日期！");
+            }else{
+                animateInAndOut("operInfo", 1000, 1000, 2000, "operTip", "服务器可能正在维护");
+            }
         }
     });
 }
 
-function drawArrow(cellLon, cellLat, vecLng, vecLat, ratio, color, points) {
+function drawArrow(points) {
     map.removeLayer(dynamicCoverageOverlay);
-    let difflng = vecLng - cellLon;
-    let difflat = vecLat - cellLat;
-    let r = Math.sqrt(difflng * difflng + difflat * difflat);
-    let conV = difflng / r;
-    let sinV = difflat / r;
-    var coordinates = [];
+    let coordinates = [];
     points.forEach(function (point) {
         coordinates.push([point.lng, point.lat]);
     });
-    var styles = [
+    let styles = [
         new ol.style.Style({
             stroke: new ol.style.Stroke({
                 color: 'blue',
@@ -788,12 +779,12 @@ function drawArrow(cellLon, cellLat, vecLng, vecLat, ratio, color, points) {
                 })
             }),
             geometry: function (feature) {
-                var coordinates = feature.getGeometry().getCoordinates()[0];
+                let coordinates = feature.getGeometry().getCoordinates()[0];
                 return new ol.geom.MultiPoint(coordinates);
             }
         })
     ];
-    var geojsonObject = {
+    let geojsonObject = {
         'type': 'FeatureCollection',
         'crs': {
             'type': 'name',
@@ -810,7 +801,7 @@ function drawArrow(cellLon, cellLat, vecLng, vecLat, ratio, color, points) {
         }]
     };
 
-    var source = new ol.source.Vector({
+    let source = new ol.source.Vector({
         features: (new ol.format.GeoJSON()).readFeatures(geojsonObject)
     });
     dynamicCoverageOverlay = new ol.layer.Vector({
@@ -846,14 +837,14 @@ function hideCellName() {
 
 function showCellName() {
     // 在地图上显示相应频段的小区
-    var btn = $("#showCellName");
+    let btn = $("#showCellName");
     $("#showCellName").val("loading");
-    var cityId = $("#cityId").val();
-    var area_id = "AREA_ID=" + cityId;
-    var filter = area_id;
+    let cityId = $("#cityId").val();
+    let area_id = "AREA_ID=" + cityId;
+    let filter = area_id;
 
     cellNameLayerGroup.getLayers().clear();
-    var cellNameLayer = new ol.layer.Tile({
+    let cellNameLayer = new ol.layer.Tile({
         zIndex: 4,
         source: new ol.source.TileWMS({
             url: 'http://rno-gis.hgicreate.com/geoserver/rnoprod/wms',

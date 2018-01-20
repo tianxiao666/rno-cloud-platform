@@ -3,7 +3,7 @@ package com.hgicreate.rno.service.gsm;
 import java.util.List;
 import java.util.Map;
 
-public interface RnoNcsDynaCoverageService {
+public interface GsmDynamicCoverageService {
 
     /**
      * 获取画小区动态覆盖图所需的数据
@@ -13,10 +13,9 @@ public interface RnoNcsDynaCoverageService {
 
     /**
      * 获取cell的邻区
-     *
-     * @param cell
+     * @param cellId
      * @param cityId
      * @return
      */
-    List<Map<String, Object>> getNcellDetailsByCellAndAreaId(String cell, long cityId);
+    List<Map<String, Object>> getNcellDetailsByCellAndAreaId(String cellId, long cityId);
 }

@@ -1,44 +1,51 @@
 package com.hgicreate.rno.web.rest.gsm;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.hgicreate.rno.service.gsm.RnoNcsDynaCoverageService;
+import com.hgicreate.rno.service.gsm.GsmDynamicCoverageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author xiao.sz
+ */
 @Slf4j
 @CrossOrigin
 @RestController
-@RequestMapping("/api/dynamic-coverage")
+@RequestMapping("/api/gsm-dynamic-coverage")
 public class GsmDynamicCoverageResource {
-    private static Gson gson = new GsonBuilder().create();// 线程安全
     @Autowired
-    private RnoNcsDynaCoverageService rnoNcsDynaCoverageService;
+    private GsmDynamicCoverageService rnoNcsDynaCoverageService;
 
-    @RequestMapping("/get-dynamic-coverage-data")
-    public String getDynamicCoverageData(String enName, long cityId, String cellId, String startDate, String endDate) {
-        log.debug("获取画小区动态覆盖图(曲线)所需的数据, cell=" + enName + ", cityId=" + cityId
-                + ", startDate=" + startDate + ", endDate=" + endDate);
+    /**
+     * 根据参数获得在日期区间内的覆盖图
+     * @param enName 小区英文名
+     * @param cityId 城市id
+     * @param cellId 小区id
+     * @param startDate 开始日期
+     * @param endDate 结束日期
+     * @return res 结果集
+     */
+    @GetMapping("/dynamic-coverage-data")
+    public Map<String, List<Map<String, Object>>> getDynamicCoverageData(String enName, long cityId, String cellId, String startDate, String endDate) {
         Map<String, List<Map<String, Object>>> res = rnoNcsDynaCoverageService
                 .getDynaCoverageDataByCityAndDate(enName, cellId, cityId, startDate, endDate);
-        String result = gson.toJson(res);
-        log.debug("result == {}", result);
-        return result;
+        log.debug("result == {}", res);
+        return res;
     }
 
-    @RequestMapping("/get-ncell-details")
-    public String getNcellDetails(String cell, long cityId) {
-        log.info("进入getNcellDetailsByCellandCityIdForAjaxAction方法,cell=" + cell + ",cityId=" + cityId);
-
-        List<Map<String, Object>> res = rnoNcsDynaCoverageService.getNcellDetailsByCellAndAreaId(cell, cityId);
+    /**
+     * 根据输入的主小区id 和当前的城市id 获取该小区的邻区
+     * @param cellId 主小区id
+     * @param cityId 城市id
+     * @return res 邻区结果集
+     */
+    @GetMapping("/ncell-details")
+    public List<Map<String, Object>> getNcellDetails(String cellId, long cityId) {
+        List<Map<String, Object>> res = rnoNcsDynaCoverageService.getNcellDetailsByCellAndAreaId(cellId, cityId);
         log.debug("邻区 == {}" + res);
-        String result = gson.toJson(res);
-        return result;
+        return res;
     }
 }
