@@ -8,11 +8,11 @@ $(function () {
     //绑定事件
     bindEvent();
     // 执行 laydate 实例 
-    laydate.render({elem: '#begUploadDate', value: new Date(new Date().getTime() - 7 * 86400000)});
-    laydate.render({elem: '#endUploadDate', value: new Date()});
-    laydate.render({elem: '#fileDate', value: new Date()});
-    laydate.render({elem: '#beginTestDate', value: new Date(new Date().getTime() - 7 * 86400000)});
-    laydate.render({elem: '#endTestDate', value: new Date()});
+    laydate.render({elem: '#begUploadDate', value: new Date(new Date().getTime() - 7 * 86400000),format: 'yyyy/MM/dd'});
+    laydate.render({elem: '#endUploadDate', value: new Date(), format:'yyyy/MM/dd'});
+    laydate.render({elem: '#fileDate', value: new Date(),format: 'yyyy/MM/dd'});
+    laydate.render({elem: '#beginTestDate', value: new Date(new Date().getTime() - 7 * 86400000),format: 'yyyy/MM/dd'});
+    laydate.render({elem: '#endTestDate', value: new Date(),format: 'yyyy/MM/dd'});
 
     $("#queryNcsBtn").click(function () {
         var dataMap = {
@@ -29,6 +29,7 @@ $(function () {
             data: dataMap,
             type: 'post',
             success:function(data){
+                $("#queryNcsResultTab").DataTable().clear();
                 $("#queryNcsResultTab").DataTable({
                     "data": data,
                     "columns": [
@@ -55,7 +56,7 @@ $(function () {
                 showInfoInAndOut("info", "后台程序错误！");
             }
         });
-    })
+    });
 
 
     //执行 区域 实例 
@@ -93,7 +94,7 @@ $(function () {
             'areaId':$("#city-menu").val(),
             'beginDate':new Date($("#begUploadDate").val()),
             'endDate':new Date($("#endUploadDate").val()),
-            'moduleName': 'GSM-NCS-DATA'
+            'moduleName': 'gsm-ncs-data'
         };
         $('#queryResultTab').css("line-height", "12px");
         $.ajax({

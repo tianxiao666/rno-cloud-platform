@@ -19,10 +19,10 @@ import java.util.Objects;
 @Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class GsmFasService {
+public class GsmFasDataService {
     private final GsmFasDescRepository gsmFasDescRepository;
 
-    public GsmFasService(GsmFasDescRepository gsmFasDescRepository) {
+    public GsmFasDataService(GsmFasDescRepository gsmFasDescRepository) {
         this.gsmFasDescRepository = gsmFasDescRepository;
     }
 

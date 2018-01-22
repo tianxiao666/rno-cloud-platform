@@ -4,11 +4,11 @@ $(function () {
     // 设置jquery ui
     jqueryUiSet();
     // 执行 laydate 实例 
-    laydate.render({elem: '#begUploadDate', value: new Date(new Date().getTime() - 7 * 86400000)});
-    laydate.render({elem: '#endUploadDate', value: new Date()});
-    laydate.render({elem: '#fileDate', value: new Date()});
-    laydate.render({elem: '#beginTestDate', value: new Date(new Date().getTime() - 7 * 86400000)});
-    laydate.render({elem: '#endTestDate', value: new Date()});
+    laydate.render({elem: '#begUploadDate', value: new Date(new Date().getTime() - 7 * 86400000), format:'yyyy/MM/dd'});
+    laydate.render({elem: '#endUploadDate', value: new Date(), format:'yyyy/MM/dd'});
+    laydate.render({elem: '#fileDate', value: new Date(), format:'yyyy/MM/dd'});
+    laydate.render({elem: '#beginTestDate', value: new Date(new Date().getTime() - 7 * 86400000), format:'yyyy/MM/dd'});
+    laydate.render({elem: '#endTestDate', value: new Date(), format:'yyyy/MM/dd'});
 
     initAreaSelectors({selectors: ["provinceSearch", "citySearch", "areaSearch"]});
     initAreaSelectors({selectors: ["provinceImport", "cityImport", "areaImport"]});
@@ -30,11 +30,11 @@ $(function () {
             'areaId':$("#areaSearch").val(),
             'beginDate':new Date($("#begUploadDate").val()),
             'endDate':new Date($("#endUploadDate").val()),
-            'moduleName':$("#dateType").val()
+            'fileCode':$("#dateType").val()
         };
         $('#queryResultTab').css("line-height", "12px");
         $.ajax({
-            url: '../../api/gsm-import-query',
+            url: '../../api/gsm-new-station-ncell/import-query',
             dataType: 'json',
             data: dataMap,
             type: 'post',
@@ -42,12 +42,12 @@ $(function () {
                 $("#queryResultTab").DataTable({
                     "data": data,
                     "columns": [
-                        {"data": "area.name"},
+                        {"data": "areaName"},
                         { "data": "createdDate", "render": function (data) {
                             return (new Date(data)).Format("yyyy-MM-dd hh:mm:ss");
                         }},
-                        { "data": "originFile.filename" },
-                        { "data": "originFile.fileSize", "render": function (data) {
+                        { "data": "filename" },
+                        { "data": "fileSize", "render": function (data) {
                             return conver(data);
                         }},
                         { "data": null},
@@ -134,7 +134,7 @@ $(function () {
     $("#queryNcsBtn").click(function () {
         var dataMap = {
             'areaId':$("#areaDesc").val(),
-            'dataType':$("#dataType").val(),
+            'fileCode':$("#fileCode").val(),
             'beginTestDate':new Date($("#beginTestDate").val()),
             'endTestDate':new Date($("#endTestDate").val())
         };
@@ -148,8 +148,16 @@ $(function () {
                 $("#queryNcsResultTab").DataTable({
                     "data": data,
                     "columns": [
-                        {"data": "area.name"},
-                        { "data": "dataType"},
+                        {"data": "areaName"},
+                        { "data": "fileCode", "render": function (data) {
+                            if (data === 'LTE-NEW-STATION-DATA') {
+                                return 'LTE新站数据';
+                            }
+                            if (data === 'GSM-NEW-STATION-DATA') {
+                                return 'GSM新站数据';
+                            }
+                            return '--';
+                        }},
                         { "data": "filename" },
                         { "data": "recordCount" },
                         { "data": "createdDate", "render": function (data) {

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hgicreate.rno.mapper.NewStationNcellMapper">
+
+    <select id="queryImport" resultType="com.hgicreate.rno.service.dto.NewStationNcellImportQueryDTO">
+
+            SELECT area.NAME AS AREA_NAME, f.FILENAME, f.FILE_SIZE, job.ID, job.CREATED_DATE, job.START_TIME, job.COMPLETE_TIME, job.CREATED_USER,
+        job.STATUS FROM RNO_DATA_JOB job JOIN RNO_SYS_AREA area ON area.ID = job.AREA_ID JOIN RNO_ORIGIN_FILE f ON f.ID = job.ORIGIN_FILE_ID
+        WHERE
+        <![CDATA[
+        job.CREATED_DATE >=  #{beginDate} AND job.CREATED_DATE <= (#{endDate} + 1)
+        ]]>
+        <if test="status != '全部'">
+            AND job.STATUS = #{status}
+        </if>
+        AND job.AREA_ID = #{areaId}
+        AND job.ORIGIN_FILE_ID IN
+        (SELECT ORIGIN_FILE_ID FROM RNO_ORIGIN_FILE_ATTR WHERE NAME = 'file_code' AND VALUE = upper(#{fileCode}))
+
+    </select>
+</mapper>

@@ -5,12 +5,12 @@ $(function () {
     jqueryUiSet();
 
     // 执行 laydate 实例 
-    laydate.render({elem: '#begUploadDate', value: new Date(new Date().getTime() - 7 * 86400000)});
-    laydate.render({elem: '#endUploadDate', value: new Date()});
-    laydate.render({elem: '#beginTestDate', value: new Date(new Date().getTime() - 7 * 86400000)});
-    laydate.render({elem: '#endTestDate', value: new Date()});
-    laydate.render({elem: '#begUploadDate2', value: new Date(new Date().getTime() - 7 * 86400000)});
-    laydate.render({elem: '#endUploadDate2', value: new Date()});
+    laydate.render({elem: '#begUploadDate', value: new Date(new Date().getTime() - 7 * 86400000), format:'yyyy/MM/dd'});
+    laydate.render({elem: '#endUploadDate', value: new Date(), format:'yyyy/MM/dd'});
+    laydate.render({elem: '#beginTestDate', value: new Date(new Date().getTime() - 7 * 86400000), format:'yyyy/MM/dd'});
+    laydate.render({elem: '#endTestDate', value: new Date(), format:'yyyy/MM/dd'});
+    laydate.render({elem: '#begUploadDate2', value: new Date(new Date().getTime() - 7 * 86400000), format:'yyyy/MM/dd'});
+    laydate.render({elem: '#endUploadDate2', value: new Date(), format:'yyyy/MM/dd'});
 
     initAreaSelectors({selectors: ["province-id", "city-id", "area-id"]});
     initAreaSelectors({selectors: ["provinceId", "cityId", "areaId"]});

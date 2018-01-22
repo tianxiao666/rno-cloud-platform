@@ -36,7 +36,7 @@ $(function () {
     $(".draggable").draggable();
     $("#trigger").css("display", "none");
 
-    laydate.render({elem: '#beginTime', value: new Date()});
+    laydate.render({elem: '#beginTime', value: new Date(), format:'yyyy/MM/dd'});
     initAreaSelectors({selectors: ["provinceId", "cityId"]});
 
     // 展开、收缩小区ncs信息的控制

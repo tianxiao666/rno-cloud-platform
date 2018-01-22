@@ -18,11 +18,11 @@ import java.util.Objects;
 @Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class GsmNcsService {
+public class GsmNcsAnalysisService {
     private final GsmNcsAnalysisMapper gsmNcsAnalysisMapper;
     private final GsmEriNcsDescRepository gsmEriNcsDescRepository;
 
-    public GsmNcsService(GsmNcsAnalysisMapper gsmNcsAnalysisMapper, GsmEriNcsDescRepository gsmEriNcsDescRepository) {
+    public GsmNcsAnalysisService(GsmNcsAnalysisMapper gsmNcsAnalysisMapper, GsmEriNcsDescRepository gsmEriNcsDescRepository) {
         this.gsmNcsAnalysisMapper = gsmNcsAnalysisMapper;
         this.gsmEriNcsDescRepository = gsmEriNcsDescRepository;
     }

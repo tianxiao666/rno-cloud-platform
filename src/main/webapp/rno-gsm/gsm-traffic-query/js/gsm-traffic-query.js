@@ -9,12 +9,12 @@ $(function () {
     jqueryUiSet();
 
     //执行 laydate 实例 
-    laydate.render({elem: '#audioBeginTime', value: new Date(new Date().getTime() - 7 * 86400000)});
-    laydate.render({elem: '#audioLatestAllowedTime', value: new Date()});
-    laydate.render({elem: '#dataBeginTime', value: new Date(new Date().getTime() - 7 * 86400000)});
-    laydate.render({elem: '#dataLatestAllowedTime', value: new Date()});
-    laydate.render({elem: '#qualityBeginTime', value: new Date(new Date().getTime() - 7 * 86400000)});
-    laydate.render({elem: '#qualityLatestAllowedTime', value: new Date()});
+    laydate.render({elem: '#audioBeginTime', value: new Date(new Date().getTime() - 7 * 86400000), format:'yyyy/MM/dd'});
+    laydate.render({elem: '#audioLatestAllowedTime', value: new Date(), format:'yyyy/MM/dd'});
+    laydate.render({elem: '#dataBeginTime', value: new Date(new Date().getTime() - 7 * 86400000), format:'yyyy/MM/dd'});
+    laydate.render({elem: '#dataLatestAllowedTime', value: new Date(), format:'yyyy/MM/dd'});
+    laydate.render({elem: '#qualityBeginTime', value: new Date(new Date().getTime() - 7 * 86400000), format:'yyyy/MM/dd'});
+    laydate.render({elem: '#qualityLatestAllowedTime', value: new Date(), format:'yyyy/MM/dd'});
 
     initAreaSelectors({selectors: ["provinceId", "cityId", "audioAreaId"]});
     initAreaSelectors({selectors: ["provinceId1", "cityId1", "dataAreaId"]});

@@ -74,8 +74,8 @@
                             <td style="padding-left:30px"><label>数据类型:</label></td>
                             <td>
                                 <select id="dateType" name="moduleName" style="width:120px" title="">
-                                    <option value="GSM-NEW-STATION-NCELL">GSM新站数据</option>
-                                    <option value="LTE-NEW-STATION-NCELL">LTE新站数据</option>
+                                    <option value="gsm-new-station-data">GSM新站数据</option>
+                                    <option value="lte-new-station-data">LTE新站数据</option>
                                 </select>
                             </td>
                             <td style="padding-left:30px"><input id="queryBtn" value="查询导入记录" type="button"></td>
@@ -92,6 +92,7 @@
             </div>
             <div id="importDiv" class="importContent" style="height: 290px;">
                 <form id="formImportNcs" enctype="multipart/form-data" method="post">
+                    <input type="hidden" name="moduleName" value="gsm-new-station-ncell">
                     <div>
                         <table class="main-table1 half-width" style="margin-left:0;width:50%">
                             <tbody>
@@ -119,9 +120,9 @@
                                 </td>
                                 <td style="width: 50%;" colspan="0">
                                     GSM新站数据
-                                    <input id="cellData" name="fileCode" value="GSM-NEW-STATION-NCELL" checked="checked" type="radio" title="">
+                                    <input id="cellData" name="fileCode" value="gsm-new-station-data" checked="checked" type="radio" title="">
                                     LTE新站数据
-                                    <input id="enginData" name="fileCode" value="LTE-NEW-STATION-NCELL" type="radio" title="">
+                                    <input id="enginData" name="fileCode" value="lte-new-station-data" type="radio" title="">
                                 </td>
                             </tr>
                             </tbody>
@@ -201,9 +202,9 @@
                     </td>
                     <td style="padding-left:10px">数据类型：</td>
                     <td>
-                        <select id="dataType" title="" style="width: auto">
-                            <option value="GSM-NEW-STATION-NCELL">GSM新站数据</option>
-                            <option value="LTE-NEW-STATION-NCELL">LTE新站数据</option>
+                        <select id="fileCode" title="" style="width: auto">
+                            <option value="gsm-new-station-data">GSM新站数据</option>
+                            <option value="lte-new-station-data">LTE新站数据</option>
                         </select>
                     </td>
                     <td style="padding-left:10px">测试时间 从:</td>

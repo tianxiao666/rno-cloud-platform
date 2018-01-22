@@ -29,11 +29,11 @@ import java.util.List;
 @Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class GsmTrafficService {
+public class GsmTrafficQueryService {
     private final GsmTrafficMapper gsmTrafficMapper;
     private final GsmTrafficQualityRepository gsmTrafficQualityRepository;
 
-    public GsmTrafficService(GsmTrafficMapper gsmTrafficMapper, GsmTrafficQualityRepository gsmTrafficQualityRepository) {
+    public GsmTrafficQueryService(GsmTrafficMapper gsmTrafficMapper, GsmTrafficQualityRepository gsmTrafficQualityRepository) {
         this.gsmTrafficMapper = gsmTrafficMapper;
         this.gsmTrafficQualityRepository = gsmTrafficQualityRepository;
     }

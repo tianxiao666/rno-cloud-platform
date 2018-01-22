@@ -35,9 +35,12 @@ public class GsmNcsDescService {
         Area area = new Area();
         area.setId(vm.getAreaId());
         Calendar calendar = Calendar.getInstance();
+        log.debug("开始时间：{}",vm.getBeginTestDate());
+        log.debug("修改前的结束时间：{}",vm.getEndTestDate());
         calendar.setTime(vm.getEndTestDate());
         calendar.add(Calendar.DATE, 1);
         Date endDate = calendar.getTime();
+        log.debug("修改后时间：{}",endDate);
         if (vm.getBsc() == null || Objects.equals(vm.getBsc().trim(), "")) {
             if (Objects.equals(vm.getFactory(), "HW")) {
                 return gsmHwNcsDescRepository.findTop1000ByAreaAndMeaTimeBetween(

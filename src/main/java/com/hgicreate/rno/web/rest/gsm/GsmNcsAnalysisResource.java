@@ -1,7 +1,7 @@
 package com.hgicreate.rno.web.rest.gsm;
 
 import com.hgicreate.rno.domain.gsm.GsmEriNcsDesc;
-import com.hgicreate.rno.service.gsm.GsmNcsService;
+import com.hgicreate.rno.service.gsm.GsmNcsAnalysisService;
 import com.hgicreate.rno.service.gsm.dto.GsmNcsAnalysisDTO;
 import com.hgicreate.rno.web.rest.gsm.vm.CellNcsQueryVM;
 import lombok.extern.slf4j.Slf4j;
@@ -17,20 +17,20 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/api/gsm-ncs-analysis")
-public class GsmNcsResource {
-    private final GsmNcsService gsmNcsService;
+public class GsmNcsAnalysisResource {
+    private final GsmNcsAnalysisService gsmNcsAnalysisService;
 
-    public GsmNcsResource(GsmNcsService gsmNcsService) {
-        this.gsmNcsService = gsmNcsService;
+    public GsmNcsAnalysisResource(GsmNcsAnalysisService gsmNcsAnalysisService) {
+        this.gsmNcsAnalysisService = gsmNcsAnalysisService;
     }
 
     @PostMapping("/cell-ncs-query")
     public List<GsmNcsAnalysisDTO> cellNcsQuery(CellNcsQueryVM vm) {
-        return gsmNcsService.cellNcsQuery(vm);
+        return gsmNcsAnalysisService.cellNcsQuery(vm);
     }
 
     @PostMapping("/ncs-desc-query")
     public GsmEriNcsDesc ncsDescQuery(Long ncsId) {
-        return gsmNcsService.queryGsmEriNcsDesc(ncsId);
+        return gsmNcsAnalysisService.queryGsmEriNcsDesc(ncsId);
     }
 }

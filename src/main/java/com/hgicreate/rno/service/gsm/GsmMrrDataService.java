@@ -20,12 +20,12 @@ import java.util.*;
 @Slf4j
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class GsmMrrService {
+public class GsmMrrDataService {
     private final GsmMrrDescRepository gsmMrrDescRepository;
     private final DataJobRepository dataJobRepository;
     private final GsmMrrDetailMapper gsmMrrDetailMapper;
 
-    public GsmMrrService(GsmMrrDescRepository gsmMrrDescRepository, DataJobRepository dataJobRepository, GsmMrrDetailMapper gsmMrrDetailMapper) {
+    public GsmMrrDataService(GsmMrrDescRepository gsmMrrDescRepository, DataJobRepository dataJobRepository, GsmMrrDetailMapper gsmMrrDetailMapper) {
         this.gsmMrrDescRepository = gsmMrrDescRepository;
         this.dataJobRepository = dataJobRepository;
         this.gsmMrrDetailMapper = gsmMrrDetailMapper;
@@ -86,15 +86,6 @@ public class GsmMrrService {
             return Collections.emptyList();
         }
 
-        //long totalCnt = page.getTotalCnt();
-        /*if (totalCnt < 0) {
-            totalCnt = gsmMrrDetailMapper.getEriMrrCellAndBscCntByDescId(
-                    mrrDescId, cityId, meaTime);
-            page.setTotalCnt((int) totalCnt);
-        }*/
-        //int startIndex = page.calculateStart();
-        int startIndex = 1;
-        int cnt = 50;
         List<Map<String, Object>> resCellAndBsc = gsmMrrDetailMapper
                 .queryEriMrrCellAndBscByDescId(mrrDescId, cityId, meaTime);
         List<Map<String, Object>> resUlQua6t7Rate = gsmMrrDetailMapper

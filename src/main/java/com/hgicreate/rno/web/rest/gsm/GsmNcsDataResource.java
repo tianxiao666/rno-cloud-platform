@@ -16,10 +16,10 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/api/gsm-ncs-data")
-public class GsmNcsDescResource {
+public class GsmNcsDataResource {
     private final GsmNcsDescService gsmNcsDescService;
 
-    public GsmNcsDescResource(GsmNcsDescService gsmNcsDescService) {
+    public GsmNcsDataResource(GsmNcsDescService gsmNcsDescService) {
         this.gsmNcsDescService = gsmNcsDescService;
     }
 

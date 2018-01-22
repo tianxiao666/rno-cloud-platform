@@ -7,7 +7,7 @@ import java.util.Date;
 @Data
 public class GsmNewStationNcellDescQueryVM {
     private Long areaId;
-    private String dataType;
+    private String fileCode;
     private Date beginTestDate;
     private Date endTestDate;
 }

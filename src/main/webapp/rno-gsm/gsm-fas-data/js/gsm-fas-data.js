@@ -8,11 +8,11 @@ $(function () {
     //绑定事件
     bindEvent();
     // 执行 laydate 实例 
-    laydate.render({elem: '#begUploadDate', value: new Date(new Date().getTime() - 7 * 86400000)});
-    laydate.render({elem: '#endUploadDate', value: new Date()});
-    laydate.render({elem: '#fileDate', value: new Date()});
-    laydate.render({elem: '#beginTestDate', value: new Date(new Date().getTime() - 7 * 86400000)});
-    laydate.render({elem: '#endTestDate', value: new Date()});
+    laydate.render({elem: '#begUploadDate', value: new Date(new Date().getTime() - 7 * 86400000), format:'yyyy/MM/dd'});
+    laydate.render({elem: '#endUploadDate', value: new Date(), format:'yyyy/MM/dd'});
+    laydate.render({elem: '#fileDate', value: new Date(), format:'yyyy/MM/dd'});
+    laydate.render({elem: '#beginTestDate', value: new Date(new Date().getTime() - 7 * 86400000), format:'yyyy/MM/dd'});
+    laydate.render({elem: '#endTestDate', value: new Date(), format:'yyyy/MM/dd'});
     initAreaSelectors({selectors: ["province-menu", "city-menu"]});
     initAreaSelectors({selectors: ["province-id", "city-id"]});
 
@@ -26,7 +26,7 @@ $(function () {
         };
         $('#queryFasResultTab').css("line-height", "12px");
         $.ajax({
-            url: '../../api/gsm-fas-data/gsm-fas-data-query',
+            url: '../../api/gsm-fas-data/data-query',
             dataType: 'json',
             data: dataMap,
             type: 'post',
@@ -65,7 +65,7 @@ $(function () {
             'areaId':$("#city-menu").val(),
             'beginDate':new Date($("#begUploadDate").val()),
             'endDate':new Date($("#endUploadDate").val()),
-            'moduleName': 'GSM-FAS-DATA'
+            'moduleName': 'gsm-fas-data'
         };
         $('#queryResultTab').css("line-height", "12px");
         $.ajax({

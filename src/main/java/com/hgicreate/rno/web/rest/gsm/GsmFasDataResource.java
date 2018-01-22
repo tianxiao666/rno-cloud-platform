@@ -1,7 +1,7 @@
 package com.hgicreate.rno.web.rest.gsm;
 
 import com.hgicreate.rno.domain.gsm.GsmFasDesc;
-import com.hgicreate.rno.service.gsm.GsmFasService;
+import com.hgicreate.rno.service.gsm.GsmFasDataService;
 import com.hgicreate.rno.web.rest.gsm.vm.GsmFasDataQueryVM;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,15 +16,15 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/api/gsm-fas-data")
-public class GsmFasResource {
-    private final GsmFasService gsmFasService;
+public class GsmFasDataResource {
+    private final GsmFasDataService gsmFasDataService;
 
-    public GsmFasResource(GsmFasService gsmFasService) {
-        this.gsmFasService = gsmFasService;
+    public GsmFasDataResource(GsmFasDataService gsmFasDataService) {
+        this.gsmFasDataService = gsmFasDataService;
     }
 
-    @PostMapping("/gsm-fas-data-query")
+    @PostMapping("/data-query")
     public List<GsmFasDesc> gsmFasDataQuery(GsmFasDataQueryVM vm){
-        return gsmFasService.gsmFasDescQuery(vm);
+        return gsmFasDataService.gsmFasDescQuery(vm);
     }
 }

@@ -1,7 +1,7 @@
 package com.hgicreate.rno.web.rest.gsm;
 
 import com.hgicreate.rno.domain.gsm.GsmTrafficQuality;
-import com.hgicreate.rno.service.gsm.GsmTrafficService;
+import com.hgicreate.rno.service.gsm.GsmTrafficQueryService;
 import com.hgicreate.rno.service.gsm.dto.GsmTrafficQueryDTO;
 import com.hgicreate.rno.web.rest.gsm.vm.GsmTrafficQualityQueryVM;
 import com.hgicreate.rno.web.rest.gsm.vm.GsmTrafficQueryVM;
@@ -27,22 +27,22 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/api")
-public class GsmTrafficResource {
-    private final GsmTrafficService gsmTrafficService;
+public class GsmTrafficQueryResource {
+    private final GsmTrafficQueryService gsmTrafficQueryService;
 
-    public GsmTrafficResource(GsmTrafficService gsmTrafficService) {
-        this.gsmTrafficService = gsmTrafficService;
+    public GsmTrafficQueryResource(GsmTrafficQueryService gsmTrafficQueryService) {
+        this.gsmTrafficQueryService = gsmTrafficQueryService;
     }
 
     @PostMapping("/gsm-traffic-query")
     public List<GsmTrafficQueryDTO> gsmTrafficQuery(GsmTrafficQueryVM vm){
-        return gsmTrafficService.gsmTrafficQuery(vm);
+        return gsmTrafficQueryService.gsmTrafficQuery(vm);
     }
 
     @PostMapping("/gsm-traffic-downLoad")
     @ResponseBody
     public ResponseEntity<byte[]> gsmTrafficDownLoad(GsmTrafficQueryVM vm) throws ParseException {
-        File file = gsmTrafficService.downloadData(vm);
+        File file = gsmTrafficQueryService.downloadData(vm);
         try {
             HttpHeaders headers = new HttpHeaders();
             String fileName = new String(file.getName().getBytes("UTF-8"),
@@ -64,6 +64,6 @@ public class GsmTrafficResource {
 
     @PostMapping("/gsm-traffic-quality-query")
     public List<GsmTrafficQuality> gsmTrafficQualityQuery(GsmTrafficQualityQueryVM vm){
-        return gsmTrafficService.gsmTrafficQualityQuery(vm);
+        return gsmTrafficQueryService.gsmTrafficQualityQuery(vm);
     }
 }

@@ -8,4 +8,5 @@ public class GsmNewStationNcellUploadVM {
     private Long areaId;
     private MultipartFile file;
     private String fileCode;
+    private String moduleName;
 }
