@@ -19,7 +19,7 @@
         WHERE a.AREA_ID=b.ID
           AND STS_DESC_ID in (${configIds})
     </select>
-    <select id="getStsSpecFieldInSelConfig" parameterType="map" resultType="map">
+    <select id="getStsSpecFieldInSelConfig" parameterType="map" resultType="com.hgicreate.rno.service.gsm.dto.GsmStsResultDTO">
         select distinct(cell),
         avg(${fieldName}) as avgValue,
         max(${fieldName}) as maxValue,
@@ -29,7 +29,7 @@
         where DESCRIPTOR_ID IN (${buf})
         group by cell
     </select>
-    <select id="selectSpecialCellInSelConfig" parameterType="map" resultType="map">
+    <select id="selectSpecialCellInSelConfig" parameterType="map" resultType="com.hgicreate.rno.service.gsm.dto.GsmStsResultDTO">
       ${sql}
     </select>
 

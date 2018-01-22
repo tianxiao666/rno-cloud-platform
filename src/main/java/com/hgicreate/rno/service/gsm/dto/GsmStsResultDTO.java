@@ -1,11 +1,11 @@
-package com.hgicreate.rno.web.rest.gsm.vm;
+package com.hgicreate.rno.service.gsm.dto;
 
 import lombok.Data;
 
 import java.io.Serializable;
 
 @Data
-public class GsmStsResultVM implements Serializable{
+public class GsmStsResultDTO implements Serializable{
 
 	private String cell;
 	private Float maxValue;

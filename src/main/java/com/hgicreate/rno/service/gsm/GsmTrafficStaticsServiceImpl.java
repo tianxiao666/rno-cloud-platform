@@ -1,7 +1,7 @@
 package com.hgicreate.rno.service.gsm;
 
 import com.hgicreate.rno.mapper.gsm.GsmTrafficStaticsMapper;
-import com.hgicreate.rno.web.rest.gsm.vm.GsmStsResultVM;
+import com.hgicreate.rno.service.gsm.dto.GsmStsResultDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,10 +29,9 @@ public class GsmTrafficStaticsServiceImpl implements GsmTrafficStaticsService {
     }
 
     @Override
-    public List<GsmStsResultVM> staticsResourceUtilizationRateInSelList(
+    public List<GsmStsResultDTO> staticsResourceUtilizationRateInSelectList(
             String stsCode, List<Integer> selConfigs) {
-        log.info("进入staticsResourceUtilizationRateInSelList。 selConfigs="
-                + selConfigs + ",stsCode=" + stsCode);
+        log.debug("参数：selConfigs={},stsCode={}", selConfigs, stsCode);
 
         if (selConfigs == null || selConfigs.isEmpty()) {
             return Collections.EMPTY_LIST;
@@ -41,44 +40,36 @@ public class GsmTrafficStaticsServiceImpl implements GsmTrafficStaticsService {
         if (stsCode == null || stsCode.trim().isEmpty()) {
             return Collections.EMPTY_LIST;
         }
-        System.out.println(selConfigs);
         Collections.sort(selConfigs);
-        System.out.println(selConfigs);
-        List<GsmStsResultVM> stsResults = null;
-        System.out.println(stsCode);
-        if (stsResults == null) {
-            // 从数据库统计
-            String fieldName = "";
-            if ("radioresourcerate".equals(stsCode)) {
-                fieldName = "RESOURCE_USE_RATE";
-            } else if ("accsucrate".equals(stsCode)) {
-                fieldName = "ACCESS_OK_RATE";
-            } else if ("droprate".equals(stsCode)) {
-                fieldName = "RADIO_DROP_RATE_NO_HV";
-            } else if ("dropnum".equals(stsCode)) {
-                fieldName = "DROP_CALL_NUM_TOGETHER";
-            } else if ("handoversucrate".equals(stsCode)) {
-                fieldName = "HANDOVER_SUC_RATE";
-            }
-            StringBuilder buf = new StringBuilder();
-            for (int sc : selConfigs) {
-                buf.append(sc + ",");
-            }
-            if (buf.length() > 1) {
-                buf.deleteCharAt(buf.length() - 1);
-            }
-            Map<String, Object> map = new HashMap<>();
-            map.put("fieldName", fieldName);
-            map.put("buf", buf.toString());
-            stsResults = gsmTrafficStaticsMapper.getStsSpecFieldInSelConfig(map);
+        // 从数据库统计
+        String fieldName = "";
+        if ("radioresourcerate".equals(stsCode)) {
+            fieldName = "RESOURCE_USE_RATE";
+        } else if ("accsucrate".equals(stsCode)) {
+            fieldName = "ACCESS_OK_RATE";
+        } else if ("droprate".equals(stsCode)) {
+            fieldName = "RADIO_DROP_RATE_NO_HV";
+        } else if ("dropnum".equals(stsCode)) {
+            fieldName = "DROP_CALL_NUM_TOGETHER";
+        } else if ("handoversucrate".equals(stsCode)) {
+            fieldName = "HANDOVER_SUC_RATE";
         }
-        return stsResults;
+        StringBuilder buf = new StringBuilder();
+        for (int sc : selConfigs) {
+            buf.append(sc).append(",");
+        }
+        if (buf.length() > 1) {
+            buf.deleteCharAt(buf.length() - 1);
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("fieldName", fieldName);
+        map.put("buf", buf.toString());
+        return gsmTrafficStaticsMapper.getStsSpecFieldInSelConfig(map);
     }
 
     @Override
-    public List<GsmStsResultVM> staticsSpecialCellInSelList(String needCellType, List<Integer> selConfigs) {
-        log.info("进入staticsSpecialCellInSelList。 selConfigs=" + selConfigs
-                + ",cellType=" + needCellType);
+    public List<GsmStsResultDTO> staticsSpecialCellInSelectList(String needCellType, List<Integer> selConfigs) {
+        log.debug("参数：selConfigs={},cellType={}", selConfigs, needCellType);
 
         if (selConfigs == null || selConfigs.isEmpty()) {
             return Collections.EMPTY_LIST;
@@ -90,7 +81,7 @@ public class GsmTrafficStaticsServiceImpl implements GsmTrafficStaticsService {
         Collections.sort(selConfigs);
         StringBuilder buf = new StringBuilder();
         for (int sc : selConfigs) {
-            buf.append(sc + ",");
+            buf.append(sc).append(",");
         }
         if (buf.length() > 1) {
             buf.deleteCharAt(buf.length() - 1);
@@ -123,10 +114,9 @@ public class GsmTrafficStaticsServiceImpl implements GsmTrafficStaticsService {
         }
         if (!"".equals(sql)) {
             // 从数据库统计
-            List<GsmStsResultVM> stsResults = null;
             Map<String, Object> map = new HashMap<>();
             map.put("sql", sql);
-            stsResults = gsmTrafficStaticsMapper.selectSpecialCellInSelConfig(map);
+            List<GsmStsResultDTO> stsResults = gsmTrafficStaticsMapper.selectSpecialCellInSelConfig(map);
             log.debug("结果集={}", stsResults);
             return stsResults;
         } else {

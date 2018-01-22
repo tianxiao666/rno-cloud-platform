@@ -1,5 +1,7 @@
-package com.hgicreate.rno.web.rest.gsm.vm;
+package com.hgicreate.rno.service.gsm.dto;
 
+import com.hgicreate.rno.web.rest.gsm.vm.GsmStsAnaItemDetailVM;
+import com.hgicreate.rno.web.rest.gsm.vm.GsmStsConditionVM;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -10,11 +12,11 @@ import java.io.Serializable;
  * @author brightming
  */
 @Data
-public class GsmStsConfigVM implements Serializable {
+public class GsmStsConfigDTO implements Serializable {
 
     private long configId;
-    private boolean isFromQuery;
-    private boolean isSelected;
+    private boolean fromQuery;
+    private boolean selected;
     private GsmStsAnaItemDetailVM stsAnaItemDetail;
     private GsmStsConditionVM stsCondition;
 
@@ -28,22 +30,24 @@ public class GsmStsConfigVM implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
-        GsmStsConfigVM other = (GsmStsConfigVM) obj;
-        if (configId != other.configId)
-            return false;
-        return true;
+        }
+        GsmStsConfigDTO other = (GsmStsConfigDTO) obj;
+
+        return (configId == other.configId);
     }
 
     @Override
     public String toString() {
         return "StsConfig [configId=" + configId + ", isFromQuery="
-                + isFromQuery + ", isSelected=" + isSelected
+                + fromQuery + ", isSelected=" + selected
                 + ", stsAnaItemDetail=" + stsAnaItemDetail + ", stsCondition="
                 + stsCondition + "]";
     }

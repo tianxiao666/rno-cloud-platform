@@ -143,70 +143,80 @@ $(function () {
  * 获取和展现被加载的分析列表
  */
 function loadAndShowAnalysisList() {
-    var data = "31,32,33";
-    $("#analysisListTable").empty();
-    $
-        .ajax({
-            url: '../../api/gsm-traffic-statics/get-cell-performance-quota-list',
-            data: {
-                'data': data
-            },
-            dataType: 'json',
-            type: 'post',
-            success: function (data) {
-                if (!data) {
-                    return;
-                }
-                // 在面板显示
-                let htmlstr = "";
-                let one;
-                let trClass = "";
-                for (let i = 0; i < data.length; i++) {
-                    one = data[i]['stsAnaItemDetail'];
-                    if (i % 2 === 0) {
-                        trClass = "tb-tr-bg-coldwhite";
-                    } else {
-                        trClass = "tb-tr-bg-warmwhite";
+    $.ajax({
+        url:"../../api/gsm-traffic-statics/id-string",
+        type: "get",
+        success: function (data) {
+            $("#analysisListTable").empty();
+            $.ajax({
+                url: '../../api/gsm-traffic-statics/cell-performance-quota-list',
+                data: {
+                    'data': data
+                },
+                dataType: 'json',
+                type: 'post',
+                success: function (data) {
+                    if (!data) {
+                        return;
                     }
-                    if (one) {
-                        htmlstr += "<tr class=\""
-                            + trClass
-                            + "\">"// table 内容 yuan.yw 修改 2013-10-28
-                            + "  <td width=\"25%\" class=\"bd-right-white\" >    "
-                            + "  <span >"
-                            + one['areaName']
-                            + "</span>"
-                            + "  </td>"
-                            + "  <td  width=\"40%\"  class=\"bd-right-white td_nowrap\">"
-                            + "  <span >"
-                            + getValidValue(one['stsType'], "未知")
-                            + "</span>"
-                            + "  </td>"
-                            + "  <td  width=\"20%\"  class=\"td-standard-date bd-right-white td_nowrap\">"
-                            + "  <span >"
-                            + getValidValue(one['stsDate'], "未知")
-                            + "</span>"
-                            + "  </td>"
-                            + "  <td width=\"20%\" class=\"bd-right-white td_nowrap\">"
-                            + "  <span>"
-                            + getValidValue(one['periodType'], "不规则指标")
-                            + "</span>"
-                            + "  </td>"
-                            + "  <td width=\"5%\" class=\"bd-right-white\">"
-                            + "  <input type=\"checkbox\" class=\"forselect\" name=\"checkbox\" value="+getValidValue(one['areaId'], "未知")+" id='"
-                            + data[i]['configId']
-                            + "' />"
-                            + "  <label for=\"checkbox\"></label>"
-                            + "  </td>"
-                            + "  </tr>";
+                    // 在面板显示
+                    let htmlStr = "";
+                    let one;
+                    let trClass = "";
+                    for (let i = 0; i < data.length; i++) {
+                        one = data[i]['stsAnaItemDetail'];
+                        if (i % 2 === 0) {
+                            trClass = "tb-tr-bg-coldwhite";
+                        } else {
+                            trClass = "tb-tr-bg-warmwhite";
+                        }
+                        if (one) {
+                            htmlStr += "<tr class=\""
+                                + trClass
+                                + "\">"// table 内容 yuan.yw 修改 2013-10-28
+                                + "  <td width=\"25%\" class=\"bd-right-white\" >    "
+                                + "  <span >"
+                                + one['areaName']
+                                + "</span>"
+                                + "  </td>"
+                                + "  <td  width=\"40%\"  class=\"bd-right-white td_nowrap\">"
+                                + "  <span >"
+                                + getValidValue(one['stsType'], "未知")
+                                + "</span>"
+                                + "  </td>"
+                                + "  <td  width=\"20%\"  class=\"td-standard-date bd-right-white td_nowrap\">"
+                                + "  <span >"
+                                + getValidValue(one['stsDate'], "未知")
+                                + "</span>"
+                                + "  </td>"
+                                + "  <td width=\"20%\" class=\"bd-right-white td_nowrap\">"
+                                + "  <span>"
+                                + getValidValue(one['periodType'], "不规则指标")
+                                + "</span>"
+                                + "  </td>"
+                                + "  <td width=\"5%\" class=\"bd-right-white\">"
+                                + "  <input type=\"checkbox\" class=\"forselect\" name=\"checkbox\" value="+getValidValue(one['areaId'], "未知")+" id='"
+                                + data[i]['configId']
+                                + "' />"
+                                + "  <label for=\"checkbox\"></label>"
+                                + "  </td>"
+                                + "  </tr>";
+                        }
                     }
+                    $("#analysisListTable").append(htmlStr);
+                    if (htmlStr !== "") {
+                        $("#analysisBtnDiv").show();
+                    }
+                },
+                error: function (err) {
+                    animateInAndOut("operInfo", 500, 500, 1000, "operTip", "获取性能指标列表失败");
                 }
-                $("#analysisListTable").append(htmlstr);
-                if (htmlstr !== "") {
-                    $("#analysisBtnDiv").show();
-                }
-            }
-        });
+            });
+        },
+        error: function (err) {
+            animateInAndOut("operInfo", 500, 500, 1000, "operTip", "获取性能指标id串失败");
+        }
+    })
 }
 
 function getValidValue(v, defaultValue, precision) {
@@ -246,7 +256,7 @@ function hideTips(tip) {
  *            如果name不为空，说明要获取type类型的name指定的范围的统计值。如获取type=无线资源利用率，name=超忙小区
  */
 function commonstatics(type, action, name) {
-    showTips("正在加载资源无线利用率")
+    showTips("正在加载资源无线利用率");
     loadStaticsInfo(action, type, name, 0, function () {
         hideTips();
     });
