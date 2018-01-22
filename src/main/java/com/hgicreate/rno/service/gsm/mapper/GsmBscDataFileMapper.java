@@ -16,6 +16,11 @@ public interface GsmBscDataFileMapper {
 
     GsmBscDataFileMapper INSTANCE = Mappers.getMapper(GsmBscDataFileMapper.class);
 
+    /**
+     * gsm网元导入记录对象转换为DTO
+     * @param dataJob 数据任务对象
+     * @return 数据任务对象DTO
+     */
     @Mappings({
             @Mapping(source = "originFile.createdDate", target = "uploadTime",dateFormat = "yyyy-MM-dd HH:mm:ss"),
             @Mapping(source = "area.name", target = "areaName"),

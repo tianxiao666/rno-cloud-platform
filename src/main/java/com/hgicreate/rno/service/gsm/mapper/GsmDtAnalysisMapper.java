@@ -13,7 +13,11 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface GsmDtAnalysisMapper {
     GsmDtAnalysisMapper INSTANCE = Mappers.getMapper(GsmDtAnalysisMapper.class);
-
+    /**
+     * gsm路测采样数据对象转换为DTO
+     * @param gsmDtSample 路测采样数据对象
+     * @return 路测采样数据对象DTO
+     */
     @Mapping(source = "id", target = "id")
     GsmDtAnalysisDTO gsmDtAnalysisToGsmDtAnalysisDTO(GsmDtSample gsmDtSample);
 }

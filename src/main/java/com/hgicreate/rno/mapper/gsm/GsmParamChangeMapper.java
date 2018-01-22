@@ -17,7 +17,7 @@ public interface GsmParamChangeMapper {
      * cell参数比较
      *
      * @param vm 参数对象
-     * @return cell比较结果lsit
+     * @return cell比较结果list
      */
     List<Map<String, Object>> eriCellParamsCompare(GsmParamChangeVM vm);
 
