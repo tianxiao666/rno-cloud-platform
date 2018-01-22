@@ -87,13 +87,13 @@ public class GsmBscDataResource {
         return gsmBscDataService.queryRecord(vm);
     }
 
-    @GetMapping("delete-by-bscId")
+    @DeleteMapping("delete-by-bscId")
     public void deleteByBscId(@RequestParam Long bscId) {
         log.debug("待删除BSC信息id为={}", bscId);
         gsmBscDataRepository.delete(bscId);
     }
 
-    @GetMapping("/bsc-data-update")
+    @PutMapping("/bsc-data-update")
     public boolean updateBscData(GsmBscDataQueryVM vm) {
         try {
             log.debug("要更新的bsc信息为{}", vm);

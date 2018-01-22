@@ -96,6 +96,7 @@ $(function () {
     });
     $("#addSingleBscForm").ajaxForm({
         url: "../../api/gsm-bsc-data/bsc-data-update",
+        type: "Put",
         success: showResult
     });
 
@@ -309,10 +310,9 @@ function showRecord(data) {
 //显示导入记录的状态的详情
 function deleteBsc(id) {
     $.ajax({
-        url: '../../api/gsm-bsc-data/delete-by-bscId',
+        url: '../../api/gsm-bsc-data/delete-by-bscId?bscId=' + id,
         dataType: 'text',
-        data: {bscId: id},
-        type: "Get",
+        type: "delete",
         success: function (data) {
             $("#info").css("background", "green");
             showInfoInAndOut("info", "删除完成！");
