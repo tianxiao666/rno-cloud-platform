@@ -10,8 +10,8 @@
          from RNO_GSM_FAS_CELL_DATA t1 left join RNO_GSM_CELL t2 on t2.EN_NAME = t1.CELL
         where
         <![CDATA[
-            MEA_TIME >= to_date(${fasMeaBegTime} ,'yyyy-MM-dd')
-            and MEA_TIME <= to_date(${fasMeaEndTime},'yyyy-MM-dd')
+            MEA_TIME >= to_date(#{fasMeaBegTime} ,'yyyy-MM-dd')
+            and MEA_TIME <= to_date(#{fasMeaEndTime},'yyyy-MM-dd')
             and t1.CELL like #{cell}
                 ]]>
 

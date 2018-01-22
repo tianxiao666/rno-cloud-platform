@@ -20,8 +20,8 @@ public interface GsmFasAnalysisMapper {
      * @param cell fas小区id
      * @return fas频点数据列表
      */
-    List<Map<String,Object>> queryFasChartData(@Param("fasMeaBegTime")Integer fasMeaBegTime ,
-                                               @Param("fasMeaEndTime")Integer fasMeaEndTime,
+    List<Map<String,Object>> queryFasChartData(@Param("fasMeaBegTime")String fasMeaBegTime ,
+                                               @Param("fasMeaEndTime")String fasMeaEndTime,
                                                @Param("cell")String cell);
 
 }
