@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
 
+/**
+ * @author xiao.sz
+ */
 @Slf4j
 @RestController
 @RequestMapping("/api/gsm-frequency-reuse-analysis")
@@ -19,30 +22,35 @@ public class GsmFrequencyReuseAnalysisResource {
     @Autowired
     private GsmFrequencyReuseService gsmFrequencyReuseService;
 
+    /**
+     * @return 页面配置列表
+     */
     @GetMapping("/cell-config-analysis-list")
     public List<Map<String, Object>> getCellConfigAnalysisList() {
         List<Map<String, Object>> planConfigs = gsmFrequencyReuseService.getCellConfigAnalysisList();
-        log.debug("退出方法：getCellConfigAnalysisListForAjaxAction。输出：" + planConfigs);
+        log.debug("返回：" + planConfigs);
         return planConfigs;
     }
 
     /**
+     * 统计指定区域范围小区的频率复用情况
      * @param btsType 频率类型
      * @param currentPage 当前页码
      * @param pageSize 每页大小
      * @param areaId 区域id
      * @return Map 结果集
-     * @description: 统计指定区域范围小区的频率复用情况
      */
     @PostMapping("/statistics-frequency-reuse-info")
     public Map<String, Object> staticsFreqReuseInfo(String btsType, int currentPage, int pageSize, long areaId) {
         Map<Integer, Object> freqReuseInfos;
         GsmPageVM page = new GsmPageVM(0, pageSize, currentPage, 0, 0);
-        freqReuseInfos = gsmFrequencyReuseService.staticsFreqReuseInfoInArea(btsType, currentPage, pageSize, areaId);// 获取统计信息
+        // 获取统计信息
+        freqReuseInfos = gsmFrequencyReuseService.staticsFreqReuseInfoInArea(btsType, currentPage, pageSize, areaId);
         if (freqReuseInfos == null) {
             freqReuseInfos = Collections.EMPTY_MAP;
         }
-        GsmPageVM newPage = new GsmPageVM();// 当前分页
+        // 当前分页
+        GsmPageVM newPage = new GsmPageVM();
         newPage.setCurrentPage(page.getCurrentPage());
         newPage.setPageSize(page.getPageSize());
         newPage.setTotalCnt(freqReuseInfos.size());
@@ -56,8 +64,6 @@ public class GsmFrequencyReuseAnalysisResource {
         }
         if (start >= 0) {
             int toIndex = start + page.getPageSize() - 1;
-            System.out.println("start" + start);
-            System.out.println("toIndex" + toIndex);
             if (toIndex > freqReuseInfos.size()) {
                 toIndex = freqReuseInfos.size();
             }
@@ -79,7 +85,7 @@ public class GsmFrequencyReuseAnalysisResource {
         resultMap.put("freqReuseInfos", rMap);
         resultMap.put("page", newPage);
 
-        log.debug("退出方法：staticsFreqReuseInfoForAjaxAction。输出：{}" + resultMap);
+        log.debug("返回：{}" + resultMap);
         return resultMap;
     }
 }
