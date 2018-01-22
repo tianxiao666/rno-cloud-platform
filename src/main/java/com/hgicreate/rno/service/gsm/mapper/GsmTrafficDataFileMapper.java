@@ -8,11 +8,19 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
+/**
+ * @author yang.ch1
+ */
 @Mapper
 public interface GsmTrafficDataFileMapper {
 
     GsmTrafficDataFileMapper INSTANCE = Mappers.getMapper(GsmTrafficDataFileMapper.class);
 
+    /**
+     * 将数据任务对象转换为话务文件DTO
+     * @param dataJob 数据处理任务
+     * @return 话务数据文件DTO
+     */
     @Mappings({
             @Mapping(source = "id", target = "id"),
             @Mapping(source = "originFile.createdDate", target = "uploadTime",dateFormat = "yyyy-MM-dd HH:mm:ss"),

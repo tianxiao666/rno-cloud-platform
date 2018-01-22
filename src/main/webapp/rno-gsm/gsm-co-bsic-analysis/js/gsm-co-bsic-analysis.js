@@ -769,7 +769,8 @@ function getCobsicCellWholenet (reSelected, areaIdStr,cellConfigIds) {
         dataType: "text",
         async: true,
         success: function (data) {
-            if(data ===null || data ===''){
+            console.log(data.length);
+            if(data ===null || data.length <= 2){
                 showInfoInAndOut('info','不存在co-bsic小区');
                 return false;
             }

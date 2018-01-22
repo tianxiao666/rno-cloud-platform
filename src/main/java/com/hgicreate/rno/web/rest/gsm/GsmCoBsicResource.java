@@ -27,6 +27,9 @@ import java.io.FileOutputStream;
 import java.nio.file.Paths;
 import java.util.*;
 
+/**
+ * @author yang.ch1
+ */
 @Slf4j
 @RestController
 @RequestMapping("/api/gsm-co-bsic-analysis")
@@ -63,16 +66,9 @@ public class GsmCoBsicResource {
     public Map<String, Object> getWholeNetCoBsicCells(GsmCoBsicQueryVM vm){
         List<CobsicCellsDTO> cobsicCells = gsmCoBsicService.getCobsicCells(vm);
         log.debug("cobsicCells大小为{}",cobsicCells.size());
-        return cobsicCells.size()>1000?null:getCoBsic(cobsicCells);
+        return new HashMap<>();
     }
 
-    private void prepareCellsExpand(List<GsmNcellRelation> list, CobsicCellsExpandDTO gsmCobsicCellsExpand){
-        for (int l = 0; l < list.size(); l++) {
-            log.info("获取共同邻区共多少：" + list.size());
-            gsmCobsicCellsExpand.setWhetherComNcell(true);
-            gsmCobsicCellsExpand.setCommonNcell(list.get(l).getCellId());
-        }
-    }
 
     @GetMapping("/cobsic-query-by-bcch-bsic")
     public Map<String, Object> getCoBsicCellsByBcchAndBsic(GsmCoBsicQueryVM vm){
@@ -83,7 +79,6 @@ public class GsmCoBsicResource {
     private Map<String, Object> getCoBsic(List<CobsicCellsDTO> cobsicCells){
         Map<String, Object> result = new HashMap<>();
         Map<String, Object> cobsicMap = new HashMap<>();
-
         List<String> cellStrs;
         CobsicCellsDTO gsmCobsicCells;
         String bcch;
@@ -114,8 +109,9 @@ public class GsmCoBsicResource {
                                 CobsicCellsExpandDTO cellsExpand = new CobsicCellsExpandDTO();
                                 cellsExpand.setCombinedCell(labels[i] + "," + labels[j]);
                                 cellsExpand.setWhetherNcell(isNcell);
-                                cellsExpand.setWhetherComNcell(false);
-                                prepareCellsExpand(ncells,cellsExpand);
+                                cellsExpand.setWhetherComNcell(true);
+                                cellsExpand.setCommonNcell(ncells.get(ncells.size()-1).getCellId());
+
                                 // 为bcch,bsic的所在拓展的对象集合内新增对象
                                 cobsicexpanList.add(cellsExpand);
                                 gsmCobsicCells.setCombinedCells(cobsicexpanList);
@@ -125,7 +121,8 @@ public class GsmCoBsicResource {
                                 CobsicCellsExpandDTO cellsExpand = new CobsicCellsExpandDTO();
                                 cellsExpand.setCombinedCell(labels[i] + "," + labels[j]);
                                 cellsExpand.setWhetherNcell(isNcell);
-                                prepareCellsExpand(ncells,cellsExpand);
+                                cellsExpand.setWhetherComNcell(true);
+                                cellsExpand.setCommonNcell(ncells.get(ncells.size()-1).getCellId());
                                 gsmCobsicCells.setBcch(Long.parseLong(bcch));
                                 gsmCobsicCells.setBsic(bsic);
                                 List<CobsicCellsExpandDTO> list = new ArrayList<>();
@@ -136,9 +133,7 @@ public class GsmCoBsicResource {
                                 // 通过bcch,bsic为key向map中增加cobsic对象集合
                                 cobsicMap.put(bcch + "," + bsic, gsmCobsicCells);
                             }
-
                         }
-
                     }
                 }
                 log.debug("cobsic map = {}",cobsicMap);
@@ -186,7 +181,6 @@ public class GsmCoBsicResource {
                     new BufferedOutputStream(new FileOutputStream(new File(filepath)));
             stream.write(vm.getFile().getBytes());
             stream.close();
-
 
             //更新文件记录
             originFile.setDataType(vm.getModuleName().toUpperCase());

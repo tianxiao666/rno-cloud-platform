@@ -3,6 +3,9 @@ package com.hgicreate.rno.service.gsm.dto;
 import com.hgicreate.rno.util.FileSizeUtil;
 import lombok.Data;
 
+/**
+ * @author yang.ch1
+ */
 @Data
 public class GsmTrafficDataFileDTO {
 

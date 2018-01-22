@@ -8,10 +8,18 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
+/**
+ * @author yang.ch1
+ */
 @Mapper
 public interface GsmTrafficDataDescMapper {
     GsmTrafficDataDescMapper INSTANCE = Mappers.getMapper(GsmTrafficDataDescMapper.class);
 
+    /**
+     * gsm话务描述对象转换为DTO
+     * @param gsmStsDescriptor gsm话务数据描述对象
+     * @return gsm话务数据描述DTO
+     */
     @Mappings({
             @Mapping(source = "area.name", target = "areaName"),
             @Mapping(source = "createTime", target = "createTime",dateFormat = "yyyy-MM-dd HH:mm:ss"),

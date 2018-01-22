@@ -13,17 +13,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author yang.ch1
+ */
 @Service
 @Slf4j
 public class GsmCoBsicService {
 
     private final GsmCoBsicMapper gsmCoBsicMapper;
 
-    private final AreaRepository areaRepository;
 
-    public GsmCoBsicService(GsmCoBsicMapper gsmCoBsicMapper, AreaRepository areaRepository) {
+    public GsmCoBsicService(GsmCoBsicMapper gsmCoBsicMapper) {
         this.gsmCoBsicMapper = gsmCoBsicMapper;
-        this.areaRepository = areaRepository;
     }
 
     public List<CobsicCellsDTO> getCobsicCells(GsmCoBsicQueryVM vm){
@@ -34,7 +35,7 @@ public class GsmCoBsicService {
 
     public double getDistanceBetweenCells(String sourceCell, String targetCell){
         List<String> lonlats = gsmCoBsicMapper.getLonLatsByCells(sourceCell,targetCell);
-        String lonlat[] = lonlats.get(0).split(",");
+        String [] lonlat = lonlats.get(0).split(",");
         return LatLngHelperUtils.Distance(Double.parseDouble(lonlat[0]),Double.parseDouble(lonlat[1]),
                 Double.parseDouble(lonlat[2]),Double.parseDouble(lonlat[3]));
     }

@@ -1135,9 +1135,9 @@ function updateCellFreq() {
                 'bcch' : bcch,
                 'tch' : tch
             },
-            dataType : 'json',
-            type : 'post',
-            success : function(data) {
+            type : 'put',
+            success : function(xhr,textstatus,e) {
+                console.log(xhr.status);
                 $("#freq_dialogId").hide();
                 $("#info").css("background","green");
                 showInfoInAndOut("info","更新频点成功！");

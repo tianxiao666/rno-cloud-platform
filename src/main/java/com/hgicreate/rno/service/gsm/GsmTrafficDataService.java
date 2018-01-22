@@ -19,6 +19,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author yang.ch1
+ */
 @Service
 public class GsmTrafficDataService {
 
@@ -31,7 +34,6 @@ public class GsmTrafficDataService {
         this.gsmStsDescriptorRepository = gsmStsDescriptorRepository;
     }
 
-
     public List<GsmTrafficDataFileDTO> queryFileUploadRecord(GsmTrafficDataImportVM vm) throws ParseException {
         Area area = new Area();
         area.setId(Long.parseLong(vm.getCity()));
@@ -40,7 +42,7 @@ public class GsmTrafficDataService {
         SimpleDateFormat sdf2 =   new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
         Date endDate =sdf2.parse(vm.getEndUploadDate() +" 23:59:59");
         List<DataJob> list;
-        if(vm.getStatus().equals("全部")){
+        if("全部".equals(vm.getStatus())){
             list= dataJobRepository.findTop1000ByAreaAndOriginFile_CreatedDateBetweenAndOriginFile_DataTypeOrderByOriginFile_CreatedDateDesc(
                     area, beginDate, endDate,"GSM-TRAFFIC-DATA");
         }else{

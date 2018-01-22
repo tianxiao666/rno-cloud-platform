@@ -32,6 +32,9 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * @author yang.ch1
+ */
 @Slf4j
 @RestController
 @RequestMapping("/api/gsm-traffic-data")
@@ -91,7 +94,6 @@ public class GsmTrafficDataResource {
             stream.write(vm.getFile().getBytes());
             stream.close();
 
-
             //更新文件记录
             originFile.setDataType(vm.getModuleName().toUpperCase());
             originFile.setFullPath(filepath);
@@ -119,7 +121,6 @@ public class GsmTrafficDataResource {
             originFileAttrRepository.save(originFileAttr1);
             originFileAttrRepository.save(originFileAttr2);
 
-
             // 保存文件到FTP
             String ftpFullPath = FtpUtils.sendToFtp(vm.getModuleName(), filepath, true, env);
             log.debug("获取FTP文件的全路径：{}", ftpFullPath);
@@ -139,7 +140,6 @@ public class GsmTrafficDataResource {
             dataJob.setDataStoreType("FTP");
             dataJob.setDataStorePath(ftpFullPath);
             dataJobRepository.save(dataJob);
-
 
             //建立任务报告
             DataJobReport dataJobReport = new DataJobReport();

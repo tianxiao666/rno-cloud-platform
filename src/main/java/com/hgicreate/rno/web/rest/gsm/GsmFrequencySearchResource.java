@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author yang.ch1
+ */
 @Slf4j
 @RestController
 @RequestMapping("/api/gsm-frequency-search")
@@ -24,15 +27,14 @@ public class GsmFrequencySearchResource {
         this.gsmFrequencySearchMapper = gsmFrequencySearchMapper;
     }
 
-    @PostMapping("/update-cell-freq-by-cellId")
-    public boolean updateCellFreqByCellId(GsmFrequencyUpdateVM vm){
+    @PutMapping("/update-cell-freq-by-cellId")
+    public void updateCellFreqByCellId(GsmFrequencyUpdateVM vm){
         log.debug("更新频点参数bcch={},tch={},cellId={}",
                 vm.getBcch(),vm.getTch(),vm.getCellId());
         GsmCell gsmCell = gsmCellDataRepository.findOne(vm.getCellId());
         gsmCell.setBcch(Integer.parseInt(vm.getBcch()));
         gsmCell.setTch(vm.getTch());
         gsmCellDataRepository.save(gsmCell);
-        return true;
     }
 
     @GetMapping("/cell-search")
