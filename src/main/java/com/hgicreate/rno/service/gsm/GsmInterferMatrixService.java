@@ -12,6 +12,7 @@ import com.hgicreate.rno.service.gsm.mapper.GsmNcsForJobMapper;
 import com.hgicreate.rno.web.rest.gsm.vm.GsmInterferMatrixVM;
 import com.hgicreate.rno.web.rest.gsm.vm.GsmNcsForJobVM;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -20,6 +21,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author tao.xj
+ */
 @Slf4j
 @Service
 public class GsmInterferMatrixService {
@@ -40,13 +44,13 @@ public class GsmInterferMatrixService {
         Date beginDate = sdf.parse(vm.getBegDate());
         Date endDate = sdf.parse(vm.getEndDate());
         List<GsmInterferMatrixJob> list;
-        if("ALL".equals(vm.getInterMatrixType())){
+        if ("ALL".equals(vm.getInterMatrixType())) {
             list = gsmInterferMatrixJobRepository.findTop1000ByAreaAndCreatedDateBetweenOrderByCreatedDateDesc(
-                    area,beginDate,endDate);
-        }else{
+                    area, beginDate, endDate);
+        } else {
             list = gsmInterferMatrixJobRepository
                     .findTop1000ByAreaAndDataTypeAndAndCreatedDateBetweenOrderByCreatedDateDesc(
-                    area,vm.getInterMatrixType(),beginDate,endDate);
+                            area, vm.getInterMatrixType(), beginDate, endDate);
         }
         return list.stream()
                 .map(GsmInterferMatrixJobMapper.INSTANCE::gsmInterferMatrixToGsmInterferMatrixDTO)
@@ -60,56 +64,58 @@ public class GsmInterferMatrixService {
         Date beginMeaDate = sdf.parse(vm.getBegMeaDate());
         Date endMeaDate = sdf.parse(vm.getEndMeaDate());
         List<GsmEriNcsDesc> list = gsmEriNcsDescRepository.findTop1000ByAreaAndMeaTimeBetween(
-                area,beginMeaDate,endMeaDate);
+                area, beginMeaDate, endMeaDate);
         return list.stream()
                 .map(GsmNcsForJobMapper.INSTANCE::ncsForJobToNcsForJobDTO)
                 .collect(Collectors.toList());
     }
 
     // 更新任务状态
+
+    /**
+     * 更新任务状态
+     *
+     * @param area 地市
+     * @param job  干扰矩阵分析任务
+     */
+    @Async
     public void runTask(Area area, GsmInterferMatrixJob job) {
         long times = (long) (Math.random() * (5000) + 60000);
-        Runnable runnable = new Runnable() {
-            boolean isStopped = false;
-            public void run() {
-                while (!isStopped) {
-                    if ("".equals(job.getStatus()) || job.getStatus() == null || "排队中".equals(job.getStatus())) {
-                        List<GsmInterferMatrixJob> list = gsmInterferMatrixJobRepository.findByAreaOrderByIdDesc(area);
-                        if ("排队中".equals(list.get(1).getStatus()) || "正在计算".equals(list.get(1).getStatus())) {
-                            job.setStatus("排队中");
-                            gsmInterferMatrixJobRepository.save(job);
-                            log.debug("干扰矩阵任务状态更新：{}",job.getStatus());
-                            try {
-                                Thread.sleep(times);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            job.setStartTime(new Date());
-                            job.setStatus("正在计算");
-                            gsmInterferMatrixJobRepository.save(job);
-                            log.debug("干扰矩阵任务状态更新：{}",job.getStatus());
-                            try {
-                                Thread.sleep(times);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    } else {
-                        job.setCompleteTime(new Date());
-                        if (Math.random() < 0.1) {
-                            job.setStatus("计算失败");
-                        } else {
-                            job.setStatus("计算成功");
-                        }
-                        gsmInterferMatrixJobRepository.save(job);
-                        log.debug("干扰矩阵任务状态更新：{}",job.getStatus());
-                        isStopped = true;
+        boolean isStopped = false;
+        while (!isStopped) {
+            if ("".equals(job.getStatus()) || job.getStatus() == null || "排队中".equals(job.getStatus())) {
+                List<GsmInterferMatrixJob> list = gsmInterferMatrixJobRepository.findByAreaOrderByIdDesc(area);
+                if ("排队中".equals(list.get(1).getStatus()) || "正在计算".equals(list.get(1).getStatus())) {
+                    job.setStatus("排队中");
+                    gsmInterferMatrixJobRepository.save(job);
+                    log.debug("干扰矩阵任务状态更新：{}", job.getStatus());
+                    try {
+                        Thread.sleep(times);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    job.setStartTime(new Date());
+                    job.setStatus("正在计算");
+                    gsmInterferMatrixJobRepository.save(job);
+                    log.debug("干扰矩阵任务状态更新：{}", job.getStatus());
+                    try {
+                        Thread.sleep(times);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                 }
+            } else {
+                job.setCompleteTime(new Date());
+                if (Math.random() < 0.1) {
+                    job.setStatus("计算失败");
+                } else {
+                    job.setStatus("计算成功");
+                }
+                gsmInterferMatrixJobRepository.save(job);
+                log.debug("干扰矩阵任务状态更新：{}", job.getStatus());
+                isStopped = true;
             }
-        };
-        Thread thread = new Thread(runnable);
-        thread.start();
+        }
     }
 }

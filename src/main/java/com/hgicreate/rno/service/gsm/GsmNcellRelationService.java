@@ -21,6 +21,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author tao.xj
+ */
 @Service
 public class GsmNcellRelationService {
 
@@ -49,7 +52,7 @@ public class GsmNcellRelationService {
         Date beginDate = sdf.parse(vm.getBegUploadDate() + " 00:00:00");
         Date endDate = sdf.parse(vm.getEndUploadDate() + " 23:59:59");
         List<DataJob> list;
-        if (vm.getStatus().equals("全部")) {
+        if ("全部".equals(vm.getStatus())) {
             list = dataJobRepository
                     .findTop1000ByAreaAndOriginFile_CreatedDateBetweenAndOriginFile_DataTypeOrderByOriginFile_CreatedDateDesc(
                             area, beginDate, endDate, "GSM-NCELL-RELATION");
@@ -67,7 +70,7 @@ public class GsmNcellRelationService {
         Area area = new Area();
         area.setId(Long.parseLong(vm.getCityId()));
         List<GsmNcellDescDTO> dtoList;
-        if (vm.getDataType().equals("全部")) {
+        if ("全部".equals(vm.getDataType())) {
             dtoList = gsmNcellDescRepository.findTop1000ByAreaOrderByCreatedDateDesc(area)
                     .stream()
                     .map(GsmNcellDescMapper.INSTANCE::ncellDescToNcellDescDTO)

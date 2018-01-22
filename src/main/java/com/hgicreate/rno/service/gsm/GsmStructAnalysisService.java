@@ -24,9 +24,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * @author tao.xj
+ */
 @Slf4j
 @Service
 public class GsmStructAnalysisService {
+    private String directory = System.getProperty("java.io.tmpdir");
+
     private final GsmStructAnalysisQueryMapper gsmStructAnalysisQueryMapper;
 
     private final GsmMrrDescRepository gsmMrrDescRepository;
@@ -47,7 +52,7 @@ public class GsmStructAnalysisService {
         this.areaRepository = areaRepository;
     }
 
-    public List<GsmStructAnalysisJobDTO> taskQuery(GsmStructAnalysisQueryVM vm) throws ParseException {
+    public List<GsmStructAnalysisJobDTO> taskQuery(GsmStructAnalysisQueryVM vm) {
         if (vm.getIsMine() == null) {
             vm.setIsMine(false);
             vm.setCreatedUser("");
@@ -115,27 +120,32 @@ public class GsmStructAnalysisService {
 
     public String saveGsmStructAnaResult(Long cityId) {
         List<GsmCell> cellList = gsmCellDataRepository.findByArea_Id(cityId);
-        Area area = areaRepository.findById(cityId);
+        Area area = areaRepository.findOne(cityId);
         List<Map<String, Object>> indexSumLists = doIndexSum(cellList, area);
         List<Map<String, Object>> indexLists = doOverLayIndex(cellList, area);
         saveIndexSum(indexSumLists);
         saveOverLayIndex(indexLists);
-        String realUserDataName = "d:/tmp/rno-cloud-platform/downloads/" + "GSM结构优化分析结果.zip";
+        String realUserDataName = directory + "GSM结构优化分析结果.zip";
         try {
-            ZipFileHandler.zip("d:/tmp/rno-cloud-platform/downloads/temp/", "", realUserDataName);
+            ZipFileHandler.zip(directory+"/structAnalysis/", "", realUserDataName);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
             // 删除临时目录
             try {
-                File file = new File("d:/tmp/rno-cloud-platform/downloads/temp/");
-                if (file.exists()) {//判断文件是否存在
-                    if (file.isFile()) {//判断是否是文件
-                        log.debug("文件是否删除成功：{}", file.delete());//删除文件
-                    } else if (file.isDirectory()) {//否则如果它是一个目录
-                        File[] files = file.listFiles();//声明目录下所有的文件 files[];
+                File file = new File(directory+"/structAnalysis/");
+                //判断文件是否存在
+                if (file.exists()) {
+                    //判断是否是文件
+                    if (file.isFile()) {
+                        //删除文件
+                        log.debug("文件是否删除成功：{}", file.delete());
+                    } else if (file.isDirectory()) {
+                        //声明目录下所有的文件 files[];
+                        File[] files = file.listFiles();
                         if (files != null) {
-                            for (int i = 0; i < files.length; i++) {//遍历目录下所有的文件
+                            //遍历目录下所有的文件
+                            for (int i = 0; i < files.length; i++) {
                                 log.debug("文件是否删除成功：{}", files[i].delete());
                             }
                         }
@@ -150,7 +160,7 @@ public class GsmStructAnalysisService {
         return realUserDataName;
     }
 
-    public List<Map<String, Object>> doIndexSum(List<GsmCell> cellList, Area area) {
+    private List<Map<String, Object>> doIndexSum(List<GsmCell> cellList, Area area) {
         List<Map<String, Object>> indexSumLists = new ArrayList<>();
         for (GsmCell gsmCell : cellList) {
             double rate = Math.random();
@@ -196,16 +206,19 @@ public class GsmStructAnalysisService {
         return indexSumLists;
     }
 
-    // 生成指标汇总文件
+    /**
+     * 生成指标汇总文件
+     * @param indexSumLists 指标数据集合
+     */
     private void saveIndexSum(List<Map<String, Object>> indexSumLists) {
         log.debug("进入方法：saveIndexSum");
         BufferedWriter bw = null;
-        String directory = "d:/tmp/rno-cloud-platform/downloads/temp/";
-        File fileDirectory = new File(directory);
+        String filePath = directory+"/structAnalysis/";
+        File fileDirectory = new File(filePath);
         if (!fileDirectory.exists()) {
             fileDirectory.mkdirs();
         }
-        String saveFullPath = directory + "指标汇总.csv";
+        String saveFullPath = filePath + "指标汇总.csv";
         log.debug("保存指标汇总，saveFullPath=" + saveFullPath);
         try {
             bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(saveFullPath), "gbk"));
@@ -243,6 +256,7 @@ public class GsmStructAnalysisService {
                     bw.write(buf.toString());
                     bw.newLine();
                 } catch (Exception e) {
+                    log.error(e.getMessage());
                 }
             }
             bw.flush();
@@ -356,16 +370,19 @@ public class GsmStructAnalysisService {
         return indexLists;
     }
 
-    // 生成重叠覆盖文件
+    /**
+     * 生成重叠覆盖文件
+     * @param indexLists 重叠指标数据集合
+     */
     private void saveOverLayIndex(List<Map<String, Object>> indexLists) {
         log.debug("进入方法：saveOverLayIndex。");
         BufferedWriter bw = null;
-        String directory = "d:/tmp/rno-cloud-platform/downloads/temp/";
-        File fileDirectory = new File(directory);
+        String filePath = directory+"/structAnalysis/";
+        File fileDirectory = new File(filePath);
         if (!fileDirectory.exists()) {
             fileDirectory.mkdirs();
         }
-        String saveFullPath = directory + "重叠覆盖.csv";
+        String saveFullPath = filePath + "重叠覆盖.csv";
         log.debug("保存重叠覆盖指标，saveFullPath=" + saveFullPath);
         try {
             bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(saveFullPath), "gbk"));
@@ -387,7 +404,7 @@ public class GsmStructAnalysisService {
             bw.write(buf.toString());
             bw.newLine();
             // 输出内容
-            Map<String, Object> indexMap = null;
+            Map<String, Object> indexMap;
             for (int i = 0; i < indexLists.size(); i++) {
                 try {
                     buf.setLength(0);
@@ -506,7 +523,7 @@ public class GsmStructAnalysisService {
                     bw.write(buf.toString());
                     bw.newLine();
                 } catch (Exception e) {
-                    // 捕获单行错误，过滤
+                    log.error(e.getMessage());
                 }
             }
             bw.flush();
@@ -523,13 +540,17 @@ public class GsmStructAnalysisService {
         }
     }
 
-    // 获取参数名及参数值
+    /**
+     * 获取参数名及参数值
+     * @param vm 参数对象
+     * @return 参数集合
+     */
     public List<Map<String, Object>> getParamsInfo(GsmStructTaskInfoVM vm) {
         Field[] fields = vm.getClass().getDeclaredFields();
         List<Map<String, Object>> list = new ArrayList<>();
         Map<String, Object> infoMap;
         for (int i = fields.length - 21; i < fields.length; i++) {
-            infoMap = new HashMap();
+            infoMap = new HashMap<>();
             infoMap.put("type", "STRUCTANA_THRESHOLD");
             infoMap.put("name", fields[i].getName().toUpperCase());
             Object value = getFieldValueByName(fields[i].getName(), vm);
@@ -566,7 +587,7 @@ public class GsmStructAnalysisService {
         mapParam.put("name","calIdealDis");
         infoParamList.add(mapParam);
         for(Map<String,Object> map:infoParamList){
-            infoMap = new HashMap();
+            infoMap = new HashMap<>();
             infoMap.put("type", map.get("type").toString());
             infoMap.put("name", map.get("name").toString().toUpperCase());
             if ("on".equals(getFieldValueByName(map.get("name").toString(),vm))) {

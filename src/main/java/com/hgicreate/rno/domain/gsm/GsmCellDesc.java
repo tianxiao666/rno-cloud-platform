@@ -7,6 +7,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * @author toa.xj
+ */
 @Data
 @Entity
 @Table(name = "RNO_GSM_CELL_DESC")

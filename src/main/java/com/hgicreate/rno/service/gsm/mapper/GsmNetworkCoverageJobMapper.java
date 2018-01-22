@@ -7,10 +7,18 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
+/**
+ * @author tao.xj
+ */
 @Mapper
 public interface GsmNetworkCoverageJobMapper {
     GsmNetworkCoverageJobMapper INSTANCE = Mappers.getMapper(GsmNetworkCoverageJobMapper.class);
 
+    /**
+     * 将网络覆盖任务对象转换为DTO
+     * @param gsmNetworkCoverageJob 网络覆盖任务对象
+     * @return GsmNetworkCoverageJobDTO
+     */
     @Mappings({
             @Mapping(source = "id",target = "id"),
             @Mapping(source = "createdDate", target = "createdDate",dateFormat = "yyyy-MM-dd HH:mm:ss"),

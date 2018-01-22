@@ -4,6 +4,9 @@ import lombok.Data;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+/**
+ * @author taao.xj
+ */
 @Data
 @Entity
 public class GsmNcell {

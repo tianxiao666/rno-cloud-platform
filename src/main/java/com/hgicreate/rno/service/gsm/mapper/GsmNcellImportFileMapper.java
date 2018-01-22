@@ -8,11 +8,19 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
+/**
+ * @author tao.xj
+ */
 @Mapper
 public interface GsmNcellImportFileMapper {
 
     GsmNcellImportFileMapper INSTANCE = Mappers.getMapper(GsmNcellImportFileMapper.class);
 
+    /**
+     * 数据任务对象转换为DTO
+     * @param dataJob 数据任务对象
+     * @return GsmNcellImportFileDTO
+     */
     @Mappings({
             @Mapping(source = "originFile.createdDate", target = "uploadTime"),
             @Mapping(source = "area.name",target = "areaName"),

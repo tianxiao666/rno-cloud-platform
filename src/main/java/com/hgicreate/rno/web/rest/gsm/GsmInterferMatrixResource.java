@@ -21,6 +21,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author tao.xj
+ */
 @Slf4j
 @RestController
 @RequestMapping("/api/gsm-interfer-matrix")
@@ -53,7 +56,7 @@ public class GsmInterferMatrixResource {
     @PostMapping("/add-job")
     public boolean addInterferMatrixJob(GsmNcsForJobVM vm) throws ParseException {
         log.debug("干扰矩阵的任务数据视图模型：{}", vm);
-        Area area = areaRepository.findById(vm.getCityId());
+        Area area = areaRepository.findOne(vm.getCityId());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date beginMeaDate = sdf.parse(vm.getBegMeaDate());
         Date endMeaDate = sdf.parse(vm.getEndMeaDate());

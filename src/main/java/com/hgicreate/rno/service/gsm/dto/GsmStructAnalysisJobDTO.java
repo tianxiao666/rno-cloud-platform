@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.util.Date;
 
+/**
+ * @author tao.xj
+ */
 @Data
 public class GsmStructAnalysisJobDTO {
     private Long id;

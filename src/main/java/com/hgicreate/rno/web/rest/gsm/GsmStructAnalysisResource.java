@@ -28,6 +28,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * @author tao.xj
+ */
 @Slf4j
 @RestController
 @RequestMapping("/api/gsm-struct-analysis")
@@ -149,8 +152,8 @@ public class GsmStructAnalysisResource {
 
         // 保存任务参数
         List<GsmStructJobParam> gsmStructJobParamList = new ArrayList<>();
-        List<Map<String,Object>> Paramlist = gsmStructAnalysisService.getParamsInfo(vm);
-        for(Map map:Paramlist){
+        List<Map<String,Object>> paramList = gsmStructAnalysisService.getParamsInfo(vm);
+        for(Map map:paramList){
             GsmStructJobParam gsmStructJobParam = new GsmStructJobParam();
             gsmStructJobParam.setGsmStructAnalysisJob(gsmStructAnalysisJob);
             gsmStructJobParam.setParamType(map.get("type").toString());

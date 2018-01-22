@@ -26,6 +26,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author tao.xj
+ */
 @Slf4j
 @RestController
 @RequestMapping("/api/gsm-network-coverage")
@@ -62,7 +65,7 @@ public class GsmNetworkCoverageJobResource {
         if (dtoList == null || dtoList.size() <= 0) {
             return false;
         }
-        Area area = areaRepository.findById(vm.getCityId());
+        Area area = areaRepository.findOne(vm.getCityId());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date beginDate = sdf.parse(vm.getBegMeaDate());
         Date endDate = sdf.parse(vm.getEndMeaDate());

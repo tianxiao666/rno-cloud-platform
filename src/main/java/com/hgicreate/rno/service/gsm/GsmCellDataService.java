@@ -27,6 +27,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author tao.xj
+ */
 @Service
 public class GsmCellDataService {
     private final GsmCellDataRepository gsmCellDataRepository;
@@ -51,7 +54,7 @@ public class GsmCellDataService {
         SimpleDateFormat sdf2 =   new SimpleDateFormat( "yyyy-MM-dd HH:mm:ss" );
         Date endDate =sdf2.parse(vm.getEndUploadDate() +" 23:59:59");
         List<DataJob> list;
-        if(vm.getStatus().equals("全部")){
+        if("全部".equals(vm.getStatus())){
             list= dataJobRepository.findTop1000ByAreaAndOriginFile_CreatedDateBetweenAndOriginFile_DataTypeOrderByOriginFile_CreatedDateDesc(
                     area, beginDate, endDate,"GSM-CELL-DATA");
         }else{
@@ -79,14 +82,14 @@ public class GsmCellDataService {
         area.setId(Long.parseLong(gsmCellDataVM.getCityId()));
         gsmCell.setArea(area);
 
-        if(!gsmCellDataVM.getCellId().trim().equals("")){
+        if(!("".equals(gsmCellDataVM.getCellId().trim()))){
             gsmCell.setCellId(gsmCellDataVM.getCellId().trim());
         }
         gsmCell.setCellName(gsmCellDataVM.getCellName().trim());
         ExampleMatcher matcher =  ExampleMatcher.matching()
                 .withMatcher("cellName", ExampleMatcher.GenericPropertyMatcher::contains)
                 .withIgnoreNullValues();
-        if(!gsmCellDataVM.getBsc().trim().equals("")){
+        if(!"".equals(gsmCellDataVM.getBsc().trim())){
             gsmCell.setBsc(gsmCellDataVM.getBsc().trim());
         }
         Example<GsmCell> example = Example.of(gsmCell, matcher);

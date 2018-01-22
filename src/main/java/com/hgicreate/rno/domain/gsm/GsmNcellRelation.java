@@ -8,6 +8,9 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * @author tao.xj
+ */
 @Data
 @Entity
 @Table(name = "RNO_GSM_NCELL_RELATION")

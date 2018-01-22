@@ -4,6 +4,9 @@ import lombok.Data;
 
 import javax.persistence.*;
 
+/**
+ * @author tao.xj
+ */
 @Data
 @Entity
 @Table(name = "RNO_GSM_STRUCANA_JOB_PARAM")

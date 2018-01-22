@@ -10,12 +10,20 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
+/**
+ * @author tao.xj
+ */
 @Mapper
 public interface GsmCellDescMapper {
 
     GsmCellDescMapper INSTANCE = Mappers.getMapper(GsmCellDescMapper.class);
 
 
+    /**
+     * 小区数据描述对象转换为DTO
+     * @param gsmCellDesc 小区数据描述对象
+     * @return GsmCellDescDTO
+     */
     @Mappings({
          @Mapping(source = "area.name",target = "areaName"),
          @Mapping(source = "dataType", target = "dataType"),

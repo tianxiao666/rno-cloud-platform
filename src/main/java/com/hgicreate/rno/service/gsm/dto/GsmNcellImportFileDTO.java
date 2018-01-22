@@ -5,6 +5,9 @@ import lombok.Data;
 
 import java.util.Date;
 
+/**
+ * @author tao.xj
+ */
 @Data
 public class GsmNcellImportFileDTO {
     private Long id;
