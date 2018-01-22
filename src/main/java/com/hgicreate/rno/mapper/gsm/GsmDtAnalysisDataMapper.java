@@ -13,15 +13,14 @@ import java.util.Map;
 public interface GsmDtAnalysisDataMapper {
     /**
      * 获取当前区域下的小区
-     * @return
+     * @return 小区list
      */
     List<Map<String, Object>> getDistinctCell();
 
     /**
      * 根据查询的小区获取其覆盖小区
-     *
      * @param cellId
-     * @return
+     * @return 覆盖小区list
      */
     List<Map<String, Object>> getCoverageCell(String cellId);
 
@@ -29,7 +28,7 @@ public interface GsmDtAnalysisDataMapper {
      * 根据查询的采样点小区获取其覆盖小区
      *
      * @param cellId
-     * @return
+     * @return 采样点覆盖小区list
      */
     List<Map<String, Object>> getCoverageSample(String cellId);
 
@@ -38,7 +37,7 @@ public interface GsmDtAnalysisDataMapper {
      *
      * @param longitude
      * @param latitude
-     * @return
+     * @return 邻区list
      */
     List<Map<String, Object>> getNcell(Double longitude, Double latitude);
 }

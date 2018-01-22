@@ -68,7 +68,8 @@ public class GsmParamChangeServiceImpl implements GsmParamChangeService {
             //MAIO改为MAIO_16
             else if (("ETCHTN").equals(param)) {
                 paramsSql += " ETCHTN_8 as ETCHTN" + ",";
-            } else {
+            }
+            else {
                 paramsSql += param + ",";
             }
         }

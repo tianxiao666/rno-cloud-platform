@@ -12,8 +12,8 @@ import java.util.Map;
 public interface GsmParamCheckService {
     /**
      * 查询一致性数据
-     * @param vm
-     * @return
+     * @param vm 查询条件对象
+     * @return 查询结果list
      */
     List<Map<String, Object>> checkParamData(GsmParamCheckVM vm);
     /**

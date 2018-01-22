@@ -17,7 +17,7 @@ public interface GsmBscDataRepository extends JpaRepository<GsmBscData,Long>{
      * 根据区域和状态查询所有bsc
      * @param area
      * @param status
-     * @return
+     * @return 符合条件的bsc
      */
     List<GsmBscData> findByAreaAndStatus(Area area, String status);
 }
