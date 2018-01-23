@@ -53,7 +53,10 @@ public class GsmCellDataResource {
 
     private final Environment env;
 
-    public GsmCellDataResource(OriginFileRepository originFileRepository, DataJobRepository dataJobRepository, DataJobReportRepository dataJobReportRepository, GsmCellDataRepository gsmCellDataRepository, GsmCellDataService gsmCellDataService, Environment env) {
+    public GsmCellDataResource(OriginFileRepository originFileRepository, DataJobRepository dataJobRepository,
+                               DataJobReportRepository dataJobReportRepository,
+                               GsmCellDataRepository gsmCellDataRepository,
+                               GsmCellDataService gsmCellDataService, Environment env) {
         this.originFileRepository = originFileRepository;
         this.dataJobRepository = dataJobRepository;
         this.dataJobReportRepository = dataJobReportRepository;
@@ -62,12 +65,22 @@ public class GsmCellDataResource {
         this.env = env;
     }
 
+    /**
+     * 根据页面查询条件查询文件导入记录
+     * @param vm 接收页面查询条件的VM对象
+     * @return 文件导入记录列表
+     */
     @GetMapping("/query-import")
     public List<GsmCellDataFileDTO> queryImport(GsmCellDataImportVM vm) throws ParseException {
         log.debug("视图模型: " + vm);
         return gsmCellDataService.queryFileUploadRecord(vm);
     }
 
+    /**
+     * 根据任务id查询任务报告
+     * @param id 任务id
+     * @return 任务报告列表
+     */
     @GetMapping("/query-report")
     public List<DataJobReportDTO> queryReportById(@RequestParam String id){
         return dataJobReportRepository.findByDataJob_Id(Long.parseLong(id))
@@ -75,12 +88,22 @@ public class GsmCellDataResource {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 根据页面查询条件查询数据处理记录
+     * @param vm 接收页面查询条件的VM对象
+     * @return 数据处理记录列表
+     */
     @GetMapping("/query-record")
     public List<GsmCellDescDTO> queryRecord(GsmCellDescVM vm) throws ParseException{
         log.debug("视图模型vm ={}", vm);
         return gsmCellDataService.queryRecord(vm);
     }
 
+    /**
+     * 上传工参数据文件
+     * @param vm 接收文件属性的VM对象
+     * @return 上传状态
+     */
     @PostMapping("/upload-file")
     public ResponseEntity<?> uploadGsmCellFile(FileUploadVM vm) {
         log.debug("模块名：" + vm.getModuleName());
@@ -160,6 +183,11 @@ public class GsmCellDataResource {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    /**
+     * 根据查询条件查询小区数据
+     * @param vm 接收页面查询条件的VM对象
+     * @return 小区数据列表
+     */
     @GetMapping("/cell-query")
     public List<GsmCellDataDTO> cellQuery(GsmCellDataVM vm) {
         log.debug("查询条件：省={}，市={}，cellId={}, cell名称={},pci={}",
@@ -171,24 +199,43 @@ public class GsmCellDataResource {
         return gsmCellDataService.queryGsmCell(vm);
     }
 
+    /**
+     * 根据小区id查询小区详细信息
+     * @param cellId 小区id
+     * @return 小区详细信息列表
+     */
     @GetMapping("/cell-detail-id")
     public List<GsmCell> findCellDetailById(@RequestParam String cellId) {
         return gsmCellDataRepository.findByCellId(cellId);
     }
 
+    /**
+     * 根据小区id查询小区详细信息
+     * @param cellId 小区id
+     * @return 小区详细信息
+     */
     @GetMapping("/cell-detail-edit")
     public GsmCell findCellDetailForEdit(@RequestParam String cellId) {
         return gsmCellDataRepository.findOne(cellId);
     }
 
+    /**
+     * 根据小区id删除小区
+     * @param cellId 小区id
+     */
     @PostMapping("/cell-delete")
     public void deleteByCellId(@RequestParam String cellId) {
         log.debug("待删除小区id为={}", cellId);
         gsmCellDataRepository.delete(cellId);
     }
 
+    /**
+     * 更新小区信息
+     * @param gsmCell 小区信息
+     * @return 更新状态
+     */
     @PostMapping("/cell-detail-update")
-    public boolean updateLteCellDetail(GsmCell gsmCell) {
+    public boolean updateGsmCellDetail(GsmCell gsmCell) {
         try {
             log.debug("要更新的小区={}", gsmCell.getCellId());
             GsmCell lteCell =gsmCellDataRepository.findOne(gsmCell.getCellId());

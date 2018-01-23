@@ -51,16 +51,31 @@ public class GsmStructAnalysisResource {
         this.gsmStructJobReportRepository = gsmStructJobReportRepository;
     }
 
+    /**
+     * 结构优化分析任务查询
+     * @param vm 接收页面查询条件的VM对象
+     * @return 结构优化分析任务列表
+     */
     @PostMapping("/task-query")
     public List<GsmStructAnalysisJobDTO> taskQuery(GsmStructAnalysisQueryVM vm) throws ParseException {
         return gsmStructAnalysisService.taskQuery(vm);
     }
 
+    /**
+     * 查询创建任务的文件数量
+     * @param vm 文件数量查询条件的VM对象
+     * @return 文件数量情况列表
+     */
     @PostMapping("/query-file-number")
     public List<Map<String,Object>> queryFileNumber(GsmStructTaskInfoVM vm) throws ParseException {
         return gsmStructAnalysisService.queryFileNumber(vm);
     }
 
+    /**
+     * 根据任务id查询任务报告
+     * @param id 任务id
+     * @return 任务报告列表
+     */
     @PostMapping("/query-report")
     public List<StructJobReportDTO> queryReport(String id){
         log.debug("查询任务报告的任务id：{}",id);
@@ -69,6 +84,11 @@ public class GsmStructAnalysisResource {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 根据任务id下载结构优化分析任务结果报告
+     * @param id 任务id
+     * @return 成功情况下返回 HTTP OK 状态，错误情况下返回 HTTP 4xx 状态。
+     */
     @GetMapping("/download-result")
     @ResponseBody
     public ResponseEntity<byte[]> downloadResultFile(String id){
@@ -96,6 +116,10 @@ public class GsmStructAnalysisResource {
         }
     }
 
+    /**
+     * 新增结构优化分析任务
+     * @param vm  新增构优化分析任务的条件的VM对象
+     */
     @PostMapping("/submit-task")
     public void submitTask(GsmStructTaskInfoVM vm) throws ParseException {
         log.debug("任务信息：{}",vm);

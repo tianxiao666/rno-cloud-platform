@@ -64,12 +64,22 @@ public class GsmNcellRelationResource {
         this.env = env;
     }
 
+    /**
+     * 查询GSM邻区关系
+     * @param vm 接收页面查询条件的VM对象
+     * @return 邻区关系数据列表
+     */
     @PostMapping("/ncell-query")
     public List<GsmNcellRelationDTO> ncellQuery(GsmNcellRelationQueryVM vm) {
         log.debug("查询GSM邻区关系");
         return gsmNcellRelationService.queryNcellRelationDTOs(vm);
     }
 
+    /**
+     * 文件导入记录查询
+     * @param vm 接收页面查询条件的VM对象
+     * @return 导入记录列表
+     */
     @PostMapping("/ncell-import-query")
     public List<GsmNcellImportFileDTO> importQuery(GsmNcellImportQueryVM vm) throws ParseException {
         log.debug("查询邻区文件导入记录。");
@@ -77,6 +87,11 @@ public class GsmNcellRelationResource {
         return gsmNcellRelationService.queryImport(vm);
     }
 
+    /**
+     * 邻区数据处理记录查询
+     * @param vm 接收页面查询条件的VM对象
+     * @return 数据处理记录列表
+     */
     @PostMapping("/ncell-import-data-query")
     public List<GsmNcellDescDTO> ncellDataQuery(GsmNcellImportDtQueryVM vm){
         log.debug("查询 邻区 数据记录。");
@@ -84,12 +99,21 @@ public class GsmNcellRelationResource {
         return gsmNcellRelationService.queryImportDt(vm);
     }
 
+    /**
+     * 根据id删除邻区关系
+     * @param id 邻区关系id
+     */
     @DeleteMapping("/delete-by-id")
     public void deleteByCellId(@RequestParam long id){
         log.debug("待删除邻区id为={}", id);
         gsmNcellRelationRepository.delete(id);
     }
 
+    /**
+     * 根据id查找任务报告
+     * @param id 任务id
+     * @return 任务报告列表
+     */
     @PostMapping("/query-report")
     public List<DataJobReportDTO> queryReport(String id){
         log.debug("查询任务报告的任务id：{}",id);

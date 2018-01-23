@@ -124,6 +124,11 @@ $(function () {
             showInfoInAndOut("info", "文件导入成功！");
             //AJAX 提交邻区导入记录查询条件表单
             $("#importQuery").submit();
+        },
+        error:function (err) {
+            console.log(err);
+            $("#info").css("background", "red");
+            showInfoInAndOut("info", "后台程序错误！");
         }
     });
 

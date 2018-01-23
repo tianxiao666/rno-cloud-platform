@@ -109,7 +109,7 @@ public class GsmNetworkCoverageService {
             for (GsmCell gsmCell : cellList) {
                 String cellName = gsmCell.getCellName();
                 String cellId = gsmCell.getCellId();
-                int calAzimuth = random.nextInt(359);
+                int calAzimuth = random.nextInt(360);
                 String line;
                 if (gsmCell.getAzimuth() == null) {
                     int diffAzimuth = calAzimuth > 180 ? Math.abs(360 - calAzimuth) : calAzimuth;

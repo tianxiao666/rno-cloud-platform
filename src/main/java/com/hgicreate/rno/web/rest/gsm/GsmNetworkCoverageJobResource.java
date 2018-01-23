@@ -46,18 +46,33 @@ public class GsmNetworkCoverageJobResource {
         this.areaRepository = areaRepository;
     }
 
+    /**
+     * 网络覆盖分析任务查询
+     * @param vm 接收页面查询条件的VM对象
+     * @return 网络覆盖分析任务列表
+     */
     @PostMapping("/job-query")
     public List<GsmNetworkCoverageJobDTO> jobQuery(GsmNetworkCoverageVM vm) throws ParseException {
         log.debug("视图模型：{}", vm);
         return gsmNetworkCoverageService.jobQuery(vm);
     }
 
+    /**
+     * 查询用于创建网络覆盖分析任务的ncs数据
+     * @param vm 接收页面查询条件的VM对象
+     * @return ncs数据列表
+     */
     @PostMapping("/ncs-data-query")
     public List<GsmNcsForJobDTO> ncsDataQuery(GsmNcsForJobVM vm) throws ParseException {
         log.debug("视图模型：{}", vm);
         return gsmNetworkCoverageService.ncsDataQuery(vm);
     }
 
+    /**
+     * 新增网络覆盖分析任务
+     * @param vm 新增网络覆盖分析任务的条件的VM对象
+     * @return 新增任务结果
+     */
     @PostMapping("/add-job")
     public boolean addNetCoverJob(GsmNcsForJobVM vm) throws ParseException {
         log.debug("视图模型：{}", vm);
@@ -95,6 +110,11 @@ public class GsmNetworkCoverageJobResource {
         return true;
     }
 
+    /**
+     * 根据任务id下载任务结果文件
+     * @param id 任务id
+     * @return 成功情况下返回 HTTP OK 状态，错误情况下返回 HTTP 4xx 状态。
+     */
     @GetMapping("/download-result")
     @ResponseBody
     public ResponseEntity<byte[]> downloadResultFile(String id) {

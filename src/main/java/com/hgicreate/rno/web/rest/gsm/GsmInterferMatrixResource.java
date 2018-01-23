@@ -41,18 +41,33 @@ public class GsmInterferMatrixResource {
         this.areaRepository = areaRepository;
     }
 
+    /**
+     * 根据查询条件查询干扰矩阵任务
+     * @param vm 接收页面查询条件的VM对象
+     * @return 干扰矩阵列表
+     */
     @PostMapping("/job-query")
     public List<GsmInterferMatrixJobDTO> queryJob(GsmInterferMatrixVM vm) throws ParseException {
         log.debug("要查询的任务视图模型：{}", vm);
         return gsmInterferMatrixService.jobQuery(vm);
     }
 
+    /**
+     * 查询用于创建干扰矩阵任务的ncs数据
+     * @param vm 接收页面查询条件的VM对象
+     * @return ncs数据列表
+     */
     @PostMapping("/ncs-data-query")
     public List<GsmNcsForJobDTO> ncsDataQuery(GsmNcsForJobVM vm) throws ParseException {
         log.debug("查询NCS数据的视图模型：{}", vm);
         return gsmInterferMatrixService.ncsDataQuery(vm);
     }
 
+    /**
+     * 新增干扰矩阵任务
+     * @param vm 新增干扰矩阵任务的条件的VM对象
+     * @return 新增任务结果
+     */
     @PostMapping("/add-job")
     public boolean addInterferMatrixJob(GsmNcsForJobVM vm) throws ParseException {
         log.debug("干扰矩阵的任务数据视图模型：{}", vm);
