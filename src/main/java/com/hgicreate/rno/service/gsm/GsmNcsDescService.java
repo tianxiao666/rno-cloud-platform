@@ -10,6 +10,7 @@ import com.hgicreate.rno.repository.gsm.GsmHwNcsDescRepository;
 import com.hgicreate.rno.security.SecurityUtils;
 import com.hgicreate.rno.service.dto.DataJobReportDTO;
 import com.hgicreate.rno.service.dto.GsmImportQueryDTO;
+import com.hgicreate.rno.service.gsm.dto.GsmNcsAnalysisDescQueryDTO;
 import com.hgicreate.rno.service.gsm.dto.GsmNcsDescQueryDTO;
 import com.hgicreate.rno.service.gsm.mapper.GsmNcsDescQueryMapper;
 import com.hgicreate.rno.service.mapper.DataJobMapper;
@@ -69,7 +70,7 @@ public class GsmNcsDescService {
                 .collect(Collectors.toList());
     }
 
-    public List<GsmNcsDescQueryDTO> ncsDescQuery(GsmNcsDescQueryVM vm) {
+    public List<GsmNcsAnalysisDescQueryDTO> ncsDescQuery(GsmNcsDescQueryVM vm) {
         Area area = new Area();
         area.setId(vm.getAreaId());
         Calendar calendar = Calendar.getInstance();

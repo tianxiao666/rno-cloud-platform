@@ -59,7 +59,7 @@ public class GsmNcsAnalysisService {
         return null;
     }
 
-    public GsmNcsDescQueryDTO queryGsmEriNcsDesc(Long ncsDescId) {
+    public GsmNcsDescQueryDTO queryGsmNcsDesc(Long ncsDescId) {
         GsmEriNcsDesc gsmEriNcsDesc = gsmEriNcsDescRepository.findOne(ncsDescId);
         return GsmEriNcsDescMapper.INSTANCE.gsmNcsDescQueryToDTO(gsmEriNcsDesc);
     }

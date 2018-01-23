@@ -32,6 +32,6 @@ public class GsmNcsAnalysisResource {
 
     @PostMapping("/ncs-desc-query")
     public GsmNcsDescQueryDTO ncsDescQuery(Long ncsId) {
-        return gsmNcsAnalysisService.queryGsmEriNcsDesc(ncsId);
+        return gsmNcsAnalysisService.queryGsmNcsDesc(ncsId);
     }
 }

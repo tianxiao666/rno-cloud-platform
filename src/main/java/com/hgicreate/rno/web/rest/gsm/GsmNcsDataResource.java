@@ -4,6 +4,7 @@ package com.hgicreate.rno.web.rest.gsm;
 import com.hgicreate.rno.service.dto.DataJobReportDTO;
 import com.hgicreate.rno.service.dto.GsmImportQueryDTO;
 import com.hgicreate.rno.service.gsm.GsmNcsDescService;
+import com.hgicreate.rno.service.gsm.dto.GsmNcsAnalysisDescQueryDTO;
 import com.hgicreate.rno.service.gsm.dto.GsmNcsDescQueryDTO;
 import com.hgicreate.rno.web.rest.gsm.vm.GsmImportQueryVM;
 import com.hgicreate.rno.web.rest.gsm.vm.GsmNcsDescQueryVM;
@@ -30,7 +31,7 @@ public class GsmNcsDataResource {
     }
 
     @PostMapping("/gsm-ncs-data-query")
-    public List<GsmNcsDescQueryDTO> gsmNcsDataQuery(GsmNcsDescQueryVM vm){
+    public List<GsmNcsAnalysisDescQueryDTO> gsmNcsDataQuery(GsmNcsDescQueryVM vm){
         return gsmNcsDescService.ncsDescQuery(vm);
     }
 
