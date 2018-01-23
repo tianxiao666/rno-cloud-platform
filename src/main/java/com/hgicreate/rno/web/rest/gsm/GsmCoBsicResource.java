@@ -111,7 +111,6 @@ public class GsmCoBsicResource {
                                 cellsExpand.setWhetherNcell(isNcell);
                                 cellsExpand.setWhetherComNcell(true);
                                 cellsExpand.setCommonNcell(ncells.get(ncells.size()-1).getCellId());
-
                                 // 为bcch,bsic的所在拓展的对象集合内新增对象
                                 cobsicexpanList.add(cellsExpand);
                                 gsmCobsicCells.setCombinedCells(cobsicexpanList);

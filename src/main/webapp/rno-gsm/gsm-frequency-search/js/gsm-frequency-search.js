@@ -722,8 +722,6 @@ function showNoise(evt) {
                         success: function (data) {
                             if (data !== '' && data !== null) {
                                 console.log(data);
-
-
                             } else {
                                 $("#loading").css("display", "none");
                                 showInfoInAndOut('info', '未找到小区'+cellId+'的干扰记录！');
@@ -815,10 +813,7 @@ function showIn(evt) {
                             $("#loading").css("display", "none");
                             if (data !== '' && data !== null) {
                                 console.log(data);
-
-
                             } else {
-
                                 showInfoInAndOut('info', '未找到小区'+cellName+'的干扰记录！');
                             }
                             //console.log(data);
@@ -911,29 +906,27 @@ function showOut(evt) {
                     var btsType = allFeatures[index].get('BTS_TYPE');
                     $.ajax({
                         url: "../../api/gsm-frequency-search/cell-out",
-                        dataType: "json",
                         data: {
                             'cellId': cellId
                         },
                         async: false,
                         success: function (data) {
-                            var datas = eval('('+data+')');
-                            console.log(datas);
-                            if(data === null){
+                            console.log(data);
+                            if(data === null || data === ''){
                                 $("#loading").css("display", "none");
                                 showInfoInAndOut('info', '未找到小区'+cellName+'的干扰记录！');
+                                $("#loadingStatus").html('未找到小区'+cellName+'的干扰记录！');
+                                $("#cellname").text(cellName);
+                                $("#cellFreq").html("BCCH:"+bcch+"<br/>TCH:<span style='word-break:break-all'>"+tch+"</span>");
+                                $("#cellInterfereId").html(cellName);
+                                for(var i = 0; i< tch.split(",").length;i++){
+                                    modalTbody.append("<tr><td>"+tch.split(',')[i]+"</td><td></td><td></td><td></td><td>"+btsType+"</td></tr>")
+                                }
                             }
+
                         },error: function (XMLHttpRequest, textStatus) {
                             $("#loading").css("display", "none");
                             showInfoInAndOut('info', '未找到小区'+cellName+'的干扰记录！');
-                            $("#loadingStatus").html('未找到小区'+cellName+'的干扰记录！');
-                            $("#cellname").text(cellName);
-                            $("#cellFreq").html("BCCH:"+bcch+"<br/>TCH:<span style='word-break:break-all'>"+tch+"</span>");
-                            $("#cellInterfereId").html(cellName);
-
-                            for(var i = 0; i< tch.split(",").length;i++){
-                                modalTbody.append("<tr><td>"+tch.split(',')[i]+"</td><td></td><td></td><td></td><td>"+btsType+"</td></tr>")
-                            }
                         },complete: function (XMLHttpRequest, textStatus) {
                             $("#loading").css("display", "none");
                         }

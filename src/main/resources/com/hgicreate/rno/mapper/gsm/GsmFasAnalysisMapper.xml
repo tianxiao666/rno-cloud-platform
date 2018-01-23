@@ -14,14 +14,5 @@
             and MEA_TIME <= to_date(#{fasMeaEndTime},'yyyy-MM-dd')
             and t1.CELL like #{cell}
                 ]]>
-
-    </select>
-    <select id="getBscCellByCityId" parameterType="java.lang.Long" resultType="java.util.Map">
-        select mid1.EN_NAME,mid1.CELL_NAME, bsc.bsc,bsc.VENDOR  from
-            ( select distinct EN_NAME,CELL_NAME,BSC from RNO_GSM_CELL where area_id in (
-               select AREA_ID from RNO_GSM_SYS_AREA where PARENT_ID= #{cityId}
-            )) mid1
-            left join (select id,bsc,VENDOR from RNO_GSM_BSC_DATA where status='N') bsc
-                on mid1.BSC=bsc.id order by bsc.bsc,mid1.EN_NAME
     </select>
 </mapper>

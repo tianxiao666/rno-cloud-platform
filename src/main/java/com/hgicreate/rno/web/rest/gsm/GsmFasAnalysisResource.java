@@ -29,8 +29,8 @@ public class GsmFasAnalysisResource {
     public List<Map<String,Object>> queryFasChartData(GsmFasAnalysisQueryVM vm){
         log.debug("进入查询fas chart数据方法vm={}",vm);
         return gsmFasAnalysisMapper.queryFasChartData(
-                vm.getFasMeaBegTime().replace("-",""),
-                vm.getFasMeaEndTime().replace("-",""),
+                vm.getFasMeaBegTime(),
+                vm.getFasMeaEndTime(),
                 "%"+vm.getCell()+"%");
     }
 }
