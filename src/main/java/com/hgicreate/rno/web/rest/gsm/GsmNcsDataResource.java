@@ -1,6 +1,6 @@
 package com.hgicreate.rno.web.rest.gsm;
 
-import com.hgicreate.rno.domain.DataJob;
+
 import com.hgicreate.rno.service.dto.DataJobReportDTO;
 import com.hgicreate.rno.service.dto.GsmImportQueryDTO;
 import com.hgicreate.rno.service.gsm.GsmNcsDescService;
