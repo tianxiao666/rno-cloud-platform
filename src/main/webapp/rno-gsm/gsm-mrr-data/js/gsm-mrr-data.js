@@ -1,5 +1,4 @@
 var fileSize = 0;
-var stopQueryProgress=false;///停止查询进度
 $(function () {
     // 设置导航标题
     setNavTitle("navTitle");
@@ -14,34 +13,8 @@ $(function () {
     laydate.render({elem: '#beginTestDate', value: new Date(new Date().getTime() - 7 * 86400000), format:'yyyy/MM/dd'});
     laydate.render({elem: '#endTestDate', value: new Date(), format:'yyyy/MM/dd'});
 
-    //执行 区域 实例 
-    $("#province-menu").change(function () {
-        var cityId = parseInt($(this).find("option:checked").val());
-        $.getJSON("../../data/area.json", function (data) {
-            renderArea(data, cityId, "city-menu");
-        })
-    });
-
-    $("#province-id").change(function () {
-        var provinceId = parseInt($(this).find("option:checked").val());
-        $.getJSON("../../data/area.json", function (data) {
-            renderArea(data, provinceId, "city-id");
-        })
-    });
-
-
-    //初始化区域
-    $.ajax({
-        url: "../../data/area.json",
-        dataType: "json",
-        async: false,
-        success: function (data) {
-            renderArea(data, 0, "province-id");
-            renderArea(data, 0, "province-menu");
-            $("#province-id").change();
-            $("#province-menu").change();
-        }
-    });
+    initAreaSelectors({selectors: ["province-menu", "city-menu"]});
+    initAreaSelectors({selectors: ["province-id", "city-id"]});
 
     $("#queryBtn").click(function () {
         var dataMap = {
@@ -53,7 +26,7 @@ $(function () {
         };
         $('#queryResultTab').css("line-height", "12px");
         $.ajax({
-            url: '../../api/gsm-import-query',
+            url: '../../api/gsm-mrr-data/gsm-import-query',
             dataType: 'json',
             data: dataMap,
             type: 'post',
@@ -61,12 +34,12 @@ $(function () {
                 $("#queryResultTab").DataTable({
                     "data": data,
                     "columns": [
-                        {"data": "area.name"},
+                        {"data": "areaName"},
                         { "data": "createdDate", "render": function (data) {
                             return (new Date(data)).Format("yyyy-MM-dd hh:mm:ss");
                         }},
-                        { "data": "originFile.filename" },
-                        { "data": "originFile.fileSize", "render": function (data) {
+                        { "data": "filename" },
+                        { "data": "fileSize", "render": function (data) {
                             return conver(data);
                         }},
                         { "data": null},
@@ -148,7 +121,7 @@ $(function () {
                 $("#queryMrrResultTab").DataTable({
                     "data": data,
                     "columns": [
-                        {"data": "area.name"},
+                        {"data": "areaName"},
                         { "data": "meaDate", "render": function (data) {
                             return (new Date(data)).Format("yyyy-MM-dd");
                         }},
@@ -221,35 +194,15 @@ function conver(limit){
 function showDetail(jobId) {
     $("#mrrListDiv").css("display","none");
     $("#mrrDetailDiv").css("display","block");
-    initFormPage("searchMrrDetailForm");
     $("#hiddenMrrDescId").val(jobId);
     queryMrrDetailData();
 }
 
-// 渲染区域
-function renderArea(data, parentId, areaMenu) {
-    var arr = data.filter(function (v) {
-        return v.parentId === parentId;
-    });
-    if (arr.length > 0) {
-        var areaHtml = [];
-        $.each(arr, function (index) {
-            var area = arr[index];
-            areaHtml.push("<option value='" + area.id + "'>");
-            areaHtml.push(area.name + "</option>");
-        });
-        $("#" + areaMenu).html(areaHtml.join(""));
-
-    } else {
-        console.log("父ID为" + parentId + "时未找到任何下级区域。");
-    }
-
-}
 
 //显示导入记录的状态的详情
 function showImportDetail(id) {
     $.ajax({
-        url: '../../api/lte-mr-data/query-report',
+        url: '../../api/gsm-mrr-data/query-report',
         dataType: 'text',
         type:'post',
         data: {id: id},
@@ -299,7 +252,6 @@ function bindEvent(){
             return;
         }
         $("#uploadMsgDiv").css("display","none");
-        stopQueryProgress=false;
         doUpload();
     });
     //浏览文件绑定事件
@@ -331,63 +283,6 @@ function jqueryUiSet() {
     $("#importDiv").css("height","290px");
 }
 
-//设置formid下的page信息
-//其中，当前页会加一
-function setFormPageInfo(formId, page) {
-    if (formId === null || formId === undefined || page === null
-        || page === undefined) {
-        return;
-    }
-
-    var form = $("#" + formId);
-    if (!form) {
-        return;
-    }
-    form.find("#hiddenPageSize").val(page.pageSize);
-    form.find("#hiddenCurrentPage").val(Number(page.currentPage));// /
-    form.find("#hiddenTotalPageCnt").val(page.totalPageCnt);
-    form.find("#hiddenTotalCnt").val(page.totalCnt);
-
-}
-
-/**
- * 设置分页面板
- *
- * @param page
- *            分页信息
- * @param divId
- *            分页面板id
- */
-function setPageView(page, divId) {
-    if (page === null || page === undefined) {
-        return;
-    }
-
-    var div = $("#" + divId);
-    if (!div) {
-        return;
-    }
-    var currentPage = page['currentPage'] ? page['currentPage'] : 1;
-    var totalPageCnt = page['totalPageCnt'] ? page['totalPageCnt'] : 0;
-    var totalCnt = page['totalCnt'] ? page['totalCnt'] : 0;
-
-    // 设置到面板上
-    $(div).find("#emTotalCnt").html(totalCnt);
-    $(div).find("#showCurrentPage").val(currentPage);
-    $(div).find("#emTotalPageCnt").html(totalPageCnt);
-}
-
-//初始化form下的page信息
-function initFormPage(formId) {
-    var form = $("#" + formId);
-    if (!form) {
-        return;
-    }
-    form.find("#hiddenCurrentPage").val(1);
-    form.find("#hiddenTotalPageCnt").val(-1);
-    form.find("#hiddenTotalCnt").val(-1);
-}
-
 // 上传
 function doUpload() {
     console.log("进入doUpload");
@@ -407,7 +302,7 @@ function doUpload() {
     var bar = $('.bar');
     var percent = $('.percent');
     $("#formImportMrr").ajaxForm({
-        url: "../../api/upload-file",
+        url: "../../api/gsm-mrr-data/upload-file",
         beforeSend: function () {
             progress.css("display", "block");
             var percentVal = '0%';
@@ -428,46 +323,6 @@ function doUpload() {
             //showInfoInAndOut("info","文件导入成功！");
         }
     })
-}
-
-function queryProgress(token) {
-
-    $.ajax({
-        url : "queryUploadFileProgressAction",
-        type : 'post',
-        data : {
-            'token' : token
-        },
-        success : function(raw) {
-            if (raw === null) {
-                clearInterval(i);
-                return;
-            }
-            var data = {};
-            try {
-                data = eval('(' + raw + ")");
-            } catch (err) {
-                console.log(err);
-            }
-            var percentage=0;
-            if(data.totalBytes>0){
-                percentage= Math.floor(100 * parseFloat(data.readedBytes)
-                    / parseFloat(data.totalBytes));
-            }
-            $("#progressbar").progressbar({
-                value : percentage
-            });
-            $("#progressNum").text(percentage + '%');
-            if (percentage >= 1) {
-                return;
-            }
-            if(stopQueryProgress===false){
-                window.setTimeout(function() {
-                    queryProgress(token);
-                }, 5000);
-            }
-        }
-    });
 }
 
 
@@ -535,9 +390,6 @@ function queryMrrDetailData() {
                         url: '../../lib/datatables/1.10.16/i18n/Chinese.json'
                     }
                 });
-            /*displayMrrDetailData(data['data']);
-            setFormPageInfo("searchMrrDetailForm",data['page']);
-            setPageView(data['page'],"mrrDetailListPageDiv");*/
         },
         complete : function(){
             hideOperTips("loadingDataDiv");
@@ -559,74 +411,6 @@ function hideOperTips(outerId) {
         $("#" + outerId).css("display", "none");
     } catch (err) {
     }
-}
-
-/**
- * 显示返回的Mrr详情信息
- * @param data
- */
-function displayMrrDetailData(data){
-    if(data===null||data===undefined){
-        return;
-    }
-    $("#mrrDetailListTab").find("tr:not(:first)").each(function(i, ele) {
-        $(ele).remove();
-    });
-    var html="";
-    var one;
-    for (var i = 0; i < data.length; i++) {
-        one = data[i];
-        html += "<tr>";
-        html += "<td>" + getValidValue(one['CELL_NAME'], '') + "</td>";
-        html += "<td>" + getValidValue(one['BSC'], '') + "</td>";
-        if (one['UL_QUA6T7_RATE'] === "--") {
-            html += "<td>" + getValidValue(one['UL_QUA6T7_RATE'], '', 5) + "</td>";
-        } else {
-            html += "<td>" + parseFloat(getValidValue(one['UL_QUA6T7_RATE'], '', 5)) + "</td>";
-        }
-        if (one['DL_QUA6T7_RATE'] === "--") {
-            html += "<td>" + getValidValue(one['DL_QUA6T7_RATE'], '', 5) + "</td>";
-        } else {
-            html += "<td>" + parseFloat(getValidValue(one['DL_QUA6T7_RATE'], '', 5)) + "</td>";
-        }
-        if (one['UL_STREN_RATE'] === "--") {
-            html += "<td>" + getValidValue(one['UL_STREN_RATE'], '', 5) + "</td>";
-        } else {
-            html += "<td>" + parseFloat(getValidValue(one['UL_STREN_RATE'], '', 5)) + "</td>";
-        }
-        if (one['DL_STREN_RATE'] === "--") {
-            html += "<td>" + getValidValue(one['DL_STREN_RATE'], '', 5) + "</td>";
-        } else {
-            html += "<td>" + parseFloat(getValidValue(one['DL_STREN_RATE'], '', 5)) + "</td>";
-        }
-        if (one['DL_WEEK_SIGNAL'] === "--") {
-            html += "<td>" + getValidValue(one['DL_WEEK_SIGNAL'], '', 5) + "</td>";
-        } else {
-            html += "<td>" + parseFloat(getValidValue(one['DL_WEEK_SIGNAL'], '', 5)) + "</td>";
-        }
-        if (one['AVER_TA'] === "--") {
-            html += "<td>" + getValidValue(one['AVER_TA'], '', 5) + "</td>";
-        } else {
-            html += "<td>" + parseFloat(getValidValue(one['AVER_TA'], '', 5)) + "</td>";
-        }
-        if (one['MAX_TA'] === "--") {
-            html += "<td>" + getValidValue(one['MAX_TA'], '', 5) + "</td>";
-        } else {
-            html += "<td>" + parseFloat(getValidValue(one['MAX_TA'], '', 5)) + "</td>";
-        }
-        if (one['UL_QUA0T5_RATE'] === "--") {
-            html += "<td>" + getValidValue(one['UL_QUA0T5_RATE'], '', 5) + "</td>";
-        } else {
-            html += "<td>" + parseFloat(getValidValue(one['UL_QUA0T5_RATE'], '', 5)) + "</td>";
-        }
-        if (one['DL_QUA0T5_RATE'] === "--") {
-            html += "<td>" + getValidValue(one['DL_QUA0T5_RATE'], '', 5) + "</td>";
-        } else {
-            html += "<td>" + parseFloat(getValidValue(one['DL_QUA0T5_RATE'], '', 5)) + "</td>";
-        }
-        html += "</tr>";
-    }
-    $("#mrrDetailListTab").append(html);
 }
 
 /**

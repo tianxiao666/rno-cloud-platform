@@ -8,8 +8,10 @@ import com.hgicreate.rno.repository.OriginFileAttrRepository;
 import com.hgicreate.rno.repository.OriginFileRepository;
 import com.hgicreate.rno.repository.NewStationDescRepository;
 import com.hgicreate.rno.security.SecurityUtils;
+import com.hgicreate.rno.service.dto.DataJobReportDTO;
 import com.hgicreate.rno.service.dto.NewStationNcellDescQueryDTO;
 import com.hgicreate.rno.service.dto.NewStationNcellImportQueryDTO;
+import com.hgicreate.rno.service.mapper.DataJobReportMapper;
 import com.hgicreate.rno.service.mapper.NewStationNcellDescQueryMapper;
 import com.hgicreate.rno.util.FtpUtils;
 import com.hgicreate.rno.web.rest.gsm.vm.GsmNewStationNcellDescQueryVM;
@@ -44,11 +46,11 @@ public class NewStationNcellService {
     private final DataJobReportRepository dataJobReportRepository;
     private final NewStationNcellMapper newStationNcellMapper;
     private final Environment env;
-    public NewStationNcellService(NewStationDescRepository newStationDescRepository,
-                                  OriginFileRepository originFileRepository,
-                                  OriginFileAttrRepository originFileAttrRepository,
-                                  DataJobRepository dataJobRepository,
-                                  DataJobReportRepository dataJobReportRepository, NewStationNcellMapper newStationNcellMapper, Environment env) {
+    public NewStationNcellService(
+            NewStationDescRepository newStationDescRepository, OriginFileRepository originFileRepository,
+            OriginFileAttrRepository originFileAttrRepository, DataJobRepository dataJobRepository,
+            DataJobReportRepository dataJobReportRepository, NewStationNcellMapper newStationNcellMapper,
+            Environment env) {
         this.newStationDescRepository = newStationDescRepository;
         this.originFileRepository = originFileRepository;
         this.originFileAttrRepository = originFileAttrRepository;
@@ -56,6 +58,13 @@ public class NewStationNcellService {
         this.dataJobReportRepository = dataJobReportRepository;
         this.newStationNcellMapper = newStationNcellMapper;
         this.env = env;
+    }
+
+    public List<DataJobReportDTO> queryReport(String id){
+        log.debug("查询任务报告的任务id：{}",id);
+        return dataJobReportRepository.findByDataJob_Id(Long.parseLong(id))
+                .stream().map(DataJobReportMapper.INSTANCE::dataJobReportToDataJobReportDTO)
+                .collect(Collectors.toList());
     }
 
     public ResponseEntity<?> gsmNewStationNcellUpload(GsmNewStationNcellUploadVM vm) {

@@ -4,6 +4,9 @@ import com.hgicreate.rno.domain.gsm.GsmEriNcsDesc;
 import com.hgicreate.rno.mapper.gsm.GsmNcsAnalysisMapper;
 import com.hgicreate.rno.repository.gsm.GsmEriNcsDescRepository;
 import com.hgicreate.rno.service.gsm.dto.GsmNcsAnalysisDTO;
+import com.hgicreate.rno.service.gsm.dto.GsmNcsDescQueryDTO;
+import com.hgicreate.rno.service.gsm.mapper.GsmEriNcsDescMapper;
+import com.hgicreate.rno.service.mapper.DataJobMapper;
 import com.hgicreate.rno.web.rest.gsm.vm.CellNcsQueryVM;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -56,7 +59,8 @@ public class GsmNcsAnalysisService {
         return null;
     }
 
-    public GsmEriNcsDesc queryGsmEriNcsDesc(Long ncsDescId) {
-        return gsmEriNcsDescRepository.findOne(ncsDescId);
+    public GsmNcsDescQueryDTO queryGsmEriNcsDesc(Long ncsDescId) {
+        GsmEriNcsDesc gsmEriNcsDesc = gsmEriNcsDescRepository.findOne(ncsDescId);
+        return GsmEriNcsDescMapper.INSTANCE.gsmNcsDescQueryToDTO(gsmEriNcsDesc);
     }
 }

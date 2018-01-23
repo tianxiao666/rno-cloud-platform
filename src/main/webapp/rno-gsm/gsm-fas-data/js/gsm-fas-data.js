@@ -34,7 +34,7 @@ $(function () {
                 $("#queryFasResultTab").DataTable({
                     "data": data,
                     "columns": [
-                        {"data": "area.name"},
+                        {"data": "areaName"},
                         { "data": "meaTime", "render": function (data) {
                             return (new Date(data)).Format("yyyy-MM-dd hh:mm:ss");
                         }},
@@ -69,7 +69,7 @@ $(function () {
         };
         $('#queryResultTab').css("line-height", "12px");
         $.ajax({
-            url: '../../api/gsm-import-query',
+            url: '../../api/gsm-fas-data/gsm-import-query',
             dataType: 'json',
             data: dataMap,
             type: 'post',
@@ -77,12 +77,12 @@ $(function () {
                 $("#queryResultTab").DataTable({
                     "data": data,
                     "columns": [
-                        {"data": "area.name"},
+                        {"data": "areaName"},
                         { "data": "createdDate", "render": function (data) {
                             return (new Date(data)).Format("yyyy-MM-dd hh:mm:ss");
                         }},
-                        { "data": "originFile.filename" },
-                        { "data": "originFile.fileSize", "render": function (data) {
+                        { "data": "filename" },
+                        { "data": "fileSize", "render": function (data) {
                             return conver(data);
                         }},
                         { "data": null},
@@ -188,18 +188,10 @@ function conver(limit){
     return sizestr;
 }
 
-function showDetail(jobId) {
-    $("#mrrListDiv").css("display","none");
-    $("#mrrDetailDiv").css("display","block");
-    initFormPage("searchMrrDetailForm");
-    $("#hiddenMrrDescId").val(jobId);
-    queryMrrDetailData();
-}
-
 //显示导入记录的状态的详情
 function showImportDetail(id) {
     $.ajax({
-        url: '../../api/lte-mr-data/query-report',
+        url: '../../api/gsm-fas-data/query-report',
         dataType: 'text',
         type:'post',
         data: {id: id},
@@ -281,63 +273,6 @@ function jqueryUiSet() {
     $("#importDiv").css("height","290px");
 }
 
-//设置formid下的page信息
-//其中，当前页会加一
-function setFormPageInfo(formId, page) {
-    if (formId === null || formId === undefined || page === null
-        || page === undefined) {
-        return;
-    }
-
-    var form = $("#" + formId);
-    if (!form) {
-        return;
-    }
-    form.find("#hiddenPageSize").val(page.pageSize);
-    form.find("#hiddenCurrentPage").val(Number(page.currentPage));// /
-    form.find("#hiddenTotalPageCnt").val(page.totalPageCnt);
-    form.find("#hiddenTotalCnt").val(page.totalCnt);
-
-}
-
-/**
- * 设置分页面板
- *
- * @param page
- *            分页信息
- * @param divId
- *            分页面板id
- */
-function setPageView(page, divId) {
-    if (page === null || page === undefined) {
-        return;
-    }
-
-    var div = $("#" + divId);
-    if (!div) {
-        return;
-    }
-    var currentPage = page['currentPage'] ? page['currentPage'] : 1;
-    var totalPageCnt = page['totalPageCnt'] ? page['totalPageCnt'] : 0;
-    var totalCnt = page['totalCnt'] ? page['totalCnt'] : 0;
-
-    // 设置到面板上
-    $(div).find("#emTotalCnt").html(totalCnt);
-    $(div).find("#showCurrentPage").val(currentPage);
-    $(div).find("#emTotalPageCnt").html(totalPageCnt);
-}
-
-//初始化form下的page信息
-function initFormPage(formId) {
-    var form = $("#" + formId);
-    if (!form) {
-        return;
-    }
-    form.find("#hiddenCurrentPage").val(1);
-    form.find("#hiddenTotalPageCnt").val(-1);
-    form.find("#hiddenTotalCnt").val(-1);
-}
-
 // 上传
 function doUpload() {
     console.log("进入doUpload");
@@ -357,7 +292,7 @@ function doUpload() {
     var bar = $('.bar');
     var percent = $('.percent');
     $("#formImportMrr").ajaxForm({
-        url: "../../api/upload-file",
+        url: "../../api/gsm-fas-data/upload-file",
         beforeSend: function () {
             progress.css("display", "block");
             var percentVal = '0%';
@@ -378,158 +313,6 @@ function doUpload() {
             //showInfoInAndOut("info","文件导入成功！");
         }
     })
-}
-
-function queryProgress(token) {
-
-    $.ajax({
-        url : "queryUploadFileProgressAction",
-        type : 'post',
-        data : {
-            'token' : token
-        },
-        success : function(raw) {
-            if (raw === null) {
-                clearInterval(i);
-                return;
-            }
-            var data = {};
-            try {
-                data = eval('(' + raw + ")");
-            } catch (err) {
-                console.log(err);
-            }
-            var percentage=0;
-            if(data.totalBytes>0){
-                percentage= Math.floor(100 * parseFloat(data.readedBytes)
-                    / parseFloat(data.totalBytes));
-            }
-            $("#progressbar").progressbar({
-                value : percentage
-            });
-            $("#progressNum").text(percentage + '%');
-            if (percentage >= 1) {
-                return;
-            }
-            if(stopQueryProgress===false){
-                window.setTimeout(function() {
-                    queryProgress(token);
-                }, 5000);
-            }
-        }
-    });
-}
-
-
-
-/**
- * 查看mrr文件详情
- */
-function queryMrrDetailData() {
-    showOperTips("loadingDataDiv", "loadContentId", "正在加载详情");
-    $("#searchMrrDetailForm").ajaxSubmit({
-        url:'../../api/gsm-mrr-data/query-mrr-detail',
-        type:'post',
-        dataType:'text',
-        success:function(raw){
-            var data={};
-            try{
-                data=eval("("+raw+")");
-            }catch(err){
-                console.log(err);
-            }
-            displayMrrDetailData(data['data']);
-            setFormPageInfo("searchMrrDetailForm",data['page']);
-            setPageView(data['page'],"mrrDetailListPageDiv");
-        },
-        complete : function(){
-            hideOperTips("loadingDataDiv");
-        }
-    });
-}
-
-function showOperTips(outerId, tipId, tips) {
-    try {
-        var outerIdDiv = $("#" + outerId);
-        outerIdDiv.css("display", "");
-        outerIdDiv.find("#" + tipId).html(tips);
-    } catch (err) {
-    }
-}
-
-function hideOperTips(outerId) {
-    try {
-        $("#" + outerId).css("display", "none");
-    } catch (err) {
-    }
-}
-
-/**
- * 显示返回的Mrr详情信息
- * @param data
- */
-function displayMrrDetailData(data){
-    if(data===null||data===undefined){
-        return;
-    }
-    $("#mrrDetailListTab").find("tr:not(:first)").each(function(i, ele) {
-        $(ele).remove();
-    });
-    var html="";
-    var one;
-    for (var i = 0; i < data.length; i++) {
-        one = data[i];
-        html += "<tr>";
-        html += "<td>" + getValidValue(one['CELL_NAME'], '') + "</td>";
-        html += "<td>" + getValidValue(one['BSC'], '') + "</td>";
-        if (one['UL_QUA6T7_RATE'] === "--") {
-            html += "<td>" + getValidValue(one['UL_QUA6T7_RATE'], '', 5) + "</td>";
-        } else {
-            html += "<td>" + parseFloat(getValidValue(one['UL_QUA6T7_RATE'], '', 5)) + "</td>";
-        }
-        if (one['DL_QUA6T7_RATE'] === "--") {
-            html += "<td>" + getValidValue(one['DL_QUA6T7_RATE'], '', 5) + "</td>";
-        } else {
-            html += "<td>" + parseFloat(getValidValue(one['DL_QUA6T7_RATE'], '', 5)) + "</td>";
-        }
-        if (one['UL_STREN_RATE'] === "--") {
-            html += "<td>" + getValidValue(one['UL_STREN_RATE'], '', 5) + "</td>";
-        } else {
-            html += "<td>" + parseFloat(getValidValue(one['UL_STREN_RATE'], '', 5)) + "</td>";
-        }
-        if (one['DL_STREN_RATE'] === "--") {
-            html += "<td>" + getValidValue(one['DL_STREN_RATE'], '', 5) + "</td>";
-        } else {
-            html += "<td>" + parseFloat(getValidValue(one['DL_STREN_RATE'], '', 5)) + "</td>";
-        }
-        if (one['DL_WEEK_SIGNAL'] === "--") {
-            html += "<td>" + getValidValue(one['DL_WEEK_SIGNAL'], '', 5) + "</td>";
-        } else {
-            html += "<td>" + parseFloat(getValidValue(one['DL_WEEK_SIGNAL'], '', 5)) + "</td>";
-        }
-        if (one['AVER_TA'] === "--") {
-            html += "<td>" + getValidValue(one['AVER_TA'], '', 5) + "</td>";
-        } else {
-            html += "<td>" + parseFloat(getValidValue(one['AVER_TA'], '', 5)) + "</td>";
-        }
-        if (one['MAX_TA'] === "--") {
-            html += "<td>" + getValidValue(one['MAX_TA'], '', 5) + "</td>";
-        } else {
-            html += "<td>" + parseFloat(getValidValue(one['MAX_TA'], '', 5)) + "</td>";
-        }
-        if (one['UL_QUA0T5_RATE'] === "--") {
-            html += "<td>" + getValidValue(one['UL_QUA0T5_RATE'], '', 5) + "</td>";
-        } else {
-            html += "<td>" + parseFloat(getValidValue(one['UL_QUA0T5_RATE'], '', 5)) + "</td>";
-        }
-        if (one['DL_QUA0T5_RATE'] === "--") {
-            html += "<td>" + getValidValue(one['DL_QUA0T5_RATE'], '', 5) + "</td>";
-        } else {
-            html += "<td>" + parseFloat(getValidValue(one['DL_QUA0T5_RATE'], '', 5)) + "</td>";
-        }
-        html += "</tr>";
-    }
-    $("#mrrDetailListTab").append(html);
 }
 
 /**

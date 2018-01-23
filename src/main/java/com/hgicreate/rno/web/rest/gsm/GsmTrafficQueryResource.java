@@ -26,7 +26,7 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/gsm-traffic-query")
 public class GsmTrafficQueryResource {
     private final GsmTrafficQueryService gsmTrafficQueryService;
 
@@ -34,12 +34,12 @@ public class GsmTrafficQueryResource {
         this.gsmTrafficQueryService = gsmTrafficQueryService;
     }
 
-    @PostMapping("/gsm-traffic-query")
+    @PostMapping("/traffic-query")
     public List<GsmTrafficQueryDTO> gsmTrafficQuery(GsmTrafficQueryVM vm){
         return gsmTrafficQueryService.gsmTrafficQuery(vm);
     }
 
-    @PostMapping("/gsm-traffic-downLoad")
+    @PostMapping("/traffic-downLoad")
     @ResponseBody
     public ResponseEntity<byte[]> gsmTrafficDownLoad(GsmTrafficQueryVM vm) throws ParseException {
         File file = gsmTrafficQueryService.downloadData(vm);
@@ -47,8 +47,8 @@ public class GsmTrafficQueryResource {
             HttpHeaders headers = new HttpHeaders();
             String fileName = new String(file.getName().getBytes("UTF-8"),
                     "iso-8859-1");
-            headers.setContentDispositionFormData("attachment", fileName);
             headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            headers.setContentDispositionFormData("attachment", fileName);
             return new ResponseEntity<>(FileUtils.readFileToByteArray(file), headers, HttpStatus.CREATED);
         } catch (IOException e) {
             e.printStackTrace();
@@ -62,7 +62,7 @@ public class GsmTrafficQueryResource {
         }
     }
 
-    @PostMapping("/gsm-traffic-quality-query")
+    @PostMapping("/quality-query")
     public List<GsmTrafficQuality> gsmTrafficQualityQuery(GsmTrafficQualityQueryVM vm){
         return gsmTrafficQueryService.gsmTrafficQualityQuery(vm);
     }

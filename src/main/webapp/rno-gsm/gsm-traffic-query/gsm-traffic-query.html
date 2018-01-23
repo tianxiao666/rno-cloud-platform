@@ -62,13 +62,8 @@
                             区：<select name="areaId" class="required" id="audioAreaId" title=""></select>
                         </td>
                         <td style="text-align:left">
-                            始: <input id="audioBeginTime" class="Wdate required input-text" value="" readonly="readonly"
-                                      onfocus="var dd=$dp.$('latestAllowedTime');WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:function(){latestAllowedTime.focus();},maxDate:'#F{$dp.$D(\'latestAllowedTime\')}'})"
-                                      name="beginTime" type="text" title=""><br>
-                            止: <input id="audioLatestAllowedTime" class="Wdate required input-text" readonly="readonly"
-                                onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'beginTime\')}'})"
-                                name="latestAllowedTime" type="text" title=""></td>
-
+                            始: <input id="audioBeginTime" name="beginTime" class="hasDatepicker" type="text"><br>
+                            止: <input id="audioLatestAllowedTime" name="latestAllowedTime" class="hasDatepicker" type="text"></td>
                         <td>
                             <select name="stsPeriod" title="" id="audioStsPeriod">
                                 <option value="" selected="selected">全部</option>
@@ -147,7 +142,7 @@
                     </td>
                     <td style="text-align:right"><input onclick="exportData('audio')" value="导出数据"
                                                         style="width:120px;" name="load" type="button">
-                        <form id="audioDownloadFileForm" method="post" action="../../api/gsm-traffic-downLoad" hidden>
+                        <form id="audioDownloadFileForm" method="post" action="../../api/gsm-traffic-query/traffic-downLoad" hidden>
                             <table>
                                 <tbody>
                                 <td style="text-align:right">
@@ -215,16 +210,8 @@
                             区：<select name="areaId" class="required" id="dataAreaId" title=""></select>
                         </td>
                         <td style="text-align:left">
-                            始: <input id="dataBeginTime" class="Wdate required input-text"
-                                      value="" readonly="readonly"
-                                      onfocus="var dd=$dp.$('latestAllowedTime');WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:function(){latestAllowedTime.focus();},maxDate:'#F{$dp.$D(\'latestAllowedTime\')}'})"
-                                      name="beginTime" type="text" title=""><br>
-                            止: <input
-                                id="dataLatestAllowedTime" class="Wdate required input-text"
-                                readonly="readonly"
-                                onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'beginTime\')}'})"
-                                name="latestAllowedTime" type="text" title="">
-                        </td>
+                            始: <input id="dataBeginTime" name="beginTime" class="hasDatepicker" type="text"><br>
+                            止: <input id="dataLatestAllowedTime" name="latestAllowedTime" class="hasDatepicker" type="text"></td>
                         <td style="text-align:left">
                             <select name="stsPeriod" title="" id="dataStsPeriod">
                                 <option value="" selected="selected">全部</option>
@@ -302,7 +289,7 @@
                     <td style="text-align:right"><input onclick="exportData('data')" value="导出数据"
                                                         style="width:120px;" name="load" type="button">
                     </td>
-                    <form id="dataDownloadFileForm" method="post" action="../../api/gsm-traffic-downLoad" hidden>
+                    <form id="dataDownloadFileForm" method="post" action="../../api/gsm-traffic-query/traffic-downLoad" hidden>
                         <table>
                             <tbody>
                                 <td style="text-align:right">
@@ -358,7 +345,6 @@
                         <td class="menuTd" style="text-align:center;">日期</td>
                     </tr>
                     <tr>
-
                         <td style="text-align:left"><select name="type" title="">
                             <option value="" selected="selected">全部</option>
                             <option value="1">一类</option>
@@ -372,19 +358,8 @@
                         </td>
 
                         <td style="text-align:left">
-
-                            始:<input id="qualityBeginTime" name="beginTime"
-                                     onfocus="var dd=$dp.$('latestAllowedTime');WdatePicker({dateFmt:'yyyy-MM-dd',onpicked:function(){latestAllowedTime.focus();},maxDate:'#F{$dp.$D(\'latestAllowedTime\')}'})"
-                                     readonly="readonly" class="Wdate required input-text"
-                                     value="2017-10-25" type="text" title="">
-                            止:<input id="qualityLatestAllowedTime"
-                                                                                  name="latestAllowedTime"
-                                                                                  onfocus="WdatePicker({dateFmt:'yyyy-MM-dd',minDate:'#F{$dp.$D(\'beginTime\')}'})"
-                                                                                  readonly="readonly"
-                                                                                  class="Wdate required input-text"
-                                                                                  type="text" title="">
-
-                        </td>
+                            始: <input id="qualityBeginTime" name="beginTime" class="hasDatepicker" type="text"><br>
+                            止: <input id="qualityLatestAllowedTime" name="latestAllowedTime" class="hasDatepicker" type="text"></td>
                     </tr>
                     <tr>
                         <td style="text-align:right" colspan="3"><input id="queryCityNetworkBtn" value="查  询" style="width:90px;" name="search" type="button" onclick="searchCityNetQuality();">

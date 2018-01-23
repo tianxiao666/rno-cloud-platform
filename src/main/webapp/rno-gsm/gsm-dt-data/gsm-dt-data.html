@@ -34,18 +34,18 @@
         <div id="tabs-1" class="ui-tabs-panel ui-widget-content ui-corner-bottom">
             <div id="listInfoDiv">
                 <form id="searchImportForm">
-                    <td style=" font-weight: normal;" colspan="0">
-                        <select  id="provinceId" title=""></select>
-                        <select id="cityId" title=""></select>
-                        <select id="areaId" name="areaId" title="">
-                    </select>
-                    </td>
                     <div style="margin: 9px"></div>
                     <div id="searchImportDiv">
                         <div style="margin: 9px"></div>
                         <table>
                             <tbody>
                             <tr>
+                                <td style=" font-weight: normal;" colspan="0">
+                                    <select  id="provinceId" title=""></select>
+                                    <select id="cityId" title=""></select>
+                                    <select id="areaId" name="areaId" title="">
+                                    </select>
+                                </td>
                                 <td style="padding-left:30px">
                                     <label>上传时间 从:</label>
                                     <label for="begUploadDate"></label>
@@ -79,7 +79,7 @@
                 </div>
                 <div id="importDiv" class="importContent" style="height: 290px;">
                     <form id="formImportDT" enctype="multipart/form-data" method="post">
-                        <input name="fileCode" value="GSMDTDLLOGFILE" class="canclear" type="hidden">
+                        <input name="moduleName" value="gsm-dt-data" class="canclear" type="hidden">
                         <div>
                             <table class="main-table1 half-width" style="width: 50%; margin-left: 0">
                                 <tbody>

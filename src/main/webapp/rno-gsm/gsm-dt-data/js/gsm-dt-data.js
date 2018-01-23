@@ -67,11 +67,11 @@ $(function () {
             'areaId':$("#areaId").val(),
             'beginDate':new Date($("#begUploadDate").val()),
             'endDate':new Date($("#endUploadDate").val()),
-            'moduleName': 'GSMDTDLLOGFILE'
+            'moduleName': 'gsm-dt-data'
         };
         $('#queryResultTab').css("line-height", "12px");
         $.ajax({
-            url: '../../api/gsm-import-query',
+            url: '../../api/gsm-dt/gsm-import-query',
             dataType: 'json',
             data: dataMap,
             type: 'post',
@@ -79,12 +79,12 @@ $(function () {
                 $("#queryResultTab").DataTable({
                     "data": data,
                     "columns": [
-                        {"data": "area.name"},
+                        {"data": "areaName"},
                         { "data": "createdDate", "render": function (data) {
                             return (new Date(data)).Format("yyyy-MM-dd hh:mm:ss");
                         }},
-                        { "data": "originFile.filename" },
-                        { "data": "originFile.fileSize", "render": function (data) {
+                        { "data": "filename" },
+                        { "data": "fileSize", "render": function (data) {
                             return conver(data);
                         }},
                         { "data": null},
@@ -229,7 +229,7 @@ function returnToImportList(){
 //显示导入记录的状态的详情
 function showImportDetail(id) {
     $.ajax({
-        url: '../../api/lte-mr-data/query-report',
+        url: '../../api/gsm-dt/query-report',
         dataType: 'text',
         type:'post',
         data: {id: id},

@@ -3,6 +3,7 @@ package com.hgicreate.rno.web.rest.gsm;
 import com.hgicreate.rno.domain.gsm.GsmEriNcsDesc;
 import com.hgicreate.rno.service.gsm.GsmNcsAnalysisService;
 import com.hgicreate.rno.service.gsm.dto.GsmNcsAnalysisDTO;
+import com.hgicreate.rno.service.gsm.dto.GsmNcsDescQueryDTO;
 import com.hgicreate.rno.web.rest.gsm.vm.CellNcsQueryVM;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +31,7 @@ public class GsmNcsAnalysisResource {
     }
 
     @PostMapping("/ncs-desc-query")
-    public GsmEriNcsDesc ncsDescQuery(Long ncsId) {
+    public GsmNcsDescQueryDTO ncsDescQuery(Long ncsId) {
         return gsmNcsAnalysisService.queryGsmEriNcsDesc(ncsId);
     }
 }

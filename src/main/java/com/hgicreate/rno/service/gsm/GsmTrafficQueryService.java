@@ -18,10 +18,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author ke_weixu
@@ -61,12 +58,8 @@ public class GsmTrafficQueryService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         File file = new File(vm.getSearchType() + sdf.format(today) + "-话务性能指标.csv");
 
-        List<String> columns = new ArrayList<>();
-        List<String> columnNames = new ArrayList<>();
-        for (Object column : columnTitles.keySet()) {
-            columns.add((String) column);
-            columnNames.add(columnTitles.get(column));
-        }
+
+        List<String> columnNames = columnTitles.valueList();
         //获取UTF-8编码文本文件开头的BOM签名
         byte b[] = {(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
         String s = new String(b);

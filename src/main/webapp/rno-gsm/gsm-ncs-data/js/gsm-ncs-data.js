@@ -98,7 +98,7 @@ $(function () {
         };
         $('#queryResultTab').css("line-height", "12px");
         $.ajax({
-            url: '../../api/gsm-import-query',
+            url: '../../api/gsm-ncs-data/gsm-import-query',
             dataType: 'json',
             data: dataMap,
             type: 'post',
@@ -106,12 +106,12 @@ $(function () {
                 $("#queryResultTab").DataTable({
                     "data": data,
                     "columns": [
-                        {"data": "area.name"},
+                        {"data": "areaName"},
                         { "data": "createdDate", "render": function (data) {
                             return (new Date(data)).Format("yyyy-MM-dd hh:mm:ss");
                         }},
-                        { "data": "originFile.filename" },
-                        { "data": "originFile.fileSize", "render": function (data) {
+                        { "data": "filename" },
+                        { "data": "fileSize", "render": function (data) {
                             return conver(data);
                         }},
                         { "data": null},
@@ -253,7 +253,7 @@ function renderArea(data, parentId, areaMenu) {
 //显示导入记录的状态的详情
 function showImportDetail(id) {
     $.ajax({
-        url: '../../api/lte-mr-data/query-report',
+        url: '../../api/gsm-ncs-data/query-report',
         dataType: 'text',
         type:'post',
         data: {id: id},
@@ -411,7 +411,7 @@ function doUpload() {
     var bar = $('.bar');
     var percent = $('.percent');
     $("#formImportNcs").ajaxForm({
-        url: "../../api/upload-file",
+        url: "../../api/gsm-ncs-data/upload-file",
         beforeSend: function () {
             progress.css("display", "block");
             var percentVal = '0%';
@@ -423,7 +423,7 @@ function doUpload() {
             bar.width(percentVal);
             percent.html(percentVal);
         },
-        success: function () {
+        complete: function () {
             var percentVal = '100%';
             bar.width(percentVal);
             percent.html(percentVal);

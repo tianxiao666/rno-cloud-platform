@@ -1,6 +1,7 @@
 package com.hgicreate.rno.web.rest;
 
 import com.hgicreate.rno.service.NewStationNcellService;
+import com.hgicreate.rno.service.dto.DataJobReportDTO;
 import com.hgicreate.rno.service.dto.NewStationNcellDescQueryDTO;
 import com.hgicreate.rno.service.dto.NewStationNcellImportQueryDTO;
 import com.hgicreate.rno.web.rest.gsm.vm.GsmNewStationNcellDescQueryVM;
@@ -40,5 +41,10 @@ public class NewStationNcellResource {
     @PostMapping("/import-query")
     public List<NewStationNcellImportQueryDTO> importQuery(NewStationNcellImportQueryVM vm) {
         return newStationNcellService.importQuery(vm);
+    }
+
+    @PostMapping("/query-report")
+    public List<DataJobReportDTO> queryReport(String id){
+        return newStationNcellService.queryReport(id);
     }
 }

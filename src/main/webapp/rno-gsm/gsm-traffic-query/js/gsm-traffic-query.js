@@ -1,4 +1,4 @@
-var isSerched = false;
+var isSerched = [false,false];
 var exportParamMap;
 $(function () {
     // 设置导航标题
@@ -60,12 +60,23 @@ function cellInputBlur(me) {
 }
 
 function exportData(exportFromId) {
-    if (isSerched === false){
-        alert("请先查询！");
-    }else {
-        $("#" + exportFromId + "DownloadFileForm").submit();
+    if (exportFromId === 'audio'){
+        if (isSerched[0] === false){
+            alert("请先查询！");
+        }else {
+            $("#" + exportFromId + "DownloadFileForm").submit();
 
+        }
     }
+    if (exportFromId === 'data'){
+        if (isSerched[1] === false){
+            alert("请先查询！");
+        }else {
+            $("#" + exportFromId + "DownloadFileForm").submit();
+
+        }
+    }
+
 }
 
 //小区业务指标查询
@@ -90,11 +101,25 @@ function trafficQuery(tab){
     $("#" + tab +"DlCellChineseName").val($("#" + tab +"CellChineseName").val());
     $("#" + tab +"DlStsType").val($("#" + tab +"StsType").val());
     $("#form_tab_" + tab).ajaxSubmit({
-        url:'../../api/gsm-traffic-query',
+        url:'../../api/gsm-traffic-query/traffic-query',
         type:'post',
         dataType:'text',
         success:function(data){
-            isSerched =true;
+            if(data.length === 2){
+                if (tab === 'audio'){
+                    isSerched[0] = false;
+                }
+                if (tab === 'data'){
+                    isSerched[1] = false;
+                }
+            } else {
+                if (tab === 'audio'){
+                    isSerched[0] = true;
+                }
+                if (tab === 'data'){
+                    isSerched[1] = true;
+                }
+            }
             $('#'+ tab + 'QueryCellTrafficTab').css("line-height", "12px");
             $('#'+ tab + 'QueryCellTrafficTab').DataTable( {
                 "data": JSON.parse(data),
@@ -148,7 +173,7 @@ function searchCityNetQuality() {
     $("#qualityBeginTime").val(new Date(beginTime));
     $("#qualityLatestAllowedTime").val(new Date(endTime));
     $("#form_tab_2").ajaxSubmit({
-        url:'../../api/gsm-traffic-quality-query',
+        url:'../../api/gsm-traffic-query/quality-query',
         type:'post',
         dataType:'text',
         beforeSend:function () {

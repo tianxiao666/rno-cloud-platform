@@ -218,7 +218,7 @@ function doUpload() {
 //显示导入记录的状态的详情
 function showImportDetail(id) {
     $.ajax({
-        url: '../../api/lte-mr-data/query-report',
+        url: '../../api/gsm-new-station-ncell/query-report',
         dataType: 'text',
         type:'post',
         data: {id: id},
