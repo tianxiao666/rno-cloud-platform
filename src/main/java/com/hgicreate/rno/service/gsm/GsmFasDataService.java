@@ -1,7 +1,6 @@
 package com.hgicreate.rno.service.gsm;
 
 import com.hgicreate.rno.domain.*;
-import com.hgicreate.rno.domain.gsm.GsmFasDesc;
 import com.hgicreate.rno.repository.DataJobReportRepository;
 import com.hgicreate.rno.repository.DataJobRepository;
 import com.hgicreate.rno.repository.OriginFileAttrRepository;
@@ -58,6 +57,9 @@ public class GsmFasDataService {
         this.env = env;
     }
 
+    /**
+     * FAS数据查询
+     */
     public List<GsmFasDataQueryDTO> gsmFasDescQuery(GsmFasDataQueryVM vm){
         Area area = new Area();
         area.setId(vm.getAreaId());
@@ -76,6 +78,9 @@ public class GsmFasDataService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 文件上传查询
+     */
     public List<GsmImportQueryDTO> gsmImportQuery(GsmImportQueryVM vm) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(vm.getEndDate());
@@ -95,6 +100,9 @@ public class GsmFasDataService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 查找上传状态历史
+     */
     public List<DataJobReportDTO> queryReport(String id){
         log.debug("查询任务报告的任务id：{}",id);
         return dataJobReportRepository.findByDataJob_Id(Long.parseLong(id))

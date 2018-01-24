@@ -45,7 +45,9 @@ public class GsmDtDataService {
     private final DataJobReportRepository dataJobReportRepository;
     private final Environment env;
 
-    public GsmDtDataService(GsmDtDescRepository gsmDtDescRepository, OriginFileRepository originFileRepository, OriginFileAttrRepository originFileAttrRepository, DataJobRepository dataJobRepository, DataJobReportRepository dataJobReportRepository, Environment env) {
+    public GsmDtDataService(GsmDtDescRepository gsmDtDescRepository, OriginFileRepository originFileRepository,
+                            OriginFileAttrRepository originFileAttrRepository, DataJobRepository dataJobRepository,
+                            DataJobReportRepository dataJobReportRepository, Environment env) {
         this.gsmDtDescRepository = gsmDtDescRepository;
         this.originFileRepository = originFileRepository;
         this.originFileAttrRepository = originFileAttrRepository;
@@ -54,6 +56,9 @@ public class GsmDtDataService {
         this.env = env;
     }
 
+    /**
+     * 查找DT文件上传历史
+     */
     public List<GsmImportQueryDTO> gsmImportQuery(GsmImportQueryVM vm) {
         Calendar calendar = Calendar.getInstance();
         Area area = new Area();
@@ -101,6 +106,9 @@ public class GsmDtDataService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * DT文件上传
+     */
     public ResponseEntity<?> gsmDtUpload(GsmDtUploadVM vm) {
         try {
             Date uploadBeginTime = new Date();

@@ -11,8 +11,14 @@ import java.util.List;
  * @author ke_weixu
  */
 public interface GsmMrrDescRepository extends JpaRepository<GsmMrrDesc, Long>{
+    /**
+     * MRR数据查询(带有BSC参数)
+     */
     List<GsmMrrDesc> findTop1000ByAreaAndFactoryAndBscLikeAndMeaDateBetween(Area area, String factory, String bsc, Date beginTestDate, Date endTestDate);
 
+    /**
+     * MRR数据查询(不带BSC参数)
+     */
     List<GsmMrrDesc> findTop1000ByAreaAndFactoryAndMeaDateBetween(Area area, String factory, Date beginTestDate, Date endTestDate);
 
     List<GsmMrrDesc> findTop1000ByAreaAndMeaDateBetween(Area area,Date begMeaDate,Date endMeaDate);

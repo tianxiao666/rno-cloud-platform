@@ -8,6 +8,12 @@ import java.util.Date;
 import java.util.List;
 
 public interface GsmHwNcsDescRepository extends JpaRepository<GsmHwNcsDesc, Long> {
+    /**
+     * 厂家为华为的NCS数据查询（带有BSC）
+     */
     List<GsmHwNcsDesc> findTop1000ByAreaAndBscLikeAndMeaTimeBetween(Area area, String bsc, Date beginTestDate, Date endTestDate);
+    /**
+     * 厂家为华为的NCS数据查询（不带BSC）
+     */
     List<GsmHwNcsDesc> findTop1000ByAreaAndMeaTimeBetween(Area area, Date beginTestDate, Date endTestDate);
 }

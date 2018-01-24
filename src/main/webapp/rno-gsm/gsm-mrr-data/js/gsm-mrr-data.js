@@ -31,6 +31,7 @@ $(function () {
             data: dataMap,
             type: 'post',
             success:function(data){
+                $("#queryResultTab").DataTable().clear();
                 $("#queryResultTab").DataTable({
                     "data": data,
                     "columns": [
@@ -118,6 +119,7 @@ $(function () {
             data: dataMap,
             type: 'post',
             success:function(data){
+                $("#queryMrrResultTab").DataTable().clear();
                 $("#queryMrrResultTab").DataTable({
                     "data": data,
                     "columns": [
@@ -338,7 +340,12 @@ function queryMrrDetailData() {
         type:'post',
         dataType:'text',
         success:function(data){
+            if (!data) {
+                alert('文件属性缺失！');
+                return;
+            }
             $('#mrrDetailListTab').css("line-height", "12px");
+            $("#mrrDetailListTab").DataTable().clear();
             $("#mrrDetailListTab").DataTable({
                     "data": JSON.parse(data),
                     "columns": [

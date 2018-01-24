@@ -39,6 +39,9 @@ public class GsmTrafficQueryService {
         return gsmTrafficMapper.gsmTrafficQuery(vm);
     }
 
+    /**
+     * 导出数据
+     */
     public File downloadData(GsmTrafficQueryVM vm) throws ParseException {
         List<GsmTrafficQueryDTO> list = gsmTrafficQuery(vm);
         ListOrderedMap<String, String> columnTitles = new ListOrderedMap<>();
@@ -61,7 +64,7 @@ public class GsmTrafficQueryService {
 
         List<String> columnNames = columnTitles.valueList();
         //获取UTF-8编码文本文件开头的BOM签名
-        byte b[] = {(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
+        byte[] b = {(byte) 0xEF, (byte) 0xBB, (byte) 0xBF};
         String s = new String(b);
         BufferedWriter bw = null;
         FileWriter fw = null;
@@ -118,6 +121,9 @@ public class GsmTrafficQueryService {
     }
 
 
+    /**
+     * 城市网络质量指标查询
+     */
     public List<GsmTrafficQuality> gsmTrafficQualityQuery(GsmTrafficQualityQueryVM vm){
         Area area = new Area();
         area.setId(vm.getAreaId());

@@ -31,6 +31,7 @@ $(function () {
             data: dataMap,
             type: 'post',
             success:function(data){
+                $("#queryFasResultTab").DataTable().clear();
                 $("#queryFasResultTab").DataTable({
                     "data": data,
                     "columns": [
@@ -74,6 +75,7 @@ $(function () {
             data: dataMap,
             type: 'post',
             success:function(data){
+                $("#queryResultTab").DataTable().clear();
                 $("#queryResultTab").DataTable({
                     "data": data,
                     "columns": [

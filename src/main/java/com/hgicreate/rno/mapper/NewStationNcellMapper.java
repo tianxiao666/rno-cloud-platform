@@ -8,5 +8,8 @@ import java.util.List;
 
 @Mapper
 public interface NewStationNcellMapper {
+    /**
+     * 上传查询
+     */
     List<NewStationNcellImportQueryDTO> queryImport(NewStationNcellImportQueryVM vm);
 }

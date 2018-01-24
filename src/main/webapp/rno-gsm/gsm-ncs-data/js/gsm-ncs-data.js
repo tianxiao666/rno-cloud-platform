@@ -103,6 +103,7 @@ $(function () {
             data: dataMap,
             type: 'post',
             success:function(data){
+                $("#queryResultTab").DataTable().clear();
                 $("#queryResultTab").DataTable({
                     "data": data,
                     "columns": [
@@ -423,7 +424,7 @@ function doUpload() {
             bar.width(percentVal);
             percent.html(percentVal);
         },
-        complete: function () {
+        success: function () {
             var percentVal = '100%';
             bar.width(percentVal);
             percent.html(percentVal);

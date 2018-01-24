@@ -5,7 +5,6 @@ import com.hgicreate.rno.service.dto.DataJobReportDTO;
 import com.hgicreate.rno.service.dto.GsmImportQueryDTO;
 import com.hgicreate.rno.service.gsm.GsmNcsDescService;
 import com.hgicreate.rno.service.gsm.dto.GsmNcsAnalysisDescQueryDTO;
-import com.hgicreate.rno.service.gsm.dto.GsmNcsDescQueryDTO;
 import com.hgicreate.rno.web.rest.gsm.vm.GsmImportQueryVM;
 import com.hgicreate.rno.web.rest.gsm.vm.GsmNcsDescQueryVM;
 import com.hgicreate.rno.web.rest.gsm.vm.GsmUploadVM;

@@ -63,7 +63,9 @@ public class GsmMrrDataService {
         this.env = env;
     }
 
-
+    /**
+     * 查找上传状态历史
+     */
     public List<DataJobReportDTO> queryReport(String id){
         log.debug("查询任务报告的任务id：{}",id);
         return dataJobReportRepository.findByDataJob_Id(Long.parseLong(id))
@@ -71,6 +73,9 @@ public class GsmMrrDataService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * MRR数据查询
+     */
     public List<GsmMrrDataQueryDTO> mrrDataQuery(GsmMrrDescQueryVM vm) {
         Area area = new Area();
         area.setId(vm.getAreaId());
@@ -90,6 +95,9 @@ public class GsmMrrDataService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * gsm文件上传查询
+     */
     public List<GsmImportQueryDTO> gsmImportQuery(GsmImportQueryVM vm) {
         Area area = new Area();
         area.setId(vm.getAreaId());
@@ -111,14 +119,9 @@ public class GsmMrrDataService {
 
     /**
      * 查询爱立信Mrr详情信息
-     *
-     * @author peng.jm
-     * @date 2014-9-2下午05:17:42
      */
     public List<Map<String, Object>> queryEriMrrDetailByPage(
             Long mrrDescId) {
-
-
         GsmMrrDesc mrrDescDetails = gsmMrrDescRepository.findOne(mrrDescId);
         long cityId;
         Date meaTime;
@@ -160,6 +163,18 @@ public class GsmMrrDataService {
         List<Map<String, Object>> result = new ArrayList<>();
         Map<String, Object> map;
         String cell;
+        if (!(resCellAndBsc.size() == resUlQua6t7Rate.size()
+                && resUlQua6t7Rate.size() == resDlQua6t7Rate.size()
+                && resDlQua6t7Rate.size() == resUlStrenRate.size()
+                && resUlStrenRate.size() == resDlStrenRate.size()
+                && resDlStrenRate.size() == resDlWeekSignal.size()
+                && resDlWeekSignal.size() == resAverTa.size()
+                && resAverTa.size() == resMaxTa.size()
+                && resMaxTa.size() == resUlQua0t5Rate.size()
+                && resUlQua0t5Rate.size() == resDlQua0t5Rate.size()
+        )) {
+            return null;
+        }
         for (int i = 0; i < resCellAndBsc.size(); i++) {
             map = new HashMap<>();
             cell = resCellAndBsc.get(i).get("CELL_NAME").toString();

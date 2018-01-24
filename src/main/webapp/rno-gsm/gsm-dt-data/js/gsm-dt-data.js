@@ -76,6 +76,7 @@ $(function () {
             data: dataMap,
             type: 'post',
             success:function(data){
+                $("#queryResultTab").DataTable().clear();
                 $("#queryResultTab").DataTable({
                     "data": data,
                     "columns": [
@@ -159,6 +160,7 @@ function queryDtData() {
         data: dataMap,
         type: 'post',
         success:function(data) {
+            $("#queryResultDT").DataTable().clear();
             $("#queryResultDT").DataTable({
                 "data": data,
                 "columns": [

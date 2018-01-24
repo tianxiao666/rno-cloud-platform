@@ -6,11 +6,11 @@
 
     <select id="queryImport" resultType="com.hgicreate.rno.service.dto.NewStationNcellImportQueryDTO">
 
-            SELECT area.NAME AS AREA_NAME, f.FILENAME, f.FILE_SIZE, job.ID, job.CREATED_DATE, job.START_TIME, job.COMPLETE_TIME, job.CREATED_USER,
+            SELECT area.NAME AS AREA_NAME, f.FILENAME, f.FILE_SIZE, job.ID, f.CREATED_DATE, job.START_TIME, job.COMPLETE_TIME, job.CREATED_USER,
         job.STATUS FROM RNO_DATA_JOB job JOIN RNO_SYS_AREA area ON area.ID = job.AREA_ID JOIN RNO_ORIGIN_FILE f ON f.ID = job.ORIGIN_FILE_ID
         WHERE
         <![CDATA[
-        job.CREATED_DATE >=  #{beginDate} AND job.CREATED_DATE <= (#{endDate} + 1)
+        f.CREATED_DATE >=  #{beginDate} AND f.CREATED_DATE <= (#{endDate} + 1)
         ]]>
         <if test="status != '全部'">
             AND job.STATUS = #{status}

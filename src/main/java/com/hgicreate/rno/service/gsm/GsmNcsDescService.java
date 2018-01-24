@@ -11,7 +11,6 @@ import com.hgicreate.rno.security.SecurityUtils;
 import com.hgicreate.rno.service.dto.DataJobReportDTO;
 import com.hgicreate.rno.service.dto.GsmImportQueryDTO;
 import com.hgicreate.rno.service.gsm.dto.GsmNcsAnalysisDescQueryDTO;
-import com.hgicreate.rno.service.gsm.dto.GsmNcsDescQueryDTO;
 import com.hgicreate.rno.service.gsm.mapper.GsmNcsDescQueryMapper;
 import com.hgicreate.rno.service.mapper.DataJobMapper;
 import com.hgicreate.rno.service.mapper.DataJobReportMapper;
@@ -63,6 +62,9 @@ public class GsmNcsDescService {
         this.env = env;
     }
 
+    /**
+     * 查找上传状态历史
+     */
     public List<DataJobReportDTO> queryReport(String id){
         log.debug("查询任务报告的任务id：{}",id);
         return dataJobReportRepository.findByDataJob_Id(Long.parseLong(id))
@@ -70,6 +72,9 @@ public class GsmNcsDescService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * NCS数据查询
+     */
     public List<GsmNcsAnalysisDescQueryDTO> ncsDescQuery(GsmNcsDescQueryVM vm) {
         Area area = new Area();
         area.setId(vm.getAreaId());
@@ -109,6 +114,9 @@ public class GsmNcsDescService {
         return null;
     }
 
+    /**
+     * NCS查询上传文件历史
+     */
     public List<GsmImportQueryDTO> gsmImportQuery(GsmImportQueryVM vm) {
         Calendar calendar = Calendar.getInstance();
         Area area = new Area();

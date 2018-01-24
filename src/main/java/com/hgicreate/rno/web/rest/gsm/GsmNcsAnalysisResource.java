@@ -1,6 +1,5 @@
 package com.hgicreate.rno.web.rest.gsm;
 
-import com.hgicreate.rno.domain.gsm.GsmEriNcsDesc;
 import com.hgicreate.rno.service.gsm.GsmNcsAnalysisService;
 import com.hgicreate.rno.service.gsm.dto.GsmNcsAnalysisDTO;
 import com.hgicreate.rno.service.gsm.dto.GsmNcsDescQueryDTO;

@@ -6,7 +6,6 @@ import com.hgicreate.rno.repository.gsm.GsmEriNcsDescRepository;
 import com.hgicreate.rno.service.gsm.dto.GsmNcsAnalysisDTO;
 import com.hgicreate.rno.service.gsm.dto.GsmNcsDescQueryDTO;
 import com.hgicreate.rno.service.gsm.mapper.GsmEriNcsDescMapper;
-import com.hgicreate.rno.service.mapper.DataJobMapper;
 import com.hgicreate.rno.web.rest.gsm.vm.CellNcsQueryVM;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -30,16 +29,17 @@ public class GsmNcsAnalysisService {
         this.gsmEriNcsDescRepository = gsmEriNcsDescRepository;
     }
 
+    /**
+     * NCS邻区分析查询
+     */
     public List<GsmNcsAnalysisDTO> cellNcsQuery(CellNcsQueryVM vm){
         List<String> ncells = gsmNcsAnalysisMapper.queryGsmNcell(vm.getCell());
         if (Objects.equals(vm.getFactory(), "ERI")){
         List<GsmNcsAnalysisDTO> result = gsmNcsAnalysisMapper.queryGsmEriNcs(vm.getCityId(), vm.getCell());
             for (GsmNcsAnalysisDTO dto:result) {
                 dto.setManufacturers("ERI");
-                if (dto.getDefined() != 1L) {
-                    if (ncells.contains(dto.getNcell())) {
-                        dto.setDefined(1L);
-                    }
+                if (dto.getDefined() != 1L && ncells.contains(dto.getNcell())) {
+                    dto.setDefined(1L);
                 }
             }
             return result;
@@ -59,6 +59,9 @@ public class GsmNcsAnalysisService {
         return null;
     }
 
+    /**
+     * NCS邻区分析测量信息查询
+     */
     public GsmNcsDescQueryDTO queryGsmNcsDesc(Long ncsDescId) {
         GsmEriNcsDesc gsmEriNcsDesc = gsmEriNcsDescRepository.findOne(ncsDescId);
         return GsmEriNcsDescMapper.INSTANCE.gsmNcsDescQueryToDTO(gsmEriNcsDesc);

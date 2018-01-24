@@ -59,7 +59,9 @@ public class NewStationNcellService {
         this.newStationNcellMapper = newStationNcellMapper;
         this.env = env;
     }
-
+    /**
+     * 查找文件上传状态
+     */
     public List<DataJobReportDTO> queryReport(String id){
         log.debug("查询任务报告的任务id：{}",id);
         return dataJobReportRepository.findByDataJob_Id(Long.parseLong(id))
@@ -67,6 +69,9 @@ public class NewStationNcellService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * 上传文件
+     */
     public ResponseEntity<?> gsmNewStationNcellUpload(GsmNewStationNcellUploadVM vm) {
         try {
             Date uploadBeginTime = new Date();

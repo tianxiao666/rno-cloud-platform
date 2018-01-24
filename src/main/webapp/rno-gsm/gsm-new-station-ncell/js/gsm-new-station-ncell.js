@@ -39,6 +39,7 @@ $(function () {
             data: dataMap,
             type: 'post',
             success:function(data){
+                $("#queryResultTab").DataTable().clear();
                 $("#queryResultTab").DataTable({
                     "data": data,
                     "columns": [
@@ -145,6 +146,7 @@ $(function () {
             data: dataMap,
             type: 'post',
             success:function(data){
+                $("#queryNcsResultTab").DataTable().clear();
                 $("#queryNcsResultTab").DataTable({
                     "data": data,
                     "columns": [

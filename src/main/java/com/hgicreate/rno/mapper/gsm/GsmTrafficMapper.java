@@ -9,6 +9,9 @@ import java.util.Map;
 
 @Mapper
 public interface GsmTrafficMapper {
+    /**
+     * 小区语音业务指标查询与小区数据业务指标查询
+     */
     List<GsmTrafficQueryDTO> gsmTrafficQuery(GsmTrafficQueryVM vm);
 
     List<Map<String,Object>> busyCellQuery(Long areaId);
