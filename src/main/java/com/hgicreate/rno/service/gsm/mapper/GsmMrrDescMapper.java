@@ -16,6 +16,11 @@ import org.mapstruct.factory.Mappers;
 public interface GsmMrrDescMapper {
     GsmMrrDescMapper INSTANCE = Mappers.getMapper(GsmMrrDescMapper.class);
 
+    /**
+     * gsmMrrDesc 转换为 mrr数据查询DTO
+     * @param gsmMrrDesc gsmMrrDesc
+     * @return mrr数据查询DTO
+     */
     @Mappings({
             @Mapping(source = "area.name", target = "areaName"),
             @Mapping(source = "id", target = "id"),

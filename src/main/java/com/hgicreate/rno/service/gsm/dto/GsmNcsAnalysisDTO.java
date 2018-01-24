@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.util.Date;
 
+/**
+ * @author ke_weixu
+ */
 @Data
 public class GsmNcsAnalysisDTO {
     private String cell;

@@ -5,6 +5,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Date;
 
+/**
+ * @author ke_weixu
+ */
 @Data
 public class GsmUploadVM {
     private MultipartFile file;

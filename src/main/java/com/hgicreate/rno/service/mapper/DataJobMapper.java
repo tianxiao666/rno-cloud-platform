@@ -14,11 +14,17 @@ public interface DataJobMapper {
 
     DataJobMapper INSTANCE = Mappers.getMapper(DataJobMapper.class);
 
+    /**
+     * DataJob 转换为 GSM查询导出记录DTO
+     * @param dataJob dataJob
+     * @return GSM查询导出记录DTO
+     */
     @Mappings({
             @Mapping(source = "area.name", target = "areaName"),
             @Mapping(source = "id", target = "id"),
             @Mapping(source = "originFile.filename", target = "filename"),
-            @Mapping(source = "originFile.fileSize", target = "fileSize")
+            @Mapping(source = "originFile.fileSize", target = "fileSize"),
+            @Mapping(source = "originFile.createdDate", target = "createdDate")
     })
     GsmImportQueryDTO gsmImportQueryToDTO(DataJob dataJob);
 }
