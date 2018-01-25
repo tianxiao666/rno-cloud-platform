@@ -32,6 +32,8 @@ public class AppResource {
         Map<String, Object> map = new HashMap<>();
 
         String code = env.getProperty("rno.app-code", "rno");
+        // 是否检查前缀来使用不同的应用菜单，缺省为true
+        boolean checkUrlPrefix = Boolean.valueOf(env.getProperty("rno.check-url-prefix", "true"));
 
         // 获取登录名
         map.put("username", SecurityUtils.getCurrentUserLogin());
@@ -45,7 +47,7 @@ public class AppResource {
         List<App> list = appRepository.findAllByCode(array[0]);
 
         // 如果有则以返回url前缀的应用
-        if (list.size() > 0) {
+        if (checkUrlPrefix && list.size() > 0) {
             map.put("app", list.get(0));
         } else {
             map.put("app", appRepository.findAllByCode(code).get(0));

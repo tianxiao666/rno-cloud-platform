@@ -2,6 +2,7 @@
 var firstLevelMenuSelected = "";
 var secondLevelMenuSelected = "";
 var thirdLevelMenuSelected = "";
+var appCode;
 
 $(function () {
     //检验用户信息
@@ -24,12 +25,13 @@ $(function () {
             $(".logo").html("<img src='images/" + app.logo + "'>");
             $("#software-version").html(app.name + " " + app.version);
             $("#greeting").html(data.fullName + "，欢迎您！");
+            appCode = app.code;
         }
     });
 
     //初始化菜单
     $.ajax({
-        url: "api/app-menu",
+        url: "api/app-menu?appCode="+appCode,
         dataType: "json",
         async: false,
         success: function (data) {

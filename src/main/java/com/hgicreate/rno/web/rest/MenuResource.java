@@ -17,24 +17,15 @@ import java.util.List;
 public class MenuResource {
 
     private final MenuService menuService;
-    private final AppRepository appRepository;
 
-    @Value("${rno.app-code}")
-    private String appCode;
-
-    public MenuResource(MenuService menuService, AppRepository appRepository) {
+    public MenuResource(MenuService menuService) {
         this.menuService = menuService;
-        this.appRepository = appRepository;
     }
 
     @GetMapping("/app-menu")
-    public List<Menu> getAppMenu(HttpServletRequest request) {
-        // 查询应用程序表是否有和url前缀同名的应用
-        String prefix = request.getServerName().split("\\.")[0];
-        List<App> list = appRepository.findAllByCode(prefix);
-
-        // 如果有则返回url前缀的应用的菜单，否则返回系统配置的缺省菜单
-        return menuService.listMenuByAppCode(list.size() > 0 ? prefix : appCode);
+    public List<Menu> getAppMenu(String appCode) {
+        // 根据前端传进来的参数appCode返回相应的系统菜单
+        return menuService.listMenuByAppCode(appCode);
     }
 
     @GetMapping("/get-menu")
@@ -44,9 +35,9 @@ public class MenuResource {
     }
 
     @PostMapping("/submit-menu")
-    public String submitMenu(@RequestBody List<Menu> menus, Long appId){
+    public String submitMenu(@RequestBody List<Menu> menus, Long appId) {
         menuService.deleteAllByAppId(appId);
-        for(Menu menuNode: menus){
+        for (Menu menuNode : menus) {
             menuService.saveMenu(menuNode);
         }
         return "ok";

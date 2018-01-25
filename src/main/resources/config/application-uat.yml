@@ -27,7 +27,8 @@ spring:
       max-request-size: 800MB
 
 rno:
-  app-code: rno4g
+  app-code: rno-tdlte
+  check-url-prefix: false
   path:
     upload-files: /tmp/rno-cloud-platform/uploads
   ftp:
