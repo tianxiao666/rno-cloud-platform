@@ -139,3 +139,71 @@ function setNavTitle(navTitleId) {
         $("#" + navTitleId).html("当前位置：" + navTitle);
     }
 }
+
+/**
+ *场所楼层联动
+ */
+function initBuildingSelectors(options,eventId) {
+    renderBuildings(options,eventId);
+}
+
+/**
+ * 初始化场所信息
+ */
+function renderBuildings(options,eventId) {
+    var $buildingId = $("#" + options.selectors[0]);
+    $.ajax({
+        url: "/api/cb-buliding-data/cb-building-query-all",
+        data: {},
+        type: "post",
+        success: function(data){
+            // showInfoInAndOut('info', '状态修改成功！');
+            var areaHtml = [];
+            $.each(data, function (index) {
+                var CBB = data[index];
+                $("#" + options.selectors[0]).append("<option value='" + CBB.buildingId + "'>"+CBB.buildingName+"</option>");
+            });
+            if(options.tip!=null){
+                $("#" + options.tip[0]).text($("#" + options.selectors[0]).find("option:selected").text());
+            }
+            //完成场所初始化后触发查询楼层事件
+            if(options.selectors.length == 1){
+                $("#"+eventId).click();
+            }
+            if (options.selectors.length > 1) {
+                var $floorId = $("#" + options.selectors[1]);
+                // console.log(options.selectors.length);
+                $buildingId.change(function () {
+                    var buildingId = parseInt($(this).find("option:selected").val());
+                    renderFloors(options, buildingId, eventId);
+                    $floorId.trigger("change");
+                });
+                $buildingId.trigger("change");
+            }
+        }
+    });
+}
+
+/**
+ * 初始化楼层信息
+ */
+function renderFloors(options,buildingId,eventId) {
+    $.ajax({
+        url: "/api/cb-floor-data/cb-floor-query-by-building",
+        data: {"buildingId":buildingId},
+        type: "post",
+        success: function(data){
+            // showInfoInAndOut('info', '状态修改成功！');
+            var areaHtml = [];
+            $("#" + options.selectors[1]).find('option').not(':first').remove();
+            $.each(data, function (index) {
+                var CBB = data[index];
+                $("#" + options.selectors[1]).append("<option value='" + CBB.floorId + "'>"+CBB.floorName+"</option>");
+            });
+            //完成场所初始化后触发查询楼层事件
+            if(eventId!=null){
+                $("#"+eventId).click();
+            }
+        }
+    });
+}
