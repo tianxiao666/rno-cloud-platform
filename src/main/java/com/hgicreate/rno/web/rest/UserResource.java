@@ -39,7 +39,7 @@ public class UserResource {
     }
 
     @PostMapping("/reset-password")
-    public boolean resetPassword(String newPassword, String oldPassword) {
-        return casUserService.resetPassword(newPassword, oldPassword);
+    public boolean resetPassword(String oldPassword, String newPassword) {
+        return casUserService.resetPassword(oldPassword, newPassword);
     }
 }
