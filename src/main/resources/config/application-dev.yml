@@ -8,7 +8,7 @@ management:
 
 logging:
   level:
-    com.hgicreate.rno: debug
+    com.hgicreate.rno: info
 
 spring:
   datasource:
@@ -18,7 +18,7 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.Oracle10gDialect
     database: ORACLE
-    show-sql: true
+    show-sql: false
     properties:
       hibernate.format_sql: true
   http:

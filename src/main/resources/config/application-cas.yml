@@ -1,0 +1,12 @@
+security:
+  basic:
+    enabled: true
+  cas:
+    enabled: true
+    server:
+      base-url: https://cas.hgicreate.com:8443/cas
+    service:
+      base-url: http://localhost:8380/portal
+    user:
+      roles-attributes: roles
+

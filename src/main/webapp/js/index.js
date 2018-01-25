@@ -331,9 +331,3 @@ var openModulePage = function (obj) {
 
     $("#iframe").attr("src", href);
 };
-
-function logout() {
-    $.get("api/logout").then(function () {
-        window.location.href = "/";
-    });
-}
