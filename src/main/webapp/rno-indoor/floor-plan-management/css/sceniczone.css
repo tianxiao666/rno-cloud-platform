@@ -1,0 +1,61 @@
+/*=================================
+智能旅游景区显示页
+dateTime: 2010-12-29
+author: Monny
+=================================*/
+/*导入公共样式*/
+@import url("public.css");
+/*导入页头样式*/
+@import url("header.css");
+/*
+.tablist{float:left;margin-bottom:10px;}
+.tablist span{font-weight:bold;font-size:14px;}
+.tablist span a{display:inline-block;height:16px;line-height:16px;text-align:center;margin:0 8px;padding:0 2px;border-left:5px solid #fff;border-right:5px solid #fff;}
+.tablist span a:hover,.tablist span a.vi{border-left:5px solid #39a4ba;border-right:5px solid #39a4ba;color:#39a4ba; text-decoration:none;padding:0 2px;margin:0 8px;}
+.tabox .tabtip{ float:right;color:#ff8101;padding-right:10px;}
+.tabox .tabtip span{ float:left; margin-right:10px; background:url(../images/poi/bg_btn4.jpg) 0 0 no-repeat; height:29px; padding-left:12px;}
+.tabox .tabtip span a{ display:inline-block; padding-top:8px; height:21px; background:url(../images/poi/bg_btn4.jpg) right -29px no-repeat; padding-right:12px; color:#F8F7FC;}
+.tabox .tabtip span.on{background:url(../images/poi/bg_btn3.jpg) 0 0 no-repeat; height:29px; padding-left:12px; }
+.tabox .tabtip span.on a{ display:inline-block; padding-top:8px; height:21px; background:url(../images/poi/bg_btn3.jpg) right -29px no-repeat; padding-right:12px; color:#F8F7FC;}
+.tabox .tabtip span a:hover{ text-decoration:none; }
+
+.tabtext{ min-width:978px; border:1px #ebebeb solid; -moz-border-radius:5px; -webkit-border-radius:5px; background:#f9f9f8;margin-top:10px; }
+.con_left{ float:left; width:100%; }
+.cl_tit{ float:left; background:url(../images/poi/icon_jt1.jpg) 0 center no-repeat; color:#39a4ba; font-weight:bold; line-height:35px; position:relative; width:100%; }
+.cl_tit2{ float:left; background:url(../images/poi/icon_jt1.jpg) 0 center no-repeat; color:#39a4ba; font-weight:bold; line-height:35px; position:relative; width:auto; margin-right:5px; display:inline;  }
+.cl_tit3{ float:left; color:#089E61; font-weight:bold; line-height:35px; position:relative; width:auto; display:inline;  }
+.cl_tit strong{ padding-left:18px; font-weight:bold; margin-right:5px;}
+.cl_tit2 strong{ padding-left:18px; display:inline-block; width:65px; font-weight:bold; margin-right:5px;}
+.cl_tit3 strong{ padding-left:5px; display:inline-block; width:auto; font-weight:bold; margin-right:5px;}
+.cl_tit span{ position:absolute; right:20px; top:5px; font-weight:normal; }
+.areatxt{ float:left; border:1px #ccc solid; width:96%; height:100px; }
+
+.areatab{ float:left; width:99%; height:150px; margin-top:15px; overflow:hidden}
+table.itable{ width:100%; margin:0 auto; border:1px #ccc solid; }
+.itable caption{font-size:1em; font-weight:normal; color:#a40000}
+.itable thead{background:#f0f0ee;}
+.itable th{padding:6px 0 6px 10px;border:1px #ccc solid;  color:#666; font-size:12px; font-weight:bold; text-align:center; height:20px; line-height:20px; overflow:hidden; }
+.itable td{ font-size:14px;}
+.itable .linenum{width:25%; background:#fff}
+.itable .id-1{width:25%; background:#fff}
+.itable .id-2{width:25%; background:#fff}
+.itable .id-3{width:25%; background:#fff}
+
+
+.piclist{ float:left; width:100%; }
+.piclist li{float:left; padding:5px 25px 5px 5px; margin:0;}
+.piclist li span{display:block; border:1px #ccc solid; background:#e5e5e5; width:125px; height:125px; overflow:hidden;}
+.piclist li span a{ display:table-cell; width:125px; height:125px; text-align:center; vertical-align:middle; *font-size:109px; *display:block; }
+.piclist li span a img{ vertical-align:middle;}
+
+
+
+
+.con_right{ float:right; width:385px; padding:10px;}
+.con_right .rpic{ float:left; width:375px; height:375px; overflow:hidden; border:5px #000 solid; }
+.poilist{ float:left; width:385px; }
+.poilist ul{ float:left; width:385px; font-size:12px;}
+.poilist ul li{ float:left; padding:5px 10px 5px 0; white-space:nowrap;}
+.poilist ul li a{color:#666; }
+.poilist ul li a:hover{ color:#089E61;}
+*/

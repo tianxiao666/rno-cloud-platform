@@ -1,0 +1,32 @@
+uthor: Monny
+=================================*/
+/*导入公共样式*/
+@import url("public.css");
+/*导入页头样式*/
+@import url("header.css");
+
+
+.nav-list .tabox{ width:129px; padding-top:10px; padding-bottom:10px; overflow:hidden; position:absolute; top:43px; background:#fff; border:1px solid #ddd; border-top:none;}
+.nav-list .tabox .tablist{float:left; width:100px; background:#F0F0F0;text-align: center;width: 120px;}
+.nav-list .tabox .tablist span{ font-size:14px; padding-bottom:5px; height:28px; width:120px; float:left;}
+.nav-list .tabox .tablist span a{ float:left; display:inline-block;height:28px;line-height:28px;text-align:center;margin:0;padding:0; font-size:12px; color:#333; text-decoration:none; width:130px;}
+.nav-list .tabox .tablist span a.cur,.tabox .tablist span a:hover{ background:#dcf0f4; width:130px; height:28px;color:#333; text-decoration:none;padding:0; margin:0; font-size:12px;}
+.nav-list .tabox .tabtip{ float:right;color:#ff8101;padding-right:10px;}
+
+
+.tabtext{ min-width:978px; border:1px #cecece solid; -moz-border-radius:5px; -webkit-border-radius:5px; background:#f9f9f8; margin-top:5px; }
+.pic{ float:left; width:100%; text-align:center; vertical-align:middle; }
+
+/*for validate*/
+.invalid {
+	color:#F03;
+}
+.info {
+    color: red;
+    font-weight: bold;
+    margin: auto;
+    padding: 10px;
+}
+/*添加样式*/
+.title11{color="#39a4ba" style="font-weight:bold;font-size:14px}
+.nav-list li { position:relative; width:130px; text-align:center;}

@@ -1,0 +1,706 @@
+<!--<!DOCTYPE html>
+<html>-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <!--<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />-->
+    	<meta charset="UTF-8">
+    <title>::室内数据管理系统::</title>
+    <script type="text/javascript">
+
+    </script>
+        <!--<script src="../../lib/jquery/1.8.2/jquery.js"></script>-->
+        <script src="js/jquery/jquery-1.4.2.min.js"></script>
+    <script language="javascript" type="text/javascript" src="js/edit-drawing-plan.js"></script>
+    <link href="css/edit-drawing-plan.css" rel="stylesheet" type="text/css">
+       <!-- <link href="css/sceniczone.css" rel="stylesheet" type="text/css">
+        <link href="css/jqModal.css" rel="stylesheet" type="text/css">
+        <link href="css/xsbortsImg.css" rel="stylesheet" type="text/css">
+        <link href="css/area_select.css" rel="stylesheet" type="text/css">
+        <link href="css/popup.css" rel="stylesheet" type="text/css">
+        <link href="css/public.css" rel="stylesheet" type="text/css">
+        <link href="css/search.css" rel="stylesheet" type="text/css">
+        <link href="css/index.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="css/jPicker.css" type="text/css">
+        <link rel="stylesheet" href="css/jgraduate.css" type="text/css">
+        <link rel="stylesheet" href="css/svg-editor.css" type="text/css">
+        <link rel="stylesheet" href="css/JQuerySpinBtn.css" type="text/css">
+        <link rel="alternate" type="application/atom+xml" title="SVG-edit General Discussion" href="http://groups.google.com/group/svg-edit/feed/atom_v1_0_msgs.xml">
+        <link rel="alternate" type="application/atom+xml" title="SVG-edit Updates (Issues/Fixes/Commits)" href="http://code.google.com/feeds/p/svg-edit/updates/basic">
+        <link rel="stylesheet" href="css/farbtastic.css" type="text/css">-->
+
+
+
+    <link href="css/sceniczone.css" rel="stylesheet" type="text/css" />
+    <link href="js/jquery/jquery_plugins/jqmodal/jqModal.css" rel="stylesheet" type="text/css" />
+    <link href="css/xsbortsImg.css" rel="stylesheet" type="text/css" />
+    <link href="css/area_select.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="js/jquery/jquery_plugins/jqmodal/jqModal.js">
+    </script>
+    <script src="js/xsbortsImageBrowser.js" type="text/javascript">
+    </script>
+    <script src="js/areaSelect/Base.js" type="text/javascript">
+    </script>
+    <script src="js/thickmsg.js" type="text/javascript">
+    </script>
+    <script src="js/areaSelect/Base_004.js" type="text/javascript">
+    </script>
+    <script src="js/areaSelect/Base_005.js" type="text/javascript">
+    </script>
+    <script src="js/areaSelect/Base_003.js" type="text/javascript">
+    </script>
+    <script src="js/areaSelect/Base_002.js" type="text/javascript">
+    </script>
+    <script type="text/javascript" src="js/thickbox.js">
+    </script>
+    <script src="js/areaSelect/jobarea_array_c.js" type="text/javascript">
+    </script>
+    <script type="text/javascript" src="js/jquery/popup.js">
+    </script>
+    <script src="js/common.js" type="text/javascript">
+    </script>
+    <link href="css/popup.css" rel="stylesheet" type="text/css" />
+    <script src="js/ajax/getpcda.js" type="text/javascript">
+    </script>
+    <link href="css/public.css" rel="stylesheet" type="text/css" />
+    <link href="css/search.css" rel="stylesheet" type="text/css" />
+    <link href="css/index.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="js/svg-edit-2.6/embedapi.js">
+    </script>
+    <link rel="icon" type="image/png" href="images/logo.png"/>
+    <link rel="stylesheet" href="js/svg-edit-2.6/jgraduate/css/jPicker.css" type="text/css"/>
+    <link rel="stylesheet" href="js/svg-edit-2.6/jgraduate/css/jgraduate.css" type="text/css"/>
+    <link rel="stylesheet" href="js/svg-edit-2.6/svg-editor.css" type="text/css"/>
+    <link rel="stylesheet" href="js/svg-edit-2.6/spinbtn/JQuerySpinBtn.css" type="text/css"/>
+    <script type="text/javascript" src="js/svg-edit-2.6/jquery.js">
+    </script>
+    <script type="text/javascript" src="js/svg-edit-2.6/js-hotkeys/jquery.hotkeys.min.js">
+    </script>
+    <script type="text/javascript" src="js/svg-edit-2.6/jquerybbq/jquery.bbq.min.js">
+    </script>
+    <script type="text/javascript" src="js/svg-edit-2.6/svgicons/jquery.svgicons.js">
+    </script>
+    <script type="text/javascript" src="js/svg-edit-2.6/jgraduate/jquery.jgraduate.min.js">
+    </script>
+    <script type="text/javascript" src="js/svg-edit-2.6/spinbtn/JQuerySpinBtn.min.js">
+    </script>
+    <script type="text/javascript" src="js/svg-edit-2.6/touch.js">
+    </script>
+    <script type="text/javascript" src="js/svg-edit-2.6/contextmenu/jquery.contextMenu.js">
+    </script>
+    <script type="text/javascript" src="js/svg-edit-2.6/browser.js">
+    </script>
+    <script type="text/javascript" src="js/svg-edit-2.6/svgtransformlist.js">
+    </script>
+    <script type="text/javascript" src="js/svg-edit-2.6/math.js">
+    </script>
+    <script type="text/javascript" src="js/svg-edit-2.6/units.js">
+    </script>
+    <script type="text/javascript" src="js/svg-edit-2.6/svgutils.js">
+    </script>
+    <script type="text/javascript" src="js/svg-edit-2.6/sanitize.js">
+    </script>
+    <script type="text/javascript" src="js/svg-edit-2.6/history.js">
+    </script>
+    <script type="text/javascript" src="js/svg-edit-2.6/select.js">
+    </script>
+    <script type="text/javascript" src="js/svg-edit-2.6/draw.js">
+    </script>
+    <script type="text/javascript" src="js/svg-edit-2.6/path.js">
+    </script>
+    <script type="text/javascript" src="js/svg-edit-2.6/svgcanvas.js">
+    </script>
+    <script type="text/javascript" src="js/svg-edit-2.6/svg-editor.js">
+    </script>
+    <script type="text/javascript" src="js/svg-edit-2.6/locale/locale.js">
+    </script>
+    <script type="text/javascript" src="js/svg-edit-2.6/contextmenu.js">
+    </script>
+    <script type="text/javascript" src="js/svg-edit-2.6/jquery-ui/jquery-ui-1.8.17.custom.min.js">
+    </script>
+    <script type="text/javascript" src="js/svg-edit-2.6/jgraduate/jpicker.js">
+    </script>
+    <link rel="alternate" type="application/atom+xml" title="SVG-edit General Discussion" href="http://groups.google.com/group/svg-edit/feed/atom_v1_0_msgs.xml" />
+    <link rel="alternate" type="application/atom+xml" title="SVG-edit Updates (Issues/Fixes/Commits)" href="http://code.google.com/feeds/p/svg-edit/updates/basic" />
+    <script type="text/javascript" src="js/svg-edit-2.6/canvg/canvg.js">
+    </script>
+    <script type="text/javascript" src="js/svg-edit-2.6/canvg/rgbcolor.js">
+    </script>
+    <script type="text/javascript" src="js/jquery/jquery.form.js">
+    </script>
+
+
+   </head>
+    <body>
+        <div class="warp">
+
+<div class="content">
+    <input id="DRAW_MAP_ID" value="" autocomplete="off" type="hidden">
+    <div class="crumb">
+        <span>当前位置：<a href="../place-management/place-management.html">场所管理</a></span>&nbsp;&gt;&nbsp;<a id="BuildingFloorMrg_ID" href="../floor-management/floor-management.html"><span id="BUILDING_NAME">楼层管理</span></a>&nbsp;&gt;&nbsp;<a id="BuildingFloorPlanegraphMgr_ID" href="floor-plan-management.html">楼层平面图管理</a>
+    </div>
+</div>
+            <div id="svgeditdiv" style=" width:100%;position:absolute;background-color: #A0A0A0;">
+                <!--{include file="js/svg-edit-2.6/svg-editor.html"}-->
+                <!--<#include file="js/svg-edit-2.6/svg-editor.html"></#include>-->
+                <script>
+                    $("#svgeditdiv").load("js/svg-edit-2.6/svg-editor.html");
+                </script>
+                <!--<object style="border:0px" type="text/x-scriptlet" data="js/svg-edit-2.6/svg-editor.html" width=100% height=30></object>
+                <iframe name="content_frame" marginwidth=0 marginheight=0 width=100% height=30 src="js/svg-edit-2.6/svg-editor.html" frameborder=0></iframe>-->
+
+            </div>
+            <div id="svgeditbgdiv" style=" width:100%;position:static;">
+            </div>
+            <div style="width:100%;position:absolute;">
+                <input type="hidden" id="headMenu" value="building">
+                </input>{include file="footer.html"}
+            </div>
+            <div id="popupbgdiv" style="display:none;">
+            </div>
+            <div id="popuppoidiv" align="center" style="display:none; background-color:#ffffff" class="divPopup">
+                {literal}
+                <script language="javascript" type="text/javascript">
+                    function checkFormPoi(){
+                        var re_kong = /^\s*$/;
+                        var re_POI_PHONE = /^(([0-9]+(\-[0-9]+)*)|(((\([0-9]{3,4}\))|([0-9]{3,4}\-))?[0-9]{7,8}))$/;
+                        if ($('#POI_NAME').val() == '' || re_kong.test($('#POI_NAME').val())) {
+                            alert('POI名称不能为空,最多64个字符！');
+                            $('#POI_NAME').focus();
+                            return false;
+                        }
+                        if ($('#POI_NAME').val() == '') {
+                            alert('POI名称不能为空,最多64个字符！');
+                            $('#POI_NAME').focus();
+                            return false;
+                        }
+                        if ($('#POI_TYPE').val() == '') {
+                            alert('请选择类别！');
+                            $('#POI_TYPE').focus();
+                            return false;
+                        }
+                        if ($('#POI_STATUS').val() == '') {
+                            alert('请选择状态！');
+                            $('#POI_STATUS').focus();
+                            return false;
+                        }
+                        if ($('#POI_TYPE').val() == "ANTS") {
+                            {
+                                var reg = new RegExp("^[0-9]{5}$");
+                                {
+                                    var ANT_LAC = $('#ANT_LAC').val();
+                                    if (ANT_LAC == '') {
+                                        alert('请输入室内天线LAC！');
+                                        $('#ANT_LAC').focus();
+                                        return (false);
+                                    }
+                                    else {
+                                        if (!reg.test(ANT_LAC)) {
+                                            alert("输入的LAC不正确！");
+                                            $('#ANT_LAC').focus();
+                                            return (false);
+                                        }
+                                    }
+                                }
+                                {
+                                    var ANT_CID = $('#ANT_CID').val();
+                                    if (ANT_CID == '') {
+                                        alert('请输入室内天线CID！');
+                                        $('#ANT_CID').focus();
+                                        return (false);
+                                    }
+                                    else {
+                                        if (!reg.test(ANT_CID)) {
+                                            alert("输入的CID不正确！");
+                                            $('#ANT_CID').focus();
+                                            return (false);
+                                        }
+                                    }
+                                }
+                            }
+                            {
+                                var reg = new RegExp("^[0-9]{1,2}$");
+                                {
+                                    var ANT_POWER = $('#ANT_POWER').val();
+                                    if (ANT_POWER == '') {
+                                        alert('请输入室内天线发射功率！');
+                                        $('#ANT_POWER').focus();
+                                        return (false);
+                                    }
+                                    else {
+                                        if (!reg.test(ANT_POWER)) {
+                                            alert("输入的发射功率不正确！");
+                                            $('#ANT_POWER').focus();
+                                            return (false);
+                                        }
+                                    }
+                                }
+                            }
+                            if ($('#ANT_FREQUENCY').val() == '') {
+                                alert('请选择室内天线频率！');
+                                $('#ANT_FREQUENCY').focus();
+                                return (false);
+                            }
+                        }
+                        if ($('#POI_PHONE').val() != '' && !re_POI_PHONE.test($('#POI_PHONE').val())) {
+                            alert('请填写正确电话号码格式（如020-33333333）！');
+                            $('#POI_PHONE').focus();
+                            return false;
+                        }
+                        if ($('#POI_NOTE').val() == '' || re_kong.test($('#POI_NOTE').val())) {
+                            alert('POI简介不能为空！');
+                            $('#POI_NOTE').focus();
+                            return false;
+                        }
+                        return true;
+                    }
+
+                    function savePoi(){
+                        if (checkFormPoi()) {
+                            var POI_TYPE = $('#POI_TYPE').val();
+                            env.PoiFormListJson[env.elementId] = {
+                                "POI_NAME": $('#POI_NAME').val(),
+                                "POI_TYPE": POI_TYPE,
+                                "POI_NOTE": $('#POI_NOTE').val(),
+                                "NOTE": $('#POI_REMARK').val(),
+                                "STATUS": $('#POI_STATUS').val(),
+                                "ADDRESS": $('#POI_ADDRESS').val(),
+                                "PHONE": $('#POI_PHONE').val(),
+                                "ANT_FREQUENCY": ((POI_TYPE == "ANTS") ? $('#ANT_FREQUENCY').val() : ""),
+                                "ANT_POWER": ((POI_TYPE == "ANTS") ? $('#ANT_POWER').val() : ""),
+                                "ANT_LAC": ((POI_TYPE == "ANTS") ? $('#ANT_LAC').val() : ""),
+                                "ANT_CID": ((POI_TYPE == "ANTS") ? $('#ANT_CID').val() : "")
+                            };
+                            hidePoiInfo();
+                            var inputFileName = env.elementId;
+                            var inputFile = $("#inputFileName" + inputFileName);
+                            if ((inputFile.length > 0) && (inputFile.val() != "")) {
+                                if (env.SvgPicListJson[env.elementId] == null) {
+                                    env.SvgPicListJson[env.elementId] = {};
+                                }
+                                env.SvgPicListJson[env.elementId]["NEW_PIC"] = inputFileName;
+                            }
+                        }
+                    }
+
+                    function onUploadImgChange(sender){
+                        var file = sender.files[0];
+                        if (file.type.indexOf("image") != -1) {
+                            return true;
+                        }
+                        else {
+                            alert('图片格式无效！');
+                            sender.value = "";
+                            removeSvgNewPic();
+                            return false;
+                        }
+                    }
+
+                    function checkPoiType(){
+                        var ANT_NEEDFILL = $(".ANT_NEEDFILL");
+                        if (ANT_NEEDFILL) {
+                            var poi_type = $("#POI_TYPE").val();
+                            if (poi_type == "ANTS") {
+                                ANT_NEEDFILL.css("display", "");
+                            }
+                            else {
+                                ANT_NEEDFILL.css("display", "none");
+                            }
+                        }
+                    }
+                </script>
+                {/literal}
+                <div style="width: 688px;" class="popup">
+                    <div class="p-box">
+                        <div style="cursor: move;" class="p-title" id="drag_handler">
+                            <div id="POIINFO_TITLE" class="p-title-content">
+                                添加POI信息
+                            </div>
+                            <span><a style="cursor: pointer; background-position: 0px 0px;" href="#" onclick="closePoiInfo();" class="pop_Content_close jqmClose" title="关闭">关闭</a></span>
+                        </div>
+                        <div class="p-main clear">
+                            <div style="display: none;" class="content">
+                            </div>
+                            <div>
+                                <div id="u312" class="u312_container" border="1">
+                                    <table width="100%" id="add" border="2" cellspacing="1" cellpadding="4" bordercolor="#FFFFFF" bgcolor="" align="center" frame="box">
+                                        <tr>
+                                            <td>
+                                                <table width="100%" id="add" border="0" cellspacing="1" cellpadding="4" bordercolor="#FFFFFF" bgcolor="" align="center" frame="box">
+                                                    <tr height="0px">
+                                                        <td width="12%">
+                                                        </td>
+                                                        <td width="12%">
+                                                        </td>
+                                                        <td width="12%">
+                                                        </td>
+                                                        <td width="12%">
+                                                        </td>
+                                                        <td width="12%">
+                                                        </td>
+                                                        <td width="12%">
+                                                        </td>
+                                                        <td width="12%">
+                                                        </td>
+                                                        <td width="12%">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                            POI名称:
+                                                        </td>
+                                                        <td align="left" style="border: 0px; height: 40px;" colspan="7">
+                                                            <input name="POI_NAME" type="text" id="POI_NAME" maxlength="64" value="" style="height: 20px;width:96%"/>
+                                                            <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                                                *
+                                                            </font>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                            类别:
+                                                        </td>
+                                                        <td align="left" style="border:0px;font-size:14px;height:40px;" colspan="3">
+                                                            <select style="height:20px;width:92.5%" name="POI_TYPE" id="POI_TYPE" style="height: 22px;" onchange="checkPoiType();">
+                                                                <option selected="" value="">--请选择--</option>
+                                                                {html_options options=$POI_TYPE}
+                                                            </select>
+                                                            <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                                                *
+                                                            </font>
+                                                        </td>
+                                                        <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                            状态:
+                                                        </td>
+                                                        <td align="left" style="border:0px;font-size:14px;height:40px;" colspan="3">
+                                                            <select style="height:20px;width:92.8%" id="POI_STATUS" style="height: 22px;" value="">
+                                                                <option selected="" value="">--请选择--</option>
+                                                                {html_options options=$POI_STATUS}
+                                                            </select>
+                                                            <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                                                *
+                                                            </font>
+                                                        </td>
+                                                    </tr>
+                                                    <tr style="display:none" class="ANT_NEEDFILL">
+                                                        <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                            LAC:
+                                                        </td>
+                                                        <td colspan="3">
+                                                            <input name="ANT_LAC" type="text" id="ANT_LAC" maxlength="5" value="" style="height: 20px;width:90%;"/>
+                                                            <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                                                *
+                                                            </font>
+                                                        </td>
+                                                        <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                            CID:
+                                                        </td>
+                                                        <td colspan="3">
+                                                            <input name="ANT_CID" type="text" id="ANT_CID" maxlength="5" value="" style="height: 20px;width:90%;"/>
+                                                            <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                                                *
+                                                            </font>
+                                                        </td>
+                                                    </tr>
+                                                    <tr style="display:none" class="ANT_NEEDFILL">
+                                                        <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                            功 率:
+                                                        </td>
+                                                        <td colspan="3">
+                                                            <input name="ANT_POWER" type="text" id="ANT_POWER" maxlength="2" value="" style="height: 20px;width:90%;"/>
+                                                            <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                                                *
+                                                            </font>
+                                                        </td>
+                                                        <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                            频率:
+                                                        </td>
+                                                        <td colspan="3">
+                                                            <select style="height:20px;width:92.4%" name="ANT_FREQUENCY" id="ANT_FREQUENCY" style="height: 22px;">
+                                                                <option selected="" value="">--请选择--</option>
+                                                                {html_options options=$ANT_FREQUENCYS}
+                                                            </select>
+                                                            <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                                                *
+                                                            </font>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                            电话:
+                                                        </td>
+                                                        <td align="left" style="border:0px;font-size:14px;height:40px;" colspan="3">
+                                                            <input type="text" id="POI_PHONE" name="POI_PHONE" maxlength="256" style="height:20px;width:90%" value="" />
+                                                        </td>
+                                                        <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                            <span id="uploadpoipic"></span>
+                                                        </td>
+                                                        <td align="left" style="border:0px;height:40px;" colspan="3">
+                                                            <form id="SELECTIMAGEFORM" name="SELECTIMAGEFORM" method="post" enctype="multipart/form-data">
+                                                    <textarea id="PARAMSJSON" name="PARAMSJSON" style="display:none;">
+                                                    </textarea>
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                            详细地址:
+                                                        </td>
+                                                        <td align="left" style="border:0px;font-size:14px;height:40px;" colspan="7">
+                                                            <input type="text" id="POI_ADDRESS" name="POI_ADDRESS" maxlength="128" value="" style="height:20px;width:95.5%;"/>
+                                                        </td>
+                                                    </tr>
+                                                    <tr valign="top">
+                                                        <td valign="top" align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                            介绍说明:
+                                                        </td>
+                                                        <td valign="top" align="left" style="border:0px;font-size:14px;height:40px;" colspan="7">
+                                                            <div class="cl_tit">
+                                                    <textarea id="POI_NOTE" rows="1" cols="2" style="overflow-y:scroll;height:45px;width:96%;font-size:14px;border:1px #ccc solid;">
+                                                    </textarea>
+                                                                <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                                                    *
+                                                                </font>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="7%" valign="top" align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                            备注:
+                                                        </td>
+                                                        <td align="left" style="border:0px;font-size:14px;height:40px;" colspan="7">
+                                                            <div class="cl_tit">
+                                                    <textarea id="POI_REMARK" rows="1" cols="2" style="overflow-y:scroll;height:45px;width:96%;font-size:14px;border:1px #ccc solid;">
+                                                    </textarea>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <table style="height:30px;" width="100%">
+                                                    <tr>
+                                                        <td width="40%" align="right">
+                                                            <input type="button" name="button" id="button" onclick="savePoi()" value="确定" valign="center"/>
+                                                        </td>
+                                                        <td width="5%">
+                                                        </td>
+                                                        <td width="40%" align="left">
+                                                            <input id="POI_RESET" type="button" value="重设" valign="center" onclick="resetPoiInfo()"/>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-bom clear">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="popupapdiv" align="center" style="display:none; background-color:#ffffff" class="divPopup">
+                {literal}
+                <script language="javascript" type="text/javascript">
+                    function checkFormAp(){
+                        var re_kong = /^\s*$/;
+                        var re_MAC_BSSID = /^(([a-fA-F\d]{2}:[a-fA-F\d]{2}:[a-fA-F\d]{2}:[a-fA-F\d]{2}:[a-fA-F\d]{2}:[a-fA-F\d]{2})|([a-fA-F\d]{2}-[a-fA-F\d]{2}-[a-fA-F\d]{2}-[a-fA-F\d]{2}-[a-fA-F\d]{2}-[a-fA-F\d]{2}))$/;
+                        var re_POSITION_X = /^([0-9]{1,4})(\.[0-9]+?)?$/;
+                        var re_POSITION_Y = /^([0-9]{1,4})(\.[0-9]+?)?$/;
+                        var re_FREQUENCY = /^[0-9]{1,5}$/;
+                        var re_CHANNEL = /^[0-9]{1,5}$/;
+                        if ($('#AP_EQUT_SSID').val() == '' || re_kong.test($('#AP_EQUT_SSID').val())) {
+                            alert('设备别名不能为空！');
+                            $('#AP_EQUT_SSID').focus();
+                            return false;
+                        }
+                        if ($('#AP_EQUT_TYPE').val() == '') {
+                            alert('请选择类别！');
+                            $('#AP_EQUT_TYPE').focus();
+                            return false;
+                        }
+                        if ($('#AP_STATUS').val() == '') {
+                            alert('请选择状态！');
+                            $('#AP_STATUS').focus();
+                            return false;
+                        }
+                        if ($('#AP_MAC_BSSID').val() == '' || !re_MAC_BSSID.test($('#AP_MAC_BSSID').val()) || re_kong.test($('#AP_MAC_BSSID').val())) {
+                            alert('MAC不能为空，由数字和大小写英文字母（a-f）及冒号或“-”组成（格式一般为c4:ca:d9:59:93:30或c4-ca-d9-59-93-30）！');
+                            $('#AP_MAC_BSSID').focus();
+                            return false;
+                        }
+                        if (($('#AP_FREQUENCY').val() != '' && !re_FREQUENCY.test($('#AP_FREQUENCY').val())) || ($('#AP_FREQUENCY').val() != '' && $('#AP_FREQUENCY').val() == 0)) {
+                            alert('频率最多为5位数字,不能为0！');
+                            $('#AP_FREQUENCY').focus();
+                            return false;
+                        }
+                        if (($('#AP_CHANNEL').val() != '' && !re_CHANNEL.test($('#AP_CHANNEL').val())) || ($('#AP_CHANNEL').val() != '' && $('#AP_CHANNEL').val() == 0)) {
+                            alert('信道最多为2位数字，不能为0！');
+                            $('#AP_CHANNEL').focus();
+                            return false;
+                        }
+                        return true;
+                    }
+
+                    function saveAp(){
+                        if (checkFormAp()) {
+                            env.ApFormListJson[env.elementId] = {
+                                "EQUT_SSID": $("#AP_EQUT_SSID").val(),
+                                "MAC_BSSID": $("#AP_MAC_BSSID").val(),
+                                "EQUT_TYPE": $("#AP_EQUT_TYPE").val(),
+                                "FREQUENCY": $("#AP_FREQUENCY").val(),
+                                "CHANNEL": $("#AP_CHANNEL").val(),
+                                "FACTORY": $("#AP_FACTORY").val(),
+                                "BRANDS": $("#AP_BRANDS").val(),
+                                "EQUT_MODEL": $("#AP_EQUT_MODEL").val(),
+                                "NOTE": $("#AP_NOTE").val(),
+                                "STATUS": $("#AP_STATUS").val()
+                            };
+                            hideApInfo();
+                        }
+                    }
+                </script>
+                {/literal}
+                <div style="width: 688px;" class="popup">
+                    <div class="p-box">
+                        <div style="cursor: move;" class="p-title" id="drag_handler1">
+                            <div id="APINFO_TITLE" class="p-title-content">
+                                添加AP信息
+                            </div>
+                            <span><a style="cursor: pointer; background-position: 0px 0px;" href="#" onclick="hideApInfo();" class="pop_Content_close jqmClose" title="关闭">关闭</a></span>
+                        </div>
+                        <div class="p-main clear">
+                            <div style="display: none;" class="content">
+                            </div>
+                            <div>
+                                <div id="u312" class="u312_container" border="1">
+                                    <table width="100%" id="add" border="2" cellspacing="1" cellpadding="4" bordercolor="#FFFFFF" bgcolor="" align="center" frame="box">
+                                        <tr>
+                                            <td>
+                                                <table width="100%" id="add" border="0" cellspacing="1" cellpadding="4" bordercolor="#FFFFFF" bgcolor="" align="center" frame="box">
+                                                    <tr>
+                                                        <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" width="12%">
+                                                            设备别名:
+                                                        </td>
+                                                        <td align="left" style="border: 0px; height: 40px;" colspan="3">
+                                                            <input name="AP_EQUT_SSID" type="text" id="AP_EQUT_SSID" maxlength="16" value="" style="height: 22px;width:95%"/>
+                                                            <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                                                *
+                                                            </font>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                            厂家:
+                                                        </td>
+                                                        <td align="left" style="border: 0px; height: 40px;">
+                                                            <select style="height:20px;width:90%" name="AP_FACTORY" id="AP_FACTORY" class="u279" style="width: 50px;">
+                                                                <option selected="" value="">-请选择-</option>
+                                                                {html_options options=$EQUT_FACTORY}
+                                                            </select>
+                                                        </td>
+                                                        <td width="17%" align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                            品牌:
+                                                        </td>
+                                                        <td align="left" style="border: 0px; height: 40px;" colspan="2">
+                                                            <select style="height:20px;width:90%" name="AP_BRANDS" id="AP_BRANDS" style="height: 22px;">
+                                                                <option selected="" value="">-请选择-</option>
+                                                                {html_options options=$EQUT_BRANDS}
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                            类别:
+                                                        </td>
+                                                        <td align="left" style="border: 0px; height: 40px;">
+                                                            <select style="height:20px;width:90%" name="AP_EQUT_TYPE" id="AP_EQUT_TYPE" style="height: 22px;">
+                                                                <option selected="" value="">-请选择-</option>
+                                                                {html_options options=$EQUT_TYPE}>
+                                                            </select>
+                                                            <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                                                *
+                                                            </font>
+                                                        </td>
+                                                        <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                            状态:
+                                                        </td>
+                                                        <td align="left" style="border: 0px; height: 40px;" colspan="2">
+                                                            <select style="height:20px;width:90%" name="AP_STATUS" id="AP_STATUS" style="height: 22px;">
+                                                                <option selected="" value="">-请选择-</option>
+                                                                {html_options options=$EQUT_STATUS}>
+                                                            </select>
+                                                            <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                                                *
+                                                            </font>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                            设备型号:
+                                                        </td>
+                                                        <td align="left" style="border:0px;font-size:14px;height:40px;" colspan="3">
+                                                            <input name="AP_EQUT_MODEL" type="text" id="AP_EQUT_MODEL" maxlength="64" value="" style="height:20px;width:95%"/>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                            MAC地址:
+                                                        </td>
+                                                        <td align="left" style="border:0px;font-size:14px;height:40px;" colspan="3">
+                                                            <input name="AP_MAC_BSSID" type="text" id="AP_MAC_BSSID" maxlength="20" value="" style="height:20px;width:95%"/>
+                                                            <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                                                *
+                                                            </font>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="7%" align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                            频率:
+                                                        </td>
+                                                        <td style="border: 0px; height: 40px;">
+                                                            <input name="AP_FREQUENCY" type="text" id="AP_FREQUENCY" maxlength="5" value="" style="height:20px;width:90%"/>
+                                                        </td>
+                                                        <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                            信道:
+                                                        </td>
+                                                        <td align="left">
+                                                            <input name="AP_CHANNEL" type="text" id="AP_CHANNEL" maxlength="2" value="" style="height:20px;width:88%"/>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td width="7%" valign="top" align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                            说明:
+                                                        </td>
+                                                        <td align="left" style="border:0px;font-size:18px;height:40px;" colspan="5">
+                                                            <div class="cl_tit">
+                                                    <textarea name="AP_NOTE" id="AP_NOTE" rows="1" cols="2" style="overflow-y:scroll;font-size:14px;height:45px;width:96%;border:1px #ccc solid;">
+                                                    </textarea>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                                <table style="height:30px;" width="100%">
+                                                    <tr>
+                                                        <td width="40%" align="right">
+                                                            <input type="button" onclick="saveAp();" value="保存" valign="center"/>
+                                                        </td>
+                                                        <td width="5%">
+                                                        </td>
+                                                        <td width="40%" align="left">
+                                                            <input id="POI_RESET" type="button" value="重设" valign="center" onclick="resetApInfo()"/>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-bom clear">
+                        </div>
+                    </div>
+                </div>
+            </div>
+<div style="position: absolute; z-index: 19700; top: -1970px; left: -1970px;"><iframe src="css/My97DatePicker.htm" border="0" scrolling="no" style="width: 186px; height: 199px;" frameborder="0"></iframe></div><canvas style="display: none;"></canvas></body></html>

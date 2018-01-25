@@ -1,0 +1,29 @@
+{
+  "data":
+  [
+    {
+      "CHECKBOX": "<input onclick=\"checkboxAll(this);\" type=\"checkbox\">",
+      "TITLE": "省博二楼平面图",
+      "THUMBNAIL": "",
+      "FLOOR": "(2层)  广东省博物馆二楼",
+      "PCI_WIDTH": "888像素",
+      "PCI_HEIGHT": "1034像素",
+      "GROUND_WIDTH": "133.17",
+      "GROUND_HEIGHT": "155.14",
+      "SCALE": "1px-15cm",
+      "STAT": "编辑中"
+    },
+    {
+      "CHECKBOX": "<input onclick=\"checkboxAll(this);\" type=\"checkbox\">",
+      "TITLE": "省博三楼平面图",
+      "THUMBNAIL": "",
+      "FLOOR": "(3层)  广东省博物馆三楼",
+      "PCI_WIDTH": "817像素",
+      "PCI_HEIGHT": "808像素",
+      "GROUND_WIDTH": "133.17",
+      "GROUND_HEIGHT": "155.14",
+      "SCALE": "1px-15cm",
+      "STAT": "正常"
+    }
+  ]
+}

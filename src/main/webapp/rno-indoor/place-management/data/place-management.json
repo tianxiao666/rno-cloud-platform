@@ -1,0 +1,45 @@
+{
+  "data":
+[
+  {
+    "CHECKBOX":"<input onclick=\"checkboxAll(this);\" type=\"checkbox\">",
+    "NAME": "广东省博物馆",
+    "TYPE": "大型场馆",
+    "FLOOR": "5",
+    "TEL": "020-38046886",
+    "CONTRORY": "中国",
+    "PRO": "广东省",
+    "STAT": "正常"
+  },
+  {
+    "CHECKBOX":"<input onclick=\"checkboxAll(this);\" type=\"checkbox\">",
+    "NAME": "越秀财富世纪广场写字楼",
+    "TYPE": "写字楼",
+    "FLOOR": "35",
+    "TEL": "(020)38792338",
+    "CONTRORY": "中国",
+    "PRO": "广东省",
+    "STAT": "正常"
+  },
+  {
+    "CHECKBOX":"<input onclick=\"checkboxAll(this);\" type=\"checkbox\">",
+    "NAME": "正佳广场",
+    "TYPE": "大型商场",
+    "FLOOR": "7",
+    "TEL": "(020)38331818",
+    "CONTRORY": "中国",
+    "PRO": "广东省",
+    "STAT": "正常"
+  },
+  {
+    "CHECKBOX":"<input onclick=\"checkboxAll(this);\" type=\"checkbox\">",
+    "NAME": "越秀财富世纪广场写字楼2",
+    "TYPE": "写字楼",
+    "FLOOR": "19",
+    "TEL": "(020)38792338",
+    "CONTRORY": "中国",
+    "PRO": "广东省",
+    "STAT": "失效"
+  }
+]
+}

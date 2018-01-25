@@ -1,0 +1,44 @@
+.jobLayer { font-size: 12px; }
+.jobLayer .title td {
+  background : url(../images/title_layer.gif);
+  height: 34px;
+  color: #ffffff;
+  vertical-align: top;
+}
+.orange{color: #FF7400; font-size:14px;text-decoration:underline;}
+.jobLayer .title img , .jobLayer .title span { float: left; margin: 7px 0px 0px 0px; }
+.jobLayer .title .ccType { float: right; margin: 7px 20px; }
+.jobLayer .title .ccType span { float: none; margin: 0px; }
+.jobLayer .bigOrange { color: #ff7400 ; font-size: 14px ; font-weight: bold ; }
+.jobLayer .gray { background-color: #f7f7f7; }
+.jobLayer .blackBold { color: #000000; font-weight: bold; vertical-align: top; padding-top: 3px; }
+.jobLayer .cityOrange { color: #FF7400; font-weight: bold;font-size:14px; vertical-align: top; padding-top: 3px; }
+.jobLayer .jlSeprator { height: 5px; background: url(images/bgclear_bot.gif) }
+.jobLayer td { padding-left: 3px; height: 20px; }
+.jobLayer .bottomLine { background-color: #ff7400; }
+.jobLayer .bottomLine td { height: 4px; }
+.subLayer { border:1px solid #ff7b00; background-color: #feffef; }
+.jobLayer .bgGray { background-color: #f6f6f6; }
+
+.jobLayer .title td {
+    background: url("../images/title_layer.gif") repeat scroll 0 0 transparent;
+    color: #FFFFFF;
+    height: 34px;
+    vertical-align: top;
+}
+.zz_51High {
+    background-color: #FFA22E;
+    color: #FFFFFF;
+}
+.zz_51Lower {
+    background-color: #FFFFFF;
+    color: #000000;
+}
+.zz_51LowerGray {
+    background-color: #F3F2F2;
+    color: #000000;
+}
+.zz_51LowerYellow {
+    background-color: #FEFFEF;
+    color: #000000;
+}

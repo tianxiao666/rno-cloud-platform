@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hgicreate.rno.mapper.indoor.api.ApiDataMapper">
+    <select id="getBuildingFloorList" parameterType="long" resultType="map">
+        select incf.*,outdm.draw_map_id from (select * from INDOOR_CB_FLOOR cf where cf.building_id = ${buildingId} and
+        <![CDATA[
+        cf.status <> 'X'
+        ]]>
+        ) incf left join INDOOR_DM_DRAW_MAP outdm on incf.floor_id = outdm.floor_id
+    </select>
+
+    <select id="getMtSignalGridMeaData" parameterType="java.util.Map"
+            resultType="map">
+        <bind name="pattern" value=" + _parameter.startDate + ' 00:00:00'" />
+        <bind name="pattern2" value=" + _parameter.endDate + ' 23:59:59'" />
+        select mea_date, sum(signal) / count(1) signal
+        from (select to_char(mea_date, 'yyyy-mm-dd') mea_date, signal
+        from INDOOR_MT_SIGNAL_MEA_DATA
+        where 1 = 1
+        AND BUILDING_ID = #{buildingId}
+        AND FLOOR_ID = #{floorId}
+        AND DRAW_MAP_ID = #{drawMapId}
+        AND SIGNAL_TYPE = #{signalType}
+        <![CDATA[
+        AND PLANE_X >= #{gridLtx}
+        AND PLANE_Y >= #{gridLty}
+        AND PLANE_X <= #{gridRbx}
+        AND PLANE_Y <= #{gridRby}
+        ]]>
+        <if test="startDate != null and startDate != '' and endDate != null and endDate != '' ">
+            <![CDATA[
+        AND MEA_DATE > = to_date(#{pattern},'yyyy-mm-dd hh24:mi:ss')
+        AND  MEA_DATE < = to_date(#{pattern2},'yyyy-mm-dd hh24:mi:ss')
+        ]]>
+        </if>
+        <if test="startDate != null and startDate != '' and (endDate == null or endDate == '') ">
+            <![CDATA[
+        AND MEA_DATE > = to_date(#{pattern},'yyyy-mm-dd hh24:mi:ss')
+        ]]>
+        </if>
+        <if test="(startDate == null or startDate == '') and endDate != null and endDate != '' ">
+            <![CDATA[
+        AND  MEA_DATE < = to_date(#{pattern2},'yyyy-mm-dd hh24:mi:ss')
+        ]]>
+        </if>
+        ) group by mea_date
+        order by mea_date asc
+    </select>
+
+    <insert id="saveMtSignalData" parameterType="map">
+      <selectKey keyProperty="keywordId" resultType="int" order="BEFORE">
+          select SEQ_INDOOR_MT_SIGNAL_MEA_DATA.NEXTVAL from dual
+      </selectKey>
+        INSERT INTO INDOOR_MT_SIGNAL_MEA_DATA(
+          SIGNAL_ID,
+          BUILDING_ID,
+          FLOOR_ID,
+          DRAW_MAP_ID,
+          LONGITUDE,
+          LATITUDE,
+          SIGNAL,
+          PLANE_X,
+          PLANE_Y,
+          MEA_DATE,
+          SIGNAL_TYPE,
+          DEVICE_ID
+        )
+        VALUES (
+        ${keywordId},
+        #{buildingId},
+        #{floorId},
+        #{drawMapId},
+        #{longitude},
+        #{latitude},
+        #{signal},
+        #{planeX},
+        #{planeY},
+        to_date(#{meaDate},'yyyy/MM/dd HH24:mi:ss'),
+        #{signalType},
+        #{deviceId}
+        )
+    </insert>
+
+    <insert id="saveIdealApData" parameterType="map">
+        <selectKey keyProperty="keywordId" resultType="int" order="BEFORE">
+            select SEQ_INDOOR_IDEAL_AP_MEA_DATA.NEXTVAL from dual
+        </selectKey>
+        INSERT INTO INDOOR_IDEAL_AP_MEA_DATA(
+        IDEAL_AP_ID,
+        BUILDING_ID,
+        FLOOR_ID,
+        DRAW_MAP_ID,
+        LONGITUDE,
+        LATITUDE,
+        AP_LEVELS,
+        PLANE_X,
+        PLANE_Y,
+        MEA_DATE,
+        PHONE_DIRECTION
+        )
+        VALUES (
+        ${keywordId},
+        #{buildingId},
+        #{floorId},
+        #{drawMapId},
+        #{longitude},
+        #{latitude},
+        #{apLevels},
+        #{planeX},
+        #{planeY},
+        to_date(#{meaDate},'yyyy/MM/dd HH24:mi:ss'),
+        #{phoneDirection}
+        )
+    </insert>
+
+    <select id="getPoiList" parameterType="map"
+            resultType="map">
+        SELECT * from INDOOR_CB_POI WHERE 1 = 1
+        <if test="buildingId != null and buildingId != '' ">
+            <![CDATA[
+        AND BUILDING_ID = #{buildingId}
+        ]]>
+        </if>
+        <if test="floorId != null and floorId != '' ">
+            <![CDATA[
+        AND FLOOR_ID = #{floorId}
+        ]]>
+        </if>
+        <if test="drawMapId != null and drawMapId != '' ">
+            <![CDATA[
+        AND DRAW_MAP_ID = #{drawMapId}
+        ]]>
+        </if>
+        <if test="poiType != null and poiType != '' ">
+            <![CDATA[
+        AND POI_TYPE = #{poiType}
+        ]]>
+        </if>
+        <if test="poiId != null and poiId != '' ">
+            <![CDATA[
+        AND POI_ID = #{poiId}
+        ]]>
+        </if>
+        <if test="svgId != null and svgId != '' ">
+            <![CDATA[
+        AND SVG_ID = #{svgId}
+        ]]>
+        </if>
+        <if test="status != null and status != '' ">
+            <![CDATA[
+        AND STATUS <> #{status}
+        ]]>
+        </if>
+    </select>
+
+    <select id="getNearbyBuildingList" parameterType="map"
+            resultType="map">
+        SELECT * from INDOOR_CB_BUILDING WHERE 1 = 1
+        <if test="buildingType != null and buildingType != '' ">
+            <![CDATA[
+        AND BUILD_TYPE = #{buildingType}
+        ]]>
+        </if>
+        <if test="range != null and range != '' ">
+            <![CDATA[
+         AND (((LT_LONGITUDEL between  (${longitude} - ${range})  and  (${longitude} + ${range}) ) and (LT_LATITUDEL between  (${latitude} - ${range})  AND  (${latitude} + ${range}) )) or ((RB_LONGITUDEL between  (${longitude} - ${range}) and  (${longitude} + ${range})) and (RB_LATITUDEL between  (${latitude} - ${range}) AND  (${latitude} + ${range}))))
+        ]]>
+        </if>
+        <if test="status != null and status != '' ">
+            <![CDATA[
+        AND STATUS <> #{status}
+        ]]>
+        </if>
+    </select>
+
+    <select id="getPic" parameterType="string"
+            resultType="map">
+        SELECT * from Indoor_Cb_Pic WHERE ${picWhere}
+    </select>
+
+    <select id="getApList" parameterType="map" resultType="map">
+        SELECT * FROM INDOOR_AP_EQUIPMENT WHERE 1=1
+        <if test="buildingId != null and buildingId != '' ">
+            <![CDATA[
+        AND BUILDING_ID = #{buildingId}
+        ]]>
+        </if>
+        <if test="floorId != null and floorId != '' ">
+            <![CDATA[
+        AND FLOOR_ID = #{floorId}
+        ]]>
+        </if>
+        <if test="drawMapId != null and drawMapId != '' ">
+            <![CDATA[
+        AND DRAW_MAP_ID = #{drawMapId}
+        ]]>
+        </if>
+        <if test="apId != null and apId != '' ">
+            <![CDATA[
+        AND AP_ID = #{apId}
+        ]]>
+        </if>
+        <if test="status != null and status != '' ">
+            <![CDATA[
+        AND STATUS <> #{status}
+        ]]>
+        </if>
+    </select>
+
+    <select id="getBuildingList" parameterType="map"
+            resultType="map">
+        SELECT * FROM INDOOR_CB_BUILDING WHERE 1 = 1
+        <choose>
+            <when test="buildingId != null and buildingId != ''">
+                AND BUILDING_ID = #{buildingId}
+            </when>
+            <otherwise>
+                <![CDATA[
+                AND LT_LONGITUDEL < ${longitude}  AND RB_LONGITUDEL > ${longitude}  AND LT_LATITUDEL > ${latitude} AND RB_LATITUDEL < ${latitude}
+                ]]>
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="getBuildingNameById" parameterType="long" resultType="string">
+        SELECT cb.building_name FROM INDOOR_CB_BUILDING cb WHERE cb.building_id = ${buildingId}
+    </select>
+
+    <select id="getApLocationList" parameterType="map"
+            resultType="map">
+        SELECT * FROM INDOOR_AP_EQUIPMENT WHERE 1 = 1
+        <if test="macBssid != null and macBssid != '' ">
+            <![CDATA[
+        AND MAC_BSSID = #{macBssid} and BUILDING_ID= #{buildingId}
+        ]]>
+        </if>
+        <if test="frequency != null and frequency != '' ">
+            <![CDATA[
+        AND FREQUENCY = #{frequency}
+        ]]>
+        </if>
+        <if test="channel != null and channel != '' ">
+            <![CDATA[
+        AND CHANNEL = #{channel}
+        ]]>
+        </if>
+        <if test="floorId != null and floorId != '' ">
+            <![CDATA[
+        AND FLOOR_ID = #{floorId}
+        ]]>
+        </if>
+    </select>
+
+    <select id="getFloorNameById" parameterType="long" resultType="string">
+        SELECT cf.floor_name FROM INDOOR_CB_FLOOR cf WHERE cf.floor_id = ${floorId}
+    </select>
+
+    <select id="getFloorListById" parameterType="long" resultType="map">
+        SELECT * FROM INDOOR_CB_FLOOR cf WHERE cf.floor_id = ${floorId}
+    </select>
+
+    <select id="getFloorListByBuildingId" parameterType="long" resultType="map">
+        SELECT cf.floor_name FROM INDOOR_CB_FLOOR cf WHERE cf.BUILDING_ID = ${buildingId}
+    </select>
+
+    <select id="getMatchBuildingList" parameterType="map"
+            resultType="map">
+        <bind name="pattern" value="'%' + _parameter.keyWord + '%'" />
+        SELECT * from INDOOR_CB_BUILDING WHERE 1 = 1
+        <if test="keyWord != null and keyWord != '' ">
+            <![CDATA[
+         AND lower(BUILDING_NAME) like #{pattern}
+        ]]>
+        </if>
+        <if test="range != null and range != '' ">
+            <![CDATA[
+         AND (((LT_LONGITUDEL between  (${longitude} - ${range})  and  (${longitude} + ${range}) ) and (LT_LATITUDEL between  (${latitude} - ${range})  AND  (${latitude} + ${range}) )) or ((RB_LONGITUDEL between  (${longitude} - ${range}) and  (${longitude} + ${range})) and (RB_LATITUDEL between  (${latitude} - ${range}) AND  (${latitude} + ${range}))))
+        ]]>
+        </if>
+        <if test="status != null and status != '' ">
+            <![CDATA[
+        AND STATUS <> #{status}
+        ]]>
+        </if>
+    </select>
+
+    <select id="getApListByMacbssids" parameterType="map"
+            resultType="map">
+        <bind name="pattern" value="'(' + _parameter.macBssids + ')'" />
+        SELECT * from INDOOR_AP_EQUIPMENT WHERE 1 = 1
+        <if test="macBssids != null and macBssids != '' ">
+            <![CDATA[
+         AND MAC_BSSID IN ${pattern}
+        ]]>
+        </if>
+        <if test="buildingId != null and buildingId != '' ">
+            <![CDATA[
+        AND BUILDING_ID = #{buildingId}
+        ]]>
+        </if>
+        <if test="floorId != null and floorId != '' ">
+            <![CDATA[
+        AND FLOOR_ID = #{floorId}
+        ]]>
+        </if>
+        <if test="drawMapId != null and drawMapId != '' ">
+            <![CDATA[
+        AND DRAW_MAP_ID = #{drawMapId}
+        ]]>
+        </if>
+    </select>
+</mapper>

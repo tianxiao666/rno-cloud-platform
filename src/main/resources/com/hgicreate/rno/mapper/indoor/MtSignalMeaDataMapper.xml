@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hgicreate.rno.mapper.indoor.MtSignalMeaDataMapper">
+    <select id="queryMtSignalMeaData" parameterType="com.hgicreate.rno.web.rest.indoor.vm.MtSignalMeaDataQueryVM"
+            resultType="com.hgicreate.rno.domain.indoor.MtSignalMeaDataInfo">
+        <bind name="pattern" value=" + _parameter.beginDate + ' 00:00:00'" />
+        <bind name="pattern2" value=" + _parameter.endDate + ' 23:59:59'" />
+        SELECT
+        NAME as CITYNAME,
+        SIGNAL_ID AS ID,
+        BUILDING_NAME as BUILDINGNAME,
+        FLOOR_NAME as FLOORNAME,
+        DM_TOPIC as DMTOPIC,
+        LONGITUDE,
+        LATITUDE,
+        PLANE_X as PLANEX,
+        PLANE_Y as PLANEY,
+        MEA_DATE as MEADATE,
+        SIGNAL_TYPE SIGNALTYPE,
+        SIGNAL,
+        DEVICE_ID as DEVICEID
+        FROM
+        (SELECT
+        T2.NAME,
+        T1.BUILDING_NAME,
+        T1.FLOOR_NAME,
+        T1.DM_TOPIC,
+        T1.SIGNAL_ID,
+        T1.LONGITUDE,
+        T1.LATITUDE,
+        T1.SIGNAL,
+        T1.PLANE_X,
+        T1.PLANE_Y,
+        T1.MEA_DATE,
+        T1.SIGNAL_TYPE,
+        T1.DEVICE_ID
+        FROM
+        (SELECT
+        BU.CITY,
+        BU.BUILDING_NAME,
+        FL.FLOOR_NAME,
+        DM.DM_TOPIC,
+        MT.SIGNAL_ID,
+        MT.LONGITUDE,
+        MT.LATITUDE,
+        MT.SIGNAL,
+        MT.PLANE_X,
+        MT.PLANE_Y,
+        MT.MEA_DATE,
+        MT.SIGNAL_TYPE,
+        MT.DEVICE_ID
+        FROM
+        INDOOR_MT_SIGNAL_MEA_DATA MT,
+        INDOOR_CB_BUILDING        BU,
+        INDOOR_CB_FLOOR           FL,
+        INDOOR_DM_DRAW_MAP        DM
+        WHERE
+        MT.BUILDING_ID = BU.BUILDING_ID
+        AND MT.FLOOR_ID = FL.FLOOR_ID
+        AND MT.DRAW_MAP_ID = DM.DRAW_MAP_ID
+        AND 1=1
+        <if test="city != null and city != ''">
+            AND BU.CITY = #{city}
+        </if>
+        <if test="beginDate != null and beginDate != '' and endDate != null and endDate != '' ">
+            <![CDATA[
+        AND MT.MEA_DATE > = to_date(#{pattern},'yyyy-mm-dd hh24:mi:ss')
+        AND  MT.MEA_DATE < = to_date(#{pattern2},'yyyy-mm-dd hh24:mi:ss')
+        ]]>
+        </if>
+        <if test="beginDate != null and beginDate != '' and (endDate == null or endDate == '') ">
+            <![CDATA[
+        AND MT.MEA_DATE > = to_date(#{pattern},'yyyy-mm-dd hh24:mi:ss')
+        ]]>
+        </if>
+        <if test="(beginDate == null or beginDate == '') and endDate != null and endDate != '' ">
+            <![CDATA[
+        AND  MT.MEA_DATE < = to_date(#{pattern2},'yyyy-mm-dd hh24:mi:ss')
+        ]]>
+        </if>
+        order by
+        MEA_DATE desc) T1
+        LEFT JOIN
+        RNO_SYS_AREA T2
+        ON T1.CITY = T2.ID
+        )
+        where
+        <![CDATA[
+            rownum <= 1000
+        ]]>
+    </select>
+</mapper>

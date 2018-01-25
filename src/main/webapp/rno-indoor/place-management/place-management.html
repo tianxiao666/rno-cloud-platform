@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html><head>
+    	<meta charset="UTF-8">
+        <title>::室内数据管理系统::</title>
+        <script type="text/javascript" src="../../lib/jquery/1.8.2/jquery.js"></script>
+        <script type="text/javascript" src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
+        <script type="text/javascript" src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="../../lib/datatables/1.10.16/datatables.min.css">
+        <script src="../../lib/datatables/1.10.16/datatables.min.js"></script>
+
+        <link href="css/place-management.css" rel="stylesheet" type="text/css">
+        <script src="js/place-management.js" type="text/javascript">
+        </script>
+    </head>
+    <body>
+    <div id="loading" class="loading" style="display: none">加载中...</div>
+    <div id="info" class="info-style" style="display: none"></div>
+        <div class="warp">
+
+<div class="content">
+
+    <div class="crumb">
+        <span>当前位置：<a href="./place-management.html">场所管理</a></span>
+    </div>
+    <div class="tabtext" id="tabtext1" style="padding:5px" align="center">
+        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+            <tbody><tr>
+            	<td colspan="8" class="nameFunction" align="left">
+                    <img src="images/m_user.gif" border="0" align="absmiddle">
+                    <font style="font-weight:bold;font-size:14px" color="#a40000">
+                        <span>场所列表</span>
+                    </font>
+                    <font style="font-weight:bold;font-size:14px" color="#a40000">
+                    </font>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="12">
+                    <div class="scenic_search" style="width:99%;">
+                    	<div style="width:90%;float:left;">
+                    		<form action="" method="POST" id="conditionForm" enctype="multipart/form-data">
+                            <span style="font-size:12px;">场所关键字：</span>
+                            <input name="buildingName" size="20" style="height:20px;" type="text"><span style="font-size:12px;padding:15px">类别：</span>
+                            <select name="buildingType">
+                                <option value="" selected="selected">--请选择--</option>
+                                <option value="MALL_">大型商场</option>
+<option value="OFFIC">写字楼</option>
+<option value="LARGE">大型场馆</option>
+<option value="TRAFF">交通枢纽</option>
+
+                            </select>
+                            <input value="搜索" style="font-size: 12px; padding:0px 10px 0px 10px;margin-bottom:3px"  type="button" id="queryBtn">
+                            
+                        </form>
+                    	</div>
+                        <div style="width:10%;float:left;text-align:right;">
+                        	<a href="add-place.html" class="taboff" style="text-decoration:none;">
+                        <font style="font-weight:bold;font-size:14px;" color="#666">
+                            [添加场所]
+                        </font>
+                    </a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody></table>
+
+        <div style="padding-top: 10px">
+            <table id="queryResultTab" class="display rnoHeader" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                    <th>
+                        <input onclick="checkboxAll(this);" type="checkbox">
+                    </th>
+                    <th>名称</th>
+                    <th>类别</th>
+                    <th>楼层</th>
+                    <th>咨询电话</th>
+                    <th>省份</th>
+                    <th>城市</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+
+        <table style="align:left;padding-top:10px">
+            <tbody><tr>
+                <td>
+                    <select style="height:20px;width:120px" name="changestatus" id="changestatus">
+                        <option value="" selected="selected">-更改状态-</option>
+                        <option value="A">正常</option>
+                        <option value="X">失效</option>
+                        <option value="E">编辑中</option>
+                    </select>
+                    <input style="height:25px" onclick="submitChangeStatus()" value="批量更改状态" type="button">
+                </td>
+            </tr>
+        </tbody></table>
+        <table>
+            <tbody><tr>
+                <td colspan="8">
+                    <div class="pagebreak">
+                        <div class="page">
+                            
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody></table>
+    </div>
+</div>
+<input id="headMenu" value="building" type="hidden">
+</div>
+<div style="position: absolute; z-index: 19700; top: -1970px; left: -1970px;"><!--<iframe src="images/My97DatePicker.htm" border="0" scrolling="no" style="width: 186px; height: 199px;" frameborder="0"></iframe>--></div></body></html>

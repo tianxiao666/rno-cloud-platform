@@ -1,0 +1,53 @@
+/*=================================
+智能旅游样式  
+dateTime: 2010-12-28
+author:monny
+=================================*/
+
+/*重写浏览器默认样式 start */
+/*html { color:#333; font-size:12px; font-family: "宋体"; background:#fff;} 
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form, fieldset,input,textarea,blockquote,th,td,p { 
+margin:0;  padding:0; }
+body{font-size:12px;}
+
+fieldset,img { border:0; } 
+address,caption,cite,code,dfn,em,strong,th,var { font-style:normal; font-weight:normal; } 
+ol,ul { list-style:none; } 
+caption,th { text-align:left; } 
+q:before,q:after { content:''; } 
+abbr,acronym { border:0; } 
+table { border-collapse: collapse;border-spacing: 0;}
+*/
+/*重写浏览器默认样式 end */
+
+/*全局样式 start*/
+/*a { text-decoration:none; color:#333;}
+a:hover { text-decoration:underline; }
+.cur{color:#BF3600;}
+.hidden{display:none;}
+.c{clear:both; height:0; overflow:hidden;}
+*/
+/*全局样式 end*/
+
+/* 整体布局 start */
+/*body{ color:#333; width:100%; font-size:12px;}
+.wrapper{ width:100%; background:#eee;  }
+.header { width:100%; margin:0 auto; background:#fff url(../images/header/bg_header.jpg) 0 0 repeat-x;}
+.header_inner { min-width:980px; max-width:1440px; margin:0 auto;}
+.nav{ width:100%; text-align:center; }
+.content { min-width:980px; max-width:1440px;overflow:hidden; margin:10px auto;}
+.content{ min-width:980px;}
+.main{background:#fff;border-top:1px solid #e0e0df;border-bottom:1px solid #e0e0df;width:99.2%;padding:5px;}
+.crumb{ min-width:980px; max-width:1380px;overflow:hidden; height:28px; background:url(../images/crumb.jpg) right 0 no-repeat; margin-top:5px; }
+.crumb span{ padding-left:15px; height:28px; line-height:28px; background:url(../images/crumb.jpg) 0 -28px no-repeat; display:inline-block; color:#666; }
+*/
+/* 整体布局 end */
+
+/*页脚 start===========================================*/
+.footer { width:100%; text-align:center; padding:15px 0px  30px 0px; line-height:22px; margin-top:20px; background:#fff url(../images/bg_footer.jpg) 0 0 repeat-x; }
+.footer_inner{ min-width:980px; text-align:center; margin:0 auto; }
+/*页脚 end=============================================*/
+
+
+
+

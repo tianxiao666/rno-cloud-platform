@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html><head>
+    	<meta charset="UTF-8">
+        <title>::室内数据管理系统::</title>
+        <link href="css/add-place.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="../../lib/jquery/1.8.2/jquery.js"></script>
+        <script type="text/javascript" src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
+        <script type="text/javascript" src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
+        <script type="text/javascript" src="js/add-place.js">
+        </script>
+        <script src="../../js/common.js"></script>
+    </head>
+    <body>
+    <div id="loading" class="loading" style="display: none">加载中...</div>
+    <div id="info" class="info-style" style="display: none"></div>
+        <div class="warp">
+
+<div class="content">
+    <div class="crumb">
+        <span>当前位置：<a href="place-management.html">场所管理</a>&nbsp;&gt;&nbsp;<a href="">添加场所</a></span>
+    </div>
+    <div class="tabtext" id="tabtext1" style="padding:15px" align="center">
+        <table width="100%">
+            <tbody><tr>
+                <td width="1%" valign="top">
+                                        <div style="width:120px;">
+                    </div>
+                                    </td>
+                <td valign="top">
+                    <form action="" method="POST" id="conditionForm" enctype="multipart/form-data">
+                        <input class="hidden" name="FORM_BUILDINGINFO[BUILDING_ID]" type="text">
+                        <table width="85%">
+                            <tbody><tr>
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" width="10%" align="right">
+                                    名称:
+                                </td>
+                                <td colspan="2">
+                                    <input id="BUILDING_NAME" name="buildingName" style="width:90%;" maxlength="100" type="text">
+                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                        *
+                                    </font>
+                                </td>
+                                <td width="10%">
+                                </td>
+                            </tr>
+                            <tr>
+
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" width="4%" align="right">
+                                    省:
+                                </td>
+                                <td width="12%">
+                                    <!--<select id="PROV" name="FORM_BUILDINGINFO[PROV]" style="font-size:12px;width:80%" onchange="getProvList();" class="provSearchType"><option value="">-请选择 -</option><option value="17">河南省</option><option value="18">湖北省</option><option value="19">湖南省</option><option value="20" selected="selected">广东省</option><option value="21">广西壮族自治区</option><option value="22">海南省</option><option value="23">重庆市</option><option value="24">四川省</option><option value="25">贵州省</option><option value="26">云南省</option><option value="27">西藏自治区</option><option value="28">陕西省</option><option value="29">甘肃省</option><option value="30">青海省</option><option value="31">宁夏回族自治区</option><option value="32">新疆维吾尔自治区</option><option value="33">香港</option><option value="34">澳门</option><option value="35">台湾</option><option value="2">北京市</option><option value="3">天津市</option><option value="4">河北省</option><option value="5">山西省</option><option value="6">内蒙古自治区</option><option value="7">辽宁省</option><option value="8">吉林省</option><option value="9">黑龙江省</option><option value="10">上海市</option><option value="11">江苏省</option><option value="12">浙江省</option><option value="13">安徽省</option><option value="14">福建省</option><option value="15">江西省</option><option value="16">山东省</option></select>-->
+                                    <select name="area1.id" class="required" id="provinceId"></select>
+                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                        *
+                                    </font>
+                                </td>
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" width="4%" align="left">
+                                    城市:
+                                </td>
+                                <td width="12%">
+                                    <!--<select id="CITY" name="FORM_BUILDINGINFO[CITY]" style="font-size:12px; width:80%" onchange="getCityList();" class="citySearchType"><option value="">-请选择 -</option><option value="236" selected="selected">广州市</option><option value="237">韶关市</option><option value="238">深圳市</option><option value="239">珠海市</option><option value="240">汕头市</option><option value="241">佛山市</option><option value="242">江门市</option><option value="243">湛江市</option><option value="244">茂名市</option><option value="245">肇庆市</option><option value="246">惠州市</option><option value="247">梅州市</option><option value="248">汕尾市</option><option value="249">河源市</option><option value="250">阳江市</option><option value="251">清远市</option><option value="252">东莞市</option><option value="253">中山市</option><option value="254">潮州市</option><option value="255">揭阳市</option><option value="256">云浮市</option></select>-->
+                                    <select name="area.id" class="required" id="cityId"></select>
+                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                        *
+                                    </font>
+                                </td>
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" width="2%" align="left">
+                                    区:
+                                </td>
+                                <td width="12%">
+                                    <select name="district" class="required" id="areaId"></select>
+                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                        *
+                                    </font>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" align="right">
+                                    总楼层数:
+                                </td>
+                                <td>
+                                    <input id="TOTAL_FLOOR" name="totalFloor" style="width:80%;" maxlength="5" type="text">
+                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                        *
+                                    </font>
+                                </td>
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" align="left">
+                                    状态:
+                                </td>
+                                <td>
+                                    <select id="STATUS" name="status" style="width:80%;">
+                                        <option value="" selected="selected">-请选择-</option>
+                                        <option value="A">正常</option>
+<option value="E">编辑中</option>
+<option value="X">失效</option>
+
+                                    </select>
+                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                        *
+                                    </font>
+                                </td>
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" align="left">
+                                    类型:
+                                </td>
+                                <td>
+                                    <select id="BUILD_TYPE" name="buildType" style="width:80%;">
+                                        <option value="" selected="selected">-请选择-</option>
+                                        <option value="MALL_">大型商场</option>
+<option value="OFFIC">写字楼</option>
+<option value="LARGE">大型场馆</option>
+<option value="TRAFF">交通枢纽</option>
+
+                                    </select>
+                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                        *
+                                    </font>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" align="right">
+                                    详细地址:
+                                </td>
+                                <td colspan="3">
+                                    <input id="ADDRESS" name="address" style="width:92%;" maxlength="256" type="text">
+                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                        *
+                                    </font>
+                                </td>
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" align="left">
+                                    邮编:
+                                </td>
+                                <td>
+                                    <input id="POSTALCODE" name="postalcode" style="width:80%;" maxlength="10" type="text">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" align="right">
+                                    左上经度:
+                                </td>
+                                <td>
+                                    <input id="LT_LONGITUDEL" name="ltLongitudel" style="width:80%;" type="text">
+                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                        *
+                                    </font>
+                                </td>
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" align="left">
+                                    左上纬度:
+                                </td>
+                                <td>
+                                    <input id="LT_LATITUDEL" name="ltLatitudel" style="width:80%;" type="text">
+                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                        *
+                                    </font>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" align="right">
+                                    右下经度:
+                                </td>
+                                <td>
+                                    <input id="RB_LONGITUDEL" name="rbLongitudel" style="width:80%;" type="text">
+                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                        *
+                                    </font>
+                                </td>
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" align="left">
+                                    右下纬度:
+                                </td>
+                                <td>
+                                    <input id="RB_LATITUDEL" name="rbLatitudel" style="width:80%;" type="text">
+                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                        *
+                                    </font>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" align="right">
+                                    咨询电话:
+                                </td>
+                                <td>
+                                    <input id="PHONE" name="phone" style="width:80%;" maxlength="250" type="text">
+                                </td>
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" align="left">
+                                    官方网站:
+                                </td>
+                                <td colspan="3">
+                                    <input name="site" style="width:92%;" maxlength="256" type="text">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" align="right">
+                                    上传图片:
+                                </td>
+                                <td colspan="5" style="border:0px;" align="left">
+                                    <input onchange="onUploadImgChange(this)" id="file" name="file" style="font-size:12px;width:98%" type="file">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" valign="top" align="right">
+                                    简介:
+                                </td>
+                                <td colspan="5">
+                                    <textarea name="note" id="NOTE" style="width:95%; height:100px;" maxlength="4000"></textarea>
+                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                        *
+                                    </font>
+                                </td>
+                            </tr>
+                            <tr>
+                                </tr></tbody></table><table width="100%">
+                                    <tbody><tr>
+                                        <td width="35%" align="right">
+                                            <input value="&nbsp;保存&nbsp;" onclick="" type="button" id="saveBtn">
+                                        </td>
+                                        <td width="5%">
+                                        </td>
+                                        <td width="60%">
+                                            <input value="&nbsp;取消&nbsp;" onclick="history.go(-1);" type="button">
+											<input id="headMenu" value="building" type="hidden">
+                                        </td>
+                                    </tr>
+                                </tbody></table>
+                            </form></td></tr>
+                        </tbody></table>
+                    
+                
+            
+        
+    </div>
+</div>
+</div>
+
+<div style="position: absolute; z-index: 19700; top: -1970px; left: -1970px;"><!--<iframe src="add-place_files/My97DatePicker.htm" border="0" scrolling="no" style="width: 186px; height: 199px;" frameborder="0"></iframe>--></div></body></html>

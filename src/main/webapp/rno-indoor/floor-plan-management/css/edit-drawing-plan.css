@@ -1,0 +1,136 @@
+#shape_buttons {
+    overflow: auto;
+    width: 180px;
+    max-height: 300px;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+#shape_cats {
+    min-width: 150px;
+    display: table-cell;
+    vertical-align: middle;
+    height: 300px;
+}
+
+#shape_cats > div {
+    line-height: 1em;
+    padding: .5em;
+    border: 1px solid #B0B0B0;
+    background: #E8E8E8;
+    display: none;
+    margin-bottom: -1px;
+}
+
+#shape_cats div:hover {
+    background: #FFFFCC;
+}
+
+#shape_cats div.current {
+    font-weight: bold;
+}
+#imgbrowse_holder {
+       position: absolute;
+       top: 0;
+       left: 0;
+       width: 100%;
+       height: 100%;
+       background-color: rgba(0, 0, 0, .5);
+       z-index: 5;
+   }
+
+#imgbrowse {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    right: 25px;
+    bottom: 25px;
+    min-width: 300px;
+    min-height: 200px;
+    background: #B0B0B0;
+    border: 1px outset #777;
+}
+
+#imgbrowse h1 {
+    font-size: 20px;
+    margin: .4em;
+    text-align: center;
+}
+
+#lib_framewrap, #imgbrowse > ul {
+    position: absolute;
+    top: 45px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    background: white;
+    margin: 0;
+    padding: 0;
+}
+
+#imgbrowse > ul {
+    overflow: auto;
+}
+
+#imgbrowse > div {
+    border: 1px solid #666;
+}
+
+#imglib_preview > div {
+    padding: 5px;
+    font-size: 12px;
+}
+
+#imglib_preview img {
+    display: block;
+    margin: 0 auto;
+    max-height: 100px;
+}
+
+#imgbrowse li {
+    list-style: none;
+    padding: .5em;
+    background: #E8E8E8;
+    border-bottom: 1px solid #B0B0B0;
+    line-height: 1.2em;
+    font-style: sans-serif;
+}
+
+#imgbrowse li > span {
+    color: #666;
+    font-size: 15px;
+    display: block;
+}
+
+#imgbrowse li:hover {
+    background: #FFC;
+    cursor: pointer;
+}
+
+#imgbrowse iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+#backgroundcolorpicker_div {
+    background: none repeat scroll 0 0 #E8E8E8;
+    left: 286px;
+    top: 232px;
+    display: none;
+    height: auto;
+    position: absolute;
+    padding-top: 10px;
+    border: 1px outset #777;
+    z-index: 5;
+}
+
+table.Picker {
+    background-color: #EFEFEF;
+    border: 1px solid #666666;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 5px;
+    width: auto;
+    z-index: 20;
+}

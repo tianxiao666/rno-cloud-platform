@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>::室内数据管理系统::</title>
+    <script src="../../lib/jquery/1.8.2/jquery.js"></script>
+    <script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
+    <link rel="stylesheet" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
+    <script type="text/javascript" src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../lib/datatables/1.10.16/datatables.min.css">
+    <script src="../../lib/datatables/1.10.16/datatables.min.js"></script>
+    <link href="css/floor-management.css" rel="stylesheet" type="text/css">
+    <script src="js/floor-management.js"></script>
+    <script src="../../js/common.js"></script>
+</head>
+<body>
+<div id="loading" class="loading" style="display: none">加载中...</div>
+<div id="info" class="info-style" style="display: none"></div>
+<div class="warp">
+    <div class="content">
+        <div class="main">
+            <div class="crumb">
+                <span>当前位置：<a href="../place-management/place-management.html">场所管理</a>&nbsp;&gt;&nbsp;<a
+                        href="../floor-management/floor-management.html">楼层管理</a></span>
+            </div>
+            <input id="subbarFlag" value="sysuser_mgr_bar" type="hidden">
+            <div class="tabtext" id="tabtext1">
+                <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                    <tbody>
+                    <tr>
+                        <td width="1%" valign="top">
+                        </td>
+                        <td>
+                            <table>
+                                <tbody>
+                                <tr>
+                                    <td class="nameFunction" style="padding: 5px 0px 0px;" align="left">
+                                        <img src="images/m_user.gif" border="0" align="absmiddle">
+                                        <font style="font-weight:bold;font-size:14px" color="#a40000">
+                                            <span id="buildingNameTip"></span>
+                                             &nbsp;&gt;&nbsp;楼层列表
+                                        </font>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding:0px 5px 0px 0px;" valign="top">
+                                        <div class="scenic_list">
+                                            <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                                                <tbody>
+                                                <tr>
+                                                    <td style="width:100%;" align="left">
+                                                        <div class="scenic_search" style="width:99%;">
+                                                            <div class="chose" style="width:80%;float:left;">
+                                                                <form method="post" name="conditionForm" id="conditionForm"
+                                                                      action="">
+                                                                    场所：
+                                                                    <select style="height:20px;width:120px"
+                                                                            name="buildingId" id="building">
+                                                                        </option>
+                                                                    </select>
+                                                                    关键字：
+                                                                    <input name="floorName" id="floorName" maxlength="10"
+                                                                           size="20" style="height:20px;" type="text">状态：
+                                                                    <select style="height:20px;width:120px"
+                                                                            name="status" id="status">
+                                                                        <option value="" selected="selected">-请选择-
+                                                                        </option>
+                                                                        <option value="A">正常</option>
+                                                                        <option value="X">失效</option>
+
+                                                                    </select>
+                                                                    <input id="building_id" value="1"
+                                                                           type="hidden"><input id="building_name"
+                                                                                                value="广东省博物馆"
+                                                                                                type="hidden"><input
+                                                                        value="搜索"
+                                                                        style="font-size: 12px; width: 60px; height: 20px;height: 22px;"
+                                                                        onclick="" type="button" id="queryBtn">
+                                                                </form>
+                                                            </div>
+                                                            <div align="right">
+                                                                <a onclick="AddFloor();">
+                                                                    <font style="font-weight:bold;font-size:14px"
+                                                                          color="#666">
+                                                                        [添加楼层]
+                                                                    </font>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+
+                                            <div style="padding-top: 10px">
+                                                <table id="queryResultTab" class="display rnoHeader" cellspacing="0" width="100%">
+                                                    <thead>
+                                                    <tr>
+                                                        <th>
+                                                            <input onclick="checkboxAll(this);" type="checkbox">
+                                                        </th>
+                                                        <th>名称</th>
+                                                        <th>物理楼层</th>
+                                                        <th>楼层类型</th>
+                                                        <th>简介</th>
+                                                        <th>状态</th>
+                                                        <th>相关操作</th>
+                                                    </tr>
+                                                    </thead>
+                                                </table>
+                                            </div>
+
+                                            <div style="align:left;padding-top:10px">
+                                                <select style="height:20px;width:120px" name="changestatus"
+                                                        id="changestatus">
+                                                    <option value="" selected="selected">-更改状态-</option>
+                                                    <option value="A">正常</option>
+                                                    <option value="X">失效</option>
+
+                                                </select>
+                                                <input style="height:25px" onclick="submitChangeStatus('广东省博物馆','1','')"
+                                                       value="批量更改状态" type="button">
+                                            </div>
+                                            <table>
+                                                <tbody>
+                                                <tr>
+                                                    <td style="padding:10px;" colspan="7" valign="top">
+                                                        <div class="pagebreak">
+                                                            <div class="page">
+
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <input id="headMenu" value="building" type="hidden">
+            </div>
+        </div>
+    </div>
+</div>
+<div style="position: absolute; z-index: 19700; top: -1970px; left: -1970px;">
+</div>
+
+<div id="addFloorDialog" style="position: fixed;opacity: 1;z-index: 1000;display:none;">
+    <div style="position: fixed;width: 100%;height: 100%;top:0;left:0;background: rgba(0,0,0,0.3);">
+        <div id="addFloorDiv" class="dialog2" style="position: relative;right: 10px;opacity: 0;">
+            <div class="dialog_header">
+                <div class="dialog_title">
+                    添加楼层
+                </div>
+                <div class="dialog_tool">
+                    <div class="dialog_tool_close dialog_closeBtn"
+                         onclick="addDialogClose()"></div>
+                </div>
+            </div>
+            <div class="dialog_content">
+                <!--<div style="font-weight: bold;margin-bottom:5px">
+                    场所ID：<span id="buildingId"></span>
+                    -&gt;场所名称：<span id="buildingName"></span>
+                </div>-->
+                <div>
+                </div>
+                <form method="post" name="conditionAddForm" id="conditionAddForm" action="">
+                    <input id="status" name="status" value="A" type="hidden"/>
+                    <input id="buildingId" name="buildingId" value="" type="hidden">
+                    <table class="greystyle-standard" id="viewFloorDetailTable">
+                        <tr>
+                            <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;"
+                                width="20%" align="left">
+                                所在场所:
+                            </td>
+                            <td style="border:0px;height:40px;width:30%;" align="left">
+                                <font style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;"
+                                      color="#a40000">
+                                    <span id="buildingName"></span>
+                                </font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;"
+                                align="left">
+                                楼层名称:
+                            </td>
+                            <td style="border:0px;height:40px;" align="left">
+                                <input name="floorName" id="floorName" maxlength="10" style="height: 22px;width:90%;"
+                                       type="text">
+                                <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                    *
+                                </font>
+                            </td>
+                            <td width="3%">
+                            </td>
+                            <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;"
+                                width="17%" align="left">
+                                楼层类型:
+                            </td>
+                            <td style="border:0px;height:40px;width:30%;" align="left">
+                                <select style="height:22px;width:90%" name="floorType" id="floorType">
+                                    <option selected="" value="">--请选择--</option>
+                                    <option value="LOOBY">大堂</option>
+                                    <option value="FUEST">客房</option>
+                                    <option value="EFOOD">餐饮</option>
+
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;"
+                                width="17%" align="left">
+                                物理层数:
+                            </td>
+                            <td style="border:0px;height:40px;width:30%;" align="left">
+                                <input name="physicalFloor" id="physicalFloor" maxlength="5"
+                                       style="height: 22px;width:90%;" type="text">
+                            </td>
+                            <td width="3%">
+                            </td>
+                            <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;"
+                                align="left">
+                                地上地下:
+                            </td>
+                            <td style="border:0px;height:40px;" align="left">
+                                <select id="basement" name="basement" style="height:22px;width:90%;">
+                                    <option value="">-请选择-</option>
+                                    <option value="Y">地上</option>
+                                    <option value="N">地下</option>
+
+                                </select>
+                                <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                    *
+                                </font>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;"
+                                width="17%" align="left">
+                                上传图片:
+                            </td>
+                            <td colspan="4" style="border:0px;height:40px;" align="left">
+                                <input onchange="onUploadImgChange(this)" id="file" name="file"
+                                       style="font-size:12px;height:22px;width:98%" type="file">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;"
+                                valign="top" align="left">
+                                简介:
+                            </td>
+                            <td style="border:0px;font-size:18px;height:40px;" colspan="4" align="left">
+                                <div class="cl_tit">
+                                <textarea name="floorNote" id="floorNote" rows="1" cols="2"
+                                          style="overflow-y:scroll;height:100px;width:70%;border:1px #ccc solid;"></textarea>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;"
+                                valign="top" align="left">
+
+                            </td>
+                            <td style="border:0px;font-size:18px;height:40px;" colspan="4">
+                                <div id="" class="cl_tit" style=""><input style="margin-left: 100px" name="button" id="addFloorBtn" value="保存" type="button"><input style="margin-left: 30px" value="重设" type="reset"></div>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="editFloorDialog" style="position: fixed;opacity: 1;z-index: 1000;display:none;">
+    <div style="position: fixed;width: 100%;height: 100%;top:0;left:0;background: rgba(0,0,0,0.3);">
+        <div id="editFloorDiv" class="dialog2" style="position: relative;right: 10px;opacity: 0;">
+            <div class="dialog_header">
+                <div class="dialog_title">
+                    编辑楼层
+                </div>
+                <div class="dialog_tool">
+                    <div class="dialog_tool_close dialog_closeBtn"
+                         onclick="editDialogClose()"></div>
+                </div>
+            </div>
+            <div class="dialog_content">
+                <!--<div style="font-weight: bold;margin-bottom:5px">
+                    场所ID：<span id="buildingId"></span>
+                    -&gt;场所名称：<span id="buildingName"></span>
+                </div>-->
+                <div>
+                </div>
+                <form method="post" name="conditionAddForm" id="conditionModForm" action="#">
+                    <input name="buildingId" id="buildingId" value="" type="hidden">
+                    <input name="floorId" id="floorId" value="" type="hidden">
+                <table class="greystyle-standard" id="viewFloorDetailTable">
+                    <tr>
+                        <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;"
+                            width="20%" align="left">
+                            所在场所:
+                        </td>
+                        <td style="border:0px;height:40px;" align="left">
+                            <font style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;"
+                                  color="#a40000">
+                                <input id="status" name="status" value="A" type="hidden"/><input
+                                    id="floorId" name="floorId" value="" type="hidden"><span id="buildingName"></span>
+                            </font>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;"
+                            align="left">
+                            楼层名称:
+                        </td>
+                        <td style="border:0px;height:40px;" align="left">
+                            <input name="floorName" id="floorName" maxlength="10" style="height: 22px;width:90%;"
+                                   value="fdfdfdfdfdf" type="text"/>
+                            <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                *
+                            </font>
+                        </td>
+                        <td width="3%">
+                        </td>
+                        <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;"
+                            width="17%" align="left">
+                            楼层类型:
+                        </td>
+                        <td style="border:0px;height:40px;width:30%;" align="left">
+                            <select style="height:22px;width:90%" name="floorType" id="floorType">
+                                <option value="">--请选择--</option>
+                                <option value="LOOBY" selected="selected">大堂</option>
+                                <option value="FUEST">客房</option>
+                                <option value="EFOOD">餐饮</option>
+
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;"
+                            width="17%" align="left">
+                            物理层数:
+                        </td>
+                        <td style="border:0px;height:40px;width:30%;" align="left">
+                            <input name="physicalFloor" id="physicalFloor" maxlength="5"
+                                   style="height: 22px;width:90%;" value="">
+                        </td>
+                        <td width="3%">
+                        </td>
+                        <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;"
+                            align="left">
+                            地上地下:
+                        </td>
+                        <td style="border:0px;height:40px;" align="left">
+                            <select id="basement" name="basement" style="height:22px;width:90%;">
+                                <option value="">--请选择--</option>
+                                <option value="Y" selected="selected">地上</option>
+                                <option value="N">地下</option>
+
+                            </select>
+                            <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                *
+                            </font>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;"
+                            width="17%" align="left">
+                            上传图片:
+                        </td>
+                        <td colspan="4" style="border:0px;height:40px;" align="left">
+                            <input onchange="onUploadImgChange(this)" id="file" name="file"
+                                   style="font-size:12px;height:22px;width:98%" type="file">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;"
+                            valign="top" align="left">
+                            简介:
+                        </td>
+                        <td style="border:0px;font-size:18px;height:40px;" colspan="4" align="left">
+                            <div class="cl_tit">
+                                <textarea name="floorNote" id="floorNote" rows="1" cols="2"
+                                          style="overflow-y:scroll;height:100px;width:70%;border:1px #ccc solid;">广东省博物馆二楼</textarea>
+                            </div>
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;"
+                            valign="top" align="left">
+
+                        </td>
+                        <td style="border:0px;font-size:18px;height:40px;" colspan="4">
+                                <div id="" class="cl_tit" style=""><input style="margin-left: 100px" name="button" id="updateBtn" onclick="" value="更新" type="button"><input style="margin-left: 30px" value="重设" type="reset"></div>
+                        </td>
+                    </tr>
+                </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

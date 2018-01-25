@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html><head>
+    	<meta charset="UTF-8">
+        <title>::室内数据管理系统::</title>
+        <script src="../../lib/jquery/1.8.2/jquery.js"></script>
+        <script src="../../lib/jquery-plugins/jquery.ui-1.11.1.js"></script>
+        <link rel="stylesheet" href="../../lib/jquery-plugins/jquery.ui-1.11.1.css">
+        <script type="text/javascript" src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
+        <link rel="stylesheet" type="text/css" href="../../lib/datatables/1.10.16/datatables.min.css">
+        <script src="../../lib/datatables/1.10.16/datatables.min.js"></script>
+        <link href="css/ap-management.css" rel="stylesheet" type="text/css">
+        <script src="js/ap-management.js"></script>
+        <script src="../../js/common.js"></script>
+    </head>
+    <body>
+    <div id="loading" class="loading" style="display: none">加载中...</div>
+    <div id="info" class="info-style" style="display: none"></div>
+        <div class="warp">
+<style>
+    .itable td {
+        padding: 3px 0 3px 10px;
+        border: 1px solid #ccc;
+        color: #666;
+    }
+</style>
+<div class="content">
+    <div class="main">
+        <div class="crumb">
+            <span>当前位置：<a href="../place-management/place-management.html">场所管理</a>&nbsp;&gt;&nbsp;<a href="./ap-management.html">定位信息管理</a></span>
+        </div>
+        <input id="subbarFlag" value="sysuser_mgr_bar" type="hidden">
+        <div class="tabtext" id="tabtext1">
+            <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                <tbody><tr>
+                    <td width="1%" valign="top">
+                        
+                    </td>
+                    <td>
+                        <table>
+                            <tbody><tr>
+                            	<td class="nameFunction" style="padding: 5px 0px 0px;" align="left">
+                                	<img src="images/m_user.gif" border="0" align="absmiddle">
+                                	<font style="font-weight:bold;font-size:14px" color="#a40000">
+                                        <span id="buildingNameTip"></span>&nbsp;&gt;&nbsp;定位信息列表
+                                	</font>
+                            	</td>
+                            </tr>
+                            <tr>
+                                <td style="padding:0px 5px 0px 0px;" valign="top">
+                                    <div class="scenic_list">
+                                    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+                                        <tbody><tr>
+                                            <td style="width:100%;" align="left">
+                                                <div class="scenic_search" style="width:99%;">
+                                                    <div class="chose" style="width:80%;float:left;">
+                                                        <form method="post" name="conditionForm" id="conditionForm" action="">
+                                                            场所：
+                                                            <select style="height:20px;width:120px"
+                                                                    name="buildingId" id="buildingId">
+                                                                </option>
+                                                            </select>
+                                                            关键字：<input name="equtSsid" id="equtSsid" maxlength="16" size="20" style="height: 20px;" type="text"> 楼层：
+                                                            <select style="height:20px;width:192px" name="floorId" id="floorId">
+                                                                <option value="" selected="selected">-请选择-</option>
+                                                            </select>
+                                                            类别：
+                                                            <select style="height:20px;width:120px" name="equtType" id="equtType">
+                                                                <option value="" selected="selected">-请选择-</option>
+                                                                <option value="PBX">交换机</option>
+<option value="AP">AP</option>
+
+                                                            </select>
+                                                            状态：
+                                                            <select style="height:20px;width:120px" name="status" id="status">
+                                                                <option value="" selected="selected">-请选择-</option>
+                                                                <option value="A">正常</option>
+<option value="E">编辑中</option>
+<option value="X">禁用</option>
+
+                                                            </select>
+                                                            <input value="搜索" id="queryBtn" style="font-size: 12px; width: 60px; height: 20px;height: 22px;" onclick="" type="button">
+                                                        </form>
+                                                    </div>
+                                                    <div align="right">
+                                                        <a onclick="AddEqut('广东省博物馆','1');">
+                                                            <font style="font-weight:bold;font-size:14px" color="#666">
+                                                                [添加定位信息]
+                                                            </font>
+                                                        </a>
+                                                                                                            </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody></table>
+
+                                        <div style="padding-top: 10px">
+                                            <table id="queryResultTab" class="display rnoHeader" cellspacing="0" width="100%">
+                                                <thead>
+                                                <tr>
+                                                    <th>
+                                                        <!--onclick="checkboxAll(this);"-->
+                                                        <input id="select-all" onclick="checkboxAll(this);" type="checkbox">
+                                                    </th>
+                                                    <th>设备标识SSID</th>
+                                                    <th>类别</th>
+                                                    <th>所在楼层</th>
+                                                    <th>MAC地址</th>
+                                                    <th>位置(单位：米)</th>
+                                                    <th>状态</th>
+                                                    <th>操作</th>
+                                                </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                                <div style="align:left;padding-top:10px">
+                                                    <select style="height:20px;width:120px" name="changestatus" id="changestatus">
+                                                        <option value="" selected="selected">-请选择-</option>
+                                                        <option value="A">正常</option>
+<option value="E">编辑中</option>
+<option value="X">禁用</option>
+
+                                                    </select>
+                                                    <input style="height:25px" onclick="submitChangeStatus('广东省博物馆','1')" value="批量更改状态" type="button">
+                                                </div>
+                                                <table>
+                                                <tbody><tr>
+                                                    <td style="padding:10px;" colspan="7" valign="top">
+                                                        <div class="pagebreak">
+                                                            <div class="page">
+                                                                
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
+                                </tr></tbody></table>
+                            </td>
+                            </tr>
+                        </tbody></table>
+                        <input id="headMenu" value="building" type="hidden">
+                        </div>
+                    </div>
+                    </div>
+</div>
+<div style="position: absolute; z-index: 19700; top: -1970px; left: -1970px;"></div>
+
+        <div id="editApDialog" style="position: fixed;opacity: 1;z-index: 1000;display:none;">
+            <div style="position: fixed;width: 100%;height: 100%;top:0;left:0;background: rgba(0,0,0,0.3);">
+                <div id="editApDiv" class="dialog2" style="position: relative;right: 10px;opacity: 0;">
+                    <div class="dialog_header">
+                        <div class="dialog_title">
+                            编辑AP定位信息
+                        </div>
+                        <div class="dialog_tool">
+                            <div class="dialog_tool_close dialog_closeBtn"
+                                 onclick="editDialogClose()"></div>
+                        </div>
+                    </div>
+                    <div class="dialog_content">
+                        <!--<div style="font-weight: bold;margin-bottom:5px">
+                            场所ID：<span id="buildingId"></span>
+                            -&gt;场所名称：<span id="buildingName"></span>
+                        </div>-->
+                        <div>
+                        </div>
+                        <form method="post" name="conditionModForm" id="conditionModForm" action="" enctype="multipart/form-data">
+                            <input name="buildingId" id="buildingId" value="" type="hidden">
+                            <input name="apId" type="hidden" id="apId" value="">
+                            <table class="greystyle-standard" id="viewFloorDetailTable">
+                                            <tr>
+                                                <td width="16%" align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                    所在场所:
+                                                </td>
+                                                <td style="border: 0px; height: 40px;" width="18%">
+                                                    <font color="#a40000" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;">
+                                                        <span id="buildingName"></span>
+                                                    </font>
+                                                </td>
+                                                <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" width="12%">
+                                                    设备别名:
+                                                </td>
+                                                <td align="left" style="border: 0px; height: 40px;" colspan="3">
+                                                    <input name="equtSsid" type="text" id="equtSsid" maxlength="16" value="" style="height: 22px;width:93%"/>
+                                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                                        *
+                                                    </font>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" width="12%">
+                                                    所属楼层:
+                                                </td>
+                                                <td align="left" colspan="2">
+                                                    <select name="floorId" id="floorId" style="height: 20px;width:90%">
+                                                        <option value="">-请选择-</option>
+                                                    </select>
+                                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                                        *
+                                                    </font>
+                                                </td>
+                                                <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" width="18%">
+                                                    所属楼层平面图:
+                                                </td>
+                                                <td align="left" style="border: 0px; height: 40px;" colspan="2">
+                                                    <select style="height:20px;width:90%" name="drawMapId" id="drawMapId" style="width: 50px;">
+                                                        <option value="">-请选择-</option>
+                                                    </select>
+                                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                                        *
+                                                    </font>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                    平面图图层:
+                                                </td>
+                                                <td align="left" style="border: 0px; height: 40px;" colspan="2">
+                                                    <select style="height:20px;width:90%"  name="layerId" id="layerId" class="u279" style="width: 50px;">
+                                                        <option value="">-请选择-</option>
+                                                    </select>
+                                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                                        *
+                                                    </font>
+                                                </td>
+                                                <td width="17%" align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                    图层元素:
+                                                </td>
+                                                <td align="left" style="border: 0px; height: 40px;" colspan="2">
+                                                    <select style="height:20px;width:90%" name="svgId" id="svgId" style="height: 22px;">
+                                                        <option value="">-请选择-</option>
+                                                    </select>
+                                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                                        *
+                                                    </font>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                    厂家:
+                                                </td>
+                                                <td align="left" style="border: 0px; height: 40px;" colspan="2">
+                                                    <select style="height:20px;width:90%" name="factory" id="factory" class="u279" style="height: 22px;width: 50px;" value="">
+                                                        <option value="">-请选择-</option>
+                                                    </select>
+                                                </td>
+                                                <td width="17%" align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                    品牌:
+                                                </td>
+                                                <td align="left" style="border: 0px; height: 40px;" colspan="2">
+                                                    <select style="height:20px;width:90%" name="brands" id="brands" style="height: 22px;">
+                                                        <option value="">-请选择-</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                    类别:
+                                                </td>
+                                                <td align="left" style="border: 0px; height: 40px;" colspan="2">
+                                                    <select style="height:20px;width:90%" name="equtType" id="equtType" style="height: 22px;">
+                                                        <option value="">-请选择-</option>
+                                                    </select>
+                                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                                        *
+                                                    </font>
+                                                </td>
+                                                <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                    状态:
+                                                </td>
+                                                <td align="left" style="border: 0px; height: 40px;" colspan="2">
+                                                    <select style="height:20px;width:90%" name="status" id="status" style="height: 22px;" value="">
+                                                        <option value="">-请选择-</option>
+                                                    </select>
+                                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                                        *
+                                                    </font>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                    设备型号:
+                                                </td>
+                                                <td align="left" style="border:0px;font-size:14px;height:40px;" colspan="3">
+                                                    <input name="equtModel" type="text" id="equtModel" maxlength="64" value="" style="height:20px;width:93%"/>
+                                                </td>
+                                                <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" width="17%">
+                                                    距离边界X轴:
+                                                </td>
+                                                <td align="left" style="border:0px;font-size:14px;height:40px;">
+                                                    <input name="positionX" type="text" id="positionX" maxlength="7" style="height:20px;width:71%" value="" /><span style="font-family:Arial;font-size:14px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">米</span>
+                                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                                        *
+                                                    </font>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                    MAC地址:
+                                                </td>
+                                                <td align="left" style="border:0px;font-size:14px;height:40px;" colspan="3">
+                                                    <input name="macBssid" type="text" id="macBssid" maxlength="20" value="" style="height:20px;width:93%"/>
+                                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                                        *
+                                                    </font>
+                                                </td>
+                                                <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                    距离边界Y轴:
+                                                </td>
+                                                <td align="left" style="border:0px;font-size:14px;height:40px;">
+                                                    <input name="positionY" type="text" id="positionY" maxlength="7" style="height:20px;width:71%" value="" /><span style="font-family:Arial;font-size:14px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">米</span>
+                                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                                        *
+                                                    </font>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="7%" align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                    频率:
+                                                </td>
+                                                <td style="border: 0px; height: 40px;">
+                                                    <input name="frequency" type="text" id="frequency" maxlength="5" value="" style="height:20px;width:90%"/>
+                                                </td>
+                                                <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                    信道:
+                                                </td>
+                                                <td align="left">
+                                                    <input name="channel" type="text" id="channel" maxlength="2" value="" style="height:20px;width:80%"/>
+                                                </td>
+                                                <td colspan="2" rowspan="2" valign="top" style="font-family:Arial;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">
+                                                    设备的位置定位，以建筑物与北向平行的为Y轴，与北向垂直的为X轴，左上角为0，0
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="7%" valign="top" align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                    说明:
+                                                </td>
+                                                <td align="left" style="border:0px;font-size:14px;height:40px;" colspan="5">
+                                                    <div class="cl_tit">
+                                                        <textarea name="note" id="note" rows="1" cols="2" style="overflow-y:scroll;height:45px;width:97%;font-size:14px;border:1px #ccc solid;"></textarea>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;"
+                                                    valign="top" align="left">
+
+                                                </td>
+                                                <td style="border:0px;font-size:18px;height:40px;" colspan="4">
+                                                    <div id="" class="cl_tit" style=""><input style="margin-left: 150px" name="button" id="updateBtn" onclick="" value="更新" type="button"><input style="margin-left: 30px" value="重设" type="reset"></div>
+                                                </td>
+                                            </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="addApDialog" style="position: fixed;opacity: 1;z-index: 1000;display:none;">
+            <div style="position: fixed;width: 100%;height: 100%;top:0;left:0;background: rgba(0,0,0,0.3);">
+                <div id="addApDiv" class="dialog2" style="position: relative;right: 10px;opacity: 0;">
+                    <div class="dialog_header">
+                        <div class="dialog_title">
+                            添加AP定位信息
+                        </div>
+                        <div class="dialog_tool">
+                            <div class="dialog_tool_close dialog_closeBtn"
+                                 onclick="addDialogClose()"></div>
+                        </div>
+                    </div>
+                    <div class="dialog_content">
+                        <!--<div style="font-weight: bold;margin-bottom:5px">
+                            场所ID：<span id="buildingId"></span>
+                            -&gt;场所名称：<span id="buildingName"></span>
+                        </div>-->
+                        <div>
+                        </div>
+                        <form method="post" name="conditionAddForm" id="conditionAddForm" action="" enctype="multipart/form-data">
+                            <input name="buildingId" id="buildingId" value="" type="hidden">
+                            <input name="elementId" id="elementId" value="" type="hidden">
+                            <table class="greystyle-standard" id="viewFloorDetailTable">
+                                            <tr>
+                                                <td width="16%" align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                    所在场所:
+                                                </td>
+                                                <td style="border: 0px; height: 40px;" width="18%">
+                                                    <font color="#a40000" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;">
+                                                        <span id="buildingName"></span>
+                                                    </font>
+                                                </td>
+                                                <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" width="12%">
+                                                    设备别名:
+                                                </td>
+                                                <td align="left" style="border: 0px; height: 40px;" colspan="3">
+                                                    <input name="equtSsid" type="text" id="equtSsid" maxlength="16" value="" style="height: 22px;width:93%"/>
+                                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                                        *
+                                                    </font>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" width="12%">
+                                                    所属楼层:
+                                                </td>
+                                                <td align="left" colspan="2">
+                                                    <select name="floorId" id="floorId" style="height: 20px;width:90%">
+                                                        <option value="" selected="selected">-请选择-</option>
+                                                    </select>
+                                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                                        *
+                                                    </font>
+                                                </td>
+                                                <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" width="18%">
+                                                    所属楼层平面图:
+                                                </td>
+                                                <td align="left" style="border: 0px; height: 40px;" colspan="2">
+                                                    <select style="height:20px;width:90%" name="drawMapId" id="drawMapId" style="width: 50px;">
+                                                        <option value="" selected="selected">-请选择所属楼层-</option>
+                                                    </select>
+                                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                                        *
+                                                    </font>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                    平面图图层:
+                                                </td>
+                                                <td align="left" style="border: 0px; height: 40px;" colspan="2">
+                                                    <select style="height:20px;width:90%" name="layerId" id="layerId" class="u279" style="width: 50px;">
+                                                        <option value="" selected="selected">-请选择AP设备图层-</option>
+                                                    </select>
+                                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                                        *
+                                                    </font>
+                                                    <input type="hidden" id="hidden_layer_id" name="LAYER_ID" value="">
+                                                </td>
+                                                <td width="17%" align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                    图层元素:
+                                                </td>
+                                                <td align="left" style="border: 0px; height: 40px;" colspan="2">
+                                                    <select style="height:20px;width:90%" name="svgId" id="svgId" style="height: 22px;">
+                                                        <option value="">-请选择-</option>
+                                                    </select>
+                                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                                        *
+                                                    </font>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                    厂家:
+                                                </td>
+                                                <td align="left" style="border: 0px; height: 40px;" colspan="2">
+                                                    <select style="height:20px;width:90%" name="factory" id="factory" class="u279" style="width: 50px;">
+                                                        <option selected="" value="">-请选择-</option>
+                                                    </select>
+                                                </td>
+                                                <td width="17%" align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                    品牌:
+                                                </td>
+                                                <td align="left" style="border: 0px; height: 40px;" colspan="2">
+                                                    <select style="height:20px;width:90%" name="brands" id="brands" style="height: 22px;">
+                                                        <option selected="" value="">-请选择-</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                    类别:
+                                                </td>
+                                                <td align="left" style="border: 0px; height: 40px;" colspan="2">
+                                                    <select style="height:20px;width:90%" name="equtType" id="equtType" style="height: 22px;">
+                                                        <option selected="" value="">-请选择-</option>
+                                                    </select>
+                                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                                        *
+                                                    </font>
+                                                </td>
+                                                <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                    状态:
+                                                </td>
+                                                <td align="left" style="border: 0px; height: 40px;" colspan="2">
+                                                    <select style="height:20px;width:90%" name="status" id="status" style="height: 22px;">
+                                                        <option selected="" value="">-请选择-</option>
+                                                    </select>
+                                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                                        *
+                                                    </font>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                    设备型号:
+                                                </td>
+                                                <td align="left" style="border:0px;font-size:14px;height:40px;" colspan="3">
+                                                    <input name="equtModel" type="text" id="equtModel" maxlength="64" value="" style="height:20px;width:93%"/>
+                                                </td>
+                                                <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" width="17%">
+                                                    距离边界X轴:
+                                                </td>
+                                                <td align="left" style="border:0px;font-size:14px;height:40px;">
+                                                    <input name="positionX" type="text" id="positionX" maxlength="7" value="" style="height:20px;width:71%"/><span style="font-family:Arial;font-size:14px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">米</span>
+                                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                                        *
+                                                    </font>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                    MAC地址:
+                                                </td>
+                                                <td align="left" style="border:0px;font-size:14px;height:40px;" colspan="3">
+                                                    <input name="macBssid" type="text" id="macBssid" maxlength="20" value="" style="height:20px;width:93%"/>
+                                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                                        *
+                                                    </font>
+                                                </td>
+                                                <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                    距离边界Y轴 :
+                                                </td>
+                                                <td align="left" style="border:0px;font-size:14px;height:40px;">
+                                                    <input name="positionY" type="text" id="positionY" maxlength="7" value="" style="height:20px;width:71%"/><span style="font-family:Arial;font-size:14px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">米</span>
+                                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                                        *
+                                                    </font>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="7%" align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                    频率:
+                                                </td>
+                                                <td style="border: 0px; height: 40px;">
+                                                    <input name="frequency" type="text" id="frequency" maxlength="5" value="" style="height:20px;width:90%"/>
+                                                </td>
+                                                <td align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                    信道:
+                                                </td>
+                                                <td align="left">
+                                                    <input name="channel" type="text" id="channel" maxlength="2" value="" style="height:20px;width:80%"/>
+                                                </td>
+                                                <td colspan="2" rowspan="2" valign="top" style="font-family:Arial;font-size:12px;font-weight:normal;font-style:normal;text-decoration:none;color:#333333;">
+                                                    设备的位置定位，以建筑物与北向平行的为Y轴，与北向垂直的为X轴，左上角为0，0
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="7%" valign="top" align="left" style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;">
+                                                    说明:
+                                                </td>
+                                                <td align="left" style="border:0px;font-size:18px;height:40px;" colspan="5">
+                                                    <div class="cl_tit">
+                                                        <textarea name="note" id="note" rows="1" cols="2" style="overflow-y:scroll;font-size:14px;height:45px;width:97%;border:1px #ccc solid;"></textarea>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+
+                                <tr>
+                                    <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;"
+                                        valign="top" align="left">
+
+                                    </td>
+                                    <td style="border:0px;font-size:18px;height:40px;" colspan="4">
+                                        <div id="" class="cl_tit" style=""><input style="margin-left: 150px" name="button" id="addApBtn" onclick="" value="保存" type="button"><input style="margin-left: 30px" value="重设" type="reset"></div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+</body></html>

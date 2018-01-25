@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html><head>
+    	<meta charset="UTF-8">
+        <title>::室内数据管理系统::</title>
+        <script type="text/javascript" src="../../lib/jquery/1.8.2/jquery.js"></script>
+        <script type="text/javascript" src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
+        <script type="text/javascript" src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
+
+        <script type="text/javascript" src="js/ideal-ap-management.js"></script>
+        <script type="text/javascript" src="../../lib/laydate/5.0.7/laydate.js"></script>
+        <link href="css/ideal-ap-management.css" rel="stylesheet" type="text/css">
+
+        <link rel="stylesheet" type="text/css" href="../../lib/datatables/1.10.16/datatables.min.css">
+        <script src="../../lib/datatables/1.10.16/datatables.min.js"></script>
+        <script src="../../js/common.js"></script>
+    </head>
+    <body>
+    <div id="loading" class="loading" style="display: none">加载中...</div>
+    <div id="info" class="info-style" style="display: none"></div>
+        <div class="warp">
+<div class="content">
+    <div class="crumb">
+        <span>当前位置：<a href="./ideal-ap-management.html">理想AP管理</a></span>
+    </div>
+    <div class="tabtext" id="tabtext1" style="padding:5px" align="center">
+        <table width="100%" cellspacing="0" cellpadding="0" border="0">
+            <tbody><tr>
+            	<td colspan="8" class="nameFunction" align="left">
+                    <img src="./images/m_user.gif" align="absmiddle" border="0">
+                    <font style="font-weight:bold;font-size:14px" color="#a40000">
+                        <span>理想AP列表</span>
+                    </font>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="12">
+                    <div class="scenic_search" style="width:99%;">
+                    	<div style="width:90%;float:left;">
+                            <form id="conditionForm" method="post">
+                            <span style="font-size:12px;">省：</span>
+                                <select id="province"></select>
+                                <span style="font-size:12px;">市：</span>
+                                <select id="city" name="city" title=""></select>
+                            <span style="font-size:12px;">起始时间：</span>
+                                <input
+                                        value="" id="beginDate"
+                                        name="beginDate" class="hasDatepicker"
+                                        type="text">
+ 							<span style="font-size:12px;">终止时间：</span>
+                                <input value="" id="endDate"
+                                       name="endDate"
+                                       class="hasDatepicker" type="text">
+                            <input value="搜索" style="font-size: 12px; padding:0px 10px 0px 10px;margin-bottom:3px"  type="submit" id="queryBtn">
+                            
+                        </form>
+                    	</div>
+                    </div>
+                </td>
+            </tr>
+        </tbody></table>
+        <div style="padding-top: 10px">
+            <table id="queryResultTab" class="display rnoHeader" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                    <th>城市</th>
+                    <th>建筑物</th>
+                    <th>楼层</th>
+                    <th>图层</th>
+                    <th>经度</th>
+                    <th>纬度</th>
+                    <th>信号强度列表</th>
+                    <th>X坐标</th>
+                    <th>Y坐标</th>
+                    <th>采集时间</th>
+                    <th>手机方向</th>
+                </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+<input id="headMenu" value="datamanager" type="hidden">
+</div>
+</div></body></html>

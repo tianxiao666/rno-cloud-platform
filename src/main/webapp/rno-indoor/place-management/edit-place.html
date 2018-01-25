@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html><head>
+    	<meta charset="UTF-8">
+        <title>::室内数据管理系统::</title>
+        <script type="text/javascript" src="../../lib/jquery/1.8.2/jquery.js"></script>
+        <script type="text/javascript" src="../../lib/jquery-plugins/jquery.form-3.2.0.js"></script>
+        <script type="text/javascript" src="../../lib/jquery-plugins/jquery.validate-1.8.1.js"></script>
+        <link href="css/edit-place.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="js/edit-place.js">
+        </script>
+        <script src="../../js/common.js"></script>
+    </head>
+    <body>
+    <div id="loading" class="loading" style="display: none">加载中...</div>
+    <div id="info" class="info-style" style="display: none"></div>
+        <div class="warp">
+
+<div class="content">
+    <div class="crumb">
+        <span>当前位置：<a href="place-management.html">场所管理</a>&nbsp;&gt;&nbsp;<a href="">编缉场所</a></span>
+    </div>
+    <div class="tabtext" id="tabtext1" style="padding:15px" align="center">
+        <table width="100%">
+            <tbody><tr>
+                <td width="1%" valign="top">
+                    
+                                    </td>
+                <td valign="top">
+                    <form action="" method="POST" id="conditionForm" enctype="multipart/form-data">
+                        <input class="hidden" name="buildingId" id="buildingId" value="" type="text">
+                        <table width="85%">
+                            <tbody><tr>
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" width="10%" align="right">
+                                    名称:
+                                </td>
+                                <td colspan="2">
+                                    <input id="buildingName" name="buildingName" style="width:90%;" value="" maxlength="100" type="text">
+                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                        *
+                                    </font>
+                                </td>
+                                <td width="10%">
+                                </td>
+                            </tr>
+                            <tr>
+
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" width="4%" align="right">
+                                    省:
+                                </td>
+                                <td width="12%">
+
+                                    <select name="area1.id" class="required" id="provinceId"></select>
+                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                        *
+                                    </font>
+                                </td>
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" width="4%" align="left">
+                                    城市:
+                                </td>
+                                <td width="12%">
+
+                                    <select name="area.id" class="required" id="cityId"></select>
+                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                        *
+                                    </font>
+                                </td>
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" width="2%" align="left">
+                                    区:
+                                </td>
+                                <td width="12%">
+                                    <select name="district" class="required" id="areaId"></select>
+									<font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                        *
+                                    </font>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" align="right">
+                                    总楼层数:
+                                </td>
+                                <td>
+                                    <input id="totalFloor" name="totalFloor" style="width:80%;" value="" maxlength="5" type="text">
+                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                        *
+                                    </font>
+                                </td>
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" align="left">
+                                    状态:
+                                </td>
+                                <td>
+                                    <select id="status" name="status" style="width:80%;">
+                                        <option value="">-请选择-</option>
+                                        <option value="A" selected="selected">正常</option>
+<option value="E">编辑中</option>
+<option value="X">失效</option>
+
+                                    </select>
+                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                        *
+                                    </font>
+                                </td>
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" align="left">
+                                    类型:
+                                </td>
+                                <td>
+                                    <select id="buildType" name="buildType" style="width:80%;">
+                                        <option value="">-请选择-</option>
+                                        <option value="MALL_">大型商场</option>
+<option value="OFFIC">写字楼</option>
+<option value="LARGE" selected="selected">大型场馆</option>
+<option value="TRAFF">交通枢纽</option>
+
+                                    </select>
+                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                        *
+                                    </font>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" align="right">
+                                    详细地址:
+                                </td>
+                                <td colspan="3">
+                                    <input id="address" name="address" style="width:92%;" value="" maxlength="256" type="text">
+                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                        *
+                                    </font>
+                                </td>
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" align="left">
+                                    邮编:
+                                </td>
+                                <td>
+                                    <input id="postalcode" name="postalcode" style="width:80%;" maxlength="10" type="text">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" align="right">
+                                    左上经度:
+                                </td>
+                                <td>
+                                    <input id="ltLongitudel" name="ltLongitudel" style="width:80%;" value="" type="text">
+                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                        *
+                                    </font>
+                                </td>
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" align="left">
+                                    左上纬度:
+                                </td>
+                                <td>
+                                    <input id="ltLatitudel" name="ltLatitudel" style="width:80%;" value="" type="text">
+                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                        *
+                                    </font>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" align="right">
+                                    右下经度:
+                                </td>
+                                <td>
+                                    <input id="rbLongitudel" name="rbLongitudel" style="width:80%;" value="" type="text">
+                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                        *
+                                    </font>
+                                </td>
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" align="left">
+                                    右下纬度:
+                                </td>
+                                <td>
+                                    <input id="rbLatitudel" name="rbLatitudel" style="width:80%;" value="" type="text">
+                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                        *
+                                    </font>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" align="right">
+                                    咨询电话:
+                                </td>
+                                <td>
+                                    <input id="phone" name="phone" style="width:80%;" value="" maxlength="250" type="text">
+                                </td>
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" align="left">
+                                    官方网站:
+                                </td>
+                                <td colspan="3">
+                                    <input id="site" name="site" style="width:92%;" value="" maxlength="256" type="text">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" align="right">
+                                    上传图片:
+                                </td>
+                                <td colspan="5" style="border:0px;" align="left">
+                                    <input onchange="onUploadImgChange(this)" id="file" name="file" style="font-size:12px;width:98%" type="file">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-family:Arial;font-size:14px;font-style:normal;text-decoration:none;color:#333333;" valign="top" align="right">
+                                    简介:
+                                </td>
+                                <td colspan="5">
+                                    <textarea name="note" id="note" style="width:95%; height:100px;" maxlength="4000"></textarea>
+                                    <font style="font-size:14px;font-style:normal;text-decoration:none;color:red;">
+                                        *
+                                    </font>
+                                </td>
+                            </tr>
+                            <tr>
+                                </tr></tbody></table><table width="100%">
+                                    <tbody><tr>
+                                        <td width="35%" align="right">
+                                            <input value="&nbsp;保存&nbsp;" onclick="" type="button" id="editBtn">
+                                        </td>
+                                        <td width="5%">
+                                        </td>
+                                        <td width="60%">
+                                            <input value="&nbsp;取消&nbsp;" onclick="history.go(-1);" type="button">
+											<input id="headMenu" value="building" type="hidden">
+                                        </td>
+                                    </tr>
+                                </tbody></table>
+                            </form></td></tr>
+                        </tbody></table>
+                    
+                
+            
+        
+    </div>
+</div>
+</div>
+
+<div style="position: absolute; z-index: 19700; top: -1970px; left: -1970px;"><!--<iframe src="edit-place_files/My97DatePicker.htm" border="0" scrolling="no" style="width: 186px; height: 199px;" frameborder="0"></iframe>--></div></body></html>
