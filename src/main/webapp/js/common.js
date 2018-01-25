@@ -153,7 +153,7 @@ function initBuildingSelectors(options,eventId) {
 function renderBuildings(options,eventId) {
     var $buildingId = $("#" + options.selectors[0]);
     $.ajax({
-        url: "/api/cb-buliding-data/cb-building-query-all",
+        url: "../../api/cb-buliding-data/cb-building-query-all",
         data: {},
         type: "post",
         success: function(data){
@@ -189,7 +189,7 @@ function renderBuildings(options,eventId) {
  */
 function renderFloors(options,buildingId,eventId) {
     $.ajax({
-        url: "/api/cb-floor-data/cb-floor-query-by-building",
+        url: "../../api/cb-floor-data/cb-floor-query-by-building",
         data: {"buildingId":buildingId},
         type: "post",
         success: function(data){
