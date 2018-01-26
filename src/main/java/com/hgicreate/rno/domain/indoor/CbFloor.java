@@ -30,11 +30,11 @@ public class CbFloor implements Serializable{
   private String floorNote;
   private String status;
 
-  private enum FloorType{
+  private enum FloorTypeEnum{
     LOOBY("大堂"),FUEST("客房"),EFOOD("餐饮");
 
     private String value;
-    FloorType(String value) {
+    FloorTypeEnum(String value) {
       this.value = value;
     }
     @Override
@@ -43,11 +43,11 @@ public class CbFloor implements Serializable{
     }
   }
 
-  private enum FloorStatus{
+  private enum FloorStatusEnum{
     A("正常"),X("失效");
 
     private String value;
-    FloorStatus(String value) {
+    FloorStatusEnum(String value) {
       this.value = value;
     }
     @Override
