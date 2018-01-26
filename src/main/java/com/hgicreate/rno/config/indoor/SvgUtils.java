@@ -548,9 +548,6 @@ public class SvgUtils {
                             //组装图层元素
                             DmLayerElement elementForm = new DmLayerElement();
 
-                           /*XmlUtils.SvgAttr attr = svgElem.getSvgAttrs().stream().
-                                   filter(svgAttr -> svgAttr.getAttrName().equals("id")).
-                                   collect(Collectors.toList()).get(0);*/
                             Map<String, String> elementAttr = svgElem.getSvgAttrs();
                             long elementID = dmLayerElementRepository.getSeqId();
                             elementForm.setBuildingId(Long.toString(finalBuildingId));
@@ -645,30 +642,6 @@ public class SvgUtils {
                                     poiForm.setPositionX(elementForm.getPositionX());
                                     poiForm.setPositionY(elementForm.getPositionY());
                                     poiForm.setNote(poiJsons.getString("NOTE"));
-                                    /*if (null!= finalSvgPicListJson) {
-                                      JSONObject  picJsons = new JSONObject(finalSvgPicListJson1.getString(elementForm.getSvgId()));
-                                      if (null!=picJsons){
-                                          CbPic picForm = new CbPic();
-                                          picForm.setDrawMapId(Long.toString(drawMapId));
-                                          picForm.setPoiId(Long.toString(poiForm.getPoiId()));
-                                          if (null != picJsons.getString("NEW_PIC")) {
-                                              if (false*//*! empty ( $_FILES )*//*) {
-//                                                  $Poi_file = $_FILES [$ElementForm ["SVG_ID"]];
-                                                  elementForm.getSvgId();
-                                                  if (false*//*! empty ( $Poi_file )*//*) {
-                                                      String buildingName = cbBuildingRepository.getBuildingNameByBuildingId(finalBuildingId);
-                                                      String floorName = cbFloorRepository.getFloorNameByFloorId(floorId);
-                                                      DmDrawMap drawMap = dmDrawMapRepository.findByDrawMapId(drawMapId);
-                                                      String fileName = buildingName + "_" + floorName + "_" + dmDrawMap.getDmTopic() + "_" +poiForm.getPoiName()+ "_" + getTimeByCalendar();
-                                                      *//*$PoiForm ["PIC_ID"] = SvgUtil::savePic ( $FILE_NAME, $PoiForm ["POI_ID"], $Poi_file, $FLOOR_ID, $BUILDING_ID, $DRAW_MAP_ID );
-                                                      $PicForm ["PIC_ID"] = $PoiForm ["PIC_ID"];*//*
-                                                  }
-                                              }
-                                          }
-                                         *//* $PicInfo ["NEWPICFORM"] = $PicForm;
-                                          $SVGPICLIST [$ElementForm ["SVG_ID"]] = $PicInfo;*//*
-                                      }
-                                    }*/
                                     //累加poi对象
                                     poiFormList.add(poiForm);
                                 }
