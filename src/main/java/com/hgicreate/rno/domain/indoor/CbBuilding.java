@@ -47,11 +47,11 @@ public class CbBuilding {
   @JoinColumn(name = "prov",referencedColumnName = "id")
   private Area area1;
 
-  private enum BuildType{
+  private enum BuildTypeEnum{
     MALL_("大型商场"),OFFIC("写字楼"),LARGE("大型场馆"),TRAFF("交通枢纽");
 
     private String value;
-    BuildType(String value) {
+    BuildTypeEnum(String value) {
       this.value = value;
     }
     @Override
@@ -60,11 +60,11 @@ public class CbBuilding {
     }
   }
 
-  private enum BuildStatus{
+  private enum BuildStatusEnum{
     A("正常"),E("编辑中"),X("失效");
 
     private String value;
-    BuildStatus(String value) {
+    BuildStatusEnum(String value) {
       this.value = value;
     }
     @Override
