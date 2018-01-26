@@ -19,7 +19,7 @@ public final class Constants {
 
     public static final String ADMIN_CLI_CLIENT_ID = "admin-cli";
 
-    //定义室内项目的基本URL
+    // 定义室内项目的基本URL
     public static final String SF_BASE_URL = "http://192.168.6.40/indooradmin/";
     /**
      * 缺省地区：广州市天河区
