@@ -15,10 +15,10 @@ import java.util.Map;
 @Slf4j
 public class XmlUtils {
 
-    private static final String title = "title";
-    private static final String desc = "desc";
-    private static final String width = "width";
-    private static final String height = "height";
+    private static final String TITLE = "title";
+    private static final String DESC = "desc";
+    private static final String WIDTH = "width";
+    private static final String HEIGHT = "height";
 
     public static Svg getSvgInfo(String xml) {
 
@@ -46,10 +46,10 @@ public class XmlUtils {
 
         List<Attribute> svgList = root.attributes();
         svgList.forEach(a -> {
-            if (width == a.getName()) {
+            if (WIDTH == a.getName()) {
                 svg.setWidth(a.getValue());
             }
-            if (height == a.getName()) {
+            if (HEIGHT == a.getName()) {
                 svg.setHeight(a.getValue());
             }
         });
@@ -62,10 +62,10 @@ public class XmlUtils {
             svgElems = new ArrayList<SvgElem>();
             for (Element element : gList) {
                 //元素
-                if (title.equals(element.getName())) {
+                if (TITLE.equals(element.getName())) {
                     svgLayer = new SvgLayer();
                     svgLayer.setTitle(element.getStringValue());
-                } else if (desc.equals(element.getName())) {
+                } else if (DESC.equals(element.getName())) {
                     svgLayer.setDesc(element.getStringValue());
                     svgLayers.add(svgLayer);
                 } else {
@@ -79,9 +79,11 @@ public class XmlUtils {
                     List<Attribute> listAttr = element.attributes();
                     for (Attribute attr : listAttr) {
                         //属性
-                        String name = attr.getName();//属性名称
-                        String value = attr.getValue();//属性的值
-                        if (element.getName() != title || element.getName() != desc) {
+                        //属性名称
+                        String name = attr.getName();
+                        //属性的值
+                        String value = attr.getValue();
+                        if (element.getName() != TITLE || element.getName() != DESC) {
                             svgAttrs.put(name, value);
                         }
                     }
