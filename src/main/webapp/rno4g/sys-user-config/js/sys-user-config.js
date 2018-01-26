@@ -119,6 +119,7 @@ function getCurrentUserInfo(){
         }
     });
 }
+
 function showUserInfo(raw) {
     if (raw) {
         var data = eval("(" + raw + ")");

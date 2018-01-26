@@ -38,6 +38,7 @@ public class AppResource {
         // 获取登录名
         map.put("username", SecurityUtils.getCurrentUserLogin());
         map.put("fullName", SecurityUtils.getFullName());
+        map.put("roles", SecurityUtils.getRoles());
 
         String url = request.getServerName();
         log.debug("URL : {}", url);

@@ -6,7 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.jasig.cas.client.validation.AssertionImpl;
 import org.springframework.security.cas.authentication.CasAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import java.util.*;
 
 /**
  * 安全工具类
@@ -48,7 +52,18 @@ public final class SecurityUtils {
             return assertion.getPrincipal().getAttributes()
                     .getOrDefault("email", "").toString();
         } else {
-            return Constants.ANONYMOUS_NAME;
+            return "";
         }
+    }
+
+    public static List<String> getRoles() {
+        List<String> list = new ArrayList<>();
+        if (auth() != null) {
+            CasAuthenticationToken casToken = (CasAuthenticationToken) auth();
+            casToken.getUserDetails().getAuthorities().forEach(r -> {
+                list.add(r.getAuthority());
+            });
+        }
+        return list;
     }
 }

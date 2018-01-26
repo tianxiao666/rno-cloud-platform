@@ -4,6 +4,16 @@ var secondLevelMenuSelected = "";
 var thirdLevelMenuSelected = "";
 var appCode;
 
+function clickUserConfig() {
+    $('#iframe').attr('src','rno4g/sys-user-config/sys-user-config.html');
+}
+function clickApi() {
+    $('#iframe').attr('src','swagger-ui.html');
+}
+function clickSysConfig() {
+    $('#iframe').attr('src','system.html');
+}
+
 $(function () {
     //检验用户信息
     $.ajax({
@@ -21,11 +31,27 @@ $(function () {
         async: false,
         success: function (data) {
             var app = data.app;
+            appCode = app.code;
             document.title = app.name;
             $(".logo").html("<img src='images/" + app.logo + "'>");
             $("#software-version").html(app.name + " " + app.version);
-            $("#greeting").html(data.fullName + "，欢迎您！");
-            appCode = app.code;
+
+            // user-info 区域
+            var htmlInfo = [];
+            htmlInfo.push('<b id="greeting">' + data.fullName + "，欢迎您！</b>");
+            if ($.inArray('ROLE_USER', data.roles) !== -1) {
+                htmlInfo.push('<a href="#" onclick="clickUserConfig()">我的设置</a>');
+            }
+            if ($.inArray('ROLE_DEV', data.roles) !== -1) {
+                htmlInfo.push('<span class="split"> | </span>');
+                htmlInfo.push('<a href="#" onclick="clickApi()">API接口</a>');
+            }
+            if ($.inArray('ROLE_ADMIN', data.roles) !== -1) {
+                htmlInfo.push('<span class="split"> | </span>');
+                htmlInfo.push('<a href="#" onclick="clickSysConfig()">系统设置</a>');
+            }
+            htmlInfo.push('<span class="quit"><a href="logout">退出</a></span>');
+            $(".user-info").html(htmlInfo.join(''));
         }
     });
 

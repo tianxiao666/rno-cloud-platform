@@ -33,11 +33,6 @@ public class UserResource {
         return userService.saveUser(user);
     }
 
-    @GetMapping("/check-user-info")
-    public String checkUserInfo() {
-        return userService.checkUser();
-    }
-
     @PostMapping("/reset-password")
     public boolean resetPassword(String oldPassword, String newPassword) {
         return casUserService.resetPassword(oldPassword, newPassword);

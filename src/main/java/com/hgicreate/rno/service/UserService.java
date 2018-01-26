@@ -26,15 +26,15 @@ public class UserService {
         this.casUserService = casUserService;
     }
 
-    public User getCurrentUser(){
+    public User getCurrentUser() {
         String username = SecurityUtils.getCurrentUserLogin();
         List<User> userList = userRepository.findByUsername(username);
         return userList.get(0);
     }
 
-    public boolean saveUser(User user){
+    public boolean saveUser(User user) {
         boolean isSuccess = casUserService.updateAccount(user);
-        if (isSuccess){
+        if (isSuccess) {
             user.setLastModifiedDate(new Date());
             user.setLastModifiedUser(user.getUsername());
             userRepository.save(user);
@@ -42,26 +42,27 @@ public class UserService {
         return isSuccess;
     }
 
-    public String checkUser(){
+    public String checkUser() {
         List<User> userList = userRepository.findByUsername(SecurityUtils.getCurrentUserLogin());
         //如果用户信息已存在数据库
-        if (userList != null && !userList.isEmpty()){
+        if (userList != null && !userList.isEmpty()) {
             String message = "更新了";
             User user = userList.get(0);
             String fullName = SecurityUtils.getFullName();
             String email = SecurityUtils.getEmail();
             //判断fullName和email是否相同，如果不同，则更新，更新人为system
-            if (!fullName.equals(user.getFullName())){
+            if (!fullName.equals(user.getFullName())) {
                 user.setFullName(fullName);
                 user.setLastModifiedUser(Constants.SYSTEM_ACCOUNT);
                 message = message + "fullName.";
-            } if (!email.equals(user.getEmail())){
+            }
+            if (!email.equals(user.getEmail())) {
                 user.setEmail(email);
                 user.setLastModifiedUser(Constants.SYSTEM_ACCOUNT);
                 message = message + "email";
             }
             return message;
-        }else{
+        } else {
             //从数据库中新建一个用户
             User newUser = new User();
             newUser.setEmail(SecurityUtils.getEmail());
