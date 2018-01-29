@@ -23,8 +23,8 @@ spring:
       hibernate.format_sql: true
   http:
     multipart:
-      max-file-size: 800MB
-      max-request-size: 800MB
+      max-file-size: 900MB
+      max-request-size: 900MB
 
 rno:
   app-code: rno-tdlte
@@ -32,7 +32,7 @@ rno:
   path:
     upload-files: /tmp/rno-cloud-platform/uploads
   ftp:
-    host: 192.168.9.78
+    host: 192.168.50.88
     port: 21
     username: rnoftp
     password: rnodev
