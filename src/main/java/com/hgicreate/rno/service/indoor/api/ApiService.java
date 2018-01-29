@@ -58,9 +58,9 @@ public class ApiService extends Api {
         }
         List<Map<String, Object>> buildingFloorList = null;
         try {
-            //转换成为JSONObject对象
+            // 转换成为JSONObject对象
             JSONObject jsons = new JSONObject(jsonArrayObj);
-            //判断是否有场所ID传入
+            // 判断是否有场所ID传入
             if (jsons.has("BUILDING_ID")) {
                 long buildingId = jsons.getLong("BUILDING_ID");
                 buildingFloorList = apiDataMapper.getBuildingFloorList(buildingId);
@@ -91,7 +91,7 @@ public class ApiService extends Api {
         }
 
         try {
-            //转换成为JSONObject对象
+            // 转换成为JSONObject对象
             JSONObject jsons = new JSONObject(jsonArrayObj);
             Long buildingId = null;
             if (jsons.has("BUILDING_ID")) {
@@ -177,7 +177,7 @@ public class ApiService extends Api {
         Map<String, Object> map = new HashMap<String, Object>();
         List<Map<String, Object>> lists = null;
         try {
-            //转换成为JSONObject对象
+            // 转换成为JSONObject对象
             JSONObject jsonObj = new JSONObject(jsonArrayObj);
             if (jsonObj.has("BUILDING_ID")) {
                 map.put("buildingId", jsonObj.getString("BUILDING_ID"));
@@ -215,30 +215,30 @@ public class ApiService extends Api {
                 message = "END_DATE属性值为空！";
                 return renderErrorJson(message);
             }
-            //先确定点坐标归属方格区域
+            // 先确定点坐标归属方格区域
             double x = Double.parseDouble(jsonObj.getString("PLANE_X"));
             double y = Double.parseDouble(jsonObj.getString("PLANE_Y"));
             double length = Double.parseDouble(jsonObj.getString("WIDTH").replaceAll("[a-zA-Z]","" ));
             double width = Double.parseDouble(jsonObj.getString("HEIGHT").replaceAll("[a-zA-Z]","" ));
-            //长分10格
+            // 长分10格
             int m = 10;
-            //宽分10格
+            // 宽分10格
             int n = 10;
-            //单元方格长
+            // 单元方格长
             double grid_len = length / m;
-            //单元方格宽
+            // 单元方格宽
             double grid_wid = width / n;
-            //确定矩阵栅格列
+            // 确定矩阵栅格列
             double col = floor(x / grid_len);
-            //确定矩阵栅格行
+            // 确定矩阵栅格行
             double row = floor(y / grid_wid);
-            //左上
+            // 左上
             double grid_ltx = grid_len * col;
             double grid_lty = grid_wid * row;
-            //右下
+            // 右下
             double grid_rbx = grid_len * (col + 1);
             double grid_rby = grid_wid * (row + 1);
-            //区域确定结束
+            // 区域确定结束
             map.put("gridLtx", grid_ltx);
             map.put("gridLty", grid_lty);
             map.put("gridRbx", grid_rbx);
@@ -268,7 +268,7 @@ public class ApiService extends Api {
         }
         Map<String, Object> map = new HashMap<String, Object>();
         try {
-            //转换成为JSONObject对象
+            // 转换成为JSONObject对象
             JSONObject jsonObj = new JSONObject(jsonArrayObj);
             if (jsonObj.has("BUILDING_ID")) {
                 map.put("buildingId", jsonObj.getString("BUILDING_ID"));
@@ -330,9 +330,9 @@ public class ApiService extends Api {
                 message = "DEVICE_ID属性值为空！";
                 return renderErrorJson(message);
             }
-            //new日期对象
+            // new日期对象
             Date date = new Date();
-            //转换提日期输出格式
+            // 转换提日期输出格式
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             String meaDate = dateFormat.format(date);
             map.put("meaDate", meaDate);
@@ -359,7 +359,7 @@ public class ApiService extends Api {
         }
         Map<String, Object> map = new HashMap<String, Object>();
         try {
-            //转换成为JSONObject对象
+            // 转换成为JSONObject对象
             JSONObject jsonObj = new JSONObject(jsonArrayObj);
             if (jsonObj.has("BUILDING_ID")) {
                 map.put("buildingId", jsonObj.getString("BUILDING_ID"));
@@ -415,9 +415,9 @@ public class ApiService extends Api {
                 message = "Derection属性值为空！";
                 return renderErrorJson(message);
             }
-            //new日期对象
+            // new日期对象
             Date date = new Date();
-            //转换提日期输出格式
+            // 转换提日期输出格式
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             String meaDate = dateFormat.format(date);
             map.put("meaDate", meaDate);
@@ -446,7 +446,7 @@ public class ApiService extends Api {
         Map<String, Object> map = new HashMap<String, Object>();
         List<Map<String, Object>> results = null;
         try {
-            //转换成为JSONObject对象
+            // 转换成为JSONObject对象
             JSONObject jsonObj = new JSONObject(jsonArrayObj);
             if (jsonObj.has("BUILDING_ID")) {
                 flag = true;
@@ -490,12 +490,12 @@ public class ApiService extends Api {
                 message = "SVG_ID属性值为空！";
                 return renderErrorJson(message);
             }
-            //过滤状态无效的
+            // 过滤状态无效的
             map.put("status", "X");
             if (flag) {
                 results = apiDataMapper.getPoiList(map);
                 if (results != null || !results.isEmpty()) {
-                    //更名
+                    // 更名
                     results.forEach((s) -> {
                         if (s.containsKey("ANT_FREQUENCY")) {
                             s.put("FREQUENCY", s.get("ANT_FREQUENCY"));
@@ -534,7 +534,7 @@ public class ApiService extends Api {
         Map<String, Object> map = new HashMap<String, Object>();
         String content = "";
         try {
-            //转换成为JSONObject对象
+            // 转换成为JSONObject对象
             JSONObject jsonObj = new JSONObject(jsonArrayObj);
             Double longitude = 0D;
             Double latitude = 0D;
@@ -544,7 +544,7 @@ public class ApiService extends Api {
             }
             if (jsonObj.has("LONGITUDE")) {
                 longitude = jsonObj.getDouble("LONGITUDE");
-                //坐标值处理，让它与数据库相匹配
+                // 坐标值处理，让它与数据库相匹配
                 longitude = SvgUtils.getEncodeLatLng(longitude);
                 map.put("longitude", longitude);
             } else {
@@ -553,7 +553,7 @@ public class ApiService extends Api {
             }
             if (jsonObj.has("LATITUDE")) {
                 latitude = jsonObj.getDouble("LATITUDE");
-                //坐标值处理，让它与数据库相匹配
+                // 坐标值处理，让它与数据库相匹配
                 latitude = SvgUtils.getEncodeLatLng(latitude);
                 map.put("latitude", latitude);
             } else {
@@ -561,21 +561,21 @@ public class ApiService extends Api {
                 return renderErrorJson(message);
             }
             if (jsonObj.has("RANGE")) {
-                //有范围值时的查询条件
+                // 有范围值时的查询条件
                 range = jsonObj.getDouble("RANGE");
                 range = SvgUtils.getEncodeLatLng(range / 111.2);
                 map.put("range", range);
             }
-            //过滤状态无效的
+            // 过滤状态无效的
             map.put("status", "X");
-            //附近场所的数据
+            // 附近场所的数据
             List<Map<String, Object>> buildingList = apiDataMapper.getNearbyBuildingList(map);
-            //把数据库的坐标值转成真实坐标值
+            // 把数据库的坐标值转成真实坐标值
             longitude = SvgUtils.getDecodeLatLng(longitude);
             latitude = SvgUtils.getDecodeLatLng(latitude);
             if (null != buildingList && !buildingList.isEmpty()) {
                 String picWhere = "";
-                //场所图片信息的查询条件
+                // 场所图片信息的查询条件
                 for (Map<String, Object> buildingMap : buildingList) {
                     if ("".equals(picWhere)) {
                         picWhere = picWhere + " (BUILDING_ID=" + buildingMap.get("BUILDING_ID");
@@ -584,13 +584,13 @@ public class ApiService extends Api {
                     }
                 }
                 picWhere = picWhere + ") and FLOOR_ID is null";
-                //查询场所图片信息
+                // 查询场所图片信息
                 List<Map<String, Object>> buildingIconList = apiDataMapper.getPic(picWhere);
                 String filePath = "";
-                //定义媒体库物理路径
+                // 定义媒体库物理路径
                 String medialibPath = System.getProperty("user.dir") + File.separator + "medialib/";
                 for (Map<String, Object> buildingMap : buildingList) {
-                    //返回数据的生成
+                    // 返回数据的生成
                     buildingMap.put("LT_LONGITUDEL", SvgUtils.getDecodeLatLng(Double.parseDouble(buildingMap.get("LT_LONGITUDEL").toString())));
                     buildingMap.put("LT_LATITUDEL", SvgUtils.getDecodeLatLng(Double.parseDouble(buildingMap.get("LT_LATITUDEL").toString())));
                     buildingMap.put("RB_LONGITUDEL", SvgUtils.getDecodeLatLng(Double.parseDouble(buildingMap.get("RB_LONGITUDEL").toString())));
@@ -601,7 +601,7 @@ public class ApiService extends Api {
                             + Double.parseDouble(buildingMap.get("RB_LATITUDEL").toString())) / 2;
                     buildingMap.put("DISTANCE", SvgUtils.getLatLngDistance(latitude, longitude, buildingLATITUDEL, buildingLONGITUDEL) / 1000);
                     if (null != buildingIconList && !buildingIconList.isEmpty()) {
-                        //场所与图片信息相匹配
+                        // 场所与图片信息相匹配
                         for (Map<String, Object> buildingIconMap : buildingIconList) {
                             if (buildingIconMap.get("BUILDING_ID").toString().equals(buildingIconMap.get("BUILDING_ID").toString())) {
                                 filePath = medialibPath + buildingIconMap.get("PATH").toString() + "/" + buildingIconMap.get("FILENAME").toString() +
@@ -614,10 +614,10 @@ public class ApiService extends Api {
                         }
                     }
                 }
-                //按DISTANCE从小到大排序
+                // 按DISTANCE从小到大排序
                 buildingList.sort((map1, map2) -> map1.get("DISTANCE").toString().
                         compareTo(map2.get("DISTANCE").toString()));
-                //生成返回数据
+                // 生成返回数据
                 content = "{\"TOTALCOUNT\":" + buildingList.size() + ",\"NearbyBuildingList\":" + objectToJson(objectToJson(buildingList)) + "}";
             } else {
                 content = "{}";
@@ -642,7 +642,7 @@ public class ApiService extends Api {
             message = "参数为空！";
             return renderErrorJson(message);
         }
-        //转换成为JSONObject对象
+        // 转换成为JSONObject对象
         JSONObject jsonObj = null;
         Double versionCode = 0D;
         try {
@@ -704,7 +704,7 @@ public class ApiService extends Api {
         Map<String, Object> map = new HashMap<String, Object>();
         List<Map<String, Object>> results = null;
         try {
-            //转换成为JSONObject对象
+            // 转换成为JSONObject对象
             JSONObject jsonObj = new JSONObject(jsonArrayObj);
             if (jsonObj.has("BUILDING_ID")) {
                 flag = true;
@@ -726,7 +726,7 @@ public class ApiService extends Api {
                 flag = true;
                 map.put("svgId", jsonObj.getString("SVG_ID"));
             }
-            //过滤状态无效的
+            // 过滤状态无效的
             map.put("status", "X");
             if (flag) {
                 results = apiDataMapper.getApList(map);
@@ -760,7 +760,7 @@ public class ApiService extends Api {
         Map<String, Object> map = new HashMap<String, Object>();
 
         try {
-            //转换成为JSONObject对象
+            // 转换成为JSONObject对象
             JSONObject jsons = new JSONObject(jsonArrayObj);
             JSONArray apList = null;
             Double longitude = null;
@@ -799,7 +799,7 @@ public class ApiService extends Api {
 
             if (null != apList && !"".equals(apList)) {
                 if (null != longitude && null != latitude) {
-                    //坐标值处理，让它与数据库相匹配
+                    // 坐标值处理，让它与数据库相匹配
                     longitude = SvgUtils.getEncodeLatLng(longitude);
                     latitude = SvgUtils.getEncodeLatLng(latitude);
                     map.put("longitude", longitude);
@@ -808,10 +808,10 @@ public class ApiService extends Api {
                         buildingId = jsons.getLong("BUILDING_ID");
                         map.put("buildingId", buildingId);
                     }
-                    //定位的场所数据
+                    // 定位的场所数据
                     List<Map<String, Object>> buildingList = apiDataMapper.getBuildingList(map);
                     if (null != buildingList && !buildingList.isEmpty()) {
-                        //通过场所ID获取场所名称
+                        // 通过场所ID获取场所名称
                         buildingName = apiDataMapper.getBuildingNameById(buildingId);
                         Map<String, Double> locationMap = location.getLocation(apList, buildingId, floorId, drawMapId);
                         if (locationMap == null) {
@@ -819,7 +819,7 @@ public class ApiService extends Api {
                         }
                         JSONObject maxAp = null;
                         JSONObject jsonObject = null;
-                        //获取AP信号最强的AP信息
+                        // 获取AP信号最强的AP信息
                         for (int i = 0; i < apList.length(); i++) {
                             jsonObject = apList.getJSONObject(i);
                             if (maxAp == null) {
@@ -830,7 +830,7 @@ public class ApiService extends Api {
                                 }
                             }
                         }
-                        //生成AP查询条件
+                        // 生成AP查询条件
                         if (maxAp.has("MAC_BSSID")) {
                             maxAp.put("MAC_BSSID", maxAp.getString("MAC_BSSID").replace("-", ":"));
                             map.put("macBssid", maxAp.getString("MAC_BSSID").toUpperCase());
@@ -842,24 +842,24 @@ public class ApiService extends Api {
                             map.put("channel", maxAp.get("CHANNEL"));
                         }
                             map.put("floorId", floorId);
-                        //匹配的AP信息
+                        // 匹配的AP信息
                         List<Map<String, Object>> apMapList = apiDataMapper.getApLocationList(map);
                         if (null != apMapList && !apMapList.isEmpty()) {
                             floorName = apiDataMapper.getFloorNameById(floorId);
                             locationFloor = buildingName + "_" + floorName;
-                            //获取平面图信息
+                            // 获取平面图信息
                             floorSvgInfo = getFloorSvg(drawMapId, buildingId, floorId);
                         } else {
-                            //匹配AP不成功
-                            //传入数据有楼层ID
-                            //楼层信息
+                            // 匹配AP不成功
+                            // 传入数据有楼层ID
+                            // 楼层信息
                             floorlist = apiDataMapper.getFloorListById(floorId);
-                            //传入信息没有楼层ID
+                            // 传入信息没有楼层ID
                             if (null == floorlist || floorlist.isEmpty()) {
-                                //去场所数据库的第一个楼层信息
+                                // 去场所数据库的第一个楼层信息
                                 floorlist = apiDataMapper.getFloorListByBuildingId(buildingId);
                             }
-                            //获取平面图信息
+                            // 获取平面图信息
                             floorSvgInfo = getFloorSvg(drawMapId, buildingId, Long.parseLong(floorlist.get(0).get("FLOOR_ID").toString()));
                             // 获取楼层名称
                             floorId = Long.parseLong(floorlist.get(0).get("FLOOR_ID").toString());
@@ -869,7 +869,7 @@ public class ApiService extends Api {
                         if (null != floorSvgInfo.get("message") && !"".equals(floorSvgInfo.get("message").toString())) {//获取楼层平面图错误信息
                             message = floorSvgInfo.get("message").toString();
                         }
-                        //生成返回数据
+                        // 生成返回数据
                         content = "{" +
                                 "\"X\":" + locationMap.get("x") + "," +
                                 "\"Y\":" + locationMap.get("y") + "," +
@@ -914,22 +914,22 @@ public class ApiService extends Api {
         Map<String, Object> map = new HashMap<String, Object>();
         String content = "";
         try {
-            //转换成为JSONObject对象
+            // 转换成为JSONObject对象
             JSONObject jsonObj = new JSONObject(jsonArrayObj);
             Double longitude = 0D;
             Double latitude = 0D;
             Double range;
             String keyWord = "";
             if (jsonObj.has("KEYWORD")) {
-                //过滤html
+                // 过滤html
                 keyWord = filterHtml(jsonObj.getString("KEYWORD").trim());
-                //转义单引号 ,ORACLE中查询一个单引号时要转成两个单引号
+                // 转义单引号 ,ORACLE中查询一个单引号时要转成两个单引号
                 keyWord = keyWord.replaceAll("'", "''");
                 map.put("KEYWORD", keyWord);
             }
             if (jsonObj.has("LONGITUDE")) {
                 longitude = jsonObj.getDouble("LONGITUDE");
-                //坐标值处理，让它与数据库相匹配
+                // 坐标值处理，让它与数据库相匹配
                 longitude = SvgUtils.getEncodeLatLng(longitude);
                 map.put("longitude", longitude);
             } else {
@@ -938,7 +938,7 @@ public class ApiService extends Api {
             }
             if (jsonObj.has("LATITUDE")) {
                 latitude = jsonObj.getDouble("LATITUDE");
-                //坐标值处理，让它与数据库相匹配
+                // 坐标值处理，让它与数据库相匹配
                 latitude = SvgUtils.getEncodeLatLng(latitude);
                 map.put("latitude", latitude);
             } else {
@@ -946,21 +946,21 @@ public class ApiService extends Api {
                 return renderErrorJson(message);
             }
             if (jsonObj.has("RANGE")) {
-                //有范围值时的查询条件
+                // 有范围值时的查询条件
                 range = jsonObj.getDouble("RANGE");
                 range = SvgUtils.getEncodeLatLng(range / 111.2);
                 map.put("range", range);
             }
-            //过滤状态无效的
+            // 过滤状态无效的
             map.put("status", "X");
-            //附近匹配场所的数据
+            // 附近匹配场所的数据
             List<Map<String, Object>> buildingList = apiDataMapper.getMatchBuildingList(map);
-            //把数据库的坐标值转成真实坐标值
+            // 把数据库的坐标值转成真实坐标值
             longitude = SvgUtils.getDecodeLatLng(longitude);
             latitude = SvgUtils.getDecodeLatLng(latitude);
             if (null != buildingList && !buildingList.isEmpty()) {
                 String picWhere = "";
-                //场所图片信息的查询条件
+                // 场所图片信息的查询条件
                 for (Map<String, Object> buildingMap : buildingList) {
                     if ("".equals(picWhere)) {
                         picWhere = picWhere + " (BUILDING_ID=" + buildingMap.get("BUILDING_ID");
@@ -969,13 +969,13 @@ public class ApiService extends Api {
                     }
                 }
                 picWhere = picWhere + ") and FLOOR_ID is null";
-                //查询场所图片信息
+                // 查询场所图片信息
                 List<Map<String, Object>> buildingIconList = apiDataMapper.getPic(picWhere);
                 String filePath = "";
-                //定义媒体库物理路径
+                // 定义媒体库物理路径
                 String medialibPath = System.getProperty("user.dir") + File.separator + "medialib/";
                 for (Map<String, Object> buildingMap : buildingList) {
-                    //返回数据的生成
+                    // 返回数据的生成
                     buildingMap.put("LT_LONGITUDEL", SvgUtils.getDecodeLatLng(Double.parseDouble(buildingMap.get("LT_LONGITUDEL").toString())));
                     buildingMap.put("LT_LATITUDEL", SvgUtils.getDecodeLatLng(Double.parseDouble(buildingMap.get("LT_LATITUDEL").toString())));
                     buildingMap.put("RB_LONGITUDEL", SvgUtils.getDecodeLatLng(Double.parseDouble(buildingMap.get("RB_LONGITUDEL").toString())));
@@ -986,7 +986,7 @@ public class ApiService extends Api {
                             + Double.parseDouble(buildingMap.get("RB_LATITUDEL").toString())) / 2;
                     buildingMap.put("DISTANCE", SvgUtils.getLatLngDistance(latitude, longitude, buildingLATITUDEL, buildingLONGITUDEL) / 1000);
                     if (null != buildingIconList && !buildingIconList.isEmpty()) {
-                        //场所与图片信息相匹配
+                        // 场所与图片信息相匹配
                         for (Map<String, Object> buildingIconMap : buildingIconList) {
                             if (buildingIconMap.get("BUILDING_ID").toString().equals(buildingIconMap.get("BUILDING_ID").toString())) {
                                 filePath = medialibPath + buildingIconMap.get("PATH").toString() + "/" + buildingIconMap.get("FILENAME").toString() + "." +
@@ -999,10 +999,10 @@ public class ApiService extends Api {
                         }
                     }
                 }
-                //按DISTANCE从小到大排序
+                // 按DISTANCE从小到大排序
                 buildingList.sort((map1, map2) -> map1.get("DISTANCE").toString().
                         compareTo(map2.get("DISTANCE").toString()));
-                //生成返回数据
+                // 生成返回数据
                 content = "{\"TOTALCOUNT\":" + buildingList.size() + ",\"NearbyBuildingList\":" + objectToJson(buildingList) + "}";
             } else {
                 content = "{}";
@@ -1029,7 +1029,7 @@ public class ApiService extends Api {
             result.put("SVGSRC", "");
             result.put("LayerList", Collections.EMPTY_LIST);
         } else {
-            //通过场所ID和楼层ID获取楼层平面图信息
+            // 通过场所ID和楼层ID获取楼层平面图信息
             try {
                 response = svgUtil.getSvg(buildingId, floorId, null);
                 result.put("DRAW_MAP_ID", response.get("DRAW_MAP_ID"));

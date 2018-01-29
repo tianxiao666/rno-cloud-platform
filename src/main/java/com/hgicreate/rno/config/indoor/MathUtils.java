@@ -24,7 +24,7 @@ public class MathUtils {
 
     /**
      * 计算两个圆的交点
-     * <p>
+     *
      * 设w=(r1*r1-r2*r2-a1*a1+a2*a2-b1*b1+b2*b2+2*b1-2*b2)/(2*a2-2*a1)
      * 则计算两个圆交点的方程转换为x = wy 带入方程得到(w*w+1)*y*y -
      * (2*a1*e+2*b1)*y+(a1*a1+b1*b1-r1*r1)=0 然后根据一元二次方程的求解
@@ -72,7 +72,6 @@ public class MathUtils {
 
     /**
      * Unitary quadratic equation 获取一元二次方程的解
-     *
      * @param a 不能为0
      */
     private Map<String, Double> getUQESolution(double a, double b, double c) {

@@ -10,6 +10,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "INDOOR_TYPE_CODE")
 public class TypeCode {
+
   @Id
   private String codeType;
   private String codeName;

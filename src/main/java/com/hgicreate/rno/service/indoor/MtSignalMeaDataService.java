@@ -46,7 +46,7 @@ public class MtSignalMeaDataService {
         if (jsonArrayObj==null || "".equals(jsonArrayObj)) return false;
         MtSignalMeaData mtSignalMeaData = new MtSignalMeaData();
         try {
-            //转换成为JSONObject对象
+            // 转换成为JSONObject对象
             JSONObject jsonObj = new JSONObject(jsonArrayObj);
             mtSignalMeaData.setBuildingId(jsonObj.getString("BUILDING_ID"));
             mtSignalMeaData.setFloorId(jsonObj.getString("FLOOR_ID"));

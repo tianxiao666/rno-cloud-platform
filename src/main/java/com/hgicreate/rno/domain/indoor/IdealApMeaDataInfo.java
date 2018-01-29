@@ -8,6 +8,7 @@ import javax.persistence.Id;
 @Data
 @Entity
 public class IdealApMeaDataInfo{
+
   @Id
   private Long id;
   private String cityName;

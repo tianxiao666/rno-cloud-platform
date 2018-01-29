@@ -45,7 +45,7 @@ public class IdealApMeaDataService {
         if (jsonArrayObj==null || "".equals(jsonArrayObj)) return false;
         IdealApMeaData idealApMeaData = new IdealApMeaData();
         try {
-            //转换成为JSONObject对象
+            // 转换成为JSONObject对象
             JSONObject jsonObj = new JSONObject(jsonArrayObj);
 
             idealApMeaData.setBuildingId(jsonObj.getString("BUILDING_ID"));

@@ -37,12 +37,4 @@ public class MtSignalMeaDataResource {
             log.debug("退出资源 mtSignalCollection： MT测量数据采集保存失败！");
         }
     }
-
-    /*@GetMapping("/get-mt-signal-grid-data")
-    public void getMtSignalGridMeaData(@RequestParam("jsonArrayObj") String jsonArrayObj){
-        log.debug("进入资源 接口getMtSignalGridMeaData MT测量栅格数据,jsonArrayObj={}",
-                jsonArrayObj);
-        String msg = mtSignalMeaDataService.getMtSignalGridMeaData(jsonArrayObj);
-        log.debug("退出资源 getMtSignalGridMeaData： msg={}",msg);
-    }*/
 }

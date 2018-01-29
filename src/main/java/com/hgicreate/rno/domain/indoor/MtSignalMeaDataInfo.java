@@ -9,6 +9,7 @@ import javax.persistence.Id;
 @Data
 @Entity
 public class MtSignalMeaDataInfo {
+
   @Id
   private long id;
   @Column(name = "CITY_NAME")

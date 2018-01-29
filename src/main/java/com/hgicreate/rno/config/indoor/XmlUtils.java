@@ -30,7 +30,7 @@ public class XmlUtils {
             e.printStackTrace();
             log.error("XML解析出现错误：{}", e.getMessage());
         }
-        //获取根节点
+        // 获取根节点
         Element root = document.getRootElement();
 
         Map<String, Object> obj = new HashMap<String, Object>();
@@ -58,10 +58,10 @@ public class XmlUtils {
         List<Element> gLists = root.elements();
         for (Element layer : gLists) {
             List<Element> gList = layer.elements();
-            //图层 跳过g
+            // 图层 跳过g
             svgElems = new ArrayList<SvgElem>();
             for (Element element : gList) {
-                //元素
+                // 元素
                 if (TITLE.equals(element.getName())) {
                     svgLayer = new SvgLayer();
                     svgLayer.setTitle(element.getStringValue());
@@ -72,23 +72,22 @@ public class XmlUtils {
                     svgElem = new SvgElem();
                     svgElem.setElementName(element.getName());
                     if (!"".equals(element.getStringValue())) {
-                        //该元素有值
+                        // 该元素有值
                         svgElem.setElementVal(element.getStringValue());
                     }
                     svgAttrs = new HashMap<String, String>();
                     List<Attribute> listAttr = element.attributes();
                     for (Attribute attr : listAttr) {
-                        //属性
-                        //属性名称
+                        // 属性 属性名称
                         String name = attr.getName();
-                        //属性的值
+                        // 属性的值
                         String value = attr.getValue();
                         if (element.getName() != TITLE || element.getName() != DESC) {
                             svgAttrs.put(name, value);
                         }
                     }
                     svgElem.setSvgAttrs(svgAttrs);
-                    //排除title与desc元素
+                    // 排除title与desc元素
                     svgElems.add(svgElem);
                 }
                 svgLayer.setSvgElems(svgElems);

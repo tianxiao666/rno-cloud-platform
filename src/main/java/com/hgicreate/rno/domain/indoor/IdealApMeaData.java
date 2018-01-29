@@ -9,7 +9,9 @@ import java.io.Serializable;
 @Entity
 @Table(name = "INDOOR_CB_IDEAL_AP_MEA_DATA")
 public class IdealApMeaData implements Serializable{
+
   private static final long serialVersionUID = 1L;
+
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long idealApId;

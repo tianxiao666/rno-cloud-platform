@@ -96,7 +96,7 @@ public class SvgUtils {
     public double getTransformValue(double number, String type) {
         double val = 0;
         if ("MSE".equals(type)) {
-            /* 只保留小数点后5位*/
+            // 只保留小数点后5位
             int position_before = Double.toString(number).indexOf(".");
             if (position_before != -1) {
                 number = Double.parseDouble(Double.toString(number).substring(0, position_before + 6));
@@ -178,9 +178,11 @@ public class SvgUtils {
         double b = this.rad(lng1) - this.rad(lng2);
 
         double val = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
-        val = val * 6378137.0; // EARTH_RADIUS;
+        // EARTH_RADIUS;
+        val = val * 6378137.0;
         val = Math.round(val * 10000) / 10000;
-        return val;  //Unit:m
+        // Unit:m
+        return val;
     }
 
     /**
@@ -192,18 +194,24 @@ public class SvgUtils {
             lnglats[0] = -1;
             return lnglats;
         }
-        double distance = this.GetDistance(lng1, lat1, lng2, lat2); //2点距离米
-        double oppside = this.GetDistance(lng2, lat1, lng2, lat2); //对边距离
+        // 2点距离米
+        double distance = this.GetDistance(lng1, lat1, lng2, lat2);
+        // 对边距离
+        double oppside = this.GetDistance(lng2, lat1, lng2, lat2);
         double rad = Math.asin(oppside / distance);
 
-        //距离转换为度数
-        double lngLatM = this.GetDistance(1); //1度的距离。米
-        double adis = distance * ratio; //距离A.米..
+        // 距离转换为度数 1度的距离。米
+        double lngLatM = this.GetDistance(1);
+        // 距离A.米..
+        double adis = distance * ratio;
 
-        double lngside = Math.sin(rad) * adis; //距离对边
-        double latside = Math.cos(rad) * adis; //斜边
+        // 距离对边
+        double lngside = Math.sin(rad) * adis;
+        // 斜边
+        double latside = Math.cos(rad) * adis;
 
-        lngside = lngside / lngLatM; //距离变回度数.
+        // 距离变回度数.
+        lngside = lngside / lngLatM;
         latside = latside / lngLatM;
         double newlng = 0;
         double newlat = 0;
@@ -270,11 +278,11 @@ public class SvgUtils {
 
                 response.put("STATUSNAME", cDict.BUILD_STATUS);
 
-                //解析器工厂
+                // 解析器工厂
                 DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-                //解析器
+                // 解析器
                 DocumentBuilder db = dbf.newDocumentBuilder();
-                //文档树模型
+                // 文档树模型
                 Document dom = db.newDocument();
                 Element svg = dom.createElement("svg");
                 dom.appendChild(svg);
@@ -286,7 +294,7 @@ public class SvgUtils {
                 List<DmPlaneLayer> LayerFormList = dmPlaneLayerRepository.findByDrawMapIdAndStatusOrderByLOrder(Long.toString(drawMapId), this.STATUS_NORMAL);
                 List<DmLayerElement> ElementFormList = dmLayerElementRepository.findByDrawMapIdAndStatusOrderByElementId(Long.toString(drawMapId), this.STATUS_NORMAL);
 
-                //通过层ID存储元素集合[每个图层中包含n个元素]
+                // 通过层ID存储元素集合[每个图层中包含n个元素]
                 Map<String, List<DmLayerElement>> LayerElementFormList = new HashMap<String, List<DmLayerElement>>();
                 ElementFormList.forEach(ElementForm -> {
                     List<DmLayerElement> dmLayerElementLists = LayerElementFormList.get(ElementForm.getLayerId());
@@ -298,7 +306,7 @@ public class SvgUtils {
                 });
 
                 List<DmLayerElementAttr> ElementAttrFormList = dmLayerElementAttrRepository.findByDrawMapId(Long.toString(drawMapId));
-                //通过元素ID存储元素属性集合[每个元素中包含n个属性名及属性值]
+                // 通过元素ID存储元素属性集合[每个元素中包含n个属性名及属性值]
                 Map<String, List<DmLayerElementAttr>> LayerElementAttrFormList = new HashMap<String, List<DmLayerElementAttr>>();
                 if (null != ElementAttrFormList && ElementAttrFormList.size() != 0) {
                     ElementAttrFormList.forEach(ElementAttrForm -> {
@@ -312,7 +320,7 @@ public class SvgUtils {
                 }
                 Map<String, String> LayerList = new HashMap<String, String>();
                 if (null != LayerFormList && LayerFormList.size() != 0) {
-                    //图层创建
+                    // 图层创建
                     LayerFormList.forEach(LayerForm -> {
                         long layerId = LayerForm.getLayerId();
                         Element g = dom.createElement("g");
@@ -331,7 +339,7 @@ public class SvgUtils {
                         Text type_value = dom.createTextNode(LayerForm.getLayerType());
                         type.appendChild(type_value);
                         List<DmLayerElement> LayerIdElementFormList = LayerElementFormList.get(LayerForm.getLayerId().toString());
-                        //元素的创建
+                        // 元素的创建
                         if (null != LayerIdElementFormList && LayerIdElementFormList.size() > 0) {
                             LayerIdElementFormList.forEach(LayerElementForm -> {
                                 Element element = dom.createElement(LayerElementForm.getElementType().toLowerCase());
@@ -346,7 +354,7 @@ public class SvgUtils {
                                     element.appendChild(element_html);
                                 }
                                 List<DmLayerElementAttr> LayerElementIdAttrFormList = LayerElementAttrFormList.get(LayerElementForm.getElementId().toString());
-                                //属性值的创建
+                                // 属性值的创建
                                 if (null != LayerElementIdAttrFormList && LayerElementIdAttrFormList.size() > 0) {
                                     LayerElementIdAttrFormList.forEach(LayerElementAttrForm -> {
                                         element.setAttribute(LayerElementAttrForm.getAttrName().toLowerCase(), LayerElementAttrForm.getAttrValue());
@@ -389,7 +397,7 @@ public class SvgUtils {
         if (null == paramsJson || "".equals(paramsJson)) {
             return new HashMap<String, Object>();
         }
-        //转换成为JSONObject对象
+        // 转换成为JSONObject对象
         JSONObject jsonObj = new JSONObject(paramsJson);
 
         Long buildingId = 0L;
@@ -458,8 +466,7 @@ public class SvgUtils {
         if (null != floorId && !"".equals(svgsrc)) {
 
             if (null == drawMapId) {
-                //获取下一个唯一标识ID
-                ///  通过序列获取下一个标识
+                // 获取下一个唯一标识ID 通过序列获取下一个标识
                 drawMapId = dmDrawMapRepository.getSeqId();
             }
             if (null == buildingId) {
@@ -491,7 +498,7 @@ public class SvgUtils {
             List<ApEquipment> apFormList = new ArrayList<ApEquipment>();
             List<CbPoi> poiFormList = new ArrayList<CbPoi>();
             CbBuilding cbBuilding = cbBuildingRepository.getOne(buildingId);
-            //组装楼层平面图
+            // 组装楼层平面图
             dmDrawMap.setBuildingId(buildingId);
             dmDrawMap.setFloorId(Long.toString(floorId));
             dmDrawMap.setDrawMapId(drawMapId);
@@ -505,7 +512,7 @@ public class SvgUtils {
             dmDrawMap.setStatus(status);
             dmDrawMap.setModTime(getModTimeByCalendarDate());
             Map<String, String> svgLayerType = cDict.SVG_LAYER_TYPE;
-            //平面图层
+            // 平面图层
             List<XmlUtils.SvgLayer> layerInfos = svgInfo.getSvgLayers();
             int layerOrder = 0;
             if (null != layerInfos && layerInfos.size() > 0) {
@@ -517,7 +524,7 @@ public class SvgUtils {
                 Long finalDrawMapId = drawMapId;
 //                layerInfos.forEach(svgLayer -> {
                 for (XmlUtils.SvgLayer svgLayer : layerInfos) {
-                    //组装平面图层
+                    // 组装平面图层
                     DmPlaneLayer layerForm = new DmPlaneLayer();
                     long layerID = dmPlaneLayerRepository.getSeqId();
                     layerForm.setBuildingId(Long.toString(finalBuildingId));
@@ -537,7 +544,7 @@ public class SvgUtils {
                     ++layerOrder;
                     layerForm.setStatus("E");
 
-                    //图层元素
+                    // 图层元素
                     List<XmlUtils.SvgElem> elementInfos = svgLayer.getSvgElems();
                     if (null != elementInfos && elementInfos.size() > 0) {
                         JSONObject finalApFormListJson = finalApFormListJson1;
@@ -545,7 +552,7 @@ public class SvgUtils {
                         JSONObject finalSvgPicListJson = finalSvgPicListJson1;
 //                        elementInfos.forEach(svgElem -> {
                         for (XmlUtils.SvgElem svgElem : elementInfos) {
-                            //组装图层元素
+                            // 组装图层元素
                             DmLayerElement elementForm = new DmLayerElement();
 
                             Map<String, String> elementAttr = svgElem.getSvgAttrs();
@@ -560,7 +567,7 @@ public class SvgUtils {
                             elementForm.setElementType(svgElem.getElementName());
                             elementForm.setPoiId("");
                             elementForm.setPoiType("");
-                            //元素中心坐标
+                            // 元素中心坐标
                             Map<String, Double> position = SvgUtils.getSvgElementPosition(svgElem);
                             if (null == position || position.isEmpty()) {
                                 position = new HashMap<String, Double>() {
@@ -592,7 +599,7 @@ public class SvgUtils {
 
                                 JSONObject apJsons = new JSONObject(finalApFormListJson.getString(elementForm.getSvgId()));
                                 ApEquipment apForm = new ApEquipment();
-                                //组装AP定位数据
+                                // 组装AP定位数据
                                 if (null != apJsons) {
                                     long apId = apEquipmentRepository.getSeqId();
                                     elementForm.setPoiType(svgLayerType.get("AP"));
@@ -610,7 +617,7 @@ public class SvgUtils {
                                     apForm.setEqutModel(apJsons.getString("EQUT_MODEL"));
                                     apForm.setNote(apJsons.getString("NOTE"));
                                     apForm.setMacBssid(apJsons.getString("MAC_BSSID").toUpperCase());
-                                    //累加ap对象
+                                    // 累加ap对象
                                     apFormList.add(apForm);
                                 }
                             }
@@ -618,7 +625,7 @@ public class SvgUtils {
                             if (layerForm.getLayerType() == svgLayerType.get("POI") && null != finalPoiFormListJson) {
                                 JSONObject poiJsons = new JSONObject(finalPoiFormListJson.getString(elementForm.getSvgId()));
                                 CbPoi poiForm = new CbPoi();
-                                //组装POI兴趣点数据
+                                // 组装POI兴趣点数据
                                 if (null != poiJsons) {
                                     long poiId = cbPoiRepository.getSeqId();
 
@@ -642,11 +649,11 @@ public class SvgUtils {
                                     poiForm.setPositionX(elementForm.getPositionX());
                                     poiForm.setPositionY(elementForm.getPositionY());
                                     poiForm.setNote(poiJsons.getString("NOTE"));
-                                    //累加poi对象
+                                    // 累加poi对象
                                     poiFormList.add(poiForm);
                                 }
                             }
-                            //累加图层元素对象
+                            // 累加图层元素对象
                             elementFormList.add(elementForm);
                             if (null != elementAttr && !elementAttr.isEmpty()) {
 //                                elementAttr.forEach((attrName,attrValue)->{
@@ -654,7 +661,7 @@ public class SvgUtils {
                                     String attrValue = elementAttr.get(attrName);
                                     String attrVal = getSvgElementAttrValue(elementForm.getElementType(), attrName, attrValue);
                                     if (!"null".equals(attrVal)) {
-                                        //组装图层元素属性对象
+                                        // 组装图层元素属性对象
                                         DmLayerElementAttr elementAttrForm = new DmLayerElementAttr();
                                         elementAttrForm.setDrawMapId(Long.toString(finalDrawMapId));
                                         elementAttrForm.setLayerId(Long.toString(layerID));
@@ -667,14 +674,14 @@ public class SvgUtils {
                                         if (newlen < oldlen) {
                                             warning = warning + "\n图层“" + layerForm.getLayerTopic() + "”中" + elementForm.getElementType() + "元素的" + attrName + "属性值有" + oldlen + "字节,只保存了" + newlen + "字节！";
                                         }
-                                        //累加图层元素属性对象
+                                        // 累加图层元素属性对象
                                         elementAttrFormList.add(elementAttrForm);
                                     }
                                 }
                             }
                         }
                     }
-                    //累加图层对象
+                    // 累加图层对象
                     layerFormList.add(layerForm);
                 }
             }
@@ -747,31 +754,31 @@ public class SvgUtils {
     }
 
     private static String getTimeByCalendar() {
-        //得到long类型当前时间
+        // 得到long类型当前时间
         long l = System.currentTimeMillis();
-        //new日期对象
+        // new日期对象
         Date date = new Date(l);
-        //转换提日期输出格式
+        // 转换提日期输出格式
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
         return dateFormat.format(date);
     }
 
     private static String getModTimeByCalendar() {
-        //得到long类型当前时间
+        // 得到long类型当前时间
         long l = System.currentTimeMillis();
-        //new日期对象
+        // new日期对象
         Date date = new Date(l);
-        //转换提日期输出格式
+        // 转换提日期输出格式
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         return dateFormat.format(date);
     }
 
     private static Date getModTimeByCalendarDate() {
-        //得到long类型当前时间
+        // 得到long类型当前时间
         long l = System.currentTimeMillis();
-        //new日期对象
+        // new日期对象
         Date date = new Date(l);
-        //转换提日期输出格式
+        // 转换提日期输出格式
 //        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         return date;
     }

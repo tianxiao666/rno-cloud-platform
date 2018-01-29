@@ -13,7 +13,6 @@ public class CbFloorDTO {
     private Long buildingId;
     private String floorName;
     private String physicalFloor;
-//    private String basement;
     private String floorType;
     private String floorNote;
     private String status;

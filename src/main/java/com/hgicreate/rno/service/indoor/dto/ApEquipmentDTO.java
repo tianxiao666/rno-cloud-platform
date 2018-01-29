@@ -13,7 +13,6 @@ public class ApEquipmentDTO {
   private String layerId;
   private String drawMapId;
   private String buildingId;
-//  private String floorId;
   private String floorName;
   private String elementId;
   private String svgId;
