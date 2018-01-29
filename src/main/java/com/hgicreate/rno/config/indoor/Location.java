@@ -297,7 +297,8 @@ public class Location {
         // 第三个圆与第二个交点的距离
         double distance1 = mathUtil.getDistanceForTwoPoint(r_x, r_y, x1, y1);
         Map<String, Double> p = new HashMap<String, Double>();
-        if (r < distance0 && r <= distance1) { // 两个圆的直线与第三个圆没有交点，且距离大于第三个圆的半径
+        // 两个圆的直线与第三个圆没有交点，且距离大于第三个圆的半径
+        if (r < distance0 && r <= distance1) {
             if (distance0 < distance1) {
                 p.put("x", x0);
                 p.put("y", y0);
@@ -305,7 +306,8 @@ public class Location {
                 p.put("x", x1);
                 p.put("y", y1);
             }
-        } else if (r >= distance0 && r >= distance1) { // 两个圆的直线与第三个圆没有交点，且距离小于第三个圆的半径
+        } else if (r >= distance0 && r >= distance1) {
+            // 两个圆的直线与第三个圆没有交点，且距离小于第三个圆的半径
             if (distance0 < distance1) {
                 p.put("x", x1);
                 p.put("y", y1);
