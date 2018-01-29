@@ -109,7 +109,8 @@ public class CDict {
     };
     public final HashMap<String, String> DEFAULT_PLANEGRAPH = new HashMap<String, String>() {
         {
-            put("DW_SCALE", "0.15");// 1像素对应0.15m
+            // 1像素对应0.15m
+            put("DW_SCALE", "0.15");
             put("DW_UNIT", "px");
             put("BACKGROUD_COLOR", "#FFFFFF");
             put("STATUS", "E");
