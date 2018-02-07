@@ -6,7 +6,6 @@ security:
     server:
       base-url: https://cas.hgicreate.com:8443/cas
     service:
-      base-url: http://localhost:8380/portal
+      resolution-mode: dynamic
     user:
       roles-attributes: roles
-
