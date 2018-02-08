@@ -8,7 +8,7 @@ security:
   cas:
     enabled: true
     server:
-      base-url: https://rnodev-passport.hgicreate.com/cas
+      base-url: https://rnodev-login.hgicreate.com/cas
     service:
       resolution-mode: dynamic
     user:
