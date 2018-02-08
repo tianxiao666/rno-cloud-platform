@@ -2,6 +2,18 @@ server:
   port: 8280
   context-path: /portal
 
+security:
+  basic:
+    enabled: true
+  cas:
+    enabled: true
+    server:
+      base-url: https://rnodev-passport.hgicreate.com/cas
+    service:
+      resolution-mode: dynamic
+    user:
+      roles-attributes: roles
+
 management:
   security:
     enabled: false
@@ -32,7 +44,7 @@ rno:
   path:
     upload-files: /tmp/rno-cloud-platform/uploads
   ftp:
-    host: 192.168.50.88
+    host: 192.168.9.11
     port: 21
     username: rnoftp
     password: rnodev
