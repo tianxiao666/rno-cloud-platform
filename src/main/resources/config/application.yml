@@ -1,7 +1,12 @@
 spring:
   application:
-    name: rno-cloud-platform
+    name: @project.artifactId@
   messages:
     basename: i18n/messages
   profiles:
     active: dev
+
+info:
+  app:
+    name: ${spring.application.name}
+    version: @project.version@
