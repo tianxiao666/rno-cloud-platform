@@ -33,10 +33,6 @@ spring:
     show-sql: false
     properties:
       hibernate.format_sql: true
-  http:
-    multipart:
-      max-file-size: 900MB
-      max-request-size: 900MB
 
 rno:
   app-code: rno
@@ -49,7 +45,3 @@ rno:
     username: rnoftp
     password: rnodev
     remote-path: /var/rno/data
-
-mybatis:
-  configuration:
-    map-underscore-to-camel-case: true
