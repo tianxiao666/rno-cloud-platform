@@ -8,7 +8,7 @@ security:
   cas:
     enabled: true
     server:
-      base-url: https://rnodev-login.hgicreate.com/cas
+      base-url: https://rno-login.hgicreate.com/cas
     service:
       resolution-mode: dynamic
     user:
@@ -44,7 +44,7 @@ rno:
   path:
     upload-files: /tmp/rno-cloud-platform/uploads
   ftp:
-    host: 192.168.9.11
+    host: 192.168.50.88
     port: 21
     username: rnoftp
     password: rnodev
