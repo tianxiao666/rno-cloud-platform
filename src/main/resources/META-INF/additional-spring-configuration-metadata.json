@@ -54,11 +54,6 @@
       "name": "rno.check-url-prefix",
       "type": "java.lang.String",
       "description": "Description for rno.check-url-prefix."
-    },
-    {
-      "name": "rno.version",
-      "type": "java.lang.String",
-      "description": "Description for rno.version."
     }
   ]
 }

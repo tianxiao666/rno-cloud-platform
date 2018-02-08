@@ -2,6 +2,12 @@ server:
   port: 8380
   context-path: /portal
 
+security:
+  basic:
+    enabled: false
+  cas:
+    enabled: false
+
 management:
   security:
     enabled: false

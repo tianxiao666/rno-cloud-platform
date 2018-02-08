@@ -4,14 +4,4 @@ spring:
   messages:
     basename: i18n/messages
   profiles:
-    active: uat
-#    include: cas
-
-rno:
-  version: 4.0.0.RELEASE
-
-security:
-  basic:
-    enabled: false
-  cas:
-    enabled: false
+    active: dev
