@@ -1,12 +1,18 @@
 server:
-  port: 8380
+  port: 8280
   context-path: /portal
 
 security:
   basic:
-    enabled: false
+    enabled: true
   cas:
-    enabled: false
+    enabled: true
+    server:
+      base-url: https://rnodev-login.hgicreate.com/cas
+    service:
+      resolution-mode: dynamic
+    user:
+      roles-attributes: roles
 
 management:
   security:
@@ -14,8 +20,7 @@ management:
 
 logging:
   level:
-    com.hgicreate.rno.service: debug
-    com.hgicreate.rno.web: debug
+    com.hgicreate.rno: info
 
 spring:
   datasource:
@@ -31,9 +36,9 @@ spring:
 
 rno:
   app-code: rno
-#  show-env-ribbon: false
+  check-url-prefix: false
   path:
-    upload-files: d:/tmp/rno-cloud-platform/uploads
+    upload-files: /tmp/rno-cloud-platform/uploads
   ftp:
     host: 192.168.9.11
     port: 21

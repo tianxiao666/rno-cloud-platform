@@ -37,6 +37,7 @@ spring:
 rno:
   app-code: rno
   check-url-prefix: false
+  show-env-ribbon: false
   path:
     upload-files: /tmp/rno-cloud-platform/uploads
   ftp:

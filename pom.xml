@@ -183,10 +183,6 @@
                         </goals>
                         <configuration>
                             <additionalProperties>
-                                <encoding.source>UTF-8</encoding.source>
-                                <encoding.reporting>UTF-8</encoding.reporting>
-                                <java.source>${maven.compiler.source}</java.source>
-                                <java.target>${maven.compiler.target}</java.target>
                                 <timestamp>${build-timestamp}</timestamp>
                             </additionalProperties>
                         </configuration>

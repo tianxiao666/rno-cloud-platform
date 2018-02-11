@@ -7,9 +7,7 @@ body, iframe, ul, li {
 
 body {
     overflow: hidden;
-    font: 12px/1.231 sans-serif;
     font-family: '微软雅黑', Verdana, Geneva, sans-serif;
-    *font-size: small;
     height: 100%;
     width: 100%;
 }
@@ -46,6 +44,7 @@ header {
     top: 0;
     right: 10px;
     line-height: 30px;
+    font-size: 12px;
 }
 
 .user-info a {
@@ -202,6 +201,7 @@ footer {
     box-shadow: -2px -2px 3px #aaa;
     text-align: center;
     line-height: 24px;
+    font-size: 12px;
 }
 
 footer a {

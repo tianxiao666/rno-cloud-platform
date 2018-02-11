@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,8 @@ public class AppResource {
         map.put("username", SecurityUtils.getCurrentUserLogin());
         map.put("fullName", SecurityUtils.getFullName());
         map.put("roles", SecurityUtils.getRoles());
+        map.put("envName", getEnvName());
+        map.put("showEnvRibbon", env.getProperty("rno.show-env-ribbon", "true"));
 
         String url = request.getServerName();
         log.debug("URL : {}", url);
@@ -58,11 +61,27 @@ public class AppResource {
     }
 
     /**
-     * 退出登录
+     * 获取环境配置，对可识别的环境返回中文名称，否则显示为未知环境
      */
-    @GetMapping("/logout")
-    public void logout(HttpServletRequest request) throws ServletException {
-        request.logout();
+    private String getEnvName() {
+        String envName = "未知环境";
+
+        if (env.getActiveProfiles().length > 0) {
+            List<String> list = Arrays.asList(env.getActiveProfiles());
+            if (list.contains("dev")) {
+                envName = "开发环境";
+            } else if (list.contains("ci")) {
+                envName = "持续集成环境";
+            } else if (list.contains("test")) {
+                envName = "测试环境";
+            } else if (list.contains("uat")) {
+                envName = "用户验收环境";
+            } else if (list.contains("prod")) {
+                envName = "生产环境";
+            }
+        }
+
+        return envName;
     }
 
     @GetMapping("/list-app-names")

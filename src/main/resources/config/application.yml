@@ -4,7 +4,7 @@ spring:
   messages:
     basename: i18n/messages
   profiles:
-    active: dev
+    active: cas,dev, kafka
   http:
     multipart:
       max-file-size: 1024MB

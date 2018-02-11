@@ -52,6 +52,9 @@ $(function () {
             }
             htmlInfo.push('<span class="quit"><a href="logout">退出</a></span>');
             $(".user-info").html(htmlInfo.join(''));
+            if (data.showEnvRibbon === 'true') {
+                $("footer").after('<div class="ribbon"><a href="">'+data.envName+'</a></div>');
+            }
         }
     });
 
