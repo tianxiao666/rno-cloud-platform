@@ -17,9 +17,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
+/**
+ * @author chao.xj
+ */
 @Slf4j
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class MtSignalMeaDataService {
 
     private final MtSignalMeaDataMapper mtSignalMeaDataDaoMapper;
@@ -43,7 +46,9 @@ public class MtSignalMeaDataService {
 
     public boolean saveMtSignalMeaData(String jsonArrayObj){
 
-        if (jsonArrayObj==null || "".equals(jsonArrayObj)) return false;
+        if (jsonArrayObj==null || "".equals(jsonArrayObj)) {
+            return false;
+        }
         MtSignalMeaData mtSignalMeaData = new MtSignalMeaData();
         try {
             // 转换成为JSONObject对象
