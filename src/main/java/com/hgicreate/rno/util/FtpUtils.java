@@ -65,9 +65,7 @@ public final class FtpUtils {
                     }
                 }
                 return
-//                        "ftp:///" + username + ":" + password +
-//                        "@" + host + ":" + port + "/" +
-                          remoteModulePath + "/" + filename;
+                        remoteModulePath + "/" + filename;
             } else {
                 log.error("文件发送到FTP失败。");
                 return null;
