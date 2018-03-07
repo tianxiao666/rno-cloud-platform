@@ -1,6 +1,8 @@
 package com.hgicreate.rno.util;
 
-
+/**
+ * 文件容量显示的工具类
+ */
 public class FileSizeUtil {
 
     public static String getPrintSize(long size) {
