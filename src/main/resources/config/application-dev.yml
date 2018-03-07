@@ -2,6 +2,8 @@ server:
   port: 8380
   context-path: /portal
 
+# 开发环境缺省不启用认证
+# 开发环境缺省不启用认证
 security:
   basic:
     enabled: false
