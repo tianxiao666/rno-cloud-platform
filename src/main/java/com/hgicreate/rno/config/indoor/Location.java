@@ -13,11 +13,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 定位
+ * @author chao.xj
  */
 @Component
 @Slf4j
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class Location {
 
     private final ApiDataMapper apiDataMapper;
@@ -159,65 +159,61 @@ public class Location {
         return (m / scale);
     }
 
-    private Map<String, Double> calcLocationByAp(Map<String, Map<String, Object>> apinfolist, JSONObject ap1, JSONObject ap2, JSONObject ap3)  {
+    private Map<String, Double> calcLocationByAp(Map<String, Map<String, Object>> apinfolist, JSONObject ap1, JSONObject ap2, JSONObject ap3) {
         Map<String, Object> ap1info = null;
         Map<String, Object> ap2info = null;
         Map<String, Object> ap3info = null;
-        try {
-            if (null != ap1) {
-                ap1info = apinfolist.get(ap1.getString("MAC_BSSID").toUpperCase());
-                double ap1_x = toMeter(Double.parseDouble(ap1info.get("POSITION_X").toString()));
-                double ap1_y = toMeter(Double.parseDouble(ap1info.get("POSITION_Y").toString()));
-                double ap1_r = getRadiusForSingal(ap1.getDouble("LEVEL"), null, null, null, null, null, null);
-                if (ap2 != null) {
-                    ap2info = apinfolist.get(ap2.getString("MAC_BSSID").toUpperCase());
-                    double ap2_x = toMeter(Double.parseDouble(ap2info.get("POSITION_X").toString()));
-                    double ap2_y = toMeter(Double.parseDouble(ap2info.get("POSITION_Y").toString()));
-                    double ap2_r = getRadiusForSingal(ap2.getDouble("LEVEL"), null, null, null, null, null, null);
-                    List<Map<String, Double>> in12 = mathUtil.getIntersectionForTwoCircle(ap1_r, ap1_x, ap1_y, ap2_r, ap2_x, ap2_y);
-                    if (ap3 != null) {
-                        ap3info = apinfolist.get(ap3.getString("MAC_BSSID").toUpperCase());
-                        double ap3_x = toMeter(Double.parseDouble(ap3info.get("POSITION_X").toString()));
-                        double ap3_y = toMeter(Double.parseDouble(ap3info.get("POSITION_Y").toString()));
-                        double ap3_r = getRadiusForSingal(ap3.getDouble("LEVEL"), null, null, null, null, null, null);
-                        List<Map<String, Double>> in13 = mathUtil.getIntersectionForTwoCircle(ap1_r, ap1_x, ap1_y, ap3_r, ap3_x, ap3_y);
-                        List<Map<String, Double>> in23 = mathUtil.getIntersectionForTwoCircle(ap2_r, ap2_x, ap2_y, ap3_r, ap3_x, ap3_y);
-                        Map<String, Double> location12_3 = computeLocation(ap3_r, ap3_x, ap3_y, in12);
-                        Map<String, Double> location13_2 = computeLocation(ap2_r, ap2_x, ap2_y, in13);
-                        Map<String, Double> location23_1 = computeLocation(ap1_r, ap1_x, ap1_y, in23);
-                        if (location12_3 != null) {
-                            location12_3.put("x", toPx(location12_3.get("x")));
-                            location12_3.put("y", toPx(location12_3.get("y")));
-                            return (location12_3);
+        if (null != ap1) {
+            ap1info = apinfolist.get(ap1.getString("MAC_BSSID").toUpperCase());
+            double ap1X = toMeter(Double.parseDouble(ap1info.get("POSITION_X").toString()));
+            double ap1Y = toMeter(Double.parseDouble(ap1info.get("POSITION_Y").toString()));
+            double ap1R = getRadiusForSingal(ap1.getDouble("LEVEL"), null, null, null, null, null, null);
+            if (ap2 != null) {
+                ap2info = apinfolist.get(ap2.getString("MAC_BSSID").toUpperCase());
+                double ap2X = toMeter(Double.parseDouble(ap2info.get("POSITION_X").toString()));
+                double ap2Y = toMeter(Double.parseDouble(ap2info.get("POSITION_Y").toString()));
+                double ap2R = getRadiusForSingal(ap2.getDouble("LEVEL"), null, null, null, null, null, null);
+                List<Map<String, Double>> in12 = mathUtil.getIntersectionForTwoCircle(ap1R, ap1X, ap1Y, ap2R, ap2X, ap2Y);
+                if (ap3 != null) {
+                    ap3info = apinfolist.get(ap3.getString("MAC_BSSID").toUpperCase());
+                    double ap3X = toMeter(Double.parseDouble(ap3info.get("POSITION_X").toString()));
+                    double ap3Y = toMeter(Double.parseDouble(ap3info.get("POSITION_Y").toString()));
+                    double ap3R = getRadiusForSingal(ap3.getDouble("LEVEL"), null, null, null, null, null, null);
+                    List<Map<String, Double>> in13 = mathUtil.getIntersectionForTwoCircle(ap1R, ap1X, ap1Y, ap3R, ap3X, ap3Y);
+                    List<Map<String, Double>> in23 = mathUtil.getIntersectionForTwoCircle(ap2R, ap2X, ap2Y, ap3R, ap3X, ap3Y);
+                    Map<String, Double> location123 = computeLocation(ap3R, ap3X, ap3Y, in12);
+                    Map<String, Double> location132 = computeLocation(ap2R, ap2X, ap2Y, in13);
+                    Map<String, Double> location231 = computeLocation(ap1R, ap1X, ap1Y, in23);
+                    if (location123 != null) {
+                        location123.put("x", toPx(location123.get("x")));
+                        location123.put("y", toPx(location123.get("y")));
+                        return (location123);
+                    } else {
+                        if (location132 != null) {
+                            location132.put("x", toPx(location132.get("x")));
+                            location132.put("y", toPx(location132.get("y")));
+                            return (location132);
                         } else {
-                            if (location13_2 != null) {
-                                location13_2.put("x", toPx(location13_2.get("x")));
-                                location13_2.put("y", toPx(location13_2.get("y")));
-                                return (location13_2);
-                            } else {
-                                if (location23_1 != null) {
-                                    location23_1.put("x", toPx(location23_1.get("x")));
-                                    location23_1.put("y", toPx(location23_1.get("y")));
-                                    return (location23_1);
-                                }
+                            if (location231 != null) {
+                                location231.put("x", toPx(location231.get("x")));
+                                location231.put("y", toPx(location231.get("y")));
+                                return (location231);
                             }
                         }
-                    } else {
-                        if (in12 != null) {
-                            return new HashMap<String, Double>() {{
-                                put("x", toPx(in12.get(0).get("x")));
-                                put("y", toPx(in12.get(0).get("y")));
-                            }};
-                        }
+                    }
+                } else {
+                    if (in12 != null) {
+                        return new HashMap<String, Double>() {{
+                            put("x", toPx(in12.get(0).get("x")));
+                            put("y", toPx(in12.get(0).get("y")));
+                        }};
                     }
                 }
-                return new HashMap<String, Double>() {{
-                    put("x", toPx(ap1_x));
-                    put("y", toPx(ap1_y));
-                }};
             }
-        }catch (JSONException e) {
-            log.error(""+e.getMessage());
+            return new HashMap<String, Double>() {{
+                put("x", toPx(ap1X));
+                put("y", toPx(ap1Y));
+            }};
         }
         return (null);
     }
@@ -225,25 +221,25 @@ public class Location {
     /**
      * @param pd  测量点的信号值
      * @param nW  测量点与BS间的墙壁数量
-     * @param C   最大墙壁数，超过C个墙壁则会对信号造成影响
-     * @param WAF 墙壁衰减因子
+     * @param c   最大墙壁数，超过C个墙壁则会对信号造成影响
+     * @param waF 墙壁衰减因子
      * @param n   信号值因距离衰减的系数
      * @param pdo 测量基准点的信号值
      * @param dod 测量基准点距BS的距离
      * @return double 信号圆的半径（米）
      */
-    public double getRadiusForSingal(Double pd, Double nW, Double C, Double WAF, Double n, Double pdo, Double dod) {
-        double E = 2.7182818284590452354;
-        double W = 0;
+    public double getRadiusForSingal(Double pd, Double nW, Double c, Double waF, Double n, Double pdo, Double dod) {
+        double e = 2.7182818284590452354;
+        double w = 0;
         double d = 0;
         if (null == nW) {
             nW = 0D;
         }
-        if (null == C) {
-            C = 1D;
+        if (null == c) {
+            c = 1D;
         }
-        if (null == WAF) {
-            WAF = 10D;
+        if (null == waF) {
+            waF = 10D;
         }
         if (null == n) {
             n = 2D;
@@ -255,16 +251,16 @@ public class Location {
             dod = 4D;
         }
 
-        if (nW < C) {
-            W = nW * WAF;
+        if (nW < c) {
+            w = nW * waF;
         } else {
-            W = C * WAF;
+            w = c * waF;
         }
-        d = dod * Math.pow(E, (pdo - pd - W) / (n * 10));
+        d = dod * Math.pow(e, (pdo - pd - w) / (n * 10));
         return (d);
     }
 
-    private Map<String, Double> computeLocation(double r, double r_x, double r_y, List<Map<String, Double>> intersections) {
+    private Map<String, Double> computeLocation(double r, double rX, double rY, List<Map<String, Double>> intersections) {
         if (intersections != null) {
             double x0 = intersections.get(0).get("x");
             double y0 = intersections.get(0).get("y");
@@ -274,7 +270,7 @@ public class Location {
                 x1 = intersections.get(1).get("x");
                 y1 = intersections.get(1).get("y");
             }
-            return (computeLineCircle(r, r_x, r_y, x0, y0, x1, y1));
+            return (computeLineCircle(r, rX, rY, x0, y0, x1, y1));
         }
         return (null);
     }
@@ -283,19 +279,19 @@ public class Location {
      * 计算两个圆的交点组成的直线，与另外一个圆的交点
      *
      * @param r   第三个圆的半径
-     * @param r_x 第三个圆坐标x
-     * @param r_y 第三个圆坐标y
+     * @param rX 第三个圆坐标x
+     * @param rY 第三个圆坐标y
      * @param x0  直线的两个点x
      * @param y0  直线的两个点y
      * @param x1  直线的两个点x
      * @param y1  直线的两个点y
      */
-    private Map<String, Double> computeLineCircle(double r, double r_x, double r_y, double x0, double y0, double x1, double y1) {
+    private Map<String, Double> computeLineCircle(double r, double rX, double rY, double x0, double y0, double x1, double y1) {
         // 两个圆有交点,开始计算交点的直线公式
         // 第三个圆与第一个交点的距离
-        double distance0 = mathUtil.getDistanceForTwoPoint(r_x, r_y, x0, y0);
+        double distance0 = MathUtils.getDistanceForTwoPoint(rX, rY, x0, y0);
         // 第三个圆与第二个交点的距离
-        double distance1 = mathUtil.getDistanceForTwoPoint(r_x, r_y, x1, y1);
+        double distance1 = MathUtils.getDistanceForTwoPoint(rX, rY, x1, y1);
         Map<String, Double> p = new HashMap<String, Double>();
         // 两个圆的直线与第三个圆没有交点，且距离大于第三个圆的半径
         if (r < distance0 && r <= distance1) {
@@ -316,13 +312,14 @@ public class Location {
                 p.put("y", y0);
             }
         } else {
-            List<Map<String, Double>> intersections = mathUtil.getIntersectionForCircleAndLine(r, r_x, r_y, x0, y0, x1, y1);
+            List<Map<String, Double>> intersections = mathUtil.getIntersectionForCircleAndLine(r, rX, rY, x0, y0, x1, y1);
             if (intersections != null) {
                 p = intersections.get(0);
                 if (intersections.get(1) != null) {
                     double min = (x0 > x1) ? x1 : x0;
                     double max = (x0 > x1) ? x0 : x1;
-                    if ((min <= intersections.get(1).get("x") && (intersections.get(1).get("x") <= max))) {
+                    String xais = "x";
+                    if ((min <= intersections.get(1).get(xais) && (intersections.get(1).get(xais) <= max))) {
                         p = intersections.get(1);
                     }
                 }
