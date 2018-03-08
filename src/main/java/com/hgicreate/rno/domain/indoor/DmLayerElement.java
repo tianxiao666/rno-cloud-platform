@@ -7,6 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * @author chao.xj
+ */
 @Data
 @Entity
 @Table(name = "INDOOR_DM_LAYER_ELEMENT")

@@ -4,12 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * @author chao.xj
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class MtSignalMeaDataInfoDTO {
 
-    private long id;
+    private Long id;
     private String cityName;
     private String buildingName;
     private String floorName;

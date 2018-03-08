@@ -5,6 +5,9 @@ import lombok.Data;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+/**
+ * @author chao.xj
+ */
 @Data
 @Entity
 public class IdealApMeaDataInfo{

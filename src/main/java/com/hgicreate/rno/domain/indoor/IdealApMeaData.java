@@ -5,6 +5,9 @@ import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/**
+ * @author chao.xj
+ */
 @Data
 @Entity
 @Table(name = "INDOOR_CB_IDEAL_AP_MEA_DATA")

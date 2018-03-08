@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * @author chao.xj
+ */
 @Slf4j
 @RestController
 @RequestMapping("/api/mt-interface-data")

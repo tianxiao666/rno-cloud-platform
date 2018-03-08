@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * @author chao.xj
+ */
 @Data
 public class DmLayerElementAttrPk implements Serializable{
 
