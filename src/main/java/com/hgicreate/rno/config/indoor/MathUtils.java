@@ -10,9 +10,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author chao.xj
+ */
 @Component
 @Slf4j
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class MathUtils {
 
     /**
@@ -24,11 +27,9 @@ public class MathUtils {
 
     /**
      * 计算两个圆的交点
-     *
      * 设w=(r1*r1-r2*r2-a1*a1+a2*a2-b1*b1+b2*b2+2*b1-2*b2)/(2*a2-2*a1)
      * 则计算两个圆交点的方程转换为x = wy 带入方程得到(w*w+1)*y*y -
      * (2*a1*e+2*b1)*y+(a1*a1+b1*b1-r1*r1)=0 然后根据一元二次方程的求解
-     *
      * @param r1 圆1的半径
      * @param a1 圆1坐标x,不能等于a2
      * @param b1 圆1坐标y
@@ -57,7 +58,9 @@ public class MathUtils {
                 map.put("y", p.get("x"));
                 map.put("x", w + v * map.get("y"));
                 intersections.add(map);
-                if (p.get("x") != p.get("y")) {
+                String asixX = "x";
+                String asixY = "y";
+                if (p.get(asixX).equals(p.get(asixY)) ) {
                     map = new HashMap<String, Double>();
                     // 第二个交点
                     map.put("y", p.get("y"));
@@ -98,27 +101,27 @@ public class MathUtils {
      * 计算两个圆的交点组成的直线，与另外一个圆的交点
      *
      * @param r   第三个圆的半径
-     * @param r_x 第三个圆坐标x
-     * @param r_y 第三个圆坐标y
+     * @param rX 第三个圆坐标x
+     * @param rY 第三个圆坐标y
      * @param x0  直线的两个点x,不能等于x1
      * @param y0  直线的两个点y
      * @param x1  直线的两个点x
      * @param y1  直线的两个点y
      */
-    public List<Map<String, Double>> getIntersectionForCircleAndLine(double r, double r_x, double r_y, double x0, double y0, double x1, double y1) {
+    public List<Map<String, Double>> getIntersectionForCircleAndLine(double r, double rX, double rY, double x0, double y0, double x1, double y1) {
         if (x0 != x1) {
             // y=kx+b
             double k = (y0 - y1) / (x0 - x1);
             double b = y0 - k * x0;
-            return (getIntersectionForCircleAndLineKB(r, r_x, r_y, k, b));
+            return (getIntersectionForCircleAndLineKB(r, rX, rY, k, b));
         }
         return (null);
     }
 
-    private List<Map<String, Double>> getIntersectionForCircleAndLineKB(double r, double r_x, double r_y, double k, double b) {
+    private List<Map<String, Double>> getIntersectionForCircleAndLineKB(double r, double rX, double rY, double k, double b) {
         double a1 = 1 + k * k;
-        double b1 = -2 * (r_x + k * r_y - k * b);
-        double c1 = r_x * r_x + r_y * r_y - 2 * b * r_y - r * r + b * b;
+        double b1 = -2 * (rX + k * rY - k * b);
+        double c1 = rX * rX + rY * rY - 2 * b * rY - r * r + b * b;
         Map<String, Double> p = getUQESolution(a1, b1, c1);
         if (p != null) {
             List<Map<String, Double>> intersections = new ArrayList<Map<String, Double>>();
@@ -127,7 +130,9 @@ public class MathUtils {
             map.put("x", p.get("x"));
             map.put("y", k * map.get("x") + b);
             intersections.add(map);
-            if (p.get("x") != p.get("y")) {
+            String asixX = "x";
+            String asixY = "y";
+            if (p.get(asixX).equals(p.get(asixY)) ) {
                 map = new HashMap<String, Double>();
                 // 第二个交点
                 map.put("x", p.get("y"));
