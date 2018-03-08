@@ -16,9 +16,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * @author chao.xj
+ */
 @Slf4j
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class DmPlaneLayerService {
 
     private final DmPlaneLayerRepository dmPlaneLayerRepository;
@@ -93,34 +96,34 @@ public class DmPlaneLayerService {
             }
             pageData.put("BUILDING_NAME",vm.getBuildingName());
             if (null!=cbBuilding) {
-                double lt_lat = SvgUtils.getDecodeLatLng(cbBuilding.getLtLatitudel());
-                double lt_lng = SvgUtils.getDecodeLatLng(cbBuilding.getLtLongitudel());
-                double rb_lat = SvgUtils.getDecodeLatLng (cbBuilding.getRbLatitudel());
-                double rb_lng = SvgUtils.getDecodeLatLng (cbBuilding.getRbLongitudel());
-                pageData.put("FLOOR_WIDTH", SvgUtils.getLatLngDistance( lt_lat, lt_lng, lt_lat, rb_lng ));
-                pageData.put("FLOOR_HEIGHT", SvgUtils.getLatLngDistance(lt_lat, lt_lng, rb_lat, lt_lng ));
+                double ltLat = SvgUtils.getDecodeLatLng(cbBuilding.getLtLatitudel());
+                double ltLng = SvgUtils.getDecodeLatLng(cbBuilding.getLtLongitudel());
+                double rbLat = SvgUtils.getDecodeLatLng (cbBuilding.getRbLatitudel());
+                double rbLng = SvgUtils.getDecodeLatLng (cbBuilding.getRbLongitudel());
+                pageData.put("FLOOR_WIDTH", SvgUtils.getLatLngDistance( ltLat, ltLng, ltLat, rbLng ));
+                pageData.put("FLOOR_HEIGHT", SvgUtils.getLatLngDistance(ltLat, ltLng, rbLat, ltLng ));
             }
         }
         if (null!=vm.getDrawMapId()&&!vm.getDrawMapId().isEmpty()) {
-            DmDrawMap PlanegraphInfo = dmDrawMapRepository.findByDrawMapId(Long.parseLong(vm.getDrawMapId()));
-            pageData.put("PlanegraphInfo",PlanegraphInfo);
-            pageData.put("FLOOR_ID",PlanegraphInfo.getFloorId());
+            DmDrawMap planegraphInfo = dmDrawMapRepository.findByDrawMapId(Long.parseLong(vm.getDrawMapId()));
+            pageData.put("PlanegraphInfo",planegraphInfo);
+            pageData.put("FLOOR_ID",planegraphInfo.getFloorId());
             pageData.put("DRAW_MAP_ID",vm.getDrawMapId());
             List<CbPoi> result = cbPoiRepository.findByDrawMapId(vm.getDrawMapId());
             if (null!=result) {
-                Map<String,Object> PoiFormList = new HashMap<String,Object>();
-                Map<String,Object> PoiSvgList = new HashMap<String,Object>();
+                Map<String,Object> poiFormList = new HashMap<String,Object>();
+                Map<String,Object> poiSvgList = new HashMap<String,Object>();
                 final String[] poiIds = {""};
-                result.forEach(PoiForm->{
-                  String SVG_ID = PoiForm.getSvgId();
-                  Long POI_ID = PoiForm.getPoiId();
-                  PoiSvgList.put(Long.toString(POI_ID),SVG_ID);
-                    poiIds[0] = poiIds[0] + POI_ID+ ",";
-                    PoiFormList.put(SVG_ID,PoiForm);
+                result.forEach(poiForm->{
+                    String svgId = poiForm.getSvgId();
+                    Long poiId = poiForm.getPoiId();
+                    poiSvgList.put(Long.toString(poiId),svgId);
+                    poiIds[0] = poiIds[0] + poiId+ ",";
+                    poiFormList.put(svgId,poiForm);
                 });
 
-                if (!PoiFormList.isEmpty()) {
-                    pageData.put("POIFORMLISTJSONSTR",PoiFormList);
+                if (!poiFormList.isEmpty()) {
+                    pageData.put("POIFORMLISTJSONSTR",poiFormList);
                 }
                 List<CbPic> resultCbPic = null;
                 if (!"".equals(poiIds[0])){
@@ -129,30 +132,30 @@ public class DmPlaneLayerService {
                 }
 
                 if (null!=resultCbPic && !resultCbPic.isEmpty()){
-                    Map<String,Map<String,Object>> SvgPicList = new HashMap<String,Map<String,Object>>();
+                    Map<String,Map<String,Object>> svgPicList = new HashMap<String,Map<String,Object>>();
                     resultCbPic.forEach(cbPic -> {
-                        PoiSvgList.get(cbPic.getPoiId());
-                        SvgPicList.put( PoiSvgList.get(cbPic.getPoiId()).toString(),new HashMap<String,Object>(){
-                                {
-                                   put("PIC_ID",cbPic.getPicId());
-                                }
+                        poiSvgList.get(cbPic.getPoiId());
+                        svgPicList.put( poiSvgList.get(cbPic.getPoiId()).toString(),new HashMap<String,Object>(){
+                            {
+                                put("PIC_ID",cbPic.getPicId());
+                            }
                         });
                     });
-                    if (!SvgPicList.isEmpty()) {
-                        pageData.put("SVGPICLISTJSONSTR",SvgPicList);
+                    if (!svgPicList.isEmpty()) {
+                        pageData.put("SVGPICLISTJSONSTR",svgPicList);
                     }
                 }
             }
 
             List<ApEquipment> resultApEquipment = apEquipmentRepository.findByDrawMapId(vm.getDrawMapId());
             if (!resultApEquipment.isEmpty()) {
-                Map<String,Object> ApFormList = new HashMap<String,Object>();
+                Map<String,Object> apFormList = new HashMap<String,Object>();
                 resultApEquipment.forEach(apEquipment -> {
-                    String SVG_ID = apEquipment.getSvgId();
-                    ApFormList.put(SVG_ID,apEquipment);
+                    String svgId = apEquipment.getSvgId();
+                    apFormList.put(svgId,apEquipment);
                 });
-                if (!ApFormList.isEmpty()) {
-                    pageData.put("APFORMLISTJSONSTR",ApFormList);
+                if (!apFormList.isEmpty()) {
+                    pageData.put("APFORMLISTJSONSTR",apFormList);
                 }
             }
         }

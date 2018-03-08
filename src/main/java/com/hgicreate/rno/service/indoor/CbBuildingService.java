@@ -14,9 +14,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author chao.xj
+ */
 @Slf4j
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class CbBuildingService {
 
 
@@ -56,13 +59,13 @@ public class CbBuildingService {
     }
 
     public int cbBuildingUpdate(CbBuilding cbBuilding){
-      double LtLongitudel =  SvgUtils.getEncodeLatLng(cbBuilding.getLtLongitudel());
-      double LtLatitudel =  SvgUtils.getEncodeLatLng(cbBuilding.getLtLatitudel());
-      double RbLongitudel =  SvgUtils.getEncodeLatLng(cbBuilding.getRbLongitudel());
-      double RbLatitudel =  SvgUtils.getEncodeLatLng(cbBuilding.getRbLatitudel());
-      return cbBuildingRepository.updateBuilding(cbBuilding.getBuildingName(),cbBuilding.getArea1().getId(),cbBuilding.getArea().getId(),
-              cbBuilding.getPostalcode(),cbBuilding.getAddress(),cbBuilding.getBuildType(),cbBuilding.getTotalFloor(),cbBuilding.getPhone(),
-              cbBuilding.getSite(),LtLongitudel,LtLatitudel,RbLongitudel,RbLatitudel,cbBuilding.getNote(),cbBuilding.getStatus(),cbBuilding.getDistrict(),cbBuilding.getBuildingId());
+        double ltLongitudel =  SvgUtils.getEncodeLatLng(cbBuilding.getLtLongitudel());
+        double ltLatitudel =  SvgUtils.getEncodeLatLng(cbBuilding.getLtLatitudel());
+        double rbLongitudel =  SvgUtils.getEncodeLatLng(cbBuilding.getRbLongitudel());
+        double rbLatitudel =  SvgUtils.getEncodeLatLng(cbBuilding.getRbLatitudel());
+        return cbBuildingRepository.updateBuilding(cbBuilding.getBuildingName(),cbBuilding.getArea1().getId(),cbBuilding.getArea().getId(),
+                cbBuilding.getPostalcode(),cbBuilding.getAddress(),cbBuilding.getBuildType(),cbBuilding.getTotalFloor(),cbBuilding.getPhone(),
+                cbBuilding.getSite(),ltLongitudel,ltLatitudel,rbLongitudel,rbLatitudel,cbBuilding.getNote(),cbBuilding.getStatus(),cbBuilding.getDistrict(),cbBuilding.getBuildingId());
     }
 
     public void deleteCbBuildingByBuildingId(CbBuildingDataQueryVM vm){
@@ -70,7 +73,7 @@ public class CbBuildingService {
     }
 
     public List<CbBuilding> findAll(){
-        return cbBuildingRepository.findAll(new Sort(Sort.DEFAULT_DIRECTION.ASC,"buildingId"));
+        return cbBuildingRepository.findAll(new Sort(Sort.Direction.ASC,"buildingId"));
     }
 
 }

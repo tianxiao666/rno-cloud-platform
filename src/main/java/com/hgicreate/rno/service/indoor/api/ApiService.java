@@ -27,10 +27,11 @@ import static java.lang.Math.floor;
 
 /**
  * 移动终端接口服务类
+ * @author chao.xj
  */
 @Slf4j
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class ApiService extends Api {
 
     private final ApiDataMapper apiDataMapper;
@@ -58,10 +59,11 @@ public class ApiService extends Api {
         }
         List<Map<String, Object>> buildingFloorList = null;
         try {
-            // 转换成为JSONObject对象
+            //转换成为JSONObject对象
             JSONObject jsons = new JSONObject(jsonArrayObj);
-            // 判断是否有场所ID传入
-            if (jsons.has("BUILDING_ID")) {
+            //判断是否有场所ID传入
+            String buildingIdStr = "BUILDING_ID";
+            if (jsons.has(buildingIdStr)) {
                 long buildingId = jsons.getLong("BUILDING_ID");
                 buildingFloorList = apiDataMapper.getBuildingFloorList(buildingId);
             } else {
@@ -94,15 +96,18 @@ public class ApiService extends Api {
             // 转换成为JSONObject对象
             JSONObject jsons = new JSONObject(jsonArrayObj);
             Long buildingId = null;
-            if (jsons.has("BUILDING_ID")) {
+            String buildingIdStr = "BUILDING_ID";
+            if (jsons.has(buildingIdStr)) {
                 buildingId = jsons.getLong("BUILDING_ID");
             }
             Long floorId = null;
-            if (jsons.has("FLOOR_ID") && !jsons.getString("FLOOR_ID").isEmpty()) {
+            boolean existFloorId = jsons.has("FLOOR_ID") && !jsons.getString("FLOOR_ID").isEmpty();
+            if (existFloorId) {
                 floorId = jsons.getLong("FLOOR_ID");
             }
             Map<String, Object> response = svgUtil.getSvg(buildingId, floorId, null);
-            if (null == response.get("error")) {
+            String errorStr = "error";
+            if (null == response.get(errorStr)) {
                 content = "{" +
                         "\"FLOOR_ID\":" + response.get("FLOOR_ID") + "," +
                         "\"DRAW_MAP_ID\":" + response.get("DRAW_MAP_ID") + "," +
@@ -179,25 +184,29 @@ public class ApiService extends Api {
         try {
             // 转换成为JSONObject对象
             JSONObject jsonObj = new JSONObject(jsonArrayObj);
-            if (jsonObj.has("BUILDING_ID")) {
+            String buildingIdStr = "BUILDING_ID";
+            if (jsonObj.has(buildingIdStr)) {
                 map.put("buildingId", jsonObj.getString("BUILDING_ID"));
             } else {
                 message = "BUILDING_ID属性值为空！";
                 return renderErrorJson(message);
             }
-            if (jsonObj.has("FLOOR_ID")) {
+            String floorId = "FLOOR_ID";
+            if (jsonObj.has(floorId)) {
                 map.put("floorId", jsonObj.getString("FLOOR_ID"));
             } else {
                 message = "FLOOR_ID属性值为空！";
                 return renderErrorJson(message);
             }
-            if (jsonObj.has("DRAW_MAP_ID")) {
+            String drawMapId = "DRAW_MAP_ID";
+            if (jsonObj.has(drawMapId)) {
                 map.put("drawMapId", jsonObj.getString("DRAW_MAP_ID"));
             } else {
                 message = "DRAW_MAP_ID属性值为空！";
                 return renderErrorJson(message);
             }
-            if (jsonObj.has("SIGNAL_TYPE")) {
+            String signalType = "SIGNAL_TYPE";
+            if (jsonObj.has(signalType)) {
                 map.put("signalType", jsonObj.getString("SIGNAL_TYPE"));
             } else {
                 message = "SIGNAL_TYPE属性值为空！";
@@ -225,24 +234,24 @@ public class ApiService extends Api {
             // 宽分10格
             int n = 10;
             // 单元方格长
-            double grid_len = length / m;
+            double gridLen = length / m;
             // 单元方格宽
-            double grid_wid = width / n;
+            double gridWid = width / n;
             // 确定矩阵栅格列
-            double col = floor(x / grid_len);
+            double col = floor(x / gridLen);
             // 确定矩阵栅格行
-            double row = floor(y / grid_wid);
+            double row = floor(y / gridWid);
             // 左上
-            double grid_ltx = grid_len * col;
-            double grid_lty = grid_wid * row;
+            double gridLtx = gridLen * col;
+            double gridLty = gridWid * row;
             // 右下
-            double grid_rbx = grid_len * (col + 1);
-            double grid_rby = grid_wid * (row + 1);
+            double gridRbx = gridLen * (col + 1);
+            double gridRby = gridWid * (row + 1);
             // 区域确定结束
-            map.put("gridLtx", grid_ltx);
-            map.put("gridLty", grid_lty);
-            map.put("gridRbx", grid_rbx);
-            map.put("gridRby", grid_rby);
+            map.put("gridLtx", gridLtx);
+            map.put("gridLty", gridLty);
+            map.put("gridRbx", gridRbx);
+            map.put("gridRby", gridRby);
             lists = apiDataMapper.getMtSignalGridMeaData(map);
         } catch (Exception e) {
             message = "移动终端图层栅格化信号测量数据输出数据库出错......！catch error:" + e.getMessage();
@@ -574,18 +583,18 @@ public class ApiService extends Api {
             longitude = SvgUtils.getDecodeLatLng(longitude);
             latitude = SvgUtils.getDecodeLatLng(latitude);
             if (null != buildingList && !buildingList.isEmpty()) {
-                String picWhere = "";
+                StringBuilder picWhere = new StringBuilder();
                 // 场所图片信息的查询条件
                 for (Map<String, Object> buildingMap : buildingList) {
                     if ("".equals(picWhere)) {
-                        picWhere = picWhere + " (BUILDING_ID=" + buildingMap.get("BUILDING_ID");
+                        picWhere.append(" (BUILDING_ID=" + buildingMap.get("BUILDING_ID"));
                     } else {
-                        picWhere = picWhere + " or BUILDING_ID=" + buildingMap.get("BUILDING_ID");
+                        picWhere.append(" or BUILDING_ID=" + buildingMap.get("BUILDING_ID"));
                     }
                 }
-                picWhere = picWhere + ") and FLOOR_ID is null";
+                picWhere.append(") and FLOOR_ID is null");
                 // 查询场所图片信息
-                List<Map<String, Object>> buildingIconList = apiDataMapper.getPic(picWhere);
+                List<Map<String, Object>> buildingIconList = apiDataMapper.getPic(picWhere.toString());
                 String filePath = "";
                 // 定义媒体库物理路径
                 String medialibPath = System.getProperty("user.dir") + File.separator + "medialib/";
@@ -643,16 +652,10 @@ public class ApiService extends Api {
             return renderErrorJson(message);
         }
         // 转换成为JSONObject对象
-        JSONObject jsonObj = null;
+        JSONObject jsonObj = new JSONObject(jsonArrayObj);
         Double versionCode = 0D;
-        try {
-            jsonObj = new JSONObject(jsonArrayObj);
-            if (jsonObj.has("VersionCode")) {
-                versionCode = jsonObj.getDouble("VersionCode");
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-            log.error(e.getMessage());
+        if (jsonObj.has("VersionCode")) {
+            versionCode = jsonObj.getDouble("VersionCode");
         }
         Map<String, Object> map = new HashMap<String, Object>();
         String root = System.getProperty("user.dir") + File.separator;
@@ -841,7 +844,7 @@ public class ApiService extends Api {
                         if (maxAp.has("CHANNEL")) {
                             map.put("channel", maxAp.get("CHANNEL"));
                         }
-                            map.put("floorId", floorId);
+                        map.put("floorId", floorId);
                         // 匹配的AP信息
                         List<Map<String, Object>> apMapList = apiDataMapper.getApLocationList(map);
                         if (null != apMapList && !apMapList.isEmpty()) {
@@ -866,7 +869,8 @@ public class ApiService extends Api {
                             floorName = apiDataMapper.getFloorNameById(floorId);
                             locationFloor = buildingName + "_" + floorName;
                         }
-                        if (null != floorSvgInfo.get("message") && !"".equals(floorSvgInfo.get("message").toString())) {//获取楼层平面图错误信息
+                        // 获取楼层平面图错误信息
+                        if (null != floorSvgInfo.get("message") && !"".equals(floorSvgInfo.get("message").toString())) {
                             message = floorSvgInfo.get("message").toString();
                         }
                         // 生成返回数据
@@ -959,18 +963,18 @@ public class ApiService extends Api {
             longitude = SvgUtils.getDecodeLatLng(longitude);
             latitude = SvgUtils.getDecodeLatLng(latitude);
             if (null != buildingList && !buildingList.isEmpty()) {
-                String picWhere = "";
+                StringBuilder picWhere = new StringBuilder();
                 // 场所图片信息的查询条件
                 for (Map<String, Object> buildingMap : buildingList) {
                     if ("".equals(picWhere)) {
-                        picWhere = picWhere + " (BUILDING_ID=" + buildingMap.get("BUILDING_ID");
+                        picWhere.append(" (BUILDING_ID=" + buildingMap.get("BUILDING_ID"));
                     } else {
-                        picWhere = picWhere + " or BUILDING_ID=" + buildingMap.get("BUILDING_ID");
+                        picWhere.append(" or BUILDING_ID=" + buildingMap.get("BUILDING_ID"));
                     }
                 }
-                picWhere = picWhere + ") and FLOOR_ID is null";
+                picWhere.append(") and FLOOR_ID is null");
                 // 查询场所图片信息
-                List<Map<String, Object>> buildingIconList = apiDataMapper.getPic(picWhere);
+                List<Map<String, Object>> buildingIconList = apiDataMapper.getPic(picWhere.toString());
                 String filePath = "";
                 // 定义媒体库物理路径
                 String medialibPath = System.getProperty("user.dir") + File.separator + "medialib/";
@@ -1077,10 +1081,11 @@ public class ApiService extends Api {
     }
 
     private String replace(String json){
-      return json.replace("\"[","[").replace("]\"","]");
+        return json.replace("\"[","[").replace("]\"","]");
     }
 
     public static void main(String[] args) {
 
     }
+
 }
