@@ -7,11 +7,19 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
+/**
+ * @author chao.xj
+ */
 @Mapper
 public interface CbBuildingMapper {
 
     CbBuildingMapper INSTANCE = Mappers.getMapper(CbBuildingMapper.class);
 
+    /**
+     * 场所对象转换为DTO
+     * @param cbBuilding 场所对象
+     * @return 场所对象DTO
+     */
     @Mappings({
             @Mapping(source = "area1.name",target = "prov"),
             @Mapping(source = "area.name", target = "city"),

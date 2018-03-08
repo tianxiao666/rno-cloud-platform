@@ -5,6 +5,9 @@ import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
 
+/**
+ * @author chao.xj
+ */
 @Data
 @Entity
 @Table(name = "INDOOR_CB_FLOOR")
@@ -31,7 +34,12 @@ public class CbFloor implements Serializable{
   private String status;
 
   private enum FloorTypeEnum{
-    LOOBY("大堂"),FUEST("客房"),EFOOD("餐饮");
+    //大堂
+    LOOBY("大堂"),
+    //客房
+    FUEST("客房"),
+    //餐饮
+    EFOOD("餐饮");
 
     private String value;
     FloorTypeEnum(String value) {
@@ -44,7 +52,10 @@ public class CbFloor implements Serializable{
   }
 
   private enum FloorStatusEnum{
-    A("正常"),X("失效");
+    //正常
+    A("正常"),
+    //失效
+    X("失效");
 
     private String value;
     FloorStatusEnum(String value) {

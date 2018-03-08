@@ -5,6 +5,9 @@ import lombok.Data;
 
 import javax.persistence.*;
 
+/**
+ * @author chao.xj
+ */
 @Data
 @Entity
 @Table(name = "INDOOR_CB_POI")

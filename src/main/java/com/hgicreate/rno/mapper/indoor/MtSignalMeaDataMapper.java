@@ -6,11 +6,16 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
+/**
+ * @author chao.xj
+ */
 @Mapper
 public interface MtSignalMeaDataMapper {
 
     /**
      * 查询移动终端测量数据
+     * @param vm
+     * @return 移动终端信号采集数据信息
      */
-    public List<MtSignalMeaDataInfo> queryMtSignalMeaData(MtSignalMeaDataQueryVM vm);
+    List<MtSignalMeaDataInfo> queryMtSignalMeaData(MtSignalMeaDataQueryVM vm);
 }

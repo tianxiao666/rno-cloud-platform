@@ -6,6 +6,9 @@ import lombok.Data;
 
 import javax.persistence.*;
 
+/**
+ * @author chao.xj
+ */
 @Data
 @Entity
 @Table(name = "INDOOR_CB_BUILDING")
@@ -42,13 +45,20 @@ public class CbBuilding {
 
   @OneToOne
   @JoinColumn(name = "city",referencedColumnName = "id")
-  private com.hgicreate.rno.domain.Area area;
+  private Area area;
   @OneToOne
   @JoinColumn(name = "prov",referencedColumnName = "id")
   private Area area1;
 
   private enum BuildTypeEnum{
-    MALL_("大型商场"),OFFIC("写字楼"),LARGE("大型场馆"),TRAFF("交通枢纽");
+    //大型商场
+    MALL_("大型商场"),
+    //写字楼
+    OFFIC("写字楼"),
+    //大型场馆
+    LARGE("大型场馆"),
+    //交通枢纽
+    TRAFF("交通枢纽");
 
     private String value;
     BuildTypeEnum(String value) {
@@ -61,7 +71,12 @@ public class CbBuilding {
   }
 
   private enum BuildStatusEnum{
-    A("正常"),E("编辑中"),X("失效");
+    //正常
+    A("正常"),
+    //编辑中
+    E("编辑中"),
+    //失效
+    X("失效");
 
     private String value;
     BuildStatusEnum(String value) {

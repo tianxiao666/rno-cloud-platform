@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * @author chao.xj
+ */
 @Slf4j
 @RestController
 @RequestMapping("/api/cb-buliding-data")

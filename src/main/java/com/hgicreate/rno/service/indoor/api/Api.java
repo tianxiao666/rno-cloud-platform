@@ -4,9 +4,15 @@ package com.hgicreate.rno.service.indoor.api;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+/**
+ * @author chao.xj
+ */
 public class Api {
 
-    private static Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();// 线程安全
+    /**
+     * 线程安全
+     */
+    private static Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
     protected String createRenderTemplate(int isSuccess, String content, String message) {
         content = gson.toJson(content);

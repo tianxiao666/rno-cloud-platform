@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * @author chao.xj
+ */
 @Slf4j
 @RestController
 @RequestMapping("/api/ap-equipment-data")

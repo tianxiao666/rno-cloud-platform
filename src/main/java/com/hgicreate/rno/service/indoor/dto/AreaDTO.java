@@ -2,6 +2,9 @@ package com.hgicreate.rno.service.indoor.dto;
 
 import lombok.Data;
 
+/**
+ * @author chao.xj
+ */
 @Data
 public class AreaDTO {
 

@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 /**
  * 系统字典
+ * @author chao.xj
  */
 @Component
 public class CDict {

@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Id;
 
+/**
+ * @author chao.xj
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
