@@ -27,9 +27,12 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * @author chao.xj
+ */
 @Component
 @Slf4j
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class SvgUtils {
 
     private final CbFloorRepository cbFloorRepository;
@@ -73,15 +76,15 @@ public class SvgUtils {
     /**
      * 编码经纬度
      */
-    public static double getEncodeLatLng(double LatOrLng) {
-        return (LatOrLng * 1e16);
+    public static double getEncodeLatLng(double latOrLng) {
+        return (latOrLng * 1e16);
     }
 
     /**
      * 解码经纬度
      */
-    public static double getDecodeLatLng(double LatOrLng) {
-        return (LatOrLng / 1e16);
+    public static double getDecodeLatLng(double latOrLng) {
+        return (latOrLng / 1e16);
     }
 
     public double getTransformViewValue(int number) {
@@ -92,14 +95,21 @@ public class SvgUtils {
         }
     }
 
-    //  MSE 默认转换为毫秒 ， LAL 经纬度
+    /**
+     * MSE 默认转换为毫秒 ， LAL 经纬度
+     * @param number
+     * @param type 类型
+     * @return 毫秒
+     */
     public double getTransformValue(double number, String type) {
         double val = 0;
-        if ("MSE".equals(type)) {
+        String mseStr = "MSE";
+        String lalStr = "LAL";
+        if (mseStr.equals(type)) {
             // 只保留小数点后5位
-            int position_before = Double.toString(number).indexOf(".");
-            if (position_before != -1) {
-                number = Double.parseDouble(Double.toString(number).substring(0, position_before + 6));
+            int positionBefore = Double.toString(number).indexOf(".");
+            if (positionBefore != -1) {
+                number = Double.parseDouble(Double.toString(number).substring(0, positionBefore + 6));
 
                 double tmp = number * 3600 * 1000;
                 int position = Double.toString(tmp).indexOf(".");
@@ -107,7 +117,7 @@ public class SvgUtils {
                     tmp = Double.parseDouble(Double.toString(tmp).substring(0, position));
                 }
                 val = Double.parseDouble(Double.toString(tmp).substring(0, 10));
-            } else if ("LAL".equals(type)) {
+            } else if (lalStr.equals(type)) {
                 val = number / 3600000;
             }
         }
@@ -128,11 +138,13 @@ public class SvgUtils {
      * @lat1 lat2 纬度
      * @lng1 lng2 经度
      */
-    public double GetDistance(double lng1, double lat1, double lng2, double lat2) {
-        if ((Math.abs(lat1) > 90) || (Math.abs(lat2) > 90)) {
+    public double getDistance(double lng1, double lat1, double lng2, double lat2) {
+        int lat90 = 90;
+        int lng180 = 180;
+        if ((Math.abs(lat1) > lat90) || (Math.abs(lat2) > lat90)) {
             return -1;
         }
-        if ((Math.abs(lng1) > 180) || (Math.abs(lng2) > 180)) {
+        if ((Math.abs(lng1) > lng180) || (Math.abs(lng2) > lng180)) {
             return -1;
         }
         double radLat1 = this.rad(lat1);
@@ -140,22 +152,25 @@ public class SvgUtils {
         double a = this.rad(lat1) - this.rad(lat2);
         double b = this.rad(lng1) - this.rad(lng2);
         double val = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) + Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
-        val = val * 6378.137; // EARTH_RADIUS;
-        //		val = round(val * 10000) / 10000;
-        return val * 1000; //Unit:m
+        // EARTH_RADIUS;
+        val = val * 6378.137;
+        // val = round(val * 10000) / 10000;
+        // Unit:m
+        return val * 1000;
     }
 
 
-    public double GetDistance(double lng1) {
-        return this.GetDistance(1, 0, 0, 0);
+    public double getDistance(double lng1) {
+        return this.getDistance(1, 0, 0, 0);
     }
 
     /**
      * 返回1毫秒距离
      */
     public double getMsecByLngLat() {
-        double LngLatM = this.GetDistance(1); //米
-        return LngLatM / 3600000;
+        // 米
+        double lngLatM = this.getDistance(1);
+        return lngLatM / 3600000;
     }
 
     /**
@@ -165,11 +180,13 @@ public class SvgUtils {
      * @lat1 $lat2 纬度
      * @lng1 $lng2 经度
      */
-    public double GetSpotDistance(double lng1, double lat1, double lng2, double lat2) {
-        if ((Math.abs(lat1) > 90) || (Math.abs(lat2) > 90)) {
+    public double getSpotDistance(double lng1, double lat1, double lng2, double lat2) {
+        int lat90 = 90;
+        int lng180 = 180;
+        if ((Math.abs(lat1) > lat90) || (Math.abs(lat2) > lat90)) {
             return -1;
         }
-        if ((Math.abs(lng1) > 180) || (Math.abs(lng2) > 180)) {
+        if ((Math.abs(lng1) > lng180) || (Math.abs(lng2) > lng180)) {
             return -1;
         }
         double radLat1 = this.rad(lat1);
@@ -195,16 +212,15 @@ public class SvgUtils {
             return lnglats;
         }
         // 2点距离米
-        double distance = this.GetDistance(lng1, lat1, lng2, lat2);
+        double distance = this.getDistance(lng1, lat1, lng2, lat2);
         // 对边距离
-        double oppside = this.GetDistance(lng2, lat1, lng2, lat2);
+        double oppside = this.getDistance(lng2, lat1, lng2, lat2);
         double rad = Math.asin(oppside / distance);
 
         // 距离转换为度数 1度的距离。米
-        double lngLatM = this.GetDistance(1);
+        double lngLatM = this.getDistance(1);
         // 距离A.米..
         double adis = distance * ratio;
-
         // 距离对边
         double lngside = Math.sin(rad) * adis;
         // 斜边
@@ -291,78 +307,78 @@ public class SvgUtils {
                 svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
                 svg.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
 
-                List<DmPlaneLayer> LayerFormList = dmPlaneLayerRepository.findByDrawMapIdAndStatusOrderByLOrder(Long.toString(drawMapId), this.STATUS_NORMAL);
-                List<DmLayerElement> ElementFormList = dmLayerElementRepository.findByDrawMapIdAndStatusOrderByElementId(Long.toString(drawMapId), this.STATUS_NORMAL);
+                List<DmPlaneLayer> layerFormList = dmPlaneLayerRepository.findByDrawMapIdAndStatusOrderByLOrder(Long.toString(drawMapId), this.STATUS_NORMAL);
+                List<DmLayerElement> elementFormList = dmLayerElementRepository.findByDrawMapIdAndStatusOrderByElementId(Long.toString(drawMapId), this.STATUS_NORMAL);
 
                 // 通过层ID存储元素集合[每个图层中包含n个元素]
-                Map<String, List<DmLayerElement>> LayerElementFormList = new HashMap<String, List<DmLayerElement>>();
-                ElementFormList.forEach(ElementForm -> {
-                    List<DmLayerElement> dmLayerElementLists = LayerElementFormList.get(ElementForm.getLayerId());
+                Map<String, List<DmLayerElement>> layerElementFormList = new HashMap<String, List<DmLayerElement>>();
+                elementFormList.forEach(elementForm -> {
+                    List<DmLayerElement> dmLayerElementLists = layerElementFormList.get(elementForm.getLayerId());
                     if (dmLayerElementLists == null) {
                         dmLayerElementLists = new ArrayList<DmLayerElement>();
                     }
-                    dmLayerElementLists.add(ElementForm);
-                    LayerElementFormList.put(ElementForm.getLayerId(), dmLayerElementLists);
+                    dmLayerElementLists.add(elementForm);
+                    layerElementFormList.put(elementForm.getLayerId(), dmLayerElementLists);
                 });
 
-                List<DmLayerElementAttr> ElementAttrFormList = dmLayerElementAttrRepository.findByDrawMapId(Long.toString(drawMapId));
+                List<DmLayerElementAttr> elementAttrFormList = dmLayerElementAttrRepository.findByDrawMapId(Long.toString(drawMapId));
                 // 通过元素ID存储元素属性集合[每个元素中包含n个属性名及属性值]
-                Map<String, List<DmLayerElementAttr>> LayerElementAttrFormList = new HashMap<String, List<DmLayerElementAttr>>();
-                if (null != ElementAttrFormList && ElementAttrFormList.size() != 0) {
-                    ElementAttrFormList.forEach(ElementAttrForm -> {
-                        List<DmLayerElementAttr> dmLayerElementAttrLists = LayerElementAttrFormList.get(ElementAttrForm.getElementId().toString());
+                Map<String, List<DmLayerElementAttr>> layerElementAttrFormList = new HashMap<String, List<DmLayerElementAttr>>();
+                if (null != elementAttrFormList && elementAttrFormList.size() != 0) {
+                    elementAttrFormList.forEach(elementAttrForm -> {
+                        List<DmLayerElementAttr> dmLayerElementAttrLists = layerElementAttrFormList.get(elementAttrForm.getElementId().toString());
                         if (dmLayerElementAttrLists == null) {
                             dmLayerElementAttrLists = new ArrayList<DmLayerElementAttr>();
                         }
-                        dmLayerElementAttrLists.add(ElementAttrForm);
-                        LayerElementAttrFormList.put(Long.toString(ElementAttrForm.getElementId()), dmLayerElementAttrLists);
+                        dmLayerElementAttrLists.add(elementAttrForm);
+                        layerElementAttrFormList.put(Long.toString(elementAttrForm.getElementId()), dmLayerElementAttrLists);
                     });
                 }
-                Map<String, String> LayerList = new HashMap<String, String>();
-                if (null != LayerFormList && LayerFormList.size() != 0) {
+                Map<String, String> layerList = new HashMap<String, String>();
+                if (null != layerFormList && layerFormList.size() != 0) {
                     // 图层创建
-                    LayerFormList.forEach(LayerForm -> {
-                        long layerId = LayerForm.getLayerId();
+                    layerFormList.forEach(layerForm -> {
+                        long layerId = layerForm.getLayerId();
                         Element g = dom.createElement("g");
                         svg.appendChild(g);
                         Element title = dom.createElement("title");
                         g.appendChild(title);
-                        Text title_value = null;
+                        Text titleValue = null;
                         try {
-                            title_value = dom.createTextNode(LayerForm.getLayerTopic());
+                            titleValue = dom.createTextNode(layerForm.getLayerTopic());
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                        title.appendChild(title_value);
+                        title.appendChild(titleValue);
                         Element type = dom.createElement("desc");
                         g.appendChild(type);
-                        Text type_value = dom.createTextNode(LayerForm.getLayerType());
-                        type.appendChild(type_value);
-                        List<DmLayerElement> LayerIdElementFormList = LayerElementFormList.get(LayerForm.getLayerId().toString());
+                        Text typeValue = dom.createTextNode(layerForm.getLayerType());
+                        type.appendChild(typeValue);
+                        List<DmLayerElement> layerIdElementFormList = layerElementFormList.get(layerForm.getLayerId().toString());
                         // 元素的创建
-                        if (null != LayerIdElementFormList && LayerIdElementFormList.size() > 0) {
-                            LayerIdElementFormList.forEach(LayerElementForm -> {
-                                Element element = dom.createElement(LayerElementForm.getElementType().toLowerCase());
+                        if (null != layerIdElementFormList && layerIdElementFormList.size() > 0) {
+                            layerIdElementFormList.forEach(layerElementForm -> {
+                                Element element = dom.createElement(layerElementForm.getElementType().toLowerCase());
                                 g.appendChild(element);
-                                if (null != LayerElementForm.getElementText() && !"".equals(LayerElementForm.getElementText())) {
-                                    Text element_html = null;
+                                if (null != layerElementForm.getElementText() && !"".equals(layerElementForm.getElementText())) {
+                                    Text elementHtml = null;
                                     try {
-                                        element_html = dom.createTextNode(LayerElementForm.getElementText());
+                                        elementHtml = dom.createTextNode(layerElementForm.getElementText());
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
-                                    element.appendChild(element_html);
+                                    element.appendChild(elementHtml);
                                 }
-                                List<DmLayerElementAttr> LayerElementIdAttrFormList = LayerElementAttrFormList.get(LayerElementForm.getElementId().toString());
+                                List<DmLayerElementAttr> layerElementIdAttrFormList = layerElementAttrFormList.get(layerElementForm.getElementId().toString());
                                 // 属性值的创建
-                                if (null != LayerElementIdAttrFormList && LayerElementIdAttrFormList.size() > 0) {
-                                    LayerElementIdAttrFormList.forEach(LayerElementAttrForm -> {
-                                        element.setAttribute(LayerElementAttrForm.getAttrName().toLowerCase(), LayerElementAttrForm.getAttrValue());
+                                if (null != layerElementIdAttrFormList && layerElementIdAttrFormList.size() > 0) {
+                                    layerElementIdAttrFormList.forEach(layerElementAttrForm -> {
+                                        element.setAttribute(layerElementAttrForm.getAttrName().toLowerCase(), layerElementAttrForm.getAttrValue());
                                     });
                                 }
                             });
                         }
-                        LayerList.put(LayerForm.getLayerType(), Long.toString(layerId));
+                        layerList.put(layerForm.getLayerType(), Long.toString(layerId));
                     });
                 }
                 Transformer transformer = TransformerFactory.newInstance().newTransformer();
@@ -377,7 +393,7 @@ public class SvgUtils {
                 String retString = strReturn.toString();
                 response.put("SVGSRC", retString);
                 // 取图层
-                response.put("LayerList", LayerList);
+                response.put("LayerList", layerList);
             } else {
                 error = "此楼层不存在SVG图片！";
             }
@@ -391,7 +407,7 @@ public class SvgUtils {
     /**
      * 上传SVG源代码
      */
-    public Map<String, Object> ajaxUploadSvgAndSavePng(String paramsJson) throws JSONException {
+    public Map<String, Object> ajaxUploadSvgAndSavePng(String paramsJson) {
 
         Map<String, Object> response = new HashMap<String, Object>();
         if (null == paramsJson || "".equals(paramsJson)) {
@@ -401,50 +417,60 @@ public class SvgUtils {
         JSONObject jsonObj = new JSONObject(paramsJson);
 
         Long buildingId = 0L;
-        if (jsonObj.has("BUILDING_ID")) {
-            buildingId = jsonObj.getLong("BUILDING_ID");
+        String buildingIdStr = "BUILDING_ID";
+        if (jsonObj.has(buildingIdStr)) {
+            buildingId = jsonObj.getLong(buildingIdStr);
         }
         Long floorId = 0L;
-        if (jsonObj.has("FLOOR_ID")) {
-            floorId = jsonObj.getLong("FLOOR_ID");
+        String floorIdStr = "FLOOR_ID";
+        if (jsonObj.has(floorIdStr)) {
+            floorId = jsonObj.getLong(floorIdStr);
         }
         Long drawMapId = null;
-        if (jsonObj.has("DRAW_MAP_ID")) {
-            if (!"".equals(jsonObj.getString("DRAW_MAP_ID"))) {
-                drawMapId = jsonObj.getLong("DRAW_MAP_ID");
+        String drawMapIdStr = "DRAW_MAP_ID";
+        if (jsonObj.has(drawMapIdStr)) {
+            if (!"".equals(jsonObj.getString(drawMapIdStr))) {
+                drawMapId = jsonObj.getLong(drawMapIdStr);
             }
         }
         Double dwScale = 0d;
-        if (jsonObj.has("DW_SCALE")) {
-            dwScale = jsonObj.getDouble("DW_SCALE");
+        String dwScaleStr = "DW_SCALE";
+        if (jsonObj.has(dwScaleStr)) {
+            dwScale = jsonObj.getDouble(dwScaleStr);
         } else {
-            dwScale = Double.parseDouble(cDict.DEFAULT_PLANEGRAPH.get("DW_SCALE"));
+            dwScale = Double.parseDouble(cDict.DEFAULT_PLANEGRAPH.get(dwScaleStr));
         }
         String backgroudColor = "";
-        if (jsonObj.has("BACKGROUD_COLOR")) {
-            backgroudColor = jsonObj.getString("BACKGROUD_COLOR");
+        String backgroudColorStr = "BACKGROUD_COLOR";
+        if (jsonObj.has(backgroudColorStr)) {
+            backgroudColor = jsonObj.getString(backgroudColorStr);
         } else {
-            backgroudColor = cDict.DEFAULT_PLANEGRAPH.get("BACKGROUD_COLOR");
+            backgroudColor = cDict.DEFAULT_PLANEGRAPH.get(backgroudColorStr);
         }
         String svgsrc = "";
-        if (jsonObj.has("SVGSRC")) {
-            svgsrc = jsonObj.getString("SVGSRC");
+        String svgsrcStr = "SVGSRC";
+        if (jsonObj.has(svgsrcStr)) {
+            svgsrc = jsonObj.getString(svgsrcStr);
         }
         String pngbase64 = "";
-        if (jsonObj.has("PNGBASE64")) {
-            pngbase64 = jsonObj.getString("PNGBASE64");
+        String pngbase64Str = "PNGBASE64";
+        if (jsonObj.has(pngbase64Str)) {
+            pngbase64 = jsonObj.getString(pngbase64Str);
         }
         String apFormListJsonStr = "";
-        if (jsonObj.has("APFORMLISTJSONSTR")) {
-            apFormListJsonStr = jsonObj.getString("APFORMLISTJSONSTR");
+        String apFormListJsonStr2 = "APFORMLISTJSONSTR";
+        if (jsonObj.has(apFormListJsonStr2)) {
+            apFormListJsonStr = jsonObj.getString(apFormListJsonStr2);
         }
         String poiFormListJsonStr = "";
-        if (jsonObj.has("POIFORMLISTJSONSTR")) {
-            poiFormListJsonStr = jsonObj.getString("POIFORMLISTJSONSTR");
+        String poiFormListJsonStr2 = "POIFORMLISTJSONSTR";
+        if (jsonObj.has(poiFormListJsonStr2)) {
+            poiFormListJsonStr = jsonObj.getString(poiFormListJsonStr2);
         }
         String svgPicListJsonStr = "";
-        if (jsonObj.has("SVGPICLISTJSONSTR")) {
-            svgPicListJsonStr = jsonObj.getString("SVGPICLISTJSONSTR");
+        String svgPicListJsonStr2 = "SVGPICLISTJSONSTR";
+        if (jsonObj.has(svgPicListJsonStr2)) {
+            svgPicListJsonStr = jsonObj.getString(svgPicListJsonStr2);
         }
         String dmTopic = jsonObj.getString("DM_TOPIC");
 
@@ -462,11 +488,12 @@ public class SvgUtils {
         }
 
         String error = "";
-        String warning = "";
+        StringBuilder sbWarning = new StringBuilder();
         if (null != floorId && !"".equals(svgsrc)) {
 
             if (null == drawMapId) {
-                // 获取下一个唯一标识ID 通过序列获取下一个标识
+                //获取下一个唯一标识ID
+                ///  通过序列获取下一个标识
                 drawMapId = dmDrawMapRepository.getSeqId();
             }
             if (null == buildingId) {
@@ -478,17 +505,19 @@ public class SvgUtils {
                 }
             }
             String status = "";
-            if (jsonObj.has("STATUS")) {
-                jsonObj.getString("STATUS");
+            String statusStr = "STATUS";
+            if (jsonObj.has(statusStr)) {
+                jsonObj.getString(statusStr);
             } else {
                 status = cDict.DEFAULT_PLANEGRAPH.get("STATUS");
             }
 
             String dwUnit = "";
-            if (jsonObj.has("DW_UNIT")) {
-                dwUnit = jsonObj.getString("DW_UNIT");
+            String dwUnitStr = "DW_UNIT";
+            if (jsonObj.has(dwUnitStr)) {
+                dwUnit = jsonObj.getString(dwUnitStr);
             } else {
-                dwUnit = cDict.DEFAULT_PLANEGRAPH.get("DW_UNIT");
+                dwUnit = cDict.DEFAULT_PLANEGRAPH.get(dwUnitStr);
             }
             XmlUtils.Svg svgInfo = XmlUtils.getSvgInfo(svgsrc);
             DmDrawMap dmDrawMap = new DmDrawMap();
@@ -524,7 +553,7 @@ public class SvgUtils {
                 Long finalDrawMapId = drawMapId;
 //                layerInfos.forEach(svgLayer -> {
                 for (XmlUtils.SvgLayer svgLayer : layerInfos) {
-                    // 组装平面图层
+                    //组装平面图层
                     DmPlaneLayer layerForm = new DmPlaneLayer();
                     long layerID = dmPlaneLayerRepository.getSeqId();
                     layerForm.setBuildingId(Long.toString(finalBuildingId));
@@ -591,8 +620,7 @@ public class SvgUtils {
                                 elementForm.setElementText(SvgUtils.limitGbkStr(elementForm.getElementText(), maxbytes));
                                 newlen = elementForm.getElementText().length();
                                 if (newlen < oldlen) {
-                                    warning = warning + "\n图层“" + layerForm.getLayerTopic() + "”中" + elementForm.getElementType() + "元素值有" + oldlen + "字节,只保存了" + newlen + "字节！";
-                                    ;
+                                    sbWarning.append("\n图层“" + layerForm.getLayerTopic() + "”中" + elementForm.getElementType() + "元素值有" + oldlen + "字节,只保存了" + newlen + "字节！");
                                 }
                             }
                             if (layerForm.getLayerType() == svgLayerType.get("AP") && null != finalApFormListJson) {
@@ -672,7 +700,7 @@ public class SvgUtils {
                                         elementAttrForm.setAttrValue(limitGbkStr(attrVal, maxbytes));
                                         newlen = elementAttrForm.getAttrValue().length();
                                         if (newlen < oldlen) {
-                                            warning = warning + "\n图层“" + layerForm.getLayerTopic() + "”中" + elementForm.getElementType() + "元素的" + attrName + "属性值有" + oldlen + "字节,只保存了" + newlen + "字节！";
+                                            sbWarning.append("\n图层“" + layerForm.getLayerTopic() + "”中" + elementForm.getElementType() + "元素的" + attrName + "属性值有" + oldlen + "字节,只保存了" + newlen + "字节！");
                                         }
                                         // 累加图层元素属性对象
                                         elementAttrFormList.add(elementAttrForm);
@@ -710,7 +738,7 @@ public class SvgUtils {
             error = "参数不正确！";
         }
         response.put("error", error);
-        response.put("warning", warning);
+        response.put("warning", sbWarning.toString());
         return response;
     }
 
@@ -722,19 +750,22 @@ public class SvgUtils {
         if (strlen > limitBytes) {
             int counterOfDoubleByte = 0;
             String str = "";
-            byte b[] = new byte[0];
+            byte[] b = new byte[0];
             try {
                 b = gbkStr.getBytes("GBK");
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            if (b.length <= limitBytes)
+            if (b.length <= limitBytes){
                 return str;
-            for (int i = 0; i < limitBytes; i++) {
-                if (b[i] < 0)
-                    counterOfDoubleByte++;
             }
-            if (counterOfDoubleByte % 2 == 0) {
+            for (int i = 0; i < limitBytes; i++) {
+                if (b[i] < 0){
+                    counterOfDoubleByte++;
+                }
+            }
+            int mod2 = 2;
+            if (counterOfDoubleByte % mod2 == 0) {
                 try {
                     str = new String(b, 0, limitBytes, "GBK");
                 } catch (UnsupportedEncodingException e) {
@@ -815,22 +846,22 @@ public class SvgUtils {
         int numlen = Integer.toString(num).length();
         int count = maxlen - numlen;
         int i = 0;
-        String zeroStr = "";
+        StringBuilder zeroStr = new StringBuilder();
         while (i < count) {
-            zeroStr = zeroStr + "0";
+            zeroStr.append("0");
             ++i;
         }
-        return (zeroStr + num);
+        return (zeroStr.toString() + num);
     }
 
     /**
      * 创建随机目录
      */
     public static String createLevelPath() {
-        int Level = 3;
+        int level = 3;
         String path = "";
         int i = 0;
-        while (i < Level) {
+        while (i < level) {
             String dir = randomAlignNumStr();
             path = (path == "") ? dir : (path + "/" + dir);
             ++i;
@@ -856,25 +887,25 @@ public class SvgUtils {
 
     public static String mkdirs(String root, String dirs) {
         File file = new File(root);
-        boolean dir_exists = file.exists();
+        boolean dirExists = file.exists();
         String errormsg = "";
-        if (!dir_exists) {
+        if (!dirExists) {
             try {
-                dir_exists = file.mkdirs();
+                dirExists = file.mkdirs();
             } catch (Exception e) {
                 errormsg = "创建目录\"" + root + "\"失败！";
                 errormsg = errormsg + e.getMessage();
                 return errormsg;
             }
         }
-        if (dir_exists) {
+        if (dirExists) {
             root = file.getParent();
             String[] pathList = dirs.split(File.separator);
             for (String v : pathList) {
                 root = root + File.separator + v;
                 if (!new File(root).exists()) {
                     try {
-                        dir_exists = new File(root).mkdirs();
+                        dirExists = new File(root).mkdirs();
                     } catch (Exception e) {
                         errormsg = "创建目录\"" + root + "\"失败！";
                         errormsg = errormsg + e.getMessage();
@@ -1116,7 +1147,8 @@ public class SvgUtils {
         if (null != notEssentialAttrValue) {
             String realattrvalue = notEssentialAttrValue.get(attrValue.toLowerCase());
             if (null != realattrvalue) {
-                if ("false".equals(realattrvalue)) {
+                String falseStr = "false";
+                if (falseStr.equals(realattrvalue)) {
                     realattrvalue = "null";
                 }
                 return (realattrvalue);
@@ -1128,7 +1160,5 @@ public class SvgUtils {
     public static void main(String[] args) {
 
     }
-
-
 }
 

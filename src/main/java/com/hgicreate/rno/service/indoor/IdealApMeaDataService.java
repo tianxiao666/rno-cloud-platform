@@ -16,9 +16,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * @author chao.xj
+ */
 @Slf4j
 @Service
-@Transactional
+@Transactional(rollbackFor = Exception.class)
 public class IdealApMeaDataService {
 
     private final IdealApMeaDataMapper idealApMeaDataMapper;
@@ -42,7 +45,9 @@ public class IdealApMeaDataService {
 
     public boolean saveIdealApMeaData(String jsonArrayObj){
 
-        if (jsonArrayObj==null || "".equals(jsonArrayObj)) return false;
+        if (jsonArrayObj==null || "".equals(jsonArrayObj)) {
+            return false;
+        }
         IdealApMeaData idealApMeaData = new IdealApMeaData();
         try {
             // 转换成为JSONObject对象
